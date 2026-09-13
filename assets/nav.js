@@ -13,6 +13,12 @@
    The link set is deliberately three words. A phone at 375 shows the same row
    the desktop shows, because a menu that hides three links is machinery the
    reader did not ask for.
+
+   The script also prints the skip link every page needs and points it at the
+   page's main region, adopting <main> where a page has one and the outer
+   container where it does not, marking that container as the main landmark if
+   it is still a div, so a keyboard reaches the content in one tab without any
+   page having to wire it.
    ============================================================================= */
 (function () {
   'use strict';
@@ -56,7 +62,16 @@
     '#sp-foot ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 20px;}',
     '#sp-foot a{color:var(--ink-soft,#5f6366);text-underline-offset:.18em;}',
     '#sp-foot a:hover{color:var(--ink,#1a1a1a);}',
-    '@media (max-width:400px){#sp-foot .in{padding-left:14px;padding-right:14px}}'
+    '@media (max-width:400px){#sp-foot .in{padding-left:14px;padding-right:14px}}',
+    '#sp-skip{position:absolute;left:-9999px;top:0;z-index:99;}',
+    '#sp-skip:focus{left:8px;top:8px;width:auto;height:auto;padding:10px 14px;',
+    '  background:var(--mason,#005239);color:#fff;border-radius:8px;text-decoration:none;',
+    '  font:600 14px/1.2 var(--face,Figtree,-apple-system,"Segoe UI",Arial,sans-serif);',
+    '  outline:3px solid var(--gold,#ffc733);outline-offset:2px;}',
+    '#sp-main:focus{outline:none}',
+    /* On paper the chrome is noise, and the checker prints a summary sheet of
+       its own with its own foot line. */
+    '@media print{#sp-nav,#sp-foot,#sp-skip{display:none!important}}'
   ].join('');
 
   function here() {
@@ -82,6 +97,22 @@
     style.textContent = CSS;
     document.head.appendChild(style);
 
+    var main = document.querySelector('main') ||
+               document.getElementById('app') ||
+               document.getElementById('page');
+    var skip = null;
+    if (main) {
+      if (!main.id) main.id = 'sp-main';
+      if (!main.hasAttribute('tabindex')) main.setAttribute('tabindex', '-1');
+      /* a page whose container is still a div gets the landmark anyway, so the
+         skip link lands somewhere a screen reader can name */
+      if (main.tagName !== 'MAIN' && !main.getAttribute('role')) main.setAttribute('role', 'main');
+      skip = document.createElement('a');
+      skip.id = 'sp-skip';
+      skip.href = '#' + main.id;
+      skip.textContent = 'Skip to the main content';
+    }
+
     var head = document.createElement('header');
     head.id = 'sp-nav';
     var hin = document.createElement('div');
@@ -97,6 +128,7 @@
     hin.appendChild(nav);
     head.appendChild(hin);
     document.body.insertBefore(head, document.body.firstChild);
+    if (skip) document.body.insertBefore(skip, head);
 
     var foot = document.createElement('footer');
     foot.id = 'sp-foot';

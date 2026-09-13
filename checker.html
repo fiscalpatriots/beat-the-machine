@@ -4,12 +4,32 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#005239">
-<title>Second Pass Checker</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%23005239%27/%3E%3Cpath d=%277 20l5 5 13-14%27 fill=%27none%27 stroke=%27%23ffc733%27 stroke-width=%273%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E">
+<title>Second Pass Checker: tie every figure back to the ledger</title>
+<meta name="description" content="Paste a ledger and the memo somebody drafted about it. Four checks settle every figure, every direction word and every account nobody mentioned.">
+<link rel="canonical" href="https://fiscalpatriots.github.io/beat-the-machine/checker.html">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Second Pass">
+<meta property="og:url" content="https://fiscalpatriots.github.io/beat-the-machine/checker.html">
+<meta property="og:title" content="Second Pass Checker: tie every figure back to the ledger">
+<meta property="og:description" content="Paste a ledger and the memo somebody drafted about it. Four checks settle every figure, every direction word and every account nobody mentioned.">
+<meta property="og:image" content="https://fiscalpatriots.github.io/beat-the-machine/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Second Pass, a second pass on AI-drafted close commentary, George Mason University, Costello College of Business.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Second Pass Checker: tie every figure back to the ledger">
+<meta name="twitter:description" content="Paste a ledger and the memo somebody drafted about it. Four checks settle every figure, every direction word and every account nobody mentioned.">
+<meta name="twitter:image" content="https://fiscalpatriots.github.io/beat-the-machine/assets/og-image.png">
+
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/second-pass.css">
+<script src="assets/nav.js" defer></script>
 <style>
 /* Page layout only. Every component this page uses lives in
    assets/second-pass.css, including the band, the step strip, the segmented
@@ -23,6 +43,16 @@
    stack into rows below 760px and sit on percentage columns above it. */
 #app{max-width:1080px;margin:0 auto;padding:0 var(--gut) var(--s9);min-height:100vh;
   display:flex;flex-direction:column}
+#app:focus{outline:none}
+
+/* Read aloud, never drawn: the column a status mark occupies and the word a
+   mark stands for both have to reach a screen reader in text. */
+.vh{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+
+/* Parse preview and Previous runs are second-level headings under the page
+   title, and they keep the smaller third-level size they were drawn at. */
+#preview>h2,#prevruns>h2{font-size:var(--t-lead);line-height:1.3;font-weight:600}
 #app>*{min-width:0;max-width:100%}
 
 /* ---------- masthead ---------- */
@@ -34,6 +64,9 @@
 .masthead hr{border:0;border-top:3px solid var(--gold);margin:var(--s3) 0 0}
 
 /* ---------- the case figure under the band ---------- */
+/* This one sits 460px down a 1280 by 800 screen, so it is inside the first
+   view and is fetched eagerly. Every image further down the site carries
+   loading="lazy". Both carry width and height so nothing reflows around them. */
 figure.shot{margin:0 0 var(--s7)}
 figure.shot img{border-radius:8px;border:1px solid var(--rule)}
 
@@ -249,13 +282,13 @@ details.pr .btn-text{margin:0 0 var(--s5)}
 </style>
 </head>
 <body>
-<div id="app">
+<main id="app">
 
-  <header class="masthead">
+  <div class="masthead">
     <div class="inst">George Mason University</div>
     <div class="coll">Costello College of Business</div>
     <hr>
-  </header>
+  </div>
 
   <div class="band">
     <h1>Second Pass Checker</h1>
@@ -272,7 +305,7 @@ details.pr .btn-text{margin:0 0 var(--s5)}
   </div>
 
   <figure class="figure shot">
-    <img src="screenshots/checker/hero-results.png" width="1280" height="600" loading="lazy" decoding="async"
+    <img src="screenshots/checker/hero-results.png" width="1280" height="600" decoding="async" fetchpriority="high"
       alt="The checker on the Halyard sample: a stacked coverage bar, four stat tiles reading four checked within scope, five needs review, none not checked and three failed, then the results table under them.">
     <figcaption class="figcap">See it on a real case. Halyard Provisioning Group, June 2026: fourteen ledger
     lines against a twelve-sentence draft, one silent line and thirteen items left for a person. Load it from
@@ -303,7 +336,7 @@ details.pr .btn-text{margin:0 0 var(--s5)}
   </div>
 
   <div id="preview" class="hidden section">
-    <h3>Parse preview</h3>
+    <h2>Parse preview</h2>
     <p class="lead">What the ledger reader found, before anything is checked. Confirm the two period columns
     if the guess is wrong.</p>
     <div class="pvgrid hidden" id="pvcols">
@@ -390,7 +423,8 @@ details.pr .btn-text{margin:0 0 var(--s5)}
     </div>
   </div>
 
-  <div id="msg"></div>
+  <div id="msg" role="status" aria-live="polite"></div>
+  <p id="runsay" class="vh" role="status" aria-live="polite"></p>
 
   <div id="empty" class="empty">
     <svg viewBox="0 0 200 116" role="img" aria-label="A ledger sheet beside a memo sheet carrying a check mark.">
@@ -419,7 +453,7 @@ details.pr .btn-text{margin:0 0 var(--s5)}
   <div id="out"></div>
 
   <div id="prevruns" class="hidden section">
-    <h3>Previous runs</h3>
+    <h2>Previous runs</h2>
     <p class="tiny">Changing an input clears the statuses and stamps the next run with a new identifier.
     Earlier runs are kept here.</p>
     <div id="prevlist"></div>
@@ -452,15 +486,10 @@ details.pr .btn-text{margin:0 0 var(--s5)}
     Pages and loads one Google font; anything you copy into another AI service goes to that service under its
     terms.</p>
     <p><a href="CHECKER.md">What it does and does not do</a> &middot;
-    <a href="PROTOCOL.md">The protocol</a> &middot;
-    <a href="Second-Pass-Excel-Template.xlsx">Excel template</a> &middot;
-    <a href="Second-Pass-Facilitator-Guide.pdf">Facilitator guide</a> &middot;
-    <a href="PROVENANCE.md">Provenance</a> &middot;
-    <a href="index.html">Back to the game</a></p>
-    <p>Built by Khaled Alkurd. A drill for the AI-native accounting student.</p>
+    <a href="Second-Pass-Excel-Template.xlsx">Excel template</a></p>
   </div>
 
-</div>
+</main>
 
 <script>
 (function(){
@@ -2032,6 +2061,21 @@ function run(){
         floorD:floorD,floorP:floorP,rule:rule,zero:zp};
   render(out,rows,stats);
   renderPrev();
+  say("Run "+runId+" finished. "+stats.sent+" sentence"+(stats.sent===1?"":"s")+" read: "+
+      stats.checked+" checked within scope, "+stats.review+" need review, "+stats.notchecked+
+      " not checked, "+stats.failed+" failed. "+stats.silent+" silent line"+(stats.silent===1?"":"s")+
+      " and "+stats.queue+" item"+(stats.queue===1?"":"s")+" in the reviewer queue. The results table "+
+      "is below.");
+}
+
+/* The result is a table a long way down the page. This one sentence is read out
+   when a run ends so a screen reader is told the run happened and what it
+   found, without the table itself ever being announced cell by cell. */
+function say(line){
+  var n=$("runsay");
+  if(!n)return;
+  n.textContent="";
+  setTimeout(function(){n.textContent=line;},60);
 }
 
 function statusWhy(s){
@@ -2157,6 +2201,8 @@ var MARKS={
 };
 var MARKKEY={"checked within scope":"pass","needs review":"review","not checked":"info","failed":"fail"};
 function markHTML(status){return MARKS[MARKKEY[status]||"info"];}
+/* one id per select on the page, so a label can point at it */
+var ROLESEQ=0;
 
 function coverage(stats){
   return [["sent",stats.sent,"Sentences read",""],
@@ -2337,8 +2383,9 @@ function render(out,rows,stats){
   tbl.appendChild(cg);
   var thead=el("thead"),tr=el("tr");
   HEADS.forEach(function(h,n){
-    var th=el("th",null,h);
-    if(n===0)th.setAttribute("aria-label","Status");
+    var th=el("th",null,n===0?null:h);
+    th.setAttribute("scope","col");
+    if(n===0)th.appendChild(el("span","vh","Status"));
     tr.appendChild(th);
   });
   thead.appendChild(tr);tbl.appendChild(thead);
@@ -2354,6 +2401,7 @@ function render(out,rows,stats){
     }
     var mk=cell("mk",null,0);
     mk.innerHTML=markHTML(r.status);
+    mk.appendChild(el("span","vh",r.status));
     t.appendChild(mk);
     t.appendChild(cell("mono",r.line,1));
     var subj=cell("subj",null,2);
@@ -2371,6 +2419,8 @@ function render(out,rows,stats){
     if(r.roleSel){
       var lab=el("label","rolelab","Confirm what this figure is:");
       var sel=el("select","rolesel");
+      sel.id="rolesel-"+(++ROLESEQ);
+      lab.htmlFor=sel.id;
       var o0=el("option",null,"not confirmed");o0.value="";sel.appendChild(o0);
       ROLE_OPTIONS.forEach(function(name){
         var o=el("option",null,name);o.value=name;sel.appendChild(o);
@@ -3067,6 +3117,7 @@ $("clear").onclick=function(){
   ["ledger","memo","ratios","period","memover","company","reviewer"].forEach(function(id){$(id).value="";});
   ROLECONF={};ANSWERS={};
   $("msg").innerHTML="";$("out").innerHTML="";$("samplepick").value="";
+    var rs=$("runsay");if(rs)rs.textContent="";
   LAST=null;USERCOLS=null;
   countAll();showEmpty(true);
   refreshPreview();
