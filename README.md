@@ -3,20 +3,29 @@
 A ten minute reviewer's game for the George Mason ACFE student chapter. An assistant wrote
 Halyard's June close commentary, and the player is the second pass on it.
 
-Round one puts the ledger itself on screen as a tappable table, one row per account with May, June,
-the change in dollars and percent and a bar that makes the big movements obvious, and the player
-taps up to five lines to record unaided judgement before reading a word of the memo. Then fourteen
-accounts come one at a time with the movement drawn as a two bar chart, a one line ledger strip for
-the account under review, the sentence the memo wrote about it, and an "On file" panel carrying
-every fact the call needs. A Ledger button on every card and reveal opens the full table as a slide
-up sheet with the current account highlighted and scrolled into view. The player flags the line or
-lets it stand, and the reveal names the error type. Twelve of the fourteen carry a problem and two
-are clean lines, and the score is read against the ledger rather than against a machine score.
+The path from opening the link to the first card is three screens: the intro, one screen for the
+codename and the chapters, and the ledger.
+
+The ledger screen is a statement, not a list. A header block names the company and the close, the
+accounts sit under Revenue, Cost of sales and Operating expenses with subtotals and a net line,
+figures are right aligned at 15px with thousands separators, negative changes print in a muted red,
+and a slim bar under each account name is scaled to the largest absolute change. Nothing is tapped
+there; it is orientation, and the Ledger button on every card and reveal reopens the same component
+as a slide up sheet with the account under review highlighted and scrolled to.
+
+Then fourteen accounts come one at a time. Each card carries the account's statement line, a two bar
+picture of the movement with no figures repeated on it, the memo's sentence quoted once, and an "On
+file" panel holding only facts not already visible above it. The two calls are equal weight and
+neutral, with Let it stand on the left. Every card is scored, so flagging a line that was already
+right costs exactly what missing a problem costs, and the running pill reads right over cards seen.
+The split is twelve problem lines and two clean ones, which is what the source exercise contains,
+and neither number is ever shown to the player.
 
 The end screen leads with the reward: a trophy drawn to the rank (bronze, silver, gold, and a
-starred cup for a clean sweep), the rank name, the codename, five badges with the unearned ones
-greyed, and the share line with a Copy button. The coaching sits behind one tap under it. Ranks are
-Trainee, Staff, Senior, Manager and Partner, off correct calls out of fourteen.
+starred cup for a clean sweep), the rank name, the codename, the three outcomes as caught, let stand
+correctly and false flags, five badges with the unearned ones greyed, and the share line with a Copy
+button. The coaching sits behind one tap under it. Ranks are Trainee, Staff, Senior, Manager and
+Partner, off correct calls out of fourteen, and a player who flags all fourteen lands on Senior.
 
 Answers post straight into the existing Google Form's responses, so the leaderboard and the pooled
 results are unchanged.
@@ -61,8 +70,13 @@ their answers as copyable text rather than losing them.
 Nobody types anything after the round. The fourteen calls post as `Accept` or `Reject` so the
 existing multiple choice questions keep working, and every text question receives a generated
 summary instead of player prose: the fourteen "Why" fields carry the call, the key and the error
-type for that line, question A carries the organisations and the round one overlap, and question B
-carries the lines missed, the pattern, the result and the longest run.
+type for that line, question A carries the organisations, and question B carries the lines missed,
+the pattern, the result and the longest run.
+
+Three questions the form marks required are no longer asked on screen (expected quality, confidence
+before the round, and month end close experience). They post fixed placeholder values and question B
+says so in the same cell, so nobody reads them as player answers. The elapsed minutes come off the
+clock rather than a tap.
 
 Card one is inverted on purpose. Its form question asks the player to agree or disagree that
 nothing is owed on account 4200, so flagging that line posts `Reject` while flagging any other line
