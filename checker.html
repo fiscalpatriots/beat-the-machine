@@ -708,6 +708,48 @@ function parseFig(raw){
   if(isNaN(v))return NaN;
   return v*mult;
 }
+/* ---------- 0. WHAT THE ACCEPTED GRAMMAR DOES NOT READ -------------------
+   A number the grammar cannot interpret is never dropped in silence. It is
+   recorded as an unparsed span, it stops the sentence being called checked, and
+   it is listed in the reviewer's queue. Three kinds: a currency that is not the
+   dollar, a scale or multiplier word the grammar does not carry, and a number
+   standing where a claim stands that the figure reader did not take. */
+var FOREIGN_BEFORE=/(?:[\u20AC\u00A3\u00A5\u20B9\u20BD\u20A9\u20AA\u20BA\u0E3F\u00A2]|\b(?:EUR|GBP|JPY|CHF|CAD|AUD|NZD|CNY|RMB|INR|MXN|BRL|ZAR|SEK|NOK|DKK|SGD|HKD|USD)\s)\s*$/i;
+var FOREIGN_AFTER=/^\s*(?:[\u20AC\u00A3\u00A5\u20B9\u20BD\u20A9\u20AA\u20BA\u0E3F\u00A2]|\b(?:EUR|GBP|JPY|CHF|CAD|AUD|NZD|CNY|RMB|INR|MXN|BRL|ZAR|SEK|NOK|DKK|SGD|HKD|USD)\b)/i;
+var SCALE_AFTER=/^[\s-]*(?:thousands?|millions?|billions?|trillions?|mn|bn|basis\s+points?|bps|times|multiples?)\b/i;
+var NUMWORD_RE=/\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion)(?:[\s-]+(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion))*\b/gi;
+var UNIT_AFTER=/^[\s,-]*(?:percent|per\s?cent|pct|%|percentage\s+points?|basis\s+points?|points?|dollars?)\b/i;
+
+/* a number written out in words, where the words make it a figure: "ninety
+   percent", or "30 thousand" with a digit in front of the scale word */
+function numberWords(text){
+  var out=[],m;
+  NUMWORD_RE.lastIndex=0;
+  while((m=NUMWORD_RE.exec(text))!==null){
+    var j=m.index+m[0].length;
+    if(UNIT_AFTER.test(text.slice(j,j+26))||/\d\s*$/.test(text.slice(Math.max(0,m.index-14),m.index)))
+      out.push({raw:m[0],at:m.index,end:j,why:"a figure written in words"});
+  }
+  return out;
+}
+/* a run of digits the figure reader did not take, standing where the words put
+   a claim, or carrying a unit the grammar does not read */
+function strayNumbers(text,taken,figs){
+  var re=/-?\d[\d,]*(?:\.\d+)?/g,out=[],m,t,hit,i,j;
+  while((m=re.exec(text))!==null){
+    i=m.index;j=i+m[0].length;hit=false;
+    for(t=0;t<taken.length;t++)if(i<taken[t][1]&&j>taken[t][0]){hit=true;break;}
+    if(hit)continue;
+    var after=text.slice(j,j+26);
+    var unit=SCALE_AFTER.test(after)||FOREIGN_AFTER.test(after);
+    var r=roleOf(text,{at:i,end:j,unit:"dollars"},0,[]);
+    if(!unit&&r.role==="unknown")continue;
+    out.push({raw:m[0]+(unit?(after.match(SCALE_AFTER)||after.match(FOREIGN_AFTER))[0]:""),at:i,end:j,
+      why:unit?"a unit the checker does not read":"a number standing where the words put a claim"});
+  }
+  return out;
+}
+
 /* ---------- 1. EXTRACTION ------------------------------------------------
    A figure is the text span it was read from, its value, its unit and whether
    the text gave it an explicit sign. Nothing here binds an account, and nothing
@@ -741,23 +783,58 @@ function figures(text,skipNums){
     taken.push([m.index,m.index+m[0].length]);
   }
   /* ordinary numeric text: four digits or more, no currency punctuation at all.
-     A bare four digit number that reads as a year is left where it stands. */
-  var rn=/\b\d{4,}(?:\.\d+)?\b/g;
+     A minus sign in front of it is part of the figure and is carried through.
+     A bare four digit number that reads as a year is left where it stands, and
+     an account number written out is a reference; either one, standing where the
+     words put a claim, is picked up as an unparsed span further down. */
+  var rn=/(?:-\s?)?\b\d{4,}(?:\.\d+)?\b/g;
   while((m=rn.exec(text))!==null){
     if(overlaps(m.index,m.index+m[0].length))continue;
-    if(/^(19|20)\d\d$/.test(m[0]))continue;
-    /* an account number written out is a reference, not a figure */
-    if(skipNums&&skipNums[m[0]])continue;
-    out.push({raw:m[0],v:parseFloat(m[0]),at:m.index,end:m.index+m[0].length,
-              unit:"dollars",signed:false,plain:true});
+    var bare=m[0].replace(/[^0-9.]/g,"");
+    if(/^(19|20)\d\d$/.test(bare))continue;
+    if(skipNums&&skipNums[bare])continue;
+    out.push({raw:m[0].replace(/\s+/g,""),v:parseFloat(bare)*(/^-/.test(m[0])?-1:1),
+              at:m.index,end:m.index+m[0].length,
+              unit:"dollars",signed:/^-/.test(m[0]),plain:true});
     taken.push([m.index,m.index+m[0].length]);
   }
   out.sort(function(a,b){return a.at-b.at;});
-  out.forEach(function(f,i){
-    var r=roleOf(text,f,i,out);
+
+  /* a figure written in a currency the checker does not read, or carrying a
+     scale word it does not carry, is not a figure it may compare against a
+     dollar ledger. It comes out of the accepted set and goes to the queue. */
+  var rejected=[],keep=[];
+  out.forEach(function(f){
+    var before=text.slice(0,f.at),after=text.slice(f.end),mm;
+    if(f.unit==="dollars"&&(mm=before.match(FOREIGN_BEFORE))){
+      rejected.push({raw:mm[0].replace(/^\s+/,"")+f.raw,at:f.at-mm[0].replace(/^\s+/,"").length,end:f.end,
+        why:"a currency the checker does not read"});return;
+    }
+    if(f.unit==="dollars"&&(mm=after.match(FOREIGN_AFTER))){
+      rejected.push({raw:f.raw+mm[0],at:f.at,end:f.end+mm[0].length,
+        why:"a currency the checker does not read"});return;
+    }
+    if(f.unit==="dollars"&&(mm=after.match(SCALE_AFTER))){
+      rejected.push({raw:f.raw+mm[0],at:f.at,end:f.end+mm[0].length,
+        why:"a scale word the checker does not carry"});return;
+    }
+    keep.push(f);
+  });
+  keep.forEach(function(f,i){
+    var r=roleOf(text,f,i,keep);
     f.role=r.role;f.side=r.side||"";f.roleFrom=r.from||"";
   });
-  return out;
+  var spans=[],k;
+  for(k=0;k<keep.length;k++)spans.push([keep[k].at,keep[k].end]);
+  for(k=0;k<rejected.length;k++)spans.push([rejected[k].at,rejected[k].end]);
+  numberWords(text).forEach(function(w){
+    for(k=0;k<spans.length;k++)if(w.at<spans[k][1]&&w.end>spans[k][0])return;
+    rejected.push(w);spans.push([w.at,w.end]);
+  });
+  strayNumbers(text,spans,keep).forEach(function(n){rejected.push(n);});
+  rejected.sort(function(a,b){return a.at-b.at;});
+  keep.rejected=rejected;
+  return keep;
 }
 function dollarsIn(figs){return figs.filter(function(f){return f.unit==="dollars";});}
 function pctsIn(figs){return figs.filter(function(f){return f.unit!=="dollars";});}
@@ -828,13 +905,14 @@ function near(a,b,t){return Math.abs(Math.abs(a)-Math.abs(b))<=t;}
 function exactly(a,b,t){return Math.abs(a-b)<=t;}
 function acctId(a){return (a.num?a.num+" ":"")+a.name;}
 
-function bindSentence(s,accounts,figs){
+function bindSentence(s,accounts,figs,spent){
   var text=" "+s.text.toLowerCase().replace(/[^a-z0-9$.,%\s-]/g," ").replace(/\s+/g," ")+" ";
   var tokens={};
   s.text.toLowerCase().replace(/[a-z]+/g,function(w){tokens[w]=1;return w;});
   var byNum=[],byName=[],byWord=[],byFig=[],conflicts=[],i;
 
   accounts.forEach(function(a){
+    if(spent&&spent[a.num])return;
     if(a.num&&new RegExp("(^|[^0-9])"+a.num+"([^0-9]|$)").test(s.text))byNum.push(a);
   });
   accounts.forEach(function(a){
@@ -873,6 +951,38 @@ function bindSentence(s,accounts,figs){
           conflicts:conflicts,how:how.join(", ")};
 }
 
+/* A sentence that names more than one account is only allowed to bind a figure
+   to one of them when the clause the figure stands in names that one and no
+   other. Where it does not, the binding is unresolved and the figure cannot be
+   called checked, whatever it happens to equal. */
+function clauseBind(s){
+  var spans=spansOf(s.text,RE_FINE),distinct={};
+  s.bound.forEach(function(a){
+    distinct[acctId(a)]=a.words.filter(function(w){
+      var shared=false;
+      s.bound.forEach(function(o){if(o!==a&&o.words.indexOf(w)>-1)shared=true;});
+      return !shared;
+    });
+  });
+  s.figs.forEach(function(f){
+    var cl=null,hits=[];
+    spans.forEach(function(sp){if(f.at>=sp.at&&f.at<sp.end)cl=sp;});
+    if(cl){
+      var ct=" "+cl.text.toLowerCase().replace(/[^a-z0-9\s]/g," ").replace(/\s+/g," ")+" ";
+      s.bound.forEach(function(a){
+        var got=false;
+        if(a.num&&new RegExp("(^|[^0-9])"+a.num+"([^0-9]|$)").test(cl.text))got=true;
+        if(!got&&a.flat&&ct.indexOf(" "+a.flat+" ")>-1)got=true;
+        if(!got&&a.two&&a.two.indexOf(" ")>-1&&ct.indexOf(" "+a.two+" ")>-1)got=true;
+        if(!got)(distinct[acctId(a)]||[]).forEach(function(w){if(ct.indexOf(" "+w+" ")>-1)got=true;});
+        if(got)hits.push(a);
+      });
+    }
+    f.clause=cl?cl.text:s.text;
+    f.bind=hits.length===1?hits:null;
+  });
+}
+
 /* ---------- 4. UNITS AND CALCULATION ------------------------------------
    Every comparison is made on unrounded values. A dollar figure ties when it is
    within half a cent of the ledger value and a percent within 0.05 of a
@@ -883,7 +993,8 @@ function qtyOf(a,which){return which==="prior"?a.prior:(which==="cur"?a.cur:a.ch
 function qtyName(which){return which==="prior"?"prior balance":(which==="cur"?"current balance":"change");}
 var ROLE_QTY={"prior balance":"prior","current balance":"cur","absolute movement":"change"};
 
-function checkDollar(f,bound){
+function checkDollar(f,bound,all){
+  if(!all||!all.length)all=bound;
   var want=ROLE_QTY[f.role]||null,hit=null,alts=[],best=null;
   bound.forEach(function(a){
     ["prior","cur","change"].forEach(function(k){
@@ -930,9 +1041,9 @@ function checkDollar(f,bound){
      revenue line and a cost line, is not something the ledger holds. It is
      reported as what it looks like and left to a person, never passed. */
   var combo=null;
-  if(bound.length>1){
-    bound.forEach(function(a){
-      bound.forEach(function(b){
+  if(all.length>1){
+    all.forEach(function(a){
+      all.forEach(function(b){
         if(combo||a===b)return;
         ["prior","cur","change"].forEach(function(k){
           if(combo)return;
@@ -972,6 +1083,27 @@ function checkPercent(f,bound,ratios,zp){
     if(f.role==="rate change in points")return c.kind==="rate change in points";
     return true;
   }
+  /* A role the words do not give cannot be settled by the fact that the figure
+     happens to equal something. The reviewer confirms it in the dropdown beside
+     the row, and the run after that is the one that can call it checked. */
+  if(f.role==="unknown"){
+    cands.sort(function(x,y){return Math.abs(Math.abs(f.v)-Math.abs(x.v))-Math.abs(Math.abs(f.v)-Math.abs(y.v));});
+    var eq=cands.filter(function(c){return near(f.v,c.v,TOL_P);});
+    /* a sign written into the memo is a claim the words did give, and it is
+       tested whatever the role turns out to be */
+    var sc=eq.filter(function(c){return f.signed&&Math.abs(f.v-c.v)>TOL_P;});
+    if(sc.length&&sc.length===eq.length){
+      return {st:"failed",txt:f.raw+" is written with a sign of its own; "+sc[0].lab+" is "+pctTxt(sc[0].v)+
+        ", so the magnitudes agree and the signs do not.",
+        ask:"Which way did this move, and is the sign in the memo right?"};
+    }
+    return {st:"review",txt:f.raw+": the words around it do not say what it measures"+
+      (eq.length?", and it equals "+eq.map(function(c){return c.lab+" at "+pctTxt(c.v);}).join("; ")+
+        ". Equalling a figure is not the same as being that figure":
+        ", and it equals nothing the checker holds")+
+      ". Confirm the role beside this row before it counts as checked.",
+      ask:"What is "+f.raw+" in this sentence: the movement on the line, a ratio, or something else?"};
+  }
   for(i=0;i<cands.length;i++){
     if(!wanted(cands[i]))continue;
     if(near(f.v,cands[i].v,TOL_P)){
@@ -985,7 +1117,8 @@ function checkPercent(f,bound,ratios,zp){
       ask:"Which way did this move, and is the sign in the memo right?"};
   }
   if(hit){
-    return {st:"checked",txt:f.raw+" is the "+f.role+", "+hit.lab+" at "+pctTxt(hit.v)+" unrounded, and the role "+
+    return {st:"checked",via:hit.kind==="relative movement"?"line":"ratio",
+      txt:f.raw+" is the "+f.role+", "+hit.lab+" at "+pctTxt(hit.v)+" unrounded, and the role "+
       "was read from "+f.roleFrom+".",ask:""};
   }
   if(f.unit==="percentage points"&&!ratios.length){
@@ -1138,13 +1271,45 @@ function isFlat(a){
   if(a.pct===null)return a.change===0;
   return Math.abs(a.pct)<=FLAT_TOL;
 }
+/* Clauses, with the offsets kept so a figure can be placed in the clause it was
+   written in. A comma inside a figure is part of the figure, never a break, and
+   the guard character is one character wide so every offset still lines up. */
+var RE_COARSE=/[,;:]|\bso\b|\bbecause\b|\bwhile\b|\bbut\b|\bas\b|\bafter\b|\bbefore\b|\bwhich\b|\bthough\b/gi;
+var RE_FINE=/[,;:]|\bso\b|\bbecause\b|\bwhile\b|\bwhereas\b|\bbut\b|\bas\b|\bafter\b|\bbefore\b|\bwhich\b|\bthough\b|\band\b|\bor\b|\bagainst\b|\bversus\b|\bcompared\s+(?:with|to)\b|\brelative\s+to\b|\boffset\s+by\b|\balongside\b|\brather\s+than\b|\binstead\s+of\b/gi;
+function spansOf(txt,re){
+  var t=String(txt).replace(/(\d),(\d)/g,"$1\u0001$2"),out=[],last=0,m;
+  re.lastIndex=0;
+  while((m=re.exec(t))!==null){
+    if(m.index>last)out.push([last,m.index]);
+    last=m.index+m[0].length;
+    if(m[0].length===0)re.lastIndex++;
+  }
+  if(last<t.length)out.push([last,t.length]);
+  return out.map(function(p){return {at:p[0],end:p[1],text:String(txt).slice(p[0],p[1])};})
+            .filter(function(c){return c.text.replace(/\s/g,"")!=="";});
+}
 function clausesOf(txt){
-  /* a comma inside a figure is part of the figure, never a clause break */
-  var guard="~COMMA~";
-  var t=String(txt).replace(/(\d),(\d)/g,"$1"+guard+"$2");
-  return t.split(/[,;:]|\bso\b|\bbecause\b|\bwhile\b|\bbut\b|\bas\b|\bafter\b|\bbefore\b|\bwhich\b|\bthough\b/i)
-          .map(function(c){return String(c).split(guard).join(",");})
-          .filter(function(c){return c&&c.replace(/\s/g,"")!=="";});
+  return spansOf(txt,RE_COARSE).map(function(c){return c.text;});
+}
+/* ---------- NEGATION -----------------------------------------------------
+   not, no, never, neither, without, rather than, instead of and the contracted
+   forms. A negated clause is not read as the claim it would be without the
+   negation, and it is not read as its opposite either: the checker says it
+   cannot settle it and the reviewer does. The threshold idioms a memo uses to
+   say a line owes nothing are not negations of a figure or a direction, so they
+   are taken out before the test. */
+var NEG_RE=/\b(?:did|do|does|was|were|is|are|has|have|had|could|would|will|can|shall|should|may|might|must)\s+not\b|\bnot\b|\bnever\b|\bnor\b|\bneither\b|\bwithout\b|\brather\s+than\b|\binstead\s+of\b|\bfailed\s+to\b|\bno\b|n['\u2019]t\b/i;
+function negationIn(t){
+  var x=" "+String(t).replace(/\s+/g," ")+" ";
+  x=x.replace(/\bno\s+(?:commentary|drivers?|explanations?|reasons?|comments?|such)\b/gi," ")
+     .replace(/\bno\s+(?:change|movement)\b/gi," ")
+     .replace(/\bneither\s+leg\b/gi," ")
+     .replace(/\bnot\s+(?:listed|supplied|broken\s+out|yet)\b/gi," ");
+  var m=x.match(NEG_RE);
+  return m?m[0].replace(/^\s+|\s+$/g,""):null;
+}
+function claimIn(t){
+  return !!(figures(t).length||dirWords(t).length||flatWord(t));
 }
 
 /* ============================================================ the parse preview */
@@ -1436,13 +1601,40 @@ function run(){
   L.accounts.forEach(function(a){if(a.num)NUMSET[a.num]=1;});
   sents.forEach(function(s){
     s.figs=figures(s.text,NUMSET);
+    s.residue=s.figs.rejected||[];
     s.figs.forEach(function(f){
       var key=s.label+"#"+f.at;
       if(ROLECONF[key]){f.role=ROLECONF[key];f.roleFrom="a role the reviewer confirmed on this run";}
     });
     s.numset=NUMSET;
-    var b=bindSentence(s,L.accounts,s.figs);
+    /* an account number the memo spends as a figure ("increased by 6200") is a
+       claim, not a reference, so it does not bind that line and does not take
+       that line off the silent list */
+    var spent={};
+    s.residue.forEach(function(r){
+      var d=String(r.raw).replace(/[^0-9]/g,"");
+      if(!NUMSET[d])return;
+      var seen=String(s.text).split(d).length-1,used=0;
+      s.residue.forEach(function(o){if(String(o.raw).replace(/[^0-9]/g,"")===d)used++;});
+      if(used>=seen)spent[d]=1;
+    });
+    var b=bindSentence(s,L.accounts,s.figs,spent);
     s.bound=b.bound;s.how=b.how;s.conflicts=b.conflicts;
+    s.multi=s.bound.length>1;
+    if(s.multi)clauseBind(s);
+    s.negs={};
+    spansOf(s.text,RE_COARSE).forEach(function(c){
+      var n=claimIn(c.text)?negationIn(c.text):null;
+      if(n)s.negs[c.at+"-"+c.end]=n;
+    });
+    s.negOf=function(at){
+      var hit=null;
+      Object.keys(s.negs).forEach(function(k){
+        var p=k.split("-");
+        if(at>=Number(p[0])&&at<Number(p[1]))hit=s.negs[k];
+      });
+      return hit;
+    };
     s.bound.forEach(function(a){a.sent.push(s);});
     s.st=s.bound.length?(s.figs.length?"checked within scope":"not checked"):"not checked";
     s.findings=[];
@@ -1481,16 +1673,51 @@ function run(){
       result:s.bound.length?(s.conflicts.length?"BOUND, WITH A CONFLICT":"BOUND"):"UNMATCHED, REVIEW BY HAND",
       det:bt,ask:s.bound.length?"":"Which account is this sentence about, and what amount does it rest on?"});
 
+    /* anything numeric the accepted grammar could not read. The sentence cannot
+       be called checked while one of these is in it, whatever else agreed. */
+    s.residue.forEach(function(r){
+      s.st=worse(s.st,"not checked");
+      q("Unparsed figure",s.label,s.text,"“"+r.raw+"”"+" is "+r.why+", so the checker did not read it and "+
+        "this sentence is not checked","Preparer","What is "+"“"+r.raw+"”"+", and in what unit?");
+      rows.push({id:runId+"/"+s.label+"/u"+r.at,ev:evid(),line:acctLine(s),subj:s.text,label:s.label,
+        check:"Unparsed "+r.raw,badge:"info",status:"not checked",result:"NOT READ",
+        det:"“"+r.raw+"”"+" is "+r.why+". The accepted grammar does not cover it, so it was neither "+
+          "compared nor discarded: the sentence stays unchecked and the span is in the queue.",
+        ask:"What is "+"“"+r.raw+"”"+", and in what unit?"});
+    });
+
     /* figures: role, unit, calculation */
     s.figs.forEach(function(f){
-      var res;
+      var res,bset=(s.multi&&f.bind)?f.bind:s.bound;
       if(!s.bound.length){
         res={st:"review",txt:f.raw+" ("+f.unit+", role "+f.role+"): no account is bound, so there is nothing to "+
           "compare it with.",ask:"Which line does this figure belong to?"};
       }else if(f.unit==="dollars"){
-        res=checkDollar(f,s.bound);
+        res=checkDollar(f,bset,s.bound);
       }else{
-        res=checkPercent(f,s.bound,R.ratios,zeroPolicyText(zp));
+        res=checkPercent(f,bset,R.ratios,zeroPolicyText(zp));
+      }
+      /* more than one account named and nothing in this figure's own clause says
+         which one it belongs to */
+      if(s.multi&&!f.bind&&res.st==="checked"&&res.via!=="ratio"){
+        q("Binding conflict",s.label,s.text,f.raw+" agrees with "+s.bound.map(acctId).join("; ")+
+          " read together, and its own clause names no one of them, so which line it is the figure for is "+
+          "unresolved","Reviewer","Which account is "+f.raw+" the figure for?");
+        res={st:"review",txt:f.raw+": this sentence names "+s.bound.length+" accounts ("+
+          s.bound.map(acctId).join("; ")+") and the clause it stands in binds it to none of them on its own. "+
+          res.txt+" A figure is not bound by agreeing with the sentence read as a whole.",
+          ask:"Which account is "+f.raw+" the figure for?"};
+      }
+      /* a negated clause: the claim is not the one the words would make without
+         the negation, and it is not its opposite either */
+      var nw=s.negOf(f.at);
+      if(nw&&res.st!=="review"){
+        q("Negated claim",s.label,s.text,f.raw+" stands in a clause the words negate ("+"“"+nw+"”"+"), so what "+
+          "it asserts is not settled","Reviewer","What does this sentence say happened about "+f.raw+
+          ", once the negation is read?");
+        res={st:"review",txt:f.raw+" stands in a clause the words negate ("+"“"+nw+"”"+"). "+res.txt+
+          " A negation is not read as the claim without it and not as its opposite, so this figure is left open.",
+          ask:"What does this sentence say happened about "+f.raw+", once the negation is read?"};
       }
       f.st=res.st;f.txt=res.txt;
       var st=res.st==="checked"?"checked within scope":(res.st==="failed"?"failed":"needs review");
@@ -1515,13 +1742,21 @@ function run(){
         q("Failure",s.label,s.text,dir.bad.join("; "),"Preparer",
           "Which way did this account actually move, and does the driver still hold once the sign is right?");
       }
+      if(dir.voided.length){
+        s.st=worse(s.st,"needs review");
+        q("Negated claim",s.label,s.text,dir.voided.join("; "),"Reviewer",
+          "Which way does this sentence say the account moved, once the negation is read?");
+      }
+      var dst=dir.bad.length?"failed":(dir.voided.length?"needs review":
+        (dir.good.length?"checked within scope":"not checked"));
       rows.push({id:runId+"/"+s.label+"/dir",ev:evid(),line:acctLine(s),subj:s.text,label:s.label,
-        check:"Direction",badge:dir.bad.length?"fail":(dir.good.length?"pass":"info"),
-        status:dir.bad.length?"failed":(dir.good.length?"checked within scope":"not checked"),
-        result:dir.bad.length?"FAIL":(dir.good.length?"PASS":"NOT STATED"),
-        det:dir.bad.length?dir.bad.join("; ")+".":(dir.good.length?dir.good.join("; ")+".":
-          "This sentence makes no claim about which way the account moved."),
-        ask:dir.bad.length?"Which way did this account actually move, and does the driver still hold once the sign is right?":""});
+        check:"Direction",badge:BADGE[dst],status:dst,
+        result:dir.bad.length?"FAIL":(dir.voided.length?"NEGATED, NOT SETTLED":(dir.good.length?"PASS":"NOT STATED")),
+        det:dir.bad.length?dir.bad.join("; ")+".":(dir.voided.length?dir.voided.join("; ")+".":
+          (dir.good.length?dir.good.join("; ")+".":
+          "This sentence makes no claim about which way the account moved.")),
+        ask:dir.bad.length?"Which way did this account actually move, and does the driver still hold once the sign is right?":
+          (dir.voided.length?"Which way does this sentence say the account moved, once the negation is read?":"")});
     }
 
     /* threshold policy claims */
@@ -1665,9 +1900,9 @@ function statusWhy(s){
 
 function directionOn(s){
   if(!s.bound.length)return null;
-  var bad=[],good=[],anchored=[];
+  var bad=[],good=[],anchored=[],voided=[];
   clausesOf(s.text).forEach(function(c){
-    var cf=figures(c,s.numset),anchor=null;
+    var cf=figures(c,s.numset),anchor=null,neg=negationIn(c);
     dollarsIn(cf).forEach(function(d){
       if(anchor)return;
       s.bound.forEach(function(a){
@@ -1675,6 +1910,12 @@ function directionOn(s){
         if(near(d.v,a.prior,TOL_D)||near(d.v,a.cur,TOL_D)||near(d.v,a.change,TOL_D))anchor=a;
       });
     });
+    if(neg&&(flatWord(c)||dirWords(c).length)){
+      voided.push("the words negate this clause (“"+neg+"”), so what it claims about the direction of "+
+        (anchor?acctId(anchor):s.bound.map(acctId).join("; "))+" is not settled by the checker");
+      if(anchor)anchored.push(c);
+      return;
+    }
     if(!anchor)return;
     anchored.push(c);
     var sign=anchor.change>0?1:(anchor.change<0?-1:0);
@@ -1693,6 +1934,13 @@ function directionOn(s){
     });
   });
   if(!anchored.length){
+    if(voided.length)return {bad:bad,good:good,voided:voided};
+    var sneg=negationIn(s.text);
+    if(sneg&&(flatWord(s.text)||dirWords(s.text).length)){
+      voided.push("the words negate this sentence (“"+sneg+"”), so what it claims about the "+
+        "direction is not settled by the checker");
+      return {bad:bad,good:good,voided:voided};
+    }
     var sfw=flatWord(s.text);
     if(sfw){
       var fok=false,fnames=[];
@@ -1716,7 +1964,7 @@ function directionOn(s){
       else bad.push("the memo says \""+w.w+"\" but "+names.join(" and "));
     });
   }
-  return {bad:bad,good:good};
+  return {bad:bad,good:good,voided:voided};
 }
 
 function archiveRun(){
