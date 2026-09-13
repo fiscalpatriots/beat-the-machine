@@ -10,9 +10,10 @@
    to its head. The tokens come from assets/second-pass.css when the page loads
    it; the fallbacks below keep the header readable if it does not.
 
-   The link set is deliberately three words. A phone at 375 shows the same row
-   the desktop shows, because a menu that hides three links is machinery the
-   reader did not ask for.
+   The link set is four words. A phone at 320 shows the same row the desktop
+   shows, because a menu that hides four links is machinery the reader did not
+   ask for. The two narrow breakpoints below pull the gaps in rather than wrap
+   the row, and the row was measured at 320 with all four links on the line.
 
    The script also prints the skip link every page needs and points it at the
    page's main region, adopting <main> where a page has one and the outer
@@ -26,7 +27,8 @@
   var PAGES = [
     { href: 'index.html',   label: 'Drill'   },
     { href: 'checker.html', label: 'Checker' },
-    { href: 'review.html',  label: 'Review'  }
+    { href: 'review.html',  label: 'Review'  },
+    { href: 'author.html',  label: 'Author'  }
   ];
 
   var FOOT = [
@@ -45,14 +47,16 @@
     '  letter-spacing:-.01em;color:var(--mason,#005239);text-decoration:none;white-space:nowrap;}',
     '#sp-nav .mark:hover{color:var(--mason,#005239);text-decoration:none;}',
     '#sp-nav nav{margin-left:auto;display:flex;align-items:center;gap:18px;}',
+    '#sp-nav nav a{flex:0 0 auto;}',
     '#sp-nav nav a{font:500 14px/1.2 var(--face,Figtree,-apple-system,"Segoe UI",Arial,sans-serif);',
     '  color:var(--ink-soft,#5f6366);text-decoration:none;white-space:nowrap;',
     '  padding:13px 0;border-bottom:2px solid transparent;margin-bottom:-1px;}',
     '#sp-nav nav a:hover{color:var(--ink,#1a1a1a);}',
     '#sp-nav nav a[aria-current="page"]{color:var(--ink,#1a1a1a);font-weight:600;',
     '  border-bottom-color:var(--mason,#005239);}',
-    '@media (max-width:400px){#sp-nav .in{gap:10px;padding:0 14px}#sp-nav nav{gap:14px}}',
-    '@media (max-width:340px){#sp-nav .mark{font-size:14px}#sp-nav nav a{font-size:13px}}',
+    '@media (max-width:430px){#sp-nav .in{gap:10px;padding:0 14px}#sp-nav nav{gap:12px}}',
+    '@media (max-width:360px){#sp-nav .in{gap:8px;padding:0 12px}#sp-nav .mark{font-size:14px}',
+    '  #sp-nav nav{gap:10px}#sp-nav nav a{font-size:13px}}',
     '#sp-foot{margin-top:56px;border-top:1px solid var(--rule,#d9d3c5);',
     '  background:var(--paper,#f6f3ec);}',
     '#sp-foot .in{max-width:1048px;margin:0 auto;padding:20px var(--sp-pad,20px) 30px;',
