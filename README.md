@@ -358,23 +358,11 @@ itself never turns up in a search result.
 Each page names its own canonical address so a link carrying a tracking parameter does not read as
 a second copy of the page. `checker.html`, `review.html` and `404.html` carry theirs already.
 
-**For the drill lane, four things `index.html` still needs, in the head, none of which touch the
-game:**
-
-1. The canonical line, which is the only one not already documented above:
-
-```html
-<link rel="canonical" href="https://fiscalpatriots.github.io/beat-the-machine/index.html">
-```
-
-2. The title and description from the table above, if they are not in yet.
-3. The Open Graph and Twitter block from the code sample above, with `og:url` on `index.html`.
-4. The two favicon links, replacing any inline data URI:
-
-```html
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
-```
+All three pages carry the same head block: the title, the description, their own canonical
+address, the Open Graph and Twitter card lines with `og:url` on that page, and the two favicon
+links. `index.html` took its four on 13 September 2026, and the inline data URI icon it carried
+before that is gone, so the drill now shares the favicon and the link preview with the other two
+pages.
 
 Nothing else is owed. `assets/nav.js` is already on the page, and the skip link, the main region it
 points at, and the print rule that hides the chrome on paper all come from that script, so
