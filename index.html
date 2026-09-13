@@ -323,6 +323,9 @@ textarea{min-height:84px;resize:vertical}
 .stats b{display:block;font-size:24px;line-height:1.1;font-variant-numeric:tabular-nums}
 .stats span{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--ink-soft);margin-top:3px;line-height:1.2}
 .earned{margin:12px 0 16px;font-size:16px;color:var(--ink-soft)}
+/* the fresh case, scored on its own and set apart from the main score by a gold ring */
+.fresh{margin:0 0 2px}
+.fresh .lap{border-color:var(--gold-line);border-width:2px}
 .badges{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin:0 0 18px}
 .medal{display:flex;flex-direction:column;align-items:center;gap:8px;width:96px;
   opacity:0;transform:translateY(6px);animation:medalin .4s ease forwards}
@@ -441,6 +444,17 @@ var ROWS = [
 ];
 
 var THRESHOLD = "A line owes commentary only when it clears both $25,000 and 10 percent.";
+
+/* ---------- round two, a second company the player has never seen ----------
+   Five accounts from a regional dental group, same close, same threshold rule.
+   Kept in its own array so nothing in round one can reach it by account number. */
+var ROWS2 = [
+ ["4010","Patient service revenue, net",742000,803500,1],
+ ["4220","Orthodontic plan revenue",96000,138400,1],
+ ["5210","Dental supplies and lab fees",138500,191200,1],
+ ["6110","Hygienist wages",214000,268900,1],
+ ["6610","Marketing and patient outreach",18400,24100,1]
+];
 
 /* ---------- the fourteen lines, and the key ----------
    key "flag"  the memo's line on this account does not hold
@@ -601,6 +615,67 @@ var CARDS = [
    2026. Neither number is printed anywhere, because a player who knew the split could
    work the odds instead of the ledger. */
 
+/* ---------- the five fresh lines ----------
+   A second company in a different industry, scored on its own so the findings can say
+   whether a player's catch rate holds up on material nobody coached them through.
+   Three planted problems of three types the round one memo also carried, and two clean
+   lines. Every figure here reconciles against ROWS2. */
+var CARDS2 = [
+ {n:1, icon:"truck", acct:"5210", name:"Dental supplies and lab fees",
+  prior:138500, current:191200,
+  memo:"Dental supplies and lab fees eased to $191,200 in June as the group moved its crown and bridge work to a lower priced lab.",
+  file:["The two associate dentists who started in May began seeing a full schedule of patients in June.",
+        "The lab bills Brightwater in the month a case is sent out, and every June case has been billed.",
+        THRESHOLD],
+  key:"flag", type:"wrong direction",
+  why:"Supplies and lab fees rose $52,700, up 38.1 percent, so the sentence has the movement backwards and the reason for an increase that size is still missing.",
+  tell:"The memo used the word eased next to a June balance that is higher than May's.",
+  post:{flag:"Accept", stand:"Reject"}},
+
+ {n:2, icon:"coins", acct:"4010", name:"Patient service revenue, net",
+  prior:742000, current:803500,
+  memo:"Patient service revenue rose $61,500, which is 8.3 percent of May, so the movement fails the percentage leg of the threshold and this line carries no driver.",
+  file:["$61,500 is the largest dollar movement on this statement.",
+        THRESHOLD],
+  key:"stand", type:"clean line",
+  why:"Recompute it and the memo is right on both figures, because $61,500 against a May balance of $742,000 is 8.3 percent, so the percentage leg is not met and nothing is owed here.",
+  over:"The dollar figure is the biggest one on the page, and a line still owes nothing until the percentage leg clears as well.",
+  tell:"Both legs have to clear before a line owes anything, and 8.3 percent never reaches 10.",
+  post:{flag:"Accept", stand:"Reject"}},
+
+ {n:3, icon:"calendar", acct:"4220", name:"Orthodontic plan revenue",
+  prior:96000, current:138400,
+  memo:"Orthodontic plan revenue of $138,400 includes the eleven treatment plans families paid in full during June, and the whole payment on each plan was taken to revenue in June.",
+  file:["Orthodontic plans run eighteen months and the practice earns the fee as treatment is delivered.",
+        "The eleven plans paid in full during June carry a combined fee of $38,500, and treatment on all eleven starts in July.",
+        "Brightwater closes on the fourth business day of the following month."],
+  key:"flag", type:"timing",
+  why:"The file earns these fees as treatment is delivered and no treatment started in June, so $38,500 of money collected in advance is sitting in June revenue instead of in deferred revenue.",
+  tell:"Cash in the door in June is not revenue in June when the work it pays for happens later.",
+  post:{flag:"Accept", stand:"Reject"}},
+
+ {n:4, icon:"brief", acct:"6610", name:"Marketing and patient outreach",
+  prior:18400, current:24100,
+  memo:"Marketing and patient outreach rose $5,700, or 31.0 percent, on the new patient mailer that went out in the first week of June, and the movement fails the dollar leg of the threshold.",
+  file:["The June mailer invoice from the print vendor is $5,700 and it is recorded in June.",
+        THRESHOLD],
+  key:"stand", type:"clean line",
+  why:"The mailer invoice on file accounts for the whole movement, and $5,700 never reaches $25,000, so nothing was owed on this line and the memo explained it anyway and got it right.",
+  over:"Thirty one percent reads alarming until you test the dollar leg, and a large percentage of a small balance is still a small number.",
+  tell:"Test the dollar leg before the percentage talks you into a flag.",
+  post:{flag:"Accept", stand:"Reject"}},
+
+ {n:5, icon:"people", acct:"6110", name:"Hygienist wages",
+  prior:214000, current:268900,
+  memo:"Hygienist wages increased $44,900 after the second hygiene chair opened at the Ashburn office on June 1.",
+  file:["The second hygiene chair added one full time hygienist from June 1, and the payroll register is on file.",
+        "No other sentence in the memo touches this account."],
+  key:"flag", type:"arithmetic",
+  why:"The account moved $54,900 and the memo accounts for $44,900, which leaves $10,000 with nobody's name on it. That $10,000 may be the annual merit increase that took effect in June, and the memo has to say so.",
+  tell:"The memo handed you a number, so check it against the ledger before you read the reason attached to it.",
+  post:{flag:"Accept", stand:"Reject"}}
+];
+
 /* ---------- state ---------- */
 /* organizations, tapped on the way in so the pooled results can be counted by chapter */
 var ORGS = ["Beta Alpha Psi", "ACFE", "ASM", "NABA", "AAA", "GMU Student", "Professor"];
@@ -609,9 +684,13 @@ var S = {
   step:0, codename:"", orgs:[],
   calls:[], confPost:null, qd:null,
   caught:0, cleared:0, falseFlags:0, streak:0, best:0, started:0,
-  lapStart:0, lapEnd:0
+  lapStart:0, lapEnd:0,
+  /* round two keeps its own counters, because the fresh case is scored on its own and
+     the rank and the badges are still read off the fourteen trained lines */
+  r2calls:[], r2caught:0, r2cleared:0, r2false:0, r2Start:0, r2End:0
 };
 for(var i=0;i<14;i++){ S.calls.push(null); }
+for(var i2=0;i2<5;i2++){ S.r2calls.push(null); }
 
 var screen = document.getElementById("screen");
 
@@ -623,18 +702,23 @@ function dirWord(c){ return c.current>=c.prior ? "up" : "down"; }
 
 /* ---------- the track. Fourteen segments, one car, a chequered flag at the end. ---------- */
 var CAR_X0 = 9, CAR_X1 = 283;
+/* nineteen segments since 12 September 2026: fourteen trained lines and five fresh ones.
+   The tick at fourteen is gold, so the handover to the second company reads on the track. */
+var SEGS = 19, SEG1 = 14;
 function buildTrack(){
   var ticks = "", k, x;
-  for(k=1;k<14;k++){
-    x = CAR_X0 + (k/14)*(CAR_X1-CAR_X0);
-    ticks += '<rect x="'+(x-0.4).toFixed(1)+'" y="9" width="0.8" height="7" fill="#fff" opacity=".7"/>';
+  for(k=1;k<SEGS;k++){
+    x = CAR_X0 + (k/SEGS)*(CAR_X1-CAR_X0);
+    ticks += (k===SEG1)
+      ? '<rect x="'+(x-0.5).toFixed(1)+'" y="8" width="1" height="9" fill="var(--mason-gold)" opacity=".95"/>'
+      : '<rect x="'+(x-0.4).toFixed(1)+'" y="9" width="0.8" height="7" fill="#fff" opacity=".7"/>';
   }
   var chq = "", r, c;
   for(r=0;r<4;r++){ for(c=0;c<2;c++){
     if((r+c)%2===0) chq += '<rect x="'+(287.4+c*3.4)+'" y="'+(8+r*3.5)+'" width="3.4" height="3.5" fill="var(--mason)"/>';
   } }
   document.getElementById("track").innerHTML =
-    '<svg id="trk" viewBox="0 0 300 26" role="img" aria-label="Fourteen lines, one segment each">'+
+    '<svg id="trk" viewBox="0 0 300 26" role="img" aria-label="Nineteen lines, one segment each">'+
       '<rect x="4" y="19" width="292" height="3.4" rx="1.7" fill="#ece6d8"/>'+
       '<rect x="4" y="8" width="292" height="9" rx="4.5" fill="#e6e0d2"/>'+
       '<rect id="fill" x="4" y="8" width="0.1" height="9" rx="4.5" fill="var(--mason)" opacity=".32"/>'+
@@ -657,10 +741,11 @@ function buildTrack(){
       '</g>'+
     '</svg>';
 }
-function lapsDone(){ return S.calls.filter(function(v){ return v!==null; }).length; }
+function doneIn(list){ return list.filter(function(v){ return v!==null; }).length; }
+function lapsDone(){ return doneIn(S.calls) + doneIn(S.r2calls); }
 function paintTrack(){
   var done = lapsDone();
-  var x = CAR_X0 + (done/14)*(CAR_X1-CAR_X0);
+  var x = CAR_X0 + (done/SEGS)*(CAR_X1-CAR_X0);
   var pos = document.getElementById("carpos"), f = document.getElementById("fill"),
       fl = document.getElementById("flame"), tr = document.getElementById("trail"),
       cq = document.getElementById("chq");
@@ -674,7 +759,7 @@ function paintTrack(){
   }
   if(tr){ tr.classList.toggle("on", S.streak>=2); tr.classList.toggle("big", hot); }
   if(fl){ fl.classList.toggle("on", S.streak>=3); fl.classList.toggle("big", hot); }
-  if(cq) cq.classList.toggle("lit", done>=14);
+  if(cq) cq.classList.toggle("lit", done>=SEGS);
   placeCodename(x);
 }
 /* the codename sits on the band directly over the car, once the player has picked one */
@@ -722,24 +807,33 @@ function progress(){
   var lab = document.getElementById("step");
   var sc = document.getElementById("score");
   if(S.step>=3 && S.step<=16){
-    var seen = S.calls.filter(function(v){ return v!==null; }).length;
+    var seen = doneIn(S.calls);
     lab.textContent = "Line "+(S.step-2)+" of 14";
     if(seen){ sc.classList.remove("hidden"); sc.textContent = "Right "+(S.caught+S.cleared)+" of "+seen; }
+    else sc.classList.add("hidden");
+  } else if(S.step>=18 && S.step<=22){
+    var seen2 = doneIn(S.r2calls);
+    lab.textContent = "Fresh line "+(S.step-17)+" of 5";
+    if(seen2){ sc.classList.remove("hidden"); sc.textContent = "Right "+(S.r2caught+S.r2cleared)+" of "+seen2; }
     else sc.classList.add("hidden");
   } else if(S.step===0){ lab.textContent=""; sc.classList.add("hidden"); }
   else { lab.textContent = "Second Pass"; sc.classList.add("hidden"); }
 }
 
 /* ---------- the ledger, on call from every card ---------- */
-function rowFor(acct){
-  for(var i=0;i<ROWS.length;i++){ if(ROWS[i][0]===acct) return ROWS[i]; }
+/* every ledger function takes the book it is reading, so the five account dental
+   statement of round two runs through the same component as the fourteen account one */
+function bookOf(n){ return n===2 ? BOOK2 : BOOK1; }
+function rowFor(acct, bk){
+  var rows = (bk || BOOK1).rows;
+  for(var i=0;i<rows.length;i++){ if(rows[i][0]===acct) return rows[i]; }
   return null;
 }
 function moveCell(d){ return d<0 ? "("+money(d)+")" : (d>0 ? "+"+money(d) : "$0"); }
 
 /* the account under review, printed on the card as its statement line */
-function strip(acct){
-  var r = rowFor(acct); if(!r) return "";
+function strip(acct, bk){
+  var r = rowFor(acct, bk); if(!r) return "";
   return '<div class="strip"><div class="striptop"><b>'+r[0]+'</b><span>'+esc(r[1])+'</span></div>'+
     '<div class="stripnums"><span>May<i>'+money(r[2])+'</i></span>'+
     '<span>June<i>'+money(r[3])+'</i></span>'+
@@ -753,9 +847,23 @@ var GROUPS = [
   {title:"Operating expenses", accts:["6000","6100","6200","6300","6400","6500","7000","7400"], total:"Total operating expenses"},
   {title:"Financing", accts:["7100"], total:"Total financing"}
 ];
-function sumOf(accts, col){
+var GROUPS2 = [
+  {title:"Revenue", accts:["4010","4220"], total:"Total revenue"},
+  {title:"Clinical cost of care", accts:["5210"], total:"Total clinical cost of care"},
+  {title:"Operating expenses", accts:["6110","6610"], total:"Total operating expenses"}
+];
+var BOOK1 = {rows:ROWS, groups:GROUPS,
+  name:"Halyard Provisioning Group, Inc.",
+  sub:"June close, prepared from the general ledger",
+  cap:"The fourteen accounts the memo was written against."};
+var BOOK2 = {rows:ROWS2, groups:GROUPS2,
+  name:"Brightwater Dental Partners, PLLC",
+  sub:"June close, prepared from the practice general ledger",
+  cap:"The five accounts the second memo was written against."};
+
+function sumOf(accts, col, bk){
   var t = 0;
-  accts.forEach(function(a){ var r = rowFor(a); if(r) t += r[col]; });
+  accts.forEach(function(a){ var r = rowFor(a, bk); if(r) t += r[col]; });
   return t;
 }
 function changeCell(prior, current){
@@ -797,37 +905,38 @@ function totalRow(label, pr, cu, cls){
       figCells(pr, cu, null)+
     '</div>';
 }
-function statement(acct, wide){
+function statement(acct, wide, bk){
+  bk = bk || BOOK1;
   var maxPct = 0;
-  ROWS.forEach(function(r){ if(r[2]) maxPct = Math.max(maxPct, Math.abs((r[3]-r[2])/r[2]*100)); });
+  bk.rows.forEach(function(r){ if(r[2]) maxPct = Math.max(maxPct, Math.abs((r[3]-r[2])/r[2]*100)); });
   var body = "", z = 0;
-  GROUPS.forEach(function(g){
+  bk.groups.forEach(function(g){
     body += '<div class="sgrp">'+g.title+'</div>';
     g.accts.forEach(function(a){
-      var r = rowFor(a); if(!r) return;
+      var r = rowFor(a, bk); if(!r) return;
       z++;
       body += acctRow(r, acct, maxPct, z);
     });
-    body += totalRow(g.total, sumOf(g.accts,2), sumOf(g.accts,3), "sub");
+    body += totalRow(g.total, sumOf(g.accts,2,bk), sumOf(g.accts,3,bk), "sub");
   });
-  var netP = sumOf(GROUPS[0].accts,2), netC = sumOf(GROUPS[0].accts,3);
-  GROUPS.slice(1).forEach(function(g){ netP -= sumOf(g.accts,2); netC -= sumOf(g.accts,3); });
+  var netP = sumOf(bk.groups[0].accts,2,bk), netC = sumOf(bk.groups[0].accts,3,bk);
+  bk.groups.slice(1).forEach(function(g){ netP -= sumOf(g.accts,2,bk); netC -= sumOf(g.accts,3,bk); });
   body += totalRow("Net of the accounts shown", netP, netC, "net");
   return '<div class="stmt'+(wide?" stmt-wide":"")+'">'+
-    '<div class="stmthead"><b>Halyard Provisioning Group, Inc.</b>'+
-      '<span>June close, prepared from the general ledger</span></div>'+
+    '<div class="stmthead"><b>'+esc(bk.name)+'</b>'+
+      '<span>'+esc(bk.sub)+'</span></div>'+
     '<div class="scols"><span class="sp"></span><span class="sp"></span>'+
       '<span>May</span><span>June</span><span>Change</span><span>Percent</span>'+
       '<span class="sp"></span></div>'+
     body+
-    '<p class="cap">The fourteen accounts the memo was written against.</p></div>';
+    '<p class="cap">'+esc(bk.cap)+'</p></div>';
 }
 
-function openSheet(acct){
+function openSheet(acct, bk){
 
     var d = document.createElement("div");
   d.id="sheet";
-  d.innerHTML = '<div id="sheetbody">'+statement(acct, false)+'<button class="btn" id="closesheet">Close</button></div>';
+  d.innerHTML = '<div id="sheetbody">'+statement(acct, false, bk)+'<button class="btn" id="closesheet">Close</button></div>';
   document.body.appendChild(d);
   var here = document.getElementById("hererow");
   if(here && here.scrollIntoView) here.scrollIntoView({block:"center"});
@@ -839,13 +948,15 @@ function openSheet(acct){
     if(ev.target.id==="sheet"||ev.target.id==="closesheet") d.remove();
   });
 }
-function ledgerBig(acct){
-  return '<button class="ledgerbig" data-acct="'+acct+'">'+
+function ledgerBig(acct, book){
+  return '<button class="ledgerbig" data-acct="'+acct+'" data-book="'+(book||1)+'">'+
     '<svg viewBox="0 0 24 24">'+I.ledger+'</svg>See the full ledger</button>';
 }
 function wireLedger(){
   Array.prototype.forEach.call(screen.querySelectorAll("[data-acct]"), function(b){
-    b.addEventListener("click", function(){ openSheet(b.getAttribute("data-acct")); });
+    b.addEventListener("click", function(){
+      openSheet(b.getAttribute("data-acct"), bookOf(parseInt(b.getAttribute("data-book"),10)||1));
+    });
   });
 }
 
@@ -875,8 +986,10 @@ function render(){
   if(s===2) return roundOne();
   if(s>=3 && s<=16) return card(s-3);
   if(s===90) return howScreen();
-  if(s===17) return submitScreen();
-  if(s>=18) return done();
+  if(s===17) return bridge();
+  if(s>=18 && s<=22) return card2(s-18);
+  if(s===23) return submitScreen();
+  if(s>=24) return done();
 }
 
 /* ---------- the practitioner note. One tap from the intro, one tap from the end. ---------- */
@@ -1113,9 +1226,9 @@ function answer(i, val){
   reveal(i, right);
 }
 
-function splitBar(){
-  var seen = S.calls.filter(function(v){ return v!==null; }).length;
-  var right = S.caught + S.cleared;
+function splitBar(round){
+  var seen = (round===2) ? doneIn(S.r2calls) : doneIn(S.calls);
+  var right = (round===2) ? (S.r2caught + S.r2cleared) : (S.caught + S.cleared);
   var cw = seen ? Math.round(right/seen*100) : 0;
   return '<div class="split"><div class="splitbar"><i class="c" style="width:'+cw+'%"></i></div>'+
     '<div class="splitlab"><span>'+right+' of '+seen+' right so far</span></div></div>';
@@ -1148,7 +1261,96 @@ function reveal(i, right){
     costLine+
     streakLine+
     splitBar()+
-    '<button class="btn" id="next">'+(i===13?"See how you did":"Next line")+'</button>';
+    '<button class="btn" id="next">'+(i===13?"Start round two":"Next line")+'</button>';
+  wireLedger();
+  document.getElementById("next").addEventListener("click", function(){ go(S.step+1); });
+  window.scrollTo(0,0);
+}
+
+/* ---------- round two. A company the player has never seen, scored on its own. ---------- */
+function bridge(){
+  screen.innerHTML =
+    '<div class="card">'+
+      '<div class="cardhead">'+icon("ledger")+'</div>'+
+      '<h2>Round two: a memo you have not seen</h2>'+
+      '<p class="sub">New company, new memo, same job. Five lines.</p>'+
+      '<p class="tiny" style="margin:2px 0 0">Brightwater Dental Partners, a four office dental group.</p>'+
+      '<button class="btn" id="r2go">Continue</button>'+
+    '</div>';
+  document.getElementById("r2go").addEventListener("click", function(){ go(18); });
+}
+
+function card2(i){
+  var c = CARDS2[i];
+  if(!S.r2Start) S.r2Start = Date.now();
+  var memoBlock = c.memo
+    ? '<div class="says"><svg viewBox="0 0 24 24">'+I.robot+'</svg> What the memo says</div><p class="quote">'+esc(c.memo)+'</p>'
+    : '<div class="says"><svg viewBox="0 0 24 24">'+I.robot+'</svg> What the memo says</div><p class="quote">Nothing. This account is not mentioned anywhere in the commentary.</p>';
+  var fileBlock = c.file.length
+    ? '<div class="file"><h4>On file</h4><ul>'+c.file.map(function(f){ return '<li>'+esc(f)+'</li>'; }).join("")+'</ul></div>'
+    : "";
+  screen.innerHTML =
+    '<div class="card">'+
+      '<div class="cardhead">'+icon(c.icon)+'</div>'+
+      strip(c.acct, BOOK2)+
+      ledgerBig(c.acct, 2)+
+      (i===0 ? '<p class="ledgerhint">The ledger button now opens the five dental accounts.</p>' : "")+
+      chart(c)+
+      memoBlock+
+      fileBlock+
+      '<p class="ask">Does the memo\'s explanation hold?</p>'+
+      '<div class="two">'+
+        '<button class="btn call" id="stand">Let it stand</button>'+
+        '<button class="btn call" id="flag">Flag it</button>'+
+      '</div>'+
+    '</div>';
+  wireLedger();
+  document.getElementById("flag").addEventListener("click", function(){ answer2(i,"flag"); });
+  document.getElementById("stand").addEventListener("click", function(){ answer2(i,"stand"); });
+}
+
+function answer2(i, val){
+  var c = CARDS2[i];
+  S.r2calls[i] = val;
+  if(i === 4) S.r2End = Date.now();
+  var right = (val === c.key);
+  if(right){
+    if(c.key==="flag") S.r2caught++; else S.r2cleared++;
+    /* the streak carries on so the car behaves the same, and the best streak stays
+       frozen at what the fourteen trained lines earned, because the badge reads off those */
+    S.streak++;
+  } else {
+    if(val === "flag") S.r2false++;
+    S.streak = 0;
+  }
+  carFx(right);
+  reveal2(i, right);
+}
+
+function reveal2(i, right){
+  var c = CARDS2[i];
+  var head = right ? (c.key==="flag" ? "Caught it" : "Cleared it")
+                   : (c.key==="flag" ? "That one got past you" : "You flagged a clean line");
+  progress();
+  var streakLine = "";
+  if(right && S.streak>=5) streakLine = '<p><span class="toast">On fire</span></p>';
+  else if(right && S.streak>=3) streakLine = '<p><span class="toast">Streak '+S.streak+'</span></p>';
+  var costLine = (!right && c.key==="stand")
+    ? '<p class="tiny" style="margin:8px 0 0">A false flag scores the same as a line that gets past you.</p>'
+    : "";
+  screen.innerHTML =
+    '<div class="cardhead plain"><span class="revlabel">Fresh line '+c.n+' of 5</span></div>'+
+    strip(c.acct, BOOK2)+
+    ledgerBig(c.acct, 2)+
+    '<div class="verdict '+(right?"good":"bad")+'" style="margin-top:12px">'+
+      '<h2>'+head+'</h2>'+
+      '<span class="type">'+esc(c.type)+'</span>'+
+    '</div>'+
+    '<p class="why">'+esc((!right && c.key==="stand" && c.over) ? c.over : c.why)+'</p>'+
+    costLine+
+    streakLine+
+    splitBar(2)+
+    '<button class="btn" id="next">'+(i===4?"See how you did":"Next line")+'</button>';
   wireLedger();
   document.getElementById("next").addEventListener("click", function(){ go(S.step+1); });
   window.scrollTo(0,0);
@@ -1174,6 +1376,28 @@ function missedCards(){
   var out = [];
   CARDS.forEach(function(c,idx){ if(S.calls[idx] !== c.key) out.push(c); });
   return out;
+}
+function missedCards2(){
+  var out = [];
+  CARDS2.forEach(function(c,idx){ if(S.r2calls[idx] !== c.key) out.push(c); });
+  return out;
+}
+/* ---------- the fresh case, scored on its own ----------
+   The whole of round two rides in one string on question C, which asks the player
+   nothing and carried only a placeholder before 13 September 2026. F is a flag and S
+   is let it stand, in card order, so the sheet can be read without opening the game. */
+function r2Right(){ return S.r2caught + S.r2cleared; }
+function letters(list){
+  return list.map(function(v){ return (v==="flag") ? "F" : "S"; }).join("");
+}
+function r2Seconds(){
+  if(!S.r2Start) return 0;
+  return Math.round(((S.r2End || Date.now()) - S.r2Start)/1000);
+}
+function r2Line(){
+  return "Round2: "+r2Right()+"/5; calls "+letters(S.r2calls.map(function(v){ return v || "stand"; }))+
+         "; key "+letters(CARDS2.map(function(c){ return c.key; }))+
+         "; seconds "+r2Seconds()+".";
 }
 /* The organization taps ride at the front of question A, behind a fixed prefix, so the
    responses sheet can be counted by chapter without a new form question. */
@@ -1272,7 +1496,10 @@ function payload(){
   p["entry."+E.confPost] = "5";
   p["entry."+E.qa] = summaryA();
   p["entry."+E.qb] = summaryB();
-  p["entry."+E.qc] = "Not asked in this version.";
+  /* question C asks the player nothing, so the fresh case rides here rather than
+     costing the form a new question. The fourteen Why fields are left alone. */
+  p["entry."+E.qc] = r2Line() + " Fresh case: Brightwater Dental Partners, five lines, " +
+                     "a company the player had not seen. Not a player answer to question C.";
   p["entry."+E.qd] = lapMinutes();
   var fbzx = String(Math.floor(Math.random()*9007199254740991));
   p["fvv"] = "1";
@@ -1292,8 +1519,13 @@ function asText(){
     out.push("Line "+(i+1)+" ("+CARDS[i].acct+"): "+S.calls[i]+", key "+CARDS[i].key+", "+CARDS[i].type);
   }
   out.push("");
+  for(var j=0;j<5;j++){
+    out.push("Fresh line "+(j+1)+" ("+CARDS2[j].acct+"): "+S.r2calls[j]+", key "+CARDS2[j].key+", "+CARDS2[j].type);
+  }
+  out.push("");
   out.push(summaryA());
   out.push(summaryB());
+  out.push(r2Line());
   out.push("Lap time: "+lapText()+", posted as "+lapMinutes()+" minute(s)");
   return out.join("\n");
 }
@@ -1318,7 +1550,7 @@ function submitScreen(){
   var timer = setTimeout(function(){ if(!settled){ settled = true; failScreen(); } }, 12000);
   sink.addEventListener("load", function(){
     if(settled) return;
-    settled = true; clearTimeout(timer); go(18);
+    settled = true; clearTimeout(timer); go(24);
   });
   try{ f.submit(); }
   catch(err){ clearTimeout(timer); settled = true; failScreen(); }
@@ -1337,7 +1569,7 @@ function failScreen(){
     t.select(); t.setSelectionRange(0,99999);
     try{ document.execCommand("copy"); this.textContent = "Copied"; }catch(e){ this.textContent = "Select and copy"; }
   });
-  document.getElementById("retry").addEventListener("click", function(){ submitted = false; go(17); });
+  document.getElementById("retry").addEventListener("click", function(){ submitted = false; go(23); });
 }
 
 /* ---------- the trophy, drawn to the tier ---------- */
@@ -1373,6 +1605,9 @@ function badges(){
   var right = S.caught + S.cleared;
   return [
     {t:"Clean sweep",        on: right===14, i:"coins"},
+    /* the only badge the fresh case can earn, and it sits second because reading a
+       company cold is the hardest thing on the card */
+    {t:"Cold read",          on: r2Right()===5, i:"ledger"},
     {t:"Hot lap",            on: S.best>=5, i:"fuel"},
     {t:"Nothing over-flagged", on: allStandsRight(), i:"badge"},
     {t:"Arithmetic hawk",    on: got(1) && got(8), i:"scales"},
@@ -1393,9 +1628,19 @@ function earnedLine(){
 
 function done(){
   var miss = missedCards();
+  var miss2 = missedCards2();
+  var freshBlock = miss2.length
+    ? '<div class="coach" style="margin-top:14px"><h3>On the memo you had not seen</h3>'+
+      miss2.map(function(c){
+        return '<div class="miss"><b>Fresh line '+c.n+', '+esc(c.name)+', account '+c.acct+'</b>'+
+               '<em>'+esc(c.type)+'</em>'+
+               '<span>'+esc(c.tell)+'</span></div>';
+      }).join("")+'</div>'
+    : '<div class="coach" style="margin-top:14px"><h3>On the memo you had not seen</h3>'+
+      '<p class="tiny" style="margin:0">All five fresh lines went the way the dental ledger has them, which is the read that matters.</p></div>';
   var coachInner;
   if(!miss.length){
-    coachInner = '<div class="coach"><h3>Nothing to fix</h3><p class="tiny" style="margin:0">This read out lists the lines that got past you, and there are none.</p></div>';
+    coachInner = '<div class="coach"><h3>Nothing to fix</h3><p class="tiny" style="margin:0">This read out lists the lines that got past you, and there are none.</p></div>'+freshBlock;
   } else {
     coachInner = '<div class="coach"><h3>Where it got past you</h3>'+
       miss.map(function(c){
@@ -1407,7 +1652,7 @@ function done(){
         ? '<p class="tiny" style="margin:14px 0 0">'+(S.falseFlags===1?"One of those was a line":"Those were lines")+
           ' that owed nothing and read correctly, and flagging a line like that costs the controller time on work that was already right.</p>'
         : "")+
-      '<p class="tiny" style="margin:14px 0 0">'+esc(patternLine().charAt(0).toUpperCase()+patternLine().slice(1))+'</p></div>';
+      '<p class="tiny" style="margin:14px 0 0">'+esc(patternLine().charAt(0).toUpperCase()+patternLine().slice(1))+'</p></div>'+freshBlock;
   }
   var share = "I called " + (S.caught+S.cleared) + " of 14 lines the way the ledger has them in Second Pass: Beat the Machine at Mason.";
   var b = badges();
@@ -1424,6 +1669,8 @@ function done(){
       '<div class="rankbig">'+rank()+'</div>'+
       '<p class="tiny" style="margin:2px 0 0">'+esc(S.codename)+'</p>'+
       '<p class="earned">'+esc(earnedLine())+'</p>'+
+      '<p class="fresh"><span class="lap">Fresh case: '+r2Right()+' of 5</span></p>'+
+      '<p class="tiny" style="margin:4px 0 14px">A second company, read once, scored on its own.</p>'+
       '<div class="stats">'+
         '<div><b>'+S.caught+'</b><span>caught</span></div>'+
         '<div><b>'+S.cleared+'</b><span>let stand correctly</span></div>'+
@@ -1434,8 +1681,8 @@ function done(){
       medals+
       '<div class="sharecard"><p>'+esc(share)+'</p><button class="btn ghost" id="copyshare">Copy</button></div>'+
       '<button class="btn ghost" id="playagain">Play again</button>'+
-      '<button class="btn ghost" id="showmiss">'+(miss.length
-          ? "See the "+miss.length+" that got past you"
+      '<button class="btn ghost" id="showmiss">'+((miss.length+miss2.length)
+          ? "See the "+(miss.length+miss2.length)+" that got past you"
           : "See the full read out")+'</button>'+
       '<div id="missbox" hidden>'+coachInner+'</div>'+
       '<button class="howlink" id="howlink">How this works in a real close</button>'+
@@ -1447,7 +1694,10 @@ function done(){
   document.getElementById("playagain").addEventListener("click", function(){
     S.calls = [];
     for(var k=0;k<14;k++){ S.calls.push(null); }
+    S.r2calls = [];
+    for(var k2=0;k2<5;k2++){ S.r2calls.push(null); }
     S.caught = 0; S.cleared = 0; S.falseFlags = 0; S.streak = 0; S.best = 0;
+    S.r2caught = 0; S.r2cleared = 0; S.r2false = 0; S.r2Start = 0; S.r2End = 0;
     S.confPost = null; S.qd = null;
     S.started = Date.now(); S.lapStart = 0; S.lapEnd = 0;
     submitted = false;
@@ -1457,7 +1707,7 @@ function done(){
   sm.addEventListener("click", function(){
     mb.hidden = !mb.hidden;
     sm.textContent = mb.hidden
-      ? (miss.length ? "See the "+miss.length+" that got past you" : "See the full read out")
+      ? ((miss.length+miss2.length) ? "See the "+(miss.length+miss2.length)+" that got past you" : "See the full read out")
       : "Hide";
   });
   document.getElementById("copyshare").addEventListener("click", function(){
@@ -1483,6 +1733,7 @@ if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){
 window.addEventListener("resize", function(){ paintTrack(); });
 window.__BTM = S;
 window.__BTM_CARDS = CARDS;
+window.__BTM_CARDS2 = CARDS2;
 })();
 </script>
 </body>

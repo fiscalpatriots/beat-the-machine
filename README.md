@@ -24,7 +24,13 @@ needs a person.
 Two are reviewer judgment: invented driver and timing. Both need the facts on file and somebody
 who knows the business, so both stay with the human.
 
-**Scope.** This build is a static case: fourteen lines, one month, answers keyed by hand. It does
+The entry also has to show learning rather than performance, so the round does not end with the
+fourteen trained lines. A second company follows, five lines the player has never seen, scored
+on its own, and the sheet carries both numbers so the findings can say whether a catch rate
+holds up on material nobody coached them through.
+
+**Scope.** This build is a static case: fourteen lines and five fresh ones, one month, answers
+keyed by hand. It does
 not run on a live ledger, and the four mechanical checks run on any ledger and memo in the
 checker on this site; driver and timing stay with the reviewer. Next, the deterministic checks
 run first on every AI memo, and the reviewer's time goes only to the two judgment types.
@@ -56,10 +62,32 @@ come straight out of the responses sheet without any hand coding.
 | Catch rate by error type | The fourteen "Why" fields each carry the line, the account, the call, the key and the error type, so grouping on the type column gives a catch rate per type. The eight flagged lines carry `arithmetic` twice, `wrong account` twice, and `wrong direction`, `no explanation`, `invented driver` and `timing` once each; the six clean lines carry `clean line` and are the control. The card labels and the screen's six are close but not word for word the same. `no explanation` is what the screen calls silence, `wrong account` is a form of invented driver where the memo names a driver another account contradicts, and threshold is the machine test that decides which lines owe commentary at all rather than a label of its own. |
 | False-flag rate | The six lines whose key is `stand` are the denominator. A `flag` call on any of them is a false flag, and question B carries the round's false flag count as well. |
 | Lap time | The clock runs from the first card to the last call and posts as whole minutes in the elapsed time question, off the clock rather than off a tap. |
+| Fresh case transfer rate | Question C (`entry.756559246`) opens with `Round2: 4/5; calls FSFSF; key FSFSF; seconds 61.` The fraction is the score on the five lines of a company the player had never seen, the two letter strings are the five calls and the five keyed answers in card order with `F` for flag and `S` for let it stand, and the seconds are the round two clock. Transfer is that fraction over the main fourteen expressed the same way, so a player at 12 of 14 and 4 of 5 reads 85.7 percent trained against 80.0 percent fresh. |
 
 Read together these say which error types a reviewer catches unaided, which ones cost them time
-they did not have, and how much of the work the deterministic checks could have taken off the
-desk before anybody read a sentence.
+they did not have, how much of the work the deterministic checks could have taken off the desk
+before anybody read a sentence, and whether what a player learned on Halyard survives a company
+they have never opened.
+
+### Reading the two headline numbers off the sheet
+
+Both of these come out of the responses sheet with no hand coding, and both are worth stating in
+the findings.
+
+**Count by organization.** Question A (`entry.117652481`) opens with `Organizations: ACFE; NABA.`
+Test that column for each chapter name, for example `=COUNTIF(H2:H, "*ACFE*")`, and read each
+count against the response total as its own denominator, because a player who belongs to two
+chapters is counted in both. Rows filed before 12 September 2026 carry the older
+`Organisations:` spelling, so reach back with `Organi*ations:` or with the chapter name, which
+never changed.
+
+**Fresh case transfer rate.** Split question C on the semicolons. The first field after
+`Round2:` is the fresh score out of five, and `=AVERAGE()` over that column against the same
+average on the main fourteen is the transfer rate for the whole pilot. Splitting the calls string
+character by character against the key string gives a per line catch rate on the fresh case, and
+the three flagged lines there are `wrong direction`, `timing` and `arithmetic`, which lets a
+finding compare a type caught on Halyard with the same type caught cold on Brightwater. The
+seconds field is the fresh case clock, so pace on new material can be set beside the lap time.
 
 ## The path in
 
@@ -163,6 +191,33 @@ two the first version carried, because twelve and two let a player flag everythi
 twelve. Neither number is ever printed for the player. Flagging all fourteen now scores eight
 and lands on Trainee.
 
+## Round two, the fresh case
+
+After the fourteenth reveal the player meets a second company on a one screen bridge that reads
+"New company, new memo, same job. Five lines." Brightwater Dental Partners is a four office
+dental group, a different industry from Halyard on purpose, and its five accounts carry May and
+June balances of their own. Three of its five memo lines carry a planted problem and two are
+clean:
+
+| Fresh line | Account | May | June | Change | Percent | Call | Type |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 5210 Dental supplies and lab fees | $138,500 | $191,200 | +$52,700 | 38.1% | Flag | wrong direction |
+| 2 | 4010 Patient service revenue, net | $742,000 | $803,500 | +$61,500 | 8.3% | Let it stand | clean line |
+| 3 | 4220 Orthodontic plan revenue | $96,000 | $138,400 | +$42,400 | 44.2% | Flag | timing |
+| 4 | 6610 Marketing and patient outreach | $18,400 | $24,100 | +$5,700 | 31.0% | Let it stand | clean line |
+| 5 | 6110 Hygienist wages | $214,000 | $268,900 | +$54,900 | 25.7% | Flag | arithmetic |
+
+The threshold rule is the one the player already knows, so both clean lines turn on it: line 2
+carries the largest dollar movement on the statement and still fails the percentage leg, and line
+4 reads alarming at 31.0 percent and fails the dollar leg. All three types were also planted in
+the Halyard memo, which is what makes a catch rate on these five comparable with the trained
+fourteen.
+
+The cards are built from `CARDS2` and the balances from `ROWS2`, and every ledger function takes
+the book it is reading, so the "See the full ledger" button on a round two card opens the five
+account dental statement in the same sheet component that serves Halyard's fourteen. The five
+lines are scored on their own counters and never touch the rank, the trophy or the main score.
+
 Rows filed in the Google Form before 12 September 2026 were answered against the old key and
 are not comparable with anything filed since. The per-card entries still post the player's own
 call unchanged, so nothing about the form mapping moved. The source of truth for the new key is
@@ -171,9 +226,11 @@ call unchanged, so nothing about the form mapping moved. The source of truth for
 
 ## The track
 
-The progress bar is a race track drawn as one inline SVG in `buildTrack()`. Fourteen segments,
-a car that advances one segment per card, a pit lane under the main lane and a chequered flag at
-the finish. A right call gives the car a short forward burst with two speed lines behind it, a
+The progress bar is a race track drawn as one inline SVG in `buildTrack()`. Nineteen segments
+since 13 September 2026, fourteen for the trained lines and five for the fresh case, with the
+finish at card 19 and a gold tick at segment fourteen where the second company takes over. There
+is a car that advances one segment per card, a pit lane under the main lane and a chequered flag
+at the finish that lights once all nineteen are called. A right call gives the car a short forward burst with two speed lines behind it, a
 wrong call drops it into the pit lane for a beat before it rejoins, and three correct calls in a
 row light a flame behind it. Streaks build in three steps: two in a row gives the car a speed
 trail, three adds the gold flame and a "Streak 3" toast on the reveal, and five grows both and
@@ -186,7 +243,13 @@ The run is timed from the first card to the fourteenth call. The end screen prin
 `Lap time 6:42` beside the score, with `Best streak 7` next to it, and the lap time rounded to
 whole minutes is what goes into the form's elapsed minutes question. A streak of five or more
 earns the "Hot lap" badge, and letting all six clean lines stand earns "Nothing over-flagged".
-Eight badges can be earned and the end screen shows at most three of them.
+Nine badges can be earned and the end screen shows at most three of them. The streak carries on
+into the fresh case so the car behaves the same way, and the best streak the end screen prints
+stops at what the fourteen trained lines earned, because that is the number "Hot lap" reads.
+
+The round two clock is separate from the lap time. It starts on the first fresh card and stops
+on the fifth call, and it posts in seconds rather than minutes, because five lines on a company
+nobody has seen is a short run.
 
 ## Spelling
 
@@ -198,13 +261,16 @@ American spelling throughout, in the file and in these notes. The organization c
 Ranks are Partner at 14, Manager at 13, Senior at 11 or 12, Staff at 9 or 10 and Trainee below
 that. The end screen leads with the reward: a trophy drawn to the rank (bronze, silver, gold,
 and a starred cup for a clean sweep) with a single rise and shine that respects
-`prefers-reduced-motion`, the rank name, the codename, the earned line, the three outcomes as
+`prefers-reduced-motion`, the rank name, the codename, the earned line, the fresh case as
+"Fresh case: 4 of 5" in a gold ringed pill under that line, the three outcomes as
 caught, let stand correctly and false flags, the lap time and the best streak under those three
 tiles, then the badges. Only earned badges show, at most three, as a row of medallions with the
 icon in green on a paper disc inside a gold ring and the name under it, appearing on a 150ms
 stagger that `prefers-reduced-motion` switches off. They are chosen in a fixed order so the best
-ones survive the cut: Clean sweep, Hot lap, Nothing over-flagged, Arithmetic hawk, Invented
-driver caught, Read the silence, Right account, Timing and drift. A run that earns none prints
+ones survive the cut: Clean sweep, Cold read, Hot lap, Nothing over-flagged, Arithmetic hawk,
+Invented driver caught, Read the silence, Right account, Timing and drift. "Cold read" is the
+one badge the fresh case can earn, at five of five on Brightwater, and it sits second because
+reading a company cold is the hardest thing the drill asks. A run that earns none prints
 one line instead. Under that sit the share line with a Copy button and a Play again button, and
 the coaching sits behind one tap below them.
 
@@ -233,6 +299,12 @@ type for that line, question A carries the organizations, and question B carries
 missed, the pattern, the result and the longest run. The elapsed minutes question receives the
 lap time, off the clock rather than a tap.
 
+Round two posts without a new question. The whole fresh case rides in question C
+(`entry.756559246`), which asks the player nothing and carried only a placeholder note before 13
+September 2026. The cell now opens with `Round2: 4/5; calls FSFSF; key FSFSF; seconds 61.` and
+then names the company, so the sheet can be read without opening the game. The fourteen "Why"
+fields were left exactly as they were, because the catch rate by error type is grouped on them.
+
 Card one is inverted on purpose. Its form question asks the player to agree or disagree that
 nothing is owed on account 4200, so flagging that line posts `Reject` while flagging any other
 line posts `Accept`. Each card carries its own `post` mapping for that reason.
@@ -253,7 +325,9 @@ the round, which came out so the last card leads straight into the send:
 Question B says so in the same cell, in the sentence beginning "Intake scales", so nobody in the
 responses sheet reads them as player answers. Filter them out before any analysis. The round one
 free text field (`entry.1115022539`) carries the same kind of note, because the ledger screen is
-orientation only and collects no picks.
+orientation only and collects no picks. Question C (`entry.756559246`) was a placeholder of the
+same kind until 13 September 2026 and now carries the round two string, so it is the one former
+placeholder that is real data.
 
 ## Counting the organizations
 
@@ -289,6 +363,9 @@ problem and `stand` on the six clean ones, alongside the error type, the one lin
 at the reveal, and the tell the end screen uses when a player misses that line. Anyone who reads
 the source can read the key. That is the trade for instant feedback, and it is the reason to
 send the link and not the file.
+
+The fresh case keeps its key the same way in `CARDS2`, where three of the five lines are `flag`
+and two are `stand`, and the reveal, the tell and the over-flag note all read from that array.
 
 The error types are wrong direction, invented driver, wrong account, timing, arithmetic, no
 explanation and clean line. "No explanation" covers the one line where the memo simply says
