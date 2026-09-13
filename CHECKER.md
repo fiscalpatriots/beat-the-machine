@@ -52,26 +52,48 @@ as the same thing. They are not.
 
 1. **Extraction.** Every figure is read with the span of text it came from, its value and its unit.
    Dollars are read as `$65,000`, `65,000`, `(65,000)`, `$65k`, `$65K`, `$1.2M`, `65k` and, since an
-   ordinary number is still a number, `90000`; a bare number is read only at four digits or more, is
-   never read when it is the year, and is never read when it is an account number the ledger carries.
-   Percents are read as `7%`, `7 percent`, `7 per cent` and `7 pct`. Percentage points are a
+   ordinary number is still a number, `90000` and `-30000`; a bare number is read only at four digits
+   or more. Percents are read as `7%`, `7 percent`, `7 per cent` and `7 pct`. Percentage points are a
    **separate unit**, read from `pp` and `percentage point`. A figure is negative when a minus sign
-   or a closed pair of parentheses says so; a lone opening bracket, as in `rose $30,000 (30%)`, is
-   punctuation and the percent inside it is read normally.
+   or a closed pair of parentheses says so, **and a minus sign in front of a bare number is part of
+   the figure**; a lone opening bracket, as in `rose $30,000 (30%)`, is punctuation and the percent
+   inside it is read normally.
+1b. **Unparsed spans.** Anything numeric the accepted grammar cannot read is recorded rather than
+   dropped. Four kinds: a **currency that is not the dollar** (`€30,000`, `£30,000`, `USD 90000`), a
+   **scale or multiplier word the grammar does not carry** (`$30.0 thousand`, `30 thousand`, `0.30
+   times`, `30 basis points`), a **figure written in words** (`a change of ninety percent`), and a
+   **run of digits standing where the words put a claim** that the figure reader did not take
+   (`increased by 800`, `increased by 1999`, `increased by 6200`). An unparsed span marks the
+   sentence **not checked** and goes to the reviewer's queue with the reason. A year or an account
+   number standing in an ordinary position, `finished on June 30`, `billed on 31 July`, `against
+   $18,000 in June 2025`, is not a claim and is left where it stands. The external review of 13
+   September 2026 asked for *needs review* here; the page says **not checked**, which is the
+   stronger of the two: nothing in the sentence was settled.
 2. **Account binding.** Three routes, each named on the page: **by account number**, **by account
    name**, and **by an exact figure**. The figure route is accepted only when the sentence also
    carries a word from that account's name that no named account shares. Where a figure ties to an
    account the sentence does not name in any other way, that is a **numeric coincidence**, and it is
    printed as an unresolved conflict rather than being bound. A duplicated account number binds
    nothing on its own: the sentence is held at needs review until a consolidation decision is made.
+   A sentence that names **more than one account** binds each figure inside the **clause it was
+   written in**, split on commas, semicolons and the joining words (`and`, `or`, `but`, `while`,
+   `against`, `compared with`, `rather than`, `instead of`). A figure whose clause names exactly one
+   of the bound accounts is tested against that one; a figure whose clause names none of them, or
+   more than one, is a **binding conflict** and is held at needs review however well it agrees with
+   the sentence read as a whole. A percent settled against a ratio supplied in the ratio pane is
+   exempt, because no account binding settled it. An account number the memo **spends as an
+   amount**, `increased by 6200`, is a claim and not a reference: it binds nothing, and it does not
+   take that line off the silent list.
 3. **Numeric role.** What the sentence says each figure *is*, read from the words beside it and
    never from the fact that it matches something: **prior balance** (`from $186,000`), **current
    balance** (`to $121,000`, `at $88,500`, `now`), **absolute movement** (`by $30,000`, `rose
    $31,200`, `a decrease of $6,500`, `a $372,000 rise`), **relative movement** (`grew 7.1 percent`,
    `or 31.0 percent`, `(30%)`, `8.3 percent of May`), **ratio** (`from 25.0 percent ... to 23.8
    percent`), or **unknown**. A role the words do not give is *unknown*, and a figure with an unknown
-   role is never counted as checked: a dropdown appears beside that row listing the five roles, the
-   reviewer confirms it, and the run is stamped again with the confirmation in it.
+   role is never counted as checked, whatever it happens to equal: the row says so, a dropdown
+   appears beside it listing the five roles, the reviewer confirms it, and the run is stamped again
+   with the confirmation in it. A **sign** written into a figure is a claim the words did give, so a
+   sign that disagrees with the ledger **fails** before an unknown role can hold it for review.
 4. **Units.** Dollars, percent and percentage points are held apart. Percentage points measure a
    change in a rate, so a claim in points against a dollar balance is never tested against that
    balance's percent change; with no ratio supplied it is returned as needs review with that reason.
@@ -81,6 +103,14 @@ as the same thing. They are not.
    compared as written and a sign clash is a failure that names both sides; a figure written as a
    magnitude is compared as a magnitude and the sign is left to the direction check, which owns it.
 6. **Conclusion.** One status per sentence, below.
+
+**Negation.** `not`, `no`, `never`, `neither`, `nor`, `without`, `rather than`, `instead of`,
+`failed to` and the contracted forms **void** the direction claim and the figure claims in the
+clause they attach to, and force **needs review**. A negation is not read as the claim it would be
+without it and not as its opposite: the checker says it cannot settle the clause and a person does.
+The threshold idioms a memo uses to say a line owes nothing, "no commentary is owed", "clears
+neither leg", "carries no driver", "no change", are taken out before the test, and a clause with no
+figure and no direction word is inert.
 
 Two checks sit outside the six and are reported the same way. **Direction** tests rose, fell and
 flat against the sign of the movement, inside a clause that carries a figure tying to a bound
@@ -100,8 +130,8 @@ worst status any step assigned and the summary, the exports and the prompt all c
 | Status | What it means |
 | --- | --- |
 | **Checked within scope** | Every figure in the sentence carried a role the words gave it, and the unrounded comparison with the pasted ledger agreed. It does not mean the sentence is true. |
-| **Needs review** | Something is unresolved: a role the words do not give, a binding the checker will not settle by coincidence, a duplicate account number, a percent it cannot compute, a column mapping nobody confirmed. A person has to answer it. |
-| **Not checked** | Nothing in the sentence could be tied to the ledger and tested. An unmatched sentence and a sentence with no figures both land here. This is **not** the same as a sentence that was checked and found true, and the page never prints it as one. |
+| **Needs review** | Something is unresolved: a role the words do not give, a binding the checker will not settle by coincidence or by a clause naming two accounts, a duplicate account number, a percent it cannot compute, a clause the words negate, a column mapping nobody confirmed. A person has to answer it. |
+| **Not checked** | Nothing in the sentence could be tied to the ledger and tested. An unmatched sentence, a sentence with no figures, and a sentence carrying an unparsed span all land here. This is **not** the same as a sentence that was checked and found true, and the page never prints it as one. |
 | **Failed** | At least one check on the sentence failed. |
 
 A sentence carrying no figures is **not checked** unless it makes a threshold claim, in which case
@@ -109,10 +139,13 @@ the claim itself is checked.
 
 ## Coverage, not a failure count
 
-The summary strip states coverage, never a count of failures alone: sentences read, checked within
-scope, needs review, not checked, failed, ledger rows used, rows skipped, silent lines, and the size
-of the reviewer queue. The sentence under it repeats the counts in words and names the run
-identifier and the source version.
+The results open with a **stacked bar** of the four sentence statuses in proportion, drawn in the
+page's own tokens, and a legend carrying the four marks and their counts: a green check for checked
+within scope, an ink square for needs review, a soft ring for not checked, a red cross for failed.
+The same four marks are the first column of the table, so a row and the bar say the same thing. A
+second line carries the counts the bar does not: sentences read, ledger rows used, rows skipped,
+silent lines, and the size of the reviewer queue. Under it the run identifier and the source
+version, and, when a row was skipped, the statement that the ledger was not covered in full.
 
 A row the ledger reader could not use is printed under the strip in a red box, by line number, with
 the reason, on every run. Rows the reader drops on purpose, the header row and the title block above
@@ -121,8 +154,10 @@ a report, are not counted as skipped; a row that looks like an account line and 
 The **reviewer queue** carries every failure, every binding conflict, every unmatched sentence,
 every skipped source row, every refused row, every malformed ratio, every unsupported numeric form,
 every discarded numeric column, every silent line and every account carrying two or more sentences.
-It is printed as rows in the table, listed in the printed summary, exported in the CSV and the JSON,
-and repeated verbatim in Prompt 2.
+It is printed **below the table as a plain numbered list**, each item carrying the sentence, the
+finding and the questions beneath it; it is listed in the printed summary, exported in the CSV and
+the JSON, and repeated verbatim in Prompt 2. The reviewer queue now also carries **unparsed
+figures**, **negated claims** and **binding conflicts**.
 
 ## The boundary policy
 
@@ -145,12 +180,26 @@ node tests/run-checker-tests.cjs T02      one fixture
 node tests/run-checker-tests.cjs --dump T02
 ```
 
-`tests/checker-fixtures.json` holds the seventeen probes from the external audit of 13 September
-2026, T01 to T17, each carrying the required behaviour from that audit as the assertion, plus four
-boundary and export companions and three end-to-end fixtures, T18 Halyard, T18b Brightwater and T19
-Kestrel, which assert the expected outputs printed further down this file. The runner lifts the script out of
-`checker.html` and runs it against a document stub, so there is no build step and no dependency; a
-change to the page that breaks a probe fails the suite. All twenty-four pass.
+`tests/checker-fixtures.json` holds **fifty-three** fixtures and **all fifty-three pass**.
+
+- **T01 to T17**, the seventeen probes from the external audit of 13 September 2026, each carrying
+  the required behaviour from that audit as the assertion, plus four boundary and export companions.
+- **T18, T18b, T19**, the end-to-end sample runs, Halyard, Brightwater and Kestrel, which assert the
+  expected outputs printed further down this file.
+- **T20 to T43**, the twenty-four probes from the live release review of 13 September 2026, N01 to
+  N24, entered exactly as that bundle supplied them. Seven of them are the review's own positive and
+  negative controls and still clear or still fail; the rest are the clearances the review found. The
+  five it named in its table are T20 (negation), T21 (a percentage written in words), T26 (a dropped
+  minus sign), T28 (amounts swapped between two named accounts) and T41 (a percent whose role the
+  words do not give).
+- **T44 to T48**, five further adversarial probes written against the repaired contract: a units
+  mismatch (percentage points against a dollar line), a figure standing in a different sentence from
+  its account, a percent of a subtotal the checker was never given, a currency written in thousands
+  against a ledger in whole dollars, and a memo line quoting last year.
+
+The runner lifts the script out of `checker.html` and runs it against a document stub, so there is
+no build step and no dependency; a change to the page that breaks a probe fails the suite. The four
+sample cases produce output identical to the release the review examined.
 
 ## What it does not do
 
@@ -161,6 +210,14 @@ change to the page that breaks a probe fails the suite. All twenty-four pass.
 - **No contradiction detection.** Two sentences that cannot both be true can both be checked
   within scope. The checker says only that they landed on the same account and must be read
   together, and it puts that in the queue.
+- **No reading of a negation.** It detects one and refuses the clause. It does not work out what
+  "rent expense did not rise $30,000" asserts, and it never reads a negated claim as its opposite.
+- **No second currency and no scale words.** `€30,000`, `USD 90000`, `$30.0 thousand`, `30 basis
+  points` and `0.30 times the prior balance` are recorded as unparsed and the sentence is left
+  unchecked. The page reads one currency, written in whole units with a dollar sign.
+- **No figures written in words.** "ninety percent" is an unparsed span, not ninety percent.
+- **No resolution of a clause naming two accounts.** It reports the binding conflict; it does not
+  decide which line the figure belongs to.
 - **No fuzzy matching.** No stemming, no synonyms and no guessing: "depot" does not match
   "depots". A sentence that names nothing the ledger names comes back unmatched, on purpose.
 - **One currency, one pair of periods.** No translation, no consolidation. A ledger may carry
