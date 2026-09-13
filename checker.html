@@ -109,6 +109,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 .stat b{display:block;font-size:26px;line-height:1.1;font-variant-numeric:tabular-nums}
 .stat span{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-soft);margin-top:3px;line-height:1.25}
 .stat.f b{color:var(--reject)}
+.stat.c b{color:var(--accept)}
+.stat.n b{color:var(--ink-soft)}
 .stat.s b{color:var(--neg)}
 .stat.r b{color:var(--machine)}
 
@@ -156,6 +158,15 @@ td.ask{min-width:210px;max-width:330px;color:var(--ink-soft)}
 .pvgrid label{display:block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;
   color:var(--ink-soft);margin:0 0 6px}
 .pvfacts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 4px}
+#prevruns{margin:18px 0 0;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:14px 16px}
+#prevruns h3{margin:0 0 4px}
+.prevrow{border-top:1px solid var(--line);padding:10px 0 12px}
+.prevrow:first-child{border-top:0}
+.prevrow .tiny{margin:2px 0 6px}
+.rolelab{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;
+  color:var(--ink-soft);margin:8px 0 3px}
+.rolesel{width:100%;max-width:220px;border:1px solid var(--line);border-radius:8px;padding:6px 8px;
+  font:inherit;font-size:13px;background:#fff;color:inherit}
 .chip{display:inline-block;border-radius:99px;padding:3px 11px;font-size:12px;font-weight:700;
   background:var(--machine-bg);color:var(--machine)}
 .chip.ok{background:var(--accept-bg);color:var(--mason)}
@@ -239,8 +250,10 @@ select#samplepick{width:auto;max-width:100%;min-width:210px}
     over is the part that needs a person, and it prints as a short list of questions.</p>
     <div class="privacy">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.4-3 8.4-7 10-4-1.6-7-5.6-7-10V6z"></path><path d="M9 12l2 2 4-4"></path></svg>
-      <p><b>Nothing you paste leaves this page.</b> The checker is one HTML file with no libraries, no network
-      calls and no storage. Close the tab and the ledger is gone.</p>
+      <p><b>Where your data goes.</b> This page is served from GitHub Pages and loads one Google font from
+      fonts.googleapis.com; everything you paste is processed by the script in your own browser, this page stores
+      nothing on a server, and anything you copy from here into another AI service goes to that service under its
+      terms.</p>
     </div>
   </div>
 
@@ -304,13 +317,25 @@ select#samplepick{width:auto;max-width:100%;min-width:210px}
       </div>
       <div>
         <label for="company">Company or file name</label>
-        <input type="text" id="company" placeholder="Halyard Distribution, LLC">
+        <input type="text" id="company" placeholder="Halyard Provisioning Group, Inc.">
       </div>
       <div>
         <label for="reviewer">Reviewer name</label>
         <input type="text" id="reviewer" placeholder="Left blank to sign by hand">
       </div>
+      <div>
+        <label for="zerobase">Zero prior balance</label>
+        <select id="zerobase">
+          <option value="owing">Owes commentary on any movement</option>
+          <option value="exclude">Excluded from the rule</option>
+        </select>
+      </div>
     </div>
+    <p class="hint" id="boundary"><b>The boundary, stated.</b> The dollar rule is <b>more than</b> the floor, so a
+    movement of exactly the floor does not clear it. The percent rule is <b>at least</b> the floor, so a movement of
+    exactly the floor does clear it. Both are decided on unrounded values, not on the figures as they print.
+    A line with a zero prior balance has no percent at all, so the dropdown above settles it rather than a default
+    nobody chose; the default is that it owes commentary on any movement.</p>
     <div style="margin-top:12px">
       <label for="ratios" style="display:block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--ink-soft);margin:0 0 6px">Ratios (optional)</label>
       <textarea id="ratios" class="small" spellcheck="false" placeholder="One per line: Product gross margin = (4000 - 5000) / 4000"></textarea>
@@ -321,8 +346,8 @@ select#samplepick{width:auto;max-width:100%;min-width:210px}
       <button class="btn green" id="run">Run Second Pass</button>
       <select id="samplepick" aria-label="Samples, load a case">
         <option value="">Samples: load a case&hellip;</option>
-        <option value="halyard">Halyard Distribution, June 2026 &mdash; 14 lines, tab separated</option>
-        <option value="brightwater">Brightwater Dental Partners, June 2026 &mdash; 5 lines</option>
+        <option value="halyard">Halyard Provisioning Group, June 2026 &mdash; 14 lines, case halyard-v3</option>
+        <option value="brightwater">Brightwater Dental Partners, June 2026 &mdash; 5 lines, case brightwater-v2</option>
         <option value="kestrel">Kestrel IT Services, July 2026 &mdash; 6 lines, QuickBooks export</option>
         <option value="ridgeline">Ridgeline Partners, July 2026 &mdash; 5 lines, comma separated</option>
       </select>
@@ -332,6 +357,13 @@ select#samplepick{width:auto;max-width:100%;min-width:210px}
 
   <div id="msg"></div>
   <div id="out"></div>
+  <div id="prevruns" class="hidden">
+    <h3>Previous runs</h3>
+    <p class="tiny">Changing any input clears the statuses on the page and stamps the next run with a new
+    identifier. The runs before it are kept here so a reviewer can see what an earlier version of the memo or the
+    rule produced.</p>
+    <div id="prevlist"></div>
+  </div>
 
   <div id="prompts">
     <h2>The two prompts</h2>
@@ -515,23 +547,31 @@ function parseLedger(text,choice){
     var f=splitFields(line);
     while(f.length&&(f[f.length-1]===""||f[f.length-1]==="*"))f.pop();
     if(!f.length)return;
+    /* "100,000" split on commas is indistinguishable from two columns holding
+       100 and 000. The row is refused rather than read on a guess. */
+    var amb=false,z;
+    if(line.indexOf("\t")<0&&line.indexOf(",")>-1){
+      for(z=1;z<f.length;z++){
+        if(/^\$?\d{3}$/.test(f[z])&&/^\$?[-(]?\d+\)?$/.test(f[z-1]))amb=true;
+      }
+    }
     var k=-1,tail=0,j;
     for(j=f.length-1;j>=0;j--){
       if(f[j]!==""&&!isNaN(parseNum(f[j]))){k=j;tail++;}
       else break;
     }
-    raws.push({n:idx+1,line:line,f:f,k:k,tail:tail});
+    raws.push({n:idx+1,line:line,f:f,k:k,tail:tail,amb:amb});
   });
 
   /* how many numeric columns this ledger runs: the most common trailing run */
   var counts={},best=0,T=0;
-  raws.forEach(function(r){if(r.tail>=2&&r.k>=1)counts[r.tail]=(counts[r.tail]||0)+1;});
+  raws.forEach(function(r){if(!r.amb&&r.tail>=2&&r.k>=1)counts[r.tail]=(counts[r.tail]||0)+1;});
   Object.keys(counts).forEach(function(t){
     var n=counts[t],v=parseInt(t,10);
     if(n>best||(n===best&&v>T)){best=n;T=v;}
   });
 
-  var skipped=[],accounts=[],totals=[],sections=[],headerCells=null,headerLine=0,seenData=false,open=null;
+  var skipped=[],accounts=[],totals=[],sections=[],headerCells=null,headerLine=0,seenData=false,open=null,ambig=[];
 
   /* the header row: no numbers of its own, more than one cell, and cells that read like periods */
   if(T>=2){
@@ -574,7 +614,14 @@ function parseLedger(text,choice){
 
   raws.forEach(function(r){
     if(headerCells&&r.n===headerLine){
-      skipped.push({n:r.n,t:r.line,why:"header row, read for the period columns and then ignored"});
+      skipped.push({n:r.n,t:r.line,benign:1,why:"header row, read for the period columns and then ignored"});
+      return;
+    }
+    if(r.amb){
+      ambig.push("Line "+r.n+" splits on commas into a three digit field standing after a numeric field, which "+
+        "is what an unquoted thousands separator looks like.");
+      skipped.push({n:r.n,t:r.line,why:"the commas on this row cannot be told from an unquoted thousands "+
+        "separator, so the row was refused rather than read on a guess"});
       return;
     }
     var label=r.tail>=2&&r.k>=1?headOf(r):r.f.join(" ").replace(/\s+/g," ").replace(/^\s+|\s+$/g,"");
@@ -605,7 +652,7 @@ function parseLedger(text,choice){
     if(SECTION_ONLY.test(label)){openSection(label,r.n);return;}
     if(GRAND.test(label)){open=null;skipped.push({n:r.n,t:label,why:"a total with no figures beside it"});return;}
     if(seenData&&label&&r.tail===0&&r.f.length<=2){openSection(label,r.n);return;}
-    skipped.push({n:r.n,t:r.line,
+    skipped.push({n:r.n,t:r.line,benign:seenData?0:1,
       why:seenData?"could not read a prior and a current balance on this row":"title or heading above the report, ignored"});
   });
 
@@ -617,8 +664,15 @@ function parseLedger(text,choice){
     seenNum[a.num]=(seenNum[a.num]||0)+1;
   });
 
+  var discarded=[];
+  for(i=0;i<T;i++)if(i!==pick.p&&i!==pick.c)discarded.push(i);
+  var named=0;
+  labels.forEach(function(l){if(!/^column \d+$/.test(l))named++;});
+  var colsUnconfirmed=(T>2&&named<T&&!(choice&&typeof choice.p==="number"));
+
   return {accounts:accounts,skipped:skipped,totals:totals,sections:sections,
-          labels:labels,T:T,pick:pick,guess:guess,header:!!headerCells,dups:dups};
+          labels:labels,T:T,pick:pick,guess:guess,header:!!headerCells,dups:dups,
+          ambig:ambig,discarded:discarded,colsUnconfirmed:colsUnconfirmed};
 }
 
 /* every section total recomputed from the lines under it */
@@ -646,10 +700,20 @@ function tieTotals(L){
   return out;
 }
 
-function clears(a,floorD,floorP,rule){
-  var legD=Math.abs(a.change)>floorD;
-  var legP=(a.pct===null)?(a.change!==0):(Math.abs(a.pct)>=floorP);
-  return rule==="either"?(legD||legP):(legD&&legP);
+/* Boundary policy, printed on the page and decided on unrounded values:
+   the dollar rule is MORE THAN the floor, the percent rule is AT LEAST the
+   floor, and a zero prior balance is settled by the selected policy rather than
+   by a default nobody chose. */
+function legs(a,floorD,floorP,zp){
+  var d=Math.abs(a.change)>floorD,p;
+  if(a.pct===null)p=(zp==="exclude")?false:(a.change!==0);
+  else p=Math.abs(a.pct)>=floorP;
+  return {d:d,p:p};
+}
+function clears(a,floorD,floorP,rule,zp){
+  if(a.pct===null&&zp==="exclude")return false;
+  var L=legs(a,floorD,floorP,zp);
+  return rule==="either"?(L.d||L.p):(L.d&&L.p);
 }
 function pctCell(a){
   return a.pct===null?"new line":pctTxt(a.pct);
@@ -723,53 +787,334 @@ function parseFig(raw){
   if(isNaN(v))return NaN;
   return v*mult;
 }
-function figures(text){
-  var pcts=[],dollars=[],taken=[],m;
-  var rp=/(-?\$?\s?\(?\d[\d,]*(?:\.\d+)?\)?)\s*(?:percent\b|per cent\b|pct\b|%|pp\b|percentage points?\b)/gi;
+/* ---------- 1. EXTRACTION ------------------------------------------------
+   A figure is the text span it was read from, its value, its unit and whether
+   the text gave it an explicit sign. Nothing here binds an account, and nothing
+   here decides what the figure means. Those are separate steps on purpose. */
+function figures(text,skipNums){
+  var out=[],taken=[],m;
+  function overlaps(i,j){var t;for(t=0;t<taken.length;t++){if(i<taken[t][1]&&j>taken[t][0])return true;}return false;}
+  /* parentheses only make a figure negative when they close around it. A lone
+     opening bracket, as in "increased by $30,000 (30%)", is punctuation. */
+  function hasSign(raw){return /^\s*-/.test(raw)||(/^\s*\(/.test(raw)&&/\)\s*$/.test(raw));}
+
+  var rp=/([-(]?\s?\$?\s?\d[\d,]*(?:\.\d+)?\s?\)?)\s*(percentage points?|percent|per cent|pct|pp|%)/gi;
   while((m=rp.exec(text))!==null){
-    var v=parseNum(m[1]);
-    if(!isNaN(v)){pcts.push({raw:m[1].replace(/^\s+|\s+$/g,""),v:v,at:m.index});}
+    var ptxt=m[1],neg=hasSign(ptxt);
+    if(/^\s*\(/.test(ptxt)&&!/\)\s*$/.test(ptxt))ptxt=ptxt.replace(/^\s*\(/,"");
+    var pv=parseNum(ptxt);
+    if(!isNaN(pv)){
+      out.push({raw:m[0].replace(/^\s*\(/,"").replace(/^\s+|\s+$/g,""),v:pv,at:m.index,end:m.index+m[0].length,
+                unit:/point/i.test(m[2])||/^pp$/i.test(m[2])?"percentage points":"percent",
+                signed:neg});
+    }
     taken.push([m.index,m.index+m[0].length]);
   }
-  function isTaken(i){
-    for(var t=0;t<taken.length;t++){if(i>=taken[t][0]&&i<taken[t][1])return true;}
-    return false;
-  }
-  var rd=/\(\s?\$?\s?\d(?:[\d,]*\d)?(?:\.\d+)?[kKmM]?\s?\)|-?\$\s?\d(?:[\d,]*\d)?(?:\.\d+)?(?:[kKmM]\b)?|\b\d{1,3}(?:,\d{3})+(?:\.\d+)?\b|\b\d+(?:\.\d+)?[kKmM]\b/g;
+  var rd=/\(\s?\$?\s?\d(?:[\d,]*\d)?(?:\.\d+)?\s?[kKmMbB]?\s?\)|-?\$\s?\d(?:[\d,]*\d)?(?:\.\d+)?(?:\s?[kKmMbB]\b)?|\b\d{1,3}(?:,\d{3})+(?:\.\d+)?\b|\b\d+(?:\.\d+)?[kKmMbB]\b/g;
   while((m=rd.exec(text))!==null){
-    if(isTaken(m.index))continue;
-    var d=parseFig(m[0]);
-    if(!isNaN(d))dollars.push({raw:m[0].replace(/^\s+|\s+$/g,""),v:d,at:m.index});
+    if(overlaps(m.index,m.index+m[0].length))continue;
+    var dv=parseFig(m[0]);
+    if(isNaN(dv))continue;
+    out.push({raw:m[0].replace(/^\s+|\s+$/g,""),v:dv,at:m.index,end:m.index+m[0].length,
+              unit:"dollars",signed:hasSign(m[0])});
+    taken.push([m.index,m.index+m[0].length]);
   }
-  return {pcts:pcts,dollars:dollars};
+  /* ordinary numeric text: four digits or more, no currency punctuation at all.
+     A bare four digit number that reads as a year is left where it stands. */
+  var rn=/\b\d{4,}(?:\.\d+)?\b/g;
+  while((m=rn.exec(text))!==null){
+    if(overlaps(m.index,m.index+m[0].length))continue;
+    if(/^(19|20)\d\d$/.test(m[0]))continue;
+    /* an account number written out is a reference, not a figure */
+    if(skipNums&&skipNums[m[0]])continue;
+    out.push({raw:m[0],v:parseFloat(m[0]),at:m.index,end:m.index+m[0].length,
+              unit:"dollars",signed:false,plain:true});
+    taken.push([m.index,m.index+m[0].length]);
+  }
+  out.sort(function(a,b){return a.at-b.at;});
+  out.forEach(function(f,i){
+    var r=roleOf(text,f,i,out);
+    f.role=r.role;f.side=r.side||"";f.roleFrom=r.from||"";
+  });
+  return out;
+}
+function dollarsIn(figs){return figs.filter(function(f){return f.unit==="dollars";});}
+function pctsIn(figs){return figs.filter(function(f){return f.unit!=="dollars";});}
+
+/* ---------- 2. NUMERIC ROLE ---------------------------------------------
+   Read from the words around the figure, never from the fact that it happens to
+   equal something in the ledger. Where the words do not say, the role is
+   unknown and the reviewer is asked to confirm it in a dropdown. */
+var CUE_PRIOR={from:1};
+var CUE_CURRENT={to:1,at:1,now:1,reached:1,reaching:1,stands:1,standing:1,hit:1,hits:1};
+var CUE_MOVE={by:1};
+var MOVE_NOUN={increase:1,increases:1,decrease:1,decreases:1,rise:1,rises:1,fall:1,falls:1,drop:1,
+               drops:1,gain:1,gains:1,growth:1,decline:1,declines:1,movement:1,change:1,variance:1,
+               swing:1,reduction:1,uptick:1};
+var SKIPW={a:1,an:1,the:1,is:1,was:1,were:1,are:1,be:1,been:1,which:1,that:1,of:1,"in":1,about:1,
+           roughly:1,approximately:1,some:1,only:1,just:1,another:1,total:1,net:1,this:1,its:1};
+var DIRSET=null;
+function dirSet(){
+  if(DIRSET)return DIRSET;
+  DIRSET={};
+  UP.concat(DOWN).forEach(function(w){DIRSET[w]=1;});
+  return DIRSET;
+}
+function roleOf(text,f,idx,all){
+  var pre=text.slice(0,f.at),post=text.slice(f.end);
+  var pct=f.unit!=="dollars";
+  if(f.unit==="percentage points")
+    return {role:"rate change in points",from:"the words \"percentage points\""};
+  if(pct&&/^\s*of\s+(the\s+)?(prior|previous|last|opening|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i.test(post))
+    return {role:"relative movement",from:"\"of\" naming the period it is a share of"};
+  var nx=post.replace(/^[^A-Za-z]*/,"").toLowerCase().split(/[^a-z]/)[0];
+  if(nx&&MOVE_NOUN[nx])
+    return {role:pct?"relative movement":"absolute movement",from:"the word \""+nx+"\" standing after it"};
+  var words=pre.toLowerCase().replace(/[^a-z\s]/g," ").replace(/\s+/g," ").split(" ")
+             .filter(function(w){return w!=="";});
+  var win=words.slice(-6),i,w,prev,r;
+  for(i=win.length-1;i>=0;i--){
+    w=win[i];
+    if(CUE_PRIOR[w])return {role:pct?"ratio":"prior balance",side:"prior",from:"the word \""+w+"\""};
+    if(CUE_CURRENT[w])return {role:pct?"ratio":"current balance",side:"current",from:"the word \""+w+"\""};
+    if(CUE_MOVE[w])return {role:pct?"relative movement":"absolute movement",from:"the word \""+w+"\""};
+    if(MOVE_NOUN[w])return {role:pct?"relative movement":"absolute movement",from:"the word \""+w+"\""};
+    if(dirSet()[w])return {role:pct?"relative movement":"absolute movement",from:"the direction word \""+w+"\""};
+    if((w==="or"||w==="and")&&idx>0){
+      prev=all[idx-1];
+      if(prev&&prev.role&&prev.role!=="unknown"){
+        r=prev.role;
+        if(pct&&r==="absolute movement")r="relative movement";
+        if(!pct&&r==="relative movement")r="absolute movement";
+        return {role:r,side:prev.side||"",from:"\""+w+"\", restating the figure before it"};
+      }
+      return {role:"unknown",from:""};
+    }
+    if(SKIPW[w])continue;
+    break;
+  }
+  return {role:"unknown",from:""};
 }
 
+/* ---------- 3. ACCOUNT BINDING ------------------------------------------
+   Three labelled routes: the account number written in the sentence, the
+   account name written in the sentence, and an exact figure. A figure route is
+   only accepted when the sentence also carries a word from that account's name
+   that no named account shares; otherwise it is a numeric coincidence and it is
+   reported as an unresolved conflict rather than being bound. */
 var TOL_P=0.05,TOL_D=0.005;
 function near(a,b,t){return Math.abs(Math.abs(a)-Math.abs(b))<=t;}
+function exactly(a,b,t){return Math.abs(a-b)<=t;}
+function acctId(a){return (a.num?a.num+" ":"")+a.name;}
 
-/* ============================================================ matching */
-function matchSentence(s,accounts){
+function bindSentence(s,accounts,figs){
   var text=" "+s.text.toLowerCase().replace(/[^a-z0-9$.,%\s-]/g," ").replace(/\s+/g," ")+" ";
-  var tokens={},i;
+  var tokens={};
   s.text.toLowerCase().replace(/[a-z]+/g,function(w){tokens[w]=1;return w;});
-  var fg=s.fig||figures(s.text);
-  var t1=[],t2=[],t3=[],t4=[];
+  var byNum=[],byName=[],byWord=[],byFig=[],conflicts=[],i;
+
   accounts.forEach(function(a){
-    if(a.num&&new RegExp("(^|[^0-9])"+a.num+"([^0-9]|$)").test(s.text)){t1.push(a);return;}
-    var hit=false;
-    fg.dollars.forEach(function(d){
-      if(near(d.v,a.prior,TOL_D)||near(d.v,a.cur,TOL_D)||near(d.v,a.change,TOL_D))hit=true;
-    });
-    if(hit){t2.push(a);return;}
-    if(a.flat&&text.indexOf(" "+a.flat+" ")>-1){t3.push(a);return;}
-    if(a.two&&a.two.indexOf(" ")>-1&&text.indexOf(" "+a.two+" ")>-1){t3.push(a);return;}
-    for(i=0;i<a.words.length;i++){if(tokens[a.words[i]]){t4.push(a);return;}}
+    if(a.num&&new RegExp("(^|[^0-9])"+a.num+"([^0-9]|$)").test(s.text))byNum.push(a);
   });
-  if(t1.length)return {accts:t1,how:"by account number"};
-  if(t2.length)return {accts:t2,how:"by an amount that ties"};
-  if(t3.length)return {accts:t3,how:"by account name"};
-  if(t4.length)return {accts:t4,how:"by a word in the account name"};
-  return {accts:[],how:""};
+  accounts.forEach(function(a){
+    if(byNum.indexOf(a)>-1)return;
+    if(a.flat&&text.indexOf(" "+a.flat+" ")>-1){byName.push(a);return;}
+    if(a.two&&a.two.indexOf(" ")>-1&&text.indexOf(" "+a.two+" ")>-1)byName.push(a);
+  });
+  var named=byNum.concat(byName);
+  var namedWords={};
+  named.forEach(function(a){a.words.forEach(function(w){namedWords[w]=1;});});
+
+  dollarsIn(figs).forEach(function(f){
+    f.ties=accounts.filter(function(a){
+      return near(f.v,a.prior,TOL_D)||near(f.v,a.cur,TOL_D)||near(f.v,a.change,TOL_D);
+    });
+    f.ties.forEach(function(a){
+      if(named.indexOf(a)>-1||byFig.indexOf(a)>-1)return;
+      var distinct=a.words.filter(function(w){return !namedWords[w]&&tokens[w];});
+      if(distinct.length)byFig.push(a);
+      else conflicts.push({a:a,f:f});
+    });
+  });
+  var bound=named.concat(byFig);
+  if(!bound.length){
+    accounts.forEach(function(a){
+      for(i=0;i<a.words.length;i++)if(tokens[a.words[i]]){byWord.push(a);return;}
+    });
+    bound=byWord.slice();
+  }
+  var how=[];
+  if(byNum.length)how.push("by account number");
+  if(byName.length)how.push("by account name");
+  if(byFig.length)how.push("by an exact figure with a word from the name beside it");
+  if(!byNum.length&&!byName.length&&!byFig.length&&byWord.length)how.push("by a word in the account name");
+  return {bound:bound,byNum:byNum,byName:byName,byFig:byFig,byWord:byWord,
+          conflicts:conflicts,how:how.join(", ")};
+}
+
+/* ---------- 4. UNITS AND CALCULATION ------------------------------------
+   Every comparison is made on unrounded values. A dollar figure ties when it is
+   within half a cent of the ledger value and a percent within 0.05 of a
+   percentage point, which is the tolerance the rounding on screen needs. A sign
+   written into the memo, by a minus or by parentheses, is compared as written;
+   where the memo writes a magnitude the sign is left to the direction check. */
+function qtyOf(a,which){return which==="prior"?a.prior:(which==="cur"?a.cur:a.change);}
+function qtyName(which){return which==="prior"?"prior balance":(which==="cur"?"current balance":"change");}
+var ROLE_QTY={"prior balance":"prior","current balance":"cur","absolute movement":"change"};
+
+function checkDollar(f,bound){
+  var want=ROLE_QTY[f.role]||null,hit=null,alts=[],best=null;
+  bound.forEach(function(a){
+    ["prior","cur","change"].forEach(function(k){
+      var v=qtyOf(a,k),gap=Math.abs(Math.abs(f.v)-Math.abs(v));
+      if(near(f.v,v,TOL_D)){
+        if(want===k&&!hit)hit={a:a,k:k};
+        else alts.push(qtyName(k)+" on "+acctId(a));
+      }
+      if(best===null||gap<best.gap)best={gap:gap,txt:qtyName(k)+" on "+acctId(a)+" is "+money(v)};
+    });
+  });
+  var plainNote=f.plain?" Read as an ordinary number with no currency punctuation, so the unit is assumed to be dollars."
+                       :"";
+  if(hit){
+    if(f.signed&&Math.abs(f.v-qtyOf(hit.a,hit.k))>TOL_D){
+      return {st:"failed",txt:f.raw+" is written with a sign of its own and the "+qtyName(hit.k)+" on "+
+        acctId(hit.a)+" is "+money(qtyOf(hit.a,hit.k))+", so the signs disagree."+plainNote,
+        ask:"Which sign is right on this figure?"};
+    }
+    return {st:"checked",txt:f.raw+" is the "+f.role+" on "+acctId(hit.a)+", "+money(qtyOf(hit.a,hit.k))+
+      " unrounded, and the role was read from "+f.roleFrom+"."+plainNote,ask:""};
+  }
+  if(!want){
+    if(alts.length===1){
+      return {st:"review",txt:f.raw+": the words around it do not say what it is, and it equals the "+alts[0]+
+        ". Confirm the role before this figure counts as checked."+plainNote,
+        ask:"What is "+f.raw+" in this sentence: a prior balance, a current balance, a movement or a ratio?"};
+    }
+    if(alts.length>1){
+      return {st:"review",txt:f.raw+": the words around it do not say what it is, and it equals more than one "+
+        "ledger figure ("+alts.join("; ")+")."+plainNote,
+        ask:"What is "+f.raw+" in this sentence, and on which line?"};
+    }
+    return {st:"failed",txt:f.raw+": the words around it do not say what it is and it equals nothing on the "+
+      "bound line. Nearest is "+(best?best.txt:"nothing at all")+"."+plainNote,
+      ask:"Where did "+f.raw+" come from?"};
+  }
+  if(alts.length){
+    return {st:"failed",txt:f.raw+" is written as the "+f.role+" (read from "+f.roleFrom+"), but on "+
+      acctId(bound[0])+" the "+f.role+" is "+money(qtyOf(bound[0],want))+". "+f.raw+" is the "+alts[0]+"."+plainNote,
+      ask:"Is the figure wrong or is the wording wrong?"};
+  }
+  /* a figure computed across two bound lines, such as gross profit from a
+     revenue line and a cost line, is not something the ledger holds. It is
+     reported as what it looks like and left to a person, never passed. */
+  var combo=null;
+  if(bound.length>1){
+    bound.forEach(function(a){
+      bound.forEach(function(b){
+        if(combo||a===b)return;
+        ["prior","cur","change"].forEach(function(k){
+          if(combo)return;
+          if(exactly(f.v,qtyOf(a,k)-qtyOf(b,k),TOL_D))
+            combo="the "+qtyName(k)+" on "+acctId(a)+" less the "+qtyName(k)+" on "+acctId(b);
+          else if(exactly(f.v,qtyOf(a,k)+qtyOf(b,k),TOL_D))
+            combo="the "+qtyName(k)+" on "+acctId(a)+" plus the "+qtyName(k)+" on "+acctId(b);
+        });
+      });
+    });
+  }
+  if(combo){
+    return {st:"review",txt:f.raw+" is written as the "+f.role+", read from "+f.roleFrom+", and it is not a "+
+      f.role+" on any line this sentence binds. It is "+combo+". The checker was not told that is what it "+
+      "is, so it is left open."+plainNote,
+      ask:"Is "+f.raw+" a figure computed across two lines, and where is that computation set out?"};
+  }
+  var expected=bound.map(function(a){return "the "+f.role+" on "+acctId(a)+" is "+money(qtyOf(a,want));}).join("; ");
+  return {st:"failed",txt:"memo says "+f.raw+" as the "+f.role+"; "+expected+". Nearest ledger figure: "+
+    (best?best.txt:"nothing on the bound line comes close")+"."+plainNote,
+    ask:"Which figure is right, the memo or the ledger, and where did the memo's number come from?"};
+}
+
+function checkPercent(f,bound,ratios,zp){
+  var cands=[],i,hit=null,signClash=null;
+  bound.forEach(function(a){
+    if(a.pct!==null)cands.push({lab:acctId(a)+" percent change",v:a.pct,kind:"relative movement"});
+  });
+  ratios.forEach(function(r){
+    cands.push({lab:r.name+", prior month",v:r.prior,kind:"ratio",side:"prior"});
+    cands.push({lab:r.name+", current month",v:r.cur,kind:"ratio",side:"current"});
+    cands.push({lab:r.name+", change in points",v:r.change,kind:"rate change in points"});
+  });
+  function wanted(c){
+    if(f.role==="relative movement")return c.kind==="relative movement";
+    if(f.role==="ratio")return c.kind==="ratio"&&(!f.side||c.side===f.side);
+    if(f.role==="rate change in points")return c.kind==="rate change in points";
+    return true;
+  }
+  for(i=0;i<cands.length;i++){
+    if(!wanted(cands[i]))continue;
+    if(near(f.v,cands[i].v,TOL_P)){
+      if(f.signed&&Math.abs(f.v-cands[i].v)>TOL_P){signClash=cands[i];continue;}
+      hit=cands[i];break;
+    }
+  }
+  if(signClash&&!hit){
+    return {st:"failed",txt:f.raw+" is written with a sign of its own; "+signClash.lab+" is "+pctTxt(signClash.v)+
+      ", so the magnitudes agree and the signs do not.",
+      ask:"Which way did this move, and is the sign in the memo right?"};
+  }
+  if(hit){
+    return {st:"checked",txt:f.raw+" is the "+f.role+", "+hit.lab+" at "+pctTxt(hit.v)+" unrounded, and the role "+
+      "was read from "+f.roleFrom+".",ask:""};
+  }
+  if(f.unit==="percentage points"&&!ratios.length){
+    return {st:"review",txt:f.raw+" is written in percentage points, which measure a change in a rate. The bound "+
+      "line is a dollar balance and no ratio was supplied, so there is nothing to compare it with.",
+      ask:"What rate is moving by these points, and where is it computed?"};
+  }
+  if(f.role==="relative movement"&&bound.length&&bound[0].pct===null){
+    return {st:"review",txt:f.raw+" is written as the relative movement, and "+acctId(bound[0])+" has a zero prior "+
+      "balance, so no percentage exists to compare it with. Zero prior balance policy in force: "+zp+".",
+      ask:"What is this percent measured against?"};
+  }
+  if(f.role==="ratio"&&!ratios.length){
+    return {st:"review",txt:f.raw+" is written as a ratio for the "+(f.side||"period")+", and no ratio was supplied "+
+      "in the ratio pane, so the checker has nothing to compute it from.",
+      ask:"Which ratio is this, and how is it computed from the ledger?"};
+  }
+  cands.sort(function(x,y){return Math.abs(Math.abs(f.v)-Math.abs(x.v))-Math.abs(Math.abs(f.v)-Math.abs(y.v));});
+  var three=cands.slice(0,3).map(function(c){return c.lab+" "+pctTxt(c.v);});
+  /* the words said what this percent is and the ledger says otherwise. A
+     reviewer who believes it is a ratio the checker was never told about can say
+     so in the role dropdown beside this row, and it becomes an open ratio
+     question instead of a failure. */
+  if(f.role==="relative movement"&&bound.length&&bound[0].pct!==null){
+    return {st:"failed",txt:f.raw+" is written as the relative movement, read from "+f.roleFrom+", and the "+
+      "relative movement on "+acctId(bound[0])+" is "+pctTxt(bound[0].pct)+" unrounded. Nearest values: "+
+      (three.length?three.join("; "):"nothing else on the bound line")+".",
+      ask:"Is this percent the movement on the line, or a ratio the checker was not told about? Confirm the role "+
+        "beside this row if it is a ratio."};
+  }
+  return {st:"review",txt:f.raw+" ties to nothing the checker holds"+(f.role==="unknown"
+      ?", and the words around it do not say what it measures":" as a "+f.role)+
+    ". Nearest values: "+(three.length?three.join("; "):"nothing on the bound line and no ratio supplied")+".",
+    ask:"What is this percent measuring, and where is it computed?"};
+}
+
+/* ---------- 5. THRESHOLD POLICY CLAIMS -----------------------------------
+   A sentence that asserts something about the commentary rule is checked
+   against the rule as set, which is the one case where a sentence carrying no
+   figure can still be checked within scope. */
+function policyClaims(text){
+  var t=" "+text.toLowerCase().replace(/\s+/g," ")+" ",out=[];
+  if(/fails (both legs|the threshold on both)|clears neither leg|meets neither leg|neither leg (of the threshold )?is met/.test(t))out.push({leg:"both",met:false});
+  else{
+    if(/fails the dollar leg|fails the dollar test|below the dollar leg/.test(t))out.push({leg:"dollar",met:false});
+    if(/fails the percent(age)? leg|fails the percent(age)? test|below the percent(age)? leg/.test(t))out.push({leg:"percent",met:false});
+  }
+  if(/carries no driver|carries no commentary|owes no commentary|no commentary (is )?owed|owes no explanation|this line carries no driver/.test(t))
+    out.push({owes:false});
+  return out;
 }
 
 /* ============================================================ ratios */
@@ -939,7 +1284,11 @@ function refreshPreview(pre){
   if(L.sections.length)chip("",L.sections.length+" section"+(L.sections.length===1?"":"s")+": "+
     L.sections.map(function(s){return s.name;}).join(", "));
   if(dropped.length)chip("warn",dropped.length+" row"+(dropped.length===1?"":"s")+" ignored");
-  if(L.dups.length)chip("warn","duplicate account number"+(L.dups.length===1?"":"s")+": "+L.dups.join(", "));
+  if(L.dups.length)chip("bad","duplicate account number"+(L.dups.length===1?"":"s")+": "+L.dups.join(", "));
+  if(L.ambig.length)chip("bad",L.ambig.length+" row"+(L.ambig.length===1?"":"s")+" refused as ambiguous, not read");
+  if(L.discarded.length)chip("warn",L.discarded.length+" numeric column"+(L.discarded.length===1?"":"s")+
+    " discarded: "+L.discarded.map(function(i){return L.labels[i];}).join(", "));
+  if(L.colsUnconfirmed)chip("bad","column mapping not confirmed, confirm the two periods before reading a status");
 
   if(dropped.length||kept.length){
     var p=el("p","tiny","Rows the reader did not treat as account lines:");
@@ -971,38 +1320,67 @@ $("colprior").onchange=onColPick;
 $("colcur").onchange=onColPick;
 
 /* ============================================================ the run */
-var LAST=null;
+/* Four statuses, and nothing downstream may make one better than the step that
+   set it. The rank below is the whole of that rule: worse() only ever moves a
+   sentence up the list, never back down it. */
+var RANK={"checked within scope":0,"not checked":1,"needs review":2,"failed":3};
+var BADGE={"checked within scope":"pass","not checked":"info","needs review":"review","failed":"fail"};
+function worse(a,b){return RANK[b]>RANK[a]?b:a;}
+
+var LAST=null,PREV=[],RUNSEQ=0,ROLECONF={},LASTSIG=null;
+var ROLE_OPTIONS=["prior balance","current balance","absolute movement","relative movement","ratio"];
+
+function zeroPolicy(){var e=$("zerobase"),v=e?String(e.value||""):"";return v==="exclude"?"exclude":"owing";}
+function zeroPolicyText(zp){
+  return zp==="exclude"
+    ? "a line with a zero prior balance is excluded from the rule"
+    : "a line with a zero prior balance is treated as owing commentary on any movement (the default)";
+}
+function inputSig(){
+  return [$("ledger").value,$("memo").value,$("ratios").value,$("dollar").value,$("pct").value,
+          $("rule").value,zeroPolicy(),$("period").value,$("memover").value,$("company").value,
+          JSON.stringify(ROLECONF),JSON.stringify(USERCOLS)].join("");
+}
+function srcVersion(sig){
+  var h=5381,i;
+  for(i=0;i<sig.length;i++)h=((h<<5)+h+sig.charCodeAt(i))|0;
+  return "src-"+(h>>>0).toString(36)+"-"+sig.length;
+}
 
 function run(){
   var msg=$("msg"),out=$("out");
   msg.innerHTML="";out.innerHTML="";
+  if(LAST)archiveRun();
   LAST=null;
 
   var floorD=parseNum($("dollar").value);
   var floorP=parseNum($("pct").value);
   if(isNaN(floorD)||floorD<0)floorD=0;
   if(isNaN(floorP)||floorP<0)floorP=0;
-  var rule=$("rule").value;
+  var rule=$("rule").value,zp=zeroPolicy();
 
   var ledText=$("ledger").value,memText=$("memo").value;
   var ledEmpty=!ledText.replace(/\s/g,""),memEmpty=!memText.replace(/\s/g,"");
   if(ledEmpty&&memEmpty){
     note(msg,"bad","Both panes are empty. Paste a ledger on the left and the drafted commentary on the right, "+
       "or pick a case from <b>Samples</b> to see the shapes the reader expects.");
-    refreshPreview();
+    refreshPreview();renderPrev();
     return;
   }
   if(ledEmpty){
     note(msg,"bad","The memo is there but the ledger pane is empty. There is nothing to check a figure against "+
       "until a ledger is pasted.");
-    refreshPreview();
+    refreshPreview();renderPrev();
     return;
   }
 
   var L=parseLedger(ledText,colChoice());
   refreshPreview(L);
   if(!L.accounts.length){
-    if(L.T<2){
+    if(L.ambig.length){
+      note(msg,"bad","The ledger was refused rather than guessed at. "+L.ambig.join(" ")+
+        " Quote the fields, use tabs, or name the columns, and run it again.");
+    }else if(L.T<2){
       note(msg,"bad","The ledger reader found "+(L.skipped.length)+" row"+(L.skipped.length===1?"":"s")+
         " but no numeric columns. Every account line needs two numbers on it, a prior balance and a current "+
         "balance, separated by tabs, commas or two or more spaces. The parse preview above lists each row it "+
@@ -1012,11 +1390,13 @@ function run(){
         "prior and a current balance. The parse preview above names each one. Pick a case from <b>Samples</b> "+
         "to see the shape it expects.");
     }
+    renderPrev();
     return;
   }
   var sents=splitSentences(memText);
   if(!sents.length){
     note(msg,"bad","The ledger read fine, but the memo pane is empty. Paste the commentary you want checked.");
+    renderPrev();
     return;
   }
 
@@ -1024,283 +1404,412 @@ function run(){
   L.accounts.forEach(function(a){if(a.num&&!byNum[a.num])byNum[a.num]=a;});
   var R=parseRatios($("ratios").value,byNum);
 
+  RUNSEQ++;
+  var sig=inputSig();
+  LASTSIG=sig;
+  var runId="run-"+RUNSEQ+"-"+srcVersion(sig).slice(4,10);
+  var srcV=srcVersion(sig);
+  var evSeq=0;
+  function evid(){evSeq++;return runId+"/e"+evSeq;}
+
+  /* the reviewer's queue: every failure, ambiguity, unmatched sentence, skipped
+     source row, malformed ratio and unsupported numeric form lands here */
+  var queue=[];
+  function q(kind,ref,subject,issue,owner,ask){
+    queue.push({kind:kind,ref:ref,subject:subject,issue:issue,owner:owner||"Preparer",ask:ask||"",ev:evid()});
+  }
+
   var dropped=L.skipped.filter(function(s){return !s.keep;});
-  if(dropped.length){
-    note(msg,"","Rows the ledger reader did not treat as account lines: "+dropped.map(function(s){
-      return "line "+s.n+" ("+s.why+")";}).join("; ")+".");
+  var realDrops=dropped.filter(function(s){return !s.benign;});
+  dropped.forEach(function(s){
+    if(s.benign)return;
+    q("Skipped source row","line "+s.n,String(s.t).replace(/\s+/g," "),s.why+", so this row was not checked at all",
+      "Preparer","Is this a real account line, and if it is, what are its two balances?");
+  });
+  if(realDrops.length){
+    note(msg,"bad",realDrops.length+" ledger row"+(realDrops.length===1?"":"s")+" could not be read and "+
+      (realDrops.length===1?"was":"were")+" left out of every check: "+realDrops.map(function(s){
+        return "line "+s.n+" ("+s.why+")";}).join("; ")+". The coverage counts below are counts of what was read, "+
+      "not of the statement.");
+  }
+  L.ambig.forEach(function(t){
+    q("Ambiguous source","ledger",t,"the reader refused to guess at this rather than proceed on a guess",
+      "Preparer","Repaste this ledger with tabs, or quote the fields that carry commas.");
+  });
+  if(L.discarded.length){
+    var dtxt=L.discarded.map(function(i){return "\""+L.labels[i]+"\"";}).join(", ");
+    q("Discarded column","ledger",dtxt,"this ledger carries "+L.T+" numeric columns and only two were read; "+
+      dtxt+" "+(L.discarded.length===1?"was":"were")+" discarded","Reviewer",
+      "Are the prior and current columns the two the checker took?");
+    note(msg,L.colsUnconfirmed?"bad":"",(L.colsUnconfirmed
+      ?"This ledger has no header row and carries "+L.T+" numeric columns. Columns "+(L.pick.p+1)+" and "+
+       (L.pick.c+1)+" were read as prior and current and "+dtxt+" "+(L.discarded.length===1?"was":"were")+
+       " discarded. Confirm the mapping in the parse preview before the statuses below mean anything; until you "+
+       "do, no sentence on this ledger reads better than needs review."
+      :"Numeric columns not read as periods: "+dtxt+"."));
   }
   if(L.dups.length){
-    note(msg,"","Account "+(L.dups.length===1?"number ":"numbers ")+L.dups.join(", ")+
-      (L.dups.length===1?" appears":" appear")+" on more than one line. Every line is checked on its own, a "+
-      "sentence naming that number is matched to all of them, and a ratio using it reads the first one.");
+    q("Ambiguity","ledger","account "+L.dups.join(", "),
+      "the same account number appears on more than one row and no consolidation decision has been made",
+      "Preparer","Are these separate lines or one line to be consolidated?");
+    note(msg,"bad","Account "+(L.dups.length===1?"number ":"numbers ")+L.dups.join(", ")+
+      (L.dups.length===1?" appears":" appear")+" on more than one row. A sentence naming that number cannot be "+
+      "tied to one line, so it is held at needs review until the duplicate is resolved.");
   }
-  if(R.errs.length){
-    note(msg,"bad","Ratios that could not be read, so they were left out: "+R.errs.join("; ")+".");
-  }
+  R.errs.forEach(function(e){
+    q("Malformed ratio","ratio pane",e,"the ratio could not be read, so every percent that depends on it was "+
+      "left uncomputed","Preparer","How is this ratio computed from the ledger?");
+  });
+  if(R.errs.length)note(msg,"bad","Ratios that could not be read, so they were left out: "+R.errs.join("; ")+".");
 
-  var rows=[],stats={lines:L.accounts.length,arith:0,dir:0,silent:0,queue:0};
+  var rows=[],stats={sent:sents.length,checked:0,review:0,notchecked:0,failed:0,
+                     rowsUsed:L.accounts.length,rowsSkipped:realDrops.length,silent:0,queue:0,
+                     totalsFail:0};
 
-  /* ---- check 1, recompute, and tie the section totals */
+  /* ---- 1. recompute every line, and tie the section totals */
   rows.push({grp:"1. Recompute every line, and tie the section totals"});
   L.accounts.forEach(function(a){
-    a.clears=clears(a,floorD,floorP,rule);
+    var lg=legs(a,floorD,floorP,zp);
+    a.legs=lg;
+    a.clears=clears(a,floorD,floorP,rule,zp);
+    a.dup=L.dups.indexOf(a.num)>-1;
     rows.push({
+      id:runId+"/L"+(a.num||a.row),ev:evid(),
       line:a.num||("row "+a.row),subj:a.name,check:"Recompute",
-      badge:a.clears?"clears":"below",
+      badge:a.clears?"clears":"below",status:"checked within scope",
       result:a.clears?"CLEARS THE RULE":"BELOW THE RULE",
-      det:a.pct===null
-        ? "Change "+money(a.change)+", a new line: no prior balance, so the percent is undefined and the percent "+
-          "leg is read as met by any movement at all"+(a.clears?"":", no commentary owed")
-        : "Change "+money(a.change)+", "+pctTxt(a.pct)+" of the prior balance"+(a.clears?"":", no commentary owed"),
-      ask:""
-    });
+      det:"Prior "+money(a.prior)+", current "+money(a.cur)+", change "+money(a.change)+", "+
+        (a.pct===null?"percent undefined on a zero prior balance ("+zeroPolicyText(zp)+")":pctTxt(a.pct)+
+          " of the prior balance")+". Dollar leg (more than "+money(floorD)+"): "+(lg.d?"met":"not met")+
+        ". Percent leg (at least "+floorP+" percent): "+(lg.p?"met":"not met")+".",
+      ask:""});
   });
   var ties=tieTotals(L),tiefail=0;
   ties.forEach(function(t){
-    if(t.ok===false)tiefail++;
-    rows.push({line:"total",subj:t.label,check:"Totals tie",
+    if(t.ok===false){tiefail++;
+      q("Failure","total row",t.label,t.det,"Preparer","Which is right, the total row or the lines under it?");}
+    rows.push({id:runId+"/T"+t.label,ev:evid(),line:"total",subj:t.label,check:"Totals tie",
       badge:t.ok===null?"info":(t.ok?"pass":"fail"),
-      result:t.ok===null?"KEPT OUT":(t.ok?"TIES":"DOES NOT TIE"),
-      det:t.det,
+      status:t.ok===false?"failed":(t.ok===null?"not checked":"checked within scope"),
+      result:t.ok===null?"KEPT OUT":(t.ok?"TIES":"DOES NOT TIE"),det:t.det,
       ask:t.ok===false?"Which is right, the total row or the lines under it, and what is missing from the paste?":""});
   });
+  stats.totalsFail=tiefail;
   if(tiefail){
     note(msg,"bad",tiefail+" section total"+(tiefail===1?" does":"s do")+" not tie to the lines under "+
       (tiefail===1?"it":"them")+". Check the ledger paste before reading anything else: a line may have been "+
       "left out of the copy.");
   }
 
-  /* ---- check 2, matching */
-  rows.push({grp:"2. Tie each sentence to an account"});
+  /* ---- 2. every sentence: binding, role, units, calculation, conclusion */
+  rows.push({grp:"2. Every sentence: account binding, numeric role, units, calculation, conclusion"});
+  var NUMSET={};
+  L.accounts.forEach(function(a){if(a.num)NUMSET[a.num]=1;});
   sents.forEach(function(s){
-    s.fig=figures(s.text);
-    var m=matchSentence(s,L.accounts);
-    s.accts=m.accts;s.how=m.how;
-    s.accts.forEach(function(a){a.sent.push(s);});
-    rows.push({
-      line:s.accts.length?s.accts.map(function(a){return a.num||a.name;}).join(", "):"none",
-      subj:s.text,label:s.label,check:"Match",
-      badge:s.accts.length?"pass":"review",
-      result:s.accts.length?"MATCHED":"UNMATCHED, REVIEW BY HAND",
-      det:s.accts.length?(s.accts.map(function(a){return (a.num?a.num+" ":"")+a.name;}).join("; ")+" ("+m.how+")")
-                        :"No account number, no name and no amount in this sentence ties to a ledger line.",
-      ask:s.accts.length?"":"Which account is this sentence about, and what amount does it rest on?"
+    s.figs=figures(s.text,NUMSET);
+    s.figs.forEach(function(f){
+      var key=s.label+"#"+f.at;
+      if(ROLECONF[key]){f.role=ROLECONF[key];f.roleFrom="a role the reviewer confirmed on this run";}
     });
-  });
+    s.numset=NUMSET;
+    var b=bindSentence(s,L.accounts,s.figs);
+    s.bound=b.bound;s.how=b.how;s.conflicts=b.conflicts;
+    s.bound.forEach(function(a){a.sent.push(s);});
+    s.st=s.bound.length?(s.figs.length?"checked within scope":"not checked"):"not checked";
+    s.findings=[];
 
-  /* ---- check 3, arithmetic */
-  rows.push({grp:"3. Arithmetic in every figure"});
-  sents.forEach(function(s){
-    if(!s.accts.length)return;
-    var fails=[],passes=[],reviews=[];
-    s.fig.dollars.forEach(function(d){
-      var hit=null;
-      s.accts.forEach(function(a){
-        if(hit)return;
-        if(near(d.v,a.prior,TOL_D))hit={a:a,what:"prior balance"};
-        else if(near(d.v,a.cur,TOL_D))hit={a:a,what:"current balance"};
-        else if(near(d.v,a.change,TOL_D))hit={a:a,what:"change"};
-      });
-      if(hit)passes.push(d.raw+" is the "+hit.what+" on "+(hit.a.num?hit.a.num+" ":"")+hit.a.name);
-      else{
-        var best=null;
-        s.accts.forEach(function(a){
-          [["prior balance",a.prior],["current balance",a.cur],["change",a.change]].forEach(function(c){
-            var gap=Math.abs(Math.abs(d.v)-Math.abs(c[1]));
-            if(best===null||gap<best.gap)best={gap:gap,txt:"ledger "+c[0]+" is "+money(c[1]),a:a};
-          });
-        });
-        fails.push("memo says "+d.raw+"; "+(best?best.txt:"nothing on the matched line comes close"));
-      }
-    });
-    s.fig.pcts.forEach(function(p){
-      var hit=null,cands=[];
-      s.accts.forEach(function(a){
-        if(a.pct!==null)cands.push({lab:(a.num?a.num+" ":"")+a.name+" percent change",v:a.pct});
-      });
-      R.ratios.forEach(function(r){
-        cands.push({lab:r.name+", prior month",v:r.prior});
-        cands.push({lab:r.name+", current month",v:r.cur});
-        cands.push({lab:r.name+", change in points",v:r.change});
-      });
-      s.accts.forEach(function(a){
-        if(hit)return;
-        if(a.pct!==null&&near(p.v,a.pct,TOL_P))hit=(a.num?a.num+" ":"")+a.name+" moved "+pctTxt(a.pct);
-      });
-      if(!hit){
-        R.ratios.forEach(function(r){
-          if(hit)return;
-          if(near(p.v,r.prior,TOL_P))hit=r.name+" in the prior month is "+pctTxt(r.prior);
-          else if(near(p.v,r.cur,TOL_P))hit=r.name+" in the current month is "+pctTxt(r.cur);
-          else if(near(p.v,r.change,TOL_P))hit=r.name+" changed "+pctTxt(r.change)+" points";
-        });
-      }
-      if(hit)passes.push(p.raw+" percent ties to "+hit);
-      else{
-        cands.sort(function(x,y){return Math.abs(Math.abs(p.v)-Math.abs(x.v))-Math.abs(Math.abs(p.v)-Math.abs(y.v));});
-        var three=cands.slice(0,3).map(function(c){return c.lab+" "+pctTxt(c.v);});
-        reviews.push(p.raw+" percent is not a line percent; nearest values: "+
-          (three.length?three.join("; "):"nothing on the matched line or in the ratios"));
-      }
-    });
-    s.arithFail=fails.length>0;
-    if(!s.fig.dollars.length&&!s.fig.pcts.length){
-      rows.push({line:acctLine(s),subj:s.text,label:s.label,check:"Arithmetic",badge:"pass",
-        result:"NO FIGURES",det:"This sentence carries no dollar figure and no percent, so there is nothing to recompute.",ask:""});
-      return;
+    /* binding */
+    var bt;
+    if(!s.bound.length){
+      bt="No account number, no account name and no exact figure in this sentence ties to a ledger line.";
+      q("Unmatched sentence",s.label,s.text,"nothing in this sentence binds it to a ledger line, so none of it "+
+        "was checked","Reviewer","Which account is this sentence about, and what amount does it rest on?");
+    }else{
+      bt=s.bound.map(function(a){return acctId(a);}).join("; ")+" ("+s.how+")";
     }
-    if(fails.length)stats.arith++;
-    rows.push({
-      line:acctLine(s),subj:s.text,label:s.label,check:"Arithmetic",
-      badge:fails.length?"fail":(reviews.length?"review":"pass"),
-      result:fails.length?"FAIL":(reviews.length?"REVIEW":"PASS"),
-      det:fails.concat(reviews).concat(passes.filter(function(x,i){return passes.indexOf(x)===i;})).join(". ")+".",
-      ask:fails.length?"Which figure is right, the memo or the ledger, and where did the memo's number come from?"
-         :(reviews.length?"Confirm what this percent is measuring, since it is not the movement on the line.":"")
-    });
-  });
-
-  /* ---- check 4, direction */
-  rows.push({grp:"4. Direction against the sign of the movement"});
-  sents.forEach(function(s){
-    if(!s.accts.length)return;
-    var anchored=[],bad=[],good=[];
-    clausesOf(s.text).forEach(function(c){
-      var cf=figures(c),anchor=null;
-      cf.dollars.forEach(function(d){
-        if(anchor)return;
-        s.accts.forEach(function(a){
-          if(anchor)return;
-          if(near(d.v,a.prior,TOL_D)||near(d.v,a.cur,TOL_D)||near(d.v,a.change,TOL_D))anchor=a;
-        });
+    if(s.conflicts.length){
+      s.st=worse(s.st,"needs review");
+      bt+=" Unresolved: "+s.conflicts.map(function(c){
+        return c.f.raw+" is also exactly a figure on "+acctId(c.a)+", which this sentence does not name";
+      }).join("; ")+". The checker does not settle that by the coincidence.";
+      s.conflicts.forEach(function(c){
+        q("Binding conflict",s.label,s.text,c.f.raw+" binds "+acctId(c.a)+" by figure while the sentence names "+
+          (s.bound.length?s.bound.map(acctId).join("; "):"no account")+"; the binding is unresolved",
+          "Reviewer","Which line is this sentence about?");
       });
-      if(!anchor)return;
-      anchored.push(c);
-      var sign=anchor.change>0?1:(anchor.change<0?-1:0);
-      var anm=(anchor.num?anchor.num+" ":"")+anchor.name;
-      var fw=flatWord(c);
-      if(fw){
-        if(isFlat(anchor))good.push("\""+fw+"\" agrees with "+anm+", which moved "+money(anchor.change)+
-          (anchor.pct===null?"":", "+pctTxt(anchor.pct))+", inside half a percent of no movement");
-        else bad.push("the memo says \""+fw+"\" but "+anm+" "+(sign>0?"rose ":"fell ")+
-          money(Math.abs(anchor.change))+(anchor.pct===null?"":" ("+pctTxt(anchor.pct)+")"));
+    }
+    var dupHit=s.bound.filter(function(a){return a.dup;});
+    if(dupHit.length){
+      s.st=worse(s.st,"needs review");
+      bt+=" Account "+dupHit[0].num+" appears on more than one row, so this sentence cannot be tied to one line.";
+    }
+    if(L.colsUnconfirmed){
+      s.st=worse(s.st,"needs review");
+    }
+    rows.push({id:runId+"/"+s.label+"/bind",ev:evid(),line:acctLine(s),subj:s.text,label:s.label,check:"Binding",
+      badge:s.bound.length?(s.conflicts.length?"review":"pass"):"review",
+      status:s.bound.length?(s.conflicts.length?"needs review":"checked within scope"):"not checked",
+      result:s.bound.length?(s.conflicts.length?"BOUND, WITH A CONFLICT":"BOUND"):"UNMATCHED, REVIEW BY HAND",
+      det:bt,ask:s.bound.length?"":"Which account is this sentence about, and what amount does it rest on?"});
+
+    /* figures: role, unit, calculation */
+    s.figs.forEach(function(f){
+      var res;
+      if(!s.bound.length){
+        res={st:"review",txt:f.raw+" ("+f.unit+", role "+f.role+"): no account is bound, so there is nothing to "+
+          "compare it with.",ask:"Which line does this figure belong to?"};
+      }else if(f.unit==="dollars"){
+        res=checkDollar(f,s.bound);
+      }else{
+        res=checkPercent(f,s.bound,R.ratios,zeroPolicyText(zp));
       }
-      dirWords(c).forEach(function(w){
-        if(sign===0){
-          bad.push("the memo says \""+w.w+"\" but "+anm+" did not move at all");
-          return;
+      f.st=res.st;f.txt=res.txt;
+      var st=res.st==="checked"?"checked within scope":(res.st==="failed"?"failed":"needs review");
+      s.st=worse(s.st,st);
+      if(st!=="checked within scope"){
+        q(st==="failed"?"Failure":(f.plain?"Unsupported numeric form":"Unresolved figure"),s.label,s.text,
+          res.txt,"Preparer",res.ask);
+      }
+      rows.push({id:runId+"/"+s.label+"/f"+f.at,ev:evid(),line:acctLine(s),subj:s.text,label:s.label,
+        check:"Figure "+f.raw,badge:BADGE[st],status:st,
+        result:(f.unit==="dollars"?"DOLLARS":(f.unit==="percent"?"PERCENT":"PERCENTAGE POINTS"))+", ROLE "+
+          f.role.toUpperCase(),
+        det:res.txt,ask:res.ask,
+        roleSel:f.role==="unknown"||f.st!=="checked"?{key:s.label+"#"+f.at,cur:ROLECONF[s.label+"#"+f.at]||""}:null});
+    });
+
+    /* direction */
+    var dir=directionOn(s);
+    if(dir){
+      if(dir.bad.length){
+        s.st=worse(s.st,"failed");
+        q("Failure",s.label,s.text,dir.bad.join("; "),"Preparer",
+          "Which way did this account actually move, and does the driver still hold once the sign is right?");
+      }
+      rows.push({id:runId+"/"+s.label+"/dir",ev:evid(),line:acctLine(s),subj:s.text,label:s.label,
+        check:"Direction",badge:dir.bad.length?"fail":(dir.good.length?"pass":"info"),
+        status:dir.bad.length?"failed":(dir.good.length?"checked within scope":"not checked"),
+        result:dir.bad.length?"FAIL":(dir.good.length?"PASS":"NOT STATED"),
+        det:dir.bad.length?dir.bad.join("; ")+".":(dir.good.length?dir.good.join("; ")+".":
+          "This sentence makes no claim about which way the account moved."),
+        ask:dir.bad.length?"Which way did this account actually move, and does the driver still hold once the sign is right?":""});
+    }
+
+    /* threshold policy claims */
+    var pc=policyClaims(s.text);
+    if(pc.length&&s.bound.length){
+      var a0=s.bound[0],pbad=[],pgood=[];
+      pc.forEach(function(c){
+        if(c.leg==="both"){
+          if(!a0.legs.d&&!a0.legs.p)pgood.push("neither leg is met on "+acctId(a0));
+          else pbad.push("the memo says neither leg is met, but on "+acctId(a0)+" the "+
+            (a0.legs.d?"dollar":"percent")+" leg is met");
+        }else if(c.leg==="dollar"){
+          if(!a0.legs.d)pgood.push("the dollar leg is not met on "+acctId(a0)+" ("+money(Math.abs(a0.change))+
+            " is not more than "+money(floorD)+")");
+          else pbad.push("the memo says the dollar leg fails, but "+money(Math.abs(a0.change))+" is more than "+money(floorD));
+        }else if(c.leg==="percent"){
+          if(!a0.legs.p)pgood.push("the percent leg is not met on "+acctId(a0)+" ("+pctCell(a0)+
+            " is not at least "+floorP+" percent)");
+          else pbad.push("the memo says the percent leg fails, but "+pctCell(a0)+" is at least "+floorP+" percent");
+        }else if(c.owes===false){
+          if(!a0.clears)pgood.push("no commentary is owed on "+acctId(a0)+" under the rule as set");
+          else pbad.push("the memo says no commentary is owed, but "+acctId(a0)+" clears the rule");
         }
-        if(w.d===sign)good.push("\""+w.w+"\" agrees with "+anm);
-        else bad.push("the memo says \""+w.w+"\" but "+anm+
-          " "+(sign>0?"rose ":"fell ")+money(Math.abs(anchor.change))+
-          (anchor.pct===null?"":" ("+pctTxt(anchor.pct)+")"));
       });
-    });
-    if(!anchored.length){
-      var sfw=flatWord(s.text);
-      if(sfw){
-        var fok=false,fnames=[];
-        s.accts.forEach(function(a){
-          fnames.push((a.num?a.num+" ":"")+a.name+" moved "+money(a.change)+
-            (a.pct===null?"":", "+pctTxt(a.pct)));
-          if(isFlat(a))fok=true;
-        });
-        if(fok)good.push("\""+sfw+"\" agrees with the matched line");
-        else if(fnames.length)bad.push("the memo says \""+sfw+"\" but "+fnames.join(" and "));
+      if(pbad.length){
+        s.st=worse(s.st,"failed");
+        q("Failure",s.label,s.text,pbad.join("; "),"Preparer","Is the threshold claim in this sentence right?");
       }
-      var words=dirWords(s.text);
-      words.forEach(function(w){
-        var agrees=false,names=[];
-        s.accts.forEach(function(a){
-          var sign=a.change>0?1:(a.change<0?-1:0);
-          if(sign===0)return;
-          names.push((a.num?a.num+" ":"")+a.name+" "+(sign>0?"rose":"fell"));
-          if(w.d===sign)agrees=true;
-        });
-        if(!names.length)return;
-        if(agrees)good.push("\""+w.w+"\" agrees with the matched line");
-        else bad.push("the memo says \""+w.w+"\" but "+names.join(" and "));
-      });
+      if(s.st==="not checked"&&!pbad.length)s.st="checked within scope";
+      rows.push({id:runId+"/"+s.label+"/pol",ev:evid(),line:acctLine(s),subj:s.text,label:s.label,
+        check:"Threshold claim",badge:pbad.length?"fail":"pass",
+        status:pbad.length?"failed":"checked within scope",
+        result:pbad.length?"FAIL":"PASS",det:(pbad.length?pbad.join("; "):pgood.join("; "))+".",
+        ask:pbad.length?"Is the threshold claim in this sentence right?":""});
     }
-    s.dirFail=bad.length>0;
-    if(bad.length)stats.dir++;
-    if(!bad.length&&!good.length){
-      rows.push({line:acctLine(s),subj:s.text,label:s.label,check:"Direction",badge:"pass",
-        result:"NOT STATED",det:"This sentence makes no claim about which way the account moved.",ask:""});
-      return;
+
+    /* the sentence's one status, set here and never improved afterwards */
+    if(s.st==="checked within scope"&&!s.figs.length&&!pc.length)s.st="not checked";
+    s.sealed=true;
+    if(s.st==="needs review"||s.st==="not checked"){
+      if(s.bound.length&&s.st==="not checked"&&!s.figs.length){
+        q("Unchecked sentence",s.label,s.text,"this sentence carries no figure and makes no threshold claim, so "+
+          "nothing in it was checked against the ledger","Reviewer",
+          "Is this claim supported, and by which document?");
+      }
     }
-    rows.push({
-      line:acctLine(s),subj:s.text,label:s.label,check:"Direction",
-      badge:bad.length?"fail":"pass",
-      result:bad.length?"FAIL":"PASS",
-      det:(bad.length?bad.join("; "):good.join("; "))+".",
-      ask:bad.length?"Which way did this account actually move, and does the driver still hold once the sign is right?":""
-    });
+    stats[s.st==="checked within scope"?"checked":(s.st==="needs review"?"review":
+      (s.st==="failed"?"failed":"notchecked"))]++;
+    rows.push({id:runId+"/"+s.label+"/status",ev:evid(),line:acctLine(s),subj:s.text,label:s.label,
+      check:"Sentence status",badge:BADGE[s.st],status:s.st,result:s.st.toUpperCase(),
+      det:statusWhy(s),ask:""});
   });
 
-  /* ---- check 5, threshold and silence */
-  rows.push({grp:"5. Threshold and silence"});
+  /* ---- 3. threshold and silence */
+  rows.push({grp:"3. Threshold and silence"});
   L.accounts.forEach(function(a){
     if(a.clears&&!a.sent.length){
       stats.silent++;
-      rows.push({line:a.num||("row "+a.row),subj:a.name,check:"Silence",badge:"silent",result:"SILENT",
-        det:"Change "+money(a.change)+", "+pctCell(a)+", clears the rule and no sentence in the memo explains it. This line owes an explanation.",
-        ask:"What drove "+(a.num?a.num+" ":"")+a.name+" this month, and what supports it?"});
+      q("Silent line",a.num||("row "+a.row),a.name,"change "+money(a.change)+", "+pctCell(a)+
+        ", clears the rule and no sentence in the memo explains it","Controller",
+        "What drove "+acctId(a)+" this month, and what supports it?");
+      rows.push({id:runId+"/S"+(a.num||a.row),ev:evid(),line:a.num||("row "+a.row),subj:a.name,check:"Silence",
+        badge:"silent",status:"failed",result:"SILENT",
+        det:"Change "+money(a.change)+", "+pctCell(a)+", clears the rule and no sentence in the memo explains it. "+
+          "This line owes an explanation.",
+        ask:"What drove "+acctId(a)+" this month, and what supports it?"});
     }
   });
   sents.forEach(function(s){
-    if(!s.accts.length)return;
+    if(!s.bound.length)return;
     var anyClears=false;
-    s.accts.forEach(function(a){if(a.clears)anyClears=true;});
+    s.bound.forEach(function(a){if(a.clears)anyClears=true;});
     if(anyClears)return;
-    rows.push({line:acctLine(s),subj:s.text,label:s.label,check:"Threshold",badge:"info",result:"INFO",
-      det:"No commentary owed; fine if correct. "+s.accts.map(function(a){
-        return (a.num?a.num+" ":"")+a.name+" moved "+money(a.change)+", "+pctCell(a);}).join("; ")+
+    rows.push({id:runId+"/"+s.label+"/thr",ev:evid(),line:acctLine(s),subj:s.text,label:s.label,
+      check:"Threshold",badge:"info",status:s.st,result:"NO COMMENTARY OWED",
+      det:"No commentary owed; fine if correct. "+s.bound.map(function(a){
+        return acctId(a)+" moved "+money(a.change)+", "+pctCell(a);}).join("; ")+
         ", which does not clear the rule.",ask:""});
   });
 
-  /* ---- check 6, reviewer queue */
-  rows.push({grp:"6. The reviewer's queue, what a person still has to answer"});
-  var queue=[];
+  /* ---- 4. the reviewer's queue */
+  rows.push({grp:"4. The reviewer's queue, what a person still has to answer"});
+  var survivors=[];
   sents.forEach(function(s){
-    if(!s.accts.length)return;
-    if(s.arithFail||s.dirFail)return;
-    queue.push(s);
-    stats.queue++;
-    rows.push({line:acctLine(s),subj:s.text,label:s.label,check:"Reviewer",badge:"review",result:"FOR THE REVIEWER",
-      det:"The arithmetic and the direction hold. What is left is judgment, and the checker does not make it.",
+    if(s.st!=="checked within scope")return;
+    survivors.push(s);
+    rows.push({id:runId+"/"+s.label+"/rev",ev:evid(),line:acctLine(s),subj:s.text,label:s.label,check:"Reviewer",
+      badge:"review",status:s.st,result:"FOR THE REVIEWER",
+      det:"Every figure in this sentence was checked within the scope above and the direction agrees with the "+
+        "sign. What is left is judgment, and the checker does not make it.",
       ask:["Is the driver named here supported by anything on file?",
            "Is the period right (nothing pulled forward or deferred)?"]});
   });
   L.accounts.forEach(function(a){
     if(a.sent.length<2)return;
-    rows.push({line:a.num||("row "+a.row),subj:a.name,check:"Read together",badge:"review",result:"REVIEW",
+    q("Read together",a.num||("row "+a.row),a.name,a.sent.length+" sentences land on this line ("+
+      a.sent.map(function(s){return s.label;}).join(", ")+") and the checker does not test them against each other",
+      "Reviewer","Do these sentences agree with one another, and if not, which one holds?");
+    rows.push({id:runId+"/R"+(a.num||a.row),ev:evid(),line:a.num||("row "+a.row),subj:a.name,check:"Read together",
+      badge:"review",status:"needs review",result:"REVIEW",
       det:"Read together: "+a.sent.length+" sentences on this account ("+a.sent.map(function(s){return s.label;}).join(", ")+
         "). The checker does not test them against each other.",
       ask:"Do these sentences agree with one another, and if not, which one holds?"});
   });
-  if(!queue.length&&!rows.length){
-    note(msg,"","Nothing came back. Check that the memo pane carries sentences.");
-  }
+  queue.forEach(function(item){
+    rows.push({id:runId+"/Q"+item.ev,ev:item.ev,line:item.ref,subj:item.subject,check:"Queue: "+item.kind,
+      badge:item.kind==="Failure"||item.kind==="Silent line"?"fail":"review",
+      status:item.kind==="Failure"||item.kind==="Silent line"?"failed":"needs review",
+      result:item.kind.toUpperCase(),det:item.issue+". Owner: "+item.owner+".",ask:item.ask});
+  });
+  stats.queue=queue.length;
 
   var anyFig=false;
-  sents.forEach(function(s){if(s.fig&&(s.fig.dollars.length||s.fig.pcts.length))anyFig=true;});
+  sents.forEach(function(s){if(s.figs&&s.figs.length)anyFig=true;});
   if(!anyFig){
-    note(msg,"","No dollar figure and no percent anywhere in the memo, so the arithmetic check had nothing to "+
-      "test. The matching, the direction and the silence still ran, and every sentence that matched a line is in "+
-      "the reviewer's queue on its words alone.");
+    note(msg,"","No dollar figure and no percent anywhere in the memo. Every sentence is therefore <b>not "+
+      "checked</b> unless it makes a threshold claim, and the coverage strip says so rather than reporting a "+
+      "clean run.");
   }
 
-  LAST={rows:rows,stats:stats,accounts:L.accounts,sents:sents,queue:queue,ratios:R.ratios,
-        ledgerText:ledText,memoText:memText,ties:ties,
+  LAST={runId:runId,runAt:new Date(),srcV:srcV,sig:sig,caseVersion:CASEVER,rows:rows,stats:stats,accounts:L.accounts,sents:sents,
+        survivors:survivors,queue:queue,ratios:R.ratios,ledger:L,
+        ledgerText:ledText,memoText:memText,ties:ties,ratioText:$("ratios").value,
         period:$("period").value,version:$("memover").value,
         company:$("company").value,reviewer:$("reviewer").value,
-        floorD:floorD,floorP:floorP,rule:rule};
+        floorD:floorD,floorP:floorP,rule:rule,zero:zp};
   render(out,rows,stats);
+  renderPrev();
+}
+
+function statusWhy(s){
+  if(s.st==="failed")return "At least one check on this sentence failed. Nothing later in the run lifts that.";
+  if(s.st==="needs review")return "Something here is unresolved: a role the words do not give, a binding the "+
+    "checker will not settle, a percent it cannot compute, or a ledger question above it. It cannot be called "+
+    "checked until a person answers it.";
+  if(s.st==="not checked")return "Nothing in this sentence could be tied to the ledger and tested. That is not "+
+    "the same as a sentence that was checked and found true.";
+  return "Every figure in this sentence carries a role read from the words, a unit, and an unrounded comparison "+
+    "with the ledger, and each one agreed. That is the whole of what was checked; the judgment is not.";
+}
+
+function directionOn(s){
+  if(!s.bound.length)return null;
+  var bad=[],good=[],anchored=[];
+  clausesOf(s.text).forEach(function(c){
+    var cf=figures(c,s.numset),anchor=null;
+    dollarsIn(cf).forEach(function(d){
+      if(anchor)return;
+      s.bound.forEach(function(a){
+        if(anchor)return;
+        if(near(d.v,a.prior,TOL_D)||near(d.v,a.cur,TOL_D)||near(d.v,a.change,TOL_D))anchor=a;
+      });
+    });
+    if(!anchor)return;
+    anchored.push(c);
+    var sign=anchor.change>0?1:(anchor.change<0?-1:0);
+    var anm=acctId(anchor),fw=flatWord(c);
+    if(fw){
+      if(isFlat(anchor))good.push("\""+fw+"\" agrees with "+anm+", which moved "+money(anchor.change)+
+        (anchor.pct===null?"":", "+pctTxt(anchor.pct))+", inside half a percent of no movement");
+      else bad.push("the memo says \""+fw+"\" but "+anm+" "+(sign>0?"rose ":"fell ")+
+        money(Math.abs(anchor.change))+(anchor.pct===null?"":" ("+pctTxt(anchor.pct)+")"));
+    }
+    dirWords(c).forEach(function(w){
+      if(sign===0){bad.push("the memo says \""+w.w+"\" but "+anm+" did not move at all");return;}
+      if(w.d===sign)good.push("\""+w.w+"\" agrees with "+anm);
+      else bad.push("the memo says \""+w.w+"\" but "+anm+" "+(sign>0?"rose ":"fell ")+
+        money(Math.abs(anchor.change))+(anchor.pct===null?"":" ("+pctTxt(anchor.pct)+")"));
+    });
+  });
+  if(!anchored.length){
+    var sfw=flatWord(s.text);
+    if(sfw){
+      var fok=false,fnames=[];
+      s.bound.forEach(function(a){
+        fnames.push(acctId(a)+" moved "+money(a.change)+(a.pct===null?"":", "+pctTxt(a.pct)));
+        if(isFlat(a))fok=true;
+      });
+      if(fok)good.push("\""+sfw+"\" agrees with the bound line");
+      else if(fnames.length)bad.push("the memo says \""+sfw+"\" but "+fnames.join(" and "));
+    }
+    dirWords(s.text).forEach(function(w){
+      var agrees=false,names=[];
+      s.bound.forEach(function(a){
+        var sign=a.change>0?1:(a.change<0?-1:0);
+        if(sign===0)return;
+        names.push(acctId(a)+" "+(sign>0?"rose":"fell"));
+        if(w.d===sign)agrees=true;
+      });
+      if(!names.length)return;
+      if(agrees)good.push("\""+w.w+"\" agrees with the bound line");
+      else bad.push("the memo says \""+w.w+"\" but "+names.join(" and "));
+    });
+  }
+  return {bad:bad,good:good};
+}
+
+function archiveRun(){
+  if(!LAST)return;
+  PREV.unshift({runId:LAST.runId,at:LAST.runAt,period:LAST.period,version:LAST.version,srcV:LAST.srcV,
+                stats:LAST.stats,csv:csv(LAST),json:jsonRecord(LAST)});
+  if(PREV.length>12)PREV.pop();
+}
+function invalidate(why){
+  if(!LAST){renderPrev();return;}
+  archiveRun();
+  LAST=null;
+  $("out").innerHTML="";
+  $("msg").innerHTML="";
+  note($("msg"),"bad","The inputs changed ("+why+"), so every status from the last run was cleared. That run is "+
+    "kept under <b>Previous runs</b> below with its own run identifier. Run Second Pass again for a status that "+
+    "matches what is on the page now.");
+  renderPrev();
 }
 
 function acctLine(s){
-  return s.accts.length?s.accts.map(function(a){return a.num||a.name;}).join(", "):"none";
+  return s.bound&&s.bound.length?s.bound.map(function(a){return a.num||a.name;}).join(", "):"none";
 }
 function note(where,cls,html){
   var n=el("div","note"+(cls?" "+cls:""));
@@ -1309,19 +1818,51 @@ function note(where,cls,html){
 }
 
 /* ============================================================ render */
+function coverage(stats){
+  return [["sent",stats.sent,"Sentences read",""],
+          ["checked",stats.checked,"Checked within scope","c"],
+          ["review",stats.review,"Needs review","r"],
+          ["notchecked",stats.notchecked,"Not checked","n"],
+          ["failed",stats.failed,"Failed","f"],
+          ["rowsUsed",stats.rowsUsed,"Ledger rows used",""],
+          ["rowsSkipped",stats.rowsSkipped,"Rows skipped",stats.rowsSkipped?"f":"n"],
+          ["silent",stats.silent,"Silent lines","s"],
+          ["queue",stats.queue,"In the reviewer queue","r"]];
+}
 function render(out,rows,stats){
   var strip=el("div","strip");
-  [["lines",stats.lines,"Lines checked",""],
-   ["arith",stats.arith,"Arithmetic fails","f"],
-   ["dir",stats.dir,"Direction fails","f"],
-   ["silent",stats.silent,"Silent lines","s"],
-   ["queue",stats.queue,"Sentences for the reviewer","r"]].forEach(function(t){
+  coverage(stats).forEach(function(t){
     var d=el("div","stat"+(t[3]?" "+t[3]:""));
     d.appendChild(el("b",null,String(t[1])));
     d.appendChild(el("span",null,t[2]));
     strip.appendChild(d);
   });
   out.appendChild(strip);
+
+  var cov=el("p","tiny");
+  cov.innerHTML="Run <b>"+LAST.runId+"</b>, source "+LAST.srcV+". These are coverage counts, not a verdict: "+
+    stats.checked+" of "+stats.sent+" sentences were checked within the scope set out in CHECKER.md, "+
+    stats.review+" need a person, "+stats.notchecked+" were not checked at all and "+stats.failed+" failed. "+
+    stats.rowsUsed+" ledger row"+(stats.rowsUsed===1?" was":"s were")+" read and "+stats.rowsSkipped+
+    " skipped"+(stats.rowsSkipped?", so the statement was not covered in full":"")+".";
+  cov.style.margin="0 0 10px";
+  out.appendChild(cov);
+
+  if(LAST.ledger&&LAST.ledger.skipped){
+    var dropped=LAST.ledger.skipped.filter(function(s){return !s.keep&&!s.benign;});
+    if(dropped.length){
+      var box=el("div","note bad");
+      var h=el("b",null,"Source rows left out of every check, carried with this run:");
+      box.appendChild(h);
+      var ul=el("ul");
+      dropped.forEach(function(s){
+        var t=String(s.t).replace(/\s+/g," ");
+        ul.appendChild(el("li",null,"Line "+s.n+", “"+(t.length>90?t.slice(0,88)+"…":t)+"” — "+s.why+"."));
+      });
+      box.appendChild(ul);
+      out.appendChild(box);
+    }
+  }
 
   var wrap=el("div","tablewrap"),tbl=el("table");
   var thead=el("thead"),tr=el("tr");
@@ -1349,9 +1890,24 @@ function render(out,rows,stats){
     var ask=el("td","ask");
     if(Array.isArray(r.ask)){
       var ul=el("ul");
-      r.ask.forEach(function(q){ul.appendChild(el("li",null,q));});
+      r.ask.forEach(function(qq){ul.appendChild(el("li",null,qq));});
       ask.appendChild(ul);
     }else if(r.ask)ask.appendChild(document.createTextNode(r.ask));
+    if(r.roleSel){
+      var lab=el("label","rolelab","Confirm what this figure is:");
+      var sel=el("select","rolesel");
+      var o0=el("option",null,"not confirmed");o0.value="";sel.appendChild(o0);
+      ROLE_OPTIONS.forEach(function(name){
+        var o=el("option",null,name);o.value=name;sel.appendChild(o);
+      });
+      sel.value=r.roleSel.cur||"";
+      sel.onchange=function(){
+        if(this.value)ROLECONF[r.roleSel.key]=this.value;
+        else delete ROLECONF[r.roleSel.key];
+        run();
+      };
+      ask.appendChild(lab);ask.appendChild(sel);
+    }
     t.appendChild(ask);
     tb.appendChild(t);
   });
@@ -1364,13 +1920,38 @@ function render(out,rows,stats){
   b1.onclick=function(){copy(tsv(),b1,"Copy results as table");};
   var b2=el("button","btn ghost sm","Download CSV");
   b2.onclick=downloadCsv;
-  row.appendChild(b0);row.appendChild(b1);row.appendChild(b2);
+  var b3=el("button","btn ghost sm","Download JSON record");
+  b3.onclick=downloadJson;
+  row.appendChild(b0);row.appendChild(b1);row.appendChild(b2);row.appendChild(b3);
   out.appendChild(row);
-  var tip=el("p","tiny","The printed summary carries the header, the results and the queue with blank answer "+
-    "lines and two signatures, which is the evidence PROTOCOL.md asks a close to retain. Copy is the reliable "+
-    "export; a download can be blocked inside an embedded viewer.");
+  var tip=el("p","tiny","The CSV carries the run identifier, the sentence identifier and the exact sentence text, "+
+    "and any cell that begins with =, +, - or @ is written with a leading apostrophe so a spreadsheet reads it as "+
+    "text. The JSON record keeps every cell as it was written. Copy is the reliable export; a download can be "+
+    "blocked inside an embedded viewer.");
   tip.style.margin="8px 0 0";
   out.appendChild(tip);
+}
+
+function renderPrev(){
+  var box=$("prevruns"),list=$("prevlist");
+  if(!box||!list)return;
+  while(list.firstChild)list.removeChild(list.firstChild);
+  if(!PREV.length){box.className="hidden";return;}
+  box.className="";
+  PREV.forEach(function(p){
+    var d=el("div","prevrow");
+    var b=el("b",null,p.runId);
+    d.appendChild(b);
+    d.appendChild(el("span",null," · "+(p.at?p.at.toLocaleString():"")+" · "+(p.period||"no period")+
+      " · "+(p.version||"no memo version")+" · "+p.srcV));
+    d.appendChild(el("div","tiny",p.stats.checked+" checked within scope, "+p.stats.review+" needs review, "+
+      p.stats.notchecked+" not checked, "+p.stats.failed+" failed, "+p.stats.rowsUsed+" rows used, "+
+      p.stats.rowsSkipped+" rows skipped."));
+    var bt=el("button","btn ghost sm","Copy this run's CSV");
+    bt.onclick=function(){copy(p.csv,bt,"Copy this run's CSV");};
+    d.appendChild(bt);
+    list.appendChild(d);
+  });
 }
 
 /* ============================================================ printable summary */
@@ -1395,15 +1976,15 @@ function printSummary(){
   mrow("Memo version",LAST.version);
   mrow("Run on",new Date().toLocaleDateString());
   mrow("Reviewer",LAST.reviewer);
-  mrow("Commentary rule",money(LAST.floorD)+" and "+LAST.floorP+" percent, "+
-    (LAST.rule==="both"?"both legs":"either leg"));
+  mrow("Run identifier",LAST.runId+", source "+LAST.srcV);
+  mrow("Commentary rule","more than "+money(LAST.floorD)+" and at least "+LAST.floorP+" percent, "+
+    (LAST.rule==="both"?"both legs":"either leg")+"; "+zeroPolicyText(LAST.zero)+"; decided unrounded");
   head.appendChild(meta);
   d.appendChild(head);
 
-  d.appendChild(el("h2",null,"What the checks found"));
+  d.appendChild(el("h2",null,"Coverage of this run"));
   var strip=el("div","pstrip");
-  [[LAST.stats.lines,"Lines checked"],[LAST.stats.arith,"Arithmetic fails"],[LAST.stats.dir,"Direction fails"],
-   [LAST.stats.silent,"Silent lines"],[LAST.stats.queue,"For the reviewer"]].forEach(function(t){
+  coverage(LAST.stats).forEach(function(c){var t=[c[1],c[2]];
     var s=el("span");
     s.appendChild(el("b",null,String(t[0])));
     s.appendChild(document.createTextNode(t[1]));
@@ -1433,15 +2014,29 @@ function printSummary(){
   });
   tbl.appendChild(tb);d.appendChild(tbl);
 
-  d.appendChild(el("h2",null,"The reviewer's queue, answered by hand"));
-  if(!LAST.queue.length){
-    d.appendChild(el("p",null,"No sentence passed both the arithmetic and the direction, so nothing reached the "+
-      "queue. Every finding above goes back to the preparer before a reviewer signs anything."));
+  d.appendChild(el("p","psub","These are coverage counts, not a verdict. \"Checked within scope\" means each "+
+    "figure carried a role the words gave it and the unrounded comparison with the pasted ledger agreed; it does "+
+    "not mean the sentence is true."));
+
+  d.appendChild(el("h2",null,"Unresolved items carried out of this run"));
+  if(!LAST.queue.length)d.appendChild(el("p",null,"None."));
+  else{
+    var qul=el("ul");
+    LAST.queue.forEach(function(item){
+      qul.appendChild(el("li",null,"["+item.kind+"] "+item.ref+" — "+item.issue+". Owner: "+item.owner+"."));
+    });
+    d.appendChild(qul);
   }
-  LAST.queue.forEach(function(s){
+
+  d.appendChild(el("h2",null,"Sentences checked within scope, answered by hand"));
+  if(!LAST.survivors.length){
+    d.appendChild(el("p",null,"No sentence was checked within scope, so nothing reached this list. Every "+
+      "finding above goes back to the preparer before a reviewer signs anything."));
+  }
+  LAST.survivors.forEach(function(s){
     var q=el("div","qitem");
     q.appendChild(el("p","qs",s.label+". "+s.text));
-    q.appendChild(el("p","ql","Line: "+s.accts.map(function(a){return (a.num?a.num+" ":"")+a.name;}).join("; ")));
+    q.appendChild(el("p","ql","Line: "+s.bound.map(acctId).join("; ")));
     var a1=el("div","ans");a1.appendChild(el("div",null,"1. Is the driver named here supported by anything on file? Name the document."));
     a1.appendChild(el("div","rule"));q.appendChild(a1);
     var a2=el("div","ans");a2.appendChild(el("div",null,"2. Is the period right, with nothing pulled forward or deferred?"));
@@ -1494,49 +2089,104 @@ function printSummary(){
 /* ============================================================ exports */
 function tsv(){
   if(!LAST)return "";
-  var lines=[["Line","Sentence or account","Check","Result","Ask the controller"].join("\t")];
+  var lines=[["Run","Sentence id","Line","Sentence or account","Check","Status","Result","Finding",
+              "Ask the controller"].join("\t")];
   LAST.rows.forEach(function(r){
     if(r.grp){lines.push(r.grp);return;}
-    lines.push([r.line,(r.label?r.label+". ":"")+r.subj,r.check,r.result+": "+r.det,
-      Array.isArray(r.ask)?r.ask.join(" | "):r.ask].map(function(c){
-      return String(c).replace(/[\t\r\n]+/g," ");}).join("\t"));
+    lines.push([LAST.runId,r.label||r.id,r.line,(r.label?r.label+". ":"")+r.subj,r.check,r.status||"",r.result,
+      r.det,Array.isArray(r.ask)?r.ask.join(" | "):r.ask].map(function(c){
+      return String(c==null?"":c).replace(/[\t\r\n]+/g," ");}).join("\t"));
   });
   return lines.join("\n");
 }
-var CSV_COLS=["close period","memo version","line","account","sentence","check","result","finding",
-              "ask to the controller","reviewer answer","resolved","reviewer name","date","controller sign-off"];
-function csv(){
-  if(!LAST)return "";
-  function q(v){v=String(v==null?"":v);return '"'+v.replace(/"/g,'""').replace(/[\r\n]+/g," ")+'"';}
-  function names(line){
-    return String(line).split(/,\s*/).map(function(t){
+
+var CSV_COLS=["run id","run timestamp","close period","reviewed memo version","source version","evidence id",
+              "sentence id","sentence text","line","account","check","status","finding","proposed conclusion",
+              "human conclusion","unresolved issue","action owner","review time"];
+/* A cell a spreadsheet would treat as a formula is written with a leading
+   apostrophe. The JSON record beside it keeps the cell exactly as written. */
+function neutralise(v){
+  v=String(v==null?"":v);
+  return /^[=+\-@\t\r]/.test(v)?"'"+v:v;
+}
+function csv(state){
+  var S=state||LAST;
+  if(!S)return "";
+  function qq(v){return '"'+neutralise(v).replace(/"/g,'""').replace(/[\r\n]+/g," ")+'"';}
+  function accountOf(r){
+    if(!r.line||r.line==="none"||r.line==="total")return r.line==="total"?r.subj:"";
+    return String(r.line).split(/,\s*/).map(function(t){
       var hit=null;
-      LAST.accounts.forEach(function(a){if(!hit&&(a.num===t||a.name===t))hit=a;});
+      S.accounts.forEach(function(a){if(!hit&&(a.num===t||a.name===t))hit=a;});
       return hit?hit.name:t;
     }).join("; ");
   }
-  var lines=[CSV_COLS.map(q).join(",")];
-  LAST.rows.forEach(function(r){
+  var stamp=(S.runAt||new Date()).toISOString();
+  var lines=[CSV_COLS.map(function(c){return '"'+c+'"';}).join(",")];
+  S.rows.forEach(function(r){
     if(r.grp)return;
-    lines.push([LAST.period,LAST.version,r.line,r.label?names(r.line):r.subj,r.label||"none",
-      r.check.toLowerCase(),r.badge,r.det,Array.isArray(r.ask)?r.ask.join(" "):r.ask,
-      "","","","",""].map(q).join(","));
+    lines.push([S.runId,stamp,S.period,S.version,S.srcV,r.ev||r.id,r.label||"",
+      r.label?r.subj:"",r.line,accountOf(r),r.check,r.status||"",r.det,r.result,
+      "",Array.isArray(r.ask)?r.ask.join(" "):r.ask,
+      (r.status==="failed"||r.status==="needs review")?(r.check.indexOf("Silence")>-1?"Controller":"Preparer"):"",
+      ""].map(qq).join(","));
   });
   return lines.join("\r\n");
 }
-function downloadCsv(){
-  var data=csv();
+function jsonRecord(state){
+  var S=state||LAST;
+  if(!S)return "{}";
+  return JSON.stringify({
+    runId:S.runId,runAt:(S.runAt||new Date()).toISOString(),sourceVersion:S.srcV,
+    period:S.period,memoVersion:S.version,caseVersion:S.caseVersion||"",company:S.company,reviewer:S.reviewer,
+    policy:{dollarFloor:S.floorD,dollarRule:"more than",percentFloor:S.floorP,percentRule:"at least",
+            legs:S.rule,zeroPriorBalance:S.zero,displayTolerance:{dollars:TOL_D,percentagePoints:TOL_P}},
+    sourcesSupplied:sourceList(S),
+    coverage:S.stats,
+    sentences:S.sents.map(function(s){
+      return {id:s.label,text:s.text,status:s.st,boundTo:s.bound.map(acctId),binding:s.how,
+              conflicts:s.conflicts.map(function(c){return {figure:c.f.raw,account:acctId(c.a)};}),
+              figures:s.figs.map(function(f){
+                return {text:f.raw,value:f.v,unit:f.unit,role:f.role,roleReadFrom:f.roleFrom,
+                        span:[f.at,f.end],result:f.st,finding:f.txt};
+              })};
+    }),
+    ledgerRowsSkipped:S.ledger.skipped.filter(function(x){return !x.keep&&!x.benign;}),
+    queue:S.queue,
+    rows:S.rows.filter(function(r){return !r.grp;}).map(function(r){
+      return {evidenceId:r.ev||r.id,sentenceId:r.label||"",line:r.line,subject:r.subj,check:r.check,
+              status:r.status||"",result:r.result,finding:r.det,
+              ask:Array.isArray(r.ask)?r.ask.join(" "):r.ask};
+    })
+  },null,2);
+}
+function sourceList(S){
+  var out=["the ledger pasted into this page ("+S.ledger.accounts.length+" account rows read, "+
+           S.stats.rowsSkipped+" skipped)","the memo pasted into this page ("+S.sents.length+" sentences)"];
+  if(S.ratioText&&S.ratioText.replace(/\s/g,""))out.push("the ratio definitions typed into the ratio pane");
+  if(S.period)out.push("the close period as typed: "+S.period);
+  if(S.version)out.push("the memo version as typed: "+S.version);
+  if(S.company)out.push("the company or file name as typed: "+S.company);
+  return out;
+}
+function saveFile(name,mime,data){
   try{
     var a=document.createElement("a");
-    a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(data);
-    a.download="second-pass-"+(LAST&&LAST.period?LAST.period.replace(/[^A-Za-z0-9]+/g,"-").toLowerCase():"results")+".csv";
+    a.href="data:"+mime+";charset=utf-8,"+encodeURIComponent(data);
+    a.download=name;
     document.body.appendChild(a);a.click();document.body.removeChild(a);
-  }catch(e){
-    copy(data,null,"");
-  }
+  }catch(e){copy(data,null,"");}
 }
+function downloadCsv(){
+  saveFile("second-pass-"+(LAST&&LAST.runId?LAST.runId:"results")+".csv","text/csv",csv());
+}
+function downloadJson(){
+  saveFile("second-pass-"+(LAST&&LAST.runId?LAST.runId:"results")+".json","application/json",jsonRecord());
+}
+
 /* Prompt 1. Written before the memo exists, so it reads the panes rather than a finished run.
-   The shape it dictates is the shape the matcher reads on its strongest tier. */
+   The shape it dictates is the shape the binder reads on its strongest route, and every figure
+   in it carries a word that gives the checker the numeric role. */
 function draftPrompt(){
   var led=deSmart($("ledger").value).replace(/^\s+|\s+$/g,"");
   var floorD=parseNum($("dollar").value),floorP=parseNum($("pct").value);
@@ -1548,8 +2198,9 @@ function draftPrompt(){
   p.push("");
   p.push("Close period: "+($("period").value||"not stated")+
          ($("company").value?". Company: "+$("company").value:"")+".");
-  p.push("Commentary rule: a movement owes an explanation when it clears "+money(floorD)+" and "+floorP+
-         " percent of the prior balance ("+rule+").");
+  p.push("Commentary rule: a movement owes an explanation when the change is more than "+money(floorD)+
+         " and the percent of the prior balance is at least "+floorP+" percent ("+rule+"). "+
+         zeroPolicyText(zeroPolicy())+".");
   p.push("");
   p.push("LEDGER");
   p.push(led||"(paste the ledger here)");
@@ -1558,16 +2209,17 @@ function draftPrompt(){
          "exactly this shape:");
   p.push("");
   p.push("<n>. <account number> <account name>: prior <prior balance>, current <current balance>, "+
-         "<rose or fell or flat> <change>, <percent> percent, because <one reason> (source: <the document, "+
+         "<rose or fell or flat> by <change>, <percent> percent, because <one reason> (source: <the document, "+
          "system or person the reason came from>).");
   p.push("");
   p.push("Rules for every line:");
   p.push("- Write the account number first, exactly as the ledger prints it.");
   p.push("- Write every figure in full dollars as the ledger prints them. No k, no M, no rounding to the "+
          "nearest thousand, no restating in another unit.");
+  p.push("- Say what each figure is in words: \"prior\", \"current\", \"by\" for the change, and \"percent\" "+
+         "for the percent. A figure with no such word beside it cannot be checked and comes back unresolved.");
   p.push("- Recompute the change and the percent from the two balances; do not copy a change column.");
-  p.push("- Use one direction word only, rose, fell or flat, and put it immediately before the change figure, "+
-         "so \"rose $42,400\" or \"flat $0\". The direction is read against the figure standing beside it.");
+  p.push("- Use one direction word only, rose, fell or flat, and put it immediately before the change figure.");
   p.push("- Give one reason, and name its source. Where nothing on file supports a reason, write \"no source "+
          "on file\" rather than inventing one.");
   p.push("- Do not write a second line about an account you have already covered.");
@@ -1575,40 +2227,61 @@ function draftPrompt(){
   p.push("Then stop, except for one closing sentence naming how many lines fell below the rule and stating "+
          "that they carry no commentary. No summary paragraph, no recommendations, no headings.");
   p.push("");
-  p.push("A deterministic checker reads this memo next and ties every figure back to the ledger, so the shape "+
-         "above is not a preference. A line that drops the account number, abbreviates a figure or carries two "+
-         "accounts at once will come back unmatched and go to a human by hand.");
+  p.push("A deterministic checker reads this memo next. It ties each sentence to a ledger line, reads what each "+
+         "figure is meant to be from the words beside it, and recomputes it. A line that drops the account "+
+         "number, abbreviates a figure, leaves a figure's role unsaid or carries two accounts at once comes "+
+         "back unresolved and goes to a person by hand.");
   return p.join("\n");
 }
 
 function reviewerPrompt(){
   if(!LAST)return "";
-  var p=[];
-  p.push("Second pass, reviewer questions only.");
-  p.push("Close period: "+(LAST.period||"not stated")+". Memo version: "+(LAST.version||"not stated")+".");
-  p.push("Commentary rule: a movement owes an explanation when it clears "+money(LAST.floorD)+
-         " and "+LAST.floorP+" percent of the prior balance ("+(LAST.rule==="both"?"both legs":"either leg")+").");
+  var S=LAST,st=S.stats,p=[];
+  p.push("Second pass. Reviewer questions, and the mechanical work that was NOT done.");
+  p.push("Run "+S.runId+", source version "+S.srcV+", produced "+(S.runAt||new Date()).toISOString()+".");
+  p.push("Close period: "+(S.period||"not stated")+". Memo version: "+(S.version||"not stated")+".");
+  p.push("Commentary rule as set on this run: a movement owes an explanation when the change is more than "+
+         money(S.floorD)+" (more than, not at least) and the percent of the prior balance is at least "+
+         S.floorP+" percent (at least, not more than), "+(S.rule==="both"?"both legs":"either leg")+". "+
+         zeroPolicyText(S.zero)+". Every threshold decision was made on unrounded values.");
   p.push("");
-  p.push("The mechanical work is done. A deterministic checker has already recomputed every line, tied each "+
-         "sentence to an account, tested every figure and every percent against the ledger, and tested the "+
-         "direction words against the sign of each movement. Do not recompute any of that.");
+  p.push("COVERAGE OF THIS RUN. Do not read it as a clean bill.");
+  p.push("Sentences read: "+st.sent+".");
+  p.push("Checked within scope: "+st.checked+". Needs review: "+st.review+". Not checked: "+st.notchecked+
+         ". Failed: "+st.failed+".");
+  p.push("Ledger rows read: "+st.rowsUsed+". Ledger rows skipped and never checked: "+st.rowsSkipped+".");
+  p.push("Lines clearing the rule with no sentence about them: "+st.silent+".");
+  p.push("\"Checked within scope\" means only this: each figure in the sentence carried a role the words gave "+
+         "it, and the unrounded comparison with the pasted ledger agreed. It does not mean the sentence is true, "+
+         "and it does not mean every figure in the memo was checked. Recompute anything you doubt.");
+  p.push("");
+  p.push("SOURCES ACTUALLY SUPPLIED TO THIS RUN. Nothing else was available to the checker, and no close "+
+         "binder, trial balance, invoice or contract was seen by it.");
+  sourceList(S).forEach(function(x){p.push("- "+x);});
   p.push("");
   p.push("LEDGER AS PASTED");
-  p.push(LAST.ledgerText.replace(/^\s+|\s+$/g,""));
+  p.push(S.ledgerText.replace(/^\s+|\s+$/g,""));
   p.push("");
   p.push("MEMO AS PASTED");
-  p.push(LAST.memoText.replace(/^\s+|\s+$/g,""));
+  p.push(S.memoText.replace(/^\s+|\s+$/g,""));
   p.push("");
-  p.push("THE SENTENCES THAT SURVIVED THE MECHANICAL CHECKS. For each one, answer only these two questions:");
+  p.push("UNRESOLVED ITEMS, VERBATIM. Every one of these is open.");
+  if(!S.queue.length)p.push("(none)");
+  S.queue.forEach(function(item){
+    p.push("- ["+item.kind+"] "+item.ref+" — "+item.issue+(item.ask?" Question: "+item.ask:"")+
+           " Owner: "+item.owner+".");
+  });
+  p.push("");
+  p.push("SENTENCES CHECKED WITHIN SCOPE. For each one, answer only these two questions:");
   p.push("1. Is the driver named here supported by anything on file?");
   p.push("2. Is the period right (nothing pulled forward or deferred)?");
-  p.push("");
-  LAST.queue.forEach(function(s){
-    p.push(s.label+" ("+s.accts.map(function(a){return (a.num?a.num+" ":"")+a.name;}).join("; ")+"): "+s.text);
+  if(!S.survivors.length)p.push("(none reached this list)");
+  S.survivors.forEach(function(s){
+    p.push(s.label+" ("+s.bound.map(acctId).join("; ")+"): "+s.text);
   });
   var dup=[];
-  LAST.accounts.forEach(function(a){
-    if(a.sent.length>1)dup.push((a.num?a.num+" ":"")+a.name+": "+a.sent.map(function(s){return s.label;}).join(", "));
+  S.accounts.forEach(function(a){
+    if(a.sent.length>1)dup.push(acctId(a)+": "+a.sent.map(function(s){return s.label;}).join(", "));
   });
   if(dup.length){
     p.push("");
@@ -1616,8 +2289,9 @@ function reviewerPrompt(){
            "test them against each other: "+dup.join("; ")+".");
   }
   p.push("");
-  p.push("Answer from the close binder. Where nothing on file supports a driver, say \"not on file\" and name "+
-         "what you would ask the controller to produce.");
+  p.push("Answer only from a document you can name and open. Where nothing you hold supports a driver, say "+
+         "\"not on file\" and name what you would ask the controller to produce. Do not treat any status above "+
+         "as evidence.");
   return p.join("\n");
 }
 function copy(text,btn,label){
@@ -1647,39 +2321,64 @@ function fallback(text){
 }
 
 /* ============================================================ samples */
-var HALYARD_LEDGER=[
-"Line\tAccount\tPrior (May 2026)\tCurrent (June 2026)",
-"4000\tProduct revenue, distribution\t$5,240,000\t$5,612,000",
-"4100\tService revenue, equipment maintenance\t$812,000\t$1,041,000",
-"4200\tFreight billed to customers\t$186,000\t$121,000",
-"5000\tCost of product sold\t$3,930,000\t$4,278,000",
-"5100\tInbound freight\t$214,000\t$287,800",
-"6000\tWarehouse wages\t$630,000\t$702,500",
-"6100\tFleet fuel\t$96,400\t$91,200",
-"6200\tRepairs and maintenance, depots\t$41,000\t$118,600",
-"6300\tSoftware subscriptions\t$28,500\t$30,100",
-"6400\tBad debt expense\t$15,000\t$62,000",
-"6500\tProfessional fees\t$55,000\t$47,500",
-"7000\tDepreciation\t$128,000\t$128,000",
-"7100\tInterest expense\t$61,200\t$92,400",
-"7400\tInventory shrink adjustment\t$6,400\t$8,900"
-].join("\n");
-
-var HALYARD_MEMO=[
-"S0. Freight billed to customers fell from $186,000 to $121,000, a decrease of $6,500 and 3.5 percent.",
-"S1. Depot repairs and maintenance of $118,600 reflects the roof and dock leveler program, which finished on June 30.",
-"S2. Bad debt expense increased $42,000 following the reserve taken against the Coastal Grocers receivable.",
-"S3. Software subscriptions rose $1,600, which clears neither leg of the threshold, so this line carries no driver.",
-"S4. Distribution revenue of $5,612,000 grew 7.1 percent over May on continued customer demand across all four depots.",
-"S5. The growth in both revenue lines is driven by the Tri-State depot ramp, which management expects to continue through the third quarter.",
-"S6. Inbound freight declined to $287,800 as carrier fuel surcharges eased.",
-"S7. Interest expense rose $31,200 on the depot equipment additions that also sit in depreciation.",
-"S8. Fleet fuel fell $5,200 on lower pump prices through June, and the movement fails both legs of the threshold, so the line owes no commentary at all. Every June fuel invoice from the fleet servicer was received and recorded before the books closed.",
-"S9. Service revenue rose $229,000 as the equipment maintenance contracts signed in the spring moved onto monthly billing in June, and each month's fee is earned in the month it covers. These contracts bill monthly in arrears, so the June invoice covers June and nothing is billed ahead of the service period.",
-"S10. The remaining depot repairs are scheduled to finish in August, and that spend is not yet in these numbers.",
-"S11. Cost of product sold rose $348,000 against a $372,000 rise in revenue, so product gross margin fell from 25.0 percent in May to 23.8 percent in June on a shift toward lower margin lines.",
-"S12. Professional fees fell $7,500 because May carried a one-time $7,500 invoice from outside counsel for the depot lease renewal review, and the movement fails the dollar leg of the threshold."
-].join("\n");
+/* BUILD:CHECKER-CASES-START */
+/* Generated by build-checker-cases.cjs from the files in cases/. Do not edit by hand. */
+var CASE_SAMPLES={};
+CASE_SAMPLES.halyard={
+  ledger:["Line\tAccount\tPrior (May 2026)\tCurrent (June 2026)",
+           "4000\tProduct revenue, distribution\t$5,240,000\t$5,612,000",
+           "4100\tService revenue, equipment maintenance\t$812,000\t$1,041,000",
+           "4200\tFreight billed to customers\t$186,000\t$121,000",
+           "5000\tCost of product sold\t$3,930,000\t$4,278,000",
+           "5100\tInbound freight\t$214,000\t$287,800",
+           "6000\tWarehouse wages\t$630,000\t$702,500",
+           "6100\tFleet fuel\t$96,400\t$91,200",
+           "6200\tRepairs and maintenance, depots\t$41,000\t$118,600",
+           "6300\tSoftware subscriptions\t$28,500\t$30,100",
+           "6400\tBad debt expense\t$15,000\t$62,000",
+           "6500\tProfessional fees\t$55,000\t$47,500",
+           "7000\tDepreciation\t$128,000\t$128,000",
+           "7100\tInterest expense\t$61,200\t$92,400",
+           "7400\tInventory shrink adjustment\t$6,400\t$8,900"].join("\n"),
+  memo:["1. Freight billed to customers fell from $186,000 to $121,000, a decrease of $6,500 and 3.5 percent, so neither leg of the threshold is met and no commentary is owed on this line.",
+        "2. Depot repairs and maintenance of $118,600 reflects the roof and dock leveler program, which finished on June 30. The remaining work on that same roof and dock leveler program is scheduled to finish in August, and that spend is not yet in these numbers.",
+        "3. Inbound freight declined to $287,800 as carrier fuel surcharges eased.",
+        "4. Service revenue rose $229,000 as the twelve equipment maintenance contracts signed in the spring began service in June, and each month's fee is earned in the month it covers.",
+        "5. Professional fees fell $7,500 because May carried a one-time $7,500 invoice from outside counsel for the depot lease renewal review, and the movement fails the dollar leg of the threshold.",
+        "7. Product revenue of $5,612,000 grew on the Tri-State depot ramp, which management expects to continue through the third quarter.",
+        "8. Bad debt expense increased $42,000 following the reserve taken against the Coastal Grocers receivable.",
+        "9. Fleet fuel fell $5,200, and the movement fails both legs of the threshold, so the line owes no commentary at all.",
+        "10. Software subscriptions rose $1,600, which clears neither leg of the threshold, so this line carries no driver.",
+        "12. Distribution revenue of $5,612,000 grew 7.1 percent over May on continued customer demand across all four depots.",
+        "13. Cost of product sold rose $348,000 against a $372,000 rise in product revenue. Product gross profit rose from $1,310,000 to $1,334,000, while product gross margin fell from 25.0 percent in May to 23.8 percent in June. The category report points to a shift toward lower margin produce and dairy lines as the likely cause, and a category sales and cost bridge has been requested to confirm it.",
+        "14. Interest expense rose $31,200 on the depot equipment additions that also sit in depreciation."].join("\n"),
+  ratios:"Product gross margin = (4000 - 5000) / 4000",
+  period:"June 2026",
+  version:"halyard-v3 memo, 13 September 2026",
+  caseVersion:"halyard-v3",
+  company:"Halyard Provisioning Group, Inc.",
+  lines:14,sentences:12
+};
+CASE_SAMPLES.brightwater={
+  ledger:["Account\tMay 2026\tJune 2026",
+           "4010\tPatient service revenue, net\t$742,000\t$803,500",
+           "4220\tOrthodontic plan revenue\t$96,000\t$138,400",
+           "5210\tDental supplies and lab fees\t$138,500\t$191,200",
+           "6110\tHygienist wages\t$214,000\t$268,900",
+           "6610\tMarketing and patient outreach\t$18,400\t$24,100"].join("\n"),
+  memo:["1. Dental supplies and lab fees eased to $191,200 in June as the group moved its crown and bridge work to a lower priced lab.",
+        "2. Patient service revenue rose $61,500, which is 8.3 percent of May, so the movement fails the percentage leg of the threshold and this line carries no driver.",
+        "3. Orthodontic plan revenue of $138,400 includes the eleven treatment plans families paid in full during June, and the whole payment on each plan was taken to revenue in June.",
+        "4. Marketing and patient outreach rose $5,700, or 31.0 percent, on the new patient mailer that went out in the first week of June, and the movement fails the dollar leg of the threshold.",
+        "5. Hygienist wages increased $44,900 after the second hygiene chair opened at the Ashburn office on June 1."].join("\n"),
+  ratios:"",
+  period:"June 2026",
+  version:"brightwater-v2 memo, 13 September 2026",
+  caseVersion:"brightwater-v2",
+  company:"Brightwater Dental Partners, PLLC",
+  lines:5,sentences:5
+};
+/* BUILD:CHECKER-CASES-END */
 
 var RIDGE_LEDGER=[
 "1000,Cash and equivalents,412000,388500",
@@ -1693,25 +2392,6 @@ var RIDGE_MEMO=[
 "T1. Consulting revenue rose $61,000 on two new retainers that began in July.",
 "T2. Subcontractor costs increased $32,000 as work moved off the bench.",
 "T3. Travel and entertainment rose $9,400 on the regional sales trip."
-].join("\n");
-
-/* Brightwater Dental Partners, the round two case the game scores a player on cold.
-   Five accounts, five lines, three of them planted. */
-var BRIGHT_LEDGER=[
-"Account\tMay 2026\tJune 2026",
-"4010\tPatient service revenue, net\t$742,000\t$803,500",
-"4220\tOrthodontic plan revenue\t$96,000\t$138,400",
-"5210\tDental supplies and lab fees\t$138,500\t$191,200",
-"6110\tHygienist wages\t$214,000\t$268,900",
-"6610\tMarketing and patient outreach\t$18,400\t$24,100"
-].join("\n");
-
-var BRIGHT_MEMO=[
-"B1. Dental supplies and lab fees eased to $191,200 in June as the group moved its crown and bridge work to a lower priced lab.",
-"B2. Patient service revenue rose $61,500, which is 8.3 percent of May, so the movement fails the percentage leg of the threshold and this line carries no driver.",
-"B3. Orthodontic plan revenue of $138,400 includes the eleven treatment plans families paid in full during June, and the whole payment on each plan was taken to revenue in June.",
-"B4. Marketing and patient outreach rose $5,700, or 31.0 percent, on the new patient mailer that went out in the first week of June, and the movement fails the dollar leg of the threshold.",
-"B5. Hygienist wages increased $44,900 after the second hygiene chair opened at the Ashburn office on June 1."
 ].join("\n");
 
 /* Kestrel IT Services, a six line managed services firm, pasted in the shape QuickBooks Online's
@@ -1749,24 +2429,27 @@ var KESTREL_MEMO=[
 "6. 6400 Client acquisition costs rose $9,300, or 189.8 percent, which fails the dollar leg of the threshold, so this line carries no driver."
 ].join("\n");
 
+/* Halyard and Brightwater are generated from cases/halyard-v3.json and
+   cases/brightwater-v2.json by build-checker-cases.cjs, so the checker runs the
+   same memo version the game runs. Kestrel and Ridgeline are the checker's own. */
 var SAMPLES={
-  halyard:{ledger:HALYARD_LEDGER,memo:HALYARD_MEMO,ratios:"Product gross margin = (4000 - 5000) / 4000",
-           period:"June 2026",version:"AI draft commentary, revision 4",company:"Halyard Distribution, LLC"},
-  brightwater:{ledger:BRIGHT_LEDGER,memo:BRIGHT_MEMO,ratios:"",
-           period:"June 2026",version:"Round two memo, as drafted",company:"Brightwater Dental Partners, PLLC"},
+  halyard:CASE_SAMPLES.halyard,
+  brightwater:CASE_SAMPLES.brightwater,
   kestrel:{ledger:KESTREL_LEDGER,memo:KESTREL_MEMO,ratios:"",
            period:"July 2026",version:"AI draft, first pass",company:"Kestrel IT Services, LLC"},
   ridgeline:{ledger:RIDGE_LEDGER,memo:RIDGE_MEMO,ratios:"",
            period:"July 2026",version:"Ridgeline test memo",company:"Ridgeline Partners, LLC"}
 };
 
+var CASEVER="";
 function loadSample(key){
   var s=SAMPLES[key];
   if(!s)return false;
+  CASEVER=s.caseVersion||"";
   $("ledger").value=s.ledger;
   $("memo").value=s.memo;
   $("ratios").value=s.ratios;
-  $("dollar").value="25000";$("pct").value="10";$("rule").value="both";
+  $("dollar").value="25000";$("pct").value="10";$("rule").value="both";$("zerobase").value="owing";
   $("period").value=s.period;$("memover").value=s.version;$("company").value=s.company;
   $("msg").innerHTML="";$("out").innerHTML="";
   USERCOLS=null;
@@ -1793,6 +2476,7 @@ $("copyreview").onclick=function(){
 };
 $("clear").onclick=function(){
   ["ledger","memo","ratios","period","memover","company","reviewer"].forEach(function(id){$(id).value="";});
+  ROLECONF={};
   $("msg").innerHTML="";$("out").innerHTML="";$("samplepick").value="";
   LAST=null;USERCOLS=null;refreshPreview();
 };
@@ -1800,6 +2484,18 @@ $("ledger").addEventListener("input",function(){
   USERCOLS=null;
   clearTimeout(PVTIMER);
   PVTIMER=setTimeout(function(){refreshPreview();},350);
+  invalidate("the ledger was edited");
+});
+/* Any input that a status depends on clears the statuses when it changes. The
+   run that was on the page is kept under Previous runs with its own identifier. */
+[["memo","the memo was edited"],["ratios","a ratio changed"],["dollar","the dollar floor changed"],
+ ["pct","the percent floor changed"],["rule","the rule changed"],["zerobase","the zero prior balance policy changed"],
+ ["period","the close period changed"],["memover","the memo version changed"],
+ ["company","the company or file name changed"]].forEach(function(pair){
+  var n=$(pair[0]);
+  if(!n||!n.addEventListener)return;
+  n.addEventListener("input",function(){invalidate(pair[1]);});
+  n.addEventListener("change",function(){invalidate(pair[1]);});
 });
 
 /* a link can open with a sample already run: ?sample=halyard, brightwater, kestrel, ridgeline */
@@ -1814,8 +2510,11 @@ $("ledger").addEventListener("input",function(){
 /* exposed so a run can be checked from the console, nothing on the page uses it */
 window.__secondPass=function(what){
   if(what==="csv")return csv();
+  if(what==="json")return jsonRecord();
   if(what==="table")return tsv();
   if(what==="prompt")return reviewerPrompt();
+  if(what==="draft")return draftPrompt();
+  if(what==="prev")return PREV;
   return LAST;
 };
 })();
