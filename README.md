@@ -5,6 +5,18 @@ Halyard's June close commentary, and the player is the second pass on it.
 
 Live at https://fiscalpatriots.github.io/beat-the-machine/ from `main`.
 
+## Versions
+
+| What | Version | Where it is stated |
+| --- | --- | --- |
+| Product | `second-pass-drill 1.3.0` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
+| Round one case | `halyard-v3`, 13 September 2026 | `cases/halyard-v3.json`, question A, the local record |
+| Round two case | `brightwater-v3`, 13 September 2026 | `cases/brightwater-v3.json`, questions A and C, the local record |
+| Data notice | `notice-2026-09-13` | the notice screen, question A, the local record |
+
+One constant carries the product version. Change `PRODUCT_VERSION` and every surface follows,
+except `review.html` and this file, which state it in prose and have to be edited by hand.
+
 **Start here for reviewers:** [review.html](review.html), the whole entry on one page, live at
 https://fiscalpatriots.github.io/beat-the-machine/review.html
 
@@ -94,15 +106,130 @@ seconds field is the fresh case clock, so pace on new material can be set beside
 
 ## The path in
 
-Three screens stand between the link and the first card.
+Four screens stand between the link and the first card.
 
 1. The opening screen, two short paragraphs. Three candidate wordings live in
    `INTRO-CANDIDATES.md` and the one marked live there is the one in `index.html`.
-2. One screen for the codename and the chapters, on the same screen and both required.
-3. The ledger, read once as orientation, with a block under it saying what earns a flag and
-   what "Let it stand" means, and a single Continue.
+2. The data notice, read before anything is collected. See "The data notice" below.
+3. One screen for the codename and the chapters, on the same screen and both required.
+4. The ledger, read once as orientation, with a block under it saying what earns a flag and
+   what "Let it stand" means, and one optional step of ledger-only picks. See "The ledger-only
+   picks" below.
 
-Nothing else is asked, on the way in or after the round.
+Nothing else is asked on the way in. After the round the player is offered a local record and a
+separate voluntary send, and neither is required to finish.
+
+## The data notice
+
+It sits between the intro and the codename screen, so nothing has been collected by the time it
+is read. The four items, word for word as they appear on screen under the heading "What this
+records":
+
+> What is collected: the codename you pick, the chapters you tap, your call on each of the
+> nineteen lines, the basis chips behind each call, the optional line of your own words, and how
+> long each line and each round took you.
+>
+> A codename is a pseudonym and not anonymity. Anyone who knows which codename you chose can read
+> your run, so pick one you are willing to be known by.
+>
+> Where it goes if you send it: the Google Form responses sheet owned by Khaled Alkurd, who built
+> this drill and writes the findings from it.
+>
+> You can finish the whole run without sending anything. At the end you can save your own record
+> as a file, and sending your results to the form is a separate button you do not have to press.
+
+Under those four the screen prints the notice version and the product version. The notice version
+rides into question A and into the local record, so a response can be tied to the wording the
+player actually read. Change the wording and the version goes up with it.
+
+## The ledger-only picks
+
+**Subject to Khaled's ruling.** This step was added on 13 September 2026 because the build
+handoff asks for a short ledger-only judgment before the narrative. It has not been approved as
+a permanent part of the path in, and removing it means deleting `prepickBlock`, `wirePrepicks`
+and `prepickLine` from `index.html` and restoring the plain Continue on the orientation screen.
+
+Under the statement on the orientation screen: "Before the memo: tap up to three lines you would
+ask about first, or skip." Fourteen chips, one per ledger account, capped at three, with Skip and
+Continue side by side under them. Once three are tapped the rest go grey until one is released.
+Nothing is typed and nothing is scored, so it costs a few seconds. The sticky bar on a phone and
+the rail on a desk read "Skip the picks and continue" and record a skip rather than pretending a
+player who never scrolled made a pick.
+
+The picks post into the round one free text question, `entry.1115022539`, which collected nothing
+before this. The cell reads:
+
+```
+Prepicks: 4200; 6000; 6400.
+```
+
+A skip posts `Prepicks: skipped.` rather than an empty cell, so a deliberate skip and a missing
+answer can be told apart. The picks are also in the local record under `prepicks`, with the
+question text and the entry id beside them.
+
+## Test mode
+
+`?test=1` on the URL turns it on, and three taps on the footer line toggle it from inside the
+page for a facilitator with no address bar to edit. A band under the Mason header reads "TEST
+MODE, nothing is sent" and the footer version line gains ", test mode".
+
+While it is on, "Send my results" builds the payload, writes it into the local record and posts
+nothing. The record carries `attempt.testAttempt: true`, `scoring.exclusionReason: "test
+attempt"`, and question A of the payload carries "TEST ATTEMPT, exclude from reports." Use it for
+every walkthrough, because the live participant dataset must never be seeded from automated runs.
+
+## The participant record
+
+"Save my record" on the end screen downloads `second-pass-<attempt id>.json` and shows the same
+text in a copyable box behind it, so a browser that blocks the download still hands the player
+their run. The fields are the ones the build handoff calls the minimum attempt record:
+
+| Block | Fields |
+| --- | --- |
+| `attempt` | id, pseudonym and the note that a codename is not anonymity, organizations, role (null, not collected), notice version, product version, case versions and which path loaded them, form URL, mode per round, first attempt, run index, assistance source, started, completed, submission state, submission attempts, test attempt |
+| `prepicks` | picks, skipped, the entry id they post to, the question as it was asked |
+| `responses` | one per line for all nineteen: item id, round, case version, mode, account and name, error type, original decision, final decision, basis chips, the player's own words, the on-file facts that were shown, confidence (null, not asked), assistance revealed, elapsed active seconds, skipped or missing reason, when feedback was revealed, the keyed decision, and whether the call agrees with the key |
+| `scoring` | key versions, the round one and round two counts, human rubric scores (null), scorer id (null), out-of-key finding (null), adjudication (null), exclusion reason, final resolution (null) |
+| `timing` | round one lap seconds, the whole minutes actually posted, round two seconds, elapsed active seconds summed over the nineteen lines |
+| `notAsked` | the four form questions nobody was asked, why a placeholder is posted, and the placeholder mode |
+| `payload` | the exact payload, with a note saying whether it was posted, would have been posted, or has not been posted |
+
+Nothing in it is invented. The four unasked questions are reported as not asked rather than as
+answers, and confidence is `null` on every line because the page never asks for it.
+
+## Sending, and the attempt identifier
+
+"Send my results" is the only thing that posts, it is voluntary, and the run is complete without
+it. The hidden frame's load event proves the request left the page and nothing more, so the state
+says exactly that:
+
+> Sent. The receiver does not confirm receipt to this page.
+
+Every run gets one attempt identifier, `att-<base36 time>-<four characters>`, generated when the
+run starts and reused by every retry of that run. It posts at the front of question B:
+
+```
+Attempt id: att-mtze89jf-wrv8, run 1 in this tab.
+```
+
+Two rows carrying one attempt id are one attempt sent twice and get counted once. Play again
+generates a new id and raises the run index, so a second run is a separate attempt rather than a
+retry. A refresh in the middle of a run keeps the id, because the whole run lives in
+`sessionStorage` under `btm.run.v1` and the page resumes on the screen it was left on. A send
+that was in flight when the tab reloaded comes back as not sent rather than as sent.
+
+## The practitioner route
+
+The organization row carries an eighth chip, "Outside Mason", after Professor. A practitioner
+with no campus tie taps it and answers truthfully rather than claiming an affiliation they do not
+have. It posts the same way as the others:
+
+```
+Organizations: Outside Mason.
+```
+
+Count it as its own denominator. A practitioner walkthrough is not a student result and the two
+should never be pooled.
 
 ## Mason branding
 
@@ -194,32 +321,48 @@ two the first version carried, because twelve and two let a player flag everythi
 twelve. Neither number is ever printed for the player. Flagging all fourteen now scores eight
 and lands on Trainee.
 
-## Round two, the fresh case
+## Round two, the assessment
 
-After the fourteenth reveal the player meets a second company on a one screen bridge that reads
-"New company, new memo, same job. Five lines." Brightwater Dental Partners is a four office
-dental group, a different industry from Halyard on purpose, and its five accounts carry May and
-June balances of their own. Three of its five memo lines carry a planted problem and two are
-clean:
+Round one is practice: every call gets a reveal, a running score and a car that moves. Round two
+is an independent assessment on a company the player has never seen, and it is scored at the end.
 
-| Fresh line | Account | May | June | Change | Percent | Call | Type |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 5210 Dental supplies and lab fees | $138,500 | $191,200 | +$52,700 | 38.1% | Flag | wrong direction |
-| 2 | 4010 Patient service revenue, net | $742,000 | $803,500 | +$61,500 | 8.3% | Let it stand | clean line |
-| 3 | 4220 Orthodontic plan revenue | $96,000 | $138,400 | +$42,400 | 44.2% | Flag | timing |
-| 4 | 6610 Marketing and patient outreach | $18,400 | $24,100 | +$5,700 | 31.0% | Let it stand | clean line |
-| 5 | 6110 Hygienist wages | $214,000 | $268,900 | +$54,900 | 25.7% | Flag | arithmetic |
+The bridge screen says so: **"Round two is scored at the end, so you get no hints."** Under that
+it prints what the case file calls the assessment note, which tells the player that every figure
+ties, every direction word is right and the threshold readings are correct, so the only thing
+left on each line is whether the cause the memo names is carried by something on file.
 
-The threshold rule is the one the player already knows, so both clean lines turn on it: line 2
-carries the largest dollar movement on the statement and still fails the percentage leg, and line
-4 reads alarming at 31.0 percent and fails the dollar leg. All three types were also planted in
-the Halyard memo, which is what makes a catch rate on these five comparable with the trained
-fourteen.
+Between the bridge and the results the page suppresses everything that would leak correctness.
+There is no reveal after a call, no running score pill, no streak, no toast, and the whole track
+comes off the screen so a car that moved or changed colour cannot answer the question for the
+player. The header shows progress and nothing else, as `3 of 5`. The basis chips are still
+collected on every line, because the reason a player held is the point of the exercise.
+
+Once the fifth call is in, one results screen prints all five at once: whether the call agrees
+with the key, the error type, the full reason, and the player's own basis under it. The end
+screen follows.
+
+| Fresh line | Account | May | June | Change | Percent | Owes commentary | Call | Type |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 5210 Dental supplies and lab fees | $138,500 | $191,200 | +$52,700 | 38.1% | yes | Flag | unsupported driver |
+| 2 | 6110 Hygienist wages | $214,000 | $268,900 | +$54,900 | 25.7% | yes | Let it stand | clean line |
+| 3 | 4220 Orthodontic plan revenue | $96,000 | $138,400 | +$42,400 | 44.2% | yes | Flag | no explanation |
+| 4 | 4010 Patient service revenue, net | $742,000 | $803,500 | +$61,500 | 8.3% | no | Flag | unsupported driver |
+| 5 | 6610 Marketing and patient outreach | $18,400 | $24,100 | +$5,700 | 31.0% | no | Let it stand | clean line |
+
+The threshold is no shortcut here. Two of the three lines that clear both legs are flags and one
+stands, and of the two that clear neither one is a flag and one stands, so a player who reasons
+from the threshold alone does no better than chance. `cases/README.md` sets out the evidence on
+each line and what would settle it.
 
 The cards are built from `CARDS2` and the balances from `ROWS2`, and every ledger function takes
 the book it is reading, so the "See the full ledger" button on a round two card opens the five
 account dental statement in the same sheet component that serves Halyard's fourteen. The five
 lines are scored on their own counters and never touch the rank, the trophy or the main score.
+
+`brightwater-v2` was the practice version of this case and is retired. It tested wrong direction,
+timing and arithmetic, which the trained fourteen already teach, so it measured a second helping
+of the same thing rather than evidence judgment. Responses scored against v2 are not comparable
+with responses scored against v3 and must never be pooled with them.
 
 Rows filed in the Google Form before 12 September 2026 were answered against the old key and
 are not comparable with anything filed since. The per-card entries still post the player's own
@@ -229,11 +372,13 @@ call unchanged, so nothing about the form mapping moved. The source of truth for
 
 ## The track
 
-The progress bar is a race track drawn as one inline SVG in `buildTrack()`. Nineteen segments
-since 13 September 2026, fourteen for the trained lines and five for the fresh case, with the
-finish at card 19 and a gold tick at segment fourteen where the second company takes over. There
+The progress bar is a race track drawn as one inline SVG in `buildTrack()`. Fourteen segments,
+one per trained line, with the finish at card 14. Round two runs as an assessment where a car
+that moved or changed colour would tell the player how they were doing, so the whole bar leaves
+the screen from the bridge through the results and comes back on the end screen with the car at
+the finish. There
 is a car that advances one segment per card, a pit lane under the main lane and a chequered flag
-at the finish that lights once all nineteen are called. A right call gives the car a short forward burst with two speed lines behind it, a
+at the finish that lights once all fourteen are called. A right call gives the car a short forward burst with two speed lines behind it, a
 wrong call drops it into the pit lane for a beat before it rejoins, and three correct calls in a
 row light a flame behind it. Streaks build in three steps: two in a row gives the car a speed
 trail, three adds the gold flame and a "Streak 3" toast on the reveal, and five grows both and
@@ -246,13 +391,14 @@ The run is timed from the first card to the fourteenth call. The end screen prin
 `Lap time 6:42` beside the score, with `Best streak 7` next to it, and the lap time rounded to
 whole minutes is what goes into the form's elapsed minutes question. A streak of five or more
 earns the "Hot lap" badge, and letting all six clean lines stand earns "Nothing over-flagged".
-Nine badges can be earned and the end screen shows at most three of them. The streak carries on
-into the fresh case so the car behaves the same way, and the best streak the end screen prints
-stops at what the fourteen trained lines earned, because that is the number "Hot lap" reads.
+Nine badges can be earned and the end screen shows at most three of them. The streak stops
+moving in round two, because a streak that grew or broke between assessment lines would tell the
+player how the last call went.
 
 The round two clock is separate from the lap time. It starts on the first fresh card and stops
 on the fifth call, and it posts in seconds rather than minutes, because five lines on a company
-nobody has seen is a short run.
+nobody has seen is a short run. Each line also carries its own elapsed active seconds in the
+local record, timed from the card appearing to the basis Continue.
 
 ## Spelling
 
@@ -290,23 +436,28 @@ Every answer posts to the live form:
 https://docs.google.com/forms/d/e/1FAIpQLSfteTMPZrDKhYmRjxPKADAZERjyDntdMLIVZMH-FoIrcHusKg/formResponse
 ```
 
+Nothing posts on its own. The send is a button on the end screen, it is voluntary, and the run is
+complete whether or not it is pressed. Test mode never posts at all.
+
 All 38 questions are mapped to their `entry.NNNN` ids in the `E` object at the top of the
 script, and all 38 are populated on every submission. The three pages post as one request with
-`pageHistory=0,1,2`. If the post fails the player is shown their answers as copyable text and a
-Try sending again button that reruns the post rather than losing the round.
+`pageHistory=0,1,2`. If the post fails the state line says so and offers a retry, and the retry
+reuses the same attempt id so it cannot double count.
 
 Nobody types anything after the round. The fourteen calls post as `Accept` or `Reject` so the
-existing multiple choice questions keep working, and every text question receives a generated
-summary instead of player prose: the fourteen "Why" fields carry the call, the key and the error
-type for that line, question A carries the organizations, and question B carries the lines
-missed, the pattern, the result and the longest run. The elapsed minutes question receives the
-lap time, off the clock rather than a tap.
+existing multiple choice questions keep working, and every text question receives the player's
+basis plus generated metadata rather than player prose: the fourteen "Why" fields carry the
+basis, the call, the key and the error type for that line, the round one free text field carries
+the ledger-only picks, question A carries the organizations and the three version stamps,
+question B carries the attempt id, the lines missed, the pattern, the result and the longest run.
+The elapsed minutes question receives the lap time, off the clock rather than a tap.
 
 Round two posts without a new question. The whole fresh case rides in question C
 (`entry.756559246`), which asks the player nothing and carried only a placeholder note before 13
-September 2026. The cell now opens with `Round2: 4/5; calls FSFSF; key FSFSF; seconds 61.` and
-then names the company, so the sheet can be read without opening the game. The fourteen "Why"
-fields were left exactly as they were, because the catch rate by error type is grouped on them.
+September 2026. The cell now opens with `Round2: 4/5; calls FSFSF; key FSFFS; seconds 61.`, then
+the five bases, then the company and the case version, so the sheet can be read without opening
+the game. The fourteen "Why" fields were left exactly as they were, because the catch rate by
+error type is grouped on them.
 
 Card one is inverted on purpose. Its form question asks the player to agree or disagree that
 nothing is owed on account 4200, so flagging that line posts `Reject` while flagging any other
@@ -353,10 +504,10 @@ the form re-rendered and "This is a required question" in the body, which is how
 apart from the outside. The hidden iframe the page uses cannot read either one, so the probe is
 the only way to check this from a script.
 
-The round one free text field (`entry.1115022539`) carries its own note, because the ledger screen
-is orientation only and collects no picks. Question C (`entry.756559246`) was a placeholder of the
-same kind until 13 September 2026 and now carries the round two string and the round two basis, so
-it is the one former placeholder that is real data.
+Two former placeholders now carry real data. The round one free text field
+(`entry.1115022539`) carries the ledger-only picks, and question C (`entry.756559246`) carries
+the round two string, the round two basis and the case version. Rows filed before 13 September
+2026 carry the old placeholder note in both.
 
 ## The basis a player gives
 
@@ -396,7 +547,8 @@ includes the AUDIT-TEST-DELETE test row, carry that older British form, so a cou
 reach back through them should test for `Organi*ations:` or simply for the chapter name, which
 is unchanged either way.
 
-The seven chips are Beta Alpha Psi, ACFE, ASM, NABA, AAA, GMU Student and Professor. To count a chapter in
+The eight chips are Beta Alpha Psi, ACFE, ASM, NABA, AAA, GMU Student, Professor and Outside
+Mason, which is the practitioner route added on 13 September 2026. To count a chapter in
 the responses sheet, test the question A column for the name, for example
 `=COUNTIF(H2:H, "*ACFE*")`. A player who tapped two chapters counts in both, which is what a
 multi-select means, so the chapter counts sum to more than the number of responses. Count
@@ -411,17 +563,22 @@ else in the file depends on the form.
 ## The answer key and the case files
 
 Since 13 September 2026 both cases live outside the page, in `cases/halyard-v3.json` and
-`cases/brightwater-v2.json`. Each file carries the company, the threshold policy, the ledger
+`cases/brightwater-v3.json`. Each file carries the company, the threshold policy, the ledger
 rows, the memo sentences, the On file facts as verified case assumptions, the key, the error
-type, the reveal reason, the tell, and its own version and date. `cases/README.md` explains the
-format, the differences from the checker's Halyard sample, and what changed in this revision.
+type, the reveal reason, the tell, and its own version and date. An assessment case also carries
+`"mode": "assessment"` and the assessment note the bridge prints. `cases/README.md` explains the
+format, the evidence on each assessment line, the differences from the checker's Halyard sample,
+and what changed in this revision.
 
 The page fetches both files at load. When the fetch fails, which is what happens when the file is
 opened from a folder rather than served, it falls back to a generated copy written into
 `index.html` between the `BUILD:CASES-START` and `BUILD:CASES-END` markers. Edit the JSON, then
 run `node build-cases.cjs` to rewrite that copy. The script refuses to write if a card points at
 an account that is not in the ledger, if a card's figures do not tie, or if a card is missing its
-key, its reason or its tell.
+key, its reason or its tell. On an assessment case it also refuses if a memo states a dollar
+figure the account does not produce, states a percent that is not the movement, uses a direction
+word against the sign, or if the case does not carry exactly one no-explanation line with an
+empty memo.
 
 The key is `flag` on eight of the fourteen Halyard lines and `stand` on the six clean ones; three
 of the five Brightwater lines are `flag` and two are `stand`. Anyone who reads the source can read
@@ -429,7 +586,8 @@ the key, in the JSON as easily as in the page. That is the trade for instant fee
 the reason to send the link and not the file.
 
 The error types are wrong direction, unsupported driver, unsupported attribution, wrong account,
-timing, arithmetic, no explanation and clean line. "No explanation" covers the one line where the
+timing, arithmetic, no explanation and clean line. brightwater-v3 uses three of them:
+unsupported driver twice, no explanation once, and clean line twice. "No explanation" covers the one line where the
 memo says nothing about an account that owes commentary. "Unsupported driver" replaced "invented
 driver" on 13 September 2026, because a sentence with nothing behind it is not established from
 the supplied evidence, which is a different and smaller claim than saying it was fabricated.
@@ -444,7 +602,7 @@ case versions.
 
 ## Deploying
 
-`index.html`, `cases/halyard-v3.json` and `cases/brightwater-v2.json`. No libraries. The only
+`index.html`, `cases/halyard-v3.json` and `cases/brightwater-v3.json`. No libraries. The only
 build step is `node build-cases.cjs`, which refreshes the inline fallback inside `index.html` and
 has to be run after any edit to either case file. The only outbound request is the Figtree
 stylesheet from Google Fonts. Commit to `main` and push;
