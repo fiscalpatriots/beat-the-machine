@@ -21,9 +21,33 @@ the one network call the page makes, and it carries no ledger data.
 | Ledger | Four shapes, told apart by the reader itself. **Plain:** one account per line, account number (optional), account name, prior balance, current balance, tab separated, comma separated or column aligned with two or more spaces. **QuickBooks Online Profit and Loss Comparison:** the title block, an account label of the form `4000 Recurring managed services` in the first column, the two period columns and the `$ change` and `% change` columns that the report's Calculations dropdown adds, with `Income`, `Cost of Goods Sold` and `Expenses` as section headers and `Total ...`, `Gross Profit`, `Net Operating Income` and `Net Income` as totals. **Xero Income Statement with a comparison period:** `Income`, `Less Cost of Sales`, `Gross Profit`, `Less Operating Expenses`, `Net Profit`, each section closed by its own `Total` row. **Anything in between.** Dollar signs, thousands commas and (parentheses) for negatives are read. |
 | Memo | The drafted commentary as free text. A line beginning with a label such as `S1.`, `1.`, `(a)`, `a)` or a bullet is kept whole, so a numbered item that runs to two sentences stays one unit. Anything else is split at sentence boundaries and labelled S1, S2 and on. Word's curly quotes, en and em dashes and ellipsis are flattened first. |
 | Ratios (optional) | One per line, `Name = (4000 - 5000) / 4000`. Account numbers only, with plus, minus, times, divide and parentheses. Each ratio is computed for the prior month, the current month and the change between them, and expressed as a percent. |
-| Thresholds | A dollar floor (default $25,000), a percent floor (default 10), and the rule: **both legs** or **either leg**. The dollar rule is **more than** the floor and the percent rule is **at least** the floor, both decided unrounded. |
-| Zero prior balance | An explicit policy, because a percent of nothing does not exist: **owes commentary on any movement** (the default) or **excluded from the rule**. |
+| Thresholds | A dollar floor (default $25,000) and a percent floor (default 10), each wearing its unit, and the rule as a two-way control: **both legs** or **either leg**. The dollar rule is **more than** the floor and the percent rule is **at least** the floor, both decided unrounded. |
+| Zero prior balance | An explicit policy on a two-way control, because a percent of nothing does not exist: **owes commentary** on any movement (the default) or **excluded** from the rule. |
 | Close period, memo version, company or file name, reviewer name | Free text. They ride along in the CSV export and print at the head of the review summary, so a filed log says which close it came from and who signed it. |
+
+## The controls on the page
+
+The page opens on one sentence and three numbered steps, paste the ledger, paste the memo, read the
+queue, and then shows a screenshot of the Halyard run under them, so a first-time reader sees what
+comes back before deciding whether to paste anything.
+
+| Control | Where it is, and what it does |
+| --- | --- |
+| **Load sample** | In each pane's own header. It fills that pane alone with the Halyard case, which is the way to see one shape without disturbing the other pane. |
+| **Character count** | Beside it, so a long paste is visibly in the box. |
+| **Placeholder** | Two lines in each pane, showing the shapes that are accepted: a tab separated ledger line and a comma separated one, a numbered memo line and a labelled one. |
+| **Dollar floor, percent floor** | Numbers wearing their `$` and `%`. |
+| **Rule, zero prior balance** | Two-way controls rather than dropdowns, because each has exactly two settings and both are worth reading at a glance. |
+| **Run Second Pass** | The green button, with **Ctrl and Enter** beside it, which runs from anywhere on the page; on a Mac it reads Command and Enter. A run that ever took longer than a tenth of a second draws a line across the top of the page, and on anything a student pastes it never does. |
+| **Samples** | The four cases, loaded and run in one step. |
+| **Clear** | Empties every pane and every name, and puts the empty state back. |
+| **Before a run** | A quiet panel with a ledger sheet, a memo sheet and a check mark, and one line saying nothing has been checked yet. It goes as soon as a run paints results over it. |
+
+**Nothing on this page scrolls sideways**, at 320, 375, 390, 768, 1024, 1280 or 1600. The ledger
+pane keeps a monospace face and wraps a long line under itself rather than shrinking the type or
+running off the edge; the results table and the parse preview sit on percentage columns above 760
+and stack into labelled rows below it. It is verified by measuring `scrollWidth` against
+`clientWidth` on every element at every one of those widths, not just on the page.
 
 ## The parse preview, before anything is checked
 
@@ -140,12 +164,14 @@ the claim itself is checked.
 ## Coverage, not a failure count
 
 The results open with a **stacked bar** of the four sentence statuses in proportion, drawn in the
-page's own tokens, and a legend carrying the four marks and their counts: a green check for checked
-within scope, an ink square for needs review, a soft ring for not checked, a red cross for failed.
-The same four marks are the first column of the table, so a row and the bar say the same thing. A
-second line carries the counts the bar does not: sentences read, ledger rows used, rows skipped,
-silent lines, and the size of the reviewer queue. Under it the run identifier and the source
-version, and, when a row was skipped, the statement that the ledger was not covered in full.
+page's own tokens, which fills once when a run lands. Under it sit **four tiles** carrying the four
+marks and their counts: a green check for checked within scope, an ink square for needs review, a
+soft ring for not checked, a red cross for failed. Each count runs up to its number over a fifth of
+a second, and a reader whose system asks for less motion gets the number with no run-up. The same
+four marks are the first column of the table, so a row, a tile and the bar say the same thing. A
+line under the tiles carries the counts the bar does not: sentences read, ledger rows used, rows
+skipped, silent lines, and the size of the reviewer queue. Under it the run identifier and the
+source version, and, when a row was skipped, the statement that the ledger was not covered in full.
 
 A row the ledger reader could not use is printed under the strip in a red box, by line number, with
 the reason, on every run. Rows the reader drops on purpose, the header row and the title block above
@@ -155,8 +181,12 @@ The **reviewer queue** carries every failure, every binding conflict, every unma
 every skipped source row, every refused row, every malformed ratio, every unsupported numeric form,
 every discarded numeric column, every silent line and every account carrying two or more sentences.
 It is printed **below the table as a plain numbered list**, each item carrying the sentence, the
-finding and the questions beneath it; it is listed in the printed summary, exported in the CSV and
-the JSON, and repeated verbatim in Prompt 2. The reviewer queue now also carries **unparsed
+finding and the questions beneath it. Every question carries **Yes, No and Not on file** beside it,
+and what a reviewer ticks rides out with the run: into the human conclusion column of the CSV, into
+the JSON record as `reviewerAnswer`, and onto the line in the printed summary where an untouched
+question prints a blank rule for a pen. The queue is also repeated verbatim in Prompt 2. The
+table's own **Ask the controller** column carries the instruction in one imperative, and the
+question itself is asked in full in the queue, which is where it gets answered. The reviewer queue now also carries **unparsed
 figures**, **negated claims** and **binding conflicts**.
 
 ## The boundary policy
@@ -248,24 +278,32 @@ the findings in order: the failures go back to the preparer, the silent lines go
 as a question, the needs-review rows get a role confirmed or an ambiguity settled, and only then
 read the sentences that were checked within scope.
 
-**Print review summary** opens the browser's print dialog on a print stylesheet that hides the
+The four things you do with a finished run sit in one **Actions** bar at the foot of the results:
+Copy table, Download CSV, Print summary, Copy prompt. On a phone that bar sticks to the bottom of
+the window while the results are on screen, so the actions never sit below a long table. The JSON
+record is the underlined word beneath it.
+
+**Print summary** opens the browser's print dialog on a print stylesheet that hides the
 whole working page and prints a single document: a header carrying the company or file name, the
 close period, the memo version, the date, the reviewer name, the run identifier and the source
 version, then the rule with both boundary words and the zero prior balance policy spelled out, then
 the coverage strip with the line saying what "checked within scope" does and does not mean, then the
 full results table, then **every unresolved item carried out of the run**, then the sentences that
-were checked within scope with two blank rules each to write the driver answer and the timing answer
-on, then the silent lines with a blank rule each, then the evidence list from `PROTOCOL.md`, then a
+were checked within scope with the driver answer and the timing answer under each one, printed if
+they were ticked in the queue and left as a blank rule if they were not, then the silent lines with
+a blank rule each, then the evidence list from `PROTOCOL.md`, then a
 signature block for the second-pass reviewer and for the controller. Print it to PDF and it is the
 retained evidence the protocol asks for, in one file.
 
-**Copy results as table** pastes into a spreadsheet or an email. **Download CSV** writes one row per
-finding, in this column order: run id, run timestamp, close period, reviewed memo version, source
-version, evidence id, sentence id, sentence text, line, account, check, status, finding, proposed
-conclusion, human conclusion, unresolved issue, action owner, review time. The human conclusion and
-the review time are left blank for the person who signs, which is what
-`EVIDENCE-LOG-TEMPLATE.csv` is for; the columns are wider than that template because a sentence
-identifier, the exact sentence text and the source version now ride with every row.
+**Copy table** pastes into a spreadsheet or an email, and confirms with the word *Copied* for two
+seconds. **Copy prompt** copies Prompt 2 for the run that is on the page. **Download CSV** writes
+one row per finding, in this column order: run id, run timestamp, close period, reviewed memo
+version, source version, evidence id, sentence id, sentence text, line, account, check, status,
+finding, proposed conclusion, human conclusion, unresolved issue, action owner, review time. The
+human conclusion carries whatever was ticked in the queue and is otherwise blank for the person who
+signs, the review time is always theirs, and that is what `EVIDENCE-LOG-TEMPLATE.csv` is for; the
+columns are wider than that template because a sentence identifier, the exact sentence text and the
+source version now ride with every row.
 
 **Any cell that begins with `=`, `+`, `-` or `@` is written with a leading apostrophe**, so a
 spreadsheet reads an account named `=1+1` as text rather than evaluating it. **Download JSON
