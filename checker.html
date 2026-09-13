@@ -2199,7 +2199,7 @@ function draftPrompt(){
   p.push("Close period: "+($("period").value||"not stated")+
          ($("company").value?". Company: "+$("company").value:"")+".");
   p.push("Commentary rule: a movement owes an explanation when the change is more than "+money(floorD)+
-         " and the percent of the prior balance is at least "+floorP+" percent ("+rule+"). "+
+         " and the percent of the prior balance is at least "+floorP+" percent ("+rule+"), and "+
          zeroPolicyText(zeroPolicy())+".");
   p.push("");
   p.push("LEDGER");
@@ -2242,7 +2242,7 @@ function reviewerPrompt(){
   p.push("Close period: "+(S.period||"not stated")+". Memo version: "+(S.version||"not stated")+".");
   p.push("Commentary rule as set on this run: a movement owes an explanation when the change is more than "+
          money(S.floorD)+" (more than, not at least) and the percent of the prior balance is at least "+
-         S.floorP+" percent (at least, not more than), "+(S.rule==="both"?"both legs":"either leg")+". "+
+         S.floorP+" percent (at least, not more than), "+(S.rule==="both"?"both legs":"either leg")+", and "+
          zeroPolicyText(S.zero)+". Every threshold decision was made on unrounded values.");
   p.push("");
   p.push("COVERAGE OF THIS RUN. Do not read it as a clean bill.");
