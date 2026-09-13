@@ -241,15 +241,25 @@ this repository, because those are trademarks and a text lockup is the safe way 
 drill this is. The footer line under every screen reads "A drill by the ACFE student chapter and
 Beta Alpha Psi Theta Alpha at Mason".
 
-The colors are the published university values, not approximations:
+Both pages load one stylesheet, `assets/second-pass.css`, and neither repeats what is in it.
+That file is the design standard: the tokens, one type scale, a 4px spacing scale, one radius,
+one shadow, two buttons, one table, one figure, one status style and one focus ring. The
+comment at the top of the file states each rule in a sentence.
+
+Six values carry meaning and nothing else carries colour:
 
 | Name | Hex | Where it is used |
 | --- | --- | --- |
-| George Mason Green | `#005239` | the band, headings, the rank, the car, the chequered flag, the traveled track |
-| George Mason Gold | `#ffc733` | the rule under the band, the car cabin, the streak flame, earned badges, the top trophy |
-| Logo Black | `#333333` | body copy, the two call buttons, badge text on gold |
-| Accent, Navy | `#004f71` | the machine's voice, the account strip and the highlighted ledger row |
-| Accent, Red | `#cc4824` | the wrong-call verdict and negative changes (darkened to `#a83a1c` where it sets figures) |
+| Paper | `#f6f3ec` | the page |
+| Ink | `#1a1a1a` | every word, the primary button, the rule that matters |
+| Soft ink | `#5f6366` | secondary words, captions, labels, an inert status |
+| George Mason Green | `#005239` | the band, the car, the chequered flag, links, agreement, a passed check |
+| George Mason Gold | `#ffc733` | three places only: the rule under the band, the trophy, the underline beneath a headline numeral |
+| Muted red | `#a33a1c` | a decrease and a failed check |
+
+There are no tinted fills, no coloured left stripes and no coloured pills anywhere in the
+product. A status is a word set in small caps in one of four colours, never a badge, and the
+checker prints its coverage as one line of tabular counts rather than a wall of tiles.
 
 Those values come from the Mason brand guide color page,
 https://brand.gmu.edu/brand-guide/brand-colors. The Bynder toolkit page supplied by Khaled
@@ -258,8 +268,8 @@ Toolbox root without signing in, so the color and typography values were taken f
 published brand guide pages instead.
 
 Two brand rules shape the palette here. Accent colors are for emphasis only and never replace
-green and gold, and gold may not set text on white, so gold appears as a fill with Logo Black
-text on it and never as type on the paper. Every text pair on the band and on the cards clears
+green and gold, and gold may not set text on white, so gold never sets type on the paper and appears only as a
+rule, the trophy fill and the underline under a headline numeral. Every text pair on the band and on the cards clears
 4.5:1 at body size, the lowest being the footer and the earned line at 5.97:1.
 
 The type is Figtree, the university's web typeface, loaded from Google Fonts with the guidance's
@@ -267,14 +277,14 @@ own fallbacks behind it: Open Sans, then Franklin Gothic, then the system stack.
 request fails the page still sets correctly. Typeface guidance is at
 https://brand.gmu.edu/brand-guide/fonts-and-typography.
 
-The two call buttons stay neutral Logo Black on white. They are never green or gold, because the
-choice between them has to read as even.
+The two call buttons are the same outlined ink button, side by side. They are never green or
+gold and neither is filled, because the choice between them has to read as even.
 
 ## The ledger
 
 The ledger screen is a statement, not a list. A header block names the company and the close.
 Each account occupies three rows on a phone: the name and the account number, then May and June
-on one line and Change and Percent on the next, right aligned tabular figures at 15px on 20px
+on one line and Change and Percent on the next, right aligned tabular figures at 16px on 20px
 gutters, with a slim movement bar under them scaled to the largest absolute change in the month.
 Stacking the figures two to a line is what lets every column hold full type with thousands
 separators inside a 375px phone with no sideways scrolling; from 480px up the four sit on one
@@ -284,8 +294,8 @@ in financing rather than inside operating expense, so total operating expenses r
 in May and $1,188,800 in June and total financing reads $61,200 and $92,400.
 
 Nothing is tapped there. The Ledger button on every card and every reveal reopens the same
-component as a slide up sheet, with the account under review highlighted by a gold left border
-and a gold tint, and scrolled to. That account also prints as a strip at the top of its card.
+component as a slide up sheet, with the account under review highlighted by a tint at three percent and a bolder name, and
+scrolled to. That account also prints as a strip at the top of its card.
 One control opens the sheet and only one: the full width "See the full ledger" button under the
 strip on every card and every reveal, taller than 44px. The first card adds a one time hint line
 under it.
@@ -302,7 +312,7 @@ small caps in green over a hairline, subtotals carry a rule above them and the n
 heavier one, and alternate rows take a three percent green fill.
 
 The orientation page is two columns from 900px up: the ledger on the left and a sticky legend on
-the right holding "What earns a flag" with the six defect types as chips, with Continue at the
+the right holding "What earns a flag" with the six defect types as a list, with Continue at the
 foot of both columns. On a phone the legend comes first, collapsed to its title and the six
 chips until it is tapped, the ledger follows, and Continue is fixed to the bottom of the
 viewport.
@@ -315,7 +325,7 @@ picture of the movement with no figures repeated on it, the memo's sentence quot
 and neutral, with Let it stand on the left and Flag it on the right.
 
 Every card is scored. Flagging a line that was already right costs exactly what missing a
-problem costs, and the running pill reads `Right N of M` over the cards seen so far. The split
+problem costs, and the running count reads `Right N of M` over the cards seen so far. The split
 is eight problem lines and six clean ones, rebalanced on 12 September 2026 from the twelve and
 two the first version carried, because twelve and two let a player flag everything and score
 twelve. Neither number is ever printed for the player. Flagging all fourteen now scores eight
@@ -332,7 +342,7 @@ ties, every direction word is right and the threshold readings are correct, so t
 left on each line is whether the cause the memo names is carried by something on file.
 
 Between the bridge and the results the page suppresses everything that would leak correctness.
-There is no reveal after a call, no running score pill, no streak, no toast, and the whole track
+There is no reveal after a call, no running score, no streak, no mark, and the whole track
 comes off the screen so a car that moved or changed colour cannot answer the question for the
 player. The header shows progress and nothing else, as `3 of 5`. The basis chips are still
 collected on every line, because the reason a player held is the point of the exercise.
@@ -381,8 +391,8 @@ is a car that advances one segment per card, a pit lane under the main lane and 
 at the finish that lights once all fourteen are called. A right call gives the car a short forward burst with two speed lines behind it, a
 wrong call drops it into the pit lane for a beat before it rejoins, and three correct calls in a
 row light a flame behind it. Streaks build in three steps: two in a row gives the car a speed
-trail, three adds the gold flame and a "Streak 3" toast on the reveal, and five grows both and
-lights the track behind the car gold under an "On fire" toast. A wrong call ends the streak, the
+trail, three adds the flame and a "Streak 3" line on the reveal, and five grows both and lights
+the track behind the car gold under an "On fire" line. A wrong call ends the streak, the
 trail and the flame fade out and the car takes the pit lane dip. Every animation is 250ms or
 under, there is no sound, and everything is switched off under `prefers-reduced-motion: reduce`. The bar holds a fixed height from the first
 paint, so nothing on the page moves when the car does.
@@ -411,10 +421,10 @@ Ranks are Partner at 14, Manager at 13, Senior at 11 or 12, Staff at 9 or 10 and
 that. The end screen leads with the reward: a trophy drawn to the rank (bronze, silver, gold,
 and a starred cup for a clean sweep) with a single rise and shine that respects
 `prefers-reduced-motion`, the rank name, the codename, the earned line, the fresh case as
-"Fresh case: 4 of 5" in a gold ringed pill under that line, the three outcomes as
-caught, let stand correctly and false flags, the lap time and the best streak under those three
-tiles, then the badges. Only earned badges show, at most three, as a row of medallions with the
-icon in green on a paper disc inside a gold ring and the name under it, appearing on a 150ms
+"Fresh case: 4 of 5" under that line, then one line of tabular counts reading caught, let stand
+correctly and false flags, and a second reading the lap time and the best streak, then the
+badges. Only earned badges show, at most three, as a row of medallions with the icon in ink on a
+hairline disc and the name under it, appearing on a 150ms
 stagger that `prefers-reduced-motion` switches off. They are chosen in a fixed order so the best
 ones survive the cut: Clean sweep, Cold read, Hot lap, Nothing over-flagged, Arithmetic hawk,
 Invented driver caught, Read the silence, Right account, Timing and drift. "Cold read" is the
