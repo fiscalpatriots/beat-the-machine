@@ -41,9 +41,26 @@ p{margin:0 0 14px}
 .tiny{font-size:13px;color:var(--ink-soft)}
 
 #bar{position:sticky;top:0;z-index:5;background:var(--paper);padding:12px 0 8px}
-#track{height:8px;border-radius:99px;background:#e6e0d2;overflow:hidden}
-#fill{height:100%;width:0;background:var(--ink);border-radius:99px;transition:width .3s ease}
-#label{display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:13px;color:var(--ink-soft)}
+#track{line-height:0}
+#trk{display:block;width:100%;height:auto;overflow:visible}
+#fill{transition:width .32s cubic-bezier(.3,.8,.35,1)}
+#carpos{transition:transform .32s cubic-bezier(.3,.8,.35,1)}
+#carfx.burst{animation:burst .2s ease-out}
+#carfx.pit{animation:pit .2s ease-in-out}
+@keyframes burst{0%{transform:translateX(0)}45%{transform:translateX(4px)}100%{transform:translateX(0)}}
+@keyframes pit{0%{transform:translateY(0)}50%{transform:translateY(6.5px)}100%{transform:translateY(0)}}
+#burst{opacity:0}
+#burst.on{animation:speedlines .2s ease-out}
+@keyframes speedlines{0%{opacity:0;transform:translateX(3px)}35%{opacity:.85}100%{opacity:0;transform:translateX(-7px)}}
+#flame{opacity:0;transition:opacity .2s ease}
+#flame.on{opacity:1}
+#chq{opacity:.5;transition:opacity .2s ease}
+#chq.lit{opacity:1}
+@media (prefers-reduced-motion:reduce){
+  #fill,#carpos,#flame,#chq{transition:none}
+  #carfx.burst,#carfx.pit,#burst.on{animation:none}
+}
+#label{display:flex;justify-content:space-between;align-items:center;min-height:25px;margin-top:6px;font-size:13px;color:var(--ink-soft)}
 .scorepill{font-weight:700;color:var(--ink);background:#ece6d8;border-radius:99px;padding:3px 10px}
 
 #screen{flex:1;display:flex;flex-direction:column;justify-content:center;padding:8px 0 16px}
@@ -135,25 +152,28 @@ textarea{min-height:84px;resize:vertical}
 .stmthead b{display:block;font-size:17px;letter-spacing:-.2px}
 .stmthead span{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:2px}
 .stmttbl{width:100%;table-layout:fixed;border-collapse:collapse;font-variant-numeric:tabular-nums}
-.stmttbl col.c1{width:38%}.stmttbl col.c2{width:28%}.stmttbl col.c3{width:34%}
+.stmttbl col.c1{width:27.5%}.stmttbl col.c2{width:27.5%}.stmttbl col.c3{width:26%}.stmttbl col.c4{width:19%}
 .stmttbl th{font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-soft);
-  padding:9px 4px;text-align:right;border-bottom:1px solid var(--line);vertical-align:bottom}
-.stmttbl th:first-child{text-align:left}
-.stmttbl th i{display:block;font-style:normal;font-size:8.5px;letter-spacing:.3px;opacity:.8}
-.stmttbl td{padding:9px 4px;text-align:right;font-size:15px;border-bottom:1px solid #f0ece2;vertical-align:top}
-.stmttbl td:first-child{text-align:left}
+  padding:9px 3px;text-align:right;border-bottom:1px solid var(--line);vertical-align:bottom}
+.stmttbl td{padding:3px;text-align:right;font-size:15px;vertical-align:top;border:none}
 .stmttbl tr.z td{background:#fbf9f4}
 .stmttbl tr.grp td{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--ink-soft);
-  background:#f3efe6;padding:7px 6px;border-bottom:1px solid var(--line)}
+  background:#f3efe6;padding:7px 6px;text-align:left;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stmttbl tr.nmrow td{text-align:left;padding:9px 6px 3px;border-top:1px solid #f0ece2}
+.stmttbl tr.figrow td{padding:0 3px 9px}
+.stmttbl tr.grp+tr.nmrow td{border-top:none}
 .stmttbl .nm{display:block;font-size:13px;line-height:1.2;font-weight:600}
-.stmttbl .no{display:block;font-size:11px;color:var(--ink-soft);margin-top:1px}
-.stmttbl .mbar{display:block;height:4px;border-radius:99px;background:#efeadd;margin-top:6px;overflow:hidden}
+.stmttbl .no{display:inline-block;font-size:11px;color:var(--ink-soft);margin-top:1px}
+.stmttbl .mbar{display:block;height:4px;border-radius:99px;background:#efeadd;margin-top:5px;overflow:hidden}
 .stmttbl .mbar i{display:block;height:100%;background:var(--bar-old);border-radius:99px}
-.stmttbl .ch{display:block;font-size:13px;font-weight:600;margin-top:2px;color:var(--ink)}
-.stmttbl .ch.neg{color:var(--neg)}
-.stmttbl .ch i{display:block;font-style:normal;font-size:11.5px;font-weight:400;color:var(--ink-soft);margin-top:1px}
-.stmttbl tr.sub td{font-weight:700;border-top:1px solid var(--ink);border-bottom:none;background:#fff}
-.stmttbl tr.net td{font-weight:800;border-top:3px double var(--ink);background:#fff}
+.stmttbl td.ch{color:var(--ink);font-weight:600}
+.stmttbl td.ch.neg{color:var(--neg)}
+.stmttbl td.pc{color:var(--ink-soft)}
+.stmttbl td.pc.neg{color:var(--neg)}
+.stmttbl tr.subnm td{border-top:1px solid var(--ink);padding-top:9px;text-align:left}
+.stmttbl tr.subnm td,.stmttbl tr.subfig td{font-weight:700;background:#fff}
+.stmttbl tr.netnm td{border-top:3px double var(--ink);padding-top:10px;text-align:left}
+.stmttbl tr.netnm td,.stmttbl tr.netfig td{font-weight:800;background:#fff}
 .stmttbl tr.here td{background:var(--machine-bg)}
 .stmttbl tr.here td:first-child{box-shadow:inset 3px 0 0 var(--machine)}
 .stmttbl tr.here .mbar i{background:var(--machine)}
@@ -177,7 +197,7 @@ textarea{min-height:84px;resize:vertical}
   text-transform:none;letter-spacing:0;margin-top:2px}
 .stripnums .ch{display:block;font-size:15px;font-weight:700;color:var(--ink);text-transform:none;letter-spacing:0;margin-top:2px}
 .stripnums .ch.neg{color:var(--neg)}
-.stripnums .ch i{display:block;font-style:normal;font-size:12px;font-weight:400;color:var(--ink-soft);margin:0}
+.stripnums .ch i{display:block;font-style:normal;font-size:13px;font-weight:400;color:var(--ink-soft);margin:0}
 
 .final{text-align:center}
 .trophywrap{display:flex;justify-content:center;margin:4px 0 6px}
@@ -187,7 +207,10 @@ textarea{min-height:84px;resize:vertical}
 @keyframes sweep{from{transform:translateX(0)}to{transform:translateX(130px)}}
 @media (prefers-reduced-motion:reduce){.trophy,.trophy .glint{animation:none}.trophy .glint{opacity:0}}
 .rankbig{font-size:38px;font-weight:800;letter-spacing:-1px;line-height:1.05}
-.stats{display:flex;gap:8px;margin:0 0 18px}
+.stats{display:flex;gap:8px;margin:0 0 10px}
+.lapwrap{margin:0 0 18px}
+.lap{display:inline-block;border:1px solid var(--line);background:#fff;border-radius:99px;
+  padding:6px 14px;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
 .stats div{flex:1;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 6px}
 .stats b{display:block;font-size:24px;line-height:1.1;font-variant-numeric:tabular-nums}
 .stats span{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--ink-soft);margin-top:3px;line-height:1.2}
@@ -212,7 +235,7 @@ textarea{min-height:84px;resize:vertical}
 <body>
 <div id="app">
   <div id="bar">
-    <div id="track"><div id="fill"></div></div>
+    <div id="track"></div>
     <div id="label"><span id="step"></span><span id="score" class="scorepill hidden"></span></div>
   </div>
   <div id="screen"></div>
@@ -365,7 +388,7 @@ var CARDS = [
 
  {n:10, icon:"chip", acct:"6300", name:"Software subscriptions",
   prior:28500, current:30100,
-  memo:"Software subscriptions rose $1,600 because the inventory planning module added six seats across two depots at the contracted per seat rate, with two of those seats prorated from the middle of the month and the annual plan discount applied to the balance.",
+  memo:"Software subscriptions rose $1,600 because the inventory planning module added six seats across two depots at the contracted per seat rate, with two of those seats prorated from the middle of the month.",
   file:[THRESHOLD,
         "Warehouse wages, account 6000, moved $72,500 in the same month and carry no sentence at all."],
   key:"flag", type:"invented driver",
@@ -415,10 +438,8 @@ var CARDS = [
   post:{flag:"Accept", stand:"Reject"}}
 ];
 
-/* twelve of the fourteen lines carry a problem and two are clean. Neither number is ever
-   printed for the player, because knowing the split would make flagging everything a strategy. */
-var PROBLEMS = CARDS.filter(function(c){ return c.key==="flag"; }).length;
-var CLEANS   = CARDS.length - PROBLEMS;
+/* Twelve of the fourteen lines carry a problem and two are clean. Neither number is
+   printed anywhere, because a player who knew the split could flag everything. */
 
 /* ---------- state ---------- */
 /* organisations, tapped on the way in so the pooled results can be counted by chapter */
@@ -427,11 +448,11 @@ var ORGS = ["Beta Alpha Psi", "ACFE", "ASM", "NABA", "AAA", "GMU Student"];
 var S = {
   step:0, codename:"", orgs:[],
   calls:[], confPost:null, qd:null,
-  caught:0, cleared:0, falseFlags:0, streak:0, best:0, started:0
+  caught:0, cleared:0, falseFlags:0, streak:0, best:0, started:0,
+  lapStart:0, lapEnd:0
 };
 for(var i=0;i<14;i++){ S.calls.push(null); }
 
-var TOTAL = 19;
 var screen = document.getElementById("screen");
 
 function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
@@ -440,9 +461,76 @@ function money(v){ return "$" + Math.round(Math.abs(v)).toLocaleString("en-US");
 function pctOf(c){ return (Math.abs(c.current-c.prior)/c.prior*100).toFixed(1); }
 function dirWord(c){ return c.current>=c.prior ? "up" : "down"; }
 
+/* ---------- the track. Fourteen segments, one car, a chequered flag at the end. ---------- */
+var CAR_X0 = 9, CAR_X1 = 283;
+function buildTrack(){
+  var ticks = "", k, x;
+  for(k=1;k<14;k++){
+    x = CAR_X0 + (k/14)*(CAR_X1-CAR_X0);
+    ticks += '<rect x="'+(x-0.4).toFixed(1)+'" y="9" width="0.8" height="7" fill="#fff" opacity=".7"/>';
+  }
+  var chq = "", r, c;
+  for(r=0;r<4;r++){ for(c=0;c<2;c++){
+    if((r+c)%2===0) chq += '<rect x="'+(287.4+c*3.4)+'" y="'+(8+r*3.5)+'" width="3.4" height="3.5" fill="var(--ink)"/>';
+  } }
+  document.getElementById("track").innerHTML =
+    '<svg id="trk" viewBox="0 0 300 26" role="img" aria-label="Fourteen lines, one segment each">'+
+      '<rect x="4" y="19" width="292" height="3.4" rx="1.7" fill="#ece6d8"/>'+
+      '<rect x="4" y="8" width="292" height="9" rx="4.5" fill="#e6e0d2"/>'+
+      '<rect id="fill" x="4" y="8" width="0.1" height="9" rx="4.5" fill="var(--ink)" opacity=".28"/>'+
+      ticks+
+      '<g id="chq"><rect x="286.6" y="8" width="0.8" height="14.4" fill="var(--ink)"/>'+chq+'</g>'+
+      '<g id="carpos" style="transform:translate('+CAR_X0+'px,0px)">'+
+        '<g id="burst"><rect x="-21" y="11.3" width="7" height="1.2" rx=".6" fill="var(--ink-soft)"/>'+
+          '<rect x="-17.5" y="14.1" width="5" height="1.2" rx=".6" fill="var(--ink-soft)"/></g>'+
+        '<g id="flame"><path d="M-7.5 12.9 q-6.5 -3.4 -11.5 0 q5 3.4 11.5 0z" fill="#e08a2b"/>'+
+          '<path d="M-7.5 12.9 q-3.8 -1.9 -6.8 0 q3 1.9 6.8 0z" fill="#f3c54a"/></g>'+
+        '<g id="carfx">'+
+          '<rect x="-7" y="11" width="14" height="4.1" rx="1.6" fill="var(--ink)"/>'+
+          '<path d="M-2.8 11 L-1.4 8.3 L2.4 8.3 L3.9 11 Z" fill="var(--ink)"/>'+
+          '<circle cx="-4" cy="15.4" r="1.9" fill="#2a3a4f"/>'+
+          '<circle cx="4" cy="15.4" r="1.9" fill="#2a3a4f"/>'+
+        '</g>'+
+      '</g>'+
+    '</svg>';
+}
+function lapsDone(){ return S.calls.filter(function(v){ return v!==null; }).length; }
+function paintTrack(){
+  var done = lapsDone();
+  var x = CAR_X0 + (done/14)*(CAR_X1-CAR_X0);
+  var pos = document.getElementById("carpos"), f = document.getElementById("fill"),
+      fl = document.getElementById("flame"), cq = document.getElementById("chq");
+  if(pos) pos.style.transform = "translate("+x.toFixed(1)+"px,0px)";
+  if(f) f.setAttribute("width", Math.max(0.1, x-4).toFixed(1));
+  if(fl) fl.classList.toggle("on", S.streak>=3);
+  if(cq) cq.classList.toggle("lit", done>=14);
+}
+/* a right call is a short burst, a wrong one drops into the pit and rejoins */
+function carFx(right){
+  var fx = document.getElementById("carfx"), bu = document.getElementById("burst");
+  if(!fx) return;
+  fx.classList.remove("burst","pit");
+  if(bu) bu.classList.remove("on");
+  fx.getBoundingClientRect();
+  fx.classList.add(right ? "burst" : "pit");
+  if(right && bu) bu.classList.add("on");
+  setTimeout(function(){
+    fx.classList.remove("burst","pit");
+    if(bu) bu.classList.remove("on");
+  }, 240);
+}
+function lapMs(){
+  if(!S.lapStart) return 0;
+  return (S.lapEnd || Date.now()) - S.lapStart;
+}
+function lapText(){
+  var t = Math.round(lapMs()/1000), m = Math.floor(t/60), sec = t%60;
+  return m + ":" + (sec<10 ? "0" : "") + sec;
+}
+function lapMinutes(){ return String(Math.max(1, Math.round(lapMs()/60000))); }
+
 function progress(){
-  var f = document.getElementById("fill");
-  f.style.width = Math.round((S.step/TOTAL)*100)+"%";
+  paintTrack();
   var lab = document.getElementById("step");
   var sc = document.getElementById("score");
   if(S.step>=3 && S.step<=16){
@@ -486,38 +574,56 @@ function changeCell(prior, current){
   var pc = prior ? (d/prior*100).toFixed(1)+"%" : "0.0%";
   return '<span class="ch '+(d<0?"neg":"pos")+'">'+moveCell(d)+'<i>'+pc+'</i></span>';
 }
+/* the same movement as two statement cells, Change and Percent */
+function changeTds(prior, current){
+  var d = current - prior;
+  var pc = (prior ? (d/prior*100).toFixed(1) : "0.0")+"%";
+  var neg = d<0 ? " neg" : "";
+  return '<td class="ch'+neg+'">'+moveCell(d)+'</td><td class="pc'+neg+'">'+pc+'</td>';
+}
+/* one account is two rows: the name and its movement bar across the full width, then the
+   four figures under it, so May, June, Change and Percent all hold 15px type at 375px */
+function acctRows(r, acct, max, z){
+  var d = r[3]-r[2];
+  var w = Math.max(3, Math.round(Math.abs(d)/max*100));
+  var mark = (r[0]===acct) ? " here" : "";
+  var id = (r[0]===acct) ? ' id="hererow"' : "";
+  return '<tr class="nmrow'+(z%2?" z":"")+mark+'"'+id+'><td colspan="4">'+
+      '<span class="nm">'+esc(r[1])+'</span><span class="no">'+r[0]+'</span>'+
+      '<span class="mbar"><i style="width:'+w+'%"></i></span></td></tr>'+
+    '<tr class="figrow'+(z%2?" z":"")+mark+'"><td>'+money(r[2])+'</td><td>'+money(r[3])+'</td>'+
+      changeTds(r[2], r[3])+'</tr>';
+}
+function totalRows(label, pr, cu, cls){
+  return '<tr class="'+cls+'nm"><td colspan="4">'+label+'</td></tr>'+
+    '<tr class="'+cls+'fig"><td>'+money(pr)+'</td><td>'+money(cu)+'</td>'+changeTds(pr,cu)+'</tr>';
+}
 function statement(acct){
   var max = 0;
   ROWS.forEach(function(r){ max = Math.max(max, Math.abs(r[3]-r[2])); });
   var body = "", z = 0;
   GROUPS.forEach(function(g){
-    body += '<tr class="grp"><td colspan="3">'+g.title+'</td></tr>';
+    body += '<tr class="grp"><td colspan="4">'+g.title+'</td></tr>';
     g.accts.forEach(function(a){
       var r = rowFor(a); if(!r) return;
-      var d = r[3]-r[2];
-      var w = Math.max(3, Math.round(Math.abs(d)/max*100));
       z++;
-      body += '<tr class="line'+(z%2?" z":"")+(r[0]===acct?' here" id="hererow':'')+'">'+
-        '<td><span class="nm">'+esc(r[1])+'</span><span class="no">'+r[0]+'</span>'+
-          '<span class="mbar"><i style="width:'+w+'%"></i></span></td>'+
-        '<td>'+money(r[2])+'</td>'+
-        '<td>'+money(r[3])+changeCell(r[2], r[3])+'</td></tr>';
+      body += acctRows(r, acct, max, z);
     });
-    var pr = sumOf(g.accts,2), cu = sumOf(g.accts,3);
-    body += '<tr class="sub"><td>'+g.total+'</td><td>'+money(pr)+'</td><td>'+money(cu)+changeCell(pr,cu)+'</td></tr>';
+    body += totalRows(g.total, sumOf(g.accts,2), sumOf(g.accts,3), "sub");
   });
   var netP = sumOf(GROUPS[0].accts,2) - sumOf(GROUPS[1].accts,2) - sumOf(GROUPS[2].accts,2);
   var netC = sumOf(GROUPS[0].accts,3) - sumOf(GROUPS[1].accts,3) - sumOf(GROUPS[2].accts,3);
-  body += '<tr class="net"><td>Net of the accounts shown</td><td>'+money(netP)+'</td><td>'+money(netC)+changeCell(netP,netC)+'</td></tr>';
+  body += totalRows("Net of the accounts shown", netP, netC, "net");
   return '<div class="stmt">'+
-    '<div class="stmthead"><b>Halyard Provisioning Group</b><span>June close, prepared from the general ledger</span></div>'+
-    '<table class="stmttbl"><colgroup><col class="c1"><col class="c2"><col class="c3"></colgroup>'+
-    '<thead><tr><th>Account</th><th>May</th><th>June<i>change and percent</i></th></tr></thead>'+
+    '<div class="stmthead"><b>Halyard Provisioning Group, Inc.</b><span>June close, prepared from the general ledger</span></div>'+
+    '<table class="stmttbl"><colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup>'+
+    '<thead><tr><th>May</th><th>June</th><th>Change</th><th>Percent</th></tr></thead>'+
     '<tbody>'+body+'</tbody></table>'+
-    '<p class="cap">These are the fourteen lines the memo explains.</p></div>';
+    '<p class="cap">The fourteen accounts the memo was written against.</p></div>';
 }
 
-function openSheet(acct){
+function openSheet(acct){
+
     var d = document.createElement("div");
   d.id="sheet";
   d.innerHTML = '<div id="sheetbody">'+statement(acct)+'<button class="btn" id="closesheet">Close</button></div>';
@@ -569,8 +675,8 @@ function intro(){
   screen.innerHTML =
     icon("robot", true)+
     '<h1>Second Pass:<br>Beat the Machine</h1>'+
-    '<p>Halyard\'s controller handed the June ledger to an AI assistant and had it write the close commentary. The numbers it quotes are all correct, so there\'s nothing to catch there.</p>'+
-    '<p>The reasons it gives are just guesses, since nothing in a ledger says why. A few are honest errors, and a few are wrong in a way that would satisfy a reviewer and stop them checking. You\'ll read fourteen lines and flag the ones that don\'t hold up.</p>'+
+    '<p>The June close commentary at Halyard wasn\'t written by a person. The controller gave an AI assistant the ledger and asked it to explain the month, and every figure it quotes is right.</p>'+
+    '<p>The explanations are the assistant\'s own guesswork, because the ledger doesn\'t carry any. Enough of them are wrong in a way that would satisfy a reviewer and stop them looking further. You\'ll read fourteen lines and flag the ones that don\'t hold.</p>'+
     '<button class="btn" id="go">Play</button>'+
     '<p class="tiny" style="margin-top:14px">About ten minutes, and nothing here identifies you.</p>';
   document.getElementById("go").addEventListener("click", function(){ S.started = Date.now(); go(1); });
@@ -603,16 +709,6 @@ function identity(){
   upd();
 }
 
-function pick(iconName, head, sub, options, key, next){
-  var html = icon(iconName)+'<h2>'+head+'</h2>'+(sub?'<p class="sub">'+sub+'</p>':'');
-  options.forEach(function(o){
-    html += '<button class="choice'+(S[key]===o.v?" on":"")+'" data-v="'+esc(o.v)+'"><span class="tick"></span><span>'+o.t+'</span></button>';
-  });
-  screen.innerHTML = html;
-  Array.prototype.forEach.call(screen.querySelectorAll(".choice"), function(b){
-    b.addEventListener("click", function(){ S[key] = b.getAttribute("data-v"); go(next); });
-  });
-}
 
 
 
@@ -642,6 +738,7 @@ function roundOne(){
 
 function card(i){
   var c = CARDS[i];
+  if(!S.lapStart) S.lapStart = Date.now();
   var memoBlock = c.memo
     ? '<div class="says"><svg viewBox="0 0 24 24">'+I.robot+'</svg> What the memo says</div><p class="quote">'+esc(c.memo)+'</p>'
     : '<div class="says"><svg viewBox="0 0 24 24">'+I.robot+'</svg> What the memo says</div><p class="quote">Nothing. This account is not mentioned anywhere in the commentary.</p>';
@@ -670,6 +767,7 @@ function card(i){
 function answer(i, val){
   var c = CARDS[i];
   S.calls[i] = val;
+  if(i === 13) S.lapEnd = Date.now();
   var right = (val === c.key);
   if(right){
     if(c.key==="flag") S.caught++; else S.cleared++;
@@ -679,6 +777,7 @@ function answer(i, val){
     if(val === "flag") S.falseFlags++;
     S.streak = 0;
   }
+  carFx(right);
   reveal(i, right);
 }
 
@@ -700,8 +799,8 @@ function reveal(i, right){
   if(right && c.key==="flag" && c.type==="invented driver") celebration = '<span class="bonus">Invented driver caught</span>';
   var streakLine = "";
   if(right && S.streak>=3) streakLine = '<p class="streak">'+S.streak+' in a row.</p>';
-  var costLine = c.key==="stand"
-    ? '<p class="tiny" style="margin:8px 0 0">Flagging this one sends the controller back to a line that was already right, and that is time nobody gets back.</p>'
+  var costLine = (!right && c.key==="stand")
+    ? '<p class="tiny" style="margin:8px 0 0">A false flag scores the same as a line that gets past you.</p>'
     : "";
   screen.innerHTML =
     '<div class="cardhead plain"><span class="revlabel">Line '+c.n+' of 14</span>'+ledgerBtn(c.acct)+'</div>'+
@@ -836,7 +935,7 @@ function payload(){
   p["entry."+E.qa] = summaryA();
   p["entry."+E.qb] = summaryB();
   p["entry."+E.qc] = "Not asked in this version.";
-  p["entry."+E.qd] = String(Math.max(1, Math.round((Date.now()-S.started)/60000)));
+  p["entry."+E.qd] = lapMinutes();
   var fbzx = String(Math.floor(Math.random()*9007199254740991));
   p["fvv"] = "1";
   p["pageHistory"] = "0,1,2";
@@ -858,7 +957,7 @@ function asText(){
   out.push("Confidence after: "+(S.confPost*10)+"%");
   out.push(summaryA());
   out.push(summaryB());
-  out.push("Minutes: "+Math.max(1, Math.round((Date.now()-S.started)/60000)));
+  out.push("Lap time: "+lapText()+", posted as "+lapMinutes()+" minute(s)");
   return out.join("\n");
 }
 
@@ -882,7 +981,7 @@ function submitScreen(){
   var timer = setTimeout(function(){ if(!settled){ settled = true; failScreen(); } }, 12000);
   sink.addEventListener("load", function(){
     if(settled) return;
-    settled = true; clearTimeout(timer); go(26);
+    settled = true; clearTimeout(timer); go(19);
   });
   try{ f.submit(); }
   catch(err){ clearTimeout(timer); settled = true; failScreen(); }
@@ -901,7 +1000,7 @@ function failScreen(){
     t.select(); t.setSelectionRange(0,99999);
     try{ document.execCommand("copy"); this.textContent = "Copied"; }catch(e){ this.textContent = "Select and copy"; }
   });
-  document.getElementById("retry").addEventListener("click", function(){ submitted = false; go(25); });
+  document.getElementById("retry").addEventListener("click", function(){ submitted = false; go(18); });
 }
 
 /* ---------- the trophy, drawn to the tier ---------- */
@@ -945,8 +1044,8 @@ function badges(){
 
 function earnedLine(){
   var right = S.caught + S.cleared;
-  if(right===14) return "You called all fourteen the way the ledger has them.";
-  if(right===0) return "None of the fourteen went the way the ledger has them.";
+  if(right===14) return "Every one of your fourteen calls matches the ledger.";
+  if(right===0) return "None of your fourteen calls match the ledger.";
   return right + " of your fourteen calls match the ledger.";
 }
 
@@ -955,7 +1054,7 @@ function done(){
   var miss = missedCards();
   var coachInner;
   if(!miss.length){
-    coachInner = '<div class="coach"><h3>Nothing to fix</h3><p class="tiny" style="margin:0">You called all fourteen lines the way the ledger has them.</p></div>';
+    coachInner = '<div class="coach"><h3>Nothing to fix</h3><p class="tiny" style="margin:0">This read out lists the lines that got past you, and there are none.</p></div>';
   } else {
     coachInner = '<div class="coach"><h3>Where it got past you</h3>'+
       miss.map(function(c){
@@ -982,6 +1081,7 @@ function done(){
         '<div><b>'+S.cleared+'</b><span>let stand correctly</span></div>'+
         '<div><b>'+S.falseFlags+'</b><span>false flags</span></div>'+
       '</div>'+
+      '<p class="lapwrap"><span class="lap">Lap time '+lapText()+'</span></p>'+
       '<div class="badges">'+
         b.map(function(x){
           return '<span class="badge'+(x.on?" on":"")+'"><svg viewBox="0 0 24 24">'+I[x.i]+'</svg>'+x.t+'</span>';
@@ -994,7 +1094,6 @@ function done(){
       '<div id="missbox" hidden>'+coachInner+'</div>'+
       '<p class="tiny" style="margin-top:18px">Ranks and the top three codenames get read out at the next meeting.</p>'+
     '</div>';
-  document.getElementById("fill").style.width = "100%";
   document.getElementById("step").textContent = "Done";
   document.getElementById("score").classList.add("hidden");
   var mb = document.getElementById("missbox"), sm = document.getElementById("showmiss");
@@ -1020,6 +1119,7 @@ function done(){
   });
 }
 
+buildTrack();
 render();
 window.__BTM = S;
 window.__BTM_CARDS = CARDS;

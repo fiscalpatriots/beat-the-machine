@@ -1,59 +1,71 @@
 # Second Pass: Beat the Machine
 
-A ten minute reviewer's game for the George Mason ACFE student chapter. An assistant wrote
+A ten minute reviewer's game for the George Mason ACFE student chapter. An AI assistant wrote
 Halyard's June close commentary, and the player is the second pass on it.
 
-The path from opening the link to the first card is three screens: the intro, one screen for the
-codename and the chapters, and the ledger.
+Live at https://fiscalpatriots.github.io/beat-the-machine/ from `main`.
 
-The ledger screen is a statement, not a list. A header block names the company and the close, the
-accounts sit under Revenue, Cost of sales and Operating expenses with subtotals and a net line,
-figures are right aligned at 15px with thousands separators, negative changes print in a muted red,
-and a slim bar under each account name is scaled to the largest absolute change. Nothing is tapped
-there; it is orientation, and the Ledger button on every card and reveal reopens the same component
-as a slide up sheet with the account under review highlighted and scrolled to.
+## The path in
 
-Then fourteen accounts come one at a time. Each card carries the account's statement line, a two bar
-picture of the movement with no figures repeated on it, the memo's sentence quoted once, and an "On
-file" panel holding only facts not already visible above it. The two calls are equal weight and
-neutral, with Let it stand on the left. Every card is scored, so flagging a line that was already
-right costs exactly what missing a problem costs, and the running pill reads right over cards seen.
-The split is twelve problem lines and two clean ones, which is what the source exercise contains,
-and neither number is ever shown to the player.
+Three screens stand between the link and the first card.
+
+1. The opening screen, two short paragraphs. Three candidate wordings live in
+   `INTRO-CANDIDATES.md` and the one marked live there is the one in `index.html`.
+2. One screen for the codename and the chapters, on the same screen and both required.
+3. The ledger, read once as orientation with a single Continue.
+
+Nothing else is asked on the way in. The one tap after the round is the confidence scale.
+
+## The ledger
+
+The ledger screen is a statement, not a list. A header block names the company and the close.
+Each account occupies two rows: the name, the account number and a slim movement bar scaled to
+the largest absolute change in the month, then May, June, Change and Percent underneath it as
+four right aligned columns of tabular figures at 15px. Splitting the account name onto its own
+row is what lets all four figure columns hold full type with thousands separators inside a
+375px phone with no sideways scrolling. Negative changes print in a muted red. Revenue, cost of
+sales and operating expenses each carry a subtotal, and a net line closes the statement.
+
+Nothing is tapped there. The Ledger button on every card and every reveal reopens the same
+component as a slide up sheet, with the account under review highlighted and scrolled to, and
+that account also prints as a strip at the top of its card.
+
+## The round
+
+Fourteen accounts come one at a time. Each card carries the account's ledger strip, a two bar
+picture of the movement with no figures repeated on it, the memo's sentence quoted once, and an
+"On file" panel holding only facts not already visible above it. The two calls are equal weight
+and neutral, with Let it stand on the left and Flag it on the right.
+
+Every card is scored. Flagging a line that was already right costs exactly what missing a
+problem costs, and the running pill reads `Right N of M` over the cards seen so far. The split
+is twelve problem lines and two clean ones, which is what the source exercise contains, and
+neither number is ever printed for the player. A player who flags all fourteen lands on Senior,
+which is the point of scoring the clean lines.
+
+## The track
+
+The progress bar is a race track drawn as one inline SVG in `buildTrack()`. Fourteen segments,
+a car that advances one segment per card, a pit lane under the main lane and a chequered flag at
+the finish. A right call gives the car a short forward burst with two speed lines behind it, a
+wrong call drops it into the pit lane for a beat before it rejoins, and three correct calls in a
+row light a flame behind it. Every animation is 200ms, there is no sound, and everything is
+switched off under `prefers-reduced-motion: reduce`. The bar holds a fixed height from the first
+paint, so nothing on the page moves when the car does.
+
+The run is timed from the first card to the fourteenth call. The end screen prints it as
+`Lap time 6:42` beside the score, and the same figure rounded to whole minutes is what goes into
+the form's elapsed minutes question.
+
+## The end screen
 
 The end screen leads with the reward: a trophy drawn to the rank (bronze, silver, gold, and a
-starred cup for a clean sweep), the rank name, the codename, the three outcomes as caught, let stand
-correctly and false flags, five badges with the unearned ones greyed, and the share line with a Copy
-button. The coaching sits behind one tap under it. Ranks are Trainee, Staff, Senior, Manager and
-Partner, off correct calls out of fourteen, and a player who flags all fourteen lands on Senior.
-
-Answers post straight into the existing Google Form's responses, so the leaderboard and the pooled
-results are unchanged.
-
-One file, `index.html`. No libraries, no build step, no tracking.
-
-## Publish on GitHub Pages
-
-Create a public repository named `beat-the-machine` under the `fiscalpatriots` account first, with
-no readme, no licence and no gitignore. The repository here already has a commit on `main`.
-
-Then, from `C:\Users\Khaled\Documents\beat-the-machine`, two commands:
-
-```
-git remote add origin https://github.com/fiscalpatriots/beat-the-machine.git
-git push -u origin main
-```
-
-Then in the repository on GitHub, open Settings, then Pages, and set Source to "Deploy from a
-branch", branch `main`, folder `/ (root)`. Save.
-
-The site appears within a minute or two at:
-
-```
-https://fiscalpatriots.github.io/beat-the-machine/
-```
-
-That URL is what goes into the chapter message in place of the raw Google Form link.
+starred cup for a clean sweep) with a single rise and shine that respects
+`prefers-reduced-motion`, the rank name, the codename, the earned line, the three outcomes as
+caught, let stand correctly and false flags, the lap time under those three tiles, five badges
+with the unearned ones greyed, and the share line with a Copy button. The coaching sits behind
+one tap under it. Ranks are Trainee, Staff, Senior, Manager and Partner, off correct calls out
+of fourteen.
 
 ## Where the data lands
 
@@ -63,54 +75,81 @@ Every answer posts to the live form:
 https://docs.google.com/forms/d/e/1FAIpQLSfteTMPZrDKhYmRjxPKADAZERjyDntdMLIVZMH-FoIrcHusKg/formResponse
 ```
 
-All 38 questions are mapped to their `entry.NNNN` ids in the `E` object at the top of the script.
-The three pages post as one request with `pageHistory=0,1,2`. If a post fails the player is shown
-their answers as copyable text rather than losing them.
+All 38 questions are mapped to their `entry.NNNN` ids in the `E` object at the top of the
+script, and all 38 are populated on every submission. The three pages post as one request with
+`pageHistory=0,1,2`. If the post fails the player is shown their answers as copyable text and a
+Try sending again button that reruns the post rather than losing the round.
 
 Nobody types anything after the round. The fourteen calls post as `Accept` or `Reject` so the
 existing multiple choice questions keep working, and every text question receives a generated
 summary instead of player prose: the fourteen "Why" fields carry the call, the key and the error
-type for that line, question A carries the organisations, and question B carries the lines missed,
-the pattern, the result and the longest run.
-
-Three questions the form marks required are no longer asked on screen (expected quality, confidence
-before the round, and month end close experience). They post fixed placeholder values and question B
-says so in the same cell, so nobody reads them as player answers. The elapsed minutes come off the
-clock rather than a tap.
+type for that line, question A carries the organisations, and question B carries the lines
+missed, the pattern, the result and the longest run. The elapsed minutes question receives the
+lap time, off the clock rather than a tap.
 
 Card one is inverted on purpose. Its form question asks the player to agree or disagree that
-nothing is owed on account 4200, so flagging that line posts `Reject` while flagging any other line
-posts `Accept`. Each card carries its own `post` mapping for that reason.
+nothing is owed on account 4200, so flagging that line posts `Reject` while flagging any other
+line posts `Accept`. Each card carries its own `post` mapping for that reason.
+
+## The placeholders
+
+Three questions the form marks required are no longer asked on screen, because the path to the
+first card is three screens and these are not part of it:
+
+| Form question | Entry id | Posted value |
+| --- | --- | --- |
+| Expected quality of the commentary | `entry.53437742` | `3` |
+| Confidence before the round | `entry.538678778` | `5` |
+| Month end close experience | `entry.1421470415` | `Once or twice` |
+
+Question B says so in the same cell, in the sentence beginning "Intake scales", so nobody in the
+responses sheet reads them as player answers. Filter them out before any analysis. The round one
+free text field (`entry.1115022539`) carries the same kind of note, because the ledger screen is
+orientation only and collects no picks.
 
 ## Counting the organisations
 
-The intake screen asks which chapters the player belongs to and the taps ride at the front of
-question A (`entry.117652481`) behind a fixed prefix, so no new form question was needed. The cell
-reads:
+The intake screen asks which chapters the player belongs to, multi-select, at least one. The
+taps ride at the front of question A (`entry.117652481`) behind a fixed prefix, so no new form
+question was needed. The cell reads:
 
 ```
-Organisations: ACFE; NABA. Round one picks that did carry a problem: ...
+Organisations: ACFE; NABA. Not collected. The ledger screen is orientation only in this version.
 ```
 
-The six chips are Beta Alpha Psi, ACFE, ASM, NABA, AAA and GMU Student, and more than one can be
-tapped. To count a chapter in the responses sheet, test that column for the name, for example
-`=COUNTIF(H2:H, "*ACFE*")` against the question A column. A player who tapped two chapters counts
-in both, which is what a multi-select means.
+The six chips are Beta Alpha Psi, ACFE, ASM, NABA, AAA and GMU Student. To count a chapter in
+the responses sheet, test the question A column for the name, for example
+`=COUNTIF(H2:H, "*ACFE*")`. A player who tapped two chapters counts in both, which is what a
+multi-select means, so the chapter counts sum to more than the number of responses. Count
+players with `=COUNTA(...)` on the codename column instead.
 
 ## If the form is ever rebuilt
 
-Rebuilding the Google Form issues new `entry.NNNN` ids. Fetch the responder page, read the ids out
-of the `FB_PUBLIC_LOAD_DATA_` block, and replace the `E` object and `FORM_POST` URL. Nothing else
-in the file depends on the form.
+Rebuilding the Google Form issues new `entry.NNNN` ids. Fetch the responder page, read the ids
+out of the `FB_PUBLIC_LOAD_DATA_` block, and replace the `E` object and `FORM_POST` URL. Nothing
+else in the file depends on the form.
 
 ## The answer key
 
 The key lives in the `CARDS` array as `key`, which is `flag` on the twelve lines that carry a
-problem and `stand` on the two clean ones, alongside the error type, the one line reason shown at
-the reveal, and the tell the end screen uses when a player misses that line. Anyone who reads the
-source can read the key. That is the trade for instant feedback, and it is the reason to send the
-link and not the file.
+problem and `stand` on the two clean ones, alongside the error type, the one line reason shown
+at the reveal, and the tell the end screen uses when a player misses that line. Anyone who reads
+the source can read the key. That is the trade for instant feedback, and it is the reason to
+send the link and not the file.
 
 The error types are wrong direction, invented driver, wrong account, timing, arithmetic, no
-explanation and clean line. "No explanation" covers the one line where the memo simply says nothing
-about an account that owes commentary, which none of the other names fits.
+explanation and clean line. "No explanation" covers the one line where the memo simply says
+nothing about an account that owes commentary, which none of the other names fits.
+
+## Deploying
+
+One file, `index.html`. No libraries, no build step, no tracking. Commit to `main` and push;
+GitHub Pages serves the root of `main` and the change is live within a minute or two.
+
+```
+git add -A && git commit -m "..." && git push
+curl -s https://fiscalpatriots.github.io/beat-the-machine/index.html | diff - index.html
+```
+
+The source of truth for the content is
+`Coach Dashboard HQ/drafts-2026-09-05-aina/EXERCISE-case-01-form-rev2.md`.
