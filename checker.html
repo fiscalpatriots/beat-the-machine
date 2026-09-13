@@ -11,42 +11,58 @@
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/second-pass.css">
 <style>
-/* Page layout only. Everything shared lives in assets/second-pass.css.
-   The page follows review.html: a masthead, a standfirst, then work. */
+/* Page layout only. Every component this page uses lives in
+   assets/second-pass.css, including the band, the step strip, the segmented
+   control, the stat tiles, the actions bar and the table that cannot scroll
+   sideways. What is left here is where those pieces sit on this page.
+
+   THE WIDTH RULE, stated once. Nothing on this page scrolls sideways at any
+   width. The ledger pane wraps instead of shrinking its type: a ledger line is
+   sixty characters wide and a phone is not, so the monospace face stays at 13px
+   and the line wraps under itself. The results table and the parse preview
+   stack into rows below 760px and sit on percentage columns above it. */
 #app{max-width:1080px;margin:0 auto;padding:0 var(--gut) var(--s9);min-height:100vh;
   display:flex;flex-direction:column}
 #app>*{min-width:0;max-width:100%}
 
-/* ---------- masthead and standfirst ---------- */
+/* ---------- masthead ---------- */
 .masthead{padding:var(--s7) 0 0}
 .masthead .inst{font-size:var(--t-label);letter-spacing:.11em;text-transform:uppercase;
   font-weight:700;color:var(--mason)}
 .masthead .coll{font-size:var(--t-label);letter-spacing:.11em;text-transform:uppercase;
   color:var(--ink-soft);margin-top:3px}
 .masthead hr{border:0;border-top:3px solid var(--gold);margin:var(--s3) 0 0}
-.titleblock{padding:var(--s6) 0 var(--s6);max-width:68ch}
-.titleblock h1{margin:0;font-size:34px;line-height:1.12;letter-spacing:-.02em;color:var(--mason)}
-.titleblock .standfirst{margin:var(--s3) 0 0;font-size:var(--t-lead);line-height:1.5}
-@media (max-width:620px){.titleblock h1{font-size:26px}}
 
-/* ---------- the two input panes ---------- */
+/* ---------- the case figure under the band ---------- */
+figure.shot{margin:0 0 var(--s7)}
+figure.shot img{border-radius:8px;border:1px solid var(--rule)}
+
+/* ---------- the two input panes, each a card with a header row ---------- */
 .panes{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s5);margin:0}
 @media (min-width:860px){.panes{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
-.pane{min-width:0}
-.pane label{display:block;font-size:var(--t-label);font-weight:700;text-transform:uppercase;
-  letter-spacing:.08em;color:var(--ink-soft);margin:0 0 var(--s2)}
-.pane textarea{min-height:196px}
-.pane textarea#ledger{font-family:var(--mono);font-size:var(--t-small);white-space:pre;overflow:auto}
+.pane{min-width:0;display:flex;flex-direction:column}
+.panehead{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s2) var(--s3);
+  margin:0 0 var(--s3);min-width:0}
+.panehead label{flex:1 1 auto;min-width:0;margin:0;font-size:var(--t-label);font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft)}
+.panehead .btn-text{min-height:0;padding:0;font-size:var(--t-small);font-weight:600}
+.panehead .cc{flex:0 0 auto;font-size:var(--t-label);color:var(--ink-soft);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.pane textarea{min-height:196px;max-width:100%}
+/* the ledger wraps rather than scrolls, which is the whole of the width rule */
+.pane textarea#ledger{font-family:var(--mono);font-size:13px;line-height:1.55;
+  white-space:pre-wrap;overflow-wrap:anywhere;overflow-x:hidden;overflow-y:auto}
+.pane textarea#memo{white-space:pre-wrap;overflow-wrap:anywhere;overflow-x:hidden}
 .hint{margin:var(--s2) 0 0;font-size:var(--t-small);line-height:1.5;color:var(--ink-soft)}
 
-/* ---------- the settings: one slim row, the rest behind a line ---------- */
+/* ---------- the settings ---------- */
 .settings{margin:var(--s6) 0 0;border-top:1px solid var(--rule);padding-top:var(--s5)}
 .setrow{display:flex;flex-wrap:wrap;gap:var(--s4) var(--s5);align-items:flex-end}
-.setrow .f label{display:block;font-size:var(--t-label);font-weight:700;text-transform:uppercase;
-  letter-spacing:.08em;color:var(--ink-soft);margin:0 0 var(--s1);white-space:nowrap}
-.setrow input,.setrow select{min-height:40px;padding:var(--s2) var(--s3);font-size:var(--t-small)}
-.setrow .f.n input{width:8em}
-.setrow .f.w select{width:auto;min-width:12em;max-width:100%}
+.setrow .f{min-width:0}
+.setrow .f>label,.setrow .f>.lab{display:block;font-size:var(--t-label);font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);margin:0 0 var(--s2);
+  white-space:nowrap}
+.setrow .f.n .adorn{width:9.5em}
 details.more{margin:var(--s5) 0 0}
 details.more>summary{cursor:pointer;list-style:none;display:inline-flex;gap:var(--s2);
   align-items:baseline;min-height:34px;font-size:var(--t-small);font-weight:600;color:var(--ink-soft)}
@@ -54,26 +70,26 @@ details.more>summary::-webkit-details-marker{display:none}
 details.more>summary::before{content:"+";font-weight:700}
 details.more[open]>summary::before{content:"\2212"}
 details.more>summary:hover{color:var(--ink)}
-.moregrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+.moregrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
   gap:var(--s4);margin:var(--s4) 0 var(--s4)}
 .moregrid label,.ratiobox label{display:block;font-size:var(--t-label);font-weight:700;
   text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);margin:0 0 var(--s2)}
-.ratiobox textarea{min-height:72px}
+.ratiobox textarea{min-height:72px;white-space:pre-wrap;overflow-wrap:anywhere;overflow-x:hidden}
 .runrow{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center;margin:var(--s5) 0 0}
-.runrow select{width:auto;max-width:100%;min-width:min(100%,20em)}
+.runrow select{width:auto;max-width:100%;min-width:min(100%,19em)}
 
 .note{margin:var(--s4) 0 0;padding:var(--s4);border:1px solid var(--rule-strong);
   border-radius:var(--radius);font-size:var(--t-small);line-height:1.55}
 .note b{display:block;margin-bottom:var(--s1)}
 .note ul{margin:var(--s2) 0 0;padding-left:var(--s5)}
-.note li{margin:0 0 var(--s1)}
+.note li{margin:0 0 var(--s1);overflow-wrap:anywhere}
 .note.bad{border-color:var(--red)}
 .note.bad>b{color:var(--red);font-size:var(--t-label);text-transform:uppercase;letter-spacing:.09em}
 
 #out{margin:var(--s7) 0 0}
 #msg{margin:var(--s4) 0 0}
 
-/* ---------- the visual summary: one stacked bar, then a legend ---------- */
+/* ---------- the summary: one stacked bar, then four tiles ---------- */
 .summary{margin:0 0 var(--s5)}
 .summary>svg{display:block;width:100%;height:auto}
 .legend{display:flex;flex-wrap:wrap;gap:var(--s3) var(--s6);margin:var(--s4) 0 0;padding:0;list-style:none}
@@ -81,76 +97,83 @@ details.more>summary:hover{color:var(--ink)}
 .legend .n{font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
 .legend .k{color:var(--ink-soft)}
 svg.mark{flex:0 0 auto;width:14px;height:14px;display:inline-block;vertical-align:-2px}
+.stat .mk{display:flex;align-items:center;gap:var(--s2)}
 
 /* ---------- the results table ---------- */
-.tablewrap{max-width:100%;margin:var(--s5) 0 0;overflow-x:auto;overflow-y:visible}
-.tablewrap table{min-width:760px;font-variant-numeric:tabular-nums}
-.tablewrap thead th{position:sticky;top:0;z-index:2;background:var(--paper);padding-top:var(--s3)}
-table col.t0{width:46px}table col.t1{width:7%}table col.t2{width:24%}
-table col.t3{width:11%}table col.t4{width:34%}table col.t5{width:21%}
+/* Above 760 the columns are percentages of the container, so the table is
+   always exactly as wide as the space it has. Below it every row stacks. */
+table col.t0{width:30px}table col.t1{width:7%}table col.t2{width:25%}
+table col.t3{width:11%}table col.t4{width:35%}table col.t5{width:18%}
 td.mk{text-align:center;padding-left:0;padding-right:0}
 td.subj b{display:block;font-size:var(--t-label);letter-spacing:.07em;text-transform:uppercase;
   color:var(--ink-soft);margin-bottom:2px}
 td.chk{font-weight:600}
 td.res .det{display:block;margin-top:2px}
 td.ask{color:var(--ink-soft)}
-td.ask ul{margin:0;padding-left:var(--s4)}
-td.ask li{margin:0 0 var(--s1)}
-td.ask li:last-child{margin:0}
 .rolelab{display:block;font-size:var(--t-label);font-weight:700;text-transform:uppercase;
   letter-spacing:.08em;color:var(--ink-soft);margin:var(--s3) 0 var(--s1)}
-.rolesel{max-width:240px;min-height:38px;padding:var(--s2) var(--s3);font-size:var(--t-small)}
-@media (max-width:760px){
-  /* the columns stop being columns: the whole table lays out as blocks, so the
-     colgroup widths cannot squeeze a stacked row */
-  .tablewrap{overflow-x:visible}
-  .tablewrap table{min-width:0;table-layout:auto;display:block;width:100%}
-  .tablewrap colgroup{display:none}
-  .tablewrap thead{position:absolute;width:1px;height:1px;overflow:hidden;
+.rolesel{max-width:100%;min-height:38px;padding:var(--s2) var(--s3);font-size:var(--t-small)}
+.datatable thead th{position:sticky;top:0;z-index:2;background:var(--paper);padding-top:var(--s3)}
+@media (max-width:759px){
+  /* the columns stop being columns: every row lays out as a block, so a
+     colgroup width can never squeeze a stacked row */
+  .datatable table{table-layout:auto;display:block;width:100%}
+  .datatable colgroup{display:none}
+  .datatable thead{position:absolute;width:1px;height:1px;overflow:hidden;
     clip:rect(0 0 0 0);white-space:nowrap}
-  .tablewrap tbody{display:block;width:100%}
-  .tablewrap tbody tr{display:block;width:100%;padding:var(--s4) 0;border-bottom:1px solid var(--rule)}
-  .tablewrap tbody td{width:auto}
-  .tablewrap tbody tr:nth-child(even) td{background:transparent}
-  .tablewrap tbody td{display:block;border:0;padding:var(--s1) 0}
-  .tablewrap tbody td::before{content:attr(data-label);display:block;font-size:var(--t-label);
+  .datatable tbody{display:block;width:100%}
+  .datatable tbody tr{display:block;width:100%;padding:var(--s4) 0;border-bottom:1px solid var(--rule);
+    position:relative}
+  /* the status mark rides the top right corner of the stacked row rather than
+     floating above it with nothing beside it */
+  .datatable tbody td.mk{position:absolute;right:0;top:var(--s4);width:auto;padding:0}
+  .datatable tbody tr:nth-child(even) td,.datatable tbody tr:hover td{background:transparent}
+  .datatable tbody td{display:block;width:auto;border:0;padding:var(--s1) 0}
+  .datatable tbody td::before{content:attr(data-label);display:block;font-size:var(--t-label);
     font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);margin-bottom:2px}
-  .tablewrap tbody td.mk{text-align:left}
-  .tablewrap tbody td.mk::before{content:none}
-  .tablewrap tbody td:empty{display:none}
-  .tablewrap tbody tr.grp{padding:var(--s6) 0 0;border-bottom:1px solid var(--rule-strong)}
-  .tablewrap tbody tr.grp td{padding:0 0 var(--s2)}
-  .tablewrap tbody tr.grp td::before{content:none}
+  .datatable tbody td.mk{text-align:left}
+  .datatable tbody td.mk::before{content:none}
+  .datatable tbody td:empty{display:none}
+  .datatable tbody tr.grp{padding:var(--s6) 0 0;border-bottom:1px solid var(--rule-strong)}
+  .datatable tbody tr.grp td{padding:0 0 var(--s2)}
+  .datatable tbody tr.grp td::before{content:none}
 }
 
-/* ---------- the reviewer's queue: a plain numbered list ---------- */
+/* ---------- the reviewer's queue: a numbered list the reviewer can tick ---------- */
 .qlist{margin:var(--s5) 0 0;padding:0 0 0 var(--s6)}
 .qlist>li{margin:0 0 var(--s5);padding:0 0 var(--s5);border-bottom:1px solid var(--rule)}
 .qlist>li:last-child{border-bottom:0;padding-bottom:0;margin-bottom:0}
 .qlist .qh{margin:0 0 var(--s1);font-size:var(--t-body);font-weight:600;line-height:1.35}
-.qlist .qs{margin:0 0 var(--s2);font-size:var(--t-small);color:var(--ink-soft);line-height:1.5}
+.qlist .qs{margin:0 0 var(--s2);font-size:var(--t-small);color:var(--ink-soft);line-height:1.5;
+  overflow-wrap:anywhere}
 .qlist .qd{margin:0;font-size:var(--t-small);line-height:1.55}
-.qlist ul.qq{margin:var(--s3) 0 0;padding-left:var(--s5);font-size:var(--t-small);line-height:1.55}
-.qlist ul.qq li{margin:0 0 var(--s1)}
-.qlist ul.qq li:last-child{margin:0}
+.qlist ul.qq{margin:var(--s3) 0 0;padding:0;list-style:none;font-size:var(--t-small);line-height:1.55}
+.qlist ul.qq>li{margin:0 0 var(--s3)}
+.qlist ul.qq>li:last-child{margin:0}
+.qq .qt{display:block;margin:0 0 var(--s2)}
+.qq .seg button{min-height:38px}
 
 /* ---------- the parse preview ---------- */
 #preview{margin:var(--s6) 0 0;min-width:0}
 #preview .lead{font-size:var(--t-small);line-height:1.55;color:var(--ink-soft);margin:0 0 var(--s4);max-width:74ch}
-.pvgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--s4);margin:0 0 var(--s4)}
+.pvgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--s4);margin:0 0 var(--s4)}
 .pvgrid label{display:block;font-size:var(--t-label);font-weight:700;text-transform:uppercase;
   letter-spacing:.08em;color:var(--ink-soft);margin:0 0 var(--s2)}
 .facts{margin:0;padding:0;list-style:none;border-top:1px solid var(--rule)}
 .facts li{display:flex;gap:var(--s4);align-items:baseline;padding:var(--s3) 0;
-  border-bottom:1px solid var(--rule);font-size:var(--t-small);line-height:1.5}
+  border-bottom:1px solid var(--rule);font-size:var(--t-small);line-height:1.5;min-width:0}
 .facts li .status{flex:0 0 8.5em;margin:0}
 .facts li span:last-child{min-width:0;overflow-wrap:anywhere}
+@media (max-width:479px){
+  .facts li{display:block}
+  .facts li .status{margin:0 0 2px}
+}
 #preview ul.plain{margin:var(--s3) 0 0;padding-left:var(--s5);font-size:var(--t-small);
   line-height:1.6;color:var(--ink-soft)}
 #preview ul.plain li{margin:0 0 var(--s1);overflow-wrap:anywhere}
 
 #prevruns{margin:var(--s7) 0 0}
-.prevrow{border-top:1px solid var(--rule);padding:var(--s3) 0 var(--s4)}
+.prevrow{border-top:1px solid var(--rule);padding:var(--s3) 0 var(--s4);overflow-wrap:anywhere}
 .prevrow:first-child{border-top:0}
 .prevrow .tiny{margin:2px 0 var(--s2)}
 
@@ -179,8 +202,8 @@ details.pr .btn-text{margin:0 0 var(--s5)}
   html,body{background:#fff;overflow:visible}
   body{font-size:10.5pt;color:#000;font-family:Figtree,Arial,Helvetica,sans-serif}
   #app{max-width:none;padding:0;display:block;min-height:0}
-  .masthead,.titleblock,.panes,.settings,#preview,#msg,#out,#prompts,.foot,
-  .runrow,#prevruns{display:none!important}
+  .masthead,.band,figure.shot,.titleblock,.panes,.settings,#preview,#msg,#out,#prompts,.foot,
+  .runrow,#prevruns,.empty,#progress{display:none!important}
   #printdoc{display:block}
   #printdoc h1{font-size:16pt;line-height:1.15;margin:0 0 1mm;color:#000;letter-spacing:0}
   #printdoc .psub{font-size:9.5pt;color:#333;margin:0 0 3mm}
@@ -212,6 +235,8 @@ details.pr .btn-text{margin:0 0 var(--s5)}
   #printdoc .qitem .ql{font-size:8pt;margin:0 0 1.5mm;color:#333}
   #printdoc .qitem .ans{font-size:8pt;margin:2mm 0 0}
   #printdoc .rule{border-bottom:.4pt solid #000;height:5.5mm}
+  #printdoc .answered{border-bottom:.4pt solid #000;height:auto;min-height:5.5mm;padding:1mm 0 1.2mm;
+    font-weight:700;font-size:8.5pt}
   #printdoc .sigbox{display:grid;grid-template-columns:1fr 1fr;gap:8mm;margin:7mm 0 0}
   #printdoc .sig{font-size:8.5pt}
   #printdoc .sig .line{border-bottom:.8pt solid #000;height:11mm}
@@ -232,22 +257,46 @@ details.pr .btn-text{margin:0 0 var(--s5)}
     <hr>
   </header>
 
-  <div class="titleblock">
+  <div class="band">
     <h1>Second Pass Checker</h1>
-    <p class="standfirst">Paste a ledger and the memo somebody drafted about it. The checker settles the
-    arithmetic, the direction and the silence, and prints what is left for a person.</p>
+    <p class="promise">Paste a ledger and the memo somebody drafted about it, and every figure, every
+    direction word and every account nobody mentioned is settled before a reviewer spends an hour on it.</p>
+    <ol class="steps3">
+      <li><span class="disc">1</span><b>Paste the ledger.</b><span class="t">Account, prior balance,
+      current balance, in whatever shape your system exports.</span></li>
+      <li><span class="disc">2</span><b>Paste the memo.</b><span class="t">The drafted commentary, however
+      it is numbered.</span></li>
+      <li><span class="disc">3</span><b>Read the queue.</b><span class="t">What the checks could not settle,
+      with the two questions only a person answers.</span></li>
+    </ol>
   </div>
+
+  <figure class="figure shot">
+    <img src="screenshots/checker/hero-results.png" width="1280" height="600" loading="lazy" decoding="async"
+      alt="The checker on the Halyard sample: a stacked coverage bar, four stat tiles reading four checked within scope, five needs review, none not checked and three failed, then the results table under them.">
+    <figcaption class="figcap">See it on a real case. Halyard Provisioning Group, June 2026: fourteen ledger
+    lines against a twelve-sentence draft, one silent line and thirteen items left for a person. Load it from
+    either pane header, or from Samples below.</figcaption>
+  </figure>
 
   <div class="panes">
     <div class="pane">
-      <label for="ledger">1. Ledger</label>
-      <textarea id="ledger" spellcheck="false" placeholder="Account number (optional), account name, prior balance, current balance&#10;One account per line, tabs or commas. A header row is ignored.&#10;&#10;4000&#9;Product revenue&#9;5,240,000&#9;5,612,000"></textarea>
-      <p class="hint">Tabs, commas or aligned columns. Dollar signs, commas and (parentheses) for negatives
-      are all read.</p>
+      <div class="panehead">
+        <label for="ledger">1. Ledger</label>
+        <button type="button" class="btn-text quiet" id="loadled">Load sample</button>
+        <span class="cc" id="ledcc">0 characters</span>
+      </div>
+      <textarea id="ledger" spellcheck="false" placeholder="4000&#9;Product revenue&#9;5,240,000&#9;5,612,000&#10;Product revenue, 5240000, 5612000"></textarea>
+      <p class="hint">Tabs, commas or aligned columns, one account per line. Dollar signs, thousands commas
+      and (parentheses) for negatives are all read, and a header row is ignored.</p>
     </div>
     <div class="pane">
-      <label for="memo">2. Memo, the drafted commentary</label>
-      <textarea id="memo" class="prose" spellcheck="false" placeholder="Paste the commentary. One sentence per line reads best, and a label such as S1. is kept."></textarea>
+      <div class="panehead">
+        <label for="memo">2. Memo, the drafted commentary</label>
+        <button type="button" class="btn-text quiet" id="loadmemo">Load sample</button>
+        <span class="cc" id="memcc">0 characters</span>
+      </div>
+      <textarea id="memo" class="prose" spellcheck="false" placeholder="1. Bad debt expense increased $42,000 following the reserve against the Coastal Grocers receivable.&#10;S2. Fleet fuel fell $5,200, which clears neither leg of the threshold."></textarea>
       <p class="hint">Free text. A line starting <b>S1.</b>, <b>1.</b> or <b>(a)</b> is kept whole; anything
       else is split into sentences.</p>
     </div>
@@ -275,25 +324,27 @@ details.pr .btn-text{margin:0 0 var(--s5)}
     <div class="setrow">
       <div class="f n">
         <label for="dollar">Dollar floor</label>
-        <input type="number" id="dollar" value="25000" min="0" step="1000">
+        <div class="adorn"><span class="unit">$</span><input type="number" id="dollar" value="25000" min="0" step="1000"></div>
       </div>
       <div class="f n">
         <label for="pct">Percent floor</label>
-        <input type="number" id="pct" value="10" min="0" step="0.5">
+        <div class="adorn"><input type="number" id="pct" value="10" min="0" step="0.5"><span class="unit">%</span></div>
       </div>
-      <div class="f w">
-        <label for="rule">Rule</label>
-        <select id="rule">
-          <option value="both">Both legs</option>
-          <option value="either">Either leg</option>
-        </select>
+      <div class="f">
+        <span class="lab" id="rulelab">Rule</span>
+        <div class="seg" id="ruleseg" role="group" aria-labelledby="rulelab">
+          <button type="button" data-v="both" aria-pressed="true">Both legs</button>
+          <button type="button" data-v="either" aria-pressed="false">Either leg</button>
+        </div>
+        <input type="hidden" id="rule" value="both">
       </div>
-      <div class="f w">
-        <label for="zerobase">Zero prior balance</label>
-        <select id="zerobase">
-          <option value="owing">Owes commentary on any movement</option>
-          <option value="exclude">Excluded from the rule</option>
-        </select>
+      <div class="f">
+        <span class="lab" id="zerolab">Zero prior balance</span>
+        <div class="seg" id="zeroseg" role="group" aria-labelledby="zerolab">
+          <button type="button" data-v="owing" aria-pressed="true">Owes commentary</button>
+          <button type="button" data-v="exclude" aria-pressed="false">Excluded</button>
+        </div>
+        <input type="hidden" id="zerobase" value="owing">
       </div>
     </div>
 
@@ -327,7 +378,7 @@ details.pr .btn-text{margin:0 0 var(--s5)}
     </details>
 
     <div class="runrow">
-      <button class="btn" id="run">Run Second Pass</button>
+      <button class="btn green" id="run">Run Second Pass<span class="kbd" id="runkey">Ctrl + Enter</span></button>
       <select id="samplepick" aria-label="Samples, load a case">
         <option value="">Samples: load a case&hellip;</option>
         <option value="halyard">Halyard Provisioning Group, June 2026 &mdash; 14 lines</option>
@@ -340,6 +391,31 @@ details.pr .btn-text{margin:0 0 var(--s5)}
   </div>
 
   <div id="msg"></div>
+
+  <div id="empty" class="empty">
+    <svg viewBox="0 0 200 116" role="img" aria-label="A ledger sheet beside a memo sheet carrying a check mark.">
+      <g fill="none" stroke="var(--rule-strong)" stroke-width="1.4">
+        <rect x="8.7" y="10.7" width="78" height="94" rx="7"/>
+        <rect x="113.7" y="10.7" width="78" height="94" rx="7"/>
+      </g>
+      <g fill="var(--rule-strong)">
+        <rect x="20" y="26" width="34" height="4" rx="2"/>
+        <rect x="20" y="42" width="55" height="3" rx="1.5"/>
+        <rect x="20" y="55" width="55" height="3" rx="1.5"/>
+        <rect x="20" y="68" width="55" height="3" rx="1.5"/>
+        <rect x="20" y="81" width="38" height="3" rx="1.5"/>
+        <rect x="125" y="26" width="34" height="4" rx="2"/>
+        <rect x="125" y="42" width="60" height="3" rx="1.5"/>
+        <rect x="125" y="55" width="60" height="3" rx="1.5"/>
+        <rect x="125" y="68" width="44" height="3" rx="1.5"/>
+      </g>
+      <circle cx="166" cy="88" r="17" fill="var(--card)" stroke="var(--mason)" stroke-width="1.6"/>
+      <path d="M157 88.5l6.4 6.4L175.5 82" fill="none" stroke="var(--mason)" stroke-width="2.6"
+        stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <p>Nothing has been checked yet. Paste both panes, or load a case, and run it.</p>
+  </div>
+
   <div id="out"></div>
 
   <div id="prevruns" class="hidden section">
@@ -393,6 +469,18 @@ details.pr .btn-text{margin:0 0 var(--s5)}
 /* ============================================================ helpers */
 function $(id){return document.getElementById(id);}
 function el(tag,cls,txt){var n=document.createElement(tag);if(cls)n.className=cls;if(txt!=null)n.textContent=txt;return n;}
+function nowMs(){try{return Date.now();}catch(e){return 0;}}
+/* A run is instant on anything a student is likely to paste. If one ever takes
+   longer than a tenth of a second, a line is drawn across the top of the page
+   after the fact; below that, nothing flickers. */
+function runTimer(t0){
+  setTimeout(function(){
+    if(nowMs()-t0<150)return;
+    var bar=el("div");bar.id="progress";
+    document.body.appendChild(bar);
+    setTimeout(function(){try{document.body.removeChild(bar);}catch(e){}},520);
+  },0);
+}
 function money(v){
   if(v==null||!isFinite(v))return "n/a";
   var neg=v<0,a=Math.abs(v);
@@ -1497,9 +1585,13 @@ function srcVersion(sig){
 
 function run(){
   var msg=$("msg"),out=$("out");
+  var t0=nowMs();
   msg.innerHTML="";out.innerHTML="";
   if(LAST)archiveRun();
   LAST=null;
+  /* the answers belong to the run that asked the questions */
+  ANSWERS={};
+  try{runTimer(t0);}catch(e){}
 
   var floorD=parseNum($("dollar").value);
   var floorP=parseNum($("pct").value);
@@ -2079,12 +2171,47 @@ function coverage(stats){
 }
 
 /* One stacked bar, drawn in the tokens: the four sentence statuses in
-   proportion, with a legend that carries the counts and the same four marks the
-   table uses. No tiles, no pills, no coloured band behind a word. */
+   proportion. The counts sit under it in four tiles carrying the same four
+   marks the table uses. No pills, no coloured band behind a word. */
 var STATSEG=[["checked within scope","checked","var(--mason)",1],
              ["needs review","review","var(--ink)",1],
              ["not checked","notchecked","var(--card)",0],
              ["failed","failed","var(--red)",1]];
+
+/* A count runs up to its number once, over 200ms, and a reader who asked for
+   less motion gets the number with no run-up. */
+function reduceMotion(){
+  try{return !!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);}
+  catch(e){return false;}
+}
+function countTo(node,to){
+  if(!node)return;
+  if(!to||reduceMotion()||typeof requestAnimationFrame!=="function"){node.textContent=String(to);return;}
+  var start=null,DUR=200;
+  node.textContent="0";
+  requestAnimationFrame(function step(ts){
+    if(start===null)start=ts;
+    var p=(ts-start)/DUR;
+    if(p>=1){node.textContent=String(to);return;}
+    node.textContent=String(Math.round(to*p));
+    requestAnimationFrame(step);
+  });
+}
+function statTiles(stats){
+  var box=el("div","stats4");
+  STATSEG.forEach(function(s){
+    var t=el("div","stat "+MARKKEY[s[0]]);
+    var mk=el("div","mk");
+    mk.innerHTML=MARKS[MARKKEY[s[0]]];
+    var v=el("span","v",String(stats[s[1]]||0));
+    mk.appendChild(v);
+    t.appendChild(mk);
+    t.appendChild(el("span","k",s[0].charAt(0).toUpperCase()+s[0].slice(1)));
+    box.appendChild(t);
+    countTo(v,stats[s[1]]||0);
+  });
+  return box;
+}
 function statusBar(stats){
   var total=stats.checked+stats.review+stats.notchecked+stats.failed;
   var W=600,H=24,x=0,segs=[],lab=[];
@@ -2103,23 +2230,65 @@ function statusBar(stats){
   var svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Sentences by status: '+
     (lab.length?lab.join(", "):"nothing to show")+'.">'+
     '<defs><clipPath id="spbar"><rect x="0" y="0" width="'+W+'" height="'+H+'" rx="4"/></clipPath></defs>'+
-    '<g clip-path="url(#spbar)">'+segs.join("")+'</g>'+
+    '<g clip-path="url(#spbar)"><g class="fillbar">'+segs.join("")+'</g></g>'+
     '<rect x="0.5" y="0.5" width="'+(W-1)+'" height="'+(H-1)+
     '" rx="4" fill="none" stroke="var(--rule-strong)" stroke-width="1"/></svg>';
-  var legend='<ul class="legend">';
-  STATSEG.forEach(function(s){
-    legend+='<li>'+MARKS[MARKKEY[s[0]]]+'<span class="n">'+(stats[s[1]]||0)+'</span>'+
-      '<span class="k">'+s[0].charAt(0).toUpperCase()+s[0].slice(1)+'</span></li>';
-  });
-  legend+="</ul>";
   var box=el("div","summary");
-  box.innerHTML=svg+legend;
+  box.innerHTML=svg;
   return box;
 }
 
+/* ---------- the reviewer's answers to the queue ---------- */
+/* Every queue question is ticked Yes, No or Not on file. An answer belongs to
+   the run that asked it, so a new run starts on an empty sheet, and what is
+   ticked rides out with the CSV, the JSON record and the printed summary. */
+var ANSWERS={};
+var ANSWER_OPTIONS=["Yes","No","Not on file"];
+function answerKey(r,ix){return (r.id||r.ev||("row-"+r.line))+"#"+ix;}
+function answerOf(r,ix){return ANSWERS[answerKey(r,ix)]||"";}
+function answersFor(r){
+  var asks=Array.isArray(r.ask)?r.ask:(r.ask?[r.ask]:[]),got=[];
+  asks.forEach(function(a,ix){
+    var v=answerOf(r,ix);
+    if(v)got.push(a+" "+v);
+  });
+  return got.join(" | ");
+}
+function ticks(key){
+  var seg=el("div","seg"),btns=[];
+  ANSWER_OPTIONS.forEach(function(v){
+    var b=el("button",null,v);
+    b.setAttribute("type","button");
+    b.setAttribute("aria-pressed",ANSWERS[key]===v?"true":"false");
+    b.onclick=function(){
+      var on=ANSWERS[key]!==v;
+      if(on)ANSWERS[key]=v;else delete ANSWERS[key];
+      btns.forEach(function(x){x.b.setAttribute("aria-pressed",(on&&x.v===v)?"true":"false");});
+    };
+    btns.push({b:b,v:v});
+    seg.appendChild(b);
+  });
+  return seg;
+}
+
+/* The table carries the instruction as one imperative. The question itself is
+   asked in full in the queue underneath, which is where it gets answered. */
+function askShort(r){
+  var a=Array.isArray(r.ask)?r.ask.join(" "):r.ask;
+  if(!a)return "";
+  if(r.check==="Reviewer")return "Confirm the driver and the period.";
+  if(r.check==="Read together")return "Decide which sentence holds.";
+  if(String(r.check).indexOf("Silen")>-1)return "Ask the controller what drove this line.";
+  if(r.status==="failed")return "Send it back to the preparer.";
+  return "Settle it before sign-off.";
+}
+
 function render(out,rows,stats){
+  var em=$("empty");
+  if(em)em.className="empty hidden";
   out.appendChild(el("h2",null,"Coverage"));
   out.appendChild(statusBar(stats));
+  out.appendChild(statTiles(stats));
 
   /* the counts the bar does not carry, on one line */
   var strip=el("p","counts");
@@ -2161,7 +2330,7 @@ function render(out,rows,stats){
   for(i=0;i<rows.length;i++){if(rows[i].grp&&rows[i].grp.indexOf("4.")===0){cut=i;break;}}
   var shown=rows.slice(0,cut),queued=rows.slice(cut+1);
 
-  var wrap=el("div","tablewrap"),tbl=el("table");
+  var wrap=el("div","datatable"),tbl=el("table");
   var HEADS=["","Line","Sentence or account","Check","Result","Ask the controller"];
   var cg=el("colgroup");
   ["t0","t1","t2","t3","t4","t5"].forEach(function(c){cg.appendChild(el("col",c));});
@@ -2197,11 +2366,8 @@ function render(out,rows,stats){
     res.appendChild(el("span","det",r.det));
     t.appendChild(res);
     var ask=cell("ask",null,5);
-    if(Array.isArray(r.ask)){
-      var ul=el("ul");
-      r.ask.forEach(function(qq){ul.appendChild(el("li",null,qq));});
-      ask.appendChild(ul);
-    }else if(r.ask)ask.appendChild(document.createTextNode(r.ask));
+    var imp=askShort(r);
+    if(imp)ask.appendChild(document.createTextNode(imp));
     if(r.roleSel){
       var lab=el("label","rolelab","Confirm what this figure is:");
       var sel=el("select","rolesel");
@@ -2242,7 +2408,12 @@ function render(out,rows,stats){
       var asks=Array.isArray(r.ask)?r.ask:(r.ask?[r.ask]:[]);
       if(asks.length){
         var qul=el("ul","qq");
-        asks.forEach(function(a){qul.appendChild(el("li",null,a));});
+        asks.forEach(function(a,ix){
+          var qli=el("li");
+          qli.appendChild(el("span","qt",a));
+          qli.appendChild(ticks(answerKey(r,ix)));
+          qul.appendChild(qli);
+        });
         li.appendChild(qul);
       }
       ol.appendChild(li);
@@ -2250,19 +2421,25 @@ function render(out,rows,stats){
     out.appendChild(ol);
   }
 
-  var row=el("div","runrow");
-  var b0=el("button","btn","Print review summary");
-  b0.onclick=printSummary;
-  var b1=el("button","btn secondary","Copy results as table");
-  b1.onclick=function(){copy(tsv(),b1,"Copy results as table");};
+  /* the four things a reviewer does with a finished run. On a phone the bar
+     sticks to the bottom of the results rather than sitting under the fold. */
+  var row=el("div","actionbar");
+  row.setAttribute("aria-label","Actions");
+  var b1=el("button","btn secondary","Copy table");
+  b1.onclick=function(){copy(tsv(),b1,"Copy table");};
   var b2=el("button","btn secondary","Download CSV");
   b2.onclick=downloadCsv;
-  var b3=el("button","btn secondary","Download JSON record");
-  b3.onclick=downloadJson;
-  row.appendChild(b0);row.appendChild(b1);row.appendChild(b2);row.appendChild(b3);
+  var b0=el("button","btn","Print summary");
+  b0.onclick=printSummary;
+  var b4=el("button","btn secondary","Copy prompt");
+  b4.onclick=function(){copy(reviewerPrompt(),b4,"Copy prompt");};
+  row.appendChild(b1);row.appendChild(b2);row.appendChild(b0);row.appendChild(b4);
   out.appendChild(row);
-  var tip=el("p","tiny","The CSV carries the run identifier and the exact sentence text, and a cell that "+
-    "starts with =, +, - or @ is written as text. Copy is the reliable export.");
+  var b3=el("button","btn-text quiet","Download JSON record");
+  b3.onclick=downloadJson;
+  out.appendChild(b3);
+  var tip=el("p","tiny","The CSV carries the run identifier, the exact sentence text and every answer ticked "+
+    "above, and a cell that starts with =, +, - or @ is written as text. Copy is the reliable export.");
   tip.style.margin="8px 0 0";
   out.appendChild(tip);
 }
@@ -2358,7 +2535,11 @@ function printSummary(){
   else{
     var qul=el("ul");
     LAST.queue.forEach(function(item){
-      qul.appendChild(el("li",null,"["+item.kind+"] "+item.ref+" — "+item.issue+". Owner: "+item.owner+"."));
+      var row=null;
+      LAST.rows.forEach(function(r){if(!row&&r.ev===item.ev&&!r.grp)row=r;});
+      var ans=row?answersFor(row):"";
+      qul.appendChild(el("li",null,"["+item.kind+"] "+item.ref+" — "+item.issue+". Owner: "+item.owner+"."+
+        (ans?" Answered: "+ans:"")));
     });
     d.appendChild(qul);
   }
@@ -2368,14 +2549,22 @@ function printSummary(){
     d.appendChild(el("p",null,"No sentence was checked within scope, so nothing reached this list. Every "+
       "finding above goes back to the preparer before a reviewer signs anything."));
   }
+  /* a question ticked on the page prints its answer on the line; one left
+     untouched prints an empty rule for a pen */
+  function answerLine(row,ix){
+    var v=row?answerOf(row,ix):"";
+    return v?el("div","answered",v):el("div","rule");
+  }
   LAST.survivors.forEach(function(s){
+    var row=null;
+    LAST.rows.forEach(function(r){if(!row&&r.label===s.label&&r.check==="Reviewer")row=r;});
     var q=el("div","qitem");
     q.appendChild(el("p","qs",s.label+". "+s.text));
     q.appendChild(el("p","ql","Line: "+s.bound.map(acctId).join("; ")));
     var a1=el("div","ans");a1.appendChild(el("div",null,"1. Is the driver named here supported by anything on file? Name the document."));
-    a1.appendChild(el("div","rule"));q.appendChild(a1);
+    a1.appendChild(answerLine(row,0));q.appendChild(a1);
     var a2=el("div","ans");a2.appendChild(el("div",null,"2. Is the period right, with nothing pulled forward or deferred?"));
-    a2.appendChild(el("div","rule"));q.appendChild(a2);
+    a2.appendChild(answerLine(row,1));q.appendChild(a2);
     d.appendChild(q);
   });
 
@@ -2462,7 +2651,7 @@ function csv(state){
     if(r.grp)return;
     lines.push([S.runId,stamp,S.period,S.version,S.srcV,r.ev||r.id,r.label||"",
       r.label?r.subj:"",r.line,accountOf(r),r.check,r.status||"",r.det,r.result,
-      "",Array.isArray(r.ask)?r.ask.join(" "):r.ask,
+      answersFor(r),Array.isArray(r.ask)?r.ask.join(" "):r.ask,
       (r.status==="failed"||r.status==="needs review")?(r.check.indexOf("Silence")>-1?"Controller":"Preparer"):"",
       ""].map(qq).join(","));
   });
@@ -2491,7 +2680,8 @@ function jsonRecord(state){
     rows:S.rows.filter(function(r){return !r.grp;}).map(function(r){
       return {evidenceId:r.ev||r.id,sentenceId:r.label||"",line:r.line,subject:r.subj,check:r.check,
               status:r.status||"",result:r.result,finding:r.det,
-              ask:Array.isArray(r.ask)?r.ask.join(" "):r.ask};
+              ask:Array.isArray(r.ask)?r.ask.join(" "):r.ask,
+              reviewerAnswer:answersFor(r)};
     })
   },null,2);
 }
@@ -2633,7 +2823,7 @@ function copy(text,btn,label){
   function done(ok){
     if(!btn)return;
     btn.textContent=ok?"Copied":"Select it and copy by hand";
-    setTimeout(function(){btn.textContent=label;},1800);
+    setTimeout(function(){btn.textContent=label;},2000);
   }
   try{
     if(navigator.clipboard&&navigator.clipboard.writeText){
@@ -2788,11 +2978,75 @@ function loadSample(key){
   $("period").value=s.period;$("memover").value=s.version;$("company").value=s.company;
   $("msg").innerHTML="";$("out").innerHTML="";
   USERCOLS=null;
+  try{segment("ruleseg","rule","the rule changed");segment("zeroseg","zerobase","the zero prior balance policy changed");}catch(e){}
+  countAll();
   refreshPreview();
   return true;
 }
 
+/* ============================================================ the controls */
+/* The character counts, so a reader can see a pane took what they pasted. */
+function countChars(id,into){
+  var n=$(id),c=$(into);
+  if(!n||!c)return;
+  var v=String(n.value||"").length;
+  c.textContent=(v?v.toLocaleString?v.toLocaleString("en-US"):String(v):"0")+" character"+(v===1?"":"s");
+}
+function countAll(){countChars("ledger","ledcc");countChars("memo","memcc");}
+
+/* The segmented controls write the value the run reads, and a change clears the
+   statuses the same way editing a pane does. */
+function segment(segId,inputId,why){
+  var seg=$(segId),input=$(inputId);
+  if(!seg||!input)return;
+  var kids=seg.children?seg.children:[];
+  function paint(){
+    var i;
+    for(i=0;i<kids.length;i++){
+      kids[i].setAttribute("aria-pressed",kids[i].getAttribute("data-v")===input.value?"true":"false");
+    }
+  }
+  function bind(b){
+    b.onclick=function(){
+      var v=b.getAttribute("data-v");
+      if(v===input.value)return;
+      input.value=v;paint();invalidate(why);
+    };
+  }
+  var i;
+  for(i=0;i<kids.length;i++)bind(kids[i]);
+  paint();
+}
+try{segment("ruleseg","rule","the rule changed");}catch(e){}
+try{segment("zeroseg","zerobase","the zero prior balance policy changed");}catch(e){}
+
+/* the empty state stands until a run paints something over it */
+function showEmpty(on){
+  var em=$("empty");
+  if(em)em.className=on?"empty":"empty hidden";
+}
+
 $("run").onclick=run;
+/* one sample, loaded a pane at a time from the pane's own header */
+function loadPane(which){
+  var s=SAMPLES.halyard;
+  $(which).value=which==="ledger"?s.ledger:s.memo;
+  if(which==="ledger"){USERCOLS=null;refreshPreview();}
+  countAll();
+  invalidate(which==="ledger"?"the ledger was edited":"the memo was edited");
+}
+if($("loadled"))$("loadled").onclick=function(){loadPane("ledger");};
+if($("loadmemo"))$("loadmemo").onclick=function(){loadPane("memo");};
+
+/* Ctrl and Enter, or Command and Enter on a Mac, runs it from either pane */
+try{
+  var mac=/Mac|iPhone|iPad/.test((navigator&&navigator.platform)||"");
+  if(mac&&$("runkey"))$("runkey").textContent="⌘ + Enter";
+  document.addEventListener("keydown",function(e){
+    if((e.ctrlKey||e.metaKey)&&(e.key==="Enter"||e.keyCode===13)){e.preventDefault();run();}
+  });
+}catch(e){}
+
 $("samplepick").onchange=function(){
   var k=this.value;
   if(!k)return;
@@ -2811,12 +3065,15 @@ $("copyreview").onclick=function(){
 };
 $("clear").onclick=function(){
   ["ledger","memo","ratios","period","memover","company","reviewer"].forEach(function(id){$(id).value="";});
-  ROLECONF={};
+  ROLECONF={};ANSWERS={};
   $("msg").innerHTML="";$("out").innerHTML="";$("samplepick").value="";
-  LAST=null;USERCOLS=null;refreshPreview();
+  LAST=null;USERCOLS=null;
+  countAll();showEmpty(true);
+  refreshPreview();
 };
 $("ledger").addEventListener("input",function(){
   USERCOLS=null;
+  countChars("ledger","ledcc");
   clearTimeout(PVTIMER);
   PVTIMER=setTimeout(function(){refreshPreview();},350);
   invalidate("the ledger was edited");
@@ -2832,6 +3089,9 @@ $("ledger").addEventListener("input",function(){
   n.addEventListener("input",function(){invalidate(pair[1]);});
   n.addEventListener("change",function(){invalidate(pair[1]);});
 });
+
+$("memo").addEventListener("input",function(){countChars("memo","memcc");});
+countAll();
 
 /* a link can open with a sample already run: ?sample=halyard, brightwater, kestrel, ridgeline */
 (function(){
