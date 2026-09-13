@@ -163,10 +163,16 @@ input[type=text],input[type=number],textarea,select{
 }
 select{min-width:0;max-width:100%}
 textarea{min-height:120px;resize:vertical;line-height:1.5}
-textarea.code{font-family:var(--mono);font-size:var(--t-small);white-space:pre;overflow:auto}
+textarea.code{font-family:var(--mono);font-size:var(--t-small);
+  white-space:pre-wrap;overflow-wrap:anywhere;overflow-x:hidden;overflow-y:auto}
 textarea.prose{white-space:pre-wrap}
 input:hover,textarea:hover,select:hover{border-color:var(--ink-soft)}
 input:focus,textarea:focus,select:focus{outline:none;border-color:var(--ink)}
+/* A darker border alone is not a focus indicator a keyboard can find, and
+   input:focus outranked the shared :focus-visible ring below, so the ring is
+   restored here for the keyboard and stays off for a pointer. */
+input:focus-visible,textarea:focus-visible,select:focus-visible{
+  outline:2px solid var(--mason);outline-offset:2px}
 ::placeholder{color:#8d8f92}
 
 /* ---------- the one card ---------- */
@@ -310,6 +316,8 @@ td.mono{font-family:var(--mono);font-size:13px;white-space:nowrap;color:var(--in
 .adorn input{border:0;border-radius:0;background:transparent;min-height:42px;
   padding:var(--s2) var(--s3);font-variant-numeric:tabular-nums}
 .adorn input:focus{outline:none}
+.adorn:has(input:focus-visible){outline:2px solid var(--mason);outline-offset:2px}
+.adorn input:focus-visible{outline:2px solid var(--mason);outline-offset:-2px}
 
 /* ---------- four stat tiles ---------- */
 .stats4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s3);margin:var(--s5) 0 0}
@@ -327,8 +335,13 @@ td.mono{font-family:var(--mono);font-size:13px;white-space:nowrap;color:var(--in
 .actionbar{display:flex;flex-wrap:wrap;gap:var(--s3);margin:var(--s6) 0 0}
 .actionbar .btn{flex:0 1 auto}
 @media (max-width:759px){
-  .actionbar{position:sticky;bottom:0;z-index:5;margin:var(--s5) calc(var(--gut) * -1) 0;
-    padding:var(--s3) var(--gut) calc(var(--s3) + env(safe-area-inset-bottom,0px));
+  /* The bar sticks to the bottom of the phone screen and sits inside the page
+     gutter like every other rule on the page. It used to bleed to both edges on
+     a negative margin, and that bleed was 14px of scrollable overflow inside
+     #out at 320. Its background is the page background, so the only thing the
+     bleed ever showed was where the hairline started and stopped. */
+  .actionbar{position:sticky;bottom:0;z-index:5;margin:var(--s5) 0 0;
+    padding:var(--s3) 0 calc(var(--s3) + env(safe-area-inset-bottom,0px));
     background:var(--paper);border-top:1px solid var(--rule-strong);
     display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2)}
   .actionbar .btn{width:100%;min-height:46px;padding:var(--s2) var(--s3);font-size:var(--t-small)}
