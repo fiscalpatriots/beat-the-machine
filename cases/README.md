@@ -272,8 +272,8 @@ Two things that lane has to handle:
 Twelve accounts for a managed IT services firm, twelve memo sentences, keyed as seven flags and five
 stands. Six accounts and all six memo sentences come from the Kestrel sample in `checker.html`,
 carried over with the same figures and the same calls, so a verdict reached in the checker holds in
-the game. The six accounts added around them are 4200 hardware and licence resale, 5100 hardware and
-licence cost of resale, 5200 travel and onsite delivery, 6300 computer equipment, 6500 insurance and
+the game. The six accounts added around them are 4200 hardware and license resale, 5100 hardware and
+license cost of resale, 5200 travel and onsite delivery, 6300 computer equipment, 6500 insurance and
 7000 depreciation. Revenue, cost of sales, operating expenses and the net line reconcile from the
 twelve balances.
 
@@ -283,13 +283,13 @@ cards, as account 4000 does in Halyard.
 
 | # | Account | June | July | Change | Percent | Owes commentary | Call | Type | Basis key |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 6200 Software licences and hosting | $22,600 | $57,900 | +$35,300 | 156.2% | yes | Flag | arithmetic | figure does not tie; no source on file |
+| 1 | 6200 Software licenses and hosting | $22,600 | $57,900 | +$35,300 | 156.2% | yes | Flag | arithmetic | figure does not tie; no source on file |
 | 2 | 5000 Subcontracted engineering | $41,800 | $88,300 | +$46,500 | 111.2% | yes | Flag | wrong direction | direction wrong; no source on file |
 | 3 | 6400 Client acquisition costs | $4,900 | $14,200 | +$9,300 | 189.8% | no | Let it stand | clean line | the figure and reason hold |
 | 4 | 4100 Project and implementation revenue | $38,900 | $96,400 | +$57,500 | 147.8% | yes | Flag | unsupported driver | no source on file |
 | 5 | 6000 Salaries and wages | $88,500 | $88,500 | $0 | 0.0% | no | Let it stand | clean line | the figure and reason hold |
-| 6 | 4200 Hardware and licence resale | $148,000 | $96,000 | -$52,000 | -35.1% | yes | Flag | unsupported attribution | no source on file |
-| 7 | 5100 Hardware and licence cost of resale | $100,700 | $65,300 | -$35,400 | -35.2% | yes | Let it stand | clean line | the figure and reason hold |
+| 6 | 4200 Hardware and license resale | $148,000 | $96,000 | -$52,000 | -35.1% | yes | Flag | unsupported attribution | no source on file |
+| 7 | 5100 Hardware and license cost of resale | $100,700 | $65,300 | -$35,400 | -35.2% | yes | Let it stand | clean line | the figure and reason hold |
 | 8 | 4100 Project and implementation revenue | $38,900 | $96,400 | +$57,500 | 147.8% | yes | Flag | timing | wrong period; no source on file |
 | 9 | 6500 Insurance, cyber liability included | $6,900 | $9,600 | +$2,700 | 39.1% | no | Let it stand | clean line | the figure and reason hold |
 | 10 | 6300 Computer equipment | $3,200 | $21,900 | +$18,700 | 584.4% | no | Flag | wrong account | wrong account |

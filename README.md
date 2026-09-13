@@ -9,7 +9,7 @@ Live at https://fiscalpatriots.github.io/beat-the-machine/ from `main`.
 
 | What | Version | Where it is stated |
 | --- | --- | --- |
-| Product | `second-pass-drill 1.5.0` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
+| Product | `second-pass-drill 1.6.0` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
 | Round one case | `halyard-v4`, 13 September 2026 | `cases/halyard-v4.json`, question A, the local record |
 | Round two case | `brightwater-v4`, 13 September 2026 | `cases/brightwater-v4.json`, questions A and C, the local record |
 | Data notice | `notice-2026-09-13` | the notice screen, question A, the local record |
@@ -263,7 +263,7 @@ That file is the design standard: the tokens, one type scale, a 4px spacing scal
 one shadow, two buttons, one table, one figure, one status style and one focus ring. The
 comment at the top of the file states each rule in a sentence.
 
-Six values carry meaning and nothing else carries colour:
+Six values carry meaning and nothing else carries color:
 
 | Name | Hex | Where it is used |
 | --- | --- | --- |
@@ -274,8 +274,8 @@ Six values carry meaning and nothing else carries colour:
 | George Mason Gold | `#ffc733` | three places only: the rule under the band, the trophy, the underline beneath a headline numeral |
 | Muted red | `#a33a1c` | a decrease and a failed check |
 
-There are no tinted fills, no coloured left stripes and no coloured pills anywhere in the
-product. A status is a word set in small caps in one of four colours, never a badge, and the
+There are no tinted fills, no colored left stripes and no colored pills anywhere in the
+product. A status is a word set in small caps in one of four colors, never a badge, and the
 checker prints its coverage as one line of tabular counts rather than a wall of tiles.
 
 Those values come from the Mason brand guide color page,
@@ -503,7 +503,7 @@ left on each line is whether the cause the memo names is carried by something on
 
 Between the bridge and the results the page suppresses everything that would leak correctness.
 There is no reveal after a call, no running score, no streak, no mark, and the whole track
-comes off the screen so a car that moved or changed colour cannot answer the question for the
+comes off the screen so a car that moved or changed color cannot answer the question for the
 player. The header shows progress and nothing else, as `3 of 5`. The basis chips are still
 collected on every line, because the reason a player held is the point of the exercise.
 
@@ -544,7 +544,7 @@ call unchanged, so nothing about the form mapping moved. The source of truth for
 
 The progress bar is a race track drawn as one inline SVG in `buildTrack()`. Fourteen segments,
 one per trained line, with the finish at card 14. Round two runs as an assessment where a car
-that moved or changed colour would tell the player how they were doing, so the whole bar leaves
+that moved or changed color would tell the player how they were doing, so the whole bar leaves
 the screen from the bridge through the results and comes back on the end screen with the car at
 the finish. There
 is a car that advances one segment per card, a pit lane under the main lane and a chequered flag
@@ -666,7 +666,7 @@ now post the placeholder value they accepted before that change:
 Read every one of those four as **not asked; placeholder value posted until the form questions are
 made optional**. They are not participant answers. Whoever writes the findings script has to drop
 these four columns rather than average them, and the columns carry the same placeholder in every
-row, which is how you recognise them.
+row, which is how you recognize them.
 
 ### For Khaled: the one change that retires the placeholders
 
