@@ -1,0 +1,254 @@
+/* =============================================================================
+   Second Pass — one design standard
+   The single source of truth for index.html and checker.html. Both load it and
+   neither repeats what is here. A rule that belongs to one page's layout stays
+   in that page; anything a reader would notice as a difference between the two
+   pages belongs in this file.
+
+   THE STANDARD, stated
+
+   1. COLOUR. Six tokens carry meaning and nothing else carries colour.
+      paper  #f6f3ec   the page
+      ink    #1a1a1a   every word, every primary button, every rule that matters
+      soft   #5f6366   secondary words, captions, labels, a status that is inert
+      green  #005239   George Mason green: agreement, a passed check, a link
+      gold   #ffc733   THREE PLACES ONLY: the masthead rule, the trophy, and the
+                       underline beneath a headline numeral. Never a fill,
+                       never a badge, never a stripe.
+      red    #a33a1c   a decrease, a failed check. Muted, never a fill.
+      Tinted fills, coloured left stripes and coloured pills do not exist here.
+
+   2. TYPE. Figtree, one family. Three body sizes and two headings:
+      18px lead, 16px body, 14px small; 28px h1, 22px h2; 12px uppercase label.
+      Every number is tabular (.num, td.num, and the number tokens below).
+
+   3. SPACE. A 4px scale, --s1 through --s10. No ad hoc margins.
+
+   4. SHAPE. One radius (--radius, 12px) and one shadow (--shadow) for cards.
+      Anything else that wants a corner uses the same 12px. Pills are gone
+      except where a control is genuinely a toggle, and a toggle is an outlined
+      rectangle in ink, not a coloured pill.
+
+   5. BUTTONS. Exactly two, both 44px minimum height: .btn is solid ink,
+      .btn.secondary is outlined ink on paper. A third affordance, .btn-text,
+      is an underlined word for actions that are not decisions (Copy, Back).
+
+   6. TABLES. A rule under the header, zebra at 3 percent, numerals right and
+      tabular, no vertical lines, no filled header band.
+
+   7. FIGURES. A hairline box, an italic caption under it.
+
+   8. STATUS. The checker's four statuses are words, not pills:
+      checked within scope (green), needs review (ink), not checked (soft),
+      failed (red). Small caps, letter-spaced, no fill and no border.
+
+   9. FOCUS. One ring: 2px Mason green, 2px offset, everywhere.
+   ============================================================================= */
+
+:root{
+  /* colour */
+  --paper:#f6f3ec;
+  --card:#ffffff;
+  --ink:#1a1a1a;
+  --ink-soft:#5f6366;
+  --mason:#005239;
+  --gold:#ffc733;
+  --red:#a33a1c;
+  --rule:#d9d3c5;          /* hairline */
+  --rule-strong:#b9b2a1;   /* a rule that has to be seen */
+  --zebra:rgba(26,26,26,.03);
+
+  /* type */
+  --t-lead:18px;
+  --t-body:16px;
+  --t-small:14px;
+  --t-h1:28px;
+  --t-h2:22px;
+  --t-label:12px;
+  --face:Figtree,"Open Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
+         Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Courier New",monospace;
+
+  /* space, 4px scale */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px;
+  --s7:28px; --s8:32px; --s9:40px; --s10:48px;
+
+  /* shape */
+  --radius:12px;
+  --shadow:0 1px 2px rgba(26,26,26,.05), 0 10px 24px rgba(26,26,26,.06);
+
+  --gut:20px;
+}
+@media (max-width:399px){:root{--gut:14px}}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;max-width:100%;overflow-x:hidden}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font:var(--t-body)/1.5 var(--face);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- type ---------- */
+h1,h2,h3{margin:0 0 var(--s3);color:var(--ink);font-weight:700;letter-spacing:-.01em}
+h1{font-size:var(--t-h1);line-height:1.18}
+h2{font-size:var(--t-h2);line-height:1.24}
+h3{font-size:var(--t-lead);line-height:1.3;font-weight:600}
+p{margin:0 0 var(--s4)}
+p:last-child{margin-bottom:0}
+.lead{font-size:var(--t-lead);line-height:1.5}
+.sub{font-size:var(--t-body);color:var(--ink-soft)}
+.tiny{font-size:var(--t-small);line-height:1.5;color:var(--ink-soft)}
+.label{display:block;font-size:var(--t-label);font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--ink-soft);margin:0 0 var(--s2)}
+.num,.stmt-fig,td.num,th.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+b,strong{font-weight:600}
+a{color:var(--mason);text-underline-offset:.18em}
+a:hover{color:var(--ink)}
+code,.mono{font-family:var(--mono);font-size:.92em}
+.hidden{display:none!important}
+
+/* ---------- the masthead and the footer, identical on both pages ---------- */
+/* the band and the footer bleed past the column gutter, so they are the one pair of
+   blocks allowed to be wider than the column they sit in */
+#mason{position:relative;background:var(--mason);color:#fff;
+  margin:0 calc(var(--gut) * -1);max-width:none!important;
+  width:calc(100% + var(--gut) * 2);padding:var(--s3) var(--gut) var(--s4);
+  border-bottom:2px solid var(--gold)}           /* the one gold rule */
+#mason b{display:block;font-size:15px;font-weight:700;line-height:1.25;letter-spacing:.01em}
+#mason span{display:block;font-size:13px;line-height:1.35;color:#cfe0d6;margin-top:2px}
+#masonfoot{margin:var(--s9) calc(var(--gut) * -1) 0;max-width:none!important;
+  width:calc(100% + var(--gut) * 2);padding:var(--s4) var(--gut) var(--s1);
+  border-top:1px solid var(--rule);font-size:var(--t-small);line-height:1.5;
+  color:var(--ink-soft);text-align:center}
+#masonfoot a{color:var(--ink-soft)}
+#masonfoot b{display:block;font-weight:400;margin-top:var(--s1);font-size:13px}
+
+/* ---------- buttons: two, and one text affordance ---------- */
+button{font:inherit;color:inherit;cursor:pointer}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:44px;padding:var(--s3) var(--s5);
+  border:1px solid var(--ink);border-radius:var(--radius);
+  background:var(--ink);color:#fff;
+  font-size:var(--t-body);font-weight:600;line-height:1.3;text-align:center;
+  text-decoration:none;
+}
+.btn:hover{background:#000;border-color:#000}
+.btn:active{transform:translateY(1px)}
+.btn.secondary,.btn.ghost,.btn.call{background:transparent;color:var(--ink);border-color:var(--rule-strong)}
+.btn.secondary:hover,.btn.ghost:hover,.btn.call:hover{border-color:var(--ink);background:transparent}
+.btn.green{background:var(--mason);border-color:var(--mason)}
+.btn.green:hover{background:#003f2c;border-color:#003f2c}
+.btn:disabled,.btn[disabled]{opacity:.4;cursor:not-allowed;transform:none}
+.btn.block{display:flex;width:100%}
+.btn-text{
+  display:inline-block;min-height:44px;padding:var(--s3) 0;
+  background:none;border:0;color:var(--ink);
+  font-size:var(--t-body);font-weight:600;
+  text-decoration:underline;text-underline-offset:.2em;
+}
+.btn-text:hover{color:var(--mason)}
+.btn-text.quiet{font-weight:400;color:var(--ink-soft)}
+.btn-text.quiet:hover{color:var(--ink)}
+
+/* ---------- form controls ---------- */
+input[type=text],input[type=number],textarea,select{
+  width:100%;font:inherit;font-size:var(--t-body);
+  min-height:44px;padding:var(--s3);
+  border:1px solid var(--rule-strong);border-radius:var(--radius);
+  background:var(--card);color:var(--ink);
+}
+select{min-width:0;max-width:100%}
+textarea{min-height:120px;resize:vertical;line-height:1.5}
+textarea.code{font-family:var(--mono);font-size:var(--t-small);white-space:pre;overflow:auto}
+textarea.prose{white-space:pre-wrap}
+input:hover,textarea:hover,select:hover{border-color:var(--ink-soft)}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--ink)}
+::placeholder{color:#8d8f92}
+
+/* ---------- the one card ---------- */
+.card{background:var(--card);border:1px solid var(--rule);border-radius:var(--radius);
+  padding:var(--s5);box-shadow:var(--shadow)}
+.card>:last-child{margin-bottom:0}
+/* a block that is content, not a container: a rule above it and nothing else */
+.section{border-top:1px solid var(--rule);padding-top:var(--s5);margin-top:var(--s7)}
+.section>h2,.section>h3{margin-top:0}
+
+/* ---------- toggles. The only survivor of the pill, because it is a control ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:var(--s2);margin:0 0 var(--s3)}
+.chip{
+  min-height:44px;padding:var(--s2) var(--s4);
+  border:1px solid var(--rule-strong);border-radius:var(--radius);
+  background:var(--card);color:var(--ink);
+  font-size:var(--t-body);font-weight:500;line-height:1.3;text-align:left;
+}
+.chip:hover{border-color:var(--ink)}
+.chip.on,.chip[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff;font-weight:600}
+.chip:disabled{opacity:.35;cursor:not-allowed}
+.chip.sm{font-size:var(--t-small);padding:var(--s2) var(--s3)}
+
+/* ---------- one table ---------- */
+table{border-collapse:collapse;width:100%;font-size:var(--t-small);table-layout:fixed}
+thead th{
+  text-align:left;vertical-align:bottom;
+  padding:0 var(--s3) var(--s2);
+  border-bottom:1.5px solid var(--ink);
+  background:transparent;color:var(--ink);
+  font-size:var(--t-label);font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+}
+thead th.num{text-align:right}
+tbody td{padding:var(--s3);border:0;border-bottom:1px solid var(--rule);
+  vertical-align:top;line-height:1.5;overflow-wrap:anywhere}
+tbody tr:nth-child(even) td{background:var(--zebra)}
+tbody td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tbody tr.grp td{background:transparent;border-bottom:1px solid var(--rule-strong);
+  padding-top:var(--s6);font-size:var(--t-label);font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;color:var(--ink)}
+tbody tr.grp:first-child td{padding-top:var(--s2)}
+td.mono{font-family:var(--mono);font-size:13px;white-space:nowrap;color:var(--ink-soft)}
+
+/* ---------- one figure ---------- */
+.figure{border:1px solid var(--rule);border-radius:var(--radius);padding:var(--s4);
+  background:var(--card);margin:0 0 var(--s4)}
+.figure>svg,.figure>img{display:block;width:100%;height:auto}
+.figcap{margin:var(--s3) 0 0;font-size:var(--t-small);font-style:italic;
+  line-height:1.5;color:var(--ink-soft)}
+
+/* ---------- one status style. Words, not pills. ---------- */
+.status{
+  display:block;margin:0 0 var(--s1);
+  font-size:var(--t-label);font-weight:700;
+  text-transform:uppercase;letter-spacing:.09em;
+  color:var(--ink);background:none;border:0;padding:0;
+}
+.status.pass,.status.clears{color:var(--mason)}      /* checked within scope */
+.status.review{color:var(--ink)}                     /* needs review */
+.status.info,.status.below{color:var(--ink-soft)}    /* not checked */
+.status.fail,.status.silent{color:var(--red)}        /* failed */
+.status.inline{display:inline;margin:0}
+
+/* ---------- counts on one line, instead of a wall of stat cards ---------- */
+.counts{margin:0 0 var(--s4);font-size:var(--t-body);line-height:2;
+  font-variant-numeric:tabular-nums;color:var(--ink-soft)}
+.counts span{white-space:nowrap}
+/* the divider rides the end of a count, so a wrap never starts a line with it */
+.counts span:not(:last-child)::after{content:"";display:inline-block;width:1px;height:.85em;
+  margin:0 var(--s3);background:var(--rule-strong);vertical-align:-.05em}
+.counts b{font-weight:700;color:var(--ink);margin-right:.35em}
+.counts .fail b{color:var(--red)}
+.counts .pass b{color:var(--mason)}
+
+/* ---------- a headline numeral: the third and last place gold appears ---------- */
+.headline{font-size:var(--t-h1);font-weight:700;line-height:1.1;
+  font-variant-numeric:tabular-nums;
+  display:inline-block;padding-bottom:var(--s1);
+  border-bottom:3px solid var(--gold)}
+
+/* ---------- decreases ---------- */
+.neg{color:var(--red)}
+
+/* ---------- one focus ring ---------- */
+:focus-visible{outline:2px solid var(--mason);outline-offset:2px;border-radius:2px}
