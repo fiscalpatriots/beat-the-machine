@@ -1062,10 +1062,12 @@ function howScreen(){
       '<div class="howgrp judge"><h3>Reviewer judgment</h3>'+
         '<p>Invented driver, timing, wrong account. All three need the facts on file and a person who knows the business.</p></div>'+
       '<div class="howscope"><h3>Scope</h3>'+
-        '<p>This build is a static case: fourteen lines, one month, answers keyed by hand. It does not run on a live ledger, and the four mechanical checks run on any ledger and memo in the checker on this site; driver and timing stay with the reviewer. Next, the deterministic checks run first on every AI memo, and the reviewer\'s time goes only to the two judgment types.</p></div>'+
+        '<p>This build is a static case: fourteen lines, one month, answers keyed by hand. Halyard is a made-up company, and its memo was written for this build the way an AI assistant writes close commentary, with every failure planted so it can be taught and scored. It does not run on a live ledger, and the four mechanical checks run on any ledger and memo in the checker on this site; driver and timing stay with the reviewer. Next, the deterministic checks run first on every AI memo, and the reviewer\'s time goes only to the two judgment types.</p></div>'+
       '<a class="btn" href="checker.html">Run the checker on your own ledger and memo</a>'+
       '<div class="linkrow"><a class="howlink" href="PROTOCOL.md">The review protocol, one page</a>'+
-        '<a class="howlink" href="Second-Pass-Review-Protocol.pdf">The same page as a PDF</a></div>'+
+        '<a class="howlink" href="Second-Pass-Review-Protocol.pdf">The same page as a PDF</a>'+
+        '<a class="howlink" href="PROVENANCE.md">Where this case came from</a>'+
+        '<a class="howlink" href="evidence/EVIDENCE-NOTE.md">What a real AI draft got wrong</a></div>'+
       '<div class="howuse"><h3>Use it on your own memo</h3>'+
         '<p>Paste this into the AI tool your firm already uses, then paste your ledger and the memo under it.</p>'+
         '<textarea id="howprompt" readonly rows="10" spellcheck="false">'+esc(HOWPROMPT)+'</textarea>'+
@@ -1085,8 +1087,8 @@ function intro(){
   screen.innerHTML =
     icon("robot", true)+
     '<h1>Second Pass:<br>Beat the Machine</h1>'+
-    '<p>The June close commentary at Halyard wasn\'t written by a person. The controller gave an AI assistant the ledger and asked it to explain the month, and it wrote with the confidence of something that had checked.</p>'+
-    '<p>The explanations are the assistant\'s own guesswork, because the ledger doesn\'t carry any. Some of them are wrong, and they sound good enough that a busy reviewer would sign off and move on. You\'ll read fourteen lines and flag the ones that don\'t hold.</p>'+
+    '<p>Halyard is a made-up company. Its June close memo reads the way an AI assistant writes one, and it carries the mistakes they make.</p>'+
+    '<p>The ledger does not explain itself, so the causes in the memo are guesses, and some of them are wrong. They read well enough that a busy reviewer would sign off and move on. You are the second pass. You will read fourteen lines and flag the ones that do not hold.</p>'+
     '<button class="btn" id="go">Play</button>'+
     '<div class="linkrow"><button class="howlink" id="howlink">How this works in a real close</button>'+
       '<a class="howlink" href="checker.html">Checker</a>'+
@@ -1274,7 +1276,7 @@ function bridge(){
     '<div class="card">'+
       '<div class="cardhead">'+icon("ledger")+'</div>'+
       '<h2>Round two: a memo you have not seen</h2>'+
-      '<p class="sub">New company, new memo, same job. Five lines.</p>'+
+      '<p class="sub">Another made-up company, a memo built the same way, same job. Five lines.</p>'+
       '<p class="tiny" style="margin:2px 0 0">Brightwater Dental Partners, a four office dental group.</p>'+
       '<button class="btn" id="r2go">Continue</button>'+
     '</div>';

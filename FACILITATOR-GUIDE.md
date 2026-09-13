@@ -52,9 +52,10 @@ time, because that is how a replay is told from a new player.
 | 15 | Debrief | Six questions in order, two answers from the room on each. |
 | 5 | Close | The numbers back to the room, and what this looks like in a real close. |
 
-**Framing, five minutes.** Say three things and stop. A month end close produces a ledger. An AI
-assistant drafted this month's commentary from that ledger, and it reads well. You are the second
-pass on it. Then read the threshold rule out loud, because it decides which lines owe an
+**Framing, five minutes.** Say three things and stop. A month end close produces a ledger. The
+commentary you are about to read is a built case, written the way an AI assistant writes close
+commentary and carrying the mistakes they make, and it reads well. You are the second pass on it.
+Then read the threshold rule out loud, because it decides which lines owe an
 explanation at all: a movement owes commentary only when it clears both more than $25,000 and at
 least 10 percent of the prior balance, both legs and not either one. Do not name the six ways a
 memo fails before they play. Naming them is handing over the answer.
@@ -200,5 +201,7 @@ No prerequisite beyond knowing what a variance schedule is. The threshold rule i
 screen and again in the framing, and nothing else in the case assumes prior close experience.
 
 Halyard Provisioning Group does not exist and no figure in the case came from any real company or
-engagement. `PROVENANCE.md` in this repository records how the case and its memo were built, and
-it is worth reading before you tell a room that a machine wrote the memo.
+engagement. `PROVENANCE.md` in this repository records how the case and its memo were built. Read
+it before you run the session, because the room has to be told that the memo is constructed rather
+than captured: it was written the way an AI assistant writes close commentary, with the failures
+planted so they can be taught and scored.
