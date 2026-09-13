@@ -7,6 +7,7 @@
 
 <title>Second Pass: the review after the AI draft</title>
 <meta name="description" content="A second pass on AI-drafted close commentary. A browser checker, a one-page protocol and a ten-minute drill, built at George Mason.">
+<link rel="canonical" href="https://fiscalpatriots.github.io/beat-the-machine/review.html">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Second Pass">
@@ -35,8 +36,9 @@
    page still stands if the sheet is missing. The header and the footer come
    from assets/nav.js, which every page loads. Contrast on #f6f3ec:
    ink #1a1a1a 15.4:1, green #005239 8.4:1, soft ink #5f6366 5.3:1.
-   Gold #ffc733 is the masthead rule alone; the numerals take the deeper
-   #e0ac00 so they carry on paper. */
+   Gold #ffc733 is the masthead rule alone. The ordinal numerals are set in
+   Mason green, not gold: gold cannot carry type on paper at 4.5:1 and the
+   brand guide does not let it try. */
 :root{
   --paper:#f6f3ec;--card:#ffffff;--ink:#1a1a1a;--ink-soft:#5f6366;
   --mason:#005239;--mason-deep:#003527;--gold:#ffc733;--gold-ink:#e0ac00;
@@ -107,7 +109,7 @@ h1{margin:0;font-size:42px;line-height:1.12;letter-spacing:-.02em;color:var(--ma
 .shot img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:top center;
   background:var(--paper);border-bottom:1px solid var(--rule)}
 .shot .body{padding:12px 14px 14px}
-.shot .n{font-size:12px;font-weight:700;color:var(--gold-ink);font-variant-numeric:tabular-nums;
+.shot .n{font-size:12px;font-weight:700;color:var(--mason);font-variant-numeric:tabular-nums;
   letter-spacing:.06em}
 .shot p{margin:2px 0 0;font-size:15px;line-height:1.4}
 
@@ -120,7 +122,7 @@ h1{margin:0;font-size:42px;line-height:1.12;letter-spacing:-.02em;color:var(--ma
 .rail nav{border-top:1.5px solid var(--ink);padding-top:14px}
 .rail nav ol{list-style:none;margin:0;padding:0;font-variant-numeric:tabular-nums}
 .rail nav li{margin:0 0 8px;font-size:17px;line-height:1.4}
-.rail nav li .n{color:var(--gold-ink);font-weight:700;font-size:15px;margin-right:12px}
+.rail nav li .n{color:var(--mason);font-weight:700;font-size:15px;margin-right:12px}
 .rail nav a{text-decoration:none}
 .rail nav a:hover{text-decoration:underline}
 .railblock{margin-top:30px;border-top:1px solid var(--rule);padding-top:16px}
@@ -132,9 +134,9 @@ h1{margin:0;font-size:42px;line-height:1.12;letter-spacing:-.02em;color:var(--ma
 .railblock li{margin:0 0 7px}
 
 section{margin:0 0 46px;scroll-margin-top:64px}
-main section:last-of-type{margin-bottom:0}
+.split .col section:last-of-type{margin-bottom:0}
 h3{margin:0 0 18px;font-size:28px;line-height:1.2;letter-spacing:-.015em;color:var(--ink);font-weight:600}
-h3 .n{color:var(--gold-ink);font-size:19px;font-weight:700;font-variant-numeric:tabular-nums;margin-right:16px;vertical-align:2px}
+h3 .n{color:var(--mason);font-size:19px;font-weight:700;font-variant-numeric:tabular-nums;margin-right:16px;vertical-align:2px}
 @media (max-width:640px){h3{font-size:24px}h3 .n{margin-right:12px;font-size:17px}}
 section p{margin:0 0 14px;font-size:17.5px}
 section p:last-child{margin-bottom:0}
@@ -185,6 +187,8 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
 </head>
 <body>
 <div id="page">
+
+  <main id="sp-main" tabindex="-1">
 
   <div class="masthead">
     <div class="inst">George Mason University</div>
@@ -271,28 +275,28 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
     <div class="strip">
 
       <figure class="shot">
-        <img src="screenshots/review/strip-01-checker-empty.png" alt="The checker before a run: a pane for the ledger, a pane for the memo, the two threshold floors, and an empty result area.">
+        <img src="screenshots/review/strip-01-checker-empty.png" width="1280" height="960" loading="lazy" decoding="async" alt="The checker before a run: a pane for the ledger, a pane for the memo, the two threshold floors, and an empty result area.">
         <figcaption class="body"><span class="n">01</span>
           <p>Paste the ledger and the memo beside it.</p>
         </figcaption>
       </figure>
 
       <figure class="shot">
-        <img src="screenshots/review/strip-02-checker-results.png" alt="The checker results: a coverage bar, counts for checked within scope, needs review, not checked and failed, and the results table under them.">
+        <img src="screenshots/review/strip-02-checker-results.png" width="1280" height="960" loading="lazy" decoding="async" alt="The checker results: a coverage bar, counts for checked within scope, needs review, not checked and failed, and the results table under them.">
         <figcaption class="body"><span class="n">02</span>
           <p>Four checks run and print a verdict per line.</p>
         </figcaption>
       </figure>
 
       <figure class="shot">
-        <img src="screenshots/review/strip-03-drill-card.png" alt="A drill card: account 4200, the May and June balances, the change in red, and a link to the full ledger.">
+        <img src="screenshots/review/strip-03-drill-card.png" width="1120" height="840" loading="lazy" decoding="async" alt="A drill card: account 4200, the May and June balances, the change in red, and a link to the full ledger.">
         <figcaption class="body"><span class="n">03</span>
           <p>The drill puts one account in front of you.</p>
         </figcaption>
       </figure>
 
       <figure class="shot">
-        <img src="screenshots/review/strip-04-drill-end.png" alt="The end screen: the rank, the codename, right call twelve of fourteen and right reason two of fourteen.">
+        <img src="screenshots/review/strip-04-drill-end.png" width="1120" height="840" loading="lazy" decoding="async" alt="The end screen: the rank, the codename, right call twelve of fourteen and right reason two of fourteen.">
         <figcaption class="body"><span class="n">04</span>
           <p>The record keeps every call and its basis.</p>
         </figcaption>
@@ -334,7 +338,7 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
       </div>
     </aside>
 
-    <main>
+    <div class="col">
 
       <section id="problem">
         <h3><span class="n">01</span>The problem</h3>
@@ -500,8 +504,10 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
         <p>The protocol governs the memo rather than the model that drafted it, the threshold is a setting, and the drill fits inside one chapter meeting.</p>
       </section>
 
-    </main>
+    </div>
   </div>
+
+  </main>
 
 </div>
 
