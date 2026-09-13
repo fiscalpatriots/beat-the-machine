@@ -1,0 +1,6 @@
+# Second Pass — https://fiscalpatriots.github.io/beat-the-machine/
+# Everything here is public and meant to be found. Nothing is disallowed.
+User-agent: *
+Allow: /
+
+Sitemap: https://fiscalpatriots.github.io/beat-the-machine/sitemap.xml
