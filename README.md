@@ -67,15 +67,25 @@ row is what lets all four figure columns hold full type with thousands separator
 sales and operating expenses each carry a subtotal, and a net line closes the statement.
 
 Nothing is tapped there. The Ledger button on every card and every reveal reopens the same
-component as a slide up sheet, with the account under review highlighted and scrolled to, and
-that account also prints as a strip at the top of its card. Every card carries a full width
-"See the full ledger" button under that strip as well as the Ledger control in its header, both
-opening the same sheet, and both taller than 44px. The first card adds a one time hint line
-under the button.
+component as a slide up sheet, with the account under review highlighted by a gold left border
+and a gold tint, and scrolled to. That account also prints as a strip at the top of its card.
+One control opens the sheet and only one: the full width "See the full ledger" button under the
+strip on every card and every reveal, taller than 44px. The first card adds a one time hint line
+under it.
 
-The account number and its name share one line at 15px in the ink color, the number in tabular
-figures on a fixed width so the names line up under each other. The card holds 16px of inner
-padding on a phone and 24px from 480px up, rows are 12px apart, and no text touches the border.
+On a phone each account takes two lines, the number and name above the four figures with the
+movement bar under them. From 900px up the same row reads as one line: the account number in a
+monospace column, the name, then May, June, Change and Percent as right aligned tabular columns
+at 16px, with the movement bar drawn inside the Percent cell as a background fill scaled to the
+largest absolute percent, so the figure and the picture share one cell. Section headers are
+small caps in green over a hairline, subtotals carry a rule above them and the net line a
+heavier one, and alternate rows take a three percent green fill.
+
+The orientation page is two columns from 900px up: the ledger on the left and a sticky legend on
+the right holding "What earns a flag" with the six defect types as chips, with Continue at the
+foot of both columns. On a phone the legend comes first, collapsed to its title and the six
+chips until it is tapped, the ledger follows, and Continue is fixed to the bottom of the
+viewport.
 
 ## The round
 
@@ -86,9 +96,15 @@ and neutral, with Let it stand on the left and Flag it on the right.
 
 Every card is scored. Flagging a line that was already right costs exactly what missing a
 problem costs, and the running pill reads `Right N of M` over the cards seen so far. The split
-is twelve problem lines and two clean ones, which is what the source exercise contains, and
-neither number is ever printed for the player. A player who flags all fourteen lands on Senior,
-which is the point of scoring the clean lines.
+is eight problem lines and six clean ones, rebalanced on 12 September 2026 from the twelve and
+two the first version carried, because twelve and two let a player flag everything and score
+twelve. Neither number is ever printed for the player. Flagging all fourteen now scores eight
+and lands on Trainee.
+
+Rows filed in the Google Form before 12 September 2026 were answered against the old key and
+are not comparable with anything filed since. The per-card entries still post the player's own
+call unchanged, so nothing about the form mapping moved. The source of truth for the new key is
+`EXERCISE-case-01-form-rev3.md` in the AINA drafts folder.
 
 ## The track
 
@@ -106,7 +122,8 @@ paint, so nothing on the page moves when the car does.
 The run is timed from the first card to the fourteenth call. The end screen prints it as
 `Lap time 6:42` beside the score, with `Best streak 7` next to it, and the lap time rounded to
 whole minutes is what goes into the form's elapsed minutes question. A streak of five or more
-earns the "Hot lap" badge, which is the sixth of the six.
+earns the "Hot lap" badge, and letting all six clean lines stand earns "Nothing over-flagged".
+There are eight badges.
 
 ## Spelling
 
@@ -115,13 +132,13 @@ American spelling throughout, in the file and in these notes. The organization c
 
 ## The end screen
 
-The end screen leads with the reward: a trophy drawn to the rank (bronze, silver, gold, and a
-starred cup for a clean sweep) with a single rise and shine that respects
+Ranks are Partner at 14, Manager at 13, Senior at 11 or 12, Staff at 9 or 10 and Trainee below
+that. The end screen leads with the reward: a trophy drawn to the rank (bronze, silver, gold,
+and a starred cup for a clean sweep) with a single rise and shine that respects
 `prefers-reduced-motion`, the rank name, the codename, the earned line, the three outcomes as
 caught, let stand correctly and false flags, the lap time and the best streak under those three
 tiles, six badges with the unearned ones grayed, and the share line with a Copy button. The coaching sits behind
-one tap under it. Ranks are Trainee, Staff, Senior, Manager and Partner, off correct calls out
-of fourteen.
+one tap under it.
 
 ## Where the data lands
 
@@ -180,7 +197,7 @@ includes the AUDIT-TEST-DELETE test row, carry that older British form, so a cou
 reach back through them should test for `Organi*ations:` or simply for the chapter name, which
 is unchanged either way.
 
-The six chips are Beta Alpha Psi, ACFE, ASM, NABA, AAA and GMU Student. To count a chapter in
+The seven chips are Beta Alpha Psi, ACFE, ASM, NABA, AAA, GMU Student and Professor. To count a chapter in
 the responses sheet, test the question A column for the name, for example
 `=COUNTIF(H2:H, "*ACFE*")`. A player who tapped two chapters counts in both, which is what a
 multi-select means, so the chapter counts sum to more than the number of responses. Count
