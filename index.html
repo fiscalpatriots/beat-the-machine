@@ -538,7 +538,7 @@ body{overflow-x:clip}
    One constant. It prints under the footer line on every screen, rides into the posted
    payload on question A, and stamps the local record. README and review.html state it too. */
 var PRODUCT_NAME = "Second Pass: Beat the Machine";
-var PRODUCT_VERSION = "1.6.0";
+var PRODUCT_VERSION = "1.6.1";
 var PRODUCT_STAMP = "second-pass-drill " + PRODUCT_VERSION;
 var NOTICE_VERSION = "notice-2026-09-13";
 
@@ -773,12 +773,15 @@ var S = {
   /* sel is the call that is selected and not yet committed, first is the very first call the
      player selected on that line, and calls is the committed one. A line is locked when calls
      carries a value, and only a locked line is scored or revealed. */
-  calls:[], sel:[], first:[], basis:[], words:[], secs:[], confPost:null, qd:null,
+  calls:[], sel:[], first:[], basis:[], words:[], secs:[], asecs:[], confPost:null, qd:null,
   caught:0, cleared:0, falseFlags:0, streak:0, best:0, points:0, started:0,
   lapStart:0, lapEnd:0, itemStart:0,
+  /* the card clock runs on wall time, and a second clock takes the tab's hidden time back out
+     of it, so a run that sat in a background tab is not reported as review work */
+  hiddenTotal:0, hiddenAt:0, itemHiddenBase:0,
   /* round two keeps its own counters, because the fresh case is scored on its own and
      the rank and the badges are still read off the fourteen trained lines */
-  r2calls:[], r2sel:[], r2first:[], r2basis:[], r2words:[], r2secs:[],
+  r2calls:[], r2sel:[], r2first:[], r2basis:[], r2words:[], r2secs:[], r2asecs:[],
   r2caught:0, r2cleared:0, r2false:0, r2Start:0, r2End:0, r2Revealed:0,
   attemptId:newAttemptId(), runIndex:1, testAttempt:TEST_MODE,
   sendState:"not sent", sendAttempts:0, completedAt:0,
@@ -786,10 +789,11 @@ var S = {
   casePick:"halyard"
 };
 function blankRound(n, into){
-  into.calls = []; into.sel = []; into.first = []; into.basis = []; into.words = []; into.secs = [];
+  into.calls = []; into.sel = []; into.first = []; into.basis = []; into.words = [];
+  into.secs = []; into.asecs = [];
   for(var k=0;k<n;k++){
     into.calls.push(null); into.sel.push(null); into.first.push(null);
-    into.basis.push(null); into.words.push(""); into.secs.push(0);
+    into.basis.push(null); into.words.push(""); into.secs.push(0); into.asecs.push(0);
   }
 }
 /* Everything a run holds, cleared and resized to the case now loaded. It is the one reset:
@@ -799,15 +803,16 @@ function freshRun(){
   var one = {}, two = {};
   blankRound(LINES, one); blankRound(LINES2, two);
   S.calls = one.calls; S.sel = one.sel; S.first = one.first;
-  S.basis = one.basis; S.words = one.words; S.secs = one.secs;
+  S.basis = one.basis; S.words = one.words; S.secs = one.secs; S.asecs = one.asecs;
   S.r2calls = two.calls; S.r2sel = two.sel; S.r2first = two.first;
-  S.r2basis = two.basis; S.r2words = two.words; S.r2secs = two.secs;
+  S.r2basis = two.basis; S.r2words = two.words; S.r2secs = two.secs; S.r2asecs = two.asecs;
   LINE_PTS = []; LEVELED = false;
   S.caught = 0; S.cleared = 0; S.falseFlags = 0; S.streak = 0; S.best = 0; S.points = 0;
   S.r2caught = 0; S.r2cleared = 0; S.r2false = 0; S.r2Start = 0; S.r2End = 0; S.r2Revealed = 0;
   S.confPost = null; S.qd = null;
   S.prepicks = []; S.prepickSkipped = false;
   S.started = Date.now(); S.lapStart = 0; S.lapEnd = 0; S.itemStart = 0; S.completedAt = 0;
+  S.hiddenTotal = 0; S.hiddenAt = 0; S.itemHiddenBase = 0;
   /* a second run is a second attempt, so it gets its own id rather than reusing the first one,
      which is what keeps a retry of one run distinct from a fresh run */
   S.attemptId = newAttemptId();
@@ -821,10 +826,16 @@ function freshRun(){
   var one = {}, two = {};
   blankRound(14, one); blankRound(5, two);
   S.calls = one.calls; S.sel = one.sel; S.first = one.first;
-  S.basis = one.basis; S.words = one.words; S.secs = one.secs;
+  S.basis = one.basis; S.words = one.words; S.secs = one.secs; S.asecs = one.asecs;
   S.r2calls = two.calls; S.r2sel = two.sel; S.r2first = two.first;
-  S.r2basis = two.basis; S.r2words = two.words; S.r2secs = two.secs;
+  S.r2basis = two.basis; S.r2words = two.words; S.r2secs = two.secs; S.r2asecs = two.asecs;
 })();
+/* hidden time, counted once for the whole run and taken off each card at the lock */
+function hiddenNow(){ return S.hiddenTotal + (S.hiddenAt ? (Date.now() - S.hiddenAt) : 0); }
+document.addEventListener("visibilitychange", function(){
+  if(document.hidden){ if(!S.hiddenAt) S.hiddenAt = Date.now(); }
+  else if(S.hiddenAt){ S.hiddenTotal += Date.now() - S.hiddenAt; S.hiddenAt = 0; }
+});
 
 var screen = document.getElementById("screen");
 
@@ -1762,6 +1773,7 @@ function firstOf(r){ return r === 2 ? S.r2first : S.first; }
 function basisOf(r){ return r === 2 ? S.r2basis : S.basis; }
 function wordsOf(r){ return r === 2 ? S.r2words : S.words; }
 function secsOf(r){ return r === 2 ? S.r2secs : S.secs; }
+function asecsOf(r){ return r === 2 ? (S.r2asecs || (S.r2asecs = [])) : (S.asecs || (S.asecs = [])); }
 function lastIndex(r){ return (r === 2 ? LINES2 : LINES) - 1; }
 
 /* a line that is already committed shows its verdict rather than its buttons, which is also
@@ -1782,6 +1794,7 @@ function callCard(i, round){
   if(round === 2){ if(!S.r2Start) S.r2Start = Date.now(); }
   else if(!S.lapStart) S.lapStart = Date.now();
   S.itemStart = Date.now();
+  S.itemHiddenBase = hiddenNow();
   saveRun();
   var prev = (i > 0) ? cardsOf(round)[i-1] : null;
   var backBtn = prev
@@ -1898,6 +1911,9 @@ function callCard(i, round){
     var wordsEl = document.getElementById("basiswords");
     wordsOf(round)[i] = wordsEl ? wordsEl.value.replace(/[\r\n|]+/g, " ").trim() : "";
     secsOf(round)[i] = S.itemStart ? Math.max(0, Math.round((Date.now() - S.itemStart)/1000)) : 0;
+    asecsOf(round)[i] = S.itemStart
+      ? Math.max(0, Math.round((Date.now() - S.itemStart - (hiddenNow() - S.itemHiddenBase))/1000))
+      : 0;
     callsOf(round)[i] = val;
     if(i === lastIndex(round)){
       if(round === 2) S.r2End = Date.now(); else S.lapEnd = Date.now();
@@ -2443,6 +2459,7 @@ function itemRecord(c, idx, round){
   var chips = (round===2) ? S.r2basis[idx] : S.basis[idx];
   var words = (round===2) ? S.r2words[idx] : S.words[idx];
   var secs  = (round===2) ? S.r2secs[idx] : S.secs[idx];
+  var asecs = ((round===2) ? (S.r2asecs || []) : (S.asecs || []))[idx];
   return {
     item: (round===2 ? "r2-" : "r1-") + c.n,
     round: round,
@@ -2480,9 +2497,11 @@ function itemRecord(c, idx, round){
     confidenceNote: "not asked in this version",
     assistanceRevealed: false,
     elapsedSecondsOnCard: secs || 0,
-    elapsedSecondsNote: "Wall-clock seconds from the card appearing to the call being locked. It " +
-      "does not pause when the tab is in the background, so it is elapsed time rather than active " +
-      "review time.",
+    activeSecondsOnCard: (asecs === undefined || asecs === null) ? (secs || 0) : asecs,
+    elapsedSecondsNote: "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the " +
+      "call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden " +
+      "taken out of it, measured on visibilitychange. Neither knows whether the player was reading " +
+      "the card while the tab was in front.",
     /* kept for one version under its old name, which claimed more than it measured */
     elapsedActiveSeconds: secs || 0,
     skippedOrMissing: (call === null) ? "no call recorded" : null,
@@ -2497,8 +2516,8 @@ function attemptRecord(sentPayload){
   var responses = [];
   CARDS.forEach(function(c,i){ responses.push(itemRecord(c,i,1)); });
   CARDS2.forEach(function(c,i){ responses.push(itemRecord(c,i,2)); });
-  var active = 0;
-  responses.forEach(function(r){ active += r.elapsedSecondsOnCard; });
+  var active = 0, activeVisible = 0;
+  responses.forEach(function(r){ active += r.elapsedSecondsOnCard; activeVisible += r.activeSecondsOnCard; });
   return {
     record: "Second Pass attempt record",
     recordFormat: "btm-attempt-1",
@@ -2506,7 +2525,9 @@ function attemptRecord(sentPayload){
       note: "Two fields were renamed in 1.6.1 because their old names claimed more than they held. " +
             "The old names are written beside the new ones for this version only and come out in the next.",
       evidenceReferences: "evidenceSupplied",
-      elapsedActiveSeconds: "elapsedSecondsOnCard, and elapsedSecondsOnCards in the timing block"
+      firstAttempt: "firstRunInThisTab",
+      elapsedActiveSeconds: "elapsedSecondsOnCard and activeSecondsOnCard, and the two matching " +
+        "fields in the timing block"
     },
     attempt: {
       id: S.attemptId,
@@ -2522,6 +2543,10 @@ function attemptRecord(sentPayload){
                      caseSource: CASE_SOURCE},
       form: FORM_POST,
       modes: {roundOne: "practice", roundTwo: ASSESS ? "assessment" : "practice"},
+      firstRunInThisTab: S.runIndex === 1,
+      firstRunNote: "True when this is the first run in this browser tab. The page cannot tell a " +
+        "first-time person from a returning one, and it does not claim to.",
+      /* kept for one version under its old name, which read as a first-time participant */
       firstAttempt: S.runIndex === 1,
       runIndex: S.runIndex,
       assistanceSource: "none. No model challenge runs in this build.",
@@ -2576,8 +2601,11 @@ function attemptRecord(sentPayload){
       roundOneLapMinutesPosted: lapMinutes(),
       roundTwoSeconds: r2Seconds(),
       elapsedSecondsOnCards: active,
-      elapsedSecondsNote: "Summed wall-clock seconds on the nineteen cards. The clock does not " +
-        "pause for tab inactivity, so this is elapsed time and not active review time.",
+      activeSecondsOnCards: activeVisible,
+      elapsedSecondsNote: "Both are summed over the nineteen cards. elapsedSecondsOnCards is " +
+        "wall-clock. activeSecondsOnCards takes out the time this tab spent hidden, measured on " +
+        "visibilitychange. Neither knows whether the player was reading while the tab was in front.",
+      hiddenSecondsInRun: Math.round(hiddenNow()/1000),
       /* kept for one version under its old name */
       elapsedActiveSeconds: active
     },

@@ -256,7 +256,7 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 | `run.case_round1` | halyard-v4 |
 | `run.case_round2` | brightwater-v4 |
 | `run.key_date` | 2026-09-13 |
-| `run.product_version` | second-pass-drill 1.6.0 |
+| `run.product_version` | second-pass-drill 1.6.1 |
 | `run.responses_total` | 15 |
 | `run.players` | 10 |
 | `run.test_rows_dropped` | 4 |

@@ -40,7 +40,7 @@ HEADERS += ["After the list. Now that you have seen the challenges, how confiden
 NOTE = "Not collected. The ledger screen is orientation only in this version."
 NOT_ASKED = "not asked"
 PLACEHOLDERS = ("3", "5", "Once or twice", "5")
-PRODUCT = "second-pass-drill 1.6.0"
+PRODUCT = "second-pass-drill 1.6.1"
 NOTICE = "notice-2026-09-13"
 VERSION_LINE = ("Product: %s. Notice: %s. Mode: round one practice, round two "
                 "assessment." % (PRODUCT, NOTICE))

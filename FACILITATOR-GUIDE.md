@@ -1,8 +1,8 @@
 # Running Second Pass: Beat the Machine in Forty Minutes
 
 A facilitator's guide for a chapter meeting, a classroom, or a firm's staff training. Version 2.0,
-13 September 2026, written against `halyard-v4`, `brightwater-v4` and product version
-`second-pass-drill 1.4.0`.
+13 September 2026, written against `halyard-v4`, `brightwater-v5` and product version
+`second-pass-drill 1.6.1`.
 
 The game takes ten minutes to play and the debrief is what teaches. A room that plays and leaves
 has had a diversion. A room that plays and then answers the questions below out loud has learned a
@@ -174,18 +174,20 @@ is the sentence a player can carry to the next memo they review.
 | --- | --- | --- | --- | --- |
 | 1 | Which figures in this memo did not tie to the ledger? | Arithmetic | 1 and 8 | The memo handed you a number, so check it against the ledger before you read the reason attached to it. Freight billed fell $65,000 and the memo said $6,500. Bad debt moved $47,000 and the memo accounted for $42,000. |
 | 2 | Which sentence has the movement running the wrong way? | Wrong direction | 3 | The memo used the word declined next to a June balance higher than May's. Inbound freight rose $73,800. |
-| 3 | Which two sentences cannot both be true? | Timing | 2 | The same roof and dock leveler program is described as finished on June 30 and as still running into August. Which one holds decides whether June owes an accrual. |
+| 3 | Which two sentences cannot both be true? | Timing | 2 | The same roof and dock leveler program is described as finished on June 30 and as still running into August. The memo contradicts itself, and neither sentence says what June work was performed. Spotting the contradiction is not knowing the accounting: ask what June work was performed, how much of it is recorded, and whether any of it is an improvement rather than a repair. |
 | 4 | Which reasons sounded specific and rested on nothing? | Unsupported driver | 7 and 14 | Ask what document would prove the sentence. When the answer is that nothing in the file would, it is a guess wearing a fact's clothes. On line 14 the memo points at depreciation, which did not move at all, and the revolver drawn on June 3 is the change nobody mentioned. |
 | 5 | Where did the memo credit a movement to a cause nobody documented? | Unsupported attribution | 12 | Continued demand across all four depots is a claim about customers. The file carries no customer level billing bridge, and part of the movement is a pricing reclassification out of account 4200. |
 | 6 | Which account owed an explanation and never got a sentence? | No explanation | 11 | Read the ledger for what the memo left out, not only for what it got wrong. |
 
-**Question six is the one the room usually misses.** In the sample findings the silent line was
-called correctly by 77.8 percent of players, against 88.9 percent on the lines where a sentence was
-visibly wrong. The reason is mechanical rather than a failure of attention. A reviewer reads the
-memo and checks the memo, and warehouse wages at $72,500 and 11.5 percent clears both legs of the
-threshold and appears nowhere in it. The only way to see a silent line is to work from the ledger to
-the memo instead of from the memo to the ledger. Say that out loud, because it is the single habit
-most likely to change what somebody does on Monday.
+**Question six is the one to spend time on.** No room has run this yet, so there is no rate to
+quote and none is printed here. The reason to expect it to be missed is mechanical rather than a
+failure of attention: a reviewer reads the memo and checks the memo, and warehouse wages, account
+6000 in `cases/halyard-v4.json`, moved $72,500, which is 11.5 percent of May, clears both legs of
+the threshold and appears nowhere in the commentary. The only way to see a silent line is to work
+from the ledger to the memo instead of from the memo to the ledger. Say that out loud, because it
+is the single habit most likely to change what somebody does on Monday. Once you have run a
+session, `findings.py` prints the rate for your own room with its denominator, and that is the
+number to use.
 
 **Close the debrief on the clean lines.** Six of the fourteen are sound and the careful call is to
 leave them alone. Ask which line somebody flagged that they should have let stand, and take one
@@ -262,7 +264,7 @@ only question on each is whether something on file carries that cause.
 
 Between the bridge and the results the page takes away everything that could leak correctness.
 There is no reveal after a call, no running score, no streak, no mark and no race track, because a
-car that moved or changed colour would answer the next question for the player. The header shows
+car that moved or changed color would answer the next question for the player. The header shows
 `3 of 5` and nothing else. The chips are still collected on every line, because the reason is the
 whole point of this round.
 
@@ -270,17 +272,18 @@ Once the fifth call is in, one results screen prints all five at once with the k
 the reason and the player's own basis under it.
 
 **What you say, and what you must not say.** Say what the bridge screen says: new company, new
-memo, same job, no hints. Answer nothing about a specific line. Do not tell the room that the
-threshold will not help them, even though it will not: two of the three lines that clear both legs
-are flags and one stands, and of the two that clear neither one is a flag and one stands, so a
-player reasoning from the threshold alone does no better than chance. Saying so in advance is
+memo, same job, no hints. Answer nothing about a specific line. Do not tell the room what the
+threshold will and will not do for them. From `cases/brightwater-v5.json`: three lines clear both
+legs, and two of those three are flags while one stands; patient service revenue clears the dollar
+leg alone and is a flag; marketing clears the percentage leg alone and stands. A player who simply
+flags the three that clear both legs ends at three of five. Saying any of that in advance is
 coaching, and coaching through the fresh case destroys the only unaided measurement in the session.
 
 **How to report it.** Beside the fourteen, as a second descriptive number, never as proof that
 anything transferred. Fourteen practice items and five different assessment items are not
 equivalent pre- and post-tests. A player at 12 of 14 and 4 of 5 reads 85.7 percent trained against
-80.0 percent fresh, and the honest sentence is that both were scored the same way, not that the
-gap measures learning.
+80.0 percent fresh, which is arithmetic on those two counts and not an observation of anybody. The
+honest sentence is that both were scored the same way, not that the gap measures learning.
 
 ## How to read the response sheet in five minutes
 
@@ -319,7 +322,7 @@ first, which is why a test codename should say so and why test mode marks the ro
 
 One more thing to filter. Four questions the form still marks required are no longer asked on
 screen and post a fixed placeholder on every submission, so they are not player answers and must
-not be read as opinion. They carry the same value in every row, which is how you recognise them.
+not be read as opinion. They carry the same value in every row, which is how you recognize them.
 
 ## What to do with the numbers
 

@@ -1,7 +1,22 @@
-# Second Pass, release 1.6.0
+# Second Pass, release 1.6.1
 
 13 September 2026. Khaled Alkurd, George Mason University.
 Live at https://fiscalpatriots.github.io/beat-the-machine/
+
+---
+
+## 1.6.1, what changed since 1.6.0
+
+1.6.1 closes the items the release QA of 13 September left open that did not need another person.
+
+| What | Where | Evidence |
+| --- | --- | --- |
+| A quantity written out in words is read, or the sentence says it was not. Units through millions, hyphenated compounds included: a run becomes a figure where the parser resolves it and the words give it a unit, and otherwise it reaches the reviewer's queue and the sentence is not checked. A count in words beside no claim is left alone | `checker.html`, `CHECKER.md` rule 1c | fixtures `T49` to `T54`, and `T21` now fails a false percentage in words rather than leaving it unparsed. 59 fixtures, 59 pass. Mirrored in `second_pass/checker.py`, 138 pass |
+| Three claims on the reviewer page corrected, and five more found reading the page against `CHECKER.md`, `PROTOCOL.md` and the evidence note | `review.html` | the page now says the protocol asks for four steps rather than that the site enforces them, that this checker leaves the driver and the period to a reviewer, and that the machine check is a figure that does not tie to the line it names |
+| Two record fields renamed to what they hold, with the old names alongside for this version | `index.html`, `README.md` | `evidenceSupplied` with `evidenceSelected` beside it, `elapsedSecondsOnCard` and `activeSecondsOnCard`, `firstRunInThisTab`, and `renamedFields` on the record |
+| The card clock now also reports time with the tab's hidden time taken out of it | `index.html` | `activeSecondsOnCard`, `activeSecondsOnCards` and `hiddenSecondsInRun`, measured on `visibilitychange` |
+| Every on-file fact in the fresh case carries a one-line excerpt from a named, dated document, or says the document was requested and is not on file. The wrong-period item rests on a real quoted schedule dated 31 May 2026 | `cases/brightwater-v5.json` | the file's own change log; verified in the page in test mode at card 3 of 5 |
+| The facilitator guide no longer decides the accrual from a contradiction, and every percentage in it is attributed or gone | `FACILITATOR-GUIDE.md`, `FACILITATOR-ONE-PAGE.md`, `Second-Pass-Facilitator-Guide.pdf` | the two sample-findings rates are out, because no room has run this yet |
 
 ---
 
@@ -198,7 +213,7 @@ drill reads, so the two surfaces cannot drift apart.
 
 | File | What it is |
 | --- | --- |
-| `tests/checker-fixtures.json` | 53 fixtures: the original defect set, the adversarial probe set, the boundary cases, and both sample cases end to end |
+| `tests/checker-fixtures.json` | 59 fixtures: the original defect set, the adversarial probe set, the boundary cases, and both sample cases end to end |
 | `tests/run-checker-tests.cjs` | Runs them against `checker.html` itself, with no browser |
 | `tools/findings.py` | Reads the responses export and writes the findings and every field the readout names |
 | `tools/make-sample-csv.py`, `tools/findings-sample.csv` | A synthetic response set in the shapes the page posts, so the script can be proved without waiting for participants |

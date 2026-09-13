@@ -337,7 +337,7 @@ CASES_RE = re.compile(
 CASES_RE_OLD = re.compile(
     r"cases\s*:\s*([\w.-]+)\s+and\s+([\w.-]+)\s*,\s*dated\s+([\d-]+)"
     r"(?:\s*,\s*loaded from\s+(.*?))?\s*\.", re.I)
-# The product stamp, from versionLine() in question A: "Product: second-pass-drill 1.6.0."
+# The product stamp, from versionLine() in question A: "Product: second-pass-drill 1.6.1."
 PRODUCT_RE = re.compile(r"product\s*:\s*(.+?)\s*\.(?=\s+[A-Z]|$)", re.I)
 TEST_ROW_RE = re.compile(r"test attempt,\s*exclude from reports", re.I)
 # Question B: the attempt identifier, which every retry of one run repeats, and the
