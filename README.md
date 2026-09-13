@@ -78,7 +78,7 @@ come straight out of the responses sheet without any hand coding.
 | Reason accuracy by error type | The same fourteen fields carry `Reason: agrees.` or `Reason: does not agree.` and the card's basis key, so the same grouping gives reason accuracy per type. Question B carries the two round totals beside the attempt identifier. A reason agrees when every chip the player tapped is in the card's basis key and at least one was tapped. |
 | False-flag rate | The six lines whose key is `stand` are the denominator. A `flag` call on any of them is a false flag, and question B carries the round's false flag count as well. |
 | Elapsed time | The clock runs from the first card to the last call and posts as whole minutes in the elapsed time question. It is elapsed time on the page rather than measured active work, and it is reported under that name. |
-| Fresh case accuracy | Question C (`entry.756559246`) opens with `Round2: right call 4/5, right reason 3/5; calls FSFSF; key FSFSF; seconds 61.` The two fractions are the call and reason scores on the five lines of a company the player had never seen, the letter strings are the five calls and the five keyed answers in card order with `F` for flag and `S` for let it stand, and the seconds are the round two clock. |
+| Fresh case accuracy | Question C (`entry.756559246`) opens with `Round2: right call 4/5, right reason 3/5; calls FSFFS; key FSFFS; seconds 61.` The two fractions are the call and reason scores on the five lines of a company the player had never seen, the letter strings are the five calls and the five keyed answers in card order with `F` for flag and `S` for let it stand, and the seconds are the round two clock. |
 
 Read together these say which error types a reviewer agrees with the key on unaided, whether the
 basis they gave agrees with the key as well, and how a second unseen memo of five lines was
@@ -106,6 +106,43 @@ gives a per line figure, and all three flagged lines in `brightwater-v4` are `un
 driver`, so the fresh case reads as a causal-evidence set rather than an arithmetic one. Report
 it beside the fourteen as two separate descriptive numbers. Calling the difference between them
 transfer, learning or improvement would require a planned comparison this pilot does not run.
+
+### The Monday command
+
+The hand formulas above are there so a number can be checked by eye. The whole sheet is read by
+one script, and the readout is written against its field names.
+
+```
+python tools/findings.py responses.csv
+```
+
+Download the responses tab as CSV, put it beside the repository, and run that from the repository
+root. It writes `FINDINGS-<today>.md` and prints the same summary to the terminal. Add
+`--fields readout-fields.json` to get the readout's field set as JSON as well, or `--fields` on
+its own to print it.
+
+The script matches columns by the form's question titles rather than by position, so a reordered
+sheet still reads, and any title it cannot find is printed under **Columns not found** with the
+measure that needed it skipped rather than guessed. It drops the named test codenames and any row
+the page stamped as a test attempt, and it treats two rows carrying one attempt identifier as one
+attempt sent twice. The four questions the form asks that this version of the game does not are
+excluded from every measure, whether the row carries the literal `not asked` or the older numeric
+placeholder.
+
+`READOUT-TEMPLATE.md` prints a field name in every cell it wants filled, and the script's
+**Readout fields** section prints exactly those names with the value to copy across, 127 of them.
+A field the responses cannot support prints *not available*, and that cell stays blank on the
+readout rather than being estimated.
+
+To see it work before any response exists:
+
+```
+python tools/make-sample-csv.py
+python tools/findings.py tools/findings-sample.csv --out tools/FINDINGS-sample.md
+```
+
+That builds fifteen synthetic responses in the shapes the page posts, including one authored-case
+run, one row in the pre-13-September shape and one attempt sent twice, and reads them back.
 
 ## The path in
 
@@ -637,7 +674,7 @@ The elapsed minutes question receives the lap time, off the clock rather than a 
 
 Round two posts without a new question. The whole fresh case rides in question C
 (`entry.756559246`), which asks the player nothing and carried only a placeholder note before 13
-September 2026. The cell now opens with `Round2: 4/5; calls FSFSF; key FSFFS; seconds 61.`, then
+September 2026. The cell now opens with `Round2: right call 4/5, right reason 3/5; calls FSFFS; key FSFFS; seconds 61.`, then
 the five bases, then the company and the case version, so the sheet can be read without opening
 the game. The fourteen "Why" fields were left exactly as they were, because the catch rate by
 error type is grouped on them.

@@ -180,7 +180,7 @@ Flagged all fourteen: SHOTGUN. Those runs score eight and land on Trainee, which
 
 ## Round two, fresh cases
 
-Read out of question C, which carries the whole fresh case as `Round2: 4/5; calls FSFSF; key FSFSF; seconds 61. Round2 basis, by line: 1: Basis: direction wrong || 2: ...`
+Read out of question C, which carries the whole fresh case as `Round2: right call 4/5, right reason 3/5; calls FSFFS; key FSFFS; seconds 61. Round2 basis, by line: 1: Basis: direction wrong || 2: ...`
 
 | Measure | Value |
 | --- | --- |

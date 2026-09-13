@@ -261,7 +261,7 @@ def fmt_pct(value, digits=0):
 
 # ---------------------------------------------------------------- parsing a row
 # Round two rides in question C. index.html builds the cell as
-#   Round2: 4/5; calls FSFSF; key FSFSF; seconds 61.
+#   Round2: right call 4/5, right reason 3/5; calls FSFFS; key FSFFS; seconds 61.
 # F is a flag and S is let it stand, in fresh card order. The seconds clause is read
 # in either spelling in case the game ever shortens it.
 ROUND2_RE = re.compile(
@@ -1393,7 +1393,8 @@ def build_markdown(r, sentences, words, video, csv_path):
         out.append("## Round two, fresh cases")
         out.append("")
         out.append("Read out of question C, which carries the whole fresh case as "
-                   "`Round2: 4/5; calls FSFSF; key FSFSF; seconds 61. Round2 basis, by "
+                   "`Round2: right call 4/5, right reason 3/5; calls FSFFS; key FSFFS; "
+                   "seconds 61. Round2 basis, by "
                    "line: 1: Basis: direction wrong || 2: ...`")
         out.append("")
         out.append("| Measure | Value |")
