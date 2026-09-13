@@ -891,17 +891,92 @@ var SCALE_AFTER=/^[\s-]*(?:thousands?|millions?|billions?|trillions?|mn|bn|basis
 var NUMWORD_RE=/\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion)(?:[\s-]+(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion))*\b/gi;
 var UNIT_AFTER=/^[\s,-]*(?:percent|per\s?cent|pct|%|percentage\s+points?|basis\s+points?|points?|dollars?)\b/i;
 
-/* a number written out in words, where the words make it a figure: "ninety
-   percent", or "30 thousand" with a digit in front of the scale word */
-function numberWords(text){
-  var out=[],m;
+/* a quantity written out in words. Units through millions, hyphenated
+   compounds, "thousand" and "million" are read. Where the run is well formed
+   and the words beside it give it a unit, it becomes an ordinary figure and is
+   compared like any other. Where it is well formed but carries no unit, and
+   where the parser cannot resolve it at all, it is an unparsed span: the
+   sentence is not called checked and the span is listed in the reviewer's
+   queue. A count in words that stands where no claim stands, "the thirty-one
+   new plans", is left alone, the same way a bare run of digits is. */
+var FRACTION_AFTER=/^[\s-]*(?:half|halves|third|thirds|quarter|quarters|fifth|fifths|sixth|sixths|seventh|sevenths|eighth|eighths|ninth|ninths|tenth|tenths|twelfth|twelfths|hundredth|hundredths|thousandth|thousandths)\b/i;
+var WORD_UNIT=/^[\s,-]*(?:(percentage\s+points?|pp)|(percent|per\s?cent|pct|%)|(dollars?))\b/i;
+var NW_SMALL={one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9};
+var NW_TEEN={ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,
+             seventeen:17,eighteen:18,nineteen:19};
+var NW_TENS={twenty:20,thirty:30,forty:40,fifty:50,sixty:60,seventy:70,eighty:80,ninety:90};
+function nwLead(w){
+  if(NW_SMALL[w]!==undefined)return NW_SMALL[w];
+  if(NW_TEEN[w]!==undefined)return NW_TEEN[w];
+  if(NW_TENS[w]!==undefined)return NW_TENS[w];
+  return null;
+}
+/* one group below a thousand: "one hundred twenty-five", "nineteen", "thirty" */
+function nwGroup(tk,i){
+  var v=0,any=false,h;
+  if(i+1<tk.length&&tk[i+1]==="hundred"&&(h=nwLead(tk[i]))!==null){v=h*100;any=true;i+=2;}
+  if(i<tk.length&&NW_TENS[tk[i]]!==undefined){
+    v+=NW_TENS[tk[i]];any=true;i++;
+    if(i<tk.length&&NW_SMALL[tk[i]]!==undefined){v+=NW_SMALL[tk[i]];i++;}
+  }else if(i<tk.length&&(NW_SMALL[tk[i]]!==undefined||NW_TEEN[tk[i]]!==undefined)){
+    v+=NW_SMALL[tk[i]]!==undefined?NW_SMALL[tk[i]]:NW_TEEN[tk[i]];any=true;i++;
+  }
+  return any?{v:v,i:i}:null;
+}
+/* the value of the whole run, or null where the parser cannot resolve it.
+   "billion" is deliberately out of range: the grammar reads units through
+   millions, and anything above that goes to the reviewer rather than being
+   guessed at. */
+function wordsToNumber(run){
+  var tk=String(run).toLowerCase().split(/[\s-]+/).filter(function(w){return w;});
+  var i=0,total=0,last=Infinity,got=false,g,sc;
+  while(i<tk.length){
+    g=nwGroup(tk,i);
+    if(!g)return null;
+    i=g.i;sc=1;
+    if(i<tk.length&&(tk[i]==="thousand"||tk[i]==="million")){sc=tk[i]==="thousand"?1000:1000000;i++;}
+    if(sc>=last)return null;
+    if(sc===1&&i<tk.length)return null;
+    last=sc;
+    total+=g.v*sc;got=true;
+  }
+  return got?total:null;
+}
+/* every run of number words, split into the ones that become figures and the
+   ones that have to reach the reviewer. `always` marks a span that goes to the
+   queue wherever it stands; the rest go only where the words put a claim. */
+function wordNumbers(text,taken){
+  var figs=[],pending=[],m;
   NUMWORD_RE.lastIndex=0;
   while((m=NUMWORD_RE.exec(text))!==null){
-    var j=m.index+m[0].length;
-    if(UNIT_AFTER.test(text.slice(j,j+26))||/\d\s*$/.test(text.slice(Math.max(0,m.index-14),m.index)))
-      out.push({raw:m[0],at:m.index,end:j,why:"a figure written in words"});
+    var i=m.index,j=i+m[0].length,t,hit=false;
+    for(t=0;t<taken.length;t++)if(i<taken[t][1]&&j>taken[t][0]){hit=true;break;}
+    if(hit)continue;
+    var after=text.slice(j,j+30),fm,u,v;
+    if(/\d\s*$/.test(text.slice(Math.max(0,i-14),i))){
+      pending.push({raw:m[0],at:i,end:j,why:"a figure written in words",always:true});continue;
+    }
+    if((fm=after.match(FRACTION_AFTER))){
+      pending.push({raw:text.slice(i,j+fm[0].length),at:i,end:j+fm[0].length,
+        why:"a quantity in words the checker cannot resolve",always:true});continue;
+    }
+    v=wordsToNumber(m[0]);
+    if(v===null){
+      pending.push({raw:m[0],at:i,end:j,
+        why:"a quantity in words the checker cannot resolve",always:true});continue;
+    }
+    if((u=after.match(WORD_UNIT))){
+      figs.push({raw:text.slice(i,j+u[0].length).replace(/^\s+|\s+$/g,""),v:v,at:i,end:j+u[0].length,
+        unit:u[1]?"percentage points":(u[2]?"percent":"dollars"),signed:false,words:true});
+      continue;
+    }
+    if(UNIT_AFTER.test(after)){
+      pending.push({raw:m[0],at:i,end:j,
+        why:"a quantity in words the checker cannot resolve",always:true});continue;
+    }
+    pending.push({raw:m[0],at:i,end:j,why:"a figure written in words with no unit",always:false});
   }
-  return out;
+  return {figs:figs,pending:pending};
 }
 /* a run of digits the figure reader did not take, standing where the words put
    a claim, or carrying a unit the grammar does not read */
@@ -969,6 +1044,13 @@ function figures(text,skipNums){
               unit:"dollars",signed:/^-/.test(m[0]),plain:true});
     taken.push([m.index,m.index+m[0].length]);
   }
+  /* a quantity in words that the parser resolved and the words gave a unit is
+     an ordinary figure from here on. */
+  var wn=wordNumbers(text,taken);
+  wn.figs.forEach(function(f){
+    if(overlaps(f.at,f.end))return;
+    out.push(f);taken.push([f.at,f.end]);
+  });
   out.sort(function(a,b){return a.at-b.at;});
 
   /* a figure written in a currency the checker does not read, or carrying a
@@ -998,9 +1080,10 @@ function figures(text,skipNums){
   var spans=[],k;
   for(k=0;k<keep.length;k++)spans.push([keep[k].at,keep[k].end]);
   for(k=0;k<rejected.length;k++)spans.push([rejected[k].at,rejected[k].end]);
-  numberWords(text).forEach(function(w){
+  wn.pending.forEach(function(w){
     for(k=0;k<spans.length;k++)if(w.at<spans[k][1]&&w.end>spans[k][0])return;
-    rejected.push(w);spans.push([w.at,w.end]);
+    if(!w.always&&roleOf(text,{at:w.at,end:w.end,unit:"dollars"},0,[]).role==="unknown")return;
+    rejected.push({raw:w.raw,at:w.at,end:w.end,why:w.why});spans.push([w.at,w.end]);
   });
   strayNumbers(text,spans,keep).forEach(function(n){rejected.push(n);});
   rejected.sort(function(a,b){return a.at-b.at;});

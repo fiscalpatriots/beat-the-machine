@@ -85,14 +85,26 @@ as the same thing. They are not.
 1b. **Unparsed spans.** Anything numeric the accepted grammar cannot read is recorded rather than
    dropped. Four kinds: a **currency that is not the dollar** (`€30,000`, `£30,000`, `USD 90000`), a
    **scale or multiplier word the grammar does not carry** (`$30.0 thousand`, `30 thousand`, `0.30
-   times`, `30 basis points`), a **figure written in words** (`a change of ninety percent`), and a
-   **run of digits standing where the words put a claim** that the figure reader did not take
+   times`, `30 basis points`), a **quantity in words the grammar cannot resolve or that carries no
+   unit** (`a rise of thirty thousand`, `one third of the prior balance`, `two billion dollars`), and
+   a **run of digits standing where the words put a claim** that the figure reader did not take
    (`increased by 800`, `increased by 1999`, `increased by 6200`). An unparsed span marks the
    sentence **not checked** and goes to the reviewer's queue with the reason. A year or an account
    number standing in an ordinary position, `finished on June 30`, `billed on 31 July`, `against
    $18,000 in June 2025`, is not a claim and is left where it stands. The external review of 13
    September 2026 asked for *needs review* here; the page says **not checked**, which is the
    stronger of the two: nothing in the sentence was settled.
+1c. **Quantities written in words.** Units through millions are read: `thirty`, `thirty-one`,
+   `ninety`, `one hundred twenty-five thousand`, `two million`. A run is parsed to a figure and
+   compared like any other **only where both hold**: the parser resolves the run, and the words
+   beside it give it a unit (`dollars`, `percent`, `per cent`, `pct`, `%`, `percentage points`,
+   `pp`). So `rose thirty thousand dollars` is compared as $30,000 and `a change of ninety percent`
+   is compared as 90 percent and fails a ledger that moved 30 percent. A run the parser cannot
+   resolve, a fraction (`one third`), and anything above a million go to the queue wherever they
+   stand. A resolved run with **no unit word** goes to the queue where the words put a claim
+   (`a rise of thirty thousand`) and is left alone where they do not: `the thirty-one new
+   orthodontic plans` is a count, not a figure about the account, and it does not make a true
+   sentence unresolved. That is the same test a bare run of digits gets in 1b.
 2. **Account binding.** Three routes, each named on the page: **by account number**, **by account
    name**, and **by an exact figure**. The figure route is accepted only when the sentence also
    carries a word from that account's name that no named account shares. Where a figure ties to an
@@ -210,7 +222,7 @@ node tests/run-checker-tests.cjs T02      one fixture
 node tests/run-checker-tests.cjs --dump T02
 ```
 
-`tests/checker-fixtures.json` holds **fifty-three** fixtures and **all fifty-three pass**.
+`tests/checker-fixtures.json` holds **fifty-nine** fixtures and **all fifty-nine pass**.
 
 - **T01 to T17**, the seventeen probes from the external audit of 13 September 2026, each carrying
   the required behavior from that audit as the assertion, plus four boundary and export companions.
@@ -219,13 +231,20 @@ node tests/run-checker-tests.cjs --dump T02
 - **T20 to T43**, the twenty-four probes from the live release review of 13 September 2026, N01 to
   N24, entered exactly as that bundle supplied them. Seven of them are the review's own positive and
   negative controls and still clear or still fail; the rest are the clearances the review found. The
-  five it named in its table are T20 (negation), T21 (a percentage written in words), T26 (a dropped
+  five it named in its table are T20 (negation), T21 (a percentage written in words, which is now
+  read and fails rather than being left unparsed), T26 (a dropped
   minus sign), T28 (amounts swapped between two named accounts) and T41 (a percent whose role the
   words do not give).
 - **T44 to T48**, five further adversarial probes written against the repaired contract: a units
   mismatch (percentage points against a dollar line), a figure standing in a different sentence from
   its account, a percent of a subtotal the checker was never given, a currency written in thousands
   against a ledger in whole dollars, and a memo line quoting last year.
+- **T49 to T54**, six probes on quantities written in words, written for the residue the release QA
+  of 13 September 2026 found open: a resolved quantity with no unit standing where a claim stands
+  (queued, sentence not checked), a fraction in words (queued), a quantity with a unit word that is
+  true (cleared) and one that is false (failed), a hyphenated compound through the hundreds and
+  thousands (`one hundred twenty-five thousand dollars`, read as $125,000), and a count in words
+  standing where no claim stands, which must stay out of the queue.
 
 The runner lifts the script out of `checker.html` and runs it against a document stub, so there is
 no build step and no dependency; a change to the page that breaks a probe fails the suite. The four
@@ -245,7 +264,10 @@ sample cases produce output identical to the release the review examined.
 - **No second currency and no scale words.** `€30,000`, `USD 90000`, `$30.0 thousand`, `30 basis
   points` and `0.30 times the prior balance` are recorded as unparsed and the sentence is left
   unchecked. The page reads one currency, written in whole units with a dollar sign.
-- **No figures written in words.** "ninety percent" is an unparsed span, not ninety percent.
+- **No quantities in words above a million, and none without a unit.** Units through millions are
+  read where a unit word stands beside them (rule 1c). `two billion dollars`, `one third of the
+  prior balance` and `a rise of thirty thousand` are unparsed spans, and the sentence is left
+  unchecked.
 - **No resolution of a clause naming two accounts.** It reports the binding conflict; it does not
   decide which line the figure belongs to.
 - **No fuzzy matching.** No stemming, no synonyms and no guessing: "depot" does not match
