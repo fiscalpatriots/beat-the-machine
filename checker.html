@@ -146,6 +146,86 @@ td.ask{min-width:210px;max-width:330px;color:var(--ink-soft)}
 .foothow h3{margin:0 0 6px}
 .foothow p{margin:0 0 8px;font-size:15px;line-height:1.45}
 .foothow p:last-child{margin:0}
+
+/* ============================================== the parse preview */
+#preview{background:var(--card);border:2px solid var(--line);border-left:4px solid var(--machine);
+  border-radius:14px;padding:14px 16px;margin:14px 0 0;box-shadow:var(--shadow);min-width:0}
+#preview h3{margin:0 0 4px}
+#preview .lead{font-size:13.5px;line-height:1.45;color:var(--ink-soft);margin:0 0 10px}
+.pvgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:0 0 12px}
+.pvgrid label{display:block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;
+  color:var(--ink-soft);margin:0 0 6px}
+.pvfacts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 4px}
+.chip{display:inline-block;border-radius:99px;padding:3px 11px;font-size:12px;font-weight:700;
+  background:var(--machine-bg);color:var(--machine)}
+.chip.ok{background:var(--accept-bg);color:var(--mason)}
+.chip.warn{background:#fff2cf;color:#7a5a00}
+.chip.bad{background:var(--reject-bg);color:var(--reject)}
+#preview ul{margin:8px 0 0;padding-left:18px;font-size:13px;line-height:1.5;color:var(--ink-soft)}
+#preview li{margin:0 0 3px;overflow-wrap:anywhere}
+#preview code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px}
+
+/* ============================================== the two prompts */
+#prompts{margin:24px 0 0;min-width:0}
+#prompts>.lead{font-size:14px;line-height:1.5;color:var(--ink-soft);margin:0 0 12px}
+.pcards{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+@media (min-width:820px){.pcards{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.pcard{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px 16px 16px;
+  box-shadow:var(--shadow);min-width:0;display:flex;flex-direction:column}
+.pcard.one{border-left:4px solid var(--gold-line)}
+.pcard.two{border-left:4px solid var(--mason)}
+.pcard h3{margin:0 0 4px}
+.pcard .when{font-size:13px;line-height:1.45;color:var(--ink-soft);margin:0 0 10px;
+  text-transform:uppercase;letter-spacing:.5px;font-weight:800;font-size:11.5px}
+.pcard .body{font-size:14.5px;line-height:1.5;margin:0 0 12px;flex:1 1 auto}
+.pcard .btn{align-self:flex-start}
+select#samplepick{width:auto;max-width:100%;min-width:210px}
+
+/* ============================================== the printable review summary */
+#printdoc{display:none}
+@media print{
+  @page{margin:14mm}
+  html,body{background:#fff;overflow:visible}
+  body{font-size:10.5pt;color:#000;font-family:Figtree,Arial,Helvetica,sans-serif}
+  #app{max-width:none;padding:0;display:block;min-height:0}
+  #mason,.intro,.panes,.settings,#preview,#msg,#out,#prompts,.foothow,#masonfoot,.row{display:none!important}
+  #printdoc{display:block}
+  #printdoc h1{font-size:16pt;line-height:1.15;margin:0 0 1mm;color:#000;letter-spacing:0}
+  #printdoc .psub{font-size:9.5pt;color:#333;margin:0 0 3mm}
+  #printdoc .phead{border-bottom:1.6pt solid #000;padding:0 0 3mm;margin:0 0 5mm}
+  #printdoc .pmeta{display:grid;grid-template-columns:1fr 1fr;gap:0 7mm;font-size:9.5pt}
+  #printdoc .pmeta div{border-bottom:.4pt solid #999;padding:1.4mm 0}
+  #printdoc .pmeta b{display:inline-block;min-width:36mm;font-weight:700}
+  #printdoc h2{font-size:11.5pt;margin:6mm 0 2.5mm;color:#000;border-bottom:.8pt solid #000;padding-bottom:1mm}
+  #printdoc h2:first-of-type{margin-top:0}
+  #printdoc .pstrip{display:flex;flex-wrap:wrap;gap:3mm;margin:0 0 4mm;font-size:9pt}
+  #printdoc .pstrip span{border:.6pt solid #000;padding:1.5mm 3mm;display:block}
+  #printdoc .pstrip b{display:block;font-size:13pt;line-height:1.1}
+  #printdoc table{width:100%;min-width:0;border-collapse:collapse;font-size:8pt;table-layout:fixed}
+  #printdoc col.c1{width:11%}#printdoc col.c2{width:35%}#printdoc col.c3{width:10%}
+  #printdoc col.c4{width:26%}#printdoc col.c5{width:18%}
+  #printdoc th{background:#ebebeb!important;color:#000;text-align:left;border:.4pt solid #777;padding:1.2mm 1.6mm;
+    font-size:7pt;text-transform:uppercase;letter-spacing:.4pt;position:static;overflow-wrap:anywhere;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #printdoc td{border:.4pt solid #777;padding:1.2mm 1.6mm;vertical-align:top;overflow-wrap:anywhere}
+  #printdoc tr.grp td{background:#f4f4f4!important;font-weight:700;font-size:7.5pt;text-transform:uppercase;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #printdoc td .bx{font-weight:700}
+  #printdoc tr,#printdoc .qitem,#printdoc .sigbox,#printdoc .evbox{page-break-inside:avoid}
+  #printdoc .qitem{border:.4pt solid #777;padding:2mm 2.5mm;margin:0 0 2.5mm}
+  #printdoc .qitem .qs{font-weight:700;font-size:9pt;margin:0 0 1mm}
+  #printdoc .qitem .ql{font-size:8pt;margin:0 0 1.5mm;color:#333}
+  #printdoc .qitem .ans{font-size:8pt;margin:2mm 0 0}
+  #printdoc .rule{border-bottom:.4pt solid #000;height:5.5mm}
+  #printdoc .sigbox{display:grid;grid-template-columns:1fr 1fr;gap:8mm;margin:7mm 0 0}
+  #printdoc .sig{font-size:8.5pt}
+  #printdoc .sig .line{border-bottom:.8pt solid #000;height:11mm}
+  #printdoc .sig .cap{padding-top:1.2mm}
+  #printdoc .evbox{margin:5mm 0 0;font-size:8.5pt;line-height:1.4}
+  #printdoc .evbox ul{margin:1.5mm 0 0;padding-left:5mm}
+  #printdoc .evbox li{margin:0 0 1mm}
+  #printdoc .pfoot{margin:5mm 0 0;font-size:7.5pt;color:#444;border-top:.4pt solid #999;padding-top:1.5mm}
+}
 </style>
 </head>
 <body>
@@ -174,9 +254,27 @@ td.ask{min-width:210px;max-width:330px;color:var(--ink-soft)}
     <div class="pane">
       <label for="memo">2. Memo (the drafted commentary)</label>
       <textarea id="memo" class="prose" spellcheck="false" placeholder="Paste the commentary. One sentence per line reads best, and a label such as S1. is kept."></textarea>
-      <p class="hint">Free text. Lines that start with a label such as <b>S1.</b> are kept whole; anything else is
-      split into sentences.</p>
+      <p class="hint">Free text. Lines that start with a label such as <b>S1.</b>, <b>1.</b> or <b>(a)</b> are kept
+      whole; anything else is split into sentences. Numbering, bullets and Word's curly quotes are stripped.</p>
     </div>
+  </div>
+
+  <div id="preview" class="hidden">
+    <h3>Parse preview</h3>
+    <p class="lead">What the ledger reader found, before anything is checked. Confirm the two period columns if the
+    guess is wrong.</p>
+    <div class="pvgrid hidden" id="pvcols">
+      <div>
+        <label for="colprior">Prior period column</label>
+        <select id="colprior"></select>
+      </div>
+      <div>
+        <label for="colcur">Current period column</label>
+        <select id="colcur"></select>
+      </div>
+    </div>
+    <div class="pvfacts" id="pvfacts"></div>
+    <div id="pvbody"></div>
   </div>
 
   <div class="settings">
@@ -204,6 +302,14 @@ td.ask{min-width:210px;max-width:330px;color:var(--ink-soft)}
         <label for="memover">Memo version</label>
         <input type="text" id="memover" placeholder="AI draft, first pass">
       </div>
+      <div>
+        <label for="company">Company or file name</label>
+        <input type="text" id="company" placeholder="Halyard Distribution, LLC">
+      </div>
+      <div>
+        <label for="reviewer">Reviewer name</label>
+        <input type="text" id="reviewer" placeholder="Left blank to sign by hand">
+      </div>
     </div>
     <div style="margin-top:12px">
       <label for="ratios" style="display:block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--ink-soft);margin:0 0 6px">Ratios (optional)</label>
@@ -213,14 +319,46 @@ td.ask{min-width:210px;max-width:330px;color:var(--ink-soft)}
     </div>
     <div class="row">
       <button class="btn green" id="run">Run Second Pass</button>
-      <button class="btn ghost sm" id="sample">Load the Halyard sample</button>
-      <button class="btn ghost sm" id="sample2">Load a second, unrelated ledger</button>
+      <select id="samplepick" aria-label="Samples, load a case">
+        <option value="">Samples: load a case&hellip;</option>
+        <option value="halyard">Halyard Distribution, June 2026 &mdash; 14 lines, tab separated</option>
+        <option value="brightwater">Brightwater Dental Partners, June 2026 &mdash; 5 lines</option>
+        <option value="kestrel">Kestrel IT Services, July 2026 &mdash; 6 lines, QuickBooks export</option>
+        <option value="ridgeline">Ridgeline Partners, July 2026 &mdash; 5 lines, comma separated</option>
+      </select>
       <button class="btn ghost sm" id="clear">Clear</button>
     </div>
   </div>
 
   <div id="msg"></div>
   <div id="out"></div>
+
+  <div id="prompts">
+    <h2>The two prompts</h2>
+    <p class="lead">The checker sits between them. The first one drafts the memo in whichever AI tool the firm
+    already uses; the second one is run only on the sentences that survived the mechanical checks.
+    <b>Prompt 1 is written in a fixed shape on purpose.</b> A numbered line that carries the account number, the
+    prior and current figures exactly as the ledger prints them, and one direction word, ties to a ledger line on the
+    strongest tier of the match, so a memo drafted this way does not land in <i>Unmatched, review by hand</i>.</p>
+    <div class="pcards">
+      <div class="pcard one">
+        <h3>Prompt 1, draft the memo</h3>
+        <p class="when">Use it before the memo exists</p>
+        <p class="body">Hands your ledger and your threshold to the drafting tool and fixes the shape of every line:
+        account number, prior, current, change, percent, direction, one reason and the source that reason came from.
+        Lines below the threshold get one closing sentence and nothing else.</p>
+        <button class="btn sm" id="copydraft">Copy Prompt 1</button>
+      </div>
+      <div class="pcard two">
+        <h3>Prompt 2, second pass</h3>
+        <p class="when">Use it after a run, on what survived</p>
+        <p class="body">Hands over the ledger, the memo and only the sentences that passed the arithmetic and the
+        direction, with the two judgment questions and an instruction not to recompute what the checker already
+        computed. Run the checker first, or this one has nothing to carry.</p>
+        <button class="btn ghost sm" id="copyreview">Copy Prompt 2</button>
+      </div>
+    </div>
+  </div>
 
   <div class="foothow">
     <h3>How to use it in a close</h3>
@@ -229,8 +367,14 @@ td.ask{min-width:210px;max-width:330px;color:var(--ink-soft)}
     supported by something on file, and whether the period is right. Those two need a person.</p>
     <p class="tiny">It does not judge drivers or timing, it does not guess at accounts beyond the matching rules,
     and it reads one currency. <a href="CHECKER.md">What it does and does not do</a> &middot;
+    <a href="PROTOCOL.md">The protocol</a> &middot;
+    <a href="Second-Pass-Excel-Template.xlsx">Excel template</a> &middot;
+    <a href="Second-Pass-Facilitator-Guide.pdf">Facilitator guide</a> &middot;
+    <a href="PROVENANCE.md">Provenance</a> &middot;
     <a href="index.html">Back to the game</a></p>
   </div>
+
+  <div id="printdoc"></div>
 
   <p id="masonfoot">Built by Khaled Alkurd. A drill for the AI-native accounting student.</p>
 </div>
@@ -291,43 +435,215 @@ function splitFields(line){
 var STOP={"and":1,"the":1,"for":1,"its":1,"per":1,"from":1,"with":1,"into":1,"that":1,"this":1,
           "all":1,"but":1,"not":1,"other":1,"total":1,"net":1};
 
-function parseLedger(text){
-  var lines=String(text).split(/\r?\n/),accounts=[],skipped=[],seenData=false;
+/* Word's curly quotes, its dashes and its ellipsis, flattened before anything is parsed. */
+function deSmart(s){
+  return String(s)
+    .replace(/[‘’‚‛′]/g,"'")
+    .replace(/[“”„‟″]/g,'"')
+    .replace(/[–—−]/g,"-")
+    .replace(/…/g,"...")
+    .replace(/[   ]/g," ");
+}
+
+/* Shapes the reader knows by name. QuickBooks Online's Profit and Loss Comparison prints an
+   account label in the first column, the two period columns, and (from its Calculations
+   dropdown) a "$ change" and a "% change" column, with Income, Cost of Goods Sold and Expenses
+   as section headers and Total, Gross Profit, Net Operating Income and Net Income as totals.
+   Xero's Income Statement prints Income, Less Cost of Sales, Gross Profit, Less Operating
+   Expenses and Net Profit, with a Total row closing each section. */
+var SECTION_ONLY=/^(?:less\s+)?(income|revenue|sales|trading income|other income|operating income|cost of goods sold|cost of sales|cogs|direct costs|expenses|operating expenses|overheads|administrative expenses|payroll expenses|other expenses|other income and expenses|assets|liabilities|equity)\b[\s:.\-]*$/i;
+var TOTALWORD=/^total\b/i;
+var GRAND=/^(gross profit|gross margin|net profit|net income|net loss|net operating income|net other income|net earnings|operating profit|profit before tax|profit for the (month|period|year)|net movement)\b/i;
+var HEADERWORD=/(^|\W)(prior|current|previous|prev|last|this|py|pp|comparative|change|variance|var|budget|actual|ytd|period|amount|balance|jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|jun(e)?|jul(y)?|aug(ust)?|sep(t|tember)?|oct(ober)?|nov(ember)?|dec(ember)?|q[1-4]|fy)(\W|$)|%|\b(19|20)\d{2}\b/i;
+var DERIVEDCOL=/(change|variance|\bvar\b|%|percent|\bpct\b|diff|movement|\bfav\b|\bunfav\b)/i;
+var MONTHNUM={jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,sept:9,oct:10,nov:11,dec:12};
+
+function monthKey(s){
+  var t=String(s).toLowerCase();
+  var y=t.match(/\b(19|20)\d{2}\b/);
+  var year=y?parseInt(y[0],10):null;
+  var m=t.match(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\b/);
+  if(!m&&year===null)return null;
+  if(!m)return year*12;
+  return (year===null?2000:year)*12+MONTHNUM[m[1]];
+}
+
+/* the best guess at which of the numeric columns is the prior period and which is the current */
+function guessCols(labels){
+  var T=labels.length,i,cand=[];
+  for(i=0;i<T;i++)if(!DERIVEDCOL.test(labels[i]))cand.push(i);
+  if(cand.length<2){cand=[];for(i=0;i<T;i++)cand.push(i);}
+  var pi=-1,ci=-1;
+  cand.forEach(function(j){
+    var L=String(labels[j]).toLowerCase();
+    if(pi<0&&/(prior|previous|\bprev\b|last month|last year|last period|\bpy\b|\bpp\b|comparative|budget)/.test(L))pi=j;
+    if(ci<0&&/(current|this month|this year|this period|\bactual\b|\bytd\b)/.test(L))ci=j;
+  });
+  if(pi>-1&&ci>-1&&pi!==ci)return {p:pi,c:ci};
+  var keyed=[];
+  cand.forEach(function(j){var k=monthKey(labels[j]);if(k!==null)keyed.push({i:j,k:k});});
+  var distinct={};keyed.forEach(function(x){distinct[x.k]=1;});
+  if(keyed.length>=2&&Object.keys(distinct).length>=2){
+    keyed.sort(function(a,b){return a.k-b.k;});
+    return {p:keyed[0].i,c:keyed[keyed.length-1].i};
+  }
+  if(pi>-1){for(i=0;i<cand.length;i++)if(cand[i]!==pi)return {p:pi,c:cand[i]};}
+  if(ci>-1){for(i=cand.length-1;i>=0;i--)if(cand[i]!==ci)return {p:cand[i],c:ci};}
+  return {p:cand[0],c:cand[1]};
+}
+
+function acctShape(name,row){
+  var num="",nm=name;
+  var mm=nm.match(/^(\d{2,8}[A-Za-z]?)\s*[\s.:·-]\s*(\S.*)$/);
+  if(mm){num=mm[1];nm=mm[2];}
+  nm=nm.replace(/\s+/g," ").replace(/^[,\s]+|[,\s]+$/g,"");
+  var words=nm.toLowerCase().replace(/[^a-z0-9\s]/g," ").split(/\s+/)
+    .filter(function(w){return w.length>=3&&!STOP[w];});
+  var flat=nm.toLowerCase().replace(/[^a-z0-9\s]/g," ").replace(/\s+/g," ").replace(/^ | $/g,"");
+  return {num:num,name:nm,words:words,flat:flat,two:flat.split(" ").slice(0,2).join(" "),row:row};
+}
+
+/* Returns the account lines, the section totals, the numeric column labels and everything the
+   reader could not use, with the reason. choice, when given, is {p:index,c:index} into the
+   numeric columns; without it the reader guesses. */
+function parseLedger(text,choice){
+  var lines=deSmart(text).split(/\r?\n/),raws=[],i;
   lines.forEach(function(raw,idx){
     var line=raw.replace(/^\s+|\s+$/g,"");
     if(!line)return;
     if(/^[-=_~\s|+*.]+$/.test(line))return;
     var f=splitFields(line);
     while(f.length&&(f[f.length-1]===""||f[f.length-1]==="*"))f.pop();
-    while(f.length&&f[0]==="")f.shift();
     if(!f.length)return;
-    var k=-1,tail=0,i;
-    for(i=f.length-1;i>=0;i--){
-      if(!isNaN(parseNum(f[i]))){k=i;tail++;}
+    var k=-1,tail=0,j;
+    for(j=f.length-1;j>=0;j--){
+      if(f[j]!==""&&!isNaN(parseNum(f[j]))){k=j;tail++;}
       else break;
     }
-    if(tail<2||k<1){
-      if(!seenData)skipped.push({n:idx+1,t:line,why:"header or label row, ignored"});
-      else skipped.push({n:idx+1,t:line,why:"could not read a prior and a current balance"});
+    raws.push({n:idx+1,line:line,f:f,k:k,tail:tail});
+  });
+
+  /* how many numeric columns this ledger runs: the most common trailing run */
+  var counts={},best=0,T=0;
+  raws.forEach(function(r){if(r.tail>=2&&r.k>=1)counts[r.tail]=(counts[r.tail]||0)+1;});
+  Object.keys(counts).forEach(function(t){
+    var n=counts[t],v=parseInt(t,10);
+    if(n>best||(n===best&&v>T)){best=n;T=v;}
+  });
+
+  var skipped=[],accounts=[],totals=[],sections=[],headerCells=null,headerLine=0,seenData=false,open=null;
+
+  /* the header row: no numbers of its own, more than one cell, and cells that read like periods */
+  if(T>=2){
+    for(i=0;i<raws.length;i++){
+      var r=raws[i];
+      if(r.tail>0)break;
+      if(r.f.length<2)continue;
+      var hits=0;
+      r.f.forEach(function(c){if(c&&HEADERWORD.test(c))hits++;});
+      if(hits>=1){headerCells=r.f;headerLine=r.n;break;}
+    }
+  }
+  var labels=[];
+  if(headerCells&&headerCells.length>=T)labels=headerCells.slice(headerCells.length-T);
+  for(i=0;i<T;i++)if(!labels[i]||!String(labels[i]).replace(/\s/g,""))labels[i]="column "+(i+1);
+
+  var guess=T>=2?guessCols(labels):{p:0,c:1};
+  var pick={p:guess.p,c:guess.c};
+  if(choice&&typeof choice.p==="number"&&typeof choice.c==="number"&&
+     choice.p>=0&&choice.p<T&&choice.c>=0&&choice.c<T&&choice.p!==choice.c){
+    pick={p:choice.p,c:choice.c};
+  }
+
+  function pairOf(r){
+    var base=r.f.length-T;
+    var a=parseNum(r.f[base+pick.p]),b=parseNum(r.f[base+pick.c]);
+    if(base+pick.p<r.k||base+pick.c<r.k||isNaN(a)||isNaN(b)){
+      a=parseNum(r.f[r.k]);b=parseNum(r.f[r.k+1]);
+    }
+    return [a,b];
+  }
+  function headOf(r){
+    var head=r.f.slice(0,r.k);
+    while(head.length&&head[0]==="")head.shift();
+    while(head.length&&head[head.length-1]==="")head.pop();
+    if(head.length>1&&/^\d{2,8}[a-z]?$/i.test(head[0]))return head[0]+" "+head.slice(1).join(", ");
+    return head.join(", ");
+  }
+  function openSection(nm,n){open={name:nm,lines:[],n:n};sections.push(open);}
+
+  raws.forEach(function(r){
+    if(headerCells&&r.n===headerLine){
+      skipped.push({n:r.n,t:r.line,why:"header row, read for the period columns and then ignored"});
       return;
     }
-    var head=f.slice(0,k),num="",name="";
-    if(head.length>1&&/^\d{2,8}[a-z]?$/i.test(head[0])){num=head[0];name=head.slice(1).join(", ");}
-    else{name=head.join(", ");}
-    name=name.replace(/\s+/g," ").replace(/^[,\s]+|[,\s]+$/g,"");
-    if(!name){skipped.push({n:idx+1,t:line,why:"no account name"});return;}
-    var prior=parseNum(f[k]),cur=parseNum(f[k+1]);
-    var change=cur-prior;
-    var pct=(prior===0)?null:(change/Math.abs(prior))*100;
-    var words=name.toLowerCase().replace(/[^a-z0-9\s]/g," ").split(/\s+/)
-      .filter(function(w){return w.length>=3&&!STOP[w];});
-    var flat=name.toLowerCase().replace(/[^a-z0-9\s]/g," ").replace(/\s+/g," ").replace(/^ | $/g,"");
-    var two=flat.split(" ").slice(0,2).join(" ");
-    accounts.push({num:num,name:name,prior:prior,cur:cur,change:change,pct:pct,
-                   words:words,flat:flat,two:two,row:idx+1,sent:[]});
-    seenData=true;
+    var label=r.tail>=2&&r.k>=1?headOf(r):r.f.join(" ").replace(/\s+/g," ").replace(/^\s+|\s+$/g,"");
+    if(r.tail>=2&&r.k>=1){
+      var pr=pairOf(r);
+      if(TOTALWORD.test(label)||GRAND.test(label)){
+        var isGrand=GRAND.test(label)&&!TOTALWORD.test(label);
+        var tr={n:r.n,label:label,prior:pr[0],cur:pr[1],grand:isGrand,sec:null};
+        if(!isGrand&&open&&open.lines.length){tr.sec=open;open=null;}
+        else if(isGrand)open=null;
+        totals.push(tr);
+        skipped.push({n:r.n,t:label,keep:1,why:isGrand?"a computed total across sections, kept for the totals tie and left out of the line checks"
+                                              :"a section total, kept for the totals tie and left out of the line checks"});
+        return;
+      }
+      var sh=acctShape(label,r.n);
+      if(!sh.name){skipped.push({n:r.n,t:r.line,why:"no account name"});return;}
+      var prior=pr[0],cur=pr[1],change=cur-prior;
+      var a={num:sh.num,name:sh.name,prior:prior,cur:cur,change:change,
+             pct:(prior===0?null:(change/Math.abs(prior))*100),
+             words:sh.words,flat:sh.flat,two:sh.two,row:r.n,section:open?open.name:"",sent:[]};
+      accounts.push(a);
+      if(open)open.lines.push(a);
+      seenData=true;
+      return;
+    }
+    /* no pair of numbers on this row */
+    if(SECTION_ONLY.test(label)){openSection(label,r.n);return;}
+    if(GRAND.test(label)){open=null;skipped.push({n:r.n,t:label,why:"a total with no figures beside it"});return;}
+    if(seenData&&label&&r.tail===0&&r.f.length<=2){openSection(label,r.n);return;}
+    skipped.push({n:r.n,t:r.line,
+      why:seenData?"could not read a prior and a current balance on this row":"title or heading above the report, ignored"});
   });
-  return {accounts:accounts,skipped:skipped};
+
+  /* duplicate account numbers */
+  var seenNum={},dups=[];
+  accounts.forEach(function(a){
+    if(!a.num)return;
+    if(seenNum[a.num]){if(dups.indexOf(a.num)<0)dups.push(a.num);}
+    seenNum[a.num]=(seenNum[a.num]||0)+1;
+  });
+
+  return {accounts:accounts,skipped:skipped,totals:totals,sections:sections,
+          labels:labels,T:T,pick:pick,guess:guess,header:!!headerCells,dups:dups};
+}
+
+/* every section total recomputed from the lines under it */
+function tieTotals(L){
+  var out=[];
+  L.totals.forEach(function(t){
+    if(t.grand||!t.sec){
+      out.push({label:t.label,ok:null,det:t.grand
+        ? "Kept out of the line checks. This is a total computed across sections, so the checker does not recompute it from lines."
+        : "Kept out of the line checks. No section lines sit above this total, so there is nothing to recompute it from."});
+      return;
+    }
+    var sp=0,sc=0;
+    t.sec.lines.forEach(function(a){sp+=a.prior;sc+=a.cur;});
+    var okP=Math.abs(sp-t.prior)<0.01,okC=Math.abs(sc-t.cur)<0.01;
+    var n=t.sec.lines.length;
+    var word="The "+n+" line"+(n===1?"":"s")+" under \""+t.sec.name+"\" "+(n===1?"adds":"add")+" to ";
+    out.push({label:t.label,ok:okP&&okC,n:n,
+      det:(okP&&okC)
+        ? word+money(sp)+" prior and "+money(sc)+" current, which is what the total row says."
+        : word+money(sp)+" prior and "+money(sc)+
+          " current, but the total row says "+money(t.prior)+" and "+money(t.cur)+
+          ". Something on this statement is missing from the paste or double counted."});
+  });
+  return out;
 }
 
 function clears(a,floorD,floorP,rule){
@@ -335,14 +651,36 @@ function clears(a,floorD,floorP,rule){
   var legP=(a.pct===null)?(a.change!==0):(Math.abs(a.pct)>=floorP);
   return rule==="either"?(legD||legP):(legD&&legP);
 }
+function pctCell(a){
+  return a.pct===null?"new line":pctTxt(a.pct);
+}
+function pctPhrase(a){
+  return a.pct===null?"a new line, so there is no prior balance to take a percent of"
+                     :pctTxt(a.pct)+" of the prior balance";
+}
 
 /* ============================================================ memo */
 function splitSentences(text){
-  var out=[],lines=String(text).split(/\r?\n/),auto=0;
+  var out=[],lines=deSmart(text).split(/\r?\n/),auto=0;
   lines.forEach(function(raw){
     var line=raw.replace(/^\s+|\s+$/g,"");
     if(!line)return;
     if(/^[-=_~\s|+*]{4,}$/.test(line))return;
+    /* a bullet is numbering, not a label: strip it and read what follows */
+    line=line.replace(/^[•·●▪‣⁃*>]+\s+/,"").replace(/^-\s+/,"").replace(/^\s+/,"");
+    if(!line)return;
+    /* (a), (1), a) and 1) are numbering too, kept as the label so the reviewer sees the
+       preparer's own marker rather than a number the checker invented */
+    var mp=line.match(/^\(\s*([A-Za-z]{1,2}|\d{1,3})\s*\)\s*(\S.*)$/);
+    if(mp&&mp[2]){
+      out.push({label:mp[1].toUpperCase(),text:mp[2].replace(/\s+/g," ")});
+      return;
+    }
+    var ml=line.match(/^([a-z])\s*[.)\]]\s+(\S.*)$/);
+    if(ml&&ml[2]){
+      out.push({label:ml[1].toUpperCase(),text:ml[2].replace(/\s+/g," ")});
+      return;
+    }
     var m=line.match(/^([A-Za-z]{1,2}\s?\d{1,3}|\d{1,2})\s*[.)\]:-]\s+(.*)$/);
     if(m&&m[2]){
       out.push({label:m[1].replace(/\s+/g,"").toUpperCase(),text:m[2].replace(/\s+/g," ")});
@@ -371,23 +709,36 @@ function splitSentences(text){
   return out;
 }
 
-/* figures inside a sentence */
+/* figures inside a sentence. $65k, $65K, $1.2M, 65,000, (65,000) and a bare 65k all read as
+   dollars; 7%, 7 percent, 7 per cent and 7 pct all read as a percent. */
+function parseFig(raw){
+  var t=String(raw).replace(/^\s+|\s+$/g,""),mult=1;
+  var sm=t.match(/([kKmMbB])\s*\)?\s*$/);
+  if(sm){
+    var c=sm[1].toLowerCase();
+    mult=c==="k"?1e3:(c==="m"?1e6:1e9);
+    t=t.replace(/[kKmMbB](\s*\)?\s*)$/,"$1");
+  }
+  var v=parseNum(t);
+  if(isNaN(v))return NaN;
+  return v*mult;
+}
 function figures(text){
   var pcts=[],dollars=[],taken=[],m;
-  var rp=/(-?\$?\s?\(?\d[\d,]*(?:\.\d+)?\)?)\s*(?:percent\b|per cent\b|%|pp\b|percentage points?\b)/gi;
+  var rp=/(-?\$?\s?\(?\d[\d,]*(?:\.\d+)?\)?)\s*(?:percent\b|per cent\b|pct\b|%|pp\b|percentage points?\b)/gi;
   while((m=rp.exec(text))!==null){
     var v=parseNum(m[1]);
     if(!isNaN(v)){pcts.push({raw:m[1].replace(/^\s+|\s+$/g,""),v:v,at:m.index});}
     taken.push([m.index,m.index+m[0].length]);
   }
-  function isTaken(i,j){
+  function isTaken(i){
     for(var t=0;t<taken.length;t++){if(i>=taken[t][0]&&i<taken[t][1])return true;}
     return false;
   }
-  var rd=/\$\s?\(?-?\d(?:[\d,]*\d)?(?:\.\d+)?\)?|\b\d{1,3}(?:,\d{3})+(?:\.\d+)?\b/g;
+  var rd=/\(\s?\$?\s?\d(?:[\d,]*\d)?(?:\.\d+)?[kKmM]?\s?\)|-?\$\s?\d(?:[\d,]*\d)?(?:\.\d+)?(?:[kKmM]\b)?|\b\d{1,3}(?:,\d{3})+(?:\.\d+)?\b|\b\d+(?:\.\d+)?[kKmM]\b/g;
   while((m=rd.exec(text))!==null){
-    if(isTaken(m.index,m.index+m[0].length))continue;
-    var d=parseNum(m[0]);
+    if(isTaken(m.index))continue;
+    var d=parseFig(m[0]);
     if(!isNaN(d))dollars.push({raw:m[0].replace(/^\s+|\s+$/g,""),v:d,at:m.index});
   }
   return {pcts:pcts,dollars:dollars};
@@ -492,14 +843,34 @@ function evalToks(toks,byNum,month){
 
 /* ============================================================ direction */
 var UP=["rose","rise","rises","risen","rising","increased","increase","increases","increasing",
-        "grew","grow","grows","growth","growing","up","higher","climbed","climb","climbs","gained","jumped","added"];
+        "grew","grow","grows","growth","growing","up","higher","climbed","climb","climbs","gained","jumped","added",
+        "advanced","advance","advances","expanded","expand","expands","expansion","surged","surge","surges",
+        "accelerated","accelerate","accelerates"];
 var DOWN=["fell","fall","falls","fallen","falling","declined","decline","declines","declining",
-          "decreased","decrease","decreases","decreasing","down","lower","dropped","drop","drops","reduced","shrank"];
+          "decreased","decrease","decreases","decreasing","down","lower","dropped","drop","drops","reduced","shrank",
+          "eased","ease","eases","easing","softened","soften","softens","softening",
+          "slipped","slip","slips","receded","recede","recedes"];
+/* "flat" is a direction too, and it is tested against a movement inside half a percent of zero */
+var FLATW=["held flat","held steady","held level","held at","no change","no movement","flat",
+           "unchanged","steady","level with","unmoved"];
+var FLAT_TOL=0.5;
 function dirWords(txt){
   var t=" "+txt.toLowerCase().replace(/[^a-z\s]/g," ").replace(/\s+/g," ")+" ",out=[];
   UP.forEach(function(w){if(t.indexOf(" "+w+" ")>-1)out.push({w:w,d:1});});
   DOWN.forEach(function(w){if(t.indexOf(" "+w+" ")>-1)out.push({w:w,d:-1});});
   return out;
+}
+function flatWord(txt){
+  var t=" "+txt.toLowerCase().replace(/[^a-z\s]/g," ").replace(/\s+/g," ")+" ",found=null;
+  FLATW.forEach(function(w){
+    if(t.indexOf(" "+w+" ")>-1&&(!found||w.length>found.length))found=w;
+  });
+  return found;
+}
+/* a movement the checker will let a "flat" claim stand on */
+function isFlat(a){
+  if(a.pct===null)return a.change===0;
+  return Math.abs(a.pct)<=FLAT_TOL;
 }
 function clausesOf(txt){
   /* a comma inside a figure is part of the figure, never a clause break */
@@ -509,6 +880,95 @@ function clausesOf(txt){
           .map(function(c){return String(c).split(guard).join(",");})
           .filter(function(c){return c&&c.replace(/\s/g,"")!=="";});
 }
+
+/* ============================================================ the parse preview */
+var USERCOLS=null,PVTIMER=null,PVSIG="";
+
+function colChoice(){return USERCOLS;}
+
+function refreshPreview(pre){
+  var box=$("preview"),facts=$("pvfacts"),body=$("pvbody"),cols=$("pvcols");
+  var txt=$("ledger").value;
+  if(!txt.replace(/\s/g,"")){
+    box.className="hidden";PVSIG="";
+    while(facts.firstChild)facts.removeChild(facts.firstChild);
+    while(body.firstChild)body.removeChild(body.firstChild);
+    return;
+  }
+  var L=pre||parseLedger(txt,USERCOLS);
+  box.className="";
+
+  /* the two dropdowns, rebuilt only when the columns themselves change */
+  var sig=L.T+"|"+L.labels.join("|");
+  if(L.T>=2){
+    cols.className="pvgrid";
+    if(sig!==PVSIG){
+      PVSIG=sig;
+      [["colprior",L.pick.p],["colcur",L.pick.c]].forEach(function(pair){
+        var sel=$(pair[0]);
+        while(sel.firstChild)sel.removeChild(sel.firstChild);
+        L.labels.forEach(function(lab,i){
+          var o=el("option",null,lab+(DERIVEDCOL.test(lab)?"  (a computed column)":""));
+          o.value=String(i);
+          sel.appendChild(o);
+        });
+      });
+    }
+    $("colprior").value=String(L.pick.p);
+    $("colcur").value=String(L.pick.c);
+  }else{
+    cols.className="pvgrid hidden";PVSIG="";
+  }
+
+  while(facts.firstChild)facts.removeChild(facts.firstChild);
+  while(body.firstChild)body.removeChild(body.firstChild);
+
+  var shape=L.sections.length&&L.totals.length
+    ? "Profit and loss with sections and totals, the shape QuickBooks Online and Xero export"
+    : (L.header?"A plain ledger with a header row":"A plain ledger, no header row");
+  var dropped=L.skipped.filter(function(s){return !s.keep;});
+  var kept=L.skipped.filter(function(s){return s.keep;});
+
+  function chip(cls,txt){facts.appendChild(el("span","chip"+(cls?" "+cls:""),txt));}
+  chip("",shape);
+  chip(L.accounts.length?"ok":"bad",L.accounts.length+" account line"+(L.accounts.length===1?"":"s")+" found");
+  if(L.T>=2)chip("",L.T+" numeric column"+(L.T===1?"":"s")+", prior is \""+L.labels[L.pick.p]+
+    "\" and current is \""+L.labels[L.pick.c]+"\"");
+  else chip("bad","no pair of numeric columns");
+  if(kept.length)chip("",kept.length+" total row"+(kept.length===1?"":"s")+" held back for the totals tie");
+  if(L.sections.length)chip("",L.sections.length+" section"+(L.sections.length===1?"":"s")+": "+
+    L.sections.map(function(s){return s.name;}).join(", "));
+  if(dropped.length)chip("warn",dropped.length+" row"+(dropped.length===1?"":"s")+" ignored");
+  if(L.dups.length)chip("warn","duplicate account number"+(L.dups.length===1?"":"s")+": "+L.dups.join(", "));
+
+  if(dropped.length||kept.length){
+    var p=el("p","tiny","Rows the reader did not treat as account lines:");
+    p.style.margin="10px 0 0";
+    body.appendChild(p);
+    var ul=el("ul");
+    dropped.concat(kept).sort(function(a,b){return a.n-b.n;}).forEach(function(s){
+      var t=String(s.t).replace(/\s+/g," ");
+      if(t.length>90)t=t.slice(0,88)+"…";
+      ul.appendChild(el("li",null,"Line "+s.n+", “"+t+"” — "+s.why+"."));
+    });
+    body.appendChild(ul);
+  }
+}
+
+function onColPick(){
+  var p=parseInt($("colprior").value,10),c=parseInt($("colcur").value,10);
+  if(!isFinite(p)||!isFinite(c))return;
+  if(p===c){
+    USERCOLS=null;refreshPreview();
+    note($("msg"),"bad","The prior column and the current column cannot be the same. The guess was put back.");
+    return;
+  }
+  USERCOLS={p:p,c:c};
+  refreshPreview();
+  if(LAST)run();
+}
+$("colprior").onchange=onColPick;
+$("colcur").onchange=onColPick;
 
 /* ============================================================ the run */
 var LAST=null;
@@ -524,13 +984,37 @@ function run(){
   if(isNaN(floorP)||floorP<0)floorP=0;
   var rule=$("rule").value;
 
-  var L=parseLedger($("ledger").value);
-  if(!L.accounts.length){
-    note(msg,"bad","Nothing to check yet. Paste a ledger with at least one line that carries an account name, "+
-      "a prior balance and a current balance, or press <b>Load the Halyard sample</b> to see the shape it expects.");
+  var ledText=$("ledger").value,memText=$("memo").value;
+  var ledEmpty=!ledText.replace(/\s/g,""),memEmpty=!memText.replace(/\s/g,"");
+  if(ledEmpty&&memEmpty){
+    note(msg,"bad","Both panes are empty. Paste a ledger on the left and the drafted commentary on the right, "+
+      "or pick a case from <b>Samples</b> to see the shapes the reader expects.");
+    refreshPreview();
     return;
   }
-  var sents=splitSentences($("memo").value);
+  if(ledEmpty){
+    note(msg,"bad","The memo is there but the ledger pane is empty. There is nothing to check a figure against "+
+      "until a ledger is pasted.");
+    refreshPreview();
+    return;
+  }
+
+  var L=parseLedger(ledText,colChoice());
+  refreshPreview(L);
+  if(!L.accounts.length){
+    if(L.T<2){
+      note(msg,"bad","The ledger reader found "+(L.skipped.length)+" row"+(L.skipped.length===1?"":"s")+
+        " but no numeric columns. Every account line needs two numbers on it, a prior balance and a current "+
+        "balance, separated by tabs, commas or two or more spaces. The parse preview above lists each row it "+
+        "could not use and why.");
+    }else{
+      note(msg,"bad","Nothing to check yet. Rows were read, but none of them carried an account name beside a "+
+        "prior and a current balance. The parse preview above names each one. Pick a case from <b>Samples</b> "+
+        "to see the shape it expects.");
+    }
+    return;
+  }
+  var sents=splitSentences(memText);
   if(!sents.length){
     note(msg,"bad","The ledger read fine, but the memo pane is empty. Paste the commentary you want checked.");
     return;
@@ -540,9 +1024,15 @@ function run(){
   L.accounts.forEach(function(a){if(a.num&&!byNum[a.num])byNum[a.num]=a;});
   var R=parseRatios($("ratios").value,byNum);
 
-  if(L.skipped.length){
-    note(msg,"","Lines the ledger reader skipped: "+L.skipped.map(function(s){
+  var dropped=L.skipped.filter(function(s){return !s.keep;});
+  if(dropped.length){
+    note(msg,"","Rows the ledger reader did not treat as account lines: "+dropped.map(function(s){
       return "line "+s.n+" ("+s.why+")";}).join("; ")+".");
+  }
+  if(L.dups.length){
+    note(msg,"","Account "+(L.dups.length===1?"number ":"numbers ")+L.dups.join(", ")+
+      (L.dups.length===1?" appears":" appear")+" on more than one line. Every line is checked on its own, a "+
+      "sentence naming that number is matched to all of them, and a ratio using it reads the first one.");
   }
   if(R.errs.length){
     note(msg,"bad","Ratios that could not be read, so they were left out: "+R.errs.join("; ")+".");
@@ -550,19 +1040,35 @@ function run(){
 
   var rows=[],stats={lines:L.accounts.length,arith:0,dir:0,silent:0,queue:0};
 
-  /* ---- check 1, recompute */
-  rows.push({grp:"1. Recompute every line"});
+  /* ---- check 1, recompute, and tie the section totals */
+  rows.push({grp:"1. Recompute every line, and tie the section totals"});
   L.accounts.forEach(function(a){
     a.clears=clears(a,floorD,floorP,rule);
     rows.push({
       line:a.num||("row "+a.row),subj:a.name,check:"Recompute",
       badge:a.clears?"clears":"below",
       result:a.clears?"CLEARS THE RULE":"BELOW THE RULE",
-      det:"Change "+money(a.change)+", "+pctTxt(a.pct)+" of the prior balance"+
-          (a.clears?"":", no commentary owed"),
+      det:a.pct===null
+        ? "Change "+money(a.change)+", a new line: no prior balance, so the percent is undefined and the percent "+
+          "leg is read as met by any movement at all"+(a.clears?"":", no commentary owed")
+        : "Change "+money(a.change)+", "+pctTxt(a.pct)+" of the prior balance"+(a.clears?"":", no commentary owed"),
       ask:""
     });
   });
+  var ties=tieTotals(L),tiefail=0;
+  ties.forEach(function(t){
+    if(t.ok===false)tiefail++;
+    rows.push({line:"total",subj:t.label,check:"Totals tie",
+      badge:t.ok===null?"info":(t.ok?"pass":"fail"),
+      result:t.ok===null?"KEPT OUT":(t.ok?"TIES":"DOES NOT TIE"),
+      det:t.det,
+      ask:t.ok===false?"Which is right, the total row or the lines under it, and what is missing from the paste?":""});
+  });
+  if(tiefail){
+    note(msg,"bad",tiefail+" section total"+(tiefail===1?" does":"s do")+" not tie to the lines under "+
+      (tiefail===1?"it":"them")+". Check the ledger paste before reading anything else: a line may have been "+
+      "left out of the copy.");
+  }
 
   /* ---- check 2, matching */
   rows.push({grp:"2. Tie each sentence to an account"});
@@ -671,15 +1177,37 @@ function run(){
       if(!anchor)return;
       anchored.push(c);
       var sign=anchor.change>0?1:(anchor.change<0?-1:0);
+      var anm=(anchor.num?anchor.num+" ":"")+anchor.name;
+      var fw=flatWord(c);
+      if(fw){
+        if(isFlat(anchor))good.push("\""+fw+"\" agrees with "+anm+", which moved "+money(anchor.change)+
+          (anchor.pct===null?"":", "+pctTxt(anchor.pct))+", inside half a percent of no movement");
+        else bad.push("the memo says \""+fw+"\" but "+anm+" "+(sign>0?"rose ":"fell ")+
+          money(Math.abs(anchor.change))+(anchor.pct===null?"":" ("+pctTxt(anchor.pct)+")"));
+      }
       dirWords(c).forEach(function(w){
-        if(sign===0)return;
-        if(w.d===sign)good.push("\""+w.w+"\" agrees with "+(anchor.num?anchor.num+" ":"")+anchor.name);
-        else bad.push("the memo says \""+w.w+"\" but "+(anchor.num?anchor.num+" ":"")+anchor.name+
+        if(sign===0){
+          bad.push("the memo says \""+w.w+"\" but "+anm+" did not move at all");
+          return;
+        }
+        if(w.d===sign)good.push("\""+w.w+"\" agrees with "+anm);
+        else bad.push("the memo says \""+w.w+"\" but "+anm+
           " "+(sign>0?"rose ":"fell ")+money(Math.abs(anchor.change))+
           (anchor.pct===null?"":" ("+pctTxt(anchor.pct)+")"));
       });
     });
     if(!anchored.length){
+      var sfw=flatWord(s.text);
+      if(sfw){
+        var fok=false,fnames=[];
+        s.accts.forEach(function(a){
+          fnames.push((a.num?a.num+" ":"")+a.name+" moved "+money(a.change)+
+            (a.pct===null?"":", "+pctTxt(a.pct)));
+          if(isFlat(a))fok=true;
+        });
+        if(fok)good.push("\""+sfw+"\" agrees with the matched line");
+        else if(fnames.length)bad.push("the memo says \""+sfw+"\" but "+fnames.join(" and "));
+      }
       var words=dirWords(s.text);
       words.forEach(function(w){
         var agrees=false,names=[];
@@ -716,7 +1244,7 @@ function run(){
     if(a.clears&&!a.sent.length){
       stats.silent++;
       rows.push({line:a.num||("row "+a.row),subj:a.name,check:"Silence",badge:"silent",result:"SILENT",
-        det:"Change "+money(a.change)+", "+pctTxt(a.pct)+", clears the rule and no sentence in the memo explains it. This line owes an explanation.",
+        det:"Change "+money(a.change)+", "+pctCell(a)+", clears the rule and no sentence in the memo explains it. This line owes an explanation.",
         ask:"What drove "+(a.num?a.num+" ":"")+a.name+" this month, and what supports it?"});
     }
   });
@@ -727,7 +1255,7 @@ function run(){
     if(anyClears)return;
     rows.push({line:acctLine(s),subj:s.text,label:s.label,check:"Threshold",badge:"info",result:"INFO",
       det:"No commentary owed; fine if correct. "+s.accts.map(function(a){
-        return (a.num?a.num+" ":"")+a.name+" moved "+money(a.change)+", "+pctTxt(a.pct);}).join("; ")+
+        return (a.num?a.num+" ":"")+a.name+" moved "+money(a.change)+", "+pctCell(a);}).join("; ")+
         ", which does not clear the rule.",ask:""});
   });
 
@@ -755,9 +1283,18 @@ function run(){
     note(msg,"","Nothing came back. Check that the memo pane carries sentences.");
   }
 
+  var anyFig=false;
+  sents.forEach(function(s){if(s.fig&&(s.fig.dollars.length||s.fig.pcts.length))anyFig=true;});
+  if(!anyFig){
+    note(msg,"","No dollar figure and no percent anywhere in the memo, so the arithmetic check had nothing to "+
+      "test. The matching, the direction and the silence still ran, and every sentence that matched a line is in "+
+      "the reviewer's queue on its words alone.");
+  }
+
   LAST={rows:rows,stats:stats,accounts:L.accounts,sents:sents,queue:queue,ratios:R.ratios,
-        ledgerText:$("ledger").value,memoText:$("memo").value,
+        ledgerText:ledText,memoText:memText,ties:ties,
         period:$("period").value,version:$("memover").value,
+        company:$("company").value,reviewer:$("reviewer").value,
         floorD:floorD,floorP:floorP,rule:rule};
   render(out,rows,stats);
 }
@@ -821,17 +1358,137 @@ function render(out,rows,stats){
   tbl.appendChild(tb);wrap.appendChild(tbl);out.appendChild(wrap);
 
   var row=el("div","row");
+  var b0=el("button","btn green sm","Print review summary");
+  b0.onclick=printSummary;
   var b1=el("button","btn sm","Copy results as table");
   b1.onclick=function(){copy(tsv(),b1,"Copy results as table");};
   var b2=el("button","btn ghost sm","Download CSV");
   b2.onclick=downloadCsv;
-  var b3=el("button","btn ghost sm","Copy the reviewer prompt");
-  b3.onclick=function(){copy(reviewerPrompt(),b3,"Copy the reviewer prompt");};
-  row.appendChild(b1);row.appendChild(b2);row.appendChild(b3);
+  row.appendChild(b0);row.appendChild(b1);row.appendChild(b2);
   out.appendChild(row);
-  var tip=el("p","tiny","Copy is the reliable one. A download can be blocked inside an embedded viewer.");
+  var tip=el("p","tiny","The printed summary carries the header, the results and the queue with blank answer "+
+    "lines and two signatures, which is the evidence PROTOCOL.md asks a close to retain. Copy is the reliable "+
+    "export; a download can be blocked inside an embedded viewer.");
   tip.style.margin="8px 0 0";
   out.appendChild(tip);
+}
+
+/* ============================================================ printable summary */
+function printSummary(){
+  if(!LAST)return;
+  var d=$("printdoc");
+  while(d.firstChild)d.removeChild(d.firstChild);
+
+  var head=el("div","phead");
+  head.appendChild(el("h1","","Second pass review summary"));
+  head.appendChild(el("p","psub","Month-end flux commentary drafted with AI assistance. Second Pass Review "+
+    "Protocol version 1.0. This sheet is the results table and the reviewer's queue; it is not a release."));
+  var meta=el("div","pmeta");
+  function mrow(k,v){
+    var x=el("div");
+    x.appendChild(el("b",null,k));
+    x.appendChild(document.createTextNode(v||" "));
+    meta.appendChild(x);
+  }
+  mrow("Company or file",LAST.company);
+  mrow("Close period",LAST.period);
+  mrow("Memo version",LAST.version);
+  mrow("Run on",new Date().toLocaleDateString());
+  mrow("Reviewer",LAST.reviewer);
+  mrow("Commentary rule",money(LAST.floorD)+" and "+LAST.floorP+" percent, "+
+    (LAST.rule==="both"?"both legs":"either leg"));
+  head.appendChild(meta);
+  d.appendChild(head);
+
+  d.appendChild(el("h2",null,"What the checks found"));
+  var strip=el("div","pstrip");
+  [[LAST.stats.lines,"Lines checked"],[LAST.stats.arith,"Arithmetic fails"],[LAST.stats.dir,"Direction fails"],
+   [LAST.stats.silent,"Silent lines"],[LAST.stats.queue,"For the reviewer"]].forEach(function(t){
+    var s=el("span");
+    s.appendChild(el("b",null,String(t[0])));
+    s.appendChild(document.createTextNode(t[1]));
+    strip.appendChild(s);
+  });
+  d.appendChild(strip);
+
+  var tbl=el("table"),cg=el("colgroup");
+  ["c1","c2","c3","c4","c5"].forEach(function(c){cg.appendChild(el("col",c));});
+  tbl.appendChild(cg);
+  var thead=el("thead"),tr=el("tr");
+  ["Line","Sentence or account","Check","Result","Ask the controller"].forEach(function(h){tr.appendChild(el("th",null,h));});
+  thead.appendChild(tr);tbl.appendChild(thead);
+  var tb=el("tbody");
+  LAST.rows.forEach(function(r){
+    var t=el("tr");
+    if(r.grp){t.className="grp";var td=el("td",null,r.grp);td.colSpan=5;t.appendChild(td);tb.appendChild(t);return;}
+    t.appendChild(el("td",null,r.line));
+    t.appendChild(el("td",null,(r.label?r.label+". ":"")+r.subj));
+    t.appendChild(el("td",null,r.check));
+    var res=el("td");
+    res.appendChild(el("span","bx",r.result+". "));
+    res.appendChild(document.createTextNode(r.det));
+    t.appendChild(res);
+    t.appendChild(el("td",null,Array.isArray(r.ask)?r.ask.join(" "):r.ask));
+    tb.appendChild(t);
+  });
+  tbl.appendChild(tb);d.appendChild(tbl);
+
+  d.appendChild(el("h2",null,"The reviewer's queue, answered by hand"));
+  if(!LAST.queue.length){
+    d.appendChild(el("p",null,"No sentence passed both the arithmetic and the direction, so nothing reached the "+
+      "queue. Every finding above goes back to the preparer before a reviewer signs anything."));
+  }
+  LAST.queue.forEach(function(s){
+    var q=el("div","qitem");
+    q.appendChild(el("p","qs",s.label+". "+s.text));
+    q.appendChild(el("p","ql","Line: "+s.accts.map(function(a){return (a.num?a.num+" ":"")+a.name;}).join("; ")));
+    var a1=el("div","ans");a1.appendChild(el("div",null,"1. Is the driver named here supported by anything on file? Name the document."));
+    a1.appendChild(el("div","rule"));q.appendChild(a1);
+    var a2=el("div","ans");a2.appendChild(el("div",null,"2. Is the period right, with nothing pulled forward or deferred?"));
+    a2.appendChild(el("div","rule"));q.appendChild(a2);
+    d.appendChild(q);
+  });
+
+  var silent=[];
+  LAST.accounts.forEach(function(a){if(a.clears&&!a.sent.length)silent.push((a.num?a.num+" ":"")+a.name);});
+  if(silent.length){
+    d.appendChild(el("h2",null,"Silent lines, asked of the controller"));
+    silent.forEach(function(nm){
+      var q=el("div","qitem");
+      q.appendChild(el("p","qs",nm));
+      var a1=el("div","ans");a1.appendChild(el("div",null,"What drove this line, and what supports it?"));
+      a1.appendChild(el("div","rule"));q.appendChild(a1);
+      d.appendChild(q);
+    });
+  }
+
+  var ev=el("div","evbox");
+  ev.appendChild(el("p",null,"Evidence retained with the close file, per PROTOCOL.md:"));
+  var ul=el("ul");
+  ["The results table the checks produced, which is the table above.",
+   "The reviewer's written answers on driver and timing, with the document each one rests on, which are the "+
+     "lines above.",
+   "This signed log, carrying the reviewer name, the date and the controller sign-off.",
+   "The version of the memo released, held beside this log so a reader can see which words the signature covers."
+  ].forEach(function(x){ul.appendChild(el("li",null,x));});
+  ev.appendChild(ul);
+  d.appendChild(ev);
+
+  var sig=el("div","sigbox");
+  [["Second-pass reviewer","I ran the checks, worked the queue and answered the two questions above."],
+   ["Controller","I read this log with the memo, resolved every open ask and release the commentary."]].forEach(function(s){
+    var b=el("div","sig");
+    b.appendChild(el("div","line"));
+    b.appendChild(el("div","cap",s[0]+" — signature and date"));
+    b.appendChild(el("div","cap",s[1]));
+    sig.appendChild(b);
+  });
+  d.appendChild(sig);
+
+  d.appendChild(el("p","pfoot","Produced by the Second Pass Checker. The checker does not decide whether the "+
+    "commentary is fit to release; the signatures above do."));
+
+  try{window.print();}catch(e){}
 }
 
 /* ============================================================ exports */
@@ -878,6 +1535,52 @@ function downloadCsv(){
     copy(data,null,"");
   }
 }
+/* Prompt 1. Written before the memo exists, so it reads the panes rather than a finished run.
+   The shape it dictates is the shape the matcher reads on its strongest tier. */
+function draftPrompt(){
+  var led=deSmart($("ledger").value).replace(/^\s+|\s+$/g,"");
+  var floorD=parseNum($("dollar").value),floorP=parseNum($("pct").value);
+  if(isNaN(floorD)||floorD<0)floorD=0;
+  if(isNaN(floorP)||floorP<0)floorP=0;
+  var rule=$("rule").value==="both"?"both legs, not either":"either leg is enough";
+  var p=[];
+  p.push("Draft the month-end flux commentary for this close. Write the memo only; do not comment on the task.");
+  p.push("");
+  p.push("Close period: "+($("period").value||"not stated")+
+         ($("company").value?". Company: "+$("company").value:"")+".");
+  p.push("Commentary rule: a movement owes an explanation when it clears "+money(floorD)+" and "+floorP+
+         " percent of the prior balance ("+rule+").");
+  p.push("");
+  p.push("LEDGER");
+  p.push(led||"(paste the ledger here)");
+  p.push("");
+  p.push("Write one numbered line for every account that clears the rule, and nothing else. Each line takes "+
+         "exactly this shape:");
+  p.push("");
+  p.push("<n>. <account number> <account name>: prior <prior balance>, current <current balance>, "+
+         "<rose or fell or flat> <change>, <percent> percent, because <one reason> (source: <the document, "+
+         "system or person the reason came from>).");
+  p.push("");
+  p.push("Rules for every line:");
+  p.push("- Write the account number first, exactly as the ledger prints it.");
+  p.push("- Write every figure in full dollars as the ledger prints them. No k, no M, no rounding to the "+
+         "nearest thousand, no restating in another unit.");
+  p.push("- Recompute the change and the percent from the two balances; do not copy a change column.");
+  p.push("- Use one direction word only, rose, fell or flat, and put it immediately before the change figure, "+
+         "so \"rose $42,400\" or \"flat $0\". The direction is read against the figure standing beside it.");
+  p.push("- Give one reason, and name its source. Where nothing on file supports a reason, write \"no source "+
+         "on file\" rather than inventing one.");
+  p.push("- Do not write a second line about an account you have already covered.");
+  p.push("");
+  p.push("Then stop, except for one closing sentence naming how many lines fell below the rule and stating "+
+         "that they carry no commentary. No summary paragraph, no recommendations, no headings.");
+  p.push("");
+  p.push("A deterministic checker reads this memo next and ties every figure back to the ledger, so the shape "+
+         "above is not a preference. A line that drops the account number, abbreviates a figure or carries two "+
+         "accounts at once will come back unmatched and go to a human by hand.");
+  return p.join("\n");
+}
+
 function reviewerPrompt(){
   if(!LAST)return "";
   var p=[];
@@ -992,36 +1695,120 @@ var RIDGE_MEMO=[
 "T3. Travel and entertainment rose $9,400 on the regional sales trip."
 ].join("\n");
 
-function loadHalyard(){
-  $("ledger").value=HALYARD_LEDGER;
-  $("memo").value=HALYARD_MEMO;
-  $("ratios").value="Product gross margin = (4000 - 5000) / 4000";
+/* Brightwater Dental Partners, the round two case the game scores a player on cold.
+   Five accounts, five lines, three of them planted. */
+var BRIGHT_LEDGER=[
+"Account\tMay 2026\tJune 2026",
+"4010\tPatient service revenue, net\t$742,000\t$803,500",
+"4220\tOrthodontic plan revenue\t$96,000\t$138,400",
+"5210\tDental supplies and lab fees\t$138,500\t$191,200",
+"6110\tHygienist wages\t$214,000\t$268,900",
+"6610\tMarketing and patient outreach\t$18,400\t$24,100"
+].join("\n");
+
+var BRIGHT_MEMO=[
+"B1. Dental supplies and lab fees eased to $191,200 in June as the group moved its crown and bridge work to a lower priced lab.",
+"B2. Patient service revenue rose $61,500, which is 8.3 percent of May, so the movement fails the percentage leg of the threshold and this line carries no driver.",
+"B3. Orthodontic plan revenue of $138,400 includes the eleven treatment plans families paid in full during June, and the whole payment on each plan was taken to revenue in June.",
+"B4. Marketing and patient outreach rose $5,700, or 31.0 percent, on the new patient mailer that went out in the first week of June, and the movement fails the dollar leg of the threshold.",
+"B5. Hygienist wages increased $44,900 after the second hygiene chair opened at the Ashburn office on June 1."
+].join("\n");
+
+/* Kestrel IT Services, a six line managed services firm, pasted in the shape QuickBooks Online's
+   Profit and Loss Comparison exports: a title block, an account label in the first column, the
+   current period before the comparison period, and a $ change and a % change column after them. */
+var KESTREL_LEDGER=[
+"Kestrel IT Services, LLC",
+"Profit and Loss Comparison",
+"July 2026 compared with June 2026",
+"",
+"\tJul 2026\tJun 2026\t$ Change\t% Change",
+"Income",
+"   4000 Recurring managed services\t198,400.00\t161,500.00\t36,900.00\t22.85 %",
+"   4100 Project and implementation revenue\t96,400.00\t38,900.00\t57,500.00\t147.81 %",
+"Total Income\t294,800.00\t200,400.00\t94,400.00\t47.11 %",
+"Cost of Goods Sold",
+"   5000 Subcontracted engineering\t88,300.00\t41,800.00\t46,500.00\t111.24 %",
+"Total Cost of Goods Sold\t88,300.00\t41,800.00\t46,500.00\t111.24 %",
+"Gross Profit\t206,500.00\t158,600.00\t47,900.00\t30.20 %",
+"Expenses",
+"   6000 Salaries and wages\t88,500.00\t88,500.00\t0.00\t0.00 %",
+"   6200 Software licences and hosting\t57,900.00\t22,600.00\t35,300.00\t156.19 %",
+"   6400 Client acquisition costs\t14,200.00\t4,900.00\t9,300.00\t189.80 %",
+"Total Expenses\t160,600.00\t116,000.00\t44,600.00\t38.45 %",
+"Net Operating Income\t45,900.00\t42,600.00\t3,300.00\t7.75 %",
+"Net Income\t45,900.00\t42,600.00\t3,300.00\t7.75 %"
+].join("\n");
+
+var KESTREL_MEMO=[
+"1. 4100 Project and implementation revenue rose $57.5k to $96,400, up 147.8 percent, on the Riverbend cutover that ran the whole month (source: project billing schedule).",
+"2. Project and implementation revenue carries the final Riverbend milestone, which was billed on 31 July and accepted the same day (source: signed acceptance certificate).",
+"3. 5000 Subcontracted engineering fell $46,500 to $88,300 as the cutover was staffed through two partner firms (source: partner invoices on file).",
+"4. 6000 Salaries and wages held flat at $88,500, with no headcount movement in the month (source: payroll register).",
+"5. 6200 Software licences and hosting rose $25,300 to $57,900 on the annual renewal of the monitoring platform, billed in July (source: vendor invoice).",
+"6. 6400 Client acquisition costs rose $9,300, or 189.8 percent, which fails the dollar leg of the threshold, so this line carries no driver."
+].join("\n");
+
+var SAMPLES={
+  halyard:{ledger:HALYARD_LEDGER,memo:HALYARD_MEMO,ratios:"Product gross margin = (4000 - 5000) / 4000",
+           period:"June 2026",version:"AI draft commentary, revision 4",company:"Halyard Distribution, LLC"},
+  brightwater:{ledger:BRIGHT_LEDGER,memo:BRIGHT_MEMO,ratios:"",
+           period:"June 2026",version:"Round two memo, as drafted",company:"Brightwater Dental Partners, PLLC"},
+  kestrel:{ledger:KESTREL_LEDGER,memo:KESTREL_MEMO,ratios:"",
+           period:"July 2026",version:"AI draft, first pass",company:"Kestrel IT Services, LLC"},
+  ridgeline:{ledger:RIDGE_LEDGER,memo:RIDGE_MEMO,ratios:"",
+           period:"July 2026",version:"Ridgeline test memo",company:"Ridgeline Partners, LLC"}
+};
+
+function loadSample(key){
+  var s=SAMPLES[key];
+  if(!s)return false;
+  $("ledger").value=s.ledger;
+  $("memo").value=s.memo;
+  $("ratios").value=s.ratios;
   $("dollar").value="25000";$("pct").value="10";$("rule").value="both";
-  $("period").value="June 2026";$("memover").value="AI draft commentary, revision 4";
+  $("period").value=s.period;$("memover").value=s.version;$("company").value=s.company;
   $("msg").innerHTML="";$("out").innerHTML="";
-}
-function loadRidge(){
-  $("ledger").value=RIDGE_LEDGER;
-  $("memo").value=RIDGE_MEMO;
-  $("ratios").value="";
-  $("dollar").value="25000";$("pct").value="10";$("rule").value="both";
-  $("period").value="July 2026";$("memover").value="Ridgeline test memo";
-  $("msg").innerHTML="";$("out").innerHTML="";
+  USERCOLS=null;
+  refreshPreview();
+  return true;
 }
 
 $("run").onclick=run;
-$("sample").onclick=function(){loadHalyard();run();window.scrollTo(0,0);};
-$("sample2").onclick=function(){loadRidge();run();window.scrollTo(0,0);};
-$("clear").onclick=function(){
-  ["ledger","memo","ratios","period","memover"].forEach(function(id){$(id).value="";});
-  $("msg").innerHTML="";$("out").innerHTML="";LAST=null;
+$("samplepick").onchange=function(){
+  var k=this.value;
+  if(!k)return;
+  if(loadSample(k))run();
+  window.scrollTo(0,0);
 };
+$("copydraft").onclick=function(){copy(draftPrompt(),$("copydraft"),"Copy Prompt 1");};
+$("copyreview").onclick=function(){
+  var b=$("copyreview");
+  if(!LAST){
+    b.textContent="Run the checker first";
+    setTimeout(function(){b.textContent="Copy Prompt 2";},1800);
+    return;
+  }
+  copy(reviewerPrompt(),b,"Copy Prompt 2");
+};
+$("clear").onclick=function(){
+  ["ledger","memo","ratios","period","memover","company","reviewer"].forEach(function(id){$(id).value="";});
+  $("msg").innerHTML="";$("out").innerHTML="";$("samplepick").value="";
+  LAST=null;USERCOLS=null;refreshPreview();
+};
+$("ledger").addEventListener("input",function(){
+  USERCOLS=null;
+  clearTimeout(PVTIMER);
+  PVTIMER=setTimeout(function(){refreshPreview();},350);
+});
 
-/* a link can open with a sample already run: ?sample=halyard or ?sample=ridgeline */
+/* a link can open with a sample already run: ?sample=halyard, brightwater, kestrel, ridgeline */
 (function(){
-  var q=(window.location.search||"").toLowerCase();
-  if(q.indexOf("sample=halyard")>-1){loadHalyard();run();}
-  else if(q.indexOf("sample=ridgeline")>-1){loadRidge();run();}
+  var q=(window.location.search||"").toLowerCase(),k;
+  ["halyard","brightwater","kestrel","ridgeline"].forEach(function(n){
+    if(!k&&q.indexOf("sample="+n)>-1)k=n;
+  });
+  if(k){$("samplepick").value=k;loadSample(k);run();}
 })();
 
 /* exposed so a run can be checked from the console, nothing on the page uses it */
