@@ -1235,9 +1235,6 @@ function reveal2(i, right){
 
 /* ---------- generated summaries. Nothing here is typed by the player. ---------- */
 var ROUND1_NOTE = "Not collected. The ledger screen is orientation only in this version.";
-/* the literal the four unasked questions carry, in place of the fixed values they used to send */
-var NOT_ASKED = "not asked";
-
 /* the player's own basis, in the shape the response sheet reads:
    Basis: no source on file; wrong period | Words: the freight moved */
 function basisText(chips, words){
@@ -1307,7 +1304,7 @@ function summaryB(){
   parts.push("Result: " + (S.caught+S.cleared) + " of 14 calls correct, " + S.caught + " caught, " +
              S.cleared + " let stand correctly, " + S.falseFlags + " false flag" + (S.falseFlags===1?"":"s") +
              ", rank " + rank() + ".");
-  parts.push("Four questions on the form (expected quality, confidence before, confidence after, close experience) are not asked in this version and were sent as \"not asked\" rather than as values.");
+  parts.push("Four questions on the form (expected quality, confidence before, confidence after, close experience) are not asked in this version. They carry a placeholder value the question accepts and are not participant answers.");
   parts.push("Longest run of correct calls: " + S.best + ".");
   return parts.join(" ");
 }
@@ -1368,18 +1365,28 @@ function allStandsRight(){
 }
 
 /* ---------- payload and submit ---------- */
+/* PLACEHOLDER_MODE decides what the four unasked questions carry. "numeric" posts a value the
+   question actually accepts, which is what Google Forms requires while all four are marked
+   required. Once Khaled makes those four questions optional in the form editor, change this one
+   word to "empty" and the four fields post nothing at all. Nothing else has to change.
+   See README, "The four questions that are not asked". */
+var PLACEHOLDER_MODE = "numeric";
+var PLACEHOLDERS = PLACEHOLDER_MODE === "empty"
+  ? { expect:"", confPre:"", experience:"", confPost:"" }
+  : { expect:"3", confPre:"5", experience:"Once or twice", confPost:"5" };
+
 function payload(){
   var p = {};
   p["entry."+E.codename] = S.codename;
   p["entry."+E.round1] = ROUND1_NOTE;
   /* Four questions on the form are not asked in this version: expected quality, confidence
-     before, close experience and, below, final confidence. They used to carry fixed values
-     that looked like participant answers. They now carry the literal string "not asked",
-     because all four are marked required on the form and it will not take an empty value.
-     See README, "The four questions that are not asked". */
-  p["entry."+E.expect] = NOT_ASKED;
-  p["entry."+E.confPre] = NOT_ASKED;
-  p["entry."+E.experience] = NOT_ASKED;
+     before, close experience and, below, final confidence. All four are marked required and
+     three of them are linear scales, so the posted value has to be one the question accepts.
+     These are placeholders, not answers, and the findings script must exclude them.
+     PLACEHOLDER_MODE is the one switch. */
+  p["entry."+E.expect] = PLACEHOLDERS.expect;
+  p["entry."+E.confPre] = PLACEHOLDERS.confPre;
+  p["entry."+E.experience] = PLACEHOLDERS.experience;
   for(var i=0;i<14;i++){
     var c = CARDS[i];
     var call = S.calls[i] || "stand";
@@ -1388,7 +1395,7 @@ function payload(){
                            " || Line "+c.n+", account "+c.acct+". Called: "+call+". Key: "+c.key+
                            ". Type: "+c.type+". "+(S.calls[i]===c.key ? "Correct." : "Missed.");
   }
-  p["entry."+E.confPost] = NOT_ASKED;
+  p["entry."+E.confPost] = PLACEHOLDERS.confPost;
   p["entry."+E.qa] = summaryA();
   p["entry."+E.qb] = summaryB();
   /* question C asks the player nothing, so the fresh case rides here rather than
@@ -1408,7 +1415,7 @@ function payload(){
 function asText(){
   var out = ["Second Pass: Beat the Machine at Mason", "Codename: "+S.codename, orgLine(), caseLine(), ""];
   out.push("Round one: "+ROUND1_NOTE);
-  out.push("Four questions on the form were not asked in this version and were sent as \"not asked\".");
+  out.push("Four questions on the form were not asked in this version and carry a placeholder value, not an answer.");
   out.push("");
   for(var i=0;i<14;i++){
     out.push("Line "+(i+1)+" ("+CARDS[i].acct+"): "+S.calls[i]+", key "+CARDS[i].key+", "+

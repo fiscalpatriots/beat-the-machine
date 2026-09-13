@@ -318,28 +318,40 @@ Four questions the form marks required are not asked on screen. Three were intak
 three-screen path has no room for, and the fourth was the confidence tap after the round, which
 came out so the last card leads straight into the send.
 
-Until 13 September 2026 all four carried fixed values, which arrived in the responses sheet
-looking exactly like participant answers and could not support any analysis. They now carry the
-literal string `not asked`:
+For part of 13 September 2026 all four posted the literal string `not asked`. That string is not
+one of the values any of these four questions accepts, so it was withdrawn the same day. All four
+now post the placeholder value they accepted before that change:
 
-| Form question | Entry id | Posted value |
-| --- | --- | --- |
-| Expected quality of the commentary | `entry.53437742` | `not asked` |
-| Confidence before the round | `entry.538678778` | `not asked` |
-| Confidence after the round | `entry.439643836` | `not asked` |
-| Month end close experience | `entry.1421470415` | `not asked` |
+| Form question | Entry id | Question type | Accepted values | Posted value |
+| --- | --- | --- | --- | --- |
+| Expected quality of the commentary | `entry.53437742` | Linear scale, required | 1 to 5 | `3` |
+| Confidence before the round | `entry.538678778` | Linear scale, required | 0 to 10 | `5` |
+| Confidence after the round | `entry.439643836` | Linear scale, required | 0 to 10 | `5` |
+| Month end close experience | `entry.1421470415` | Multiple choice, required | Never, Once or twice, Regularly | `Once or twice` |
 
-Empty would have been the cleaner value. The form does not take it: all four questions are marked
-required, three of them are linear scales and the fourth is multiple choice, so an empty value and
-an off-list string are both refused by Google Forms. **Google Forms will very probably reject a
-response carrying `not asked` on these four, and the hidden iframe cannot tell a stored response
-from a rejected one, so the drill may show a completion screen for a response the sheet never
-received.** The player always has the local copy on the fallback screen.
+Read every one of those four as **not asked; placeholder value posted until the form questions are
+made optional**. They are not participant answers. Whoever writes the findings script has to drop
+these four columns rather than average them, and the columns carry the same placeholder in every
+row, which is how you recognise them.
 
-The fix belongs on the form, not in the page: make those four questions optional, or delete them.
-Once they are optional, change `NOT_ASKED` in `index.html` to `""`. Whoever maintains the findings
-script needs to know that these four columns now read `not asked` and must not be pooled with the
-numbers earlier responses carry.
+### For Khaled: the one change that retires the placeholders
+
+Open the form in the form editor and make these four questions **not required** (or delete them).
+The switch on the page is one word. In `index.html`, at the top of the payload and submit section:
+
+```js
+var PLACEHOLDER_MODE = "numeric";   // change to "empty" after the form change
+```
+
+Set it to `"empty"` and all four fields post nothing at all, which is the value the responses sheet
+should carry for a question nobody was asked. Nothing else in the page has to change.
+
+A Node probe against the live `formResponse` endpoint on 13 September 2026 returned the form's own
+confirmation page ("Done. Scores are computed against the key after the close...") with HTTP 200
+for the restored values. A submission that genuinely fails validation comes back as HTTP 400 with
+the form re-rendered and "This is a required question" in the body, which is how the two are told
+apart from the outside. The hidden iframe the page uses cannot read either one, so the probe is
+the only way to check this from a script.
 
 The round one free text field (`entry.1115022539`) carries its own note, because the ledger screen
 is orientation only and collects no picks. Question C (`entry.756559246`) was a placeholder of the
