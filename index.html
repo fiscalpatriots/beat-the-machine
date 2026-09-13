@@ -5,65 +5,47 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#005239">
 <title>Second Pass: Beat the Machine at Mason</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%23005239%27/%3E%3Cpath d=%277 20l5 5 13-14%27 fill=%27none%27 stroke=%27%23ffc733%27 stroke-width=%273%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/second-pass.css">
 <style>
+/* Page layout only. Everything shared lives in assets/second-pass.css.
+   The three aliases below keep the hand-written SVG (the track, the car, the
+   trophy) reading the same token names it always read. */
 :root{
-  /* George Mason Green, George Mason Gold, Logo Black and the accent palette,
-     from brand.gmu.edu/brand-guide/brand-colors */
-  --mason:#005239;
+  --mason-gold:var(--gold);
+  --gold-line:#c79a00;
   --mason-deep:#003527;
-  --mason-gold:#ffc733;
-  --gold-line:#e0ac00;
-  --ink:#333333;
-  --ink-soft:#5a5d61;
-  --paper:#f6f3ec;
-  --card:#ffffff;
-  --line:#dfd8c9;
-  --accept:#005239;
-  --accept-bg:#e3f2e8;
-  --reject:#cc4824;
-  --reject-bg:#fbe9e4;
-  --machine:#004f71;
-  --machine-bg:#e3eef4;
-  --bar-old:#cfc6b2;
-  --neg:#a83a1c;
-  --gut:18px;
-  --shadow:0 2px 0 rgba(0,82,57,.09), 0 8px 24px rgba(0,82,57,.09);
+  --line:var(--rule);
+  --machine:var(--ink-soft);
+  --neg:var(--red);
+  --bar-old:#c9c3b4;
 }
-@media (max-width:399px){:root{--gut:12px}}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;padding:0}
-body{
-  background:var(--paper);
-  color:var(--ink);
-  font:17px/1.45 Figtree,"Open Sans","Franklin Gothic Book","Franklin Gothic",
-       -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  min-height:100vh;
-}
-#app{max-width:520px;margin:0 auto;padding:0 var(--gut) 40px;min-height:100vh;display:flex;flex-direction:column}
-h1{font-size:30px;line-height:1.12;margin:0 0 10px;letter-spacing:-.5px;color:var(--mason)}
-h2{font-size:22px;line-height:1.2;margin:0 0 10px;letter-spacing:-.3px;color:var(--mason)}
-h3{font-size:19px;line-height:1.22;margin:0 0 6px;letter-spacing:-.2px;color:var(--mason)}
 
-/* The university and college names set in type. No logo file and no Patriot mark. */
-#mason{position:relative;background:var(--mason);color:#fff;margin:0 calc(var(--gut) * -1);
-  padding:12px var(--gut) 22px;border-bottom:3px solid var(--mason-gold)}
-/* the codename rides the band, right above the player's car */
-#codetag{position:absolute;bottom:4px;left:0;transform:translateX(-50%);white-space:nowrap;
-  font-size:12px;font-weight:800;letter-spacing:.4px;color:var(--mason-gold);
+#app{max-width:560px;margin:0 auto;padding:0 var(--gut) var(--s9);min-height:100vh;
+  display:flex;flex-direction:column}
+#app>*{min-width:0;max-width:100%}
+#screen{flex:1;display:flex;flex-direction:column;justify-content:center;padding:var(--s2) 0 var(--s4)}
+#screen>*{min-width:0}
+
+/* the codename rides the masthead, right above the player's car */
+#codetag{position:absolute;bottom:3px;left:0;transform:translateX(-50%);white-space:nowrap;
+  font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--gold);
   transition:left .32s cubic-bezier(.3,.8,.35,1)}
 @media (prefers-reduced-motion:reduce){#codetag{transition:none}}
-#mason b{display:block;font-size:15px;font-weight:800;letter-spacing:.2px;line-height:1.2}
-#mason span{display:block;font-size:12.5px;letter-spacing:.3px;color:#dff0e4;margin-top:2px}
-#masonfoot{margin:20px calc(var(--gut) * -1) 0;padding:14px var(--gut) 4px;border-top:1px solid var(--line);
-  font-size:12.5px;line-height:1.4;color:var(--ink-soft);text-align:center}
-p{margin:0 0 14px}
-.sub{color:var(--ink-soft);font-size:16px}
-.tiny{font-size:13px;color:var(--ink-soft)}
 
-#bar{position:sticky;top:0;z-index:5;background:var(--paper);padding:12px 0 8px}
+/* ---------- test mode ---------- */
+#testband{margin:0 calc(var(--gut) * -1);max-width:none;width:calc(100% + var(--gut) * 2);
+  padding:var(--s2) var(--gut);
+  background:var(--ink);color:#fff;border-bottom:1px solid var(--ink);
+  font-size:var(--t-small);font-weight:700;letter-spacing:.03em;line-height:1.4;
+  text-align:center;overflow-wrap:anywhere}
+#testband span{display:block;font-weight:400;letter-spacing:0;color:#d7d5d0}
+
+/* ---------- the race track ---------- */
+#bar{position:sticky;top:0;z-index:5;background:var(--paper);padding:var(--s3) 0 var(--s2)}
 #track{line-height:0}
 #trk{display:block;width:100%;height:auto;overflow:visible}
 #fill{transition:width .32s cubic-bezier(.3,.8,.35,1),fill .24s ease,fill-opacity .24s ease}
@@ -86,366 +68,279 @@ p{margin:0 0 14px}
   #fill,#carpos,#flame,#trail,#chq,.flaghead .chev{transition:none}
   #carfx.burst,#carfx.pit,#burst.on{animation:none}
   #trail.big,#flame.big{transform:none}
-  .toast{animation:none}
 }
-#label{display:flex;justify-content:space-between;align-items:center;min-height:25px;margin-top:6px;font-size:13px;color:var(--ink-soft)}
-.scorepill{font-weight:700;color:var(--ink);background:#ece6d8;border-radius:99px;padding:3px 10px}
+#label{display:flex;justify-content:space-between;align-items:baseline;min-height:24px;
+  margin-top:var(--s2);font-size:var(--t-small);color:var(--ink-soft);
+  font-variant-numeric:tabular-nums}
+#score{font-weight:600;color:var(--ink)}
 
-#screen{flex:1;display:flex;flex-direction:column;justify-content:center;padding:8px 0 16px}
-.icon{width:68px;height:68px;display:block;margin:0 0 14px}
-.icon svg{width:100%;height:100%;fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.icon.big{width:96px;height:96px}
+/* ---------- the figure strip above every card ---------- */
+.strip{margin:0 0 var(--s4);padding:0 0 var(--s3);border-bottom:1px solid var(--rule);
+  font-variant-numeric:tabular-nums}
+.striptop{display:flex;align-items:baseline;gap:var(--s2);margin-bottom:var(--s3)}
+.striptop b{font-size:var(--t-label);font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-soft)}
+.striptop span{font-size:var(--t-body);font-weight:600}
+.stripnums{display:flex;gap:var(--s4);align-items:flex-start}
+.stripnums>span{flex:1;min-width:0;font-size:var(--t-label);text-transform:uppercase;
+  letter-spacing:.08em;color:var(--ink-soft)}
+.stripnums>span>i,.stripnums .ch{display:block;font-style:normal;font-size:var(--t-lead);
+  font-weight:600;color:var(--ink);text-transform:none;letter-spacing:0;margin-top:2px}
+.stripnums .ch.neg{color:var(--red)}
+.stripnums .ch i{display:block;font-style:normal;font-size:var(--t-small);font-weight:400;
+  color:var(--ink-soft);margin:0}
 
-button{font:inherit;color:inherit;cursor:pointer}
-.btn{
-  display:block;width:100%;border:2px solid var(--ink);background:var(--ink);color:#fff;
-  border-radius:14px;padding:16px;font-size:18px;font-weight:700;margin-top:12px;
-}
-.btn:active{transform:translateY(1px)}
-.btn.ghost{background:transparent;color:var(--ink)}
-.btn:disabled{opacity:.35;cursor:default}
-.choice{
-  display:flex;align-items:center;gap:12px;width:100%;text-align:left;
-  border:2px solid var(--line);background:var(--card);border-radius:14px;
-  padding:15px 16px;font-size:17px;margin-top:10px;box-shadow:var(--shadow);
-}
-.choice:active{transform:translateY(1px)}
-.choice.on{border-color:var(--ink);background:#fff}
-.choice .tick{width:22px;height:22px;border-radius:99px;border:2px solid var(--line);flex:0 0 auto}
-.choice.on .tick{border-color:var(--ink);background:var(--ink);box-shadow:inset 0 0 0 3px #fff}
-
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 6px}
-.chip{
-  border:2px solid var(--line);background:var(--card);border-radius:99px;
-  padding:10px 14px;font-size:15px;font-weight:600;
-}
-.chip.on{border-color:var(--mason);background:var(--mason);color:#fff}
-.chip.sm{padding:8px 12px;font-size:14px}
-
-input[type=text],textarea{
-  width:100%;font:inherit;padding:15px;border:2px solid var(--line);border-radius:14px;
-  background:var(--card);color:var(--ink);
-}
-input[type=text]:focus,textarea:focus{outline:none;border-color:var(--ink)}
-textarea{min-height:84px;resize:vertical}
-
-.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
-.acct{display:inline-block;font-weight:700;font-size:13px;letter-spacing:.3px;background:var(--machine-bg);color:var(--machine);border-radius:99px;padding:5px 12px;margin-bottom:10px}
-.move{font-size:16px;line-height:1.35;margin:0 0 12px}
-.chart{width:100%;height:auto;display:block;margin:0 0 14px}
-.says{display:flex;gap:8px;align-items:center;font-size:13px;font-weight:700;color:var(--machine);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
-.says svg{width:20px;height:20px;fill:none;stroke:var(--machine);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.quote{font-size:17px;line-height:1.4;margin:0}
-
-.file{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:14px 0 0}
-.file h4{margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:var(--ink-soft)}
-.file ul{margin:0;padding:0 0 0 16px}
-.file li{font-size:14px;line-height:1.4;margin:0 0 5px}
+/* ---------- the card body ---------- */
+.cardhead{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s3)}
+.cardhead.plain{margin-bottom:var(--s3)}
+.revlabel{font-size:var(--t-label);font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--ink-soft)}
+.ledgerhint{margin:0 0 var(--s4);font-size:var(--t-small);line-height:1.5;color:var(--ink-soft)}
+.chart{width:100%;height:auto;display:block;margin:0 0 var(--s4)}
+.says{margin:0 0 var(--s2);font-size:var(--t-label);font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--ink-soft)}
+.quote{font-size:var(--t-lead);line-height:1.5;margin:0}
+.file{margin:var(--s5) 0 0;padding:var(--s4) 0 0;border-top:1px solid var(--rule)}
+.file h4{margin:0 0 var(--s2);font-size:var(--t-label);font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--ink-soft)}
+.file ul{margin:0;padding:0 0 0 var(--s5)}
+.file li{font-size:var(--t-small);line-height:1.55;margin:0 0 var(--s1)}
 .file li:last-child{margin-bottom:0}
+.ask{font-weight:600;font-size:var(--t-body);margin:var(--s5) 0 0}
+.two{display:flex;gap:var(--s3);margin-top:var(--s3)}
+.two .btn{flex:1;padding:var(--s3) var(--s2)}
 
-.ask{font-weight:700;font-size:15px;margin:16px 0 0;color:var(--ink-soft)}
-.two{display:flex;gap:10px;margin-top:10px}
-.two .btn{margin-top:0;flex:1;padding:17px 6px;font-size:17px}
-.btn.call{background:#fff;color:var(--ink);border-color:var(--ink)}
-.btn.call:active{background:var(--paper)}
+/* ---------- the reveal ---------- */
+.outcome{margin:var(--s5) 0 var(--s4);padding:var(--s4) 0;
+  border-top:1.5px solid var(--ink);border-bottom:1px solid var(--rule)}
+.outcome h2{margin:0 0 var(--s2)}
+.outcome.bad h2{color:var(--red)}
+.outcome.good h2{color:var(--mason)}
+.why{margin:0 0 var(--s3);font-size:var(--t-body);line-height:1.6}
+.mark{margin:var(--s3) 0 0;font-size:var(--t-small);font-weight:600;color:var(--ink)}
+.split{margin:var(--s5) 0 0}
+.splitbar{height:4px;background:var(--rule);overflow:hidden;display:flex}
+.splitbar i{display:block;height:100%;background:var(--ink)}
+.splitlab{display:flex;justify-content:space-between;font-size:var(--t-small);
+  color:var(--ink-soft);margin-top:var(--s2);font-variant-numeric:tabular-nums}
 
-.verdict{border-radius:18px;padding:16px 18px;margin-bottom:12px;border:2px solid}
-.verdict.good{background:var(--accept-bg);border-color:var(--accept)}
-.verdict.bad{background:var(--reject-bg);border-color:var(--reject)}
-.verdict h2{margin:0 0 4px;font-size:20px;color:var(--ink)}
-.type{display:inline-block;background:#fff;border:2px solid var(--ink);border-radius:99px;padding:4px 12px;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.6px}
-.bonus{display:inline-block;background:var(--mason-gold);color:#333333;border:2px solid var(--gold-line);border-radius:99px;padding:4px 12px;font-weight:700;font-size:14px;margin-top:10px}
-.why{margin:0 0 4px}
-.toast{display:inline-block;background:var(--mason-gold);color:#333333;border:2px solid var(--gold-line);
-  border-radius:99px;padding:5px 14px;font-weight:800;font-size:14px;margin:10px 0 0;
-  animation:pop .22s ease-out both}
-@keyframes pop{0%{transform:scale(.82);opacity:0}100%{transform:scale(1);opacity:1}}
+/* ---------- the ledger button and the sheet ---------- */
+.ledgerbig{width:100%;margin:0 0 var(--s3);gap:var(--s2)}
+.ledgerbig svg{width:18px;height:18px;flex:0 0 auto;fill:none;stroke:currentColor;
+  stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+#sheet{position:fixed;inset:0;background:rgba(26,26,26,.48);z-index:20;display:flex;align-items:flex-end}
+#sheetbody{background:var(--paper);width:100%;max-height:88vh;overflow:auto;
+  border-radius:var(--radius) var(--radius) 0 0;padding:var(--s4) var(--s3) var(--s6);
+  max-width:560px;margin:0 auto}
 
-.split{margin:16px 0 0}
-.splitbar{height:12px;border-radius:99px;background:#e6e0d2;overflow:hidden;display:flex}
-.splitbar i{display:block;height:100%}
-.splitbar i.c{background:var(--ink)}
-.splitbar i.k{background:var(--accept)}
-.splitlab{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-top:6px}
-.key{display:inline-block;width:9px;height:9px;border-radius:99px;vertical-align:middle;margin-right:5px}
-.key.c{background:var(--ink)}
-.key.k{background:var(--accept)}
-
-.link{background:none;border:none;padding:8px 0;text-decoration:underline;font-size:15px;color:var(--ink-soft)}
-.hidden{display:none!important}
-
-#sheet{position:fixed;inset:0;background:rgba(0,53,39,.58);z-index:20;display:flex;align-items:flex-end}
-#sheetbody{background:var(--paper);width:100%;max-height:88vh;overflow:auto;border-radius:18px 18px 0 0;padding:14px 12px 24px;max-width:520px;margin:0 auto}
-/* the statement: round one reads it, and the Ledger button reopens it during play */
-/* ---------- the statement. One grid, stacked on a phone, one line per row on a desk ---------- */
-.stmtwrap{--pad:16px}
-.stmt{--pad:16px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:0;
-  padding:var(--pad);box-shadow:0 8px 24px rgba(0,0,0,.08);overflow:hidden}
-.stmthead{background:var(--mason);margin:calc(var(--pad) * -1) calc(var(--pad) * -1) 0;
-  padding:16px var(--pad) 14px;border-bottom:2px solid var(--mason-gold)}
-.stmthead b{display:block;font-size:20px;line-height:1.25;color:#fff;letter-spacing:-.2px}
-.stmthead span{display:block;font-size:13px;line-height:1.45;color:var(--mason-gold);margin-top:3px}
+/* ---------- the statement ---------- */
+.stmtwrap{--pad:var(--s5)}
+.stmt{--pad:var(--s5);background:var(--card);border:1px solid var(--rule);
+  border-radius:var(--radius);margin:0;padding:var(--pad);box-shadow:var(--shadow);overflow:hidden}
+.stmthead{margin:calc(var(--pad) * -1) calc(var(--pad) * -1) 0;
+  padding:var(--s5) var(--pad) var(--s3);border-bottom:1.5px solid var(--ink)}
+.stmthead b{display:block;font-size:var(--t-h2);line-height:1.25;color:var(--ink);letter-spacing:-.01em}
+.stmthead span{display:block;font-size:var(--t-small);line-height:1.5;color:var(--ink-soft);margin-top:2px}
 .scols,.srow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  column-gap:20px;row-gap:6px}
-/* four numbers only sit on one line once there is room for them; below that May and June
-   take the first line and Change and Percent the second, on the same gutters */
+  column-gap:var(--s5);row-gap:var(--s1)}
 @media (min-width:480px){.scols,.srow{grid-template-columns:repeat(4,minmax(0,1fr))}}
-.scols{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--ink-soft);
-  padding:12px 0 8px;border-bottom:1px solid var(--line)}
+.scols{font-size:var(--t-label);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);
+  padding:var(--s3) 0 var(--s2);border-bottom:1.5px solid var(--ink)}
 .scols span{text-align:right;padding:0;font-variant-numeric:tabular-nums}
 .scols .sp{display:none}
-.srow{position:relative;padding:12px 10px;margin:0 -10px;align-items:baseline;
-  border-top:1px solid rgba(0,82,57,.10)}
-.srow.z{background:rgba(0,82,57,.03)}
-.srow .acctline{grid-column:1/-1;display:flex;gap:10px;align-items:baseline;margin-bottom:8px}
-.srow .no{flex:0 0 46px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Courier New",monospace;
-  font-size:13px;line-height:1.45;color:var(--ink-soft)}
-.srow .nm{font-size:15px;line-height:1.45;color:var(--ink)}
-.srow .fg{text-align:right;font-size:15px;line-height:1.45;padding:0;color:var(--ink);
+.srow{position:relative;padding:var(--s3) var(--s2);margin:0 calc(var(--s2) * -1);
+  align-items:baseline;border-top:1px solid var(--rule)}
+.srow.z{background:var(--zebra)}
+.srow .acctline{grid-column:1/-1;display:flex;gap:var(--s3);align-items:baseline;margin-bottom:var(--s2)}
+.srow .no{flex:0 0 46px;font-family:var(--mono);font-size:13px;line-height:1.5;color:var(--ink-soft)}
+.srow .nm{font-size:var(--t-body);line-height:1.5;color:var(--ink)}
+.srow .fg{text-align:right;font-size:var(--t-body);line-height:1.5;padding:0;color:var(--ink);
   font-variant-numeric:tabular-nums}
 .srow .fg.ch{font-weight:600}
-.srow .fg.neg{color:var(--neg)}
+.srow .fg.neg{color:var(--red)}
 .srow .pc{color:var(--ink-soft)}
 .srow .pc b{font-weight:400}
-/* the movement bar gets its own column on a desk, so it never sits behind a figure */
-.wbar{display:none;align-self:center;height:6px;border-radius:99px;background:rgba(0,82,57,.08)}
-.wbar i{display:block;height:100%;border-radius:99px;background:rgba(0,82,57,.55)}
-.wbar i.neg{background:rgba(168,58,28,.50)}
-.srow .mbar{grid-column:1/-1;height:4px;border-radius:99px;background:rgba(0,82,57,.07);
-  margin-top:8px;overflow:hidden}
-.srow .mbar i{display:block;height:100%;border-radius:99px;background:rgba(0,82,57,.45)}
-.srow .mbar i.neg{background:rgba(168,58,28,.45)}
-.sgrp{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--mason);
-  padding:16px 0 2px;margin-top:6px;border-top:1px solid rgba(0,82,57,.22)}
-.srow.sub,.srow.net{padding-top:14px;padding-bottom:14px}
+.wbar{display:none;align-self:center;height:4px;background:rgba(26,26,26,.08)}
+.wbar i{display:block;height:100%;background:var(--mason)}
+.wbar i.neg{background:var(--red)}
+.srow .mbar{grid-column:1/-1;height:3px;background:rgba(26,26,26,.07);margin-top:var(--s2);overflow:hidden}
+.srow .mbar i{display:block;height:100%;background:var(--mason)}
+.srow .mbar i.neg{background:var(--red)}
+.sgrp{font-size:var(--t-label);font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--ink);padding:var(--s5) 0 var(--s1);margin-top:var(--s2);
+  border-top:1px solid var(--rule-strong)}
+.srow.sub,.srow.net{padding-top:var(--s4);padding-bottom:var(--s4);background:var(--card)}
 .srow.sub{border-top:1px solid var(--ink)}
-.srow.sub .nm,.srow.sub .fg{font-weight:700}
-.srow.net{border-top:2px solid var(--ink)}
-.srow.net .nm,.srow.net .fg{font-weight:800}
-.srow.sub,.srow.net{background:#fff}
-.srow.here{background:rgba(255,199,51,.06);box-shadow:inset 4px 0 0 var(--mason-gold)}
+.srow.sub .nm,.srow.sub .fg{font-weight:600}
+.srow.net{border-top:1.5px solid var(--ink)}
+.srow.net .nm,.srow.net .fg{font-weight:700}
+.srow.here{background:var(--zebra)}
 .srow.here .nm{font-weight:700}
-.cap{margin:14px 0 0;padding:12px 0 0;font-size:12px;line-height:1.45;color:var(--ink-soft);
-  border-top:1px solid var(--line)}
+.cap{margin:var(--s4) 0 0;padding:var(--s3) 0 0;font-size:var(--t-small);font-style:italic;
+  line-height:1.5;color:var(--ink-soft);border-top:1px solid var(--rule)}
 
-/* the legend, and the orientation page it sits on */
-.flagcard{background:#fff;border:1px solid var(--line);border-left:4px solid var(--mason);
-  border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.08);padding:16px;margin:0 0 14px}
-.flaghead{display:flex;width:100%;align-items:center;justify-content:space-between;gap:10px;
-  background:none;border:none;padding:0;text-align:left;min-height:32px}
-.flaghead h3{margin:0;font-size:17px}
+/* ---------- the legend and the orientation page ---------- */
+.flagcard{padding:var(--s4) 0;margin:0 0 var(--s5);border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule)}
+.flaghead{display:flex;width:100%;align-items:center;justify-content:space-between;gap:var(--s3);
+  background:none;border:none;padding:0;text-align:left;min-height:44px}
+.flaghead h3{margin:0}
 .flaghead .chev{font-size:13px;color:var(--ink-soft);transition:transform .2s ease}
 .flaghead[aria-expanded="true"] .chev{transform:rotate(180deg)}
-.fchips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 0}
-.fchip{display:inline-flex;align-items:center;gap:6px;background:rgba(0,82,57,.06);
-  border:1px solid rgba(0,82,57,.20);border-radius:99px;padding:6px 11px;
-  font-size:13px;line-height:1.45;font-weight:600;color:var(--ink)}
-.fchip svg{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:var(--mason);stroke-width:1.8;
-  stroke-linecap:round;stroke-linejoin:round}
-.flagmore{margin-top:12px}
-.flagmore p{margin:0;font-size:15px;line-height:1.45}
-.flagmore p+p{margin-top:8px}
-.hero{margin:0 0 14px}
-.hero h2{margin:0 0 6px}
-.hero p{margin:0;font-size:15px;line-height:1.45;color:var(--ink-soft)}
+.fchips{margin:var(--s3) 0 0;padding:0;list-style:none;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--s1) var(--s5)}
+.fchip{display:flex;align-items:baseline;gap:var(--s2);font-size:var(--t-small);
+  line-height:1.6;color:var(--ink)}
+.fchip::before{content:"";flex:0 0 auto;width:4px;height:4px;background:var(--ink-soft);
+  transform:translateY(-3px)}
+.flagmore{margin-top:var(--s4)}
+.flagmore p{margin:0;font-size:var(--t-small);line-height:1.6;color:var(--ink-soft)}
+.flagmore p+p{margin-top:var(--s2)}
+.hero{margin:0 0 var(--s5)}
+.hero h2{margin:0 0 var(--s2)}
+.hero p{margin:0;font-size:var(--t-body);line-height:1.55;color:var(--ink-soft)}
 .orient{display:block}
 .orientside{display:none}
-.stickygo{position:fixed;left:0;right:0;bottom:0;z-index:8;padding:12px var(--gut);
-  background:linear-gradient(to top,var(--paper) 74%,rgba(246,243,236,0))}
-.stickygo .btn{margin:0 auto;max-width:484px}
+.stickygo{position:fixed;left:0;right:0;bottom:0;z-index:8;padding:var(--s3) var(--gut);
+  background:var(--paper);border-top:1px solid var(--rule)}
+.stickygo .btn{margin:0 auto;max-width:484px;display:flex;width:100%}
 @media (max-width:899px){#app.hasbar{padding-bottom:98px}}
 @media (min-width:900px){
   #app.wide{max-width:1076px}
-  .hero h2{font-size:28px}
-  .orient{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start;
+  .hero h2{font-size:var(--t-h1)}
+  .orient{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:var(--s6);align-items:start;
     max-width:1040px;margin:0 auto}
   .orientside{display:block;position:sticky;top:96px}
   .orientmain .flagcard{display:none}
   .stickygo{display:none}
   .flaghead{pointer-events:none}
   .flaghead .chev{display:none}
-  .stmt-wide{--pad:24px}
+  .stmt-wide{--pad:var(--s6)}
 }
-/* one line per account, with room for every figure and a column of its own for the bar */
 @media (min-width:1200px){
   #app.wide{max-width:1320px}
   .orient{max-width:1280px}
   .stmt-wide .scols,.stmt-wide .srow{
     grid-template-columns:30px minmax(0,1fr) 116px 116px 112px 72px 72px;
-    column-gap:20px;row-gap:0}
+    column-gap:var(--s5);row-gap:0}
   .stmt-wide .srow.sub .fg,.stmt-wide .srow.net .fg{font-weight:600}
   .stmt-wide .scols .sp{display:block}
-  .stmt-wide .srow{align-items:center;padding:10px;min-height:28px}
-  .stmt-wide .srow.sub,.stmt-wide .srow.net{padding-top:14px;padding-bottom:14px}
+  .stmt-wide .srow{align-items:center;padding:var(--s2);min-height:28px}
+  .stmt-wide .srow.sub,.stmt-wide .srow.net{padding-top:var(--s4);padding-bottom:var(--s4)}
   .stmt-wide .srow .acctline{display:contents}
   .stmt-wide .srow .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:420px}
-  .stmt-wide .srow .fg{font-size:16px;padding:0}
+  .stmt-wide .srow .fg{font-size:var(--t-body);padding:0}
   .stmt-wide .srow .mbar{display:none}
   .stmt-wide .wbar{display:block}
 }
 
-.cardhead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-.cardhead.plain{margin-bottom:10px;align-items:center}
-.revlabel{font-size:13px;font-weight:700;color:var(--ink-soft)}
-.ledgerbig{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:48px;
-  border:2px solid var(--ink-soft);background:var(--card);color:var(--ink);border-radius:99px;
-  padding:13px 16px;font-size:16px;font-weight:700;margin:0 0 12px}
-.ledgerbig svg{width:19px;height:19px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;
-  stroke-linecap:round;stroke-linejoin:round}
-.ledgerbig:active{background:var(--paper);transform:translateY(1px)}
-.ledgerhint{margin:0 0 14px;font-size:13px;line-height:1.4;color:var(--ink-soft);text-align:center}
-.strip{background:var(--machine-bg);border-left:3px solid var(--machine);border-radius:0 10px 10px 0;
-  padding:10px 12px;margin:0 0 14px;font-variant-numeric:tabular-nums}
-.striptop{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
-.striptop b{color:var(--machine);font-size:13px}
-.striptop span{font-size:14px;font-weight:600}
-.stripnums{display:flex;gap:10px;align-items:flex-start}
-.stripnums>span{flex:1;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-soft)}
-.stripnums>span>i{display:block;font-style:normal;font-size:15px;font-weight:700;color:var(--ink);
-  text-transform:none;letter-spacing:0;margin-top:2px}
-.stripnums .ch{display:block;font-size:15px;font-weight:700;color:var(--ink);text-transform:none;letter-spacing:0;margin-top:2px}
-.stripnums .ch.neg{color:var(--neg)}
-.stripnums .ch i{display:block;font-style:normal;font-size:13px;font-weight:400;color:var(--ink-soft);margin:0}
+/* ---------- the basis row ---------- */
+.basis{margin-top:var(--s2)}
+.basishint{margin:0 0 var(--s3)}
+.basis .chips{margin:0 0 var(--s4)}
+.basis .chip{flex:1 1 180px;min-width:0;overflow-wrap:anywhere}
+.basiswords{display:block;font-size:var(--t-small);font-weight:600;color:var(--ink-soft);
+  margin:0 0 var(--s2)}
+.basis .btn{display:flex;width:100%;margin-top:var(--s4)}
 
-/* the basis row: one tap set between the call and the reveal */
-.basis{margin-top:4px}
-.basishint{margin:0 0 10px;text-align:center}
-.basis .chips{margin:0 0 12px}
-.basis .chip{flex:1 1 auto;min-width:0;font:inherit;font-size:15px;line-height:1.25;font-weight:600;
-  color:var(--ink);cursor:pointer;text-align:center;overflow-wrap:anywhere}
-.basis .chip:hover{border-color:var(--mason)}
-.chip:focus-visible{outline:3px solid var(--mason-gold);outline-offset:2px}
-.basis .chip.on{color:#fff}
-.basiswords{display:block;font-size:14px;font-weight:600;color:var(--ink-soft);margin:0 0 6px}
-.basisinput{display:block;width:100%;box-sizing:border-box;font:inherit;font-size:16px;
-  padding:11px 12px;border:2px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
-.basisinput:focus-visible{outline:3px solid var(--mason-gold);outline-offset:2px;border-color:var(--mason)}
-.btn[disabled]{opacity:.45;cursor:not-allowed}
+/* ---------- one optional step before the memo ---------- */
+.prepick{margin:var(--s6) 0 0;padding:var(--s5) 0 0;border-top:1px solid var(--rule)}
+.prepick h3{margin:0 0 var(--s1)}
+.prepick p{margin:0 0 var(--s4);font-size:var(--t-small);line-height:1.55;color:var(--ink-soft)}
+.prepick .chips{margin:0 0 var(--s4)}
+.prepick .chip{font-size:var(--t-small);text-align:left;overflow-wrap:anywhere}
 
-.final{text-align:center;overflow-wrap:anywhere}
-.trophywrap{display:flex;justify-content:center;margin:4px 0 6px}
-.trophy{width:132px;height:auto;animation:rise .55s cubic-bezier(.2,.9,.3,1.25) both}
+/* ---------- the data notice ---------- */
+.notice{margin:0 0 var(--s5);padding:var(--s5) 0;
+  border-top:1.5px solid var(--ink);border-bottom:1px solid var(--rule)}
+.notice h3{margin:0 0 var(--s3)}
+.notice ul{margin:0;padding:0 0 0 var(--s5)}
+.notice li{font-size:var(--t-body);line-height:1.6;margin:0 0 var(--s3)}
+.notice li:last-child{margin-bottom:0}
+.noticever{margin:var(--s4) 0 0;font-size:var(--t-small);line-height:1.5;color:var(--ink-soft)}
+
+/* ---------- round two results ---------- */
+.res{margin:0;padding:var(--s5) 0;border-top:1px solid var(--rule)}
+.res:first-of-type{border-top:1.5px solid var(--ink)}
+.resline{display:flex;flex-wrap:wrap;gap:var(--s2);align-items:baseline;margin:0 0 var(--s2)}
+.resline b{font-size:var(--t-body);line-height:1.4}
+.res p{margin:var(--s2) 0 0;font-size:var(--t-body);line-height:1.6}
+.res .yours{margin:var(--s3) 0 0;font-size:var(--t-small);line-height:1.55;
+  color:var(--ink-soft);overflow-wrap:anywhere}
+
+/* ---------- the end screen ---------- */
+.final{text-align:left;overflow-wrap:anywhere}
+.trophywrap{display:flex;margin:0 0 var(--s4)}
+.trophy{width:108px;height:auto;animation:rise .55s cubic-bezier(.2,.9,.3,1.25) both}
 .trophy .glint{animation:sweep 1.1s ease-out .5s both}
 @keyframes rise{from{transform:scale(.72);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes sweep{from{transform:translateX(0)}to{transform:translateX(130px)}}
 @media (prefers-reduced-motion:reduce){.trophy,.trophy .glint{animation:none}.trophy .glint{opacity:0}}
-.rankbig{font-size:38px;font-weight:800;letter-spacing:-1px;line-height:1.05;color:var(--mason);
-  overflow-wrap:anywhere}
-.ranknote{margin:4px 0 0;font-size:13px;line-height:1.4;color:var(--ink-soft)}
-.stats{display:flex;gap:8px;margin:0 0 10px}
-.stats>div{min-width:0}
-.lapwrap{margin:0 0 18px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-.lap{display:inline-block;border:1px solid var(--line);background:#fff;border-radius:99px;
-  padding:6px 14px;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
-.stats div{flex:1;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 6px}
-.stats b{display:block;font-size:24px;line-height:1.1;font-variant-numeric:tabular-nums}
-.stats span{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--ink-soft);margin-top:3px;line-height:1.2}
-.earned{margin:12px 0 16px;font-size:16px;color:var(--ink-soft)}
-/* the fresh case, scored on its own and set apart from the main score by a gold ring */
-.fresh{margin:0 0 2px}
-.fresh .lap{border-color:var(--gold-line);border-width:2px}
-.badges{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin:0 0 18px}
-.medal{display:flex;flex-direction:column;align-items:center;gap:8px;width:96px;max-width:100%;
+.rankbig{font-size:var(--t-h1);font-weight:700;letter-spacing:-.02em;line-height:1.1;
+  color:var(--ink);display:inline-block;padding-bottom:var(--s1);border-bottom:3px solid var(--gold)}
+.ranknote{margin:var(--s3) 0 0;font-size:var(--t-small);line-height:1.5;color:var(--ink-soft)}
+.earned{margin:var(--s4) 0 var(--s2);font-size:var(--t-lead);line-height:1.5}
+.fresh{margin:0 0 var(--s1);font-size:var(--t-body);font-weight:600;font-variant-numeric:tabular-nums}
+.lapwrap{margin:0 0 var(--s5);font-size:var(--t-body);color:var(--ink-soft);
+  font-variant-numeric:tabular-nums}
+.lapwrap span:not(:last-child)::after{content:"";display:inline-block;width:1px;height:.85em;
+  margin:0 var(--s3);background:var(--rule-strong);vertical-align:-.05em}
+.badges{display:flex;flex-wrap:wrap;gap:var(--s6);margin:var(--s5) 0 var(--s6)}
+.medal{display:flex;flex-direction:column;align-items:center;gap:var(--s2);width:96px;max-width:100%;
   opacity:0;transform:translateY(6px);animation:medalin .4s ease forwards}
-.medal .disc{display:flex;align-items:center;justify-content:center;width:62px;height:62px;
-  border-radius:50%;background:var(--paper);border:2px solid var(--mason-gold);
-  box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.medal .disc svg{width:26px;height:26px;fill:none;stroke:var(--mason);stroke-width:1.8;
+.medal .disc{display:flex;align-items:center;justify-content:center;width:56px;height:56px;
+  border-radius:50%;background:transparent;border:1px solid var(--ink)}
+.medal .disc svg{width:24px;height:24px;fill:none;stroke:var(--ink);stroke-width:1.5;
   stroke-linecap:round;stroke-linejoin:round}
-.medal em{font-style:normal;font-size:14px;line-height:1.3;text-align:center;color:var(--ink)}
+.medal em{font-style:normal;font-size:var(--t-small);line-height:1.35;text-align:center;color:var(--ink)}
 @keyframes medalin{to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.medal{animation:none;opacity:1;transform:none}}
-.nobadge{margin:0 0 18px;font-size:14px;line-height:1.45;color:var(--ink-soft);text-align:center}
-.sharecard{background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:14px;text-align:left}
-.sharecard p{margin:0 0 10px;font-size:16px;font-weight:600;overflow-wrap:anywhere}
-.sharecard .btn{margin-top:0;padding:11px;font-size:16px}
-.coach{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:16px 18px;margin:18px 0 0;text-align:left;box-shadow:var(--shadow)}
-.coach h3{margin:0 0 10px}
-.miss{border-top:1px solid var(--line);padding:10px 0 0;margin:10px 0 0}
+.nobadge{margin:0 0 var(--s5);font-size:var(--t-small);line-height:1.55;color:var(--ink-soft)}
+.sharecard{margin:var(--s5) 0 0;padding:var(--s5) 0;border-top:1px solid var(--rule)}
+.sharecard p{margin:0 0 var(--s3);font-size:var(--t-body);line-height:1.55;overflow-wrap:anywhere}
+.endlinks{display:flex;flex-direction:column;align-items:flex-start;gap:var(--s1);margin:var(--s4) 0 0}
+
+.coach{margin:var(--s6) 0 0;padding:var(--s5) 0 0;border-top:1px solid var(--rule);text-align:left}
+.coach h3{margin:0 0 var(--s4)}
+.miss{border-top:1px solid var(--rule);padding:var(--s4) 0 0;margin:var(--s4) 0 0}
 .miss:first-of-type{border-top:none;padding-top:0;margin-top:0}
-.miss b{display:block;font-size:15px}
-.miss em{display:inline-block;font-style:normal;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--machine);margin:2px 0 4px}
-.miss span{display:block;font-size:14px;color:var(--ink-soft);line-height:1.4}
+.miss b{display:block;font-size:var(--t-body)}
+.miss em{display:block;font-style:normal;font-size:var(--t-label);font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);margin:var(--s1) 0}
+.miss span{display:block;font-size:var(--t-small);color:var(--ink-soft);line-height:1.55}
 
-/* the practitioner note, reachable from the intro and from the end screen */
-.howlink{display:block;width:100%;background:none;border:none;padding:12px 0 0;
-  text-decoration:underline;font-size:15px;line-height:1.4;color:var(--ink-soft);text-align:center}
-.linkrow{display:flex;gap:20px;justify-content:center;align-items:center;flex-wrap:wrap;padding:12px 0 0}
-.linkrow .howlink{width:auto;display:inline-block;padding:0}
+/* ---------- the practitioner note ---------- */
+.howlink{display:inline-block;background:none;border:none;padding:var(--s2) 0;
+  text-decoration:underline;text-underline-offset:.2em;font-size:var(--t-body);
+  line-height:1.5;color:var(--ink-soft);text-align:left}
+.howlink:hover{color:var(--ink)}
+.linkrow{display:flex;flex-direction:column;align-items:flex-start;gap:0;padding:var(--s3) 0 0}
 .howwrap{text-align:left}
-.howwrap h2{margin:0 0 14px}
-.howwrap p{font-size:16px;line-height:1.45}
-.howdiag{display:block;width:100%;max-width:420px;height:auto;margin:0 auto 18px}
-.howlead{font-weight:700;color:var(--ink);margin:18px 0 10px}
-.howgrp{background:var(--card);border:2px solid var(--line);border-left:4px solid var(--mason);
-  border-radius:14px;padding:14px 16px;margin:0 0 12px;box-shadow:var(--shadow)}
-.howgrp.judge{border-left-color:var(--gold-line)}
-.howgrp h3{margin:0 0 6px;font-size:17px}
-.howgrp p{margin:0;font-size:15px;line-height:1.45}
-.howscope{background:var(--paper);border:1px solid var(--line);border-radius:14px;
-  padding:14px 16px;margin:16px 0 0}
-.howscope h3{margin:0 0 6px;font-size:17px}
-.howscope p{margin:0;font-size:15px;line-height:1.45}
-.howuse{background:var(--card);border:2px solid var(--line);border-left:4px solid var(--mason-gold);
-  border-radius:14px;padding:14px 16px;margin:16px 0 0;box-shadow:var(--shadow)}
-.howuse h3{margin:0 0 6px;font-size:17px}
-.howuse p{margin:0 0 10px;font-size:15px;line-height:1.45;color:var(--ink-soft)}
-.howuse textarea{min-height:210px;font-size:14px;line-height:1.5;background:var(--paper)}
-.howuse .btn{margin-top:10px;padding:12px;font-size:16px}
-a.btn{text-decoration:none;text-align:center}
+.howwrap h2{margin:0 0 var(--s4)}
+.howwrap p{font-size:var(--t-body);line-height:1.6}
+.howdiag{display:block;width:100%;max-width:420px;height:auto;margin:0 auto}
+.howlead{font-weight:600;color:var(--ink);margin:var(--s6) 0 var(--s3)}
+.howrun{margin:var(--s6) 0 0}
+.howuse{margin:var(--s6) 0 0;padding:var(--s5) 0 0;border-top:1px solid var(--rule)}
+.howuse h3{margin:0 0 var(--s2)}
+.howuse p{margin:0 0 var(--s3);font-size:var(--t-body);line-height:1.6;color:var(--ink-soft)}
+.howuse textarea{min-height:210px;font-size:var(--t-small);line-height:1.6;background:var(--paper)}
 
-/* ---------- test mode. Nothing leaves the page while this band is up. ---------- */
-#testband{margin:0 calc(var(--gut) * -1);padding:9px var(--gut);background:#3a2a00;color:var(--mason-gold);
-  border-bottom:2px solid var(--gold-line);font-size:13px;font-weight:800;letter-spacing:.4px;
-  line-height:1.35;text-align:center;overflow-wrap:anywhere}
-#testband span{display:block;font-weight:600;letter-spacing:0;color:#f3e2b0}
-#masonfoot b{display:block;font-weight:600;margin-top:4px;color:var(--ink-soft);font-size:12px}
-
-/* ---------- the data notice, read before anything is collected ---------- */
-.notice{background:var(--card);border:2px solid var(--line);border-left:4px solid var(--mason);
-  border-radius:16px;padding:16px 18px;margin:0 0 12px;box-shadow:var(--shadow);text-align:left}
-.notice h3{margin:0 0 8px;font-size:17px}
-.notice ul{margin:0;padding:0 0 0 18px}
-.notice li{font-size:15px;line-height:1.45;margin:0 0 8px}
-.notice li:last-child{margin-bottom:0}
-.notice p{margin:0;font-size:15px;line-height:1.45}
-.noticever{margin:10px 0 0;font-size:12.5px;line-height:1.4;color:var(--ink-soft)}
-
-/* ---------- the ledger-only picks, one optional step before the memo ---------- */
-.prepick{background:var(--card);border:2px solid var(--line);border-left:4px solid var(--gold-line);
-  border-radius:16px;padding:16px 18px;margin:16px 0 0;box-shadow:var(--shadow)}
-.prepick h3{margin:0 0 4px;font-size:17px}
-.prepick p{margin:0 0 10px;font-size:14px;line-height:1.45;color:var(--ink-soft)}
-.prepick .chips{margin:0 0 12px}
-.prepick .chip{font-size:14px;font-weight:600;line-height:1.25;text-align:left;overflow-wrap:anywhere}
-.prepick .chip:disabled{opacity:.4;cursor:not-allowed}
-.prepick .two{margin-top:0}
-
-/* ---------- the round two results screen, everything at once ---------- */
-.res{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:16px 18px;
-  margin:0 0 12px;box-shadow:var(--shadow);border-left:4px solid var(--line)}
-.res.good{border-left-color:var(--accept)}
-.res.bad{border-left-color:var(--reject)}
-.resline{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;margin:0 0 6px}
-.resline b{font-size:16px;line-height:1.3}
-.rescall{display:inline-block;border-radius:99px;padding:3px 10px;font-size:12px;font-weight:800;
-  text-transform:uppercase;letter-spacing:.5px;border:2px solid}
-.rescall.good{background:var(--accept-bg);border-color:var(--accept);color:var(--accept)}
-.rescall.bad{background:var(--reject-bg);border-color:var(--reject);color:var(--reject)}
-.res em{display:inline-block;font-style:normal;font-size:12px;font-weight:700;text-transform:uppercase;
-  letter-spacing:.6px;color:var(--machine)}
-.res p{margin:6px 0 0;font-size:15px;line-height:1.45}
-.res .yours{margin:8px 0 0;font-size:13px;line-height:1.45;color:var(--ink-soft);overflow-wrap:anywhere}
-
-/* ---------- the record and the send, side by side at the end ---------- */
-.actions{margin:18px 0 0;text-align:left}
-.actions h3{margin:0 0 6px}
-.actions p{margin:0 0 10px;font-size:14px;line-height:1.45;color:var(--ink-soft)}
-.sendstate{margin:10px 0 0;font-size:14px;line-height:1.45;color:var(--ink);overflow-wrap:anywhere}
-.recordbox{width:100%;min-height:190px;font:inherit;font-size:12px;line-height:1.45;padding:12px;
-  border:2px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);
-  margin:10px 0 0;white-space:pre;overflow:auto}
-:focus-visible{outline:3px solid var(--mason-gold);outline-offset:2px}
+/* ---------- the record and the send ---------- */
+.actions{margin:var(--s6) 0 0;padding:var(--s5) 0 0;border-top:1px solid var(--rule);text-align:left}
+.actions h3{margin:0 0 var(--s2)}
+.actions .sendhead{margin-top:var(--s6)}
+.actions p{margin:0 0 var(--s3);font-size:var(--t-small);line-height:1.55;color:var(--ink-soft)}
+.sendstate{margin:var(--s3) 0 0;font-size:var(--t-small);line-height:1.55;color:var(--ink);
+  overflow-wrap:anywhere}
+.recordbox{width:100%;min-height:190px;font-family:var(--mono);font-size:13px;line-height:1.55;
+  padding:var(--s3);border:1px solid var(--rule-strong);border-radius:var(--radius);
+  background:var(--card);color:var(--ink);margin:var(--s3) 0 0;white-space:pre;overflow:auto}
+a.btn{text-decoration:none}
+/* in the drill a button is always the width of the column it sits in */
+#screen .btn,.stickygo .btn{display:flex;width:100%;margin-top:var(--s3)}
+#screen .two .btn{margin-top:0}
+#screen .btn:first-child{margin-top:0}
 </style>
 </head>
 <body>
@@ -454,7 +349,7 @@ a.btn{text-decoration:none;text-align:center}
   <div id="testband" hidden role="status">TEST MODE, nothing is sent<span>The would-be form payload is written to your local record instead.</span></div>
   <div id="bar">
     <div id="track"></div>
-    <div id="label"><span id="step"></span><span id="score" class="scorepill hidden"></span></div>
+    <div id="label"><span id="step"></span><span id="score" class="hidden"></span></div>
   </div>
   <div id="screen"></div>
   <p id="masonfoot">Built by Khaled Alkurd. A drill for the AI-native accounting student.<b id="verline"></b></p>
@@ -516,7 +411,6 @@ var I = {
   flag:'<path d="M5 21V3"/><path d="M5 4h13l-2.5 4L18 12H5z"/>',
   ledger:'<path d="M4 4.5h11a2 2 0 0 1 2 2V21H6a2 2 0 0 1-2-2z"/><path d="M17 8h3v11a2 2 0 0 1-2 2"/><path d="M7.5 9h6M7.5 13h6M7.5 17h3.5"/>'
 };
-function icon(name, big){ return '<span class="icon'+(big?' big':'')+'"><svg viewBox="0 0 24 24">'+I[name]+'</svg></span>'; }
 
 /* ---------- the shared case definitions ----------
    The two cases live in cases/halyard-v3.json and cases/brightwater-v2.json. Each file
@@ -880,8 +774,8 @@ function openSheet(acct, bk){
   });
 }
 function ledgerBig(acct, book){
-  return '<button class="ledgerbig" data-acct="'+acct+'" data-book="'+(book||1)+'">'+
-    '<svg viewBox="0 0 24 24">'+I.ledger+'</svg>See the full ledger</button>';
+  return '<button class="btn secondary ledgerbig" data-acct="'+acct+'" data-book="'+(book||1)+'">'+
+    '<svg viewBox="0 0 24 24" aria-hidden="true">'+I.ledger+'</svg>See the full ledger</button>';
 }
 function wireLedger(){
   Array.prototype.forEach.call(screen.querySelectorAll("[data-acct]"), function(b){
@@ -963,18 +857,19 @@ function copyText(btn, text, okLabel){
 
 /* four boxes and arrows, green and gold, sized to read on a 375 pixel phone */
 function howDiagram(){
+  /* four steps, one of them filled: the step this product is. No gold, no third colour. */
   var labels = ["Ledger","AI drafts the memo","Second Pass checks","Reviewer signs off"];
-  var fills  = ["#ffffff","var(--mason)","var(--mason-gold)","var(--mason)"];
-  var strokes= ["var(--mason)","var(--mason)","var(--gold-line)","var(--mason)"];
-  var texts  = ["var(--mason)","#ffffff","#333333","#ffffff"];
+  var fills  = ["none","none","var(--mason)","none"];
+  var texts  = ["var(--ink)","var(--ink)","#ffffff","var(--ink)"];
+  var strokes= ["var(--rule-strong)","var(--rule-strong)","var(--mason)","var(--rule-strong)"];
   var out = "", i, y;
   for(i=0;i<4;i++){
     y = i*56;
-    out += '<rect x="10" y="'+y+'" width="280" height="42" rx="10" fill="'+fills[i]+'" stroke="'+strokes[i]+'" stroke-width="2"/>'+
-           '<text x="150" y="'+(y+27)+'" text-anchor="middle" font-size="15" font-weight="700" fill="'+texts[i]+'">'+labels[i]+'</text>';
+    out += '<rect x="10" y="'+y+'" width="280" height="42" rx="8.5" fill="'+fills[i]+'" stroke="'+strokes[i]+'" stroke-width="1"/>'+
+           '<text x="150" y="'+(y+27)+'" text-anchor="middle" font-size="15" font-weight="600" fill="'+texts[i]+'">'+labels[i]+'</text>';
     if(i<3){
-      out += '<path d="M150 '+(y+44)+'V'+(y+50)+'" stroke="var(--mason)" stroke-width="2" stroke-linecap="round"/>'+
-             '<path d="M144 '+(y+49)+'h12l-6 6z" fill="var(--mason)"/>';
+      out += '<path d="M150 '+(y+44)+'V'+(y+50)+'" stroke="var(--ink-soft)" stroke-width="1" stroke-linecap="round"/>'+
+             '<path d="M145 '+(y+49)+'h10l-5 5z" fill="var(--ink-soft)"/>';
     }
   }
   return '<svg class="howdiag" viewBox="0 0 300 212" role="img" '+
@@ -986,16 +881,16 @@ function howScreen(){
   screen.innerHTML =
     '<div class="howwrap">'+
       '<h2>How this works in a real close</h2>'+
-      howDiagram()+
       '<p>Second Pass sits between the AI draft and the sign-off. The reviewer still signs, and nothing else does.</p>'+
+      '<figure class="figure">'+howDiagram()+
+        '<figcaption class="figcap">Where the check sits: after the draft, before anyone signs.</figcaption>'+
+      '</figure>'+
       '<p class="howlead">Seven ways a memo fails, in two groups.</p>'+
-      '<div class="howgrp"><h3>Machine-checkable</h3>'+
-        '<p>Arithmetic, wrong direction, threshold, silence. A script ties each sentence to an account and tests the figures it can match against the ledger, then lists every line that clears both legs of the threshold with no sentence written about it.</p></div>'+
-      '<div class="howgrp judge"><h3>Reviewer judgment</h3>'+
-        '<p>Unsupported driver, timing, and a movement sitting in the wrong account. All three need the facts on file and a person who knows the business.</p></div>'+
-      '<div class="howscope"><h3>Scope</h3>'+
-        '<p>This build is a static case: fourteen lines, one month, answers keyed by hand. Halyard is a made-up company, and its memo was written for this build the way an AI assistant writes close commentary, with every failure planted so it can be taught and scored. It does not run on a live ledger, and the four mechanical checks run on any ledger and memo in the checker on this site; driver and timing stay with the reviewer. Next, the deterministic checks run first on every AI memo, and the reviewer\'s time goes only to the two judgment types.</p></div>'+
-      '<a class="btn" href="checker.html">Run the checker on your own ledger and memo</a>'+
+      '<p><b>Machine-checkable.</b> Arithmetic, wrong direction, threshold, silence. A script ties each sentence to an account and tests the figures it can match against the ledger, then lists every line that clears both legs of the threshold with no sentence written about it.</p>'+
+      '<p><b>Reviewer judgment.</b> Unsupported driver, timing, and a movement sitting in the wrong account. All three need the facts on file and a person who knows the business.</p>'+
+      '<p class="howlead">Scope</p>'+
+      '<p>This build is a static case: fourteen lines, one month, answers keyed by hand. Halyard is a made-up company, and its memo was written for this build the way an AI assistant writes close commentary, with every failure planted so it can be taught and scored. It does not run on a live ledger, and the four mechanical checks run on any ledger and memo in the checker on this site; driver and timing stay with the reviewer. Next, the deterministic checks run first on every AI memo, and the reviewer\'s time goes only to the two judgment types.</p>'+
+      '<div class="howrun"><a class="btn" href="checker.html">Run the checker on your own ledger and memo</a></div>'+
       '<div class="linkrow"><a class="howlink" href="PROTOCOL.md">The review protocol, one page</a>'+
         '<a class="howlink" href="Second-Pass-Review-Protocol.pdf">The same page as a PDF</a>'+
         '<a class="howlink" href="PROVENANCE.md">Where this case came from</a>'+
@@ -1003,9 +898,9 @@ function howScreen(){
       '<div class="howuse"><h3>Use it on your own memo</h3>'+
         '<p>Paste this into the AI tool your firm already uses, then paste your ledger and the memo under it.</p>'+
         '<textarea id="howprompt" readonly rows="10" spellcheck="false">'+esc(HOWPROMPT)+'</textarea>'+
-        '<button class="btn ghost" id="howcopy">Copy the prompt</button></div>'+
-      '<a class="btn ghost" href="https://github.com/fiscalpatriots/second-pass" target="_blank" rel="noopener">The code and the pilot records</a>'+
-      '<button class="btn ghost" id="howback">Back</button>'+
+        '<button class="btn-text" id="howcopy">Copy</button></div>'+
+      '<a class="btn secondary" href="https://github.com/fiscalpatriots/second-pass" target="_blank" rel="noopener">The code and the pilot records</a>'+
+      '<button class="btn secondary" id="howback">Back</button>'+
     '</div>';
   document.getElementById("howcopy").addEventListener("click", function(){
     copyText(this, HOWPROMPT, "Copied");
@@ -1029,7 +924,6 @@ var NOTICE = {
 };
 function noticeScreen(){
   screen.innerHTML =
-    icon("brief")+
     '<h2>Before you pick a codename</h2>'+
     '<div class="notice"><h3>'+esc(NOTICE.head)+'</h3><ul>'+
       NOTICE.items.map(function(t){ return '<li>'+esc(t)+'</li>'; }).join("")+
@@ -1041,7 +935,6 @@ function noticeScreen(){
 
 function intro(){
   screen.innerHTML =
-    icon("robot", true)+
     '<h1>Second Pass:<br>Beat the Machine</h1>'+
     '<p>Halyard is a made-up company. Its June close memo reads the way an AI assistant writes one, and it carries the mistakes they make.</p>'+
     '<p>The ledger does not explain itself, so the causes in the memo are guesses, and some of them are wrong. They read well enough that a busy reviewer would sign off and move on. You are the second pass. You will read fourteen lines and flag the ones that do not hold.</p>'+
@@ -1058,7 +951,6 @@ function identity(){
     return '<button class="chip'+(S.orgs.indexOf(o)>-1?" on":"")+'" data-i="'+idx+'">'+esc(o)+'</button>';
   }).join("");
   screen.innerHTML =
-    icon("badge")+
     '<h2>Before you start</h2>'+
     '<p class="sub">A codename for the leaderboard, and the chapters you belong to.</p>'+
     '<input type="text" id="cn" placeholder="Silver Ledger" autocomplete="off" value="'+esc(S.codename)+'">'+
@@ -1096,12 +988,12 @@ var FTYPES = [
 ];
 function flagCard(){
   var chips = FTYPES.map(function(t){
-    return '<span class="fchip"><svg viewBox="0 0 24 24">'+t[1]+'</svg>'+t[0]+'</span>';
+    return '<li class="fchip">'+t[0]+'</li>';
   }).join("");
   return '<section class="flagcard">'+
     '<button class="flaghead" type="button" aria-expanded="false">'+
       '<h3>What earns a flag</h3><span class="chev">&#9662;</span></button>'+
-    '<div class="fchips">'+chips+'</div>'+
+    '<ul class="fchips">'+chips+'</ul>'+
     '<div class="flagmore" hidden>'+
       '<p>Flag a line when any of these is true.</p>'+
       '<p>Let it stand when the figure and the reason both hold.</p>'+
@@ -1136,8 +1028,8 @@ function prepickBlock(){
     '<p>Tap up to three lines you would ask about first, or skip. Nothing here is scored, '+
       'and it takes a few seconds.</p>'+
     '<div class="chips" id="prepicks" role="group" aria-label="Lines you would ask about first">'+chips+'</div>'+
-    '<div class="two"><button class="btn call" id="preskip">Skip</button>'+
-      '<button class="btn call" id="precont">Continue</button></div>'+
+    '<div class="two"><button class="btn secondary" id="preskip">Skip</button>'+
+      '<button class="btn secondary" id="precont">Continue</button></div>'+
   '</section>';
 }
 function wirePrepicks(){
@@ -1187,7 +1079,7 @@ function wirePrepicks(){
 function roundOne(){
   var hero = '<div class="hero"><h2>The ledger, May against June</h2>'+
     '<p>Read it before the memo. You can open it again from any card.</p></div>';
-  var go3 = '<button class="btn ghost" data-go3="1">Skip the picks and continue</button>';
+  var go3 = '<button class="btn secondary" data-go3="1">Skip the picks and continue</button>';
   screen.innerHTML = hero+
     '<div class="orient stmtwrap">'+
       '<div class="orientmain">'+flagCard()+statement("", true)+prepickBlock()+'</div>'+
@@ -1207,8 +1099,8 @@ function roundOne(){
    the figures or the file moving off the screen under the player. */
 function cardBody(c, round, i){
   var memoBlock = c.memo
-    ? '<div class="says"><svg viewBox="0 0 24 24">'+I.robot+'</svg> What the memo says</div><p class="quote">'+esc(c.memo)+'</p>'
-    : '<div class="says"><svg viewBox="0 0 24 24">'+I.robot+'</svg> What the memo says</div><p class="quote">Nothing. This account is not mentioned anywhere in the commentary.</p>';
+    ? '<p class="says">What the memo says</p><p class="quote">'+esc(c.memo)+'</p>'
+    : '<p class="says">What the memo says</p><p class="quote">Nothing. This account is not mentioned anywhere in the commentary.</p>';
   var fileBlock = c.file.length
     ? '<div class="file"><h4>On file</h4><ul>'+c.file.map(function(f){ return '<li>'+esc(f)+'</li>'; }).join("")+'</ul></div>'
     : "";
@@ -1217,8 +1109,7 @@ function cardBody(c, round, i){
   if(i===0) hint = (round===2)
     ? '<p class="ledgerhint">The ledger button now opens the five dental accounts.</p>'
     : '<p class="ledgerhint">Tap any time to open the full ledger.</p>';
-  return '<div class="cardhead">'+icon(c.icon)+'</div>'+
-    strip(c.acct, bk)+
+  return strip(c.acct, bk)+
     ledgerBig(c.acct, round===2 ? 2 : undefined)+
     hint+
     chart(c)+
@@ -1236,8 +1127,8 @@ function card(i){
       cardBody(c, 1, i)+
       '<p class="ask">Does the memo\'s explanation hold?</p>'+
       '<div class="two">'+
-        '<button class="btn call" id="stand">Let it stand</button>'+
-        '<button class="btn call" id="flag">Flag it</button>'+
+        '<button class="btn secondary" id="stand">Let it stand</button>'+
+        '<button class="btn secondary" id="flag">Flag it</button>'+
       '</div>'+
     '</div>';
   wireLedger();
@@ -1343,10 +1234,10 @@ function reveal(i, right){
                    : (c.key==="flag" ? "That one got past you" : "You flagged a clean line");
   progress();
   var celebration = "";
-  if(right && c.key==="flag" && c.type==="unsupported driver") celebration = '<span class="bonus">Unsupported driver caught</span>';
+  if(right && c.key==="flag" && c.type==="unsupported driver") celebration = '<p class="mark">Unsupported driver caught.</p>';
   var streakLine = "";
-  if(right && S.streak>=5) streakLine = '<p><span class="toast">On fire</span></p>';
-  else if(right && S.streak>=3) streakLine = '<p><span class="toast">Streak '+S.streak+'</span></p>';
+  if(right && S.streak>=5) streakLine = '<p class="mark">On fire.</p>';
+  else if(right && S.streak>=3) streakLine = '<p class="mark">Streak '+S.streak+'.</p>';
   var costLine = (!right && c.key==="stand")
     ? '<p class="tiny" style="margin:8px 0 0">A false flag scores the same as a line that gets past you.</p>'
     : "";
@@ -1354,9 +1245,9 @@ function reveal(i, right){
     '<div class="cardhead plain"><span class="revlabel">Line '+c.n+' of 14</span></div>'+
     strip(c.acct)+
     ledgerBig(c.acct)+
-    '<div class="verdict '+(right?"good":"bad")+'" style="margin-top:12px">'+
+    '<div class="outcome '+(right?"good":"bad")+'">'+
+      '<span class="status">'+esc(c.type)+'</span>'+
       '<h2>'+head+'</h2>'+
-      '<span class="type">'+esc(c.type)+'</span>'+
       celebration+
     '</div>'+
     '<p class="why">'+esc((!right && c.key==="stand" && c.over) ? c.over : c.why)+'</p>'+
@@ -1380,7 +1271,6 @@ function bridge(){
     : "";
   screen.innerHTML =
     '<div class="card">'+
-      '<div class="cardhead">'+icon("ledger")+'</div>'+
       '<h2>Round two: a memo you have not seen</h2>'+
       '<p class="sub">Another made-up company, a memo built the same way, same job. Five lines.</p>'+
       '<p class="tiny" style="margin:2px 0 0">Brightwater Dental Partners, a four office dental group.</p>'+
@@ -1403,8 +1293,8 @@ function r2Results(){
     var verdict = right ? "Agrees with the key" : "Does not agree";
     return '<section class="res '+(right?"good":"bad")+'">'+
       '<div class="resline"><b>Line '+c.n+', '+esc(c.name)+', account '+c.acct+'</b></div>'+
-      '<div class="resline"><span class="rescall '+(right?"good":"bad")+'">'+verdict+'</span>'+
-        '<em>'+esc(c.type)+'</em></div>'+
+      '<div class="resline"><span class="status '+(right?"pass":"fail")+'">'+verdict+'</span>'+
+        '<span class="status info">'+esc(c.type)+'</span></div>'+
       '<p>'+esc((!right && c.key==="stand" && c.over) ? c.over : c.why)+'</p>'+
       '<p class="yours">'+esc(said)+'. '+esc(basisText(S.r2basis[idx], S.r2words[idx]))+'</p>'+
     '</section>';
@@ -1430,8 +1320,8 @@ function card2(i){
       cardBody(c, 2, i)+
       '<p class="ask">Does the memo\'s explanation hold?</p>'+
       '<div class="two">'+
-        '<button class="btn call" id="stand">Let it stand</button>'+
-        '<button class="btn call" id="flag">Flag it</button>'+
+        '<button class="btn secondary" id="stand">Let it stand</button>'+
+        '<button class="btn secondary" id="flag">Flag it</button>'+
       '</div>'+
     '</div>';
   wireLedger();
@@ -1463,8 +1353,8 @@ function reveal2(i, right){
                    : (c.key==="flag" ? "That one got past you" : "You flagged a clean line");
   progress();
   var streakLine = "";
-  if(right && S.streak>=5) streakLine = '<p><span class="toast">On fire</span></p>';
-  else if(right && S.streak>=3) streakLine = '<p><span class="toast">Streak '+S.streak+'</span></p>';
+  if(right && S.streak>=5) streakLine = '<p class="mark">On fire.</p>';
+  else if(right && S.streak>=3) streakLine = '<p class="mark">Streak '+S.streak+'.</p>';
   var costLine = (!right && c.key==="stand")
     ? '<p class="tiny" style="margin:8px 0 0">A false flag scores the same as a line that gets past you.</p>'
     : "";
@@ -1472,9 +1362,9 @@ function reveal2(i, right){
     '<div class="cardhead plain"><span class="revlabel">Fresh line '+c.n+' of 5</span></div>'+
     strip(c.acct, BOOK2)+
     ledgerBig(c.acct, 2)+
-    '<div class="verdict '+(right?"good":"bad")+'" style="margin-top:12px">'+
+    '<div class="outcome '+(right?"good":"bad")+'">'+
+      '<span class="status">'+esc(c.type)+'</span>'+
       '<h2>'+head+'</h2>'+
-      '<span class="type">'+esc(c.type)+'</span>'+
     '</div>'+
     '<p class="why">'+esc((!right && c.key==="stand" && c.over) ? c.over : c.why)+'</p>'+
     costLine+
@@ -1929,10 +1819,10 @@ function actionsBlock(){
     '<h3>Your record</h3>'+
     '<p>Everything this run collected, as a file you keep. It needs nobody\'s permission and it '+
       'does not send anything.</p>'+
-    '<button class="btn ghost" id="saverec">Save my record</button>'+
+    '<button class="btn secondary" id="saverec">Save my record</button>'+
     '<div id="recwrap" hidden><textarea class="recordbox" id="recbox" readonly spellcheck="false"></textarea>'+
-      '<button class="btn ghost" id="copyrec">Copy the record</button></div>'+
-    '<h3 style="margin-top:18px">Send your results</h3>'+
+      '<button class="btn-text" id="copyrec">Copy the record</button></div>'+
+    '<h3 class="sendhead">Send your results</h3>'+
     '<p>Voluntary. It posts your calls to the Google Form responses sheet described in the '+
       'notice at the start.</p>'+
     '<button class="btn" id="sendres">Send my results</button>'+
@@ -2035,19 +1925,17 @@ function done(){
       '<p class="ranknote">Trainee through Partner are ranks in this drill. They say nothing about professional seniority.</p>'+
       '<p class="tiny" style="margin:6px 0 0">'+esc(S.codename)+'</p>'+
       '<p class="earned">'+esc(earnedLine())+'</p>'+
-      '<p class="fresh"><span class="lap">Fresh case: '+r2Right()+' of 5</span></p>'+
+      '<p class="fresh">Fresh case: '+r2Right()+' of 5</p>'+
       '<p class="tiny" style="margin:4px 0 14px">A second company, read once, scored on its own.</p>'+
-      '<div class="stats">'+
-        '<div><b>'+S.caught+'</b><span>caught</span></div>'+
-        '<div><b>'+S.cleared+'</b><span>let stand correctly</span></div>'+
-        '<div><b>'+S.falseFlags+'</b><span>false flags</span></div>'+
-      '</div>'+
-      '<p class="lapwrap"><span class="lap">Lap time '+lapText()+'</span>'+
-        '<span class="lap">Best streak '+S.best+'</span></p>'+
+      '<p class="counts"><span><b>'+S.caught+'</b>caught</span>'+
+        '<span><b>'+S.cleared+'</b>let stand correctly</span>'+
+        '<span'+(S.falseFlags?' class="fail"':'')+'><b>'+S.falseFlags+'</b>false flags</span></p>'+
+      '<p class="lapwrap"><span>Lap time '+lapText()+'</span>'+
+        '<span>Best streak '+S.best+'</span></p>'+
       medals+
-      '<div class="sharecard"><p>'+esc(share)+'</p><button class="btn ghost" id="copyshare">Copy</button></div>'+
-      '<button class="btn ghost" id="playagain">Play again</button>'+
-      '<button class="btn ghost" id="showmiss">'+((miss.length+miss2.length)
+      '<div class="sharecard"><p>'+esc(share)+'</p><button class="btn-text" id="copyshare">Copy</button></div>'+
+      '<button class="btn secondary" id="playagain">Play again</button>'+
+      '<button class="btn secondary" id="showmiss">'+((miss.length+miss2.length)
           ? "See the "+(miss.length+miss2.length)+" that got past you"
           : "See the full read out")+'</button>'+
       '<div id="missbox" hidden>'+coachInner+'</div>'+
