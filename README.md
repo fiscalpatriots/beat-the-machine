@@ -16,6 +16,43 @@ Three screens stand between the link and the first card.
 
 Nothing else is asked on the way in. The one tap after the round is the confidence scale.
 
+## Mason branding
+
+Every screen carries a green band at the top with "George Mason University" and, beneath it,
+"Costello College of Business", both set in type. There is no logo file and no Patriot mark in
+this repository, because those are trademarks and a text lockup is the safe way to say whose
+drill this is. The footer line under every screen reads "A drill by the ACFE student chapter and
+Beta Alpha Psi Theta Alpha at Mason".
+
+The colours are the published university values, not approximations:
+
+| Name | Hex | Where it is used |
+| --- | --- | --- |
+| George Mason Green | `#005239` | the band, headings, the rank, the car, the chequered flag, the travelled track |
+| George Mason Gold | `#ffc733` | the rule under the band, the car cabin, the streak flame, earned badges, the top trophy |
+| Logo Black | `#333333` | body copy, the two call buttons, badge text on gold |
+| Accent, Navy | `#004f71` | the machine's voice, the account strip and the highlighted ledger row |
+| Accent, Red | `#cc4824` | the wrong-call verdict and negative changes (darkened to `#a83a1c` where it sets figures) |
+
+Those values come from the Mason brand guide colour page,
+https://brand.gmu.edu/brand-guide/brand-colors. The Bynder toolkit page supplied by Khaled
+(`gmu.bynder.com/guidelines/guide/bd8609ea.../page/b053e82e...`) redirects to the public Brand
+Toolbox root without signing in, so the colour and typography values were taken from the
+published brand guide pages instead.
+
+Two brand rules shape the palette here. Accent colours are for emphasis only and never replace
+green and gold, and gold may not set text on white, so gold appears as a fill with Logo Black
+text on it and never as type on the paper. Every text pair on the band and on the cards clears
+4.5:1 at body size, the lowest being the footer and the earned line at 5.97:1.
+
+The type is Figtree, the university's web typeface, loaded from Google Fonts with the guidance's
+own fallbacks behind it: Open Sans, then Franklin Gothic, then the system stack. If the font
+request fails the page still sets correctly. Typeface guidance is at
+https://brand.gmu.edu/brand-guide/fonts-and-typography.
+
+The two call buttons stay neutral Logo Black on white. They are never green or gold, because the
+choice between them has to read as even.
+
 ## The ledger
 
 The ledger screen is a statement, not a list. A header block names the company and the close.
@@ -143,7 +180,8 @@ nothing about an account that owes commentary, which none of the other names fit
 
 ## Deploying
 
-One file, `index.html`. No libraries, no build step, no tracking. Commit to `main` and push;
+One file, `index.html`. No libraries and no build step. The only outbound request is the Figtree
+stylesheet from Google Fonts. Commit to `main` and push;
 GitHub Pages serves the root of `main` and the change is live within a minute or two.
 
 ```

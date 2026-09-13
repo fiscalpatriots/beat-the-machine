@@ -3,39 +3,55 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#12263f">
-<title>Second Pass: Beat the Machine</title>
+<meta name="theme-color" content="#005239">
+<title>Second Pass: Beat the Machine at Mason</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#12263f;
-  --ink-soft:#4a5b70;
+  /* George Mason Green, George Mason Gold, Logo Black and the accent palette,
+     from brand.gmu.edu/brand-guide/brand-colors */
+  --mason:#005239;
+  --mason-deep:#003527;
+  --mason-gold:#ffc733;
+  --gold-line:#e0ac00;
+  --ink:#333333;
+  --ink-soft:#5a5d61;
   --paper:#f6f3ec;
   --card:#ffffff;
   --line:#dfd8c9;
-  --accept:#0f7a52;
-  --accept-bg:#e4f4ec;
-  --reject:#b3261e;
-  --reject-bg:#fbe9e7;
-  --machine:#5746e3;
-  --machine-bg:#ecebfd;
-  --gold:#9a6a00;
-  --gold-bg:#fdf2d8;
+  --accept:#005239;
+  --accept-bg:#e3f2e8;
+  --reject:#cc4824;
+  --reject-bg:#fbe9e4;
+  --machine:#004f71;
+  --machine-bg:#e3eef4;
   --bar-old:#cfc6b2;
-  --neg:#9c5a52;
-  --shadow:0 2px 0 rgba(18,38,63,.08), 0 8px 24px rgba(18,38,63,.08);
+  --neg:#a83a1c;
+  --shadow:0 2px 0 rgba(0,82,57,.09), 0 8px 24px rgba(0,82,57,.09);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0}
 body{
   background:var(--paper);
   color:var(--ink);
-  font:17px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font:17px/1.45 Figtree,"Open Sans","Franklin Gothic Book","Franklin Gothic",
+       -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   min-height:100vh;
 }
 #app{max-width:520px;margin:0 auto;padding:0 18px 40px;min-height:100vh;display:flex;flex-direction:column}
-h1{font-size:30px;line-height:1.12;margin:0 0 10px;letter-spacing:-.5px}
-h2{font-size:22px;line-height:1.2;margin:0 0 10px;letter-spacing:-.3px}
-h3{font-size:19px;line-height:1.22;margin:0 0 6px;letter-spacing:-.2px}
+h1{font-size:30px;line-height:1.12;margin:0 0 10px;letter-spacing:-.5px;color:var(--mason)}
+h2{font-size:22px;line-height:1.2;margin:0 0 10px;letter-spacing:-.3px;color:var(--mason)}
+h3{font-size:19px;line-height:1.22;margin:0 0 6px;letter-spacing:-.2px;color:var(--mason)}
+
+/* The university and college names set in type. No logo file and no Patriot mark. */
+#mason{background:var(--mason);color:#fff;margin:0 -18px;padding:12px 18px 11px;
+  border-bottom:3px solid var(--mason-gold)}
+#mason b{display:block;font-size:15px;font-weight:800;letter-spacing:.2px;line-height:1.2}
+#mason span{display:block;font-size:12.5px;letter-spacing:.3px;color:#dff0e4;margin-top:2px}
+#masonfoot{margin:20px -18px 0;padding:14px 18px 4px;border-top:1px solid var(--line);
+  font-size:12.5px;line-height:1.4;color:var(--ink-soft);text-align:center}
 p{margin:0 0 14px}
 .sub{color:var(--ink-soft);font-size:16px}
 .tiny{font-size:13px;color:var(--ink-soft)}
@@ -91,7 +107,7 @@ button{font:inherit;color:inherit;cursor:pointer}
   border:2px solid var(--line);background:var(--card);border-radius:99px;
   padding:10px 14px;font-size:15px;font-weight:600;
 }
-.chip.on{border-color:var(--ink);background:var(--ink);color:#fff}
+.chip.on{border-color:var(--mason);background:var(--mason);color:#fff}
 .chip.sm{padding:8px 12px;font-size:14px}
 
 input[type=text],textarea{
@@ -124,11 +140,11 @@ textarea{min-height:84px;resize:vertical}
 .verdict{border-radius:18px;padding:16px 18px;margin-bottom:12px;border:2px solid}
 .verdict.good{background:var(--accept-bg);border-color:var(--accept)}
 .verdict.bad{background:var(--reject-bg);border-color:var(--reject)}
-.verdict h2{margin:0 0 4px;font-size:20px}
+.verdict h2{margin:0 0 4px;font-size:20px;color:var(--ink)}
 .type{display:inline-block;background:#fff;border:2px solid var(--ink);border-radius:99px;padding:4px 12px;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.6px}
-.bonus{display:inline-block;background:var(--gold-bg);color:var(--gold);border:2px solid var(--gold);border-radius:99px;padding:4px 12px;font-weight:700;font-size:14px;margin-top:10px}
+.bonus{display:inline-block;background:var(--mason-gold);color:#333333;border:2px solid var(--gold-line);border-radius:99px;padding:4px 12px;font-weight:700;font-size:14px;margin-top:10px}
 .why{margin:0 0 4px}
-.streak{font-size:15px;font-weight:700;color:var(--gold);margin:10px 0 0}
+.streak{font-size:15px;font-weight:700;color:var(--mason);margin:10px 0 0}
 
 .split{margin:16px 0 0}
 .splitbar{height:12px;border-radius:99px;background:#e6e0d2;overflow:hidden;display:flex}
@@ -143,13 +159,13 @@ textarea{min-height:84px;resize:vertical}
 .link{background:none;border:none;padding:8px 0;text-decoration:underline;font-size:15px;color:var(--ink-soft)}
 .hidden{display:none!important}
 
-#sheet{position:fixed;inset:0;background:rgba(18,38,63,.55);z-index:20;display:flex;align-items:flex-end}
+#sheet{position:fixed;inset:0;background:rgba(0,53,39,.58);z-index:20;display:flex;align-items:flex-end}
 #sheetbody{background:var(--paper);width:100%;max-height:88vh;overflow:auto;border-radius:18px 18px 0 0;padding:14px 12px 24px;max-width:520px;margin:0 auto}
 /* the statement: round one reads it, and the Ledger button reopens it during play */
 .stmt{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;
-  box-shadow:0 1px 0 rgba(18,38,63,.05), 0 10px 28px rgba(18,38,63,.07)}
+  box-shadow:0 1px 0 rgba(0,82,57,.06), 0 10px 28px rgba(0,82,57,.08)}
 .stmthead{padding:14px 12px 12px;border-bottom:1px solid var(--line)}
-.stmthead b{display:block;font-size:17px;letter-spacing:-.2px}
+.stmthead b{display:block;font-size:17px;letter-spacing:-.2px;color:var(--mason)}
 .stmthead span{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:2px}
 .stmttbl{width:100%;table-layout:fixed;border-collapse:collapse;font-variant-numeric:tabular-nums}
 .stmttbl col.c1{width:27.5%}.stmttbl col.c2{width:27.5%}.stmttbl col.c3{width:26%}.stmttbl col.c4{width:19%}
@@ -206,7 +222,7 @@ textarea{min-height:84px;resize:vertical}
 @keyframes rise{from{transform:scale(.72);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes sweep{from{transform:translateX(0)}to{transform:translateX(130px)}}
 @media (prefers-reduced-motion:reduce){.trophy,.trophy .glint{animation:none}.trophy .glint{opacity:0}}
-.rankbig{font-size:38px;font-weight:800;letter-spacing:-1px;line-height:1.05}
+.rankbig{font-size:38px;font-weight:800;letter-spacing:-1px;line-height:1.05;color:var(--mason)}
 .stats{display:flex;gap:8px;margin:0 0 10px}
 .lapwrap{margin:0 0 18px}
 .lap{display:inline-block;border:1px solid var(--line);background:#fff;border-radius:99px;
@@ -217,9 +233,9 @@ textarea{min-height:84px;resize:vertical}
 .earned{margin:12px 0 16px;font-size:16px;color:var(--ink-soft)}
 .badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0 0 18px}
 .badge{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line);background:var(--card);
-  border-radius:99px;padding:7px 13px;font-size:13px;font-weight:700;color:#b3aa96}
+  border-radius:99px;padding:7px 13px;font-size:13px;font-weight:700;color:#6e7174}
 .badge svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.badge.on{border-color:var(--gold);background:var(--gold-bg);color:var(--gold)}
+.badge.on{border-color:var(--gold-line);background:var(--mason-gold);color:#333333}
 .sharecard{background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:14px;text-align:left}
 .sharecard p{margin:0 0 10px;font-size:16px;font-weight:600}
 .sharecard .btn{margin-top:0;padding:11px;font-size:16px}
@@ -234,11 +250,13 @@ textarea{min-height:84px;resize:vertical}
 </head>
 <body>
 <div id="app">
+  <div id="mason"><b>George Mason University</b><span>Costello College of Business</span></div>
   <div id="bar">
     <div id="track"></div>
     <div id="label"><span id="step"></span><span id="score" class="scorepill hidden"></span></div>
   </div>
   <div id="screen"></div>
+  <p id="masonfoot">A drill by the ACFE student chapter and Beta Alpha Psi Theta Alpha at Mason</p>
 </div>
 <iframe name="gfsink" id="gfsink" class="hidden" title="submit"></iframe>
 <script>
@@ -471,25 +489,26 @@ function buildTrack(){
   }
   var chq = "", r, c;
   for(r=0;r<4;r++){ for(c=0;c<2;c++){
-    if((r+c)%2===0) chq += '<rect x="'+(287.4+c*3.4)+'" y="'+(8+r*3.5)+'" width="3.4" height="3.5" fill="var(--ink)"/>';
+    if((r+c)%2===0) chq += '<rect x="'+(287.4+c*3.4)+'" y="'+(8+r*3.5)+'" width="3.4" height="3.5" fill="var(--mason)"/>';
   } }
   document.getElementById("track").innerHTML =
     '<svg id="trk" viewBox="0 0 300 26" role="img" aria-label="Fourteen lines, one segment each">'+
       '<rect x="4" y="19" width="292" height="3.4" rx="1.7" fill="#ece6d8"/>'+
       '<rect x="4" y="8" width="292" height="9" rx="4.5" fill="#e6e0d2"/>'+
-      '<rect id="fill" x="4" y="8" width="0.1" height="9" rx="4.5" fill="var(--ink)" opacity=".28"/>'+
+      '<rect id="fill" x="4" y="8" width="0.1" height="9" rx="4.5" fill="var(--mason)" opacity=".32"/>'+
       ticks+
-      '<g id="chq"><rect x="286.6" y="8" width="0.8" height="14.4" fill="var(--ink)"/>'+chq+'</g>'+
+      '<g id="chq"><rect x="286.6" y="8" width="0.8" height="14.4" fill="var(--mason)"/>'+chq+'</g>'+
       '<g id="carpos" style="transform:translate('+CAR_X0+'px,0px)">'+
         '<g id="burst"><rect x="-21" y="11.3" width="7" height="1.2" rx=".6" fill="var(--ink-soft)"/>'+
           '<rect x="-17.5" y="14.1" width="5" height="1.2" rx=".6" fill="var(--ink-soft)"/></g>'+
-        '<g id="flame"><path d="M-7.5 12.9 q-6.5 -3.4 -11.5 0 q5 3.4 11.5 0z" fill="#e08a2b"/>'+
-          '<path d="M-7.5 12.9 q-3.8 -1.9 -6.8 0 q3 1.9 6.8 0z" fill="#f3c54a"/></g>'+
+        '<g id="flame"><path d="M-7.5 12.9 q-6.5 -3.4 -11.5 0 q5 3.4 11.5 0z" fill="var(--gold-line)"/>'+
+          '<path d="M-7.5 12.9 q-3.8 -1.9 -6.8 0 q3 1.9 6.8 0z" fill="var(--mason-gold)"/></g>'+
         '<g id="carfx">'+
-          '<rect x="-7" y="11" width="14" height="4.1" rx="1.6" fill="var(--ink)"/>'+
-          '<path d="M-2.8 11 L-1.4 8.3 L2.4 8.3 L3.9 11 Z" fill="var(--ink)"/>'+
-          '<circle cx="-4" cy="15.4" r="1.9" fill="#2a3a4f"/>'+
-          '<circle cx="4" cy="15.4" r="1.9" fill="#2a3a4f"/>'+
+          '<rect x="-7" y="11" width="14" height="4.1" rx="1.6" fill="var(--mason)"/>'+
+          '<path d="M-2.8 11 L-1.4 8.3 L2.4 8.3 L3.9 11 Z" fill="var(--mason-gold)"/>'+
+          '<rect x="-6" y="12.3" width="12" height="1.1" rx=".55" fill="var(--mason-gold)"/>'+
+          '<circle cx="-4" cy="15.4" r="1.9" fill="var(--mason-deep)"/>'+
+          '<circle cx="4" cy="15.4" r="1.9" fill="var(--mason-deep)"/>'+
         '</g>'+
       '</g>'+
     '</svg>';
@@ -946,7 +965,7 @@ function payload(){
 }
 
 function asText(){
-  var out = ["Second Pass: Beat the Machine", "Codename: "+S.codename, orgLine(), ""];
+  var out = ["Second Pass: Beat the Machine at Mason", "Codename: "+S.codename, orgLine(), ""];
   out.push("Round one: "+ROUND1_NOTE);
   out.push("Intake scales not asked in this version.");
   out.push("");
@@ -1004,11 +1023,12 @@ function failScreen(){
 }
 
 /* ---------- the trophy, drawn to the tier ---------- */
+/* green and gold, with the cup carrying the tier */
 var TROPHY = {
-  bronze:{body:"#b07b45", dark:"#8a5d31", name:"bronze"},
-  silver:{body:"#9aa6b2", dark:"#77838f", name:"silver"},
-  gold:{body:"#d4a72c", dark:"#a87f14", name:"gold"},
-  sweep:{body:"#d4a72c", dark:"#a87f14", name:"clean sweep"}
+  bronze:{body:"#a7c6b6", dark:"#005239", name:"green"},
+  silver:{body:"#4f9377", dark:"#005239", name:"deep green"},
+  gold:{body:"#ffc733", dark:"#005239", name:"gold"},
+  sweep:{body:"#ffc733", dark:"#005239", name:"gold, clean sweep"}
 };
 function trophySvg(t){
   var c = TROPHY[t];
@@ -1068,7 +1088,7 @@ function done(){
         : "")+
       '<p class="tiny" style="margin:14px 0 0">'+esc(patternLine().charAt(0).toUpperCase()+patternLine().slice(1))+'</p></div>';
   }
-  var share = "I called " + (S.caught+S.cleared) + " of 14 lines the way the ledger has them in Second Pass: Beat the Machine.";
+  var share = "I called " + (S.caught+S.cleared) + " of 14 lines the way the ledger has them in Second Pass: Beat the Machine at Mason.";
   var b = badges();
   screen.innerHTML =
     '<div class="final">'+
