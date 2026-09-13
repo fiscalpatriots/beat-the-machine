@@ -484,6 +484,15 @@ body{overflow-x:clip}
 .runstate .counts{margin:0}
 .runnext{margin:var(--s2) 0 0}
 
+/* ---------- the case control on the intro screen ----------
+   One quiet row under the opening paragraph, and only drawn when more than one case is
+   actually available. A label and a plain select: the choice is rare and does not earn a
+   segmented control or a set of cards. */
+.casepick{display:flex;align-items:center;gap:var(--s3);margin:var(--s5) 0 0}
+.casepick label{margin:0;font-size:var(--t-label);font-weight:700;text-transform:uppercase;
+  letter-spacing:.07em;color:var(--ink-soft);white-space:nowrap}
+.casepick select{flex:1 1 auto;min-width:0;margin:0}
+
 /* ---------- the points total on the end screen ---------- */
 .pointsbig{display:flex;align-items:baseline;gap:var(--s3);margin:var(--s2) 0 var(--s5)}
 .pointsbig i{font-style:normal;font-size:var(--t-small);color:var(--ink-soft)}
@@ -584,42 +593,148 @@ var ROWS, ROWS2, THRESHOLD, POLICY_SCOPE, EVIDENCE_NOTE, CARDS, CARDS2, GROUPS, 
 /* round two runs in assessment mode when its case file says so: no reveal between lines,
    no score, no streak and no track, and everything comes back at once at the end */
 var ASSESS = false;
+/* a case with no fresh set at all runs round one and then the end screen */
+var HAS_R2 = true;
+
+/* ---------- which case the drill is running ----------
+   Three choices on the intro screen. Halyard is the default and the case every published
+   result was scored against. Kestrel is offered only when cases/kestrel-v1.json is actually
+   on the server, so a build without it shows two options rather than a broken one. "My own
+   case" is whatever author.html last wrote into this browser.
+
+   Brightwater stays the fresh case for both authored cases. An own case gets a fresh set
+   only if its author wrote one, and skips round two when they did not. */
+var OWN_KEY = "btm.owncase.v1";
+var FRESH_FILE = "cases/brightwater-v4.json";
+var CASE_CHOICES = [
+  {id:"halyard", label:"Halyard Provisioning", file:"cases/halyard-v4.json", fresh:FRESH_FILE},
+  {id:"kestrel", label:"Kestrel IT Services",  file:"cases/kestrel-v1.json", fresh:FRESH_FILE},
+  {id:"own",     label:"My own case",          file:null,                   fresh:null}
+];
+var CASE_AVAILABLE = {halyard:true, kestrel:false, own:false};
+var CASE_PICK = "halyard";
+/* the id that rides into the payload and the record beside the version */
+var CASE_RUN_ID = "halyard";
+
+function choiceOf(id){
+  for(var i=0;i<CASE_CHOICES.length;i++){ if(CASE_CHOICES[i].id === id) return CASE_CHOICES[i]; }
+  return CASE_CHOICES[0];
+}
+/* ?case=own, ?case=kestrel or ?case=halyard in the address picks the case before the
+   intro screen is drawn, which is how the author page's Preview button arrives */
+function pickFromQuery(){
+  var m = null;
+  try{ m = /(?:^|[?&])case=([a-z0-9_-]+)/i.exec(window.location.search); }catch(e){ m = null; }
+  return m ? m[1].toLowerCase() : null;
+}
+function ownCase(){
+  var raw = null;
+  try{ raw = window.localStorage.getItem(OWN_KEY); }catch(e){ return null; }
+  if(!raw) return null;
+  var was;
+  try{ was = JSON.parse(raw); }catch(e){ return null; }
+  if(!was || !was["case"] || !was["case"].cards || !was["case"].cards.length) return null;
+  return was;
+}
 
 /* Eight of the fourteen Halyard lines carry a problem and six are clean. Neither number
    is printed anywhere, because a player who knew the split could work the odds instead
    of the ledger. The five Brightwater lines are three problems and two clean. */
+/* The two column headings over every set of figures. A case names its own months in
+   `columns`; the Halyard and Brightwater files predate that field and are May against June,
+   which is the fallback rather than a value invented for them. */
+var MONTHS_DEFAULT = ["May", "June"];
+function monthsOf(c){
+  return (c && c.columns && c.columns.length === 2) ? c.columns : MONTHS_DEFAULT;
+}
+
 function bindCases(){
   ROWS = CASE1.ledger;
-  ROWS2 = CASE2.ledger;
   THRESHOLD = CASE1.threshold;
   POLICY_SCOPE = CASE1.policyScope;
   EVIDENCE_NOTE = CASE1.evidenceNote;
   CARDS = CASE1.cards;
-  CARDS2 = CASE2.cards;
   GROUPS = CASE1.groups;
-  GROUPS2 = CASE2.groups;
-  BOOK1 = {rows:ROWS, groups:GROUPS, name:CASE1.company, sub:CASE1.period, cap:CASE1.caption};
-  BOOK2 = {rows:ROWS2, groups:GROUPS2, name:CASE2.company, sub:CASE2.period, cap:CASE2.caption};
-  ASSESS = CASE2.mode === "assessment";
+  BOOK1 = {rows:ROWS, groups:GROUPS, name:CASE1.company, sub:CASE1.period, cap:CASE1.caption,
+           months:monthsOf(CASE1)};
+  HAS_R2 = !!(CASE2 && CASE2.cards && CASE2.cards.length);
+  if(HAS_R2){
+    ROWS2 = CASE2.ledger;
+    CARDS2 = CASE2.cards;
+    GROUPS2 = CASE2.groups;
+    BOOK2 = {rows:ROWS2, groups:GROUPS2, name:CASE2.company, sub:CASE2.period, cap:CASE2.caption,
+             months:monthsOf(CASE2)};
+    ASSESS = CASE2.mode === "assessment";
+  } else {
+    ROWS2 = []; CARDS2 = []; GROUPS2 = []; BOOK2 = BOOK1; ASSESS = false;
+  }
+  setSteps();
+}
+
+/* the number of lines, and every screen number that follows from it. Fourteen and five give
+   back the numbers this page has always used; an authored case of any length gets its own. */
+var LINES = 14, LINES2 = 5;
+var STEP_L1_LAST = 16, STEP_BRIDGE = 17, STEP_L2 = 18, STEP_L2_LAST = 22, STEP_DONE = 24;
+function setSteps(){
+  LINES = CARDS.length;
+  LINES2 = HAS_R2 ? CARDS2.length : 0;
+  STEP_L1_LAST = 2 + LINES;
+  STEP_BRIDGE  = 3 + LINES;
+  STEP_L2      = 4 + LINES;
+  STEP_L2_LAST = 3 + LINES + LINES2;
+  STEP_DONE    = 5 + LINES + LINES2;
+  SEGS = LINES;
+}
+
+function fetchJSON(u){
+  return fetch(u, {cache:"no-store"}).then(function(r){
+    if(!r.ok) throw new Error(u + " " + r.status);
+    return r.json();
+  });
+}
+
+/* Which of the three choices this build can actually offer. Halyard is always there because
+   the inline fallback carries it; Kestrel only when the file answers; an own case only when
+   author.html has written one into this browser. */
+function probeCases(then){
+  CASE_AVAILABLE.halyard = true;
+  CASE_AVAILABLE.own = !!ownCase();
+  if(typeof fetch !== "function"){ CASE_AVAILABLE.kestrel = false; return then(); }
+  fetchJSON("cases/kestrel-v1.json")
+    .then(function(j){ CASE_AVAILABLE.kestrel = !!(j && j.cards && j.cards.length); then(); })
+    .catch(function(){ CASE_AVAILABLE.kestrel = false; then(); });
 }
 
 /* the fetch, with the generated copy behind it. Nothing renders until one of the two wins. */
-function loadCases(then){
-  function fallback(){ CASE_SOURCE = "inline fallback"; bindCases(); then(); }
-  if(typeof fetch !== "function"){ return fallback(); }
-  var want = ["cases/halyard-v4.json", "cases/brightwater-v4.json"];
-  Promise.all(want.map(function(u){
-    return fetch(u, {cache:"no-store"}).then(function(r){
-      if(!r.ok) throw new Error(u+" "+r.status);
-      return r.json();
-    });
-  })).then(function(pair){
-    if(!pair[0] || !pair[0].cards || pair[0].cards.length!==14) throw new Error("halyard case is not fourteen lines");
-    if(!pair[1] || !pair[1].cards || pair[1].cards.length!==5) throw new Error("brightwater case is not five lines");
+function loadCases(pick, then){
+  CASE_PICK = pick || "halyard";
+  function fallback(why){
+    CASE1 = CASE1_FALLBACK; CASE2 = CASE2_FALLBACK;
+    CASE_PICK = "halyard";
+    CASE_RUN_ID = "halyard";
+    CASE_SOURCE = "inline fallback" + (why ? " (" + why + ")" : "");
+    bindCases(); then();
+  }
+  if(CASE_PICK === "own"){
+    var own = ownCase();
+    if(!own) return fallback("no own case in this browser");
+    CASE1 = own["case"];
+    CASE2 = own.fresh || null;
+    CASE_RUN_ID = own.id || ("own:" + (own.name || "unnamed") + ":" + (own.caseVersion || "0"));
+    CASE_SOURCE = "this browser, written by author.html";
+    bindCases();
+    return then();
+  }
+  var ch = choiceOf(CASE_PICK);
+  CASE_RUN_ID = ch.id;
+  if(typeof fetch !== "function") return fallback("no fetch");
+  Promise.all([fetchJSON(ch.file), fetchJSON(ch.fresh)]).then(function(pair){
+    if(!pair[0] || !pair[0].cards || !pair[0].cards.length) throw new Error(ch.file + " carries no lines");
+    if(!pair[1] || !pair[1].cards || !pair[1].cards.length) throw new Error(ch.fresh + " carries no lines");
     CASE1 = pair[0]; CASE2 = pair[1];
     CASE_SOURCE = "cases/ files";
     bindCases(); then();
-  }).catch(fallback);
+  }).catch(function(){ fallback("could not read " + ch.file); });
 }
 
 
@@ -650,7 +765,9 @@ var S = {
   r2calls:[], r2sel:[], r2first:[], r2basis:[], r2words:[], r2secs:[],
   r2caught:0, r2cleared:0, r2false:0, r2Start:0, r2End:0, r2Revealed:0,
   attemptId:newAttemptId(), runIndex:1, testAttempt:TEST_MODE,
-  sendState:"not sent", sendAttempts:0, completedAt:0
+  sendState:"not sent", sendAttempts:0, completedAt:0,
+  /* the case this run is being played on, so a reload comes back on the same one */
+  casePick:"halyard"
 };
 function blankRound(n, into){
   into.calls = []; into.sel = []; into.first = []; into.basis = []; into.words = []; into.secs = [];
@@ -658,6 +775,31 @@ function blankRound(n, into){
     into.calls.push(null); into.sel.push(null); into.first.push(null);
     into.basis.push(null); into.words.push(""); into.secs.push(0);
   }
+}
+/* Everything a run holds, cleared and resized to the case now loaded. It is the one reset:
+   Play again calls it, and so does a change of case on the intro screen. The codename and the
+   chapter chips are deliberately left alone, because a second run is the same player. */
+function freshRun(){
+  var one = {}, two = {};
+  blankRound(LINES, one); blankRound(LINES2, two);
+  S.calls = one.calls; S.sel = one.sel; S.first = one.first;
+  S.basis = one.basis; S.words = one.words; S.secs = one.secs;
+  S.r2calls = two.calls; S.r2sel = two.sel; S.r2first = two.first;
+  S.r2basis = two.basis; S.r2words = two.words; S.r2secs = two.secs;
+  LINE_PTS = []; LEVELED = false;
+  S.caught = 0; S.cleared = 0; S.falseFlags = 0; S.streak = 0; S.best = 0; S.points = 0;
+  S.r2caught = 0; S.r2cleared = 0; S.r2false = 0; S.r2Start = 0; S.r2End = 0; S.r2Revealed = 0;
+  S.confPost = null; S.qd = null;
+  S.prepicks = []; S.prepickSkipped = false;
+  S.started = Date.now(); S.lapStart = 0; S.lapEnd = 0; S.itemStart = 0; S.completedAt = 0;
+  /* a second run is a second attempt, so it gets its own id rather than reusing the first one,
+     which is what keeps a retry of one run distinct from a fresh run */
+  S.attemptId = newAttemptId();
+  S.sendState = "not sent"; S.sendAttempts = 0;
+  S.casePick = CASE_PICK;
+  S.step = 0;
+  sending = false;
+  saveRun();
 }
 (function(){
   var one = {}, two = {};
@@ -688,16 +830,19 @@ function restoreRun(){
   var was;
   try{ was = JSON.parse(raw); }catch(e){ return false; }
   if(!was || typeof was !== "object" || !was.attemptId) return false;
-  if(!Array.isArray(was.calls) || was.calls.length !== 14) return false;
-  if(!Array.isArray(was.r2calls) || was.r2calls.length !== 5) return false;
+  /* a saved run belongs to the case it was played on. A run saved on one case is not
+     restored onto another, because its calls index a different set of lines. */
+  if((was.casePick || "halyard") !== CASE_PICK) return false;
+  if(!Array.isArray(was.calls) || was.calls.length !== LINES) return false;
+  if(!Array.isArray(was.r2calls) || was.r2calls.length !== LINES2) return false;
   restoring = true;
   Object.keys(was).forEach(function(k){ S[k] = was[k]; });
   restoring = false;
   /* a run saved by an older build carries no selection and no first-call arrays */
-  if(!Array.isArray(S.sel) || S.sel.length !== 14) S.sel = S.calls.slice();
-  if(!Array.isArray(S.first) || S.first.length !== 14) S.first = S.calls.slice();
-  if(!Array.isArray(S.r2sel) || S.r2sel.length !== 5) S.r2sel = S.r2calls.slice();
-  if(!Array.isArray(S.r2first) || S.r2first.length !== 5) S.r2first = S.r2calls.slice();
+  if(!Array.isArray(S.sel) || S.sel.length !== LINES) S.sel = S.calls.slice();
+  if(!Array.isArray(S.first) || S.first.length !== LINES) S.first = S.calls.slice();
+  if(!Array.isArray(S.r2sel) || S.r2sel.length !== LINES2) S.r2sel = S.r2calls.slice();
+  if(!Array.isArray(S.r2first) || S.r2first.length !== LINES2) S.r2first = S.r2calls.slice();
   /* a send that was in flight when the tab reloaded is not a send that landed */
   if(S.sendState === "sending") S.sendState = "not sent";
   S.testAttempt = S.testAttempt || TEST_MODE;
@@ -777,7 +922,7 @@ function paintLocks(){
 function doneIn(list){ return list.filter(function(v){ return v!==null; }).length; }
 function lapsDone(){ return doneIn(S.calls); }
 /* the bar is off from the round two bridge through the results screen */
-function barQuiet(){ return S.step>=17 && S.step<=22 || S.step===92; }
+function barQuiet(){ return (HAS_R2 && S.step>=STEP_BRIDGE && S.step<=STEP_L2_LAST) || S.step===92; }
 function paintTrack(){
   var done = lapsDone();
   var x = CAR_X0 + (done/SEGS)*(CAR_X1-CAR_X0);
@@ -923,7 +1068,7 @@ function pointsText(n){ return Number(n||0).toLocaleString("en-US"); }
 function paintRank(){
   var box = document.getElementById("rankmeter");
   if(!box) return;
-  var show = !barQuiet() && S.step >= 3 && S.step <= 16 && lapsDone() > 0;
+  var show = !barQuiet() && S.step >= 3 && S.step <= STEP_L1_LAST && lapsDone() > 0;
   box.hidden = !show;
   if(!show) return;
   var pr = rankProgress();
@@ -953,16 +1098,16 @@ function progress(){
   paintRank();
   var lab = document.getElementById("step");
   var sc = document.getElementById("score");
-  if(S.step>=3 && S.step<=16){
+  if(S.step>=3 && S.step<=STEP_L1_LAST){
     var seen = doneIn(S.calls);
-    lab.textContent = "Line "+(S.step-2)+" of 14";
+    lab.textContent = "Line "+(S.step-2)+" of "+LINES;
     if(seen){ sc.classList.remove("hidden"); sc.textContent = "Right "+(S.caught+S.cleared)+" of "+seen; }
     else sc.classList.add("hidden");
-  } else if(S.step>=18 && S.step<=22){
+  } else if(HAS_R2 && S.step>=STEP_L2 && S.step<=STEP_L2_LAST){
     /* assessment: progress and nothing else. No running score, because a pill that moved
        after every call would tell the player whether the last one landed. */
     var seen2 = doneIn(S.r2calls);
-    lab.textContent = ASSESS ? ((S.step-17)+" of 5") : ("Fresh line "+(S.step-17)+" of 5");
+    lab.textContent = ASSESS ? ((S.step-STEP_BRIDGE)+" of "+LINES2) : ("Fresh line "+(S.step-STEP_BRIDGE)+" of "+LINES2);
     if(!ASSESS && seen2){ sc.classList.remove("hidden"); sc.textContent = "Right "+(S.r2caught+S.r2cleared)+" of "+seen2; }
     else sc.classList.add("hidden");
   } else if(S.step===0){ lab.textContent=""; sc.classList.add("hidden"); }
@@ -983,9 +1128,10 @@ function moveCell(d){ return d<0 ? "("+money(d)+")" : (d>0 ? "+"+money(d) : "$0"
 /* the account under review, printed on the card as its statement line */
 function strip(acct, bk){
   var r = rowFor(acct, bk); if(!r) return "";
+  var mo = (bk || BOOK1).months || MONTHS_DEFAULT;
   return '<div class="strip"><div class="striptop"><b>'+r[0]+'</b><span>'+esc(r[1])+'</span></div>'+
-    '<div class="stripnums"><span>May<i>'+money(r[2])+'</i></span>'+
-    '<span>June<i>'+money(r[3])+'</i></span>'+
+    '<div class="stripnums"><span>'+esc(mo[0])+'<i>'+money(r[2])+'</i></span>'+
+    '<span>'+esc(mo[1])+'<i>'+money(r[3])+'</i></span>'+
     '<span>Change'+changeCell(r[2], r[3])+'</span></div></div>';
 }
 
@@ -1037,6 +1183,7 @@ function totalRow(label, pr, cu, cls){
 }
 function statement(acct, wide, bk){
   bk = bk || BOOK1;
+  var mo = bk.months || MONTHS_DEFAULT;
   var maxPct = 0;
   bk.rows.forEach(function(r){ if(r[2]) maxPct = Math.max(maxPct, Math.abs((r[3]-r[2])/r[2]*100)); });
   var body = "", z = 0;
@@ -1056,7 +1203,7 @@ function statement(acct, wide, bk){
     '<div class="stmthead"><b>'+esc(bk.name)+'</b>'+
       '<span>'+esc(bk.sub)+'</span></div>'+
     '<div class="scols"><span class="sp"></span><span class="sp"></span>'+
-      '<span>May</span><span>June</span><span>Change</span><span>Percent</span>'+
+      '<span>'+esc(mo[0])+'</span><span>'+esc(mo[1])+'</span><span>Change</span><span>Percent</span>'+
       '<span class="sp"></span></div>'+
     body+
     '<p class="cap">'+esc(bk.cap)+'</p></div>';
@@ -1091,15 +1238,16 @@ function wireLedger(){
 }
 
 /* ---------- the picture of the movement. Every figure lives in the strip above it. ---------- */
-function chart(c){
-  var max = Math.max(c.prior, c.current);
+function chart(c, mo){
+  mo = mo || MONTHS_DEFAULT;
+  var max = Math.max(c.prior, c.current) || 1;
   var wa = Math.round(250 * c.prior / max);
   var wb = Math.round(250 * c.current / max);
   var d = c.current - c.prior;
-  return '<svg class="chart" viewBox="0 0 300 74" role="img" aria-label="'+esc(c.name+', May '+money(c.prior)+', June '+money(c.current))+'">'+
-    '<text x="0" y="21" font-size="13" fill="var(--ink-soft)">May</text>'+
+  return '<svg class="chart" viewBox="0 0 300 74" role="img" aria-label="'+esc(c.name+', '+mo[0]+' '+money(c.prior)+', '+mo[1]+' '+money(c.current))+'">'+
+    '<text x="0" y="21" font-size="13" fill="var(--ink-soft)">'+esc(mo[0])+'</text>'+
     '<rect x="44" y="7" width="'+wa+'" height="18" rx="3" fill="var(--bar-old)"/>'+
-    '<text x="0" y="55" font-size="13" fill="var(--ink)">June</text>'+
+    '<text x="0" y="55" font-size="13" fill="var(--ink)">'+esc(mo[1])+'</text>'+
     '<rect x="44" y="41" width="'+wb+'" height="18" rx="3" fill="'+(d<0?"var(--neg)":"var(--ink)")+'"/>'+
   '</svg>';
 }
@@ -1118,13 +1266,13 @@ function render(){
   if(s===0) return intro();
   if(s===1) return identity();
   if(s===2) return roundOne();
-  if(s>=3 && s<=16) return lineScreen(s-3, 1);
+  if(s>=3 && s<=STEP_L1_LAST) return lineScreen(s-3, 1);
   if(s===90) return howScreen();
   if(s===91) return noticeScreen();
   if(s===92) return r2Results();
-  if(s===17) return bridge();
-  if(s>=18 && s<=22) return lineScreen(s-18, 2);
-  if(s>=24) return done();
+  if(s>=STEP_DONE) return done();
+  if(HAS_R2 && s===STEP_BRIDGE) return bridge();
+  if(HAS_R2 && s>=STEP_L2 && s<=STEP_L2_LAST) return lineScreen(s-STEP_L2, 2);
 }
 
 /* ---------- the practitioner note. One tap from the intro, one tap from the end. ---------- */
@@ -1226,7 +1374,7 @@ function openHow(){ howFrom = S.step; go(90); }
 var NOTICE = {
   head: "What this records",
   items: [
-    "What is collected: the codename you pick, the chapters you tap, your call on each of the nineteen lines, the basis chips behind each call, whether that basis agrees with the card's key, the optional line of your own words, and how long each line and each round took you.",
+    "What is collected: the codename you pick, the chapters you tap, your call on each line of the run, the basis chips behind each call, whether that basis agrees with the card's key, the optional line of your own words, and how long each line and each round took you.",
     "A codename is a pseudonym and not anonymity. Anyone who knows which codename you chose can read your run, so pick one you are willing to be known by.",
     "Where it goes if you send it: the Google Form responses sheet owned by Khaled Alkurd, who built this drill and writes the findings from it.",
     "You can finish the whole run without sending anything. At the end you can save your own record as a file, and sending your results to the form is a separate button you do not have to press."
@@ -1284,19 +1432,64 @@ function playFrames(){
   '</section>';
 }
 
+/* ---------- the case control ----------
+   A plain select, and only where a choice exists. Halyard is the default and the case the
+   published results were scored against; Kestrel appears when its file is on the server; My
+   own case appears when author.html has written one into this browser. Changing it reloads
+   the case and starts the run clean, because calls index a set of lines. */
+function caseControl(){
+  var open = CASE_CHOICES.filter(function(c){ return CASE_AVAILABLE[c.id]; });
+  if(open.length < 2) return "";
+  return '<div class="casepick"><label for="casesel">Case</label>'+
+    '<select id="casesel">'+open.map(function(c){
+      return '<option value="'+c.id+'"'+(c.id===CASE_PICK?" selected":"")+'>'+esc(c.label)+'</option>';
+    }).join("")+'</select></div>';
+}
+function wireCaseControl(){
+  var sel = document.getElementById("casesel");
+  if(!sel) return;
+  sel.addEventListener("change", function(){
+    var want = sel.value;
+    if(want === CASE_PICK) return;
+    clearRun();
+    loadCases(want, function(){
+      freshRun();
+      buildTrack();
+      publishCases();
+      render();
+    });
+  });
+}
+
 function intro(){
+  var fresh = HAS_R2
+    ? " Then a second company you have not read, "+numWord(LINES2)+" lines, scored on its own."
+    : "";
   screen.innerHTML =
     whyLine("You are about to review a close memo an AI assistant wrote, one line at a time.")+
     '<h1>Second Pass:<br>Beat the Machine</h1>'+
-    '<p>Halyard is a made-up company. Its June close memo reads the way an AI assistant writes one, and it carries the mistakes they make.</p>'+
-    '<p>The ledger does not explain itself, so the causes in the memo are guesses, and some of them are wrong. They read well enough that a busy reviewer would sign off and move on. You are the second pass. You will read fourteen lines and flag the ones that do not hold.</p>'+
+    '<p>'+esc(shortName(CASE1.company))+' is a made-up company. Its close memo reads the way an AI assistant writes one, and it carries the mistakes they make.</p>'+
+    '<p>The ledger does not explain itself, so the causes in the memo are guesses, and some of them are wrong. They read well enough that a busy reviewer would sign off and move on. You are the second pass. You will read '+numWord(LINES)+' lines and flag the ones that do not hold.'+fresh+'</p>'+
+    caseControl()+
     playFrames()+
     '<button class="btn" id="go">Play</button>'+
     '<div class="linkrow"><button class="howlink" id="howlink">How this works in a real close</button>'+
       '<a class="howlink" href="checker.html">Checker</a>'+
+      '<a class="howlink" href="author.html">Build one from your own ledger</a>'+
       '<a class="howlink" href="review.html">For reviewers: the entry in one page</a></div>';
+  wireCaseControl();
   document.getElementById("go").addEventListener("click", function(){ S.started = Date.now(); go(91); });
   document.getElementById("howlink").addEventListener("click", openHow);
+}
+/* prose counts its lines in words, the way the intro always did. Counters and scores keep
+   their numerals, because a number a player reads off a meter is a figure and not prose. */
+var NUMWORDS = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
+                "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen",
+                "eighteen","nineteen","twenty"];
+function numWord(n){ return NUMWORDS[n] || String(n); }
+/* "Halyard Provisioning Group, Inc." reads as "Halyard" in a sentence */
+function shortName(n){
+  return String(n||"The company").split(/,| - /)[0].replace(/\s+(Inc|LLC|PLLC|Ltd|LLP)\.?$/i,"").trim();
 }
 
 function identity(){
@@ -1431,7 +1624,7 @@ function wirePrepicks(){
 }
 
 function roundOne(){
-  var hero = '<div class="hero"><h2>The ledger, May against June</h2>'+
+  var hero = '<div class="hero"><h2>The ledger, '+esc(BOOK1.months[0])+' against '+esc(BOOK1.months[1])+'</h2>'+
     '<p>Read it before the memo. You can open it again from any card.</p></div>';
   var go3 = '<button class="btn secondary" data-go3="1">Skip the picks and continue</button>';
   screen.innerHTML =
@@ -1460,15 +1653,15 @@ function cardBody(c, round, i){
   var fileBlock = c.file.length
     ? '<div class="file"><h4>On file</h4><ul>'+c.file.map(function(f){ return '<li>'+esc(f)+'</li>'; }).join("")+'</ul></div>'
     : "";
-  var bk = (round===2) ? BOOK2 : undefined;
+  var bk = (round===2) ? BOOK2 : BOOK1;
   var hint = "";
   if(i===0) hint = (round===2)
-    ? '<p class="ledgerhint">The ledger button now opens the five dental accounts.</p>'
+    ? '<p class="ledgerhint">The ledger button now opens the '+ROWS2.length+' accounts of the fresh case.</p>'
     : '<p class="ledgerhint">Tap any time to open the full ledger.</p>';
   return strip(c.acct, bk)+
     ledgerBig(c.acct, round===2 ? 2 : undefined)+
     hint+
-    chart(c)+
+    chart(c, bk.months)+
     memoBlock+
     fileBlock;
 }
@@ -1492,14 +1685,14 @@ function firstOf(r){ return r === 2 ? S.r2first : S.first; }
 function basisOf(r){ return r === 2 ? S.r2basis : S.basis; }
 function wordsOf(r){ return r === 2 ? S.r2words : S.words; }
 function secsOf(r){ return r === 2 ? S.r2secs : S.secs; }
-function lastIndex(r){ return r === 2 ? 4 : 13; }
+function lastIndex(r){ return (r === 2 ? LINES2 : LINES) - 1; }
 
 /* a line that is already committed shows its verdict rather than its buttons, which is also
    what a player gets back when they reload the tab in the middle of a run */
 function lineScreen(i, round){
   var call = callsOf(round)[i];
   if(call === null || call === undefined) return callCard(i, round);
-  if(round === 2 && ASSESS) return go(i === 4 ? 92 : S.step + 1);
+  if(round === 2 && ASSESS) return go(i === LINES2 - 1 ? 92 : S.step + 1);
   return reveal(i, round);
 }
 
@@ -1635,7 +1828,7 @@ function callCard(i, round){
     if(round === 2){
       rescore2();
       saveRun();
-      if(ASSESS) return go(i === 4 ? 92 : S.step + 1);
+      if(ASSESS) return go(i === LINES2 - 1 ? 92 : S.step + 1);
       return reveal(i, 2);
     }
     var wasRank = rank();
@@ -1862,7 +2055,7 @@ function reveal(i, round){
   if(scored && right) countUp(document.getElementById("ptscount"), (LINE_PTS[i] || {}).total || 0);
   if(LEVELED){ flashRank(); LEVELED = false; }
   function onward(){
-    if(round === 2 && last) return go(24);
+    if(last) return go(round === 2 ? STEP_DONE : (HAS_R2 ? STEP_BRIDGE : STEP_DONE));
     go(S.step + 1);
   }
   document.getElementById("next").addEventListener("click", onward);
@@ -1881,22 +2074,22 @@ function reveal(i, round){
 function bridge(){
   var scored = ASSESS
     ? '<p class="sub" style="margin-top:10px"><b>Round two is scored at the end, so you get no hints.</b> '+
-      'Nothing comes back between the lines, and all five verdicts arrive together once the fifth call is in.</p>'
+      'Nothing comes back between the lines, and all '+numWord(LINES2)+' verdicts arrive together once the last call is in.</p>'
     : "";
-  var note = (ASSESS && CASE2.assessmentNote)
+  var note = (ASSESS && CASE2 && CASE2.assessmentNote)
     ? '<div class="file"><h4>What is already settled</h4><ul><li>'+esc(CASE2.assessmentNote)+'</li></ul></div>'
     : "";
   screen.innerHTML =
     whyLine("The same job on a company you have never read, which is the part that tells you whether the habit transferred.")+
     '<div class="card">'+
       '<h2>Round two: a memo you have not seen</h2>'+
-      '<p class="sub">Another made-up company, a memo built the same way, same job. Five lines.</p>'+
-      '<p class="tiny" style="margin:2px 0 0">Brightwater Dental Partners, a four office dental group.</p>'+
+      '<p class="sub">Another made-up company, a memo built the same way, same job. '+numWord(LINES2).replace(/^./, function(c){return c.toUpperCase();})+' lines.</p>'+
+      '<p class="tiny" style="margin:2px 0 0">'+esc(CASE2.company)+'.</p>'+
       scored+
       note+
       '<button class="btn" id="r2go">Continue</button>'+
     '</div>';
-  document.getElementById("r2go").addEventListener("click", function(){ go(18); });
+  document.getElementById("r2go").addEventListener("click", function(){ go(STEP_L2); });
 }
 
 /* ---------- the results of round two, all five at once ----------
@@ -1922,16 +2115,16 @@ function r2Results(){
     '</section>';
   }).join("");
   screen.innerHTML =
-    whyLine("All five fresh calls come back together now that the last one is in.")+
-    '<div class="cardhead plain"><span class="revlabel">Round two, all five</span></div>'+
-    '<h2>How the five went</h2>'+
-    '<p class="sub">Right call '+r2Right()+' of 5. Right reason '+reasonCount(2)+' of 5. '+
+    whyLine("All the fresh calls come back together now that the last one is in.")+
+    '<div class="cardhead plain"><span class="revlabel">Round two, all '+numWord(LINES2)+'</span></div>'+
+    '<h2>How the '+numWord(LINES2)+' went</h2>'+
+    '<p class="sub">Right call '+r2Right()+' of '+LINES2+'. Right reason '+reasonCount(2)+' of '+LINES2+'. '+
       'The call and the reason are counted separately. The figures, the directions and the '+
-      'threshold readings were already right on all five lines, so each one turned on whether '+
+      'threshold readings were already right on every line, so each one turned on whether '+
       'the cause the memo names is carried by something on file.</p>'+
     blocks+
     '<button class="btn" id="r2done">See how you did overall</button>';
-  document.getElementById("r2done").addEventListener("click", function(){ go(24); });
+  document.getElementById("r2done").addEventListener("click", function(){ go(STEP_DONE); });
 }
 
 
@@ -1982,13 +2175,14 @@ function r2Seconds(){
   return Math.round(((S.r2End || Date.now()) - S.r2Start)/1000);
 }
 function r2Line(){
+  if(!HAS_R2) return "Round2: no fresh case on this run.";
   var bas = [];
-  for(var i=0;i<5;i++){
+  for(var i=0;i<LINES2;i++){
     bas.push((i+1)+": "+basisText(S.r2basis[i], S.r2words[i])+
              " | Reason: "+(reasonRightAt(i,2) ? "agrees" : "does not agree")+
              " | Key basis: "+basisKeyText(CARDS2[i]));
   }
-  return "Round2: right call "+r2Right()+"/5, right reason "+reasonCount(2)+"/5; calls "+
+  return "Round2: right call "+r2Right()+"/"+LINES2+", right reason "+reasonCount(2)+"/"+LINES2+"; calls "+
          letters(S.r2calls.map(function(v){ return v || "stand"; }))+
          "; key "+letters(CARDS2.map(function(c){ return c.key; }))+
          "; seconds "+r2Seconds()+". Round2 basis, by line: "+bas.join(" || ")+".";
@@ -1997,9 +2191,9 @@ function r2Line(){
    responses sheet can be counted by chapter without a new form question. */
 function orgLine(){ return "Organizations: " + S.orgs.join("; ") + "."; }
 function caseLine(){
-  return "Cases: " + CASE1.version + " (practice, 14 lines) and " + CASE2.version +
-         " (" + (ASSESS ? "assessment" : "practice") + ", 5 lines), dated " + CASE1.date +
-         ", loaded from " + CASE_SOURCE + ".";
+  return "Case: " + CASE_RUN_ID + ", version " + CASE1.version + " (practice, " + LINES + " lines)" +
+         (HAS_R2 ? " and " + CASE2.version + " (" + (ASSESS ? "assessment" : "practice") + ", " + LINES2 + " lines)" : ", no fresh case") +
+         ", dated " + CASE1.date + ", loaded from " + CASE_SOURCE + ".";
 }
 function versionLine(){
   return "Product: " + PRODUCT_STAMP + ". Notice: " + NOTICE_VERSION +
@@ -2016,16 +2210,16 @@ function summaryB(){
   /* the attempt identifier. Every retry of the same run posts this same string, so a row
      that appears twice is one attempt sent twice and must be counted once. */
   parts.push("Attempt id: " + S.attemptId + ", run " + S.runIndex + " in this tab. " +
-             "Reason score: " + reasonCount(1) + " of 14 in round one and " + reasonCount(2) +
-             " of 5 on the fresh case. A reason counts as right when every chip tapped is in " +
+             "Reason score: " + reasonCount(1) + " of " + LINES + " in round one and " + reasonCount(2) +
+             " of " + LINES2 + " on the fresh case. A reason counts as right when every chip tapped is in " +
              "the card's basis key and at least one was tapped. It is scored apart from the " +
              "call and it does not move the rank.");
   parts.push(miss.length
     ? "Lines missed: " + miss.map(function(c){ return c.n+" "+c.acct+" ("+c.type+")"; }).join("; ") + "."
     : "No lines missed.");
   parts.push("Pattern: " + patternLine());
-  parts.push("Result: right call " + (S.caught+S.cleared) + " of 14, right reason " + reasonCount(1) +
-             " of 14, " + S.caught + " caught, " +
+  parts.push("Result: right call " + (S.caught+S.cleared) + " of " + LINES + ", right reason " + reasonCount(1) +
+             " of " + LINES + ", " + S.caught + " caught, " +
              S.cleared + " let stand correctly, " + S.falseFlags + " false flag" + (S.falseFlags===1?"":"s") +
              ", " + pointsText(S.points) + " points, rank " + rank() + ".");
   parts.push("Four questions on the form (expected quality, confidence before, confidence after, close experience) are not asked in this version. They carry a placeholder value the question accepts and are not participant answers.");
@@ -2050,7 +2244,7 @@ function patternLine(){
     if(v.miss===0 && v.tot>=2) clean.push({t:t, tot:v.tot});
     if(v.miss>0) bad.push({t:t, tot:v.tot, miss:v.miss});
   });
-  if(!bad.length) return "you agreed with the answer key on all fourteen lines.";
+  if(!bad.length) return "you agreed with the answer key on all " + numWord(LINES) + " lines.";
   bad.sort(function(a,b){ return b.miss - a.miss; });
   var worst = bad[0];
   var badBit;
@@ -2072,9 +2266,9 @@ function patternLine(){
 function rank(){ return rankAt(S.points || 0).name; }
 function tier(){
   var right = S.caught + S.cleared;
-  if(right>=14) return "sweep";
-  if(right>=13) return "gold";
-  if(right>=11) return "silver";
+  if(right>=LINES) return "sweep";
+  if(right>=LINES-1) return "gold";
+  if(right>=LINES-3) return "silver";
   return "bronze";
 }
 function allStandsRight(){
@@ -2105,7 +2299,7 @@ function payload(){
   p["entry."+E.expect] = PLACEHOLDERS.expect;
   p["entry."+E.confPre] = PLACEHOLDERS.confPre;
   p["entry."+E.experience] = PLACEHOLDERS.experience;
-  for(var i=0;i<14;i++){
+  for(var i=0;i<Math.min(LINES, E.call.length);i++){
     var c = CARDS[i];
     var call = S.calls[i] || "stand";
     p["entry."+E.call[i]] = c.post[call];
@@ -2120,10 +2314,12 @@ function payload(){
   p["entry."+E.qb] = summaryB();
   /* question C asks the player nothing, so the fresh case rides here rather than
      costing the form a new question. The fourteen Why fields are left alone. */
-  p["entry."+E.qc] = r2Line() + " Fresh case: " + CASE2.company + ", case version " +
-                     CASE2.version + ", five lines, " +
-                     (ASSESS ? "run as an assessment with no feedback between lines. " : "run as practice. ") +
-                     "A company the player had not seen. Not a player answer to question C.";
+  p["entry."+E.qc] = r2Line() + (HAS_R2
+      ? " Fresh case: " + CASE2.company + ", case version " + CASE2.version + ", " + LINES2 + " lines, " +
+        (ASSESS ? "run as an assessment with no feedback between lines. " : "run as practice. ") +
+        "A company the player had not seen."
+      : " This case carried no fresh set, so round two did not run.") +
+      " Not a player answer to question C.";
   p["entry."+E.qd] = lapMinutes();
   var fbzx = String(Math.floor(Math.random()*9007199254740991));
   p["fvv"] = "1";
@@ -2140,14 +2336,14 @@ function asText(){
   out.push("Round one: "+prepickLine());
   out.push("Four questions on the form were not asked in this version and carry a placeholder value, not an answer.");
   out.push("");
-  for(var i=0;i<14;i++){
+  for(var i=0;i<LINES;i++){
     out.push("Line "+(i+1)+" ("+CARDS[i].acct+"): "+S.calls[i]+", key "+CARDS[i].key+", "+
              CARDS[i].type+". "+basisText(S.basis[i], S.words[i])+
              " | Reason: "+(reasonRightAt(i,1) ? "agrees" : "does not agree")+
              " | Key basis: "+basisKeyText(CARDS[i]));
   }
   out.push("");
-  for(var j=0;j<5;j++){
+  for(var j=0;j<LINES2;j++){
     out.push("Fresh line "+(j+1)+" ("+CARDS2[j].acct+"): "+S.r2calls[j]+", key "+CARDS2[j].key+", "+
              CARDS2[j].type+". "+basisText(S.r2basis[j], S.r2words[j])+
              " | Reason: "+(reasonRightAt(j,2) ? "agrees" : "does not agree")+
@@ -2173,7 +2369,8 @@ function itemRecord(c, idx, round){
   return {
     item: (round===2 ? "r2-" : "r1-") + c.n,
     round: round,
-    caseVersion: (round===2 ? CASE2.version : CASE1.version),
+    caseId: CASE_RUN_ID,
+    caseVersion: (round===2 && HAS_R2 ? CASE2.version : CASE1.version),
     mode: (round===2 && ASSESS) ? "assessment" : "practice",
     account: c.acct,
     accountName: c.name,
@@ -2222,7 +2419,9 @@ function attemptRecord(sentPayload){
       roleNote: "not collected in this version",
       noticeVersion: NOTICE_VERSION,
       productVersion: PRODUCT_STAMP,
-      caseVersions: {roundOne: CASE1.version, roundTwo: CASE2.version, caseSource: CASE_SOURCE},
+      caseId: CASE_RUN_ID,
+      caseVersions: {roundOne: CASE1.version, roundTwo: HAS_R2 ? CASE2.version : null,
+                     caseSource: CASE_SOURCE},
       form: FORM_POST,
       modes: {roundOne: "practice", roundTwo: ASSESS ? "assessment" : "practice"},
       firstAttempt: S.runIndex === 1,
@@ -2245,18 +2444,19 @@ function attemptRecord(sentPayload){
     },
     responses: responses,
     scoring: {
-      keyVersions: {roundOne: CASE1.version, roundTwo: CASE2.version},
-      roundOne: {right: S.caught + S.cleared, of: 14, rightReason: reasonCount(1), reasonOf: 14,
+      caseId: CASE_RUN_ID,
+      keyVersions: {roundOne: CASE1.version, roundTwo: HAS_R2 ? CASE2.version : null},
+      roundOne: {right: S.caught + S.cleared, of: LINES, rightReason: reasonCount(1), reasonOf: LINES,
                  caught: S.caught, letStandCorrectly: S.cleared, falseFlags: S.falseFlags,
                  longestRun: S.best, points: S.points, rank: rank()},
       points: {total: S.points, rightCall: PT_CALL, rightReason: PT_REASON,
                streakStepFrom: STREAK_FROM, streakStep: PT_STREAK, coverStory: PT_COVER,
                ladder: RANKS.map(function(r){ return {rank: r.name, at: r.at}; }),
-               basis: "Points and rank are read off the fourteen trained lines. The fresh case " +
-                      "runs as an assessment and is scored on its own."},
-      roundTwo: {right: r2Right(), of: 5, rightReason: reasonCount(2), reasonOf: 5,
+               basis: "Points and rank are read off the " + LINES + " trained lines" +
+                      (HAS_R2 ? ". The fresh case is scored on its own." : ". This case carried no fresh set.")},
+      roundTwo: {right: r2Right(), of: LINES2, rightReason: reasonCount(2), reasonOf: LINES2,
                  caught: S.r2caught, letStandCorrectly: S.r2cleared, falseFlags: S.r2false},
-      rankBasis: "points earned on the fourteen trained lines. The reason score adds points " +
+      rankBasis: "points earned on the " + LINES + " trained lines. The reason score adds points " +
                  "and never moves the badges.",
       badgesEarned: badges().map(function(b){ return b.t; }),
       changedCallsRight: changedMind(),
@@ -2361,7 +2561,19 @@ function trophySvg(t){
 }
 
 /* ---------- the badges, earned off the key. Only what was earned shows, best three first ---------- */
-function got(n){ var c = CARDS[n-1]; return S.calls[n-1] === c.key; }
+/* A badge used to name its lines by number, which only worked while every run was the
+   fourteen-line Halyard case. It reads the error type instead, so the same badge means the
+   same thing on a case of any length: every line of that type agreed with the key, and the
+   case has at least one such line. On Halyard the set a perfect run earns is unchanged. */
+function allOfType(){
+  var want = Array.prototype.slice.call(arguments), seen = 0, i;
+  for(i=0;i<CARDS.length;i++){
+    if(want.indexOf(CARDS[i].type) < 0) continue;
+    seen++;
+    if(S.calls[i] !== CARDS[i].key) return false;
+  }
+  return seen > 0;
+}
 /* a call the player selected one way, changed, and locked the other way, where the locked
    one agreed with the key. Both rounds count, because both rounds let a call be changed. */
 function changedMind(){
@@ -2379,21 +2591,21 @@ function badges(){
   var right = S.caught + S.cleared;
   var steady = noFalseFlags();
   return [
-    {t:"Clean sweep",        on: right===14, i:"coins"},
+    {t:"Clean sweep",        on: right===LINES, i:"coins"},
     /* the only badge the fresh case can earn, and it sits second because reading a
        company cold is the hardest thing on the card */
-    {t:"Cold read",          on: r2Right()===5, i:"ledger"},
+    {t:"Cold read",          on: HAS_R2 && r2Right()===LINES2, i:"ledger"},
     {t:"Hot lap",            on: S.best>=5, i:"fuel"},
     {t:"Steady hand",        on: steady, i:"badge"},
     {t:"Second thoughts",    on: changedMind()>0, i:"wrench"},
     /* the round one version of the steady hand, and it stands down when that one is earned
        rather than printing the same fact twice */
     {t:"Nothing over-flagged", on: allStandsRight() && !steady, i:"box"},
-    {t:"Arithmetic hawk",    on: got(1) && got(8), i:"scales"},
-    {t:"Unsupported driver caught", on: got(7), i:"glass"},
-    {t:"Read the silence",   on: got(11), i:"flag"},
-    {t:"Traced the movement", on: got(12) && got(14), i:"brief"},
-    {t:"Timing and drift",   on: got(2) && got(3), i:"calendar"}
+    {t:"Arithmetic hawk",    on: allOfType("arithmetic"), i:"scales"},
+    {t:"Unsupported driver caught", on: allOfType("unsupported driver"), i:"glass"},
+    {t:"Read the silence",   on: allOfType("no explanation"), i:"flag"},
+    {t:"Traced the movement", on: allOfType("unsupported attribution"), i:"brief"},
+    {t:"Timing and drift",   on: allOfType("timing", "wrong direction"), i:"calendar"}
   ].filter(function(x){ return x.on; }).slice(0,3);
 }
 
@@ -2401,7 +2613,7 @@ function earnedLine(){
   /* not "matches the ledger": several of these calls turn on the evidence on file rather
      than on arithmetic, so what a call agrees with is the answer key. The reason is counted
      beside it and never inside it. */
-  return "Right call " + (S.caught + S.cleared) + " of 14. Right reason " + reasonCount(1) + " of 14.";
+  return "Right call " + (S.caught + S.cleared) + " of " + LINES + ". Right reason " + reasonCount(1) + " of " + LINES + ".";
 }
 
 
@@ -2486,7 +2698,7 @@ function done(){
                '<span>'+esc(c.tell)+'</span></div>';
       }).join("")+'</div>'
     : '<div class="coach" style="margin-top:14px"><h3>On the memo you had not seen</h3>'+
-      '<p class="tiny" style="margin:0">All five fresh calls agree with the answer key, on a company you had not seen, which is the read that matters.</p></div>';
+      '<p class="tiny" style="margin:0">Every fresh call agrees with the answer key, on a company you had not seen, which is the read that matters.</p></div>';
   var badReason = rightCallWrongReason(1).map(function(c){ return {c:c, r:1}; })
         .concat(rightCallWrongReason(2).map(function(c){ return {c:c, r:2}; }));
   var reasonBlock = badReason.length
@@ -2518,8 +2730,8 @@ function done(){
       '<p class="tiny" style="margin:14px 0 0">'+esc(patternLine().charAt(0).toUpperCase()+patternLine().slice(1))+'</p></div>'+freshBlock+reasonBlock;
   }
   var share = "Second Pass: Beat the Machine at Mason. Rank " + rank() + ", " +
-    pointsText(S.points) + " points. Right call " + (S.caught+S.cleared) + " of 14 and right reason " +
-    reasonCount(1) + " of 14, with " + r2Right() + " of 5 on a company I had not seen. Best streak " +
+    pointsText(S.points) + " points. Right call " + (S.caught+S.cleared) + " of " + LINES + " and right reason " +
+    reasonCount(1) + " of " + LINES + (HAS_R2 ? ", with " + r2Right() + " of " + LINES2 + " on a company I had not seen" : "") + ". Best streak " +
     S.best + ".";
   var b = badges();
   var medals = b.length
@@ -2547,9 +2759,9 @@ function done(){
       '<p class="counts"><span><b>'+S.caught+'</b>caught</span>'+
         '<span><b>'+S.cleared+'</b>let stand correctly</span>'+
         '<span'+(S.falseFlags?' class="fail"':'')+'><b>'+S.falseFlags+'</b>false flags</span></p>'+
-      '<p class="fresh">Fresh case: right call '+r2Right()+' of 5. Right reason '+reasonCount(2)+' of 5.</p>'+
-      '<p class="tiny" style="margin:4px 0 0">A second company, read once, scored on its own. '+
-        'The points, the rank and the badges are read off the fourteen trained lines.</p>'+
+      (HAS_R2 ? '<p class="fresh">Fresh case: right call '+r2Right()+' of '+LINES2+'. Right reason '+reasonCount(2)+' of '+LINES2+'.</p>' : '')+
+      (HAS_R2 ? '<p class="tiny" style="margin:4px 0 0">A second company, read once, scored on its own. '+
+        'The points, the rank and the badges are read off the '+numWord(LINES)+' trained lines.</p>' : '')+
       medals+
       '<div class="sharecard"><span class="label">Your card</span>'+
         '<p>'+esc(share)+'</p><button class="btn-text" id="copyshare">Copy</button></div>'+
@@ -2567,24 +2779,8 @@ function done(){
   document.getElementById("score").classList.add("hidden");
   /* a second run keeps the codename and the chips and posts its own row to the form */
   document.getElementById("playagain").addEventListener("click", function(){
-    var one = {}, two = {};
-    blankRound(14, one); blankRound(5, two);
-    S.calls = one.calls; S.sel = one.sel; S.first = one.first;
-    S.basis = one.basis; S.words = one.words; S.secs = one.secs;
-    S.r2calls = two.calls; S.r2sel = two.sel; S.r2first = two.first;
-    S.r2basis = two.basis; S.r2words = two.words; S.r2secs = two.secs;
-    LINE_PTS = []; LEVELED = false;
-    S.caught = 0; S.cleared = 0; S.falseFlags = 0; S.streak = 0; S.best = 0; S.points = 0;
-    S.r2caught = 0; S.r2cleared = 0; S.r2false = 0; S.r2Start = 0; S.r2End = 0; S.r2Revealed = 0;
-    S.confPost = null; S.qd = null;
-    S.prepicks = []; S.prepickSkipped = false;
-    S.started = Date.now(); S.lapStart = 0; S.lapEnd = 0; S.itemStart = 0; S.completedAt = 0;
-    /* a second run is a second attempt, so it gets its own id rather than reusing the first
-       one, which is what keeps a retry of one run distinct from a fresh run */
-    S.attemptId = newAttemptId();
+    freshRun();
     S.runIndex = (S.runIndex || 1) + 1;
-    S.sendState = "not sent"; S.sendAttempts = 0;
-    sending = false;
     go(1);
   });
   var mb = document.getElementById("missbox"), sm = document.getElementById("showmiss");
@@ -2632,8 +2828,20 @@ function wireTestTap(){
   });
 }
 
-loadCases(function(){
-  restoreRun();
+/* The address wins over the saved run, because ?case=own is how the author page's Preview
+   button arrives and it has to land on the case the author just wrote. */
+probeCases(function(){
+  var want = pickFromQuery();
+  if(!want || !CASE_AVAILABLE[want]){
+    var saved = null;
+    try{ saved = JSON.parse(window.sessionStorage.getItem(SKEY) || "null"); }catch(e){ saved = null; }
+    want = (saved && saved.casePick && CASE_AVAILABLE[saved.casePick]) ? saved.casePick : "halyard";
+  }
+  loadCases(want, boot);
+});
+function boot(){
+  if(!restoreRun()) freshRun();
+  S.casePick = CASE_PICK;
   /* every counter is derived, so the run is scored from its calls before the first paint */
   rescore(); rescore2();
   paintTestBand();
@@ -2651,11 +2859,22 @@ loadCases(function(){
   /* the verification hooks: the step jump and the points engine, so a run can be walked and
      a layout checked at every screen without clicking through it by hand */
   window.__BTM_GO = go;
+  window.__BTM_STEPS = function(){ return {lines:LINES, lines2:LINES2, l1last:STEP_L1_LAST,
+    bridge:STEP_BRIDGE, l2:STEP_L2, l2last:STEP_L2_LAST, done:STEP_DONE, hasR2:HAS_R2}; };
   window.__BTM_POINTS = {line:linePoints, rescore:rescore, ranks:RANKS, progress:rankProgress};
-  window.__BTM_CASES = {source:CASE_SOURCE, one:CASE1.version, two:CASE2.version,
+  publishCases();
+}
+/* the verification hook, rebuilt whenever the case changes so it never reports the case
+   before last */
+function publishCases(){
+  window.__BTM_CASES = {source:CASE_SOURCE, id:CASE_RUN_ID, pick:CASE_PICK,
+                        lines:LINES, lines2:LINES2, available:CASE_AVAILABLE,
+                        one:CASE1.version, two:HAS_R2 ? CASE2.version : null,
                         date:CASE1.date, assessment:ASSESS, product:PRODUCT_STAMP,
                         test:TEST_MODE, attempt:S.attemptId};
-});
+  window.__BTM_CARDS = CARDS;
+  window.__BTM_CARDS2 = CARDS2;
+}
 })();
 </script>
 </body>
