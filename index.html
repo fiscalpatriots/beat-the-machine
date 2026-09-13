@@ -2612,13 +2612,19 @@ function attemptRecord(sentPayload){
       receiptShort: S.receipt ? S.receipt.slice(0,12) : null,
       storedAt: S.receiptAt || null,
       state: S.receiptState || "not offered",
-      note: S.receipt
-        ? "The endpoint stored this record and answered with this receipt, which is the sha256 " +
-          "of the record as it was stored. A second send under the same attempt id returns this " +
-          "same receipt and writes no second row."
-        : (receiptEndpoint()
-          ? "A receipt endpoint is set and it did not confirm this attempt. The state field says why."
-          : "No receipt endpoint is set in this build, so nothing confirms receipt to this page.")
+      note: String(S.receiptState || "").indexOf("posted") === 0
+        ? ("This is the copy on its way to the endpoint. A receipt is the sha256 of the record " +
+           "that was stored, and no record can hold its own hash, so the receipt for this one is " +
+           "in the copy saved from the page after the answer arrives." +
+           (S.receipt ? " The receipt beside it came back from an earlier send of this same " +
+             "attempt, and a repeat returns that first receipt rather than writing a second row." : ""))
+        : (S.receipt
+          ? "The endpoint stored this record and answered with this receipt, which is the sha256 " +
+            "of the record as it was stored. A second send under the same attempt id returns this " +
+            "same receipt and writes no second row."
+          : (receiptEndpoint()
+            ? "A receipt endpoint is set and it did not confirm this attempt. The state field says why."
+            : "No receipt endpoint is set in this build, so nothing confirms receipt to this page."))
     },
     prepicks: {
       picks: (S.prepicks || []).slice(),
@@ -2746,6 +2752,9 @@ function postReceipt(url, done){
     return finish({ok:false, error:"this browser cannot post the record"});
   }
   var body;
+  /* the copy that goes over the wire says what it is, because the receipt is the hash of this
+     very record and no record can carry its own hash */
+  S.receiptState = "posted, waiting for the endpoint to answer";
   try{ body = JSON.stringify(attemptRecord(window.__BTM_LAST_POST)); }
   catch(e){ return finish({ok:false, error:"the record could not be written out"}); }
   var timer = setTimeout(function(){
