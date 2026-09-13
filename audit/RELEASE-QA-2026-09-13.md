@@ -445,3 +445,17 @@ One pass over all five pages and every document in the release.
 | The regression suite | `node tests/run-checker-tests.cjs`, 53 passed |
 | The analysis script and its proof | `tools/findings.py`, `tools/make-sample-csv.py`, `tools/findings-sample.csv` |
 | Commits | `9d1813f` the ladder and two 320 repairs, `b37e844` the Author link and the sitemap, `49f433c` the action bar and the focus ring, `52ac4f2` the checker samples on v4, `ee9a1a7` versions, spelling and the reviewer page's links, `b8a7bd7` `tools/` |
+
+---
+
+## 8. Live
+
+Confirmed on https://fiscalpatriots.github.io/beat-the-machine/ after the push. All five pages
+loaded at 320, 375 and 1280: page overflow 0 at every width, the header carries Drill, Checker,
+Review and Author with the current page marked, and zero console errors and zero failed requests
+on all fifteen loads. `index.html` reports `PRODUCT_VERSION = "1.6.0"`, the checker's printed sheet
+cites protocol 1.1, `sitemap.xml` lists `author.html`, and `RELEASE-NOTES.md`, this file and
+`tools/findings.py` all answer 200. Every page, asset, case file, the favicon in both formats and
+the share image are byte-identical to the working tree after line-ending normalization. The drill
+was never run against the live form: the local walk ran in test mode and the live check only
+loaded pages.
