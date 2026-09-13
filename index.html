@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/second-pass.css">
+<script src="assets/nav.js" defer></script>
 <style>
 /* Page layout only. Everything shared lives in assets/second-pass.css.
    The three aliases below keep the hand-written SVG (the track, the car, the
@@ -24,10 +25,11 @@
   --bar-old:#c9c3b4;
 }
 
-#app{max-width:560px;margin:0 auto;padding:0 var(--gut) var(--s9);min-height:100vh;
+#app{max-width:560px;margin:0 auto;padding:0 var(--gut) var(--s9);
   display:flex;flex-direction:column}
 #app>*{min-width:0;max-width:100%}
-#screen{flex:1;display:flex;flex-direction:column;justify-content:center;padding:var(--s2) 0 var(--s4)}
+#screen{flex:1;min-height:58vh;display:flex;flex-direction:column;justify-content:center;
+  padding:var(--s2) 0 var(--s4)}
 #screen>*{min-width:0}
 
 /* the codename rides the masthead, right above the player's car */
@@ -276,8 +278,9 @@
 @keyframes rise{from{transform:scale(.72);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes sweep{from{transform:translateX(0)}to{transform:translateX(130px)}}
 @media (prefers-reduced-motion:reduce){.trophy,.trophy .glint{animation:none}.trophy .glint{opacity:0}}
-.rankbig{font-size:var(--t-h1);font-weight:700;letter-spacing:-.02em;line-height:1.1;
-  color:var(--ink);display:inline-block;padding-bottom:var(--s1);border-bottom:3px solid var(--gold)}
+/* the gold underline moved to the points numeral, which is the headline figure on this
+   screen. The rank is the word under it and carries no colour of its own. */
+.rankbig{font-size:var(--t-h2);font-weight:700;letter-spacing:-.01em;line-height:1.2;color:var(--ink)}
 .ranknote{margin:var(--s3) 0 0;font-size:var(--t-small);line-height:1.5;color:var(--ink-soft)}
 .earned{margin:var(--s4) 0 var(--s2);font-size:var(--t-lead);line-height:1.5}
 .fresh{margin:0 0 var(--s1);font-size:var(--t-body);font-weight:600;font-variant-numeric:tabular-nums}
@@ -341,6 +344,128 @@ a.btn{text-decoration:none}
 #screen .btn,.stickygo .btn{display:flex;width:100%;margin-top:var(--s3)}
 #screen .two .btn{margin-top:0}
 #screen .btn:first-child{margin-top:0}
+
+/* =============================================================================
+   THE TWO-STEP CALL, THE REVEAL AND THE RANK LADDER - 13 September 2026
+   A call is selected, then locked. Nothing is scored and nothing is revealed
+   until it is locked, so a player can change their mind on the line in front of
+   them and on the line before it. The reveal takes the card area for a beat.
+   ============================================================================= */
+
+/* The shared sheet sets overflow-x:hidden on the body, which turns the body into a scroll
+   container and stops the header sticking to the top of the window. Clip does the same job
+   for a stray wide child without creating a scrollport, so the track and the rank meter stay
+   where a player can see them. */
+body{overflow-x:clip}
+
+/* ---------- one line at the top of every screen ---------- */
+.whyline{margin:0 0 var(--s4);font-size:var(--t-small);line-height:1.5;color:var(--ink-soft)}
+
+/* ---------- how to play: three frames, drawn ---------- */
+.howplay{margin:var(--s6) 0;padding:var(--s5) 0 0;border-top:1px solid var(--rule)}
+.howplay h3{margin:0 0 var(--s4);font-size:var(--t-label);font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft)}
+.frames{list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s4)}
+.frames li{min-width:0}
+.frames svg{display:block;width:100%;height:auto}
+.frames p{margin:var(--s2) 0 0;font-size:13px;line-height:1.45;color:var(--ink)}
+@media (max-width:440px){
+  .frames{display:block}
+  .frames li{display:flex;align-items:center;gap:var(--s4);margin:0 0 var(--s4)}
+  .frames li:last-child{margin:0}
+  .frames svg{flex:0 0 88px;width:88px}
+  .frames p{margin:0}
+}
+
+/* ---------- the two call buttons: one selected, the other still live ---------- */
+.two.calls .btn{transition:opacity .16s ease}
+.two.calls .btn.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.two.calls .btn.dim{opacity:.45}
+.two.calls .btn.dim:hover{opacity:.85;border-color:var(--ink-soft)}
+.kbd.ink{border-color:var(--rule-strong);color:var(--ink-soft)}
+.btn.on .kbd.ink{border-color:rgba(255,255,255,.45);color:#fff}
+@media (prefers-reduced-motion:reduce){.two.calls .btn{transition:none}}
+
+/* ---------- the commit step ---------- */
+.commit{margin-top:var(--s5);padding-top:var(--s5);border-top:1px solid var(--rule)}
+.commit .basis{margin-top:0}
+.locknote{margin:var(--s3) 0 0;text-align:center}
+.backrow{display:flex;justify-content:center;margin-top:var(--s2)}
+
+/* ---------- the rank meter in the header ---------- */
+#rankmeter{margin-top:var(--s2)}
+.rmtop{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s3);
+  font-size:var(--t-small);line-height:1.4}
+.rmtop b{font-weight:700;color:var(--ink);white-space:nowrap}
+.rmtop span{min-width:0;text-align:right;color:var(--ink-soft);
+  font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.rmbar{height:4px;background:var(--rule);border-radius:2px;overflow:hidden;margin-top:var(--s2)}
+.rmbar i{display:block;height:100%;width:0;background:var(--ink);
+  transition:width .32s cubic-bezier(.3,.8,.35,1)}
+#rankmeter.up .rmbar i{animation:rankflash .4s ease-out 1}
+@keyframes rankflash{0%,62%{background:var(--gold)}100%{background:var(--ink)}}
+#rankmeter.up .rmtop b{animation:rankname .4s ease-out 1}
+@keyframes rankname{from{opacity:.2}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){
+  .rmbar i{transition:none}
+  #rankmeter.up .rmbar i,#rankmeter.up .rmtop b{animation:none}
+}
+
+/* ---------- the reveal face ---------- */
+.reveal{background:var(--card);border:1px solid var(--rule);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:var(--s6) var(--s5);margin:0 0 var(--s4);
+  min-height:232px;display:flex;flex-direction:column;justify-content:center}
+.reveal .revtype{display:block;margin:0 0 var(--s2);font-size:var(--t-label);font-weight:700;
+  text-transform:uppercase;letter-spacing:.09em;color:var(--ink-soft)}
+.verdict{margin:0 0 var(--s3);font-size:32px;line-height:1.1;letter-spacing:-.02em}
+.reveal.good .verdict{color:var(--mason)}
+.reveal.bad .verdict{color:var(--red)}
+.revtell,.revtruth{margin:0;font-size:var(--t-body);line-height:1.6}
+.askbox{margin:var(--s4) 0 0;padding:var(--s4) 0 0;border-top:1px solid var(--rule)}
+.askbox p{margin:0;font-size:var(--t-body);line-height:1.6}
+.revnil{margin:var(--s4) 0 0;font-size:var(--t-small);font-weight:600;color:var(--ink)}
+.revcoach{margin:var(--s4) 0 0;padding:var(--s4) 0 0;border-top:1px solid var(--rule);
+  font-size:var(--t-small);line-height:1.6;color:var(--ink-soft)}
+@media (max-width:400px){.verdict{font-size:27px}.reveal{padding:var(--s5) var(--s4)}}
+
+/* the card turns over to its verdict face. Reduced motion gets the same beat as a fade. */
+.reveal.turn{animation:turnin .3s cubic-bezier(.2,.7,.3,1) both}
+@keyframes turnin{
+  from{transform:perspective(900px) rotateY(-88deg);opacity:.15}
+  to{transform:perspective(900px) rotateY(0);opacity:1}
+}
+@media (prefers-reduced-motion:reduce){
+  .reveal.turn{animation:turnfade .2s ease both}
+  @keyframes turnfade{from{opacity:0}to{opacity:1}}
+}
+
+/* ---------- the points earned on the line ---------- */
+.ptsblock{margin:var(--s5) 0 0;padding:var(--s4) 0 0;border-top:1px solid var(--rule)}
+.ptstotal{display:flex;align-items:baseline;gap:var(--s3);margin:0 0 var(--s4)}
+.ptstotal span{font-size:34px;font-weight:700;line-height:1;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;color:var(--ink);
+  display:inline-block;padding-bottom:var(--s1);border-bottom:3px solid var(--gold)}
+.ptstotal i{font-style:normal;font-size:var(--t-small);color:var(--ink-soft)}
+.ptslist{list-style:none;margin:0;padding:0;font-variant-numeric:tabular-nums}
+.ptslist li{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s4);
+  padding:var(--s2) 0;border-top:1px solid var(--rule);font-size:var(--t-small);line-height:1.45}
+.ptslist li:first-child{border-top:0;padding-top:0}
+.ptslist li span{color:var(--ink-soft);min-width:0}
+.ptslist li b{font-weight:700;white-space:nowrap;color:var(--ink)}
+.ptslist li.none span,.ptslist li.none b{color:var(--ink-soft);font-weight:400}
+.levelup{margin:var(--s4) 0 0;padding:var(--s3) 0 0;border-top:1px solid var(--rule);
+  font-size:var(--t-body);font-weight:700;color:var(--ink)}
+
+/* ---------- the running score under the face ---------- */
+.runstate{margin:0 0 var(--s4);padding:var(--s4) 0 0;border-top:1px solid var(--rule)}
+.runstate .counts{margin:0}
+.runnext{margin:var(--s2) 0 0}
+
+/* ---------- the points total on the end screen ---------- */
+.pointsbig{display:flex;align-items:baseline;gap:var(--s3);margin:var(--s2) 0 var(--s5)}
+.pointsbig i{font-style:normal;font-size:var(--t-small);color:var(--ink-soft)}
+.sharecard .label{margin-bottom:var(--s3)}
 </style>
 </head>
 <body>
@@ -350,9 +475,13 @@ a.btn{text-decoration:none}
   <div id="bar">
     <div id="track"></div>
     <div id="label"><span id="step"></span><span id="score" class="hidden"></span></div>
+    <div id="rankmeter" role="group" hidden>
+      <div class="rmtop"><b id="rmname"></b><span id="rmnote"></span></div>
+      <div class="rmbar"><i id="rmfill"></i></div>
+    </div>
   </div>
   <div id="screen"></div>
-  <p id="masonfoot">Built by Khaled Alkurd. A drill for the AI-native accounting student.<b id="verline"></b></p>
+  <p id="masonfoot"><b id="verline"></b></p>
 </div>
 <iframe name="gfsink" id="gfsink" class="hidden" title="submit"></iframe>
 <script>
@@ -488,18 +617,34 @@ function newAttemptId(){
 
 var S = {
   step:0, codename:"", orgs:[], prepicks:[], prepickSkipped:false,
-  calls:[], basis:[], words:[], secs:[], confPost:null, qd:null,
-  caught:0, cleared:0, falseFlags:0, streak:0, best:0, started:0,
+  /* sel is the call that is selected and not yet committed, first is the very first call the
+     player selected on that line, and calls is the committed one. A line is locked when calls
+     carries a value, and only a locked line is scored or revealed. */
+  calls:[], sel:[], first:[], basis:[], words:[], secs:[], confPost:null, qd:null,
+  caught:0, cleared:0, falseFlags:0, streak:0, best:0, points:0, started:0,
   lapStart:0, lapEnd:0, itemStart:0,
   /* round two keeps its own counters, because the fresh case is scored on its own and
      the rank and the badges are still read off the fourteen trained lines */
-  r2calls:[], r2basis:[], r2words:[], r2secs:[], r2caught:0, r2cleared:0, r2false:0,
-  r2Start:0, r2End:0, r2Revealed:0,
+  r2calls:[], r2sel:[], r2first:[], r2basis:[], r2words:[], r2secs:[],
+  r2caught:0, r2cleared:0, r2false:0, r2Start:0, r2End:0, r2Revealed:0,
   attemptId:newAttemptId(), runIndex:1, testAttempt:TEST_MODE,
   sendState:"not sent", sendAttempts:0, completedAt:0
 };
-for(var i=0;i<14;i++){ S.calls.push(null); S.basis.push(null); S.words.push(""); S.secs.push(0); }
-for(var i2=0;i2<5;i2++){ S.r2calls.push(null); S.r2basis.push(null); S.r2words.push(""); S.r2secs.push(0); }
+function blankRound(n, into){
+  into.calls = []; into.sel = []; into.first = []; into.basis = []; into.words = []; into.secs = [];
+  for(var k=0;k<n;k++){
+    into.calls.push(null); into.sel.push(null); into.first.push(null);
+    into.basis.push(null); into.words.push(""); into.secs.push(0);
+  }
+}
+(function(){
+  var one = {}, two = {};
+  blankRound(14, one); blankRound(5, two);
+  S.calls = one.calls; S.sel = one.sel; S.first = one.first;
+  S.basis = one.basis; S.words = one.words; S.secs = one.secs;
+  S.r2calls = two.calls; S.r2sel = two.sel; S.r2first = two.first;
+  S.r2basis = two.basis; S.r2words = two.words; S.r2secs = two.secs;
+})();
 
 var screen = document.getElementById("screen");
 
@@ -526,6 +671,11 @@ function restoreRun(){
   restoring = true;
   Object.keys(was).forEach(function(k){ S[k] = was[k]; });
   restoring = false;
+  /* a run saved by an older build carries no selection and no first-call arrays */
+  if(!Array.isArray(S.sel) || S.sel.length !== 14) S.sel = S.calls.slice();
+  if(!Array.isArray(S.first) || S.first.length !== 14) S.first = S.calls.slice();
+  if(!Array.isArray(S.r2sel) || S.r2sel.length !== 5) S.r2sel = S.r2calls.slice();
+  if(!Array.isArray(S.r2first) || S.r2first.length !== 5) S.r2first = S.r2calls.slice();
   /* a send that was in flight when the tab reloaded is not a send that landed */
   if(S.sendState === "sending") S.sendState = "not sent";
   S.testAttempt = S.testAttempt || TEST_MODE;
@@ -555,7 +705,10 @@ function buildTrack(){
     if((r+c)%2===0) chq += '<rect x="'+(287.4+c*3.4)+'" y="'+(8+r*3.5)+'" width="3.4" height="3.5" fill="var(--mason)"/>';
   } }
   document.getElementById("track").innerHTML =
-    '<svg id="trk" viewBox="0 0 300 26" role="img" aria-label="Fourteen lines, one segment each">'+
+    '<svg id="trk" viewBox="0 0 300 34" role="img" '+
+      'aria-label="Fourteen lines, one segment each, with a lock mark over every line you have committed">'+
+      '<g id="locks"></g>'+
+      '<g id="trackbody" transform="translate(0,8)">'+
       '<rect x="4" y="19" width="292" height="3.4" rx="1.7" fill="#ece6d8"/>'+
       '<rect x="4" y="8" width="292" height="9" rx="4.5" fill="#e6e0d2"/>'+
       '<rect id="fill" x="4" y="8" width="0.1" height="9" rx="4.5" fill="var(--mason)" opacity=".32"/>'+
@@ -576,7 +729,28 @@ function buildTrack(){
           '<circle cx="4" cy="15.4" r="1.9" fill="var(--mason-deep)"/>'+
         '</g>'+
       '</g>'+
+      '</g>'+
     '</svg>';
+}
+/* a committed line wears a small lock over its segment, so the track shows at a glance
+   which calls are settled and which one is still the player's to change */
+function lockGlyph(cx){
+  return '<g transform="translate('+cx.toFixed(1)+',0)">'+
+    '<path d="M-1.55 3.5V2.35a1.55 1.55 0 0 1 3.1 0V3.5" fill="none" stroke="var(--mason)" '+
+      'stroke-width="0.95" stroke-linecap="round"/>'+
+    '<rect x="-2.4" y="3.3" width="4.8" height="3.9" rx="1" fill="var(--mason)"/>'+
+  '</g>';
+}
+function paintLocks(){
+  var g = document.getElementById("locks");
+  if(!g) return;
+  var out = "", k, cx;
+  for(k=0;k<SEGS;k++){
+    if(S.calls[k] === null || S.calls[k] === undefined) continue;
+    cx = CAR_X0 + ((k+0.5)/SEGS)*(CAR_X1-CAR_X0);
+    out += lockGlyph(cx);
+  }
+  if(g.innerHTML !== out) g.innerHTML = out;
 }
 function doneIn(list){ return list.filter(function(v){ return v!==null; }).length; }
 function lapsDone(){ return doneIn(S.calls); }
@@ -599,6 +773,7 @@ function paintTrack(){
   if(tr){ tr.classList.toggle("on", S.streak>=2); tr.classList.toggle("big", hot); }
   if(fl){ fl.classList.toggle("on", S.streak>=3); fl.classList.toggle("big", hot); }
   if(cq) cq.classList.toggle("lit", done>=SEGS);
+  paintLocks();
   placeCodename(x);
 }
 /* the codename sits on the band directly over the car, once the player has picked one */
@@ -641,11 +816,119 @@ function lapText(){
 }
 function lapMinutes(){ return String(Math.max(1, Math.round(lapMs()/60000))); }
 
+/* ---------- points and rank ----------
+   A hundred for a call that agrees with the answer key, fifty for a basis that agrees with it,
+   twenty five for every step of a streak from the third onward, and seventy five for catching a
+   cause the memo asserted with nothing behind it. Points and rank are read off the fourteen
+   trained lines only: the fresh case runs as an assessment and is scored on its own, and a
+   points total moving between those five lines would tell the player how they were doing.
+   The thresholds are set so a clean run reaches Partner and flagging every line stops at Staff. */
+var PT_CALL = 100, PT_REASON = 50, PT_STREAK = 25, PT_COVER = 75, STREAK_FROM = 3;
+var RANKS = [
+  {name:"Trainee", at:0},
+  {name:"Staff",   at:900},
+  {name:"Senior",  at:1500},
+  {name:"Manager", at:2000},
+  {name:"Partner", at:2500}
+];
+/* the two error types where the memo names a cause and nothing on file carries it */
+function isCoverStory(c){
+  return c.type === "unsupported driver" || c.type === "unsupported attribution";
+}
+function linePoints(c, call, chips, streakBefore){
+  var p = {call:0, reason:0, streak:0, cover:0, streakAt:0, total:0};
+  if(call !== c.key) return p;
+  p.call = PT_CALL;
+  if(reasonRight(c, chips)) p.reason = PT_REASON;
+  p.streakAt = streakBefore + 1;
+  if(p.streakAt >= STREAK_FROM) p.streak = PT_STREAK;
+  if(c.key === "flag" && isCoverStory(c)) p.cover = PT_COVER;
+  p.total = p.call + p.reason + p.streak + p.cover;
+  return p;
+}
+/* every counter is recomputed from the calls on record rather than added to as they arrive,
+   because a player who goes back and changes one call changes everything that follows it */
+var LINE_PTS = [];
+function rescore(){
+  var caught=0, cleared=0, ff=0, st=0, best=0, pts=0;
+  LINE_PTS = [];
+  for(var i=0;i<CARDS.length;i++){
+    var call = S.calls[i];
+    if(call === null || call === undefined){ LINE_PTS.push(null); continue; }
+    var c = CARDS[i];
+    var p = linePoints(c, call, S.basis[i], st);
+    LINE_PTS.push(p);
+    pts += p.total;
+    if(call === c.key){
+      if(c.key === "flag") caught++; else cleared++;
+      st++; if(st > best) best = st;
+    } else {
+      if(call === "flag") ff++;
+      st = 0;
+    }
+  }
+  S.caught = caught; S.cleared = cleared; S.falseFlags = ff;
+  S.streak = st; S.best = best; S.points = pts;
+}
+function rescore2(){
+  var ca=0, cl=0, ff=0;
+  for(var i=0;i<CARDS2.length;i++){
+    var call = S.r2calls[i];
+    if(call === null || call === undefined) continue;
+    var c = CARDS2[i];
+    if(call === c.key){ if(c.key === "flag") ca++; else cl++; }
+    else if(call === "flag") ff++;
+  }
+  S.r2caught = ca; S.r2cleared = cl; S.r2false = ff;
+}
+function rankAt(points){
+  var r = RANKS[0];
+  for(var i=0;i<RANKS.length;i++){ if(points >= RANKS[i].at) r = RANKS[i]; }
+  return r;
+}
+function rankProgress(){
+  var pts = S.points || 0, cur = rankAt(pts), idx = 0, i;
+  for(i=0;i<RANKS.length;i++){ if(RANKS[i] === cur) idx = i; }
+  var nxt = RANKS[idx+1] || null;
+  if(!nxt) return {name:cur.name, pct:100, next:null, need:0, at:0};
+  var span = nxt.at - cur.at;
+  return {name:cur.name, next:nxt.name, at:nxt.at, need:Math.max(0, nxt.at - pts),
+          pct:Math.max(0, Math.min(100, Math.round((pts - cur.at) / span * 100)))};
+}
+function pointsText(n){ return Number(n||0).toLocaleString("en-US"); }
+
+/* the header meter: the rank the points have reached, and how far into the next one they are */
+function paintRank(){
+  var box = document.getElementById("rankmeter");
+  if(!box) return;
+  var show = !barQuiet() && S.step >= 3 && S.step <= 16 && lapsDone() > 0;
+  box.hidden = !show;
+  if(!show) return;
+  var pr = rankProgress();
+  document.getElementById("rmname").textContent = pr.name;
+  document.getElementById("rmnote").textContent = pr.next
+    ? pointsText(S.points) + " points, " + pr.next + " at " + pointsText(pr.at)
+    : pointsText(S.points) + " points, top rank";
+  var fill = document.getElementById("rmfill");
+  fill.style.width = pr.pct + "%";
+  box.setAttribute("aria-label", "Rank " + pr.name + ", " + pointsText(S.points) + " points");
+}
+/* a rank crossed: the bar flashes gold once and the name changes under it */
+function flashRank(){
+  var box = document.getElementById("rankmeter");
+  if(!box) return;
+  box.classList.remove("up");
+  void box.offsetWidth;
+  box.classList.add("up");
+  setTimeout(function(){ box.classList.remove("up"); }, 440);
+}
+
 function progress(){
   var trk = document.getElementById("track");
   var quiet = barQuiet();
   if(trk) trk.hidden = quiet;
   if(!quiet) paintTrack();
+  paintRank();
   var lab = document.getElementById("step");
   var sc = document.getElementById("score");
   if(S.step>=3 && S.step<=16){
@@ -800,7 +1083,11 @@ function chart(c){
 }
 
 /* ---------- screens ---------- */
+/* one line at the top of every screen, answering what the player is doing and why */
+function whyLine(t){ return '<p class="whyline">'+esc(t)+'</p>'; }
+
 function render(){
+  setKeys(null);
   var app = document.getElementById("app");
   app.classList.toggle("wide", S.step===2);
   app.classList.toggle("hasbar", S.step===2);
@@ -809,12 +1096,12 @@ function render(){
   if(s===0) return intro();
   if(s===1) return identity();
   if(s===2) return roundOne();
-  if(s>=3 && s<=16) return card(s-3);
+  if(s>=3 && s<=16) return lineScreen(s-3, 1);
   if(s===90) return howScreen();
   if(s===91) return noticeScreen();
   if(s===92) return r2Results();
   if(s===17) return bridge();
-  if(s>=18 && s<=22) return card2(s-18);
+  if(s>=18 && s<=22) return lineScreen(s-18, 2);
   if(s>=24) return done();
 }
 
@@ -880,6 +1167,7 @@ function howDiagram(){
 function howScreen(){
   screen.innerHTML =
     '<div class="howwrap">'+
+      whyLine("Where this check sits in a real close, and how to run it on a ledger of your own.")+
       '<h2>How this works in a real close</h2>'+
       '<p>Second Pass sits between the AI draft and the sign-off. The reviewer still signs, and nothing else does.</p>'+
       '<figure class="figure">'+howDiagram()+
@@ -924,6 +1212,7 @@ var NOTICE = {
 };
 function noticeScreen(){
   screen.innerHTML =
+    whyLine("Before anything is collected, here is what this drill records and where it goes.")+
     '<h2>Before you pick a codename</h2>'+
     '<div class="notice"><h3>'+esc(NOTICE.head)+'</h3><ul>'+
       NOTICE.items.map(function(t){ return '<li>'+esc(t)+'</li>'; }).join("")+
@@ -933,11 +1222,53 @@ function noticeScreen(){
   document.getElementById("noticego").addEventListener("click", function(){ go(1); });
 }
 
+/* ---------- how to play, in three frames ----------
+   Drawn rather than described, because the loop is three moves and a paragraph about it would
+   be longer than the loop. Hairlines and ink, the same two weights the cards use. */
+function playFrames(){
+  var soft = "var(--ink-soft)", rule = "var(--rule-strong)", ink = "var(--ink)";
+  var box = '<rect x="1.5" y="1.5" width="97" height="63" rx="5" fill="var(--card)" stroke="'+rule+'"/>';
+  var one =
+    box+
+    '<rect x="11" y="12" width="46" height="7" rx="2" fill="var(--bar-old)"/>'+
+    '<rect x="11" y="23" width="66" height="7" rx="2" fill="'+ink+'"/>'+
+    '<path d="M11 40h78" stroke="'+rule+'"/>'+
+    '<circle cx="13" cy="48" r="1.6" fill="'+soft+'"/><path d="M19 48h62" stroke="'+rule+'" stroke-width="2.2" stroke-linecap="round"/>'+
+    '<circle cx="13" cy="56" r="1.6" fill="'+soft+'"/><path d="M19 56h46" stroke="'+rule+'" stroke-width="2.2" stroke-linecap="round"/>';
+  var two =
+    box+
+    '<rect x="9" y="19" width="39" height="28" rx="5" fill="none" stroke="'+rule+'"/>'+
+    '<path d="M17 33h23" stroke="'+soft+'" stroke-width="2.4" stroke-linecap="round"/>'+
+    '<rect x="52" y="19" width="39" height="28" rx="5" fill="'+ink+'"/>'+
+    '<path d="M60 33h23" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>';
+  var three =
+    box+
+    '<path d="M28 17l6 6 12-13" fill="none" stroke="var(--mason)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'+
+    '<path d="M54 14h26M54 22h18" stroke="'+rule+'" stroke-width="2.4" stroke-linecap="round"/>'+
+    '<rect x="9" y="34" width="82" height="22" rx="5" fill="'+ink+'"/>'+
+    '<path d="M42 44v-2.4a3 3 0 0 1 6 0V44" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>'+
+    '<rect x="41.2" y="43.4" width="7.6" height="6.4" rx="1.6" fill="#fff"/>';
+  var frames = [
+    [one,   "Read the line against the ledger and the file behind it."],
+    [two,   "Choose whether the memo's explanation holds."],
+    [three, "Lock it in, and the answer key comes back with your points."]
+  ];
+  return '<section class="howplay">'+
+    '<h3>How to play, in twenty seconds</h3>'+
+    '<ol class="frames">'+frames.map(function(f, k){
+      return '<li><svg viewBox="0 0 100 66" role="img" aria-label="Step '+(k+1)+'. '+esc(f[1])+'">'+
+        f[0]+'</svg><p>'+esc(f[1])+'</p></li>';
+    }).join("")+'</ol>'+
+  '</section>';
+}
+
 function intro(){
   screen.innerHTML =
+    whyLine("You are about to review a close memo an AI assistant wrote, one line at a time.")+
     '<h1>Second Pass:<br>Beat the Machine</h1>'+
     '<p>Halyard is a made-up company. Its June close memo reads the way an AI assistant writes one, and it carries the mistakes they make.</p>'+
     '<p>The ledger does not explain itself, so the causes in the memo are guesses, and some of them are wrong. They read well enough that a busy reviewer would sign off and move on. You are the second pass. You will read fourteen lines and flag the ones that do not hold.</p>'+
+    playFrames()+
     '<button class="btn" id="go">Play</button>'+
     '<div class="linkrow"><button class="howlink" id="howlink">How this works in a real close</button>'+
       '<a class="howlink" href="checker.html">Checker</a>'+
@@ -951,6 +1282,7 @@ function identity(){
     return '<button class="chip'+(S.orgs.indexOf(o)>-1?" on":"")+'" data-i="'+idx+'">'+esc(o)+'</button>';
   }).join("");
   screen.innerHTML =
+    whyLine("A codename keeps the run yours on the leaderboard without putting your name on it.")+
     '<h2>Before you start</h2>'+
     '<p class="sub">A codename for the leaderboard, and the chapters you belong to.</p>'+
     '<input type="text" id="cn" placeholder="Silver Ledger" autocomplete="off" value="'+esc(S.codename)+'">'+
@@ -1080,7 +1412,9 @@ function roundOne(){
   var hero = '<div class="hero"><h2>The ledger, May against June</h2>'+
     '<p>Read it before the memo. You can open it again from any card.</p></div>';
   var go3 = '<button class="btn secondary" data-go3="1">Skip the picks and continue</button>';
-  screen.innerHTML = hero+
+  screen.innerHTML =
+    whyLine("Read the ledger first, because every call you make compares what the memo says against what the accounts did.")+
+    hero+
     '<div class="orient stmtwrap">'+
       '<div class="orientmain">'+flagCard()+statement("", true)+prepickBlock()+'</div>'+
       '<aside class="orientside">'+flagCard()+go3+'</aside>'+
@@ -1117,23 +1451,212 @@ function cardBody(c, round, i){
     fileBlock;
 }
 
-function card(i){
-  var c = CARDS[i];
-  if(!S.lapStart) S.lapStart = Date.now();
+/* ---------- the keyboard ----------
+   One handler at a time, owned by the screen on show. Every screen is rebuilt from scratch,
+   so the handler is taken off the document before the next one goes on. */
+var KEYS = null;
+function setKeys(fn){
+  if(KEYS) document.removeEventListener("keydown", KEYS);
+  KEYS = fn || null;
+  if(KEYS) document.addEventListener("keydown", KEYS);
+}
+function sheetOpen(){ return !!document.getElementById("sheet"); }
+
+/* the arrays each round reads and writes, so one set of screens serves both */
+function cardsOf(r){ return r === 2 ? CARDS2 : CARDS; }
+function callsOf(r){ return r === 2 ? S.r2calls : S.calls; }
+function selOf(r){ return r === 2 ? S.r2sel : S.sel; }
+function firstOf(r){ return r === 2 ? S.r2first : S.first; }
+function basisOf(r){ return r === 2 ? S.r2basis : S.basis; }
+function wordsOf(r){ return r === 2 ? S.r2words : S.words; }
+function secsOf(r){ return r === 2 ? S.r2secs : S.secs; }
+function lastIndex(r){ return r === 2 ? 4 : 13; }
+
+/* a line that is already committed shows its verdict rather than its buttons, which is also
+   what a player gets back when they reload the tab in the middle of a run */
+function lineScreen(i, round){
+  var call = callsOf(round)[i];
+  if(call === null || call === undefined) return callCard(i, round);
+  if(round === 2 && ASSESS) return go(i === 4 ? 92 : S.step + 1);
+  return reveal(i, round);
+}
+
+/* ---------- the call, in two steps ----------
+   Tapping Let it stand or Flag it selects it and opens the basis row. Nothing is committed and
+   nothing is revealed until Lock it in. Until then the other button is still live, the chips are
+   still open, and Back reopens the line before this one with its own basis and words intact. */
+function callCard(i, round){
+  var c = cardsOf(round)[i];
+  if(round === 2){ if(!S.r2Start) S.r2Start = Date.now(); }
+  else if(!S.lapStart) S.lapStart = Date.now();
   S.itemStart = Date.now();
   saveRun();
+  var prev = (i > 0) ? cardsOf(round)[i-1] : null;
+  var backBtn = prev
+    ? '<div class="backrow"><button class="btn-text quiet" id="backline">Back to '+
+      (round === 2 ? "fresh line " : "line ")+prev.n+'</button></div>'
+    : "";
   screen.innerHTML =
+    whyLine("Read the memo against the ledger and the file, then make the call you would defend to a reviewer.")+
     '<div class="card">'+
-      cardBody(c, 1, i)+
+      cardBody(c, round, i)+
       '<p class="ask">Does the memo\'s explanation hold?</p>'+
-      '<div class="two">'+
-        '<button class="btn secondary" id="stand">Let it stand</button>'+
-        '<button class="btn secondary" id="flag">Flag it</button>'+
+      '<div class="two calls">'+
+        '<button class="btn call" id="stand" aria-pressed="false">Let it stand'+
+          '<span class="kbd ink">1</span></button>'+
+        '<button class="btn call" id="flag" aria-pressed="false">Flag it'+
+          '<span class="kbd ink">2</span></button>'+
       '</div>'+
-    '</div>';
+      '<div class="commit" id="commit" hidden></div>'+
+    '</div>'+
+    backBtn;
   wireLedger();
-  document.getElementById("flag").addEventListener("click", function(){ basisStep(i,"flag",1); });
-  document.getElementById("stand").addEventListener("click", function(){ basisStep(i,"stand",1); });
+
+  var standBtn = document.getElementById("stand"), flagBtn = document.getElementById("flag");
+  var commit = document.getElementById("commit");
+
+  function paintButtons(){
+    var sel = selOf(round)[i];
+    [["stand", standBtn], ["flag", flagBtn]].forEach(function(pair){
+      var on = sel === pair[0];
+      pair[1].setAttribute("aria-pressed", on ? "true" : "false");
+      pair[1].classList.toggle("on", on);
+      pair[1].classList.toggle("dim", !!sel && !on);
+    });
+  }
+
+  function paintCommit(){
+    var sel = selOf(round)[i];
+    if(!sel){ commit.hidden = true; commit.innerHTML = ""; return; }
+    var opts = basisChips(sel);
+    var picked = (basisOf(round)[i] || []).slice();
+    var wordsBox = (sel === "flag")
+      ? '<label class="basiswords" for="basiswords">In your words (optional)</label>'+
+        '<input type="text" id="basiswords" class="basisinput" maxlength="140" '+
+        'placeholder="One line, if you want to add one" value="'+esc(wordsOf(round)[i] || "")+'">'
+      : "";
+    commit.hidden = false;
+    commit.innerHTML =
+      '<div class="basis">'+
+        '<p class="ask">You said '+(sel === "flag" ? "flag it" : "let it stand")+'. What is your basis?</p>'+
+        '<p class="tiny basishint">Tap at least one. More than one is fine.</p>'+
+        '<div class="chips" role="group" aria-label="Your basis">'+
+          opts.map(function(o, k){
+            var on = picked.indexOf(o) > -1;
+            return '<button type="button" class="chip'+(on ? " on" : "")+'" data-k="'+k+'" '+
+                   'aria-pressed="'+(on ? "true" : "false")+'">'+esc(o)+'</button>';
+          }).join("")+
+        '</div>'+
+        wordsBox+
+        '<button class="btn" id="lockin"'+(picked.length ? "" : " disabled")+'>Lock it in'+
+          '<span class="kbd">Enter</span></button>'+
+        '<p class="tiny locknote">Nothing is scored until you lock it in, and you can change '+
+          'your call until then.</p>'+
+      '</div>';
+    var lockBtn = document.getElementById("lockin");
+    Array.prototype.forEach.call(commit.querySelectorAll(".chip"), function(b){
+      function toggle(){
+        var o = opts[Number(b.getAttribute("data-k"))];
+        var list = basisOf(round)[i] || [];
+        var at = list.indexOf(o);
+        if(at === -1) list = list.concat([o]);
+        else { list = list.slice(); list.splice(at, 1); }
+        /* the chips post in the order the row shows them, not the order they were tapped */
+        list.sort(function(x, y){ return opts.indexOf(x) - opts.indexOf(y); });
+        basisOf(round)[i] = list;
+        b.classList.toggle("on", at === -1);
+        b.setAttribute("aria-pressed", at === -1 ? "true" : "false");
+        lockBtn.disabled = list.length === 0;
+        saveRun();
+      }
+      b.addEventListener("click", toggle);
+      /* the space bar and the return key, spelled out rather than left to the default,
+         so the row works the same on a keyboard as it does under a thumb */
+      b.addEventListener("keydown", function(e){
+        if(e.key === " " || e.key === "Spacebar" || e.code === "Space" || e.key === "Enter"){
+          e.preventDefault(); e.stopPropagation(); toggle();
+        }
+      });
+    });
+    var wordsEl = document.getElementById("basiswords");
+    if(wordsEl){
+      wordsEl.addEventListener("input", function(){
+        wordsOf(round)[i] = wordsEl.value.replace(/[\r\n|]+/g, " ").trim();
+      });
+    }
+    lockBtn.addEventListener("click", lock);
+  }
+
+  function select(val){
+    if(selOf(round)[i] === val) return;
+    if(firstOf(round)[i] === null || firstOf(round)[i] === undefined) firstOf(round)[i] = val;
+    selOf(round)[i] = val;
+    /* the two chip sets are not the same, so a chip that does not exist on the new set goes */
+    var opts = basisChips(val);
+    basisOf(round)[i] = (basisOf(round)[i] || []).filter(function(x){ return opts.indexOf(x) > -1; });
+    saveRun();
+    paintButtons();
+    paintCommit();
+  }
+
+  function lock(){
+    var val = selOf(round)[i];
+    var chips = basisOf(round)[i] || [];
+    if(!val || !chips.length) return;
+    var wordsEl = document.getElementById("basiswords");
+    wordsOf(round)[i] = wordsEl ? wordsEl.value.replace(/[\r\n|]+/g, " ").trim() : "";
+    secsOf(round)[i] = S.itemStart ? Math.max(0, Math.round((Date.now() - S.itemStart)/1000)) : 0;
+    callsOf(round)[i] = val;
+    if(i === lastIndex(round)){
+      if(round === 2) S.r2End = Date.now(); else S.lapEnd = Date.now();
+    }
+    if(round === 2){
+      rescore2();
+      saveRun();
+      if(ASSESS) return go(i === 4 ? 92 : S.step + 1);
+      return reveal(i, 2);
+    }
+    var wasRank = rank();
+    rescore();
+    saveRun();
+    LEVELED = (rank() !== wasRank);
+    carFx(S.calls[i] === CARDS[i].key);
+    reveal(i, 1);
+  }
+
+  function goBack(){
+    if(!prev) return;
+    /* the line before this one comes back live: its call is uncommitted, and its basis and
+       its words are still there to be changed */
+    callsOf(round)[i-1] = null;
+    if(round === 2) rescore2(); else rescore();
+    saveRun();
+    go(S.step - 1);
+  }
+
+  standBtn.addEventListener("click", function(){ select("stand"); });
+  flagBtn.addEventListener("click", function(){ select("flag"); });
+  if(prev) document.getElementById("backline").addEventListener("click", goBack);
+
+  setKeys(function(e){
+    if(e.metaKey || e.ctrlKey || e.altKey) return;
+    if(sheetOpen()){
+      if(e.key === "Escape"){ e.preventDefault(); var sh = document.getElementById("sheet"); if(sh) sh.remove(); }
+      return;
+    }
+    var t = e.target, tag = t && t.tagName;
+    var typing = tag === "INPUT" || tag === "TEXTAREA";
+    if(e.key === "1" && !typing){ e.preventDefault(); select("stand"); }
+    else if(e.key === "2" && !typing){ e.preventDefault(); select("flag"); }
+    else if(e.key === "Enter"){
+      if(t && t.classList && t.classList.contains("chip")) return;
+      e.preventDefault(); lock();
+    }
+    else if(e.key === "Backspace" && !typing){ e.preventDefault(); goBack(); }
+  });
+
+  paintButtons();
+  paintCommit();
 }
 
 /* ---------- the basis row ----------
@@ -1201,119 +1724,138 @@ function openNote(c){
   return c.stillOpen ? '<p class="tiny" style="margin:8px 0 0"><b>Still open.</b> '+esc(c.stillOpen)+'</p>' : "";
 }
 
-function basisStep(i, val, round){
-  var c = (round===2) ? CARDS2[i] : CARDS[i];
-  var opts = basisChips(val);
-  var picked = [];
-  var wordsBox = (val==="flag")
-    ? '<label class="basiswords" for="basiswords">In your words (optional)</label>'+
-      '<input type="text" id="basiswords" class="basisinput" maxlength="140" '+
-      'placeholder="One line, if you want to add one">'
-    : "";
-  screen.innerHTML =
-    '<div class="card">'+
-      cardBody(c, round, i)+
-      '<div class="basis">'+
-        '<p class="ask">You said '+(val==="flag" ? "flag it" : "let it stand")+'. What is your basis?</p>'+
-        '<p class="tiny basishint">Tap at least one. More than one is fine.</p>'+
-        '<div class="chips" role="group" aria-label="Your basis">'+
-          opts.map(function(o,k){
-            return '<button type="button" class="chip" data-k="'+k+'" aria-pressed="false">'+esc(o)+'</button>';
-          }).join("")+
-        '</div>'+
-        wordsBox+
-        '<button class="btn" id="basisgo" disabled>Continue</button>'+
-      '</div>'+
-    '</div>';
-  wireLedger();
-  var go2 = document.getElementById("basisgo");
-  Array.prototype.forEach.call(screen.querySelectorAll(".chip"), function(b){
-    function toggle(){
-      var k = Number(b.getAttribute("data-k"));
-      var at = picked.indexOf(k);
-      if(at === -1){ picked.push(k); b.classList.add("on"); b.setAttribute("aria-pressed","true"); }
-      else { picked.splice(at,1); b.classList.remove("on"); b.setAttribute("aria-pressed","false"); }
-      go2.disabled = picked.length === 0;
-    }
-    b.addEventListener("click", toggle);
-    /* the space bar and the return key, spelled out rather than left to the default,
-       so the row works the same on a keyboard as it does under a thumb */
-    b.addEventListener("keydown", function(e){
-      if(e.key === " " || e.key === "Spacebar" || e.code === "Space" || e.key === "Enter"){ e.preventDefault(); toggle(); }
-    });
-  });
-  go2.addEventListener("click", function(){
-    if(!picked.length) return;
-    picked.sort(function(a,b2){ return a-b2; });
-    var chosen = picked.map(function(k){ return opts[k]; });
-    var wordsEl = document.getElementById("basiswords");
-    var words = wordsEl ? wordsEl.value.replace(/[\r\n|]+/g," ").trim() : "";
-    var spent = S.itemStart ? Math.max(0, Math.round((Date.now()-S.itemStart)/1000)) : 0;
-    if(round===2){ S.r2basis[i] = chosen; S.r2words[i] = words; S.r2secs[i] = spent; answer2(i,val); }
-    else { S.basis[i] = chosen; S.words[i] = words; S.secs[i] = spent; answer(i,val); }
-  });
-  window.scrollTo(0,0);
-}
-
-
-function answer(i, val){
-  var c = CARDS[i];
-  S.calls[i] = val;
-  if(i === 13) S.lapEnd = Date.now();
-  var right = (val === c.key);
-  if(right){
-    if(c.key==="flag") S.caught++; else S.cleared++;
-    S.streak++;
-    if(S.streak > S.best) S.best = S.streak;
-  } else {
-    if(val === "flag") S.falseFlags++;
-    S.streak = 0;
+/* ---------- the reveal ----------
+   It takes the card area for a beat. A call that agrees with the answer key turns over to a
+   verdict face carrying the points it earned, counting up; a call that does not gets a calm
+   face with what was actually true, the ask the reviewer should have made, and the line from
+   the case that teaches it. Nothing here plays a sound. */
+var LEVELED = false;
+function countUp(el, to){
+  if(!el) return;
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+  if(reduce || !to){ el.textContent = pointsText(to); return; }
+  var t0 = 0, dur = 520;
+  function frame(ts){
+    if(!t0) t0 = ts;
+    var k = Math.min(1, (ts - t0) / dur);
+    el.textContent = pointsText(Math.round(to * (1 - Math.pow(1 - k, 3))));
+    if(k < 1) window.requestAnimationFrame(frame);
   }
-  carFx(right);
-  reveal(i, right);
+  window.requestAnimationFrame(frame);
+}
+/* the run of correct calls that stood before this line, so a broken streak can be named */
+function streakBefore(i){
+  var st = 0;
+  for(var k = 0; k < i; k++){
+    var call = S.calls[k];
+    if(call === null || call === undefined){ st = 0; continue; }
+    st = (call === CARDS[k].key) ? st + 1 : 0;
+  }
+  return st;
+}
+/* the running score and the rank, on both faces */
+function runState(round){
+  var seen = doneIn(callsOf(round));
+  var right = (round === 2) ? (S.r2caught + S.r2cleared) : (S.caught + S.cleared);
+  var pr = rankProgress();
+  return '<div class="runstate">'+
+    '<p class="counts"><span><b>'+right+'</b>of '+seen+' right</span>'+
+      '<span><b>'+pointsText(S.points)+'</b>points</span></p>'+
+    '<div class="rmbar"><i style="width:'+pr.pct+'%"></i></div>'+
+    '<p class="tiny runnext">'+esc(pr.name)+'. '+(pr.next
+      ? pointsText(pr.need)+' points to '+esc(pr.next)+'.'
+      : 'Partner is the top rank.')+'</p>'+
+  '</div>';
 }
 
-function splitBar(round){
-  var seen = (round===2) ? doneIn(S.r2calls) : doneIn(S.calls);
-  var right = (round===2) ? (S.r2caught + S.r2cleared) : (S.caught + S.cleared);
-  var cw = seen ? Math.round(right/seen*100) : 0;
-  return '<div class="split"><div class="splitbar"><i class="c" style="width:'+cw+'%"></i></div>'+
-    '<div class="splitlab"><span>'+right+' of '+seen+' right so far</span></div></div>';
-}
-
-
-function reveal(i, right){
-  var c = CARDS[i];
-  var head = right ? (c.key==="flag" ? "Caught it" : "Cleared it")
-                   : (c.key==="flag" ? "That one got past you" : "You flagged a clean line");
+function reveal(i, round){
+  var c = cardsOf(round)[i];
+  var call = callsOf(round)[i];
+  var right = call === c.key;
+  var scored = (round === 1);
+  var last = i === lastIndex(round);
+  var total = (round === 2) ? 5 : 14;
+  var label = (round === 2 ? "Fresh line " : "Line ") + c.n + " of " + total;
   progress();
-  var celebration = "";
-  if(right && c.key==="flag" && c.type==="unsupported driver") celebration = '<p class="mark">Unsupported driver caught.</p>';
-  var streakLine = "";
-  if(right && S.streak>=5) streakLine = '<p class="mark">On fire.</p>';
-  else if(right && S.streak>=3) streakLine = '<p class="mark">Streak '+S.streak+'.</p>';
-  var costLine = (!right && c.key==="stand")
-    ? '<p class="tiny" style="margin:8px 0 0">A false flag scores the same as a line that gets past you.</p>'
-    : "";
+
+  var head = right
+    ? (c.key === "flag" ? "Caught it" : "Cleared it")
+    : (c.key === "flag" ? "It got past you" : "A false flag");
+  var face;
+  if(right){
+    var p = (scored && LINE_PTS[i])
+      ? LINE_PTS[i]
+      : linePoints(c, call, basisOf(round)[i], 0);
+    var rows = '<li><span>Right call</span><b>+'+PT_CALL+'</b></li>';
+    rows += p.reason
+      ? '<li><span>Basis agrees with the key</span><b>+'+PT_REASON+'</b></li>'
+      : '<li class="none"><span>Basis does not agree with the key</span><b>0</b></li>';
+    if(p.streak) rows += '<li><span>'+p.streakAt+' in a row</span><b>+'+PT_STREAK+'</b></li>';
+    if(p.cover) rows += '<li><span>Cover story caught</span><b>+'+PT_COVER+'</b></li>';
+    var pts = scored
+      ? '<div class="ptsblock">'+
+          '<p class="ptstotal"><span id="ptscount">0</span><i>points on this line</i></p>'+
+          '<ul class="ptslist">'+rows+'</ul>'+
+        '</div>'
+      : '';
+    face =
+      '<div class="reveal good turn" id="revface">'+
+        '<span class="revtype">'+esc(c.type)+'</span>'+
+        '<h2 class="verdict">'+head+'</h2>'+
+        '<p class="revtell">'+esc(c.tell)+'</p>'+
+        pts+
+        (LEVELED ? '<p class="levelup">New rank, '+esc(rank())+'.</p>' : '')+
+      '</div>';
+  } else {
+    var truth = (c.key === "flag") ? c.truth : c.over;
+    var ask = (c.key === "flag")
+      ? c.ask
+      : "Nothing to ask on this line. The figure and the reason both held, and flagging a line "+
+        "like this costs the controller time on work that was already right.";
+    var broke = scored ? streakBefore(i) : 0;
+    var nil = scored
+      ? ("No points on this line." + (broke >= 2 ? " Your run of " + broke + " in a row ends here." : ""))
+      : "";
+    face =
+      '<div class="reveal bad turn" id="revface">'+
+        '<span class="revtype">'+esc(c.type)+'</span>'+
+        '<h2 class="verdict">'+head+'</h2>'+
+        '<p class="revtruth">'+esc(truth)+'</p>'+
+        '<div class="askbox"><span class="label">The ask</span><p>'+esc(ask)+'</p></div>'+
+        (nil ? '<p class="revnil">'+esc(nil)+'</p>' : '')+
+        '<p class="revcoach">'+esc(c.tell)+'</p>'+
+      '</div>';
+  }
+
+  var nextLabel = last
+    ? (round === 2 ? "See how you did" : "Start round two")
+    : "Next line";
   screen.innerHTML =
-    '<div class="cardhead plain"><span class="revlabel">Line '+c.n+' of 14</span></div>'+
-    strip(c.acct)+
-    ledgerBig(c.acct)+
-    '<div class="outcome '+(right?"good":"bad")+'">'+
-      '<span class="status">'+esc(c.type)+'</span>'+
-      '<h2>'+head+'</h2>'+
-      celebration+
-    '</div>'+
-    '<p class="why">'+esc((!right && c.key==="stand" && c.over) ? c.over : c.why)+'</p>'+
-    costLine+
-    reasonNote(i,1)+
+    whyLine("This is what the answer key says about the call you just locked in.")+
+    '<div class="cardhead plain"><span class="revlabel">'+esc(label)+'</span></div>'+
+    face+
+    (reasonRightAt(i, round) ? "" : reasonNote(i, round))+
     openNote(c)+
-    streakLine+
-    splitBar()+
-    '<button class="btn" id="next">'+(i===13?"Start round two":"Next line")+'</button>';
+    runState(round)+
+    ledgerBig(c.acct, round === 2 ? 2 : undefined)+
+    '<button class="btn" id="next">'+nextLabel+'<span class="kbd">Enter</span></button>';
   wireLedger();
-  document.getElementById("next").addEventListener("click", function(){ go(S.step+1); });
-  window.scrollTo(0,0);
+  if(scored && right) countUp(document.getElementById("ptscount"), (LINE_PTS[i] || {}).total || 0);
+  if(LEVELED){ flashRank(); LEVELED = false; }
+  function onward(){
+    if(round === 2 && last) return go(24);
+    go(S.step + 1);
+  }
+  document.getElementById("next").addEventListener("click", onward);
+  setKeys(function(e){
+    if(e.metaKey || e.ctrlKey || e.altKey) return;
+    if(sheetOpen()){
+      if(e.key === "Escape"){ e.preventDefault(); var sh = document.getElementById("sheet"); if(sh) sh.remove(); }
+      return;
+    }
+    if(e.key === "Enter" || e.key === " " || e.code === "Space"){ e.preventDefault(); onward(); }
+  });
+  window.scrollTo(0, 0);
 }
 
 /* ---------- round two. A company the player has never seen, scored on its own. ---------- */
@@ -1326,6 +1868,7 @@ function bridge(){
     ? '<div class="file"><h4>What is already settled</h4><ul><li>'+esc(CASE2.assessmentNote)+'</li></ul></div>'
     : "";
   screen.innerHTML =
+    whyLine("The same job on a company you have never read, which is the part that tells you whether the habit transferred.")+
     '<div class="card">'+
       '<h2>Round two: a memo you have not seen</h2>'+
       '<p class="sub">Another made-up company, a memo built the same way, same job. Five lines.</p>'+
@@ -1360,6 +1903,7 @@ function r2Results(){
     '</section>';
   }).join("");
   screen.innerHTML =
+    whyLine("All five fresh calls come back together now that the last one is in.")+
     '<div class="cardhead plain"><span class="revlabel">Round two, all five</span></div>'+
     '<h2>How the five went</h2>'+
     '<p class="sub">Right call '+r2Right()+' of 5. Right reason '+reasonCount(2)+' of 5. '+
@@ -1370,77 +1914,6 @@ function r2Results(){
     '<button class="btn" id="r2done">See how you did overall</button>';
   document.getElementById("r2done").addEventListener("click", function(){ go(24); });
 }
-
-function card2(i){
-  var c = CARDS2[i];
-  if(!S.r2Start) S.r2Start = Date.now();
-  S.itemStart = Date.now();
-  saveRun();
-  screen.innerHTML =
-    '<div class="card">'+
-      cardBody(c, 2, i)+
-      '<p class="ask">Does the memo\'s explanation hold?</p>'+
-      '<div class="two">'+
-        '<button class="btn secondary" id="stand">Let it stand</button>'+
-        '<button class="btn secondary" id="flag">Flag it</button>'+
-      '</div>'+
-    '</div>';
-  wireLedger();
-  document.getElementById("flag").addEventListener("click", function(){ basisStep(i,"flag",2); });
-  document.getElementById("stand").addEventListener("click", function(){ basisStep(i,"stand",2); });
-}
-
-function answer2(i, val){
-  var c = CARDS2[i];
-  S.r2calls[i] = val;
-  if(i === 4) S.r2End = Date.now();
-  var right = (val === c.key);
-  if(right){ if(c.key==="flag") S.r2caught++; else S.r2cleared++; }
-  else if(val === "flag"){ S.r2false++; }
-  if(ASSESS){
-    /* nothing is shown back: no verdict, no streak, no car and no colour. The counters are
-       still kept, and the player sees all five of them on the results screen at the end. */
-    saveRun();
-    return go(i === 4 ? 92 : S.step+1);
-  }
-  S.streak = right ? S.streak+1 : 0;
-  carFx(right);
-  reveal2(i, right);
-}
-
-function reveal2(i, right){
-  var c = CARDS2[i];
-  var head = right ? (c.key==="flag" ? "Caught it" : "Cleared it")
-                   : (c.key==="flag" ? "That one got past you" : "You flagged a clean line");
-  progress();
-  var streakLine = "";
-  if(right && S.streak>=5) streakLine = '<p class="mark">On fire.</p>';
-  else if(right && S.streak>=3) streakLine = '<p class="mark">Streak '+S.streak+'.</p>';
-  var costLine = (!right && c.key==="stand")
-    ? '<p class="tiny" style="margin:8px 0 0">A false flag scores the same as a line that gets past you.</p>'
-    : "";
-  screen.innerHTML =
-    '<div class="cardhead plain"><span class="revlabel">Fresh line '+c.n+' of 5</span></div>'+
-    strip(c.acct, BOOK2)+
-    ledgerBig(c.acct, 2)+
-    '<div class="outcome '+(right?"good":"bad")+'">'+
-      '<span class="status">'+esc(c.type)+'</span>'+
-      '<h2>'+head+'</h2>'+
-    '</div>'+
-    '<p class="why">'+esc((!right && c.key==="stand" && c.over) ? c.over : c.why)+'</p>'+
-    costLine+
-    reasonNote(i,2)+
-    openNote(c)+
-    streakLine+
-    splitBar(2)+
-    '<button class="btn" id="next">'+(i===4?"See how you did":"Next line")+'</button>';
-  wireLedger();
-  document.getElementById("next").addEventListener("click", function(){ go(i===4 ? 24 : S.step+1); });
-  window.scrollTo(0,0);
-}
-
-
-
 
 
 /* ---------- generated summaries. Nothing here is typed by the player. ---------- */
@@ -1535,7 +2008,7 @@ function summaryB(){
   parts.push("Result: right call " + (S.caught+S.cleared) + " of 14, right reason " + reasonCount(1) +
              " of 14, " + S.caught + " caught, " +
              S.cleared + " let stand correctly, " + S.falseFlags + " false flag" + (S.falseFlags===1?"":"s") +
-             ", rank " + rank() + ".");
+             ", " + pointsText(S.points) + " points, rank " + rank() + ".");
   parts.push("Four questions on the form (expected quality, confidence before, confidence after, close experience) are not asked in this version. They carry a placeholder value the question accepts and are not participant answers.");
   parts.push("Longest run of correct calls: " + S.best + ".");
   return parts.join(" ");
@@ -1576,15 +2049,8 @@ function patternLine(){
   return badBit + ".";
 }
 
-/* Flagging all fourteen now scores eight, which lands at Trainee. */
-function rank(){
-  var right = S.caught + S.cleared;
-  if(right>=14) return "Partner";
-  if(right>=13) return "Manager";
-  if(right>=11) return "Senior";
-  if(right>=9) return "Staff";
-  return "Trainee";
-}
+/* the rank is read off the points, and the points are set out above the header meter */
+function rank(){ return rankAt(S.points || 0).name; }
 function tier(){
   var right = S.caught + S.cleared;
   if(right>=14) return "sweep";
@@ -1693,10 +2159,13 @@ function itemRecord(c, idx, round){
     account: c.acct,
     accountName: c.name,
     errorType: c.type,
-    /* one call per line in this build, so the original decision and the final decision are
-       the same value. They are kept apart because a later build lets a challenge change one. */
-    originalDecision: call,
+    /* a call is committed in two steps and can be changed before it is locked and by going
+       back a line, so the first call the player selected and the one they committed are kept
+       apart. They differ on a line the player thought again about. */
+    originalDecision: (round===2 ? S.r2first : S.first)[idx] || call,
     finalDecision: call,
+    decisionChanged: !!((round===2 ? S.r2first : S.first)[idx] &&
+                        (round===2 ? S.r2first : S.first)[idx] !== call),
     actualReasonChips: chips || [],
     actualReasonWords: words || "",
     basisKey: basisKeyOf(c).slice(),
@@ -1760,10 +2229,18 @@ function attemptRecord(sentPayload){
       keyVersions: {roundOne: CASE1.version, roundTwo: CASE2.version},
       roundOne: {right: S.caught + S.cleared, of: 14, rightReason: reasonCount(1), reasonOf: 14,
                  caught: S.caught, letStandCorrectly: S.cleared, falseFlags: S.falseFlags,
-                 longestRun: S.best, rank: rank()},
+                 longestRun: S.best, points: S.points, rank: rank()},
+      points: {total: S.points, rightCall: PT_CALL, rightReason: PT_REASON,
+               streakStepFrom: STREAK_FROM, streakStep: PT_STREAK, coverStory: PT_COVER,
+               ladder: RANKS.map(function(r){ return {rank: r.name, at: r.at}; }),
+               basis: "Points and rank are read off the fourteen trained lines. The fresh case " +
+                      "runs as an assessment and is scored on its own."},
       roundTwo: {right: r2Right(), of: 5, rightReason: reasonCount(2), reasonOf: 5,
                  caught: S.r2caught, letStandCorrectly: S.r2cleared, falseFlags: S.r2false},
-      rankBasis: "the call score only. The reason score never moves the rank or the badges.",
+      rankBasis: "points earned on the fourteen trained lines. The reason score adds points " +
+                 "and never moves the badges.",
+      badgesEarned: badges().map(function(b){ return b.t; }),
+      changedCallsRight: changedMind(),
       humanRubricScores: null,
       scorerId: null,
       outOfKeyFinding: null,
@@ -1866,15 +2343,33 @@ function trophySvg(t){
 
 /* ---------- the badges, earned off the key. Only what was earned shows, best three first ---------- */
 function got(n){ var c = CARDS[n-1]; return S.calls[n-1] === c.key; }
+/* a call the player selected one way, changed, and locked the other way, where the locked
+   one agreed with the key. Both rounds count, because both rounds let a call be changed. */
+function changedMind(){
+  var out = 0, i;
+  for(i=0;i<CARDS.length;i++){
+    if(S.first[i] && S.calls[i] && S.first[i] !== S.calls[i] && S.calls[i] === CARDS[i].key) out++;
+  }
+  for(i=0;i<CARDS2.length;i++){
+    if(S.r2first[i] && S.r2calls[i] && S.r2first[i] !== S.r2calls[i] && S.r2calls[i] === CARDS2[i].key) out++;
+  }
+  return out;
+}
+function noFalseFlags(){ return S.falseFlags === 0 && S.r2false === 0; }
 function badges(){
   var right = S.caught + S.cleared;
+  var steady = noFalseFlags();
   return [
     {t:"Clean sweep",        on: right===14, i:"coins"},
     /* the only badge the fresh case can earn, and it sits second because reading a
        company cold is the hardest thing on the card */
     {t:"Cold read",          on: r2Right()===5, i:"ledger"},
     {t:"Hot lap",            on: S.best>=5, i:"fuel"},
-    {t:"Nothing over-flagged", on: allStandsRight(), i:"badge"},
+    {t:"Steady hand",        on: steady, i:"badge"},
+    {t:"Second thoughts",    on: changedMind()>0, i:"wrench"},
+    /* the round one version of the steady hand, and it stands down when that one is earned
+       rather than printing the same fact twice */
+    {t:"Nothing over-flagged", on: allStandsRight() && !steady, i:"box"},
     {t:"Arithmetic hawk",    on: got(1) && got(8), i:"scales"},
     {t:"Unsupported driver caught", on: got(7), i:"glass"},
     {t:"Read the silence",   on: got(11), i:"flag"},
@@ -2003,7 +2498,10 @@ function done(){
         : "")+
       '<p class="tiny" style="margin:14px 0 0">'+esc(patternLine().charAt(0).toUpperCase()+patternLine().slice(1))+'</p></div>'+freshBlock+reasonBlock;
   }
-  var share = "I agreed with the answer key on " + (S.caught+S.cleared) + " of 14 lines in Second Pass: Beat the Machine at Mason.";
+  var share = "Second Pass: Beat the Machine at Mason. Rank " + rank() + ", " +
+    pointsText(S.points) + " points. Right call " + (S.caught+S.cleared) + " of 14 and right reason " +
+    reasonCount(1) + " of 14, with " + r2Right() + " of 5 on a company I had not seen. Best streak " +
+    S.best + ".";
   var b = badges();
   var medals = b.length
     ? '<div class="badges">'+b.map(function(x,i){
@@ -2012,29 +2510,36 @@ function done(){
           '<em>'+x.t+'</em></span>';
       }).join("")+'</div>'
     : '<p class="nobadge">Next run, start with the arithmetic.</p>';
+  var pr = rankProgress();
   screen.innerHTML =
+    whyLine("Your run, scored two ways: the call you made on each line, and the basis you held it on.")+
     '<div class="final">'+
       '<div class="trophywrap">'+trophySvg(tier())+'</div>'+
-      '<div class="rankbig">'+rank()+'</div>'+
-      '<p class="ranknote">Trainee through Partner are ranks in this drill. They say nothing about professional seniority.</p>'+
-      '<p class="tiny" style="margin:6px 0 0">'+esc(S.codename)+'</p>'+
+      '<p class="tiny" style="margin:0 0 6px">'+esc(S.codename)+'</p>'+
       '<p class="earned">'+esc(earnedLine())+'</p>'+
-      '<p class="tiny" style="margin:4px 0 0">The rank above and the badges below are read off the call score only.</p>'+
-      '<p class="fresh">Fresh case: right call '+r2Right()+' of 5. Right reason '+reasonCount(2)+' of 5.</p>'+
-      '<p class="tiny" style="margin:4px 0 14px">A second company, read once, scored on its own.</p>'+
+      '<p class="pointsbig"><span class="headline">'+pointsText(S.points)+'</span><i>points</i></p>'+
+      '<div class="rankbig">'+rank()+'</div>'+
+      '<p class="ranknote">'+(pr.next
+        ? esc(pointsText(pr.need)+" points short of "+pr.next+". ")
+        : "Partner is the top rank. ")+
+        'Trainee through Partner are ranks in this drill. They say nothing about professional seniority.</p>'+
+      '<p class="lapwrap"><span>Best streak '+S.best+'</span>'+
+        '<span>Lap time '+lapText()+'</span></p>'+
       '<p class="counts"><span><b>'+S.caught+'</b>caught</span>'+
         '<span><b>'+S.cleared+'</b>let stand correctly</span>'+
         '<span'+(S.falseFlags?' class="fail"':'')+'><b>'+S.falseFlags+'</b>false flags</span></p>'+
-      '<p class="lapwrap"><span>Lap time '+lapText()+'</span>'+
-        '<span>Best streak '+S.best+'</span></p>'+
+      '<p class="fresh">Fresh case: right call '+r2Right()+' of 5. Right reason '+reasonCount(2)+' of 5.</p>'+
+      '<p class="tiny" style="margin:4px 0 0">A second company, read once, scored on its own. '+
+        'The points, the rank and the badges are read off the fourteen trained lines.</p>'+
       medals+
-      '<div class="sharecard"><p>'+esc(share)+'</p><button class="btn-text" id="copyshare">Copy</button></div>'+
-      '<button class="btn secondary" id="playagain">Play again</button>'+
+      '<div class="sharecard"><span class="label">Your card</span>'+
+        '<p>'+esc(share)+'</p><button class="btn-text" id="copyshare">Copy</button></div>'+
       '<button class="btn secondary" id="showmiss">'+((miss.length+miss2.length)
           ? "See the "+(miss.length+miss2.length)+" that got past you"
           : "See the full read out")+'</button>'+
       '<div id="missbox" hidden>'+coachInner+'</div>'+
       actionsBlock()+
+      '<button class="btn secondary" id="playagain">Play again</button>'+
       '<button class="howlink" id="howlink">How this works in a real close</button>'+
     '</div>';
   wireActions();
@@ -2043,11 +2548,14 @@ function done(){
   document.getElementById("score").classList.add("hidden");
   /* a second run keeps the codename and the chips and posts its own row to the form */
   document.getElementById("playagain").addEventListener("click", function(){
-    S.calls = []; S.basis = []; S.words = []; S.secs = [];
-    for(var k=0;k<14;k++){ S.calls.push(null); S.basis.push(null); S.words.push(""); S.secs.push(0); }
-    S.r2calls = []; S.r2basis = []; S.r2words = []; S.r2secs = [];
-    for(var k2=0;k2<5;k2++){ S.r2calls.push(null); S.r2basis.push(null); S.r2words.push(""); S.r2secs.push(0); }
-    S.caught = 0; S.cleared = 0; S.falseFlags = 0; S.streak = 0; S.best = 0;
+    var one = {}, two = {};
+    blankRound(14, one); blankRound(5, two);
+    S.calls = one.calls; S.sel = one.sel; S.first = one.first;
+    S.basis = one.basis; S.words = one.words; S.secs = one.secs;
+    S.r2calls = two.calls; S.r2sel = two.sel; S.r2first = two.first;
+    S.r2basis = two.basis; S.r2words = two.words; S.r2secs = two.secs;
+    LINE_PTS = []; LEVELED = false;
+    S.caught = 0; S.cleared = 0; S.falseFlags = 0; S.streak = 0; S.best = 0; S.points = 0;
     S.r2caught = 0; S.r2cleared = 0; S.r2false = 0; S.r2Start = 0; S.r2End = 0; S.r2Revealed = 0;
     S.confPost = null; S.qd = null;
     S.prepicks = []; S.prepickSkipped = false;
@@ -2107,6 +2615,8 @@ function wireTestTap(){
 
 loadCases(function(){
   restoreRun();
+  /* every counter is derived, so the run is scored from its calls before the first paint */
+  rescore(); rescore2();
   paintTestBand();
   wireTestTap();
   buildTrack();
