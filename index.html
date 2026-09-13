@@ -109,6 +109,13 @@
 .stripnums .ch.neg{color:var(--red)}
 .stripnums .ch i{display:block;font-style:normal;font-size:var(--t-small);font-weight:400;
   color:var(--ink-soft);margin:0}
+/* At 320 the card is 250px wide and three money columns at the lead size need 278,
+   so the row leaked 12px past the card. The figures step down to the body size and
+   the gap closes instead. */
+@media (max-width:359px){
+  .stripnums{gap:var(--s2)}
+  .stripnums>span>i,.stripnums .ch{font-size:var(--t-body)}
+}
 
 /* ---------- the card body ---------- */
 .cardhead{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s3)}
@@ -359,7 +366,10 @@
   overflow-wrap:anywhere}
 .recordbox{width:100%;min-height:190px;font-family:var(--mono);font-size:13px;line-height:1.55;
   padding:var(--s3);border:1px solid var(--rule-strong);border-radius:var(--radius);
-  background:var(--card);color:var(--ink);margin:var(--s3) 0 0;white-space:pre;overflow:auto}
+  background:var(--card);color:var(--ink);margin:var(--s3) 0 0;
+  /* pre-wrap rather than pre: the JSON keeps its indentation and a long line
+     wraps instead of putting 5,500px of sideways scroll inside a phone card */
+  white-space:pre-wrap;overflow-wrap:anywhere;overflow-x:hidden;overflow-y:auto}
 a.btn{text-decoration:none}
 /* in the drill a button is always the width of the column it sits in */
 #screen .btn,.stickygo .btn{display:flex;width:100%;margin-top:var(--s3)}
@@ -523,7 +533,7 @@ body{overflow-x:clip}
    One constant. It prints under the footer line on every screen, rides into the posted
    payload on question A, and stamps the local record. README and review.html state it too. */
 var PRODUCT_NAME = "Second Pass: Beat the Machine";
-var PRODUCT_VERSION = "1.5.0";
+var PRODUCT_VERSION = "1.6.0";
 var PRODUCT_STAMP = "second-pass-drill " + PRODUCT_VERSION;
 var NOTICE_VERSION = "notice-2026-09-13";
 
@@ -668,6 +678,7 @@ function bindCases(){
   } else {
     ROWS2 = []; CARDS2 = []; GROUPS2 = []; BOOK2 = BOOK1; ASSESS = false;
   }
+  buildRanks(CARDS);
   setSteps();
 }
 
@@ -986,22 +997,73 @@ function lapMinutes(){ return String(Math.max(1, Math.round(lapMs()/60000))); }
 /* ---------- points and rank ----------
    A hundred for a call that agrees with the answer key, fifty for a basis that agrees with it,
    twenty five for every step of a streak from the third onward, and seventy five for catching a
-   cause the memo asserted with nothing behind it. Points and rank are read off the fourteen
-   trained lines only: the fresh case runs as an assessment and is scored on its own, and a
-   points total moving between those five lines would tell the player how they were doing.
-   The thresholds are set so a clean run reaches Partner and flagging every line stops at Staff. */
+   cause the memo asserted with nothing behind it. Points and rank are read off the trained lines
+   only: the fresh case runs as an assessment and is scored on its own, and a points total moving
+   between those lines would tell the player how they were doing. */
 var PT_CALL = 100, PT_REASON = 50, PT_STREAK = 25, PT_COVER = 75, STREAK_FROM = 3;
-var RANKS = [
-  {name:"Trainee", at:0},
-  {name:"Staff",   at:900},
-  {name:"Senior",  at:1500},
-  {name:"Manager", at:2000},
-  {name:"Partner", at:2500}
-];
 /* the two error types where the memo names a cause and nothing on file carries it */
 function isCoverStory(c){
   return c.type === "unsupported driver" || c.type === "unsupported attribution";
 }
+/* The ladder is a share of what the case in front of the player is worth, not a fixed count of
+   points, because fourteen Halyard lines and twelve Kestrel lines cannot be worth the same run.
+   A twelve line case topped out at Manager while the ladder read absolute points.
+
+   maxAttainable is the run where every call, every basis, every streak step and every cover
+   story lands. blanketCeiling is the most a player can score by calling every line the same way
+   without reading one of them, taking the better of flag every line and stand every line and
+   giving that player the basis points too. Partner sits at 95 percent of the first and the
+   Senior line is held above the second, so a perfect run reaches the top of any case and a
+   blanket call stops at Staff on any case. */
+function maxAttainable(cards){
+  var pts = 0, st = 0, i, c;
+  cards = cards || [];
+  for(i=0;i<cards.length;i++){
+    c = cards[i];
+    pts += PT_CALL + PT_REASON;
+    st++; if(st >= STREAK_FROM) pts += PT_STREAK;
+    if(c.key === "flag" && isCoverStory(c)) pts += PT_COVER;
+  }
+  return pts;
+}
+function blanketPoints(cards, call){
+  var pts = 0, st = 0, i, c;
+  cards = cards || [];
+  for(i=0;i<cards.length;i++){
+    c = cards[i];
+    if(c.key !== call){ st = 0; continue; }
+    pts += PT_CALL + PT_REASON;
+    st++; if(st >= STREAK_FROM) pts += PT_STREAK;
+    if(call === "flag" && isCoverStory(c)) pts += PT_COVER;
+  }
+  return pts;
+}
+function blanketCeiling(cards){
+  return Math.max(blanketPoints(cards, "flag"), blanketPoints(cards, "stand"));
+}
+var RANK_NAMES = ["Trainee", "Staff", "Senior", "Manager", "Partner"];
+var RANK_SHARE = [0, 0.34, 0.57, 0.76, 0.95];
+var RANK_MAX = 0, RANK_BLANKET = 0;
+var RANKS = [];
+function buildRanks(cards){
+  var top = maxAttainable(cards), floor = blanketCeiling(cards), at = [], i;
+  for(i=0;i<RANK_SHARE.length;i++) at.push(Math.round(top * RANK_SHARE[i]));
+  if(at[2] <= floor) at[2] = floor + 1;
+  for(i=3;i>=1;i--) if(at[i] >= at[i+1]) at[i] = at[i+1] - 1;
+  for(i=1;i<at.length;i++) if(at[i] <= at[i-1]) at[i] = at[i-1] + 1;
+  if(at[at.length-1] > top) at[at.length-1] = top;
+  RANK_MAX = top; RANK_BLANKET = floor;
+  RANKS = [];
+  for(i=0;i<RANK_NAMES.length;i++) RANKS.push({name:RANK_NAMES[i], at:at[i]});
+  /* the verification hook holds the array itself, so hand it the new one */
+  if(window.__BTM_POINTS){
+    window.__BTM_POINTS.ranks = RANKS;
+    window.__BTM_POINTS.max = RANK_MAX;
+    window.__BTM_POINTS.blanket = RANK_BLANKET;
+  }
+  return RANKS;
+}
+buildRanks([]);
 function linePoints(c, call, chips, streakBefore){
   var p = {call:0, reason:0, streak:0, cover:0, streakAt:0, total:0};
   if(call !== c.key) return p;
@@ -2452,6 +2514,11 @@ function attemptRecord(sentPayload){
       points: {total: S.points, rightCall: PT_CALL, rightReason: PT_REASON,
                streakStepFrom: STREAK_FROM, streakStep: PT_STREAK, coverStory: PT_COVER,
                ladder: RANKS.map(function(r){ return {rank: r.name, at: r.at}; }),
+               maxAttainable: RANK_MAX, blanketCallCeiling: RANK_BLANKET,
+               ladderBasis: "Each rank starts at a share of the points this case can give: " +
+                            "Staff 34, Senior 57, Manager 76 and Partner 95 percent of " +
+                            RANK_MAX + ". The Senior line is held above " + RANK_BLANKET +
+                            ", the most a blanket call can score on this case.",
                basis: "Points and rank are read off the " + LINES + " trained lines" +
                       (HAS_R2 ? ". The fresh case is scored on its own." : ". This case carried no fresh set.")},
       roundTwo: {right: r2Right(), of: LINES2, rightReason: reasonCount(2), reasonOf: LINES2,
@@ -2861,7 +2928,9 @@ function boot(){
   window.__BTM_GO = go;
   window.__BTM_STEPS = function(){ return {lines:LINES, lines2:LINES2, l1last:STEP_L1_LAST,
     bridge:STEP_BRIDGE, l2:STEP_L2, l2last:STEP_L2_LAST, done:STEP_DONE, hasR2:HAS_R2}; };
-  window.__BTM_POINTS = {line:linePoints, rescore:rescore, ranks:RANKS, progress:rankProgress};
+  window.__BTM_POINTS = {line:linePoints, rescore:rescore, ranks:RANKS, progress:rankProgress,
+                         max:RANK_MAX, blanket:RANK_BLANKET, maxAttainable:maxAttainable,
+                         blanketCeiling:blanketCeiling, build:buildRanks};
   publishCases();
 }
 /* the verification hook, rebuilt whenever the case changes so it never reports the case
