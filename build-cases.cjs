@@ -41,6 +41,15 @@ function check(c, name) {
     }
     if (card.key !== "flag" && card.key !== "stand") throw new Error(name + ": card " + card.n + " has key " + card.key);
     if (!card.why || !card.tell) throw new Error(name + ": card " + card.n + " is missing why or tell");
+    /* the wrong face of the reveal reads truth and ask off the card, so a flag card without
+       them would put an empty panel in front of a player who let that line through */
+    if (card.key === "flag" && (!card.truth || !card.ask)) {
+      throw new Error(name + ": card " + card.n + " is a flag card missing truth or ask");
+    }
+    /* the wrong face of a clean line reads over, which is what the player over-flagged against */
+    if (card.key === "stand" && !card.over) {
+      throw new Error(name + ": card " + card.n + " is a clean line missing over");
+    }
     if (c.mode === "assessment") assessmentMemo(card, name);
   });
   checkBasis(c, name);

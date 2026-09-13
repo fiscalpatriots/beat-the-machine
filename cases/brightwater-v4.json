@@ -89,6 +89,8 @@
       "key": "flag",
       "type": "unsupported driver",
       "why": "The figures tie and the direction is right, so the arithmetic is not what fails here. Nothing supplied connects the surgical suite to the $52,700: there is no case mix report, no lab invoice summary and no implant count, so the driver is not established from the evidence on file, which is a smaller claim than saying it is false. A lab invoice summary by case type for May and June would settle it.",
+      "truth": "The figures tie and the direction is right, and nothing supplied connects the surgical suite to the $52,700.",
+      "ask": "Ask the practice for a lab invoice summary by case type for May and for June.",
       "tell": "The figure ties, so read the reason instead and ask which document would prove it.",
       "post": {
         "flag": "Accept",
@@ -142,6 +144,8 @@
       "key": "flag",
       "type": "unsupported driver",
       "why": "$42,400 is 44.2 percent of May and the figures tie, so the arithmetic is not what fails here. The only plan schedule on file is dated 31 May and covers the plans running before June, so it cannot carry thirty-one plans that started in June, and nothing else supplied states a June plan count. A document on file is not the same as a document covering the period the sentence is about. A June plan schedule, or a deferred revenue rollforward for June, would settle it.",
+      "truth": "The only plan schedule on file is dated 31 May and covers the plans running before June, so it cannot carry thirty-one plans that started in June.",
+      "ask": "Ask the practice for a June plan schedule or a June deferred revenue rollforward.",
       "tell": "Check the date on the document before you accept it. A schedule that stops at 31 May cannot establish what started in June.",
       "post": {
         "flag": "Accept",
@@ -169,6 +173,8 @@
       "key": "flag",
       "type": "unsupported driver",
       "why": "$61,500 is 8.3 percent of May and the threshold reading is right, so the figures are not what fails here. Nothing supplied ties the two associates to the $61,500, because there is no production report by provider and no visit count, so the driver is not established from the evidence on file. A production report by provider for both months would settle it, and a line owing no commentary does not make an unsupported sentence hold once the memo writes it.",
+      "truth": "Nothing supplied ties the two associate dentists to the $61,500, and a line that owed no commentary still has to support the sentence the memo wrote about it.",
+      "ask": "Ask the practice for a production report by provider for May and for June.",
       "tell": "A sentence nobody required still has to be supported once the memo puts it on the page.",
       "post": {
         "flag": "Accept",

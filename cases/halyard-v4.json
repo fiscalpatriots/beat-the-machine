@@ -163,6 +163,8 @@
       "key": "flag",
       "type": "arithmetic",
       "why": "The fall is $65,000 and 34.9 percent, so both legs clear and this line owes an explanation the memo never gives. The rise in inbound freight is context, not proof of what happened to the billing, so the ask here is a billing bridge for account 4200 rather than a cause you supply yourself.",
+      "truth": "The fall is $65,000 and 34.9 percent, so both legs of the threshold clear and this line owed an explanation the memo never gave.",
+      "ask": "Ask the controller for a billing bridge on account 4200.",
       "tell": "The subtraction is right there on the ledger. $186,000 less $121,000 is $65,000, not $6,500.",
       "post": {
         "flag": "Reject",
@@ -187,6 +189,8 @@
       "key": "flag",
       "type": "timing",
       "why": "One program cannot be finished on June 30 and still have work running into August, so the memo contradicts itself and a reviewer cannot tell which version is true. Completion on its own does not settle the accounting either: the question is what June work was performed, how much of it is recorded, and whether any performed June work is still unrecorded. If roof and dock leveler work does continue, ask as well whether it is a routine repair or an improvement that belongs in fixed assets.",
+      "truth": "One program cannot be finished on June 30 and still have work running into August, so the memo contradicts itself and neither sentence says what June work was performed.",
+      "ask": "Ask the controller what depot work was performed in June, how much of it is recorded, and whether any of it is an improvement rather than a repair.",
       "tell": "Two sentences in the same memo describe one program as finished and as unfinished, and neither one tells you what June work was actually performed.",
       "post": {
         "flag": "Accept",
@@ -211,6 +215,8 @@
       "key": "flag",
       "type": "wrong direction",
       "why": "Inbound freight rose $73,800, up 34.5 percent, so the sentence has the movement backwards and the reason for an increase that size is still missing. Easing surcharges are not disproved by the total: a lower rate per shipment can sit inside a higher total cost when volume moves.",
+      "truth": "Inbound freight rose $73,800, up 34.5 percent, so the sentence has the movement backwards and the reason for a rise that size is still missing.",
+      "ask": "Ask the controller what drove a 34.5 percent rise in inbound freight.",
       "tell": "The memo used the word declined next to a June balance that is higher than May's.",
       "post": {
         "flag": "Accept",
@@ -314,6 +320,8 @@
       "key": "flag",
       "type": "unsupported driver",
       "why": "A named depot and a forecast quarter read like detail, and nothing supplied ties either of them to the $372,000. Neither is established from the evidence on file, which is not the same as saying either is false. A depot revenue bridge or a documented forecast would settle it.",
+      "truth": "Nothing supplied ties the Tri-State depot or the third quarter forecast to the $372,000, so neither is established from the evidence on file.",
+      "ask": "Ask the controller for a depot revenue bridge or the documented forecast.",
       "over": "",
       "tell": "Ask what document would prove the sentence. When nothing on file does, the sentence is not established, whatever else may turn out to be true.",
       "post": {
@@ -339,6 +347,8 @@
       "key": "flag",
       "type": "arithmetic",
       "why": "The account moved $47,000 and the memo says $42,000, so the figure does not tie to the ledger. Nothing supplied establishes $42,000 as the Coastal Grocers piece either, so the $5,000 difference cannot be assigned to anything. The ask is a reserve rollforward for June, not a guess at the remainder.",
+      "truth": "The account moved $47,000 and the memo says $42,000, so the figure does not tie to the ledger and the $5,000 difference belongs to nothing on file.",
+      "ask": "Ask the controller for a June reserve rollforward.",
       "tell": "The memo handed you a number, so check it against the ledger before you read the reason attached to it.",
       "post": {
         "flag": "Accept",
@@ -415,6 +425,8 @@
       "key": "flag",
       "type": "no explanation",
       "why": "$72,500 is 11.5 percent and clears both legs with room to spare, and the memo is silent on this line, so the movement reaches the reviewer with no sentence attached to it at all. The approximate headcount does not establish a cause, so the ask is a payroll bridge showing rates, hours and staffing.",
+      "truth": "$72,500 is 11.5 percent and clears both legs with room to spare, and the memo says nothing about this line at all.",
+      "ask": "Ask the controller for a payroll bridge showing rates, hours and staffing.",
       "tell": "Read the ledger for what the memo left out, not only for what it got wrong.",
       "post": {
         "flag": "Accept",
@@ -443,6 +455,8 @@
       "key": "flag",
       "type": "unsupported attribution",
       "why": "From 1 June the freight for the two largest customers sits inside the product price rather than on account 4200, and the memo never mentions the change, so calling the growth continued customer demand is not established. How much of the $372,000 is that reclassification is not established either: $65,000 is only the net fall on 4200, and $80,000 could have moved into bundled pricing while other freight billings rose $15,000. The ask is a billing bridge for 4200 by customer.",
+      "truth": "From 1 June the freight for the two largest customers sits inside the product price rather than on account 4200, and the memo never mentions the change.",
+      "ask": "Ask the controller for a billing bridge on account 4200 by customer.",
       "tell": "When one revenue line falls while a related one rises, ask whether anything moved between them, and ask for the bridge rather than reading the net fall as the amount that moved.",
       "post": {
         "flag": "Accept",
@@ -497,6 +511,8 @@
       "key": "flag",
       "type": "unsupported driver",
       "why": "Nothing was added to fixed assets and depreciation did not move, so the equipment story is not established by anything supplied. The revolver rose $2.5 million on 3 June and the memo never mentions it, which makes the draw the candidate to investigate rather than the proved cause: the other draw and repayment dates, the daily balances, the rate and the fees would be needed to quantify how much of the $31,200 it explains.",
+      "truth": "Nothing was added to fixed assets and depreciation did not move, so the equipment story is not established, while the revolver rose $2.5 million on 3 June and the memo never mentions it.",
+      "ask": "Ask the controller for the revolver draw and repayment dates, the daily balances, the rate and the fees.",
       "tell": "The memo pointed at another account, so go and look at that account before you accept the sentence.",
       "post": {
         "flag": "Accept",
