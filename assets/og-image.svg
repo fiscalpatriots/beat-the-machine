@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Source for assets/og-image.png, the link preview card.
+       Built with:  python -c "import fitz; d=fitz.open('assets/og-image.svg');
+                    d[0].get_pixmap(alpha=False).save('assets/og-image.png')"
+       The type is set in the generic sans because the rasterizer has no
+       Figtree; the pages themselves set Figtree with Open Sans behind it. -->
+  <rect width="1200" height="630" fill="#005239"/>
+  <rect x="0" y="0" width="1200" height="10" fill="#ffc733"/>
+
+  <g>
+    <text font-family="sans-serif" x="88" y="128" fill="#cfe0d6" font-size="22" font-weight="bold" letter-spacing="3.4">GEORGE MASON UNIVERSITY</text>
+    <text font-family="sans-serif" x="88" y="162" fill="#9dbcab" font-size="20" letter-spacing="3.0">COSTELLO COLLEGE OF BUSINESS</text>
+
+    <text font-family="sans-serif" x="88" y="356" fill="#ffffff" font-size="120" font-weight="bold" letter-spacing="-2">Second Pass</text>
+    <rect x="92" y="400" width="188" height="7" fill="#ffc733"/>
+    <text font-family="sans-serif" x="88" y="482" fill="#e4ece7" font-size="40">A second pass on AI-drafted close commentary</text>
+  </g>
+
+  <rect x="900" y="206" width="212" height="234" rx="14" fill="#00432f"/>
+  <g fill="#0e5941">
+    <rect x="930" y="246" width="152" height="11" rx="5.5"/>
+    <rect x="930" y="280" width="152" height="11" rx="5.5"/>
+    <rect x="930" y="314" width="88" height="11" rx="5.5"/>
+  </g>
+  <path d="M930 372 L964 406 L1082 278" fill="none" stroke="#ffc733" stroke-width="14"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

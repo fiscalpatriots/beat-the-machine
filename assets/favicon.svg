@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Second Pass">
+  <!-- A ledger page on the Mason green field, ticked, with the gold rule
+       that runs under the masthead on every page. Drawn in the tokens:
+       green #005239, paper #f6f3ec, rule #c9c3b4, gold #ffc733. -->
+  <rect width="32" height="32" rx="6" fill="#005239"/>
+  <rect x="6" y="3.5" width="20" height="22" rx="2.5" fill="#f6f3ec"/>
+  <g fill="#c9c3b4">
+    <rect x="9.5" y="7.5" width="13" height="1.6" rx=".8"/>
+    <rect x="9.5" y="11.5" width="13" height="1.6" rx=".8"/>
+  </g>
+  <path d="M9.8 18.2 L13.6 22 L22.4 12.4" fill="none" stroke="#005239"
+        stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="6" y="27.4" width="20" height="2.2" rx="1.1" fill="#ffc733"/>
+</svg>
