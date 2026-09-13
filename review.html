@@ -271,7 +271,7 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
 
   <div class="runs">
     <h2>How a review runs</h2>
-    <p class="sub">Ten minutes, in the browser, with nothing to install.</p>
+    <p class="sub">In the browser, with nothing to install.</p>
     <div class="strip">
 
       <figure class="shot">
@@ -284,7 +284,7 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
       <figure class="shot">
         <img src="screenshots/review/strip-02-checker-results.png" width="1280" height="960" loading="lazy" decoding="async" alt="The checker results: a coverage bar, counts for checked within scope, needs review, not checked and failed, and the results table under them.">
         <figcaption class="body"><span class="n">02</span>
-          <p>Four checks run and print a verdict per line.</p>
+          <p>Four checks run and print a status for every sentence and every account.</p>
         </figcaption>
       </figure>
 
@@ -351,11 +351,11 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
       <section id="problem">
         <h3><span class="n">01</span>The problem</h3>
         <figure class="fig">
-          <svg class="wide" viewBox="0 0 600 216" role="img" aria-label="Six error types. Four are checked by the machine: arithmetic, wrong direction, silence over the threshold, wrong account. Two are signed by a reviewer: unsupported driver and timing.">
-            <text x="0" y="14" fill="var(--ink-soft)" font-size="13" font-weight="700" letter-spacing="1.6">THE MACHINE CHECKS FOUR</text>
+          <svg class="wide" viewBox="0 0 600 216" role="img" aria-label="Six error types. Four are settled by the machine: arithmetic, wrong direction, silence over the threshold, and a figure that does not tie to the line it names. Two are left to a reviewer to sign: unsupported driver and timing.">
+            <text x="0" y="14" fill="var(--ink-soft)" font-size="13" font-weight="700" letter-spacing="1.6">THE MACHINE SETTLES FOUR</text>
             <g fill="var(--ink)" font-size="20">
               <text x="26" y="62">Arithmetic</text><text x="26" y="102">Wrong direction</text>
-              <text x="26" y="142">Silence over the threshold</text><text x="26" y="182">Wrong account</text>
+              <text x="26" y="142">Silence over the threshold</text><text x="26" y="182">A figure off its line</text>
             </g>
             <g fill="var(--mason)">
               <rect x="0" y="54" width="14" height="2"/><rect x="0" y="94" width="14" height="2"/>
@@ -370,11 +370,11 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
               <rect x="372" y="54" width="14" height="2"/><rect x="372" y="94" width="14" height="2"/>
             </g>
           </svg>
-          <svg class="narrow" viewBox="0 0 340 376" role="img" aria-label="Six error types. Four are checked by the machine: arithmetic, wrong direction, silence over the threshold, wrong account. Two are signed by a reviewer: unsupported driver and timing.">
-            <text x="0" y="14" fill="var(--ink-soft)" font-size="13" font-weight="700" letter-spacing="1.4">THE MACHINE CHECKS FOUR</text>
+          <svg class="narrow" viewBox="0 0 340 376" role="img" aria-label="Six error types. Four are settled by the machine: arithmetic, wrong direction, silence over the threshold, and a figure that does not tie to the line it names. Two are left to a reviewer to sign: unsupported driver and timing.">
+            <text x="0" y="14" fill="var(--ink-soft)" font-size="13" font-weight="700" letter-spacing="1.4">THE MACHINE SETTLES FOUR</text>
             <g fill="var(--ink)" font-size="20">
               <text x="26" y="62">Arithmetic</text><text x="26" y="102">Wrong direction</text>
-              <text x="26" y="142">Silence over the threshold</text><text x="26" y="182">Wrong account</text>
+              <text x="26" y="142">Silence over the threshold</text><text x="26" y="182">A figure off its line</text>
             </g>
             <g fill="var(--mason)">
               <rect x="0" y="54" width="14" height="2"/><rect x="0" y="94" width="14" height="2"/>
@@ -389,7 +389,7 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
               <rect x="0" y="294" width="14" height="2"/><rect x="0" y="334" width="14" height="2"/>
             </g>
           </svg>
-          <figcaption class="cap">Two of the six cannot be settled by a machine.</figcaption>
+          <figcaption class="cap">This checker settles neither of the last two. It puts the driver and the period to a named reviewer instead, and prints the question rather than a verdict.</figcaption>
         </figure>
         <p>An assistant drafts the close commentary now, and it reads better than a person writes on deadline. Every figure can tie while the reason rests on nothing.</p>
       </section>
@@ -403,7 +403,7 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
             <li><span class="disc">3</span><b>Coverage</b><span class="t">Every account over the threshold, named.</span></li>
             <li><span class="disc">4</span><b>Sign-off</b><span class="t">A reviewer answers the driver and the period.</span></li>
           </ol>
-          <figcaption class="cap">Nothing is released until all four are done. The preparer may not sign, and neither may whoever prompted the assistant.</figcaption>
+          <figcaption class="cap">The protocol asks for all four before a memo is released. Nothing on this site enforces that: the checker reports the first three and the fourth is a signature a person gives. Under the protocol the preparer may not sign, and neither may whoever prompted the assistant.</figcaption>
         </figure>
       </section>
 
@@ -412,15 +412,14 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
         <figure class="fig">
           <div class="evid">
             <div>
-              <svg viewBox="0 0 330 214" role="img" aria-label="Two runs against the same ledger. The blind draft gave a cause to all fourteen accounts and eleven of them had no support on file. The Prompt 1 draft wrote seven lines and every reason reads no source on file.">
+              <svg viewBox="0 0 330 214" role="img" aria-label="Two runs against the same Halyard ledger. The blind draft gave a cause to all fourteen accounts and invented every one of them, two resting on a document nobody put on file. The Prompt 1 draft wrote seven lines and every reason reads no source on file.">
                 <text x="0" y="13" fill="var(--ink)" font-size="15" font-weight="700">Blind run</text>
                 <text x="0" y="34" fill="var(--ink-soft)" font-size="13">14 accounts, 14 causes given</text>
                 <g>
-                  <rect x="0" y="44" width="254.8" height="22" fill="var(--red)"/>
-                  <rect x="260.5" y="44.5" width="69" height="21" fill="none" stroke="var(--rule-strong)"/>
+                  <rect x="0" y="44" width="330" height="22" fill="var(--red)"/>
                 </g>
-                <text x="0" y="84" fill="var(--red)" font-size="13" font-weight="700">11 with no support on file</text>
-                <text x="0" y="102" fill="var(--ink-soft)" font-size="13">3 matched a fact by luck</text>
+                <text x="0" y="84" fill="var(--red)" font-size="13" font-weight="700">14 with no source on file</text>
+                <text x="0" y="102" fill="var(--ink-soft)" font-size="13">2 named a document that is not on file</text>
 
                 <line x1="0" y1="124" x2="330" y2="124" stroke="var(--rule)" stroke-width="1"/>
 
@@ -431,8 +430,9 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
                   <rect x="0" y="183" width="3" height="22" fill="var(--mason)"/>
                 </g>
               </svg>
-              <p class="counts2">The checker read 112 sentences in the blind draft and failed 3, sending 34 to a
-              reviewer. On the second draft it read 43, failed none and sent 8.</p>
+              <p class="counts2">On Halyard the checker read 30 sentences in the blind draft, failed 2 of them
+              and put 54 items in the reviewer&rsquo;s queue. Under Prompt 1 it read 8, failed none and
+              queued 16.</p>
             </div>
             <div>
               <div class="quote bad">
@@ -460,13 +460,13 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
           <div class="tile"><span class="v">pending</span><span class="k">Right reason</span></div>
           <div class="tile"><span class="v">pending</span><span class="k">False flags</span></div>
         </div>
-        <p>The response export fills these, one row per run. The call and the reason are scored separately, so a run can agree with the answer key and give a basis that does not. These are answer-key agreement on a keyed exercise and nothing more. Every run downloads as a file first, sending it is a separate voluntary step, and a codename is a pseudonym rather than anonymity.</p>
+        <p>The response export fills these, one row per run. The call and the reason are scored separately, so a run can agree with the answer key and give a basis that does not. These are answer-key agreement on a keyed exercise and nothing more. Every run can be saved to a file on the player&rsquo;s own machine, sending it is a separate step the player chooses, and a codename is a pseudonym rather than anonymity.</p>
       </section>
 
       <section id="scope">
         <h3><span class="n">05</span>Scope</h3>
         <div class="rows">
-          <div><b>Does</b><p>The four checks, the evidence log, and the two judgment calls, trained and scored.</p></div>
+          <div><b>Does</b><p>The four checks, the evidence log, and a drill that puts the two judgment calls to a player and scores the call and its basis against a key.</p></div>
           <div><b>Does not yet</b><p>No driver or timing verdict, no loose account match, no Excel.</p></div>
           <div><b>Next</b><p>The Excel template, and the checks running before a reviewer reads the memo.</p></div>
         </div>
@@ -475,7 +475,7 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
       <section id="replicability">
         <h3><span class="n">06</span>Replicability</h3>
         <figure class="fig">
-          <svg class="wide" viewBox="0 0 600 120" role="img" aria-label="Three columns, account, prior balance and current balance, are the whole input, and they come from any general ledger export.">
+          <svg class="wide" viewBox="0 0 600 120" role="img" aria-label="Three columns, account, prior balance and current balance, are the whole ledger contract, and they come from any general ledger export.">
             <g fill="none" stroke="var(--rule-strong)" stroke-width="1">
               <rect x="0.5" y="24.5" width="130" height="58" rx="12"/>
               <rect x="142.5" y="24.5" width="130" height="58" rx="12"/>
@@ -492,7 +492,7 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
               <text x="492" y="49">Any general</text><text x="492" y="71">ledger</text>
             </g>
           </svg>
-          <svg class="narrow" viewBox="0 0 340 188" role="img" aria-label="Three columns, account, prior balance and current balance, are the whole input, and they come from any general ledger export.">
+          <svg class="narrow" viewBox="0 0 340 188" role="img" aria-label="Three columns, account, prior balance and current balance, are the whole ledger contract, and they come from any general ledger export.">
             <g fill="none" stroke="var(--rule-strong)" stroke-width="1">
               <rect x="0.5" y="0.5" width="108" height="54" rx="12"/>
               <rect x="116.5" y="0.5" width="108" height="54" rx="12"/>
@@ -507,7 +507,7 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
             <rect x="1" y="118" width="338" height="60" rx="12" fill="none" stroke="var(--mason)" stroke-width="2"/>
             <text x="18" y="155" fill="var(--mason)" font-size="18" font-weight="600">Any general ledger</text>
           </svg>
-          <figcaption class="cap">Three columns are the whole input contract.</figcaption>
+          <figcaption class="cap">Three columns are the whole ledger contract. The memo is pasted beside them.</figcaption>
         </figure>
         <p>The protocol governs the memo rather than the model that drafted it, the threshold is a setting, and the drill fits inside one chapter meeting.</p>
       </section>
