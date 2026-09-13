@@ -127,17 +127,50 @@ textarea{min-height:84px;resize:vertical}
 
 #sheet{position:fixed;inset:0;background:rgba(18,38,63,.55);z-index:20;display:flex;align-items:flex-end}
 #sheetbody{background:var(--paper);width:100%;max-height:88vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px 16px 28px;max-width:520px;margin:0 auto}
-table{width:100%;table-layout:fixed;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:12px}
-th,td{text-align:right;padding:5px 2px;border-bottom:1px solid var(--line);white-space:nowrap}
-th:first-child,td:first-child{text-align:left;white-space:normal;width:29%}
-thead th{font-size:10px;text-transform:uppercase;letter-spacing:.3px;color:var(--ink-soft)}
-tr.star td{background:#fdf8ea}
-.wrap{max-width:100%}
+.led{width:100%;table-layout:fixed;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:11.5px}
+.led th{font-size:9px;text-transform:uppercase;letter-spacing:.3px;color:var(--ink-soft);padding:0 3px 5px;text-align:right}
+.led th:first-child{text-align:left}
+.led td{padding:9px 3px;border-top:1px solid var(--line);text-align:right;white-space:nowrap;vertical-align:middle}
+.led td:first-child{text-align:left;white-space:normal;line-height:1.2;font-weight:600}
+.led tbody tr{cursor:pointer}
+.led tbody tr.on td{background:var(--machine-bg)}
+.led tbody tr.on td:first-child{box-shadow:inset 3px 0 0 var(--machine)}
+.led tbody tr.here td{background:var(--machine-bg);font-weight:700}
+.led tbody tr.here td:first-child{box-shadow:inset 3px 0 0 var(--machine)}
+.led .pc{display:block;font-size:9.5px;font-weight:400;color:var(--ink-soft)}
+.led .bar{display:block;height:7px;border-radius:99px;background:var(--bar-old);margin-left:auto}
+.led tbody tr.on .bar{background:var(--machine)}
+.sheetled tbody tr{cursor:default}
+
+/* the card header and the one line of ledger that rides on every card */
+.cardhead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.cardhead.plain{margin-bottom:10px;align-items:center}
+.ledgerbtn{flex:0 0 auto;border:2px solid var(--line);background:var(--card);color:var(--ink-soft);
+  border-radius:99px;padding:7px 14px;font-size:13px;font-weight:700}
+.ledgerbtn:active{transform:translateY(1px)}
+.strip{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;background:var(--machine-bg);
+  border-left:3px solid var(--machine);border-radius:0 10px 10px 0;padding:8px 12px;margin:0 0 12px;
+  font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-soft)}
+.strip b{color:var(--machine)}
+.strip i{font-style:normal;font-weight:700;color:var(--ink);margin-left:auto}
 
 .final{text-align:center}
-.big{font-size:52px;font-weight:800;line-height:1;letter-spacing:-2px;font-variant-numeric:tabular-nums}
-.rank{display:inline-block;background:var(--gold-bg);color:var(--gold);border:2px solid var(--gold);border-radius:99px;padding:6px 16px;font-weight:800;font-size:18px;margin:10px 0}
-.share{background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:14px;font-size:16px;font-weight:600;text-align:left}
+.trophywrap{display:flex;justify-content:center;margin:4px 0 6px}
+.trophy{width:132px;height:auto;animation:rise .55s cubic-bezier(.2,.9,.3,1.25) both}
+.trophy .glint{animation:sweep 1.1s ease-out .5s both}
+@keyframes rise{from{transform:scale(.72);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes sweep{from{transform:translateX(0)}to{transform:translateX(130px)}}
+@media (prefers-reduced-motion:reduce){.trophy,.trophy .glint{animation:none}.trophy .glint{opacity:0}}
+.rankbig{font-size:38px;font-weight:800;letter-spacing:-1px;line-height:1.05}
+.earned{margin:12px 0 16px;font-size:16px;color:var(--ink-soft)}
+.badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0 0 18px}
+.badge{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line);background:var(--card);
+  border-radius:99px;padding:7px 13px;font-size:13px;font-weight:700;color:#b3aa96}
+.badge svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.badge.on{border-color:var(--gold);background:var(--gold-bg);color:var(--gold)}
+.sharecard{background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:14px;text-align:left}
+.sharecard p{margin:0 0 10px;font-size:16px;font-weight:600}
+.sharecard .btn{margin-top:0;padding:11px;font-size:16px}
 .coach{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:16px 18px;margin:18px 0 0;text-align:left;box-shadow:var(--shadow)}
 .coach h3{margin:0 0 10px}
 .miss{border-top:1px solid var(--line);padding:10px 0 0;margin:10px 0 0}
@@ -412,21 +445,50 @@ function progress(){
   else { lab.textContent = "Second Pass"; sc.classList.add("hidden"); }
 }
 
-/* ---------- the ledger sheet, available while you make your own calls ---------- */
-function openSheet(){
-  var body = '<div class="wrap"><table><thead><tr><th>Account</th><th>May</th><th>June</th><th>Move</th><th>Percent</th></tr></thead><tbody>';
+/* ---------- the ledger, on call from every card ---------- */
+function rowFor(acct){
+  for(var i=0;i<ROWS.length;i++){ if(ROWS[i][0]===acct) return ROWS[i]; }
+  return null;
+}
+function moveCell(d){ return d<0 ? "("+money(d)+")" : (d>0 ? "+"+money(d) : "$0"); }
+
+/* one line of the ledger, printed on the card so the reference never leaves the screen */
+function strip(acct){
+  var r = rowFor(acct); if(!r) return "";
+  var d = r[3]-r[2];
+  return '<div class="strip"><b>'+r[0]+'</b><span>May '+money(r[2])+'</span><span>June '+money(r[3])+
+         '</span><i>'+moveCell(d)+'</i></div>';
+}
+
+function openSheet(acct){
+  var body = '<table class="led sheetled"><colgroup><col style="width:34%"><col style="width:19%"><col style="width:19%"><col style="width:28%"></colgroup>'+
+             '<thead><tr><th>Account</th><th>May</th><th>June</th><th>Change</th></tr></thead><tbody>';
   ROWS.forEach(function(r){
     var d = r[3]-r[2];
-    var pc = r[2] ? (d/r[2]*100).toFixed(1) : "0.0";
-    body += '<tr class="'+(r[4]?"star":"")+'"><td>'+r[0]+' '+esc(r[1])+'</td><td>'+money(r[2])+'</td><td>'+money(r[3])+
-            '</td><td>'+(d<0?"("+money(d)+")":(d>0?"+"+money(d):"$0"))+'</td><td>'+pc+'%</td></tr>';
+    var pc = (d/r[2]*100).toFixed(1)+'%';
+    body += '<tr'+(r[0]===acct?' class="here" id="hererow"':'')+'><td>'+esc(r[1])+'<span class="pc">'+r[0]+'</span></td>'+
+            '<td>'+money(r[2])+'</td><td>'+money(r[3])+'</td><td>'+moveCell(d)+'<span class="pc">'+pc+'</span></td></tr>';
   });
-  body += '</tbody></table></div>';
+  body += '</tbody></table>';
   var d = document.createElement("div");
   d.id="sheet";
-  d.innerHTML = '<div id="sheetbody"><h2>The ledger</h2><p class="tiny">'+THRESHOLD+' Shaded rows clear both.</p>'+body+'<button class="btn" id="closesheet">Close</button></div>';
+  d.innerHTML = '<div id="sheetbody"><h2>The ledger</h2><p class="tiny">'+THRESHOLD+'</p>'+body+
+                '<button class="btn" id="closesheet">Close</button></div>';
   document.body.appendChild(d);
-  d.addEventListener("click", function(ev){ if(ev.target.id==="sheet"||ev.target.id==="closesheet") d.remove(); });
+  var here = document.getElementById("hererow");
+  if(here && here.scrollIntoView) here.scrollIntoView({block:"center"});
+  /* a tap that opens the sheet also sends a click a moment later, and that one would land
+     on the backdrop and shut it again, so the first 400ms are ignored */
+  var opened = Date.now();
+  d.addEventListener("click", function(ev){
+    if(Date.now() - opened < 400) return;
+    if(ev.target.id==="sheet"||ev.target.id==="closesheet") d.remove();
+  });
+}
+function ledgerBtn(acct){ return '<button class="ledgerbtn" data-acct="'+acct+'">Ledger</button>'; }
+function wireLedger(){
+  var b = screen.querySelector(".ledgerbtn");
+  if(b) b.addEventListener("click", function(){ openSheet(b.getAttribute("data-acct")); });
 }
 
 /* ---------- the two bar chart that rides on every card ---------- */
@@ -472,9 +534,9 @@ function title(){
   screen.innerHTML =
     icon("robot", true)+
     '<h1>Second Pass:<br>Beat the Machine</h1>'+
-    '<p class="sub">An assistant wrote this month\'s close commentary and the balances it quotes are real. The reasons it attached to them are where the work is.</p>'+
+    '<p class="sub">An assistant wrote this month\'s close commentary. The balances are real, and the reasons are where the work is.</p>'+
     '<button class="btn" id="go">Play</button>'+
-    '<p class="tiny" style="margin-top:14px">About ten minutes on a phone. You play under a codename and nothing here identifies you.</p>';
+    '<p class="tiny" style="margin-top:14px">About ten minutes, and nothing here identifies you.</p>';
   document.getElementById("go").addEventListener("click", function(){ S.started = Date.now(); go(1); });
 }
 
@@ -482,9 +544,8 @@ function brief(){
   screen.innerHTML =
     icon("glass")+
     '<h2>What you are reviewing</h2>'+
-    '<p>Halyard\'s controller handed the June ledger to an assistant and asked it to write the commentary that explains why each account moved. It read the balances correctly and its arithmetic on the totals holds, because adding and subtracting is the part these tools are dependable at.</p>'+
-    '<p>Where it struggles is the reason behind a movement, which is not in the ledger anywhere, so it supplies whatever sounds plausible. Some of what it wrote is an ordinary mistake and some of it has the shape of a cover story, which is a confident sentence with nothing standing behind it.</p>'+
-    '<p>You are the second pass. Fourteen accounts come at you one at a time with the numbers and whatever the memo said about them, and you either flag the line or let it stand. A fraud examiner should care because the sentence nobody checked is where a real one gets to live.</p>'+
+    '<p>Halyard\'s controller gave the June ledger to an AI assistant and asked it to explain why each account moved. The arithmetic holds. The reasons are another matter: they are not in the ledger, so it wrote whatever sounded plausible. Some of that is a mistake. Some of it is a cover story.</p>'+
+    '<p>You are the second pass. Fourteen lines, one at a time: flag it or let it stand. The sentence nobody checks is where a real one hides.</p>'+
     '<button class="btn" id="next">Start</button>';
   document.getElementById("next").addEventListener("click", function(){ go(2); });
 }
@@ -493,7 +554,7 @@ function codename(){
   screen.innerHTML =
     icon("badge")+
     '<h2>Pick a codename</h2>'+
-    '<p class="sub">Two words you will remember. The top three get read out at the next meeting.</p>'+
+    '<p class="sub">Two words you will remember.</p>'+
     '<input type="text" id="cn" placeholder="Silver Ledger" autocomplete="off" value="'+esc(S.codename)+'">'+
     '<button class="btn" id="next" disabled>Next</button>';
   var inp = document.getElementById("cn"), nx = document.getElementById("next");
@@ -506,7 +567,7 @@ function codename(){
 
 function orgs(){
   var html = icon("people")+'<h2>Which chapters are you in?</h2>'+
-    '<p class="sub">Tap every one that applies, because the results get counted by organisation.</p><div class="chips" id="orgs">';
+    '<p class="sub">Tap every one that applies.</p><div class="chips" id="orgs">';
   ORGS.forEach(function(o,idx){
     html += '<button class="chip'+(S.orgs.indexOf(o)>-1?" on":"")+'" data-i="'+idx+'">'+esc(o)+'</button>';
   });
@@ -562,25 +623,34 @@ function scaleChips(iconName, head, sub, key, next){
 }
 
 function confPre(){ scaleChips("flag","How much of it will you catch?","One tap and you are in.","confPre",7); }
-function confPost(){ scaleChips("badge","How much do you think you caught?","Your honest guess, before the answer.","confPost",23); }
+function confPost(){ scaleChips("badge","How much do you think you caught?","Your honest guess.","confPost",23); }
 
 function roundOne(){
-  var html = icon("glass")+'<h2>Your own calls first</h2>'+
-    '<p class="sub">Before you read a word of the commentary, tap up to five lines you would make somebody explain.</p><div class="chips" id="lines">';
+  var max = 0;
+  ROWS.forEach(function(r){ max = Math.max(max, Math.abs(r[3]-r[2])); });
+  var body = "";
   ROWS.forEach(function(r,idx){
-    var on = S.round1.indexOf(idx)>-1;
-    html += '<button class="chip sm'+(on?" on":"")+'" data-i="'+idx+'">'+r[0]+' '+esc(r[1])+'</button>';
+    var d = r[3]-r[2];
+    var w = Math.max(4, Math.round(Math.abs(d)/max*100));
+    body += '<tr class="'+(S.round1.indexOf(idx)>-1?"on":"")+'" data-i="'+idx+'">'+
+      '<td>'+esc(r[1])+'<span class="pc">'+r[0]+'</span></td>'+
+      '<td>'+money(r[2])+'</td>'+
+      '<td>'+money(r[3])+'</td>'+
+      '<td>'+moveCell(d)+'<span class="pc">'+(d/r[2]*100).toFixed(1)+'%</span></td>'+
+      '<td><span class="bar" style="width:'+w+'%"></span></td></tr>';
   });
-  html += '</div><button class="link" id="opensheet">Open the full ledger</button><button class="btn" id="next" disabled>Lock my calls</button>';
-  screen.innerHTML = html;
-  document.getElementById("opensheet").addEventListener("click", openSheet);
+  screen.innerHTML = icon("glass")+'<h2>Your own calls first</h2>'+
+    '<p class="sub">This is the ledger, May against June. Tap up to five lines you would ask the controller to explain before reading the memo.</p>'+
+    '<table class="led"><colgroup><col style="width:32%"><col style="width:18%"><col style="width:18%"><col style="width:21%"><col style="width:11%"></colgroup>'+
+    '<thead><tr><th>Account</th><th>May</th><th>June</th><th>Change</th><th></th></tr></thead><tbody>'+body+'</tbody></table>'+
+    '<button class="btn" id="next" disabled>Lock my calls</button>';
   var nx = document.getElementById("next");
   function upd(){ nx.disabled = S.round1.length===0; nx.textContent = S.round1.length? "Lock in "+S.round1.length+" call"+(S.round1.length>1?"s":"") : "Lock my calls"; }
-  Array.prototype.forEach.call(screen.querySelectorAll(".chip"), function(b){
-    b.addEventListener("click", function(){
-      var i = parseInt(b.getAttribute("data-i"),10), at = S.round1.indexOf(i);
-      if(at>-1){ S.round1.splice(at,1); b.classList.remove("on"); }
-      else if(S.round1.length<5){ S.round1.push(i); b.classList.add("on"); }
+  Array.prototype.forEach.call(screen.querySelectorAll(".led tbody tr"), function(tr){
+    tr.addEventListener("click", function(){
+      var i = parseInt(tr.getAttribute("data-i"),10), at = S.round1.indexOf(i);
+      if(at>-1){ S.round1.splice(at,1); tr.classList.remove("on"); }
+      else if(S.round1.length<5){ S.round1.push(i); tr.classList.add("on"); }
       upd();
     });
   });
@@ -600,8 +670,9 @@ function card(i){
       c.file.map(function(f){ return '<li>'+esc(f)+'</li>'; }).join("")+'</ul></div>';
   screen.innerHTML =
     '<div class="card">'+
-      icon(c.icon)+
+      '<div class="cardhead">'+icon(c.icon)+ledgerBtn(c.acct)+'</div>'+
       '<span class="acct">Account '+c.acct+'</span>'+
+      strip(c.acct)+
       '<p class="move">'+esc(sentence)+'</p>'+
       chart(c)+
       memoBlock+
@@ -612,6 +683,7 @@ function card(i){
         '<button class="btn rej" id="stand">Let it stand</button>'+
       '</div>'+
     '</div>';
+  wireLedger();
   document.getElementById("flag").addEventListener("click", function(){ answer(i,"flag"); });
   document.getElementById("stand").addEventListener("click", function(){ answer(i,"stand"); });
 }
@@ -647,7 +719,9 @@ function reveal(i, right){
   var streakLine = "";
   if(right && S.streak>=3) streakLine = '<p class="streak">'+S.streak+' in a row.</p>';
   screen.innerHTML =
-    '<div class="verdict '+(right?"good":"bad")+'">'+
+    '<div class="cardhead plain"><span class="acct">Account '+c.acct+'</span>'+ledgerBtn(c.acct)+'</div>'+
+    strip(c.acct)+
+    '<div class="verdict '+(right?"good":"bad")+'" style="margin-top:12px">'+
       '<h2>'+head+'</h2>'+
       '<span class="type">'+esc(c.type)+'</span>'+
       celebration+
@@ -656,6 +730,7 @@ function reveal(i, right){
     streakLine+
     splitBar()+
     '<button class="btn" id="next">'+(i===13?"See how you did":"Next line")+'</button>';
+  wireLedger();
   document.getElementById("next").addEventListener("click", function(){ go(S.step+1); });
   window.scrollTo(0,0);
 }
@@ -676,7 +751,7 @@ function minutes(){
   function paint(){
     screen.innerHTML =
       icon("calendar")+'<h2>How long did that take?</h2>'+
-      '<p class="sub">Par is ten minutes and your own clock says '+mins+'.</p>'+
+      '<p class="sub">Par is ten minutes. Your clock says '+mins+'.</p>'+
       '<div class="chips"><button class="chip" id="minus">Less</button>'+
       '<span class="chip on" style="pointer-events:none">'+S.qd+(S.qd===1?" minute":" minutes")+'</span>'+
       '<button class="chip" id="plus">More</button></div>'+
@@ -771,10 +846,18 @@ function patternLine(){
 
 function rank(){
   var right = S.caught + S.cleared;
-  if(right>=13) return "Partner";
-  if(right>=11) return "Manager";
-  if(right>=8) return "Senior";
+  if(right>=14) return "Partner";
+  if(right>=12) return "Manager";
+  if(right>=9) return "Senior";
+  if(right>=6) return "Staff";
   return "Trainee";
+}
+function tier(){
+  var right = S.caught + S.cleared;
+  if(right>=14) return "sweep";
+  if(right>=12) return "gold";
+  if(right>=9) return "silver";
+  return "bronze";
 }
 
 /* ---------- payload and submit ---------- */
@@ -827,7 +910,7 @@ function asText(){
 
 var submitted = false;
 function submitScreen(){
-  screen.innerHTML = icon("robot",true)+'<h2>Sending your calls</h2><p class="sub">One moment.</p>';
+  screen.innerHTML = icon("robot",true)+'<h2>Sending your calls</h2>';
   if(submitted) return;
   submitted = true;
   var p = payload();
@@ -867,13 +950,61 @@ function failScreen(){
   document.getElementById("retry").addEventListener("click", function(){ submitted = false; go(25); });
 }
 
+/* ---------- the trophy, drawn to the tier ---------- */
+var TROPHY = {
+  bronze:{body:"#b07b45", dark:"#8a5d31", name:"bronze"},
+  silver:{body:"#9aa6b2", dark:"#77838f", name:"silver"},
+  gold:{body:"#d4a72c", dark:"#a87f14", name:"gold"},
+  sweep:{body:"#d4a72c", dark:"#a87f14", name:"clean sweep"}
+};
+function trophySvg(t){
+  var c = TROPHY[t];
+  var star = t==="sweep"
+    ? '<path d="M50 4l3.6 7.6 8.4 1.2-6 5.9 1.4 8.3L50 23.1l-7.4 3.9 1.4-8.3-6-5.9 8.4-1.2z" fill="'+c.body+'" stroke="'+c.dark+'" stroke-width="1.4" stroke-linejoin="round"/>'
+    : "";
+  return '<svg class="trophy '+t+'" viewBox="0 0 100 104" role="img" aria-label="'+c.name+' trophy">'+
+    '<defs><linearGradient id="shine" x1="0" y1="0" x2="1" y2="0">'+
+      '<stop offset="0%" stop-color="#fff" stop-opacity="0"/><stop offset="50%" stop-color="#fff" stop-opacity=".75"/>'+
+      '<stop offset="100%" stop-color="#fff" stop-opacity="0"/></linearGradient>'+
+      '<clipPath id="cupclip"><path d="M30 30h40v18a20 20 0 0 1-40 0z"/></clipPath></defs>'+
+    star+
+    '<path d="M30 30h40v18a20 20 0 0 1-40 0z" fill="'+c.body+'" stroke="'+c.dark+'" stroke-width="2.4" stroke-linejoin="round"/>'+
+    '<g clip-path="url(#cupclip)"><rect class="glint" x="-40" y="28" width="26" height="44" fill="url(#shine)"/></g>'+
+    '<path d="M30 34H20a10 10 0 0 0 10 12M70 34h10a10 10 0 0 1-10 12" fill="none" stroke="'+c.dark+'" stroke-width="2.4" stroke-linecap="round"/>'+
+    '<path d="M50 68v12M36 92h28l-3-12H39z" fill="none" stroke="'+c.dark+'" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>'+
+    '<path d="M32 98h36" stroke="'+c.dark+'" stroke-width="3.4" stroke-linecap="round"/>'+
+  '</svg>';
+}
+
+/* ---------- the five badges, earned off the key ---------- */
+function got(n){ var c = CARDS[n-1]; return S.calls[n-1] === c.key; }
+function badges(){
+  var right = S.caught + S.cleared;
+  var picked = S.round1.map(function(i){ return ROWS[i][0]; });
+  var instinct = picked.some(function(code){ return flaggedAccounts().indexOf(code)>-1; });
+  return [
+    {t:"Cover story caught", on: got(7) && got(10), i:"glass"},
+    {t:"Perfect timing",     on: got(2) && got(4) && got(9), i:"calendar"},
+    {t:"Arithmetic hawk",    on: got(1) && got(8) && got(13), i:"scales"},
+    {t:"First-pass instinct",on: instinct, i:"flag"},
+    {t:"Clean sweep",        on: right===14, i:"badge"}
+  ];
+}
+
+function earnedLine(){
+  var right = S.caught + S.cleared;
+  if(right===14) return "You called all fourteen lines the way the ledger has them.";
+  if(S.caught===0) return "The memo got all " + PROBLEMS + " of its problems past you this time.";
+  return "You caught " + S.caught + " of " + PROBLEMS + ", which is " + S.caught + " more than the memo's author did.";
+}
+
 function done(){
   var miss = missedCards();
-  var coach;
+  var coachInner;
   if(!miss.length){
-    coach = '<div class="coach"><h3>Nothing to fix</h3><p class="tiny" style="margin:0">You called all fourteen lines the way the ledger has them, so the only thing left is to do it again on a memo you have not read yet.</p></div>';
+    coachInner = '<div class="coach"><h3>Nothing to fix</h3><p class="tiny" style="margin:0">You called all fourteen lines the way the ledger has them.</p></div>';
   } else {
-    coach = '<div class="coach"><h3>Where it got past you</h3>'+
+    coachInner = '<div class="coach"><h3>Where it got past you</h3>'+
       miss.map(function(c){
         return '<div class="miss"><b>Line '+c.n+', '+esc(c.name)+', account '+c.acct+'</b>'+
                '<em>'+esc(c.type)+'</em>'+
@@ -884,21 +1015,49 @@ function done(){
   var share = "I caught " + S.caught + " of the " + PROBLEMS + " problems in the machine's close memo and cleared " +
               (S.cleared===CLEANS ? (CLEANS===2?"both":"all "+CLEANS) : S.cleared+" of the "+CLEANS) +
               " clean lines. Second Pass: Beat the Machine.";
+  var b = badges();
   screen.innerHTML =
     '<div class="final">'+
-      icon((S.caught+S.cleared)>=11 ? "badge" : "robot", true).replace('class="icon big"','class="icon big" style="margin:0 auto 14px"')+
-      '<p class="tiny" style="margin:0">'+esc(S.codename)+'</p>'+
-      '<div class="big">'+S.caught+'<span style="font-size:24px;color:var(--ink-soft)"> of '+PROBLEMS+'</span></div>'+
-      '<p class="sub" style="margin:8px 0 0">You caught '+S.caught+' of the '+PROBLEMS+' problems and cleared '+S.cleared+' of the '+CLEANS+' clean lines.</p>'+
-      '<div class="rank">'+rank()+'</div>'+
-      coach+
-      '<p class="share" style="margin-top:18px">'+esc(share)+'</p>'+
-      '<p class="sub" style="margin-top:16px">Your calls are in. Ranks and the top three codenames get read out at the next meeting, along with what the room caught and what it walked past.</p>'+
-      '<p class="tiny">Your own round one calls are scored by hand against the key, so your rank on the night can climb.</p>'+
+      '<div class="trophywrap">'+trophySvg(tier())+'</div>'+
+      '<div class="rankbig">'+rank()+'</div>'+
+      '<p class="tiny" style="margin:2px 0 0">'+esc(S.codename)+'</p>'+
+      '<p class="earned">'+esc(earnedLine())+'</p>'+
+      '<div class="badges">'+
+        b.map(function(x){
+          return '<span class="badge'+(x.on?" on":"")+'"><svg viewBox="0 0 24 24">'+I[x.i]+'</svg>'+x.t+'</span>';
+        }).join("")+
+      '</div>'+
+      '<div class="sharecard"><p>'+esc(share)+'</p><button class="btn ghost" id="copyshare">Copy</button></div>'+
+      '<button class="btn ghost" id="showmiss">'+(miss.length
+          ? "See the "+miss.length+" that got past you"
+          : "See the full read out")+'</button>'+
+      '<div id="missbox" hidden>'+coachInner+'</div>'+
+      '<p class="tiny" style="margin-top:18px">Ranks and the top three codenames get read out at the next meeting.</p>'+
     '</div>';
   document.getElementById("fill").style.width = "100%";
   document.getElementById("step").textContent = "Done";
   document.getElementById("score").classList.add("hidden");
+  var mb = document.getElementById("missbox"), sm = document.getElementById("showmiss");
+  sm.addEventListener("click", function(){
+    mb.hidden = !mb.hidden;
+    sm.textContent = mb.hidden
+      ? (miss.length ? "See the "+miss.length+" that got past you" : "See the full read out")
+      : "Hide";
+  });
+  document.getElementById("copyshare").addEventListener("click", function(){
+    var self = this;
+    function done2(){ self.textContent = "Copied"; }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(share).then(done2, fallback);
+    } else { fallback(); }
+    function fallback(){
+      var ta = document.createElement("textarea");
+      ta.value = share; ta.style.position="fixed"; ta.style.opacity="0";
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand("copy"); done2(); }catch(e){ self.textContent = "Select the line above"; }
+      ta.remove();
+    }
+  });
 }
 
 render();

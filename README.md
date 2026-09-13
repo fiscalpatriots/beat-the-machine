@@ -1,11 +1,23 @@
 # Second Pass: Beat the Machine
 
 A ten minute reviewer's game for the George Mason ACFE student chapter. An assistant wrote
-Halyard's June close commentary, and the player is the second pass on it. Fourteen accounts come
-one at a time with the ledger movement drawn as a two bar chart, the sentence the memo wrote about
-that account, and an "On file" panel carrying every fact the call needs. The player flags the line
-or lets it stand, and the reveal names the error type. Twelve of the fourteen carry a problem and
-two are clean lines, and the score is read against the ledger rather than against a machine score.
+Halyard's June close commentary, and the player is the second pass on it.
+
+Round one puts the ledger itself on screen as a tappable table, one row per account with May, June,
+the change in dollars and percent and a bar that makes the big movements obvious, and the player
+taps up to five lines to record unaided judgement before reading a word of the memo. Then fourteen
+accounts come one at a time with the movement drawn as a two bar chart, a one line ledger strip for
+the account under review, the sentence the memo wrote about it, and an "On file" panel carrying
+every fact the call needs. A Ledger button on every card and reveal opens the full table as a slide
+up sheet with the current account highlighted and scrolled into view. The player flags the line or
+lets it stand, and the reveal names the error type. Twelve of the fourteen carry a problem and two
+are clean lines, and the score is read against the ledger rather than against a machine score.
+
+The end screen leads with the reward: a trophy drawn to the rank (bronze, silver, gold, and a
+starred cup for a clean sweep), the rank name, the codename, five badges with the unearned ones
+greyed, and the share line with a Copy button. The coaching sits behind one tap under it. Ranks are
+Trainee, Staff, Senior, Manager and Partner, off correct calls out of fourteen.
+
 Answers post straight into the existing Google Form's responses, so the leaderboard and the pooled
 results are unchanged.
 
