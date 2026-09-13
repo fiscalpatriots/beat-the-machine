@@ -710,15 +710,15 @@
   },
   {
     "id": "T18",
-    "name": "Halyard sample end to end, case halyard-v3",
-    "required": "The CHECKER.md expected outputs for the Halyard sample, generated from cases/halyard-v3.json.",
+    "name": "Halyard sample end to end, case halyard-v4",
+    "required": "The CHECKER.md expected outputs for the Halyard sample, generated from cases/halyard-v4.json. The v4 ledger, memo and keys are the v3 ones; only the on-file facts behind the reveal changed, so every mechanical expectation below is unchanged.",
     "sample": "halyard",
     "expect": [
       {
         "desc": "the sample carries the shared case version",
         "get": "json",
         "op": "includes",
-        "value": "\"caseVersion\": \"halyard-v3\""
+        "value": "\"caseVersion\": \"halyard-v4\""
       },
       {
         "desc": "fourteen ledger rows read",
@@ -844,21 +844,27 @@
   },
   {
     "id": "T18b",
-    "name": "Brightwater sample end to end, case brightwater-v2",
-    "required": "The CHECKER.md expected outputs for the Brightwater sample, generated from cases/brightwater-v2.json.",
+    "name": "Brightwater sample end to end, case brightwater-v4",
+    "required": "The Brightwater sample, generated from cases/brightwater-v4.json. Every figure and every direction word in the v4 memo is correct, so the mechanical pass clears all five and the whole case turns on evidence a person has to weigh. A checker that failed a line here would be wrong.",
     "sample": "brightwater",
     "expect": [
       {
         "desc": "the sample carries the shared case version",
         "get": "json",
         "op": "includes",
-        "value": "\"caseVersion\": \"brightwater-v2\""
+        "value": "\"caseVersion\": \"brightwater-v4\""
       },
       {
-        "desc": "five ledger rows, five sentences",
+        "desc": "five ledger rows read",
         "get": "stats.rowsUsed",
         "op": "eq",
         "value": 5
+      },
+      {
+        "desc": "no row skipped",
+        "get": "stats.rowsSkipped",
+        "op": "eq",
+        "value": 0
       },
       {
         "desc": "five sentences",
@@ -867,32 +873,74 @@
         "value": 5
       },
       {
-        "desc": "card 1 fails on direction",
+        "desc": "card 1, supplies, ties",
         "get": "status.1",
         "op": "eq",
-        "value": "failed"
+        "value": "checked within scope"
       },
       {
-        "desc": "card 2 is checked within scope",
+        "desc": "card 1 reads $52,700 as the movement and 38.1 percent as the rate",
+        "get": "role.1",
+        "op": "includes",
+        "value": "$52,700=dollars/absolute movement"
+      },
+      {
+        "desc": "card 2, hygienist wages, ties",
         "get": "status.2",
         "op": "eq",
         "value": "checked within scope"
       },
       {
-        "desc": "card 3, the timing trap, needs review on an unstated role",
+        "desc": "card 3, orthodontic plans, ties",
         "get": "status.3",
         "op": "eq",
-        "value": "needs review"
+        "value": "checked within scope"
       },
       {
-        "desc": "card 5 fails: $44,900 is not the $54,900 change",
+        "desc": "card 4, patient revenue, ties",
+        "get": "status.4",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "card 4's threshold claim is checked and true",
+        "get": "finding.4",
+        "op": "includes",
+        "value": "Threshold claim: PASS"
+      },
+      {
+        "desc": "card 5, marketing, ties",
         "get": "status.5",
         "op": "eq",
-        "value": "failed"
+        "value": "checked within scope"
+      },
+      {
+        "desc": "card 5's threshold claim is checked and true",
+        "get": "finding.5",
+        "op": "includes",
+        "value": "Threshold claim: PASS"
+      },
+      {
+        "desc": "nothing failed the mechanical pass",
+        "get": "stats.failed",
+        "op": "eq",
+        "value": 0
+      },
+      {
+        "desc": "nothing was left needing review",
+        "get": "stats.review",
+        "op": "eq",
+        "value": 0
       },
       {
         "desc": "nothing is silent",
         "get": "stats.silent",
+        "op": "eq",
+        "value": 0
+      },
+      {
+        "desc": "and the mechanical queue is empty, because what is left is judgment",
+        "get": "stats.queue",
         "op": "eq",
         "value": 0
       }

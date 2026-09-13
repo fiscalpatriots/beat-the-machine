@@ -22,9 +22,9 @@ const END = "/* BUILD:CHECKER-CASES-END */";
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
 const CASES = [
-  { key: "halyard", file: "cases/halyard-v3.json", header: ["Line", "Account", "Prior (%PRIOR%)", "Current (%CURRENT%)"],
+  { key: "halyard", file: "cases/halyard-v4.json", header: ["Line", "Account", "Prior (%PRIOR%)", "Current (%CURRENT%)"],
     ratios: "Product gross margin = (4000 - 5000) / 4000" },
-  { key: "brightwater", file: "cases/brightwater-v2.json", header: ["Account", "%PRIOR%", "%CURRENT%"], ratios: "" },
+  { key: "brightwater", file: "cases/brightwater-v4.json", header: ["Account", "%PRIOR%", "%CURRENT%"], ratios: "" },
 ];
 
 function money(v) {

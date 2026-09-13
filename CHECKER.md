@@ -213,7 +213,7 @@ node tests/run-checker-tests.cjs --dump T02
 `tests/checker-fixtures.json` holds **fifty-three** fixtures and **all fifty-three pass**.
 
 - **T01 to T17**, the seventeen probes from the external audit of 13 September 2026, each carrying
-  the required behaviour from that audit as the assertion, plus four boundary and export companions.
+  the required behavior from that audit as the assertion, plus four boundary and export companions.
 - **T18, T18b, T19**, the end-to-end sample runs, Halyard, Brightwater and Kestrel, which assert the
   expected outputs printed further down this file.
 - **T20 to T43**, the twenty-four probes from the live release review of 13 September 2026, N01 to
@@ -256,7 +256,7 @@ sample cases produce output identical to the release the review examined.
 - **No opinion on a total it cannot rebuild.** Gross Profit, Net Operating Income, Net Income and
   Net Profit are printed and left alone. Only a `Total ...` row standing directly under a section
   of lines is recomputed.
-- **Indentation is not read.** A section header is recognised by its words, not by how far it is
+- **Indentation is not read.** A section header is recognized by its words, not by how far it is
   indented, so a report whose sections are named something the reader does not know comes through
   as lines with no section and no totals tie. Every line is still checked.
 - **A closing sentence is unmatched by design.** "Four lines fell below the rule and carry no
@@ -355,8 +355,8 @@ Four links open the page with a case already run: `checker.html?sample=halyard`,
 The **Samples** dropdown carries four cases, and each one loads both panes, the ratio pane, the
 thresholds and the close period, then runs.
 
-**Halyard and Brightwater are generated from the shared case definitions**, `cases/halyard-v3.json`
-and `cases/brightwater-v2.json`, which are the same files the game reads, so the checker and the
+**Halyard and Brightwater are generated from the shared case definitions**, `cases/halyard-v4.json`
+and `cases/brightwater-v4.json`, which are the same files the game reads, so the checker and the
 game run the same ledger and the same memo version rather than two drifting copies of one case.
 The generated block sits in `checker.html` between `BUILD:CHECKER-CASES-START` and
 `BUILD:CHECKER-CASES-END`, and it is rewritten by:
@@ -379,9 +379,9 @@ T18, T18b and T19 in `tests/checker-fixtures.json`, so a change that moves them 
 
 ## The Halyard sample, expected against actual
 
-**Halyard Provisioning Group, June 2026** is generated from `cases/halyard-v3.json`, the same case
+**Halyard Provisioning Group, June 2026** is generated from `cases/halyard-v4.json`, the same case
 definition the game runs, so the checker and the game now read the same fourteen accounts and the
-same memo version. The Memo version field carries the case version, `halyard-v3 memo, 13 September
+same memo version. The Memo version field carries the case version, `halyard-v4 memo, 13 September
 2026`, and it rides into the CSV, the JSON record, the printed summary and Prompt 2. Two of the
 fourteen cards carry no memo sentence, which is how the case plants its silent lines, so the memo is
 twelve sentences numbered by card. The ratio pane is prefilled with
@@ -432,15 +432,23 @@ transfer to the checker, and a status here is never evidence that a driver is su
 
 ## Brightwater Dental Partners, June 2026, the round two case
 
-**Brightwater Dental Partners** is generated from `cases/brightwater-v2.json`, the five-account,
+**Brightwater Dental Partners** is generated from `cases/brightwater-v4.json`, the five-account,
 five-sentence dental group the game scores a player on cold. The Memo version field carries
-`brightwater-v2 memo, 13 September 2026`. A plain tab separated ledger with a two column header,
+`brightwater-v4 memo, 13 September 2026`. A plain tab separated ledger with a two column header,
 `Account / May 2026 / June 2026`, read chronologically. Thresholds $25,000 and 10 percent, both
 legs, no ratios.
 
-Coverage strip: **5** sentences read · **2** checked within scope · **1** needs review ·
-**0** not checked · **2** failed · **5** ledger rows used · **0** rows skipped · **0** silent lines ·
-**3** in the reviewer queue.
+Coverage strip: **5** sentences read, **5** checked within scope, **0** needs review,
+**0** not checked, **0** failed, **5** ledger rows used, **0** rows skipped, **0** silent lines,
+**0** in the reviewer queue.
+
+This is the sample where the checker clears everything and settles nothing, and that is the point
+of it. Every figure in the v4 memo is right and every direction word agrees with the sign, so the
+mechanical pass has no finding to make. What each sentence then asserts is a cause, and a cause is
+not a figure. Four of the five name a driver the ledger cannot confirm or deny, which is why the
+game keys three of them `flag` and one `stand` on evidence a person has to weigh. A checker that
+reported a failure on this sample would be wrong, and a reader who took an empty queue as a clean
+memo would be making the mistake the whole project is about.
 
 | Line | Result |
 | --- | --- |
@@ -449,17 +457,21 @@ Coverage strip: **5** sentences read · **2** checked within scope · **1** need
 | 5210 Dental supplies and lab fees | $52,700 and 38.1 percent, clears |
 | 6110 Hygienist wages | $54,900 and 25.7 percent, clears |
 | 6610 Marketing and patient outreach | $5,700 and 31.0 percent, **below the rule**: a large percentage of a small balance is still a small number |
-| 1, supplies "eased to $191,200" | bound 5210 by name; $191,200 is the **current balance**, read from "to", and it ties; direction **FAIL**, the account rose $52,700, 38.1 percent. **Failed** |
-| 2, patient revenue rose $61,500, 8.3 percent of May | bound 4010 by name; $61,500 **absolute movement** ✓ and 8.3 percent **relative movement** ✓, the role read from "of May"; the threshold claim "fails the percentage leg" **PASS**. **Checked within scope** |
-| 3, orthodontic plans taken to revenue in June | bound 4220 by name; $138,400 **role unknown**, "revenue of" says nothing, and it equals the current balance. **Needs review** |
-| 4, marketing rose $5,700, or 31.0 percent | bound 6610 by name; both figures ✓, the percent's role read from "or" restating the movement; claim "fails the dollar leg" **PASS**. **Checked within scope** |
-| 5, hygienist wages "increased $44,900" | bound 6110 by name; $44,900 **absolute movement** **FAIL**, the movement is $54,900, so $10,000 is left with no reason attached. **Failed** |
 
-**Card 3 is the one the checker cannot settle, and it now says so twice.** The case plants a timing
-error there: orthodontic fees collected in June pay for treatment that starts in July. Under the old
-page it passed cleanly and went to the reviewer; it now reads **needs review**, because "$138,400"
-carries no word saying whether it is a balance, a movement or anything else. The timing question
-still prints beside it. Both routes end at a person, and the second one is honest about why.
+| Sentence | What the checker did with it |
+| --- | --- |
+| 1, supplies rose $52,700, or 38.1 percent, on the implant cases the new surgical suite took on | bound 5210 by name; $52,700 **absolute movement**, the role read from the direction word "rose", ties; 38.1 percent **relative movement**, the role read from "or" restating the figure before it, ties. **Checked within scope** |
+| 2, hygienist wages rose $54,900, or 25.7 percent, on a second hygiene chair | bound 6110 by name; both figures tie, both roles read the same way. **Checked within scope** |
+| 3, orthodontic plan revenue rose $42,400, or 44.2 percent, as thirty-one new plans began billing | bound 4220 by name; both figures tie. **Checked within scope** |
+| 4, patient revenue rose $61,500, or 8.3 percent, as two associates reached a full schedule | bound 4010 by name; both figures tie, and the claim "fails the percentage leg" **PASS**. **Checked within scope** |
+| 5, marketing rose $5,700, or 31.0 percent, on a mailer delivered in the first week of June | bound 6610 by name; both figures tie, and the claim "fails the dollar leg" **PASS**. **Checked within scope** |
+
+**Nothing here reaches the reviewer queue, and four of the five sentences still need a reviewer.**
+The queue holds what the mechanical pass could not resolve, and on this memo it resolved everything
+it is able to resolve. The surgical suite, the thirty-one plans, the two associates and the second
+hygiene chair are each a cause the ledger has no opinion about. Read the coverage strip as what was
+checked, never as what was established: the scope is set out at the top of this file, and a status
+here is never evidence that a driver is supported.
 
 ## Kestrel IT Services, July 2026, a QuickBooks export
 
@@ -488,7 +500,7 @@ Coverage strip: **6** sentences read · **3** checked within scope · **0** need
 | 4100 Project and implementation revenue | $57,500 and 147.8 percent, clears |
 | 5000 Subcontracted engineering | $46,500 and 111.2 percent, clears |
 | 6000 Salaries and wages | $0 and 0.0 percent, below the rule |
-| 6200 Software licences and hosting | $35,300 and 156.2 percent, clears |
+| 6200 Software licenses and hosting | $35,300 and 156.2 percent, clears |
 | 6400 Client acquisition costs | $9,300 and 189.8 percent, below the rule |
 | Total Income, Total Cost of Goods Sold, Total Expenses | all three **TIE** to the lines under them |
 | Gross Profit, Net Operating Income, Net Income | **KEPT OUT**, computed across sections |
@@ -496,7 +508,7 @@ Coverage strip: **6** sentences read · **3** checked within scope · **0** need
 | 2, project revenue carries the final Riverbend milestone | bound 4100 by account name, no figures and no threshold claim. **Not checked**, and **read together** with line 1 |
 | 3, subcontracted engineering "fell $46,500" | bound 5000 by number; $46,500 **absolute movement** ✓ and $88,300 **current balance** ✓; direction **FAIL**, the account rose. **Failed** |
 | 4, salaries "held flat at $88,500" | bound 6000 by number; $88,500 **current balance** ✓, the role read from "at"; direction PASS on the flat test. **Checked within scope** |
-| 5, software licences rose **$25,300** to $57,900 | bound 6200 by number; $57,900 **current balance** ✓; $25,300 **absolute movement** **FAIL**, the movement is $35,300. **Failed** |
+| 5, software licenses rose **$25,300** to $57,900 | bound 6200 by number; $57,900 **current balance** ✓; $25,300 **absolute movement** **FAIL**, the movement is $35,300. **Failed** |
 | 6, client acquisition rose $9,300, or 189.8 percent | bound 6400 by number; both ✓; claim "fails the dollar leg" **PASS**. **Checked within scope** |
 
 Two problems are planted, one of each kind the mechanical checks can settle: **line 3 has the

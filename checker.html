@@ -414,10 +414,10 @@ details.pr .btn-text{margin:0 0 var(--s5)}
       <button class="btn green" id="run">Run Second Pass<span class="kbd" id="runkey">Ctrl + Enter</span></button>
       <select id="samplepick" aria-label="Samples, load a case">
         <option value="">Samples: load a case&hellip;</option>
-        <option value="halyard">Halyard Provisioning Group, June 2026 &mdash; 14 lines</option>
-        <option value="brightwater">Brightwater Dental Partners, June 2026 &mdash; 5 lines</option>
-        <option value="kestrel">Kestrel IT Services, July 2026 &mdash; QuickBooks export</option>
-        <option value="ridgeline">Ridgeline Partners, July 2026 &mdash; comma separated</option>
+        <option value="halyard">Halyard Provisioning Group, June 2026, 14 lines</option>
+        <option value="brightwater">Brightwater Dental Partners, June 2026, 5 lines</option>
+        <option value="kestrel">Kestrel IT Services, July 2026, a QuickBooks export</option>
+        <option value="ridgeline">Ridgeline Partners, July 2026, comma separated</option>
       </select>
       <button class="btn secondary" id="clear">Clear</button>
     </div>
@@ -1531,7 +1531,7 @@ function refreshPreview(pre){
   var dropped=L.skipped.filter(function(s){return !s.keep;});
   var kept=L.skipped.filter(function(s){return s.keep;});
 
-  /* one fact per line, the severity carried by a word rather than a coloured pill */
+  /* one fact per line, the severity carried by a word rather than a colored pill */
   var FACTWORD={"":"read","ok":"confirmed","warn":"check","bad":"blocked"};
   var FACTCLS={"":"info","ok":"pass","warn":"review","bad":"fail"};
   function chip(cls,txt){
@@ -1563,7 +1563,7 @@ function refreshPreview(pre){
     dropped.concat(kept).sort(function(a,b){return a.n-b.n;}).forEach(function(s){
       var t=String(s.t).replace(/\s+/g," ");
       if(t.length>90)t=t.slice(0,88)+"…";
-      ul.appendChild(el("li",null,"Line "+s.n+", “"+t+"” — "+s.why+"."));
+      ul.appendChild(el("li",null,"Line "+s.n+", “"+t+"”. "+s.why+"."));
     });
     body.appendChild(ul);
   }
@@ -2186,7 +2186,7 @@ function note(where,cls,html){
 }
 
 /* ============================================================ render */
-/* ---------- the four status marks, drawn rather than coloured in ---------- */
+/* ---------- the four status marks, drawn rather than colored in ---------- */
 var MARKS={
   pass:'<svg class="mark" viewBox="0 0 14 14" aria-hidden="true" focusable="false">'+
     '<path d="M2 7.3 5.4 10.8 12 3.3" fill="none" stroke="var(--mason)" stroke-width="2" '+
@@ -2218,7 +2218,7 @@ function coverage(stats){
 
 /* One stacked bar, drawn in the tokens: the four sentence statuses in
    proportion. The counts sit under it in four tiles carrying the same four
-   marks the table uses. No pills, no coloured band behind a word. */
+   marks the table uses. No pills, no colored band behind a word. */
 var STATSEG=[["checked within scope","checked","var(--mason)",1],
              ["needs review","review","var(--ink)",1],
              ["not checked","notchecked","var(--card)",0],
@@ -2364,7 +2364,7 @@ function render(out,rows,stats){
       var ul=el("ul");
       dropped.forEach(function(s){
         var t=String(s.t).replace(/\s+/g," ");
-        ul.appendChild(el("li",null,"Line "+s.n+", “"+(t.length>90?t.slice(0,88)+"…":t)+"” — "+s.why+"."));
+        ul.appendChild(el("li",null,"Line "+s.n+", “"+(t.length>90?t.slice(0,88)+"…":t)+"”. "+s.why+"."));
       });
       box.appendChild(ul);
       out.appendChild(box);
@@ -2451,7 +2451,7 @@ function render(out,rows,stats){
       var h=el("p","qh");
       h.appendChild(document.createTextNode(
         r.check.indexOf("Queue: ")===0?r.check.slice(7):(r.check==="Reviewer"?"Judgment":r.check)));
-      h.appendChild(el("span","status "+r.badge+" inline"," — "+r.result));
+      h.appendChild(el("span","status "+r.badge+" inline",": "+r.result));
       li.appendChild(h);
       li.appendChild(el("p","qs",(r.label?r.label+". ":"")+r.subj+"  ·  line "+r.line));
       li.appendChild(el("p","qd",r.det));
@@ -2588,7 +2588,7 @@ function printSummary(){
       var row=null;
       LAST.rows.forEach(function(r){if(!row&&r.ev===item.ev&&!r.grp)row=r;});
       var ans=row?answersFor(row):"";
-      qul.appendChild(el("li",null,"["+item.kind+"] "+item.ref+" — "+item.issue+". Owner: "+item.owner+"."+
+      qul.appendChild(el("li",null,"["+item.kind+"] "+item.ref+". "+item.issue+". Owner: "+item.owner+"."+
         (ans?" Answered: "+ans:"")));
     });
     d.appendChild(qul);
@@ -2648,7 +2648,7 @@ function printSummary(){
    ["Controller","I read this log with the memo, resolved every open ask and release the commentary."]].forEach(function(s){
     var b=el("div","sig");
     b.appendChild(el("div","line"));
-    b.appendChild(el("div","cap",s[0]+" — signature and date"));
+    b.appendChild(el("div","cap",s[0]+", signature and date"));
     b.appendChild(el("div","cap",s[1]));
     sig.appendChild(b);
   });
@@ -2843,7 +2843,7 @@ function reviewerPrompt(){
   p.push("UNRESOLVED ITEMS, VERBATIM. Every one of these is open.");
   if(!S.queue.length)p.push("(none)");
   S.queue.forEach(function(item){
-    p.push("- ["+item.kind+"] "+item.ref+" — "+item.issue+(item.ask?" Question: "+item.ask:"")+
+    p.push("- ["+item.kind+"] "+item.ref+". "+item.issue+(item.ask?" Question: "+item.ask:"")+
            " Owner: "+item.owner+".");
   });
   p.push("");
@@ -2929,8 +2929,8 @@ CASE_SAMPLES.halyard={
         "14. Interest expense rose $31,200 on the depot equipment additions that also sit in depreciation."].join("\n"),
   ratios:"Product gross margin = (4000 - 5000) / 4000",
   period:"June 2026",
-  version:"halyard-v3 memo, 13 September 2026",
-  caseVersion:"halyard-v3",
+  version:"halyard-v4 memo, 13 September 2026",
+  caseVersion:"halyard-v4",
   company:"Halyard Provisioning Group, Inc.",
   lines:14,sentences:12
 };
@@ -2941,15 +2941,15 @@ CASE_SAMPLES.brightwater={
            "5210\tDental supplies and lab fees\t$138,500\t$191,200",
            "6110\tHygienist wages\t$214,000\t$268,900",
            "6610\tMarketing and patient outreach\t$18,400\t$24,100"].join("\n"),
-  memo:["1. Dental supplies and lab fees eased to $191,200 in June as the group moved its crown and bridge work to a lower priced lab.",
-        "2. Patient service revenue rose $61,500, which is 8.3 percent of May, so the movement fails the percentage leg of the threshold and this line carries no driver.",
-        "3. Orthodontic plan revenue of $138,400 includes the eleven treatment plans families paid in full during June, and the whole payment on each plan was taken to revenue in June.",
-        "4. Marketing and patient outreach rose $5,700, or 31.0 percent, on the new patient mailer that went out in the first week of June, and the movement fails the dollar leg of the threshold.",
-        "5. Hygienist wages increased $44,900 after the second hygiene chair opened at the Ashburn office on June 1."].join("\n"),
+  memo:["1. Dental supplies and lab fees rose $52,700, or 38.1 percent, on the implant cases the new surgical suite took on in June.",
+        "2. Hygienist wages rose $54,900, or 25.7 percent, on the second hygiene chair that opened at the Ashburn office on 1 June.",
+        "3. Orthodontic plan revenue rose $42,400, or 44.2 percent, as the thirty-one new orthodontic plans that started in June began billing.",
+        "4. Patient service revenue rose $61,500, or 8.3 percent, as the two associate dentists who started in May reached a full patient schedule in June. The movement fails the percentage leg of the threshold.",
+        "5. Marketing and patient outreach rose $5,700, or 31.0 percent, on the new patient mailer delivered in the first week of June. The movement fails the dollar leg of the threshold."].join("\n"),
   ratios:"",
   period:"June 2026",
-  version:"brightwater-v2 memo, 13 September 2026",
-  caseVersion:"brightwater-v2",
+  version:"brightwater-v4 memo, 13 September 2026",
+  caseVersion:"brightwater-v4",
   company:"Brightwater Dental Partners, PLLC",
   lines:5,sentences:5
 };
@@ -2988,7 +2988,7 @@ var KESTREL_LEDGER=[
 "Gross Profit\t206,500.00\t158,600.00\t47,900.00\t30.20 %",
 "Expenses",
 "   6000 Salaries and wages\t88,500.00\t88,500.00\t0.00\t0.00 %",
-"   6200 Software licences and hosting\t57,900.00\t22,600.00\t35,300.00\t156.19 %",
+"   6200 Software licenses and hosting\t57,900.00\t22,600.00\t35,300.00\t156.19 %",
 "   6400 Client acquisition costs\t14,200.00\t4,900.00\t9,300.00\t189.80 %",
 "Total Expenses\t160,600.00\t116,000.00\t44,600.00\t38.45 %",
 "Net Operating Income\t45,900.00\t42,600.00\t3,300.00\t7.75 %",
@@ -3000,12 +3000,12 @@ var KESTREL_MEMO=[
 "2. Project and implementation revenue carries the final Riverbend milestone, which was billed on 31 July and accepted the same day (source: signed acceptance certificate).",
 "3. 5000 Subcontracted engineering fell $46,500 to $88,300 as the cutover was staffed through two partner firms (source: partner invoices on file).",
 "4. 6000 Salaries and wages held flat at $88,500, with no headcount movement in the month (source: payroll register).",
-"5. 6200 Software licences and hosting rose $25,300 to $57,900 on the annual renewal of the monitoring platform, billed in July (source: vendor invoice).",
+"5. 6200 Software licenses and hosting rose $25,300 to $57,900 on the annual renewal of the monitoring platform, billed in July (source: vendor invoice).",
 "6. 6400 Client acquisition costs rose $9,300, or 189.8 percent, which fails the dollar leg of the threshold, so this line carries no driver."
 ].join("\n");
 
-/* Halyard and Brightwater are generated from cases/halyard-v3.json and
-   cases/brightwater-v2.json by build-checker-cases.cjs, so the checker runs the
+/* Halyard and Brightwater are generated from cases/halyard-v4.json and
+   cases/brightwater-v4.json by build-checker-cases.cjs, so the checker runs the
    same memo version the game runs. Kestrel and Ridgeline are the checker's own. */
 var SAMPLES={
   halyard:CASE_SAMPLES.halyard,
