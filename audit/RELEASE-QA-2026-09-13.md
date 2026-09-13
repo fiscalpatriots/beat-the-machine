@@ -1,7 +1,12 @@
 # Release QA, 13 September 2026
 
-Second Pass 1.6.0. Every page walked at six widths, both independent reviews taken item by
-item, and the whole release read for consistency.
+Second Pass 1.6.0, and the 1.6.1 pass that closed what it left open. Every page walked at six
+widths, both independent reviews taken item by item, and the whole release read for consistency.
+
+**Read this first.** Sections 1 to 8 are the 1.6.0 QA as it was written. Section 9 is the closing
+pass made later the same day, and every status in sections 2, 4 and 6 that it moved has been
+rewritten in place with the evidence beside it, so no row in this file says something the build
+does not do. Section 9 lists what moved. The four items still open all wait on a person.
 
 **How it was driven.** Headless Chrome over the DevTools protocol against a local server on the
 working tree, one real click per control rather than a function call, with the drill in test mode
@@ -132,7 +137,7 @@ trophy, the medals and the call transitions are all off.
 
 | Check | Result |
 | --- | --- |
-| `node tests/run-checker-tests.cjs` | **53 passed, 0 failed, 53 run** |
+| `node tests/run-checker-tests.cjs` | **59 passed, 0 failed, 59 run** at 1.6.1, from 53 at 1.6.0 |
 | Open Graph and Twitter tags | complete on all five pages: `og:title`, `og:description`, `og:image`, `og:url`, `og:type`, `twitter:card` and `description`. Every `og:url` is the live URL for that page and every canonical points at its own page |
 | Favicon | `assets/favicon.svg` and `assets/favicon-32.png` linked in the head of all five pages, and both are byte-identical to the files served live |
 | `robots.txt` | `User-agent: *`, `Allow: /`, and the sitemap line. Nothing disallowed |
@@ -165,7 +170,7 @@ Two documents, read line by line. **Done** means I ran it or read it in the file
 | 3 | Remove legacy placeholder participant data; separate decisions, actual reasons and computed metadata | Done | `index.html` `attemptRecord()`: `confidence: null` with `confidenceNote: "not asked in this version"`; the basis chips and the free line are the player's, the key and the verdict are the page's, in separate fields |
 | 4 | Reuse commitment and response handling, with a ledger-only judgment before the narrative | Done | the orientation screen collects up to three ledger-only picks before a memo sentence is read, and posts them as `Prepicks: …` |
 | 5 | Replace the fresh assessment with one testing supported and unsupported causes, revealing nothing until completion | Partial | `brightwater-v4` replaced the empty-memo item with a numerically correct causal claim and keys four of five on evidence. Nothing is revealed until all five are committed, verified on the walk. The remaining gap is scoring: see 4.2 §3 |
-| 6 | Participant record, case packet and facilitator guide usable without the author | Partial | the record and the case packet are; the guide is the materials lane's and still names a version and figures listed under **Still open** |
+| 6 | Participant record, case packet and facilitator guide usable without the author | **Done at 1.6.1** | the record and the case packet were. The guide now names `halyard-v4`, `brightwater-v5` and product 1.6.1, decides no accrual from a contradiction, and prints no percentage without its source |
 | 7 | Demonstrate the configured model workflow with preserved inputs, raw outputs and human adjudication | Done | `evidence/` carries six raw drafts across three ledgers, blind and under Prompt 1, with the checker results and a note; `PROVENANCE.md` states plainly that the case's own fourteen challenges were authored, not generated |
 
 #### The nineteen accounting repairs
@@ -309,14 +314,26 @@ Mutation properties, which the review named as the acceptance criteria rather th
 examples: swapping the amount (`M2`) fails, changing the sign (`M3`) fails, and the base sentence
 (`M1`) still clears. **Status: the class is closed for every form the review demonstrated.**
 
-One residue, found today and **open**: a spelled-out quantity with no unit word still clears.
-`Rent expense rose $30,000, a rise of thirty thousand.` and
-`Rent expense rose $30,000, one third of the prior balance.` both come back checked within scope,
-and the second is false. The same sentence with a unit word is caught:
-`…a rise of thirty thousand dollars.` and `…a change of ninety percent.` both come back not
-checked. A fix has a trap in it: the Brightwater memo says "the thirty-one new orthodontic plans",
-which is a count, not a figure about the account, so a naive number-word detector would make a
-good sentence unresolved. Recorded as a fixture to write, not a change to make at release.
+One residue was found here and left open at 1.6.0: a spelled-out quantity with no unit word still
+cleared. **Closed in 1.6.1.** The grammar now reads units through millions, hyphenated compounds
+included, and `CHECKER.md` carries it as rule 1c. A run becomes an ordinary figure where the parser
+resolves it and the words beside it give it a unit; a run it cannot resolve, a fraction, and
+anything above a million reach the queue wherever they stand; a resolved run with no unit reaches
+the queue where the words put a claim, and is left alone where they do not.
+
+| Sentence | Was | Now |
+| --- | --- | --- |
+| `…a rise of thirty thousand.` | checked within scope | **not checked**, span in the queue |
+| `…one third of the prior balance.` | checked within scope | **not checked**, span in the queue |
+| `Rent expense rose thirty thousand dollars.` (true) | not checked | **checked within scope** |
+| `Rent expense rose forty thousand dollars.` (false) | not checked | **failed** |
+| `…rose one hundred twenty-five thousand dollars.` | not checked | read as $125,000 |
+| `…the thirty-one new orthodontic plans` (a count) | checked within scope | **checked within scope**, unchanged |
+
+The trap the fix had in it is the last row, and it is why a unit-less run is tested for whether the
+words put a claim beside it before it goes anywhere. Fixtures `T49` to `T54`. `T21` moved as well:
+`a change of ninety percent` is now read and **failed** rather than left unparsed, which is the
+stronger answer to a false sentence, and the N02 row in the table above reads that way now.
 
 The four defect locations the review named were repaired before this QA: the figure reader keeps
 the span and the sign, sentence binding holds a multi-account sentence unless each figure binds
@@ -331,7 +348,7 @@ within its own clause, and an unknown role stops a checked conclusion before any
 | Two items called accounts that "clear neither" | Done | the description now says patient revenue clears the dollar condition and marketing clears the percentage condition |
 | Scoring did not test the chosen reason: 14 of 14 with "wrong account" everywhere | Done | every card carries a `basisKey`, the reason is scored separately from the call, and the run that motivated this scores 0 of 14 on reason. The reveal prints "Reason agrees" or "Reason does not agree" per line |
 | Require a reason on stands as well as flags | Done | `basisChips.stand` offers the hold chip and the six defect chips, and a stand is scored the same way |
-| Short source excerpts, and one document that is incomplete or wrong-period | **Open** | the fresh case still gives author-summarized facts |
+| Short source excerpts, and one document that is incomplete or wrong-period | **Done at 1.6.1** | `cases/brightwater-v5.json`: every On file entry quotes one line from a named, dated document, or says the document was requested and is not on file. Line 3 rests on the orthodontic plan schedule of 31 May 2026, quoted at 96 active plans and $96,000 of monthly billing, which ties to the ledger's May balance, against a memo crediting $42,400 to plans that started in June |
 | An educator reviews the keys and independently scores a subset | **Open** | not run |
 | A rubric from zero to two, scored by a person | Partial | the record carries the fields and names the rubric; nobody has scored one |
 | Do not call the result a learning gain | Done | the end screen and `README.md` both say the fresh five are a second unseen set, not a post-test |
@@ -343,9 +360,9 @@ within its own clause, and an unknown role stops a checked conclusion before any
 | Catch rate and false flags | Done | reported as answer-key agreement with its denominators; `tools/findings.py` prints the counts and the denominators, never a bare rate |
 | Better causal reasoning | Done | the reason score is separate, and `rubricNote` says the three-dimension rubric is scored by a person outside the page |
 | Confidence calibration | Done | `confidence: null`, `confidenceNote: "not asked in this version"` |
-| Evidence the participant used | **Open** | `evidenceReferences` still copies the card's whole supplied file list under that name. The review asked it be renamed "evidence supplied" and participant-selected evidence collected separately |
-| Unique first-time participants | Partial | `firstAttempt` is still the tab-session run counter; the attempt identifier now makes a retry countable once, which is the half of the problem the page can solve |
-| Active review time | **Open** | `elapsedActiveSeconds` still measures elapsed time without pausing for tab inactivity |
+| Evidence the participant used | **Done at 1.6.1** | `evidenceSupplied` is the card's list, `evidenceSelected` sits beside it and is `null` with a note saying the page does not ask, and `evidenceReferences` rides along for one version under `renamedFields` |
+| Unique first-time participants | Partial | the field is now `firstRunInThisTab` and says in its own note that the page cannot tell a first-time person from a returning one. The attempt identifier makes a retry countable once, which is the half of it a page with no account can settle. Still partial, and it no longer claims otherwise |
+| Active review time | **Done at 1.6.1** | two clocks, named apart. `elapsedSecondsOnCard` is wall-clock; `activeSecondsOnCard` takes out the time the tab spent hidden, measured on `visibilitychange`, and `hiddenSecondsInRun` reports how much came out. The note on the record says neither one knows whether the player was reading |
 | Student versus practitioner | Partial | `role` is null and stays null; the organization chips now include an honest external route |
 | Learning gains | Done | not claimed anywhere |
 
@@ -354,9 +371,9 @@ within its own clause, and an unknown role stops a checked conclusion before any
 | Item | Status | Evidence |
 | --- | --- | --- |
 | The score screenshot said "12 of your fourteen calls match the ledger" | Done | that wording is gone; the page says a run can agree with the answer key and give a basis that does not |
-| "Nothing is released until all four are done" describes a procedure the page does not enforce | **Open** | the caption still reads that way |
-| "Two of the six cannot be settled by a machine" is a universal claim | **Open** | still on the page. The review's smallest repair is to say this checker leaves those judgments to a reviewer |
-| "Wrong account" sits among the machine checks in the diagram | **Open** | still there, and it now disagrees with the v4 key, which classifies cards 12 and 14 as unsupported attribution and unsupported driver. Re-cutting the four-and-two split changes copy on three surfaces and is a content decision, not a QA fix |
+| "Nothing is released until all four are done" describes a procedure the page does not enforce | **Done at 1.6.1** | the caption now says the protocol asks for all four, that nothing on the site enforces it, that the checker reports the first three, and that the fourth is a signature a person gives |
+| "Two of the six cannot be settled by a machine" is a universal claim | **Done at 1.6.1** | the caption reads "This checker settles neither of the last two. It puts the driver and the period to a named reviewer instead, and prints the question rather than a verdict" |
+| "Wrong account" sits among the machine checks in the diagram | **Done at 1.6.1** | the split was not re-cut. The fourth machine item is now "A figure off its line", which is the check the page runs and the one fixture `T28` guards, and it no longer collides with the key's unsupported attribution. The strip heading reads "THE MACHINE SETTLES FOUR" |
 | A three-person roles assumption | Done | the diagram says "a named reviewer, never the preparer", which is two roles rather than three |
 | The page should reach the whole entry | **Fixed today** | the rail gained Build and code: the author page, the code repository, and this site's source. Commit `ee9a1a7` |
 
@@ -366,7 +383,7 @@ within its own clause, and an unknown role stops a checked conclusion before any
 | --- | --- | --- |
 | Protocol step 3 told the reviewer to read only what passed | Done | `PROTOCOL.md` step 3 now reads "Work the reviewer queue, which holds what the checks could not settle: failures, …" |
 | The example evidence log signed off on an invented $5,000 provision | Done | `EVIDENCE-LOG-TEMPLATE.csv` now resolves the arithmetic and leaves the cause open pending a reserve rollforward |
-| The facilitator guide restores the accrual error and prints unattributed percentages | **Open** | the materials lane's file |
+| The facilitator guide restores the accrual error and prints unattributed percentages | **Done at 1.6.1** | question 3's tell now says the memo contradicts itself, that neither sentence says what June work was performed, and that spotting a contradiction is not knowing the accounting, which is the card's own reveal. The two sample-findings rates are gone, because that sample is four invented players and no room has run this. The ledger figure carries its account and its file, and the worked 85.7 against 80.0 is named as arithmetic on two counts |
 | The guide tells the reader to run `findings.py`, which was not in the repository | **Fixed today** | `tools/findings.py`, `tools/make-sample-csv.py` and `tools/findings-sample.csv`, proved on the sample. Commit `b8a7bd7` |
 | The governance note opened "CHECKER.md does not exist in this repository yet" | Done | that line is gone |
 | The case instructions described obsolete checker differences | Done | that passage is gone, and the checker now runs the same case versions |
@@ -375,29 +392,33 @@ within its own clause, and an unknown role stops a checked conclusion before any
 
 | Rank | Weakness | Status |
 | --- | --- | --- |
-| 1 | False mechanical clearance | Done for every demonstrated form; one narrow residue named above |
+| 1 | False mechanical clearance | Done for every demonstrated form, and at 1.6.1 for the residue as well: a quantity in words is read or it is queued |
 | 2 | No demonstrated practitioner benefit | **Open**, no practitioner has been observed |
 | 3 | Perfect scores without defensible reasons | Partial: the reason is scored and reported separately; no educator review and no human rubric scoring yet |
-| 4 | Contradictory operating materials | Mostly closed today; the facilitator guide and the workbook are the materials lane's |
+| 4 | Contradictory operating materials | **Done at 1.6.1.** The guide is on `halyard-v4`, `brightwater-v5` and product 1.6.1; the workbook is on `halyard-v4` and protocol 1.1; every surface names the same versions |
 | 5 | Claims outrun the demonstration | Partial: the claims on the pages are bounded. The write-up and script word counts are not this repository |
 
 ### Checklist totals
 
-| Status | Count |
-| --- | --- |
-| Done | 66 |
-| Partial | 11 |
-| Open | 12 |
-| N/A | 1 |
+| Status | At 1.6.0 | At 1.6.1 |
+| --- | --- | --- |
+| Done | 66 | **75** |
+| Partial | 11 | **10** |
+| Open | 12 | **4** |
+| N/A | 1 | 1 |
 
-**The twelve open items, named:** a receipt verified in a test destination; real user observations
-and a retest record; short source excerpts and a wrong-period document in the fresh case; an
-educator's independent review of the keys; a unit-less spelled-out quantity still clearing the
-checker; `evidenceReferences` naming the whole supplied list rather than what the participant used;
-`elapsedActiveSeconds` not pausing for tab inactivity; "Nothing is released until all four are
-done" on the reviewer page; "Two of the six cannot be settled by a machine" on the reviewer page;
-"wrong account" among the machine checks in the reviewer page diagram; the facilitator guide's
-accrual wording and its unattributed percentages; and an observed practitioner.
+Ninety rows either way. Eight open items and one partial closed at 1.6.1, each one rewritten in
+place above with its evidence.
+
+**The four open items, named, and every one waits on a person:** a receipt verified in a test
+destination, which needs a destination somebody owns; real user observations and a retest record;
+an educator's independent review of the keys; and an observed practitioner. Nothing in the code or
+the documents is holding any of them up, and nothing in the release claims any of them is done.
+
+**The ten partial items** are the three-dimension rubric and the educator scoring that goes with
+it, which need a scorer; `role`, which stays null because the page does not ask; unique first-time
+participants, which a page with no account cannot settle; the receipt half of the walkthrough item;
+and the write-up and script word counts, which are not in this repository.
 
 ---
 
@@ -422,13 +443,13 @@ One pass over all five pages and every document in the release.
 
 | Check | Found | Done |
 | --- | --- | --- |
-| Product version | `review.html` carried `second-pass-drill 1.4.0` | bumped with `index.html` to 1.6.0. `FACILITATOR-GUIDE.md` still says 1.4.0 and is the materials lane's |
+| Product version | `review.html` carried `second-pass-drill 1.4.0` | bumped with `index.html` to 1.6.0, then to **1.6.1** across `index.html`, `review.html`, `README.md`, `tools/findings.py` and `tools/make-sample-csv.py`. `FACILITATOR-GUIDE.md` said 1.4.0 and now says 1.6.1 |
 | Case versions | `build-checker-cases.cjs`, `checker.html` and `CHECKER.md` all named `halyard-v3` and `brightwater-v2` | repointed, regenerated and rewritten. The remaining mentions are in `README.md` and `cases/README.md`, where they correctly describe retired files |
 | Protocol version | the checker's printed sheet cited `Protocol version 1.0` while `PROTOCOL.md` reads **Version 1.1, effective 13 September 2026** | the sheet now cites 1.1, which is the document it points at. One displayed string in the release, and it agrees |
 | Split counts | Halyard 8 and 6, Kestrel 7 and 5, Brightwater 3 and 2 | counted from the JSON and agreed everywhere they are stated |
 | Reason-score wording | 31 statements across seven files | all say the same thing: a reason counts as right when at least one chip was tapped and every chip tapped is in the card's basis key, scored apart from the call, and it does not move the rank |
 | Employer names | none | grep over every page and document: 0 hits |
-| American spelling | `licence`/`licences` in the Kestrel case and both samples that quote it; `colour`, `recognise`, `behaviour` in the prose | changed in `cases/kestrel-v1.json`, `checker.html`, `author.html`, `README.md`, `CHECKER.md` and `cases/README.md`. `FACILITATOR-GUIDE.md` keeps two and is the materials lane's |
+| American spelling | `licence`/`licences` in the Kestrel case and both samples that quote it; `colour`, `recognise`, `behaviour` in the prose | changed in `cases/kestrel-v1.json`, `checker.html`, `author.html`, `README.md`, `CHECKER.md` and `cases/README.md`. The last two, `colour` and `recognise` in `FACILITATOR-GUIDE.md`, went at 1.6.1. **Zero left in the release** |
 | Em dashes | 8 in the copy the checker generates, 5 `&mdash;` entities in the sample names and one review quote, one in `robots.txt` | all removed. The one left is the input normalizer that folds a pasted en dash, em dash or minus sign into a hyphen, which is code reading a paste |
 | Exclamation marks | none in copy | the only match in the release is a sentence-splitter character class |
 | "Cover story" in the intro | none | 0 occurrences before the case data in `index.html`. It survives only as the badge name on the points row, which is the use that was accepted |
@@ -448,7 +469,7 @@ One pass over all five pages and every document in the release.
 
 ---
 
-## 8. Live
+## 8. Live, 1.6.0
 
 Confirmed on https://fiscalpatriots.github.io/beat-the-machine/ after the push. All five pages
 loaded at 320, 375 and 1280: page overflow 0 at every width, the header carries Drill, Checker,
@@ -459,3 +480,36 @@ cites protocol 1.1, `sitemap.xml` lists `author.html`, and `RELEASE-NOTES.md`, t
 the share image are byte-identical to the working tree after line-ending normalization. The drill
 was never run against the live form: the local walk ran in test mode and the live check only
 loaded pages.
+
+---
+
+## 9. The 1.6.1 closing pass, 13 September 2026
+
+Everything the QA above left open or partial that sat inside the code or the documents, closed.
+Nothing here needed another person, and nothing that does need one was touched.
+
+| # | What was open | What closed it | Evidence |
+| --- | --- | --- | --- |
+| 1 | A unit-less spelled-out quantity cleared the checker | The grammar reads units through millions, hyphenated compounds included, as `CHECKER.md` rule 1c. A run becomes a figure where the parser resolves it and the words give it a unit; otherwise it reaches the queue and the sentence is not checked, except where it is a count standing beside no claim | fixtures `T49` to `T54`, and `T21` rewritten. `node tests/run-checker-tests.cjs`: 59 passed, 0 failed. Mirrored in `second-pass` `second_pass/checker.py`: `python -m pytest tests/ -q`, 138 passed |
+| 2 | Three claims on the reviewer page, and five more found reading the page against `CHECKER.md`, `PROTOCOL.md`, `PROVENANCE.md` and the evidence note | The three: the governance caption, the two-of-six caption, and "Wrong account" in the machine strip. The five: the evidence counts were the old build's row totals and are now Halyard's own coverage line, 30 sentences, 2 failed, 54 queued, against 8, none and 16; the bar said 11 of 14 unsupported and 3 matched by luck, and the evidence note says 14 reasons invented and 2 fabricated facts; "print a verdict per line" became a status per sentence and per account; "Ten minutes" came off the how-it-runs strip, because nothing measures a review; "Every run downloads as a file first" and "the two judgment calls, trained and scored" both claimed more than the end screen does | `review.html`, and `evidence/EVIDENCE-NOTE.md` for every number now on the page |
+| 3 | `evidenceReferences` named the whole supplied list | `evidenceSupplied` for the card's list, `evidenceSelected` beside it and `null`, `evidenceReferences` kept for one version | the record read out of the running page in test mode: nineteen responses, both names on each, `renamedFields` naming the pairs |
+| 4 | `elapsedActiveSeconds` measured elapsed time | `elapsedSecondsOnCard` is wall-clock and `activeSecondsOnCard` takes the tab's hidden time out of it, on `visibilitychange`, with `hiddenSecondsInRun` in the timing block | same record read, and `README.md` states what each clock does and does not know |
+| 5 | `firstAttempt` read as a first-time participant | `firstRunInThisTab`, with a note saying the page cannot tell a first-time person from a returning one. Old name kept for one version | `renamedFields` on the record |
+| 6 | The fresh case gave author-summarized facts, and the wrong-period item rested on a summary | `cases/brightwater-v5.json`. Every On file entry quotes one line from a named, dated document or says the document was requested and is not on file. Line 3 rests on the orthodontic plan schedule of 31 May 2026 | driven in the page in test mode at card 3 of 5: four entries, four citations, page overflow 0 at 320 and at full width |
+| 7 | The facilitator guide's accrual wording and its unattributed percentages | Question 3's tell matches the card's own reveal, and the two sample-findings rates are gone | `FACILITATOR-GUIDE.md`, `FACILITATOR-ONE-PAGE.md`, and the rebuilt one-page PDF |
+| 8 | Product version, and the last two British spellings | 1.6.1 on every surface that prints a version, `color` and `recognize` in the guide | `grep` for `1.6.0` outside `RELEASE-NOTES.md`: 0 hits. `grep` for `colour`, `recognise`, `behaviour`, `licence` across the release: 0 hits |
+
+**What the checker's contract gained, in one line.** Rule 1c of `CHECKER.md`: units through millions
+are parsed to a figure where the run resolves and the words give it a unit; a run the parser cannot
+resolve, a fraction, and anything above a million go to the reviewer's queue wherever they stand; a
+resolved run with no unit goes to the queue where the words put a claim and is left alone where they
+do not. `CONTRACT-DIVERGENCE.md` in the `second-pass` repository carries the same statement and now
+also records the two fixture ids where the two files differ, `T18` and `T18b`, because that
+repository's shared sample files are still the v3 and v2 cases. That divergence predates this pass;
+it was claimed closed and it was not, and it now says so.
+
+**What was deliberately not done.** The four-and-two split on the reviewer page was not re-cut: the
+fourth machine item was renamed to the check the page runs. The `second-pass` shared sample cases
+were not moved to v4 or v5, because that is a case change in another repository and not a checker
+change. No receipt destination was created, no educator was asked, and no practitioner was observed,
+because those are the four open items and they are not mine to close.
