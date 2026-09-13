@@ -580,7 +580,7 @@ function placeCodename(x){
   var tr = trk.getBoundingClientRect(), br = band.getBoundingClientRect();
   if(!tr.width) return;
   var px = (tr.left - br.left) + (x/300)*tr.width;
-  var half = tag.offsetWidth/2;
+  var half = tag.getBoundingClientRect().width/2;
   px = Math.max(half+6, Math.min(br.width-half-6, px));
   tag.style.left = px.toFixed(1)+"px";
 }
@@ -1202,6 +1202,9 @@ function done(){
 
 buildTrack();
 render();
+/* the brand face lands after the first paint and the codename gets wider, so place it again */
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ paintTrack(); });
+window.addEventListener("resize", function(){ paintTrack(); });
 window.__BTM = S;
 window.__BTM_CARDS = CARDS;
 })();
