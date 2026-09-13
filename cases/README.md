@@ -188,3 +188,103 @@ Everywhere else, "fabricated" became "not established from supplied evidence", a
 became requests for a bridge: billing bridge, payroll bridge, reserve rollforward, depot revenue
 bridge. A flag can be correct while its explanation is wrong, so a reveal credits the call and
 corrects the reasoning separately.
+
+<!-- BEGIN kestrel-v1 section, added 13 September 2026 by the case-authoring lane. Nothing above
+     this line was changed. -->
+
+## The second practice case, kestrel-v1
+
+| File | Version | Company | Lines | Mode |
+| --- | --- | --- | --- | --- |
+| `kestrel-v1.json` | kestrel-v1, 13 September 2026 | Kestrel IT Services, LLC | 12 | practice, not yet loaded |
+
+**`index.html` does not load this file.** The page fetches the v4 pair and nothing else, and the
+inline fallback `build-cases.cjs` writes carries the v4 pair and nothing else. Wiring case selection
+is a later lane's work, and until it lands, `kestrel-v1.json` is read by people rather than by the
+page. It is written to the same schema as `halyard-v4.json` and passes every rule in
+`build-cases.cjs`, including the basis key rules, so the wiring lane has nothing to fix in the data.
+
+Two things that lane has to handle:
+
+1. **The comparison months are June and July, not May and June.** `statement()` in `index.html`
+   prints the column headers `May` and `June` as literals. `kestrel-v1.json` carries a `columns`
+   field, `["June","July"]`, and the headers have to read from it once a third case is selectable.
+   The months are June and July because the Kestrel sample already shipping in `checker.html` is
+   titled "July 2026 compared with June 2026", and the two have to stay the same memo.
+2. **The fifth element on each ledger row.** In this file it is 1 when the movement clears both legs
+   of the threshold and 0 when it does not, which the file states in `ledgerNote`. Nothing in
+   `index.html` reads it.
+
+### What the case is
+
+Twelve accounts for a managed IT services firm, twelve memo sentences, keyed as seven flags and five
+stands. Six accounts and all six memo sentences come from the Kestrel sample in `checker.html`,
+carried over with the same figures and the same calls, so a verdict reached in the checker holds in
+the game. The six accounts added around them are 4200 hardware and licence resale, 5100 hardware and
+licence cost of resale, 5200 travel and onsite delivery, 6300 computer equipment, 6500 insurance and
+7000 depreciation. Revenue, cost of sales, operating expenses and the net line reconcile from the
+twelve balances.
+
+Account 7000 carries no card. It is on the statement because card 10 rests on depreciation not
+moving, which is the same role account 7000 plays in `halyard-v4.json`. Account 4100 carries two
+cards, as account 4000 does in Halyard.
+
+| # | Account | June | July | Change | Percent | Owes commentary | Call | Type | Basis key |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 6200 Software licences and hosting | $22,600 | $57,900 | +$35,300 | 156.2% | yes | Flag | arithmetic | figure does not tie; no source on file |
+| 2 | 5000 Subcontracted engineering | $41,800 | $88,300 | +$46,500 | 111.2% | yes | Flag | wrong direction | direction wrong; no source on file |
+| 3 | 6400 Client acquisition costs | $4,900 | $14,200 | +$9,300 | 189.8% | no | Let it stand | clean line | the figure and reason hold |
+| 4 | 4100 Project and implementation revenue | $38,900 | $96,400 | +$57,500 | 147.8% | yes | Flag | unsupported driver | no source on file |
+| 5 | 6000 Salaries and wages | $88,500 | $88,500 | $0 | 0.0% | no | Let it stand | clean line | the figure and reason hold |
+| 6 | 4200 Hardware and licence resale | $148,000 | $96,000 | -$52,000 | -35.1% | yes | Flag | unsupported attribution | no source on file |
+| 7 | 5100 Hardware and licence cost of resale | $100,700 | $65,300 | -$35,400 | -35.2% | yes | Let it stand | clean line | the figure and reason hold |
+| 8 | 4100 Project and implementation revenue | $38,900 | $96,400 | +$57,500 | 147.8% | yes | Flag | timing | wrong period; no source on file |
+| 9 | 6500 Insurance, cyber liability included | $6,900 | $9,600 | +$2,700 | 39.1% | no | Let it stand | clean line | the figure and reason hold |
+| 10 | 6300 Computer equipment | $3,200 | $21,900 | +$18,700 | 584.4% | no | Flag | wrong account | wrong account |
+| 11 | 5200 Travel and onsite delivery | $6,400 | $32,900 | +$26,500 | 414.1% | yes | Let it stand | clean line | the figure and reason hold |
+| 12 | 4000 Recurring managed services | $161,500 | $198,400 | +$36,900 | 22.8% | yes | Flag | no explanation | nothing written where owed; no source on file |
+
+All seven error types appear. Attribution appears twice, once as `unsupported attribution` on line 6
+and once as `wrong account` on line 10, and every other flag type appears once.
+
+**Line 10 is the first card in any case whose basis key is `wrong account`.** This document recorded
+that no card in the v4 release had an amount booked in an account it does not belong in, so tapping
+that chip scored zero on all nineteen lines. Kestrel gives the chip one line where it is right. The
+invoice on file lists eight items, every one of them above the firm's $2,000 capitalisation policy,
+and depreciation did not move.
+
+**Four sentences cite a source inside the draft and only one of those documents was supplied.** The
+payroll register on line 5 is genuinely on file and carries the stand. The billing schedule on line
+4, the partner invoices on line 2 and the vendor invoice on line 1 were never handed over. A case
+where every cited source was missing would teach a shortcut instead of the distinction, which is why
+one of the four holds.
+
+**Lines 6 and 7 are the same event with two different answers.** The resale billings fell and the
+resale cost fell with them. The cost sentence recomputes clean at 32.0 percent in both months and
+the vendor cost report ties the whole $65,300 to July invoices, so it stands. The revenue sentence
+blames finished refresh cycles and never mentions that the two largest clients moved to a bundled
+subscription on account 4000 from 1 July, so it is flagged.
+
+### What a shortcut scores
+
+Stated rather than claimed away. Seven of the twelve lines clear both legs of the threshold.
+
+| Strategy | Right |
+| --- | --- |
+| The key | 12 of 12 |
+| Flag every line over both legs, stand the rest | 9 of 12 |
+| Flag every line | 7 of 12 |
+| Let every line stand | 5 of 12 |
+
+The threshold shortcut misses the three lines the case was built around: the equipment sitting in
+the wrong account on a movement that owed no commentary, the cost line that recomputes clean, and
+the travel line a document carries end to end.
+
+### The human-readable copy
+
+`EXERCISE-kestrel-rev1.md` in the Coach HQ repository holds the same case written for a facilitator,
+with the setup, the ledger, the twelve sentences, the on-file facts and the key in a separate final
+section.
+
+<!-- END kestrel-v1 section -->
+
