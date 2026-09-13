@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#005239">
+<title>Second Pass Author: build a drill from your own ledger</title>
+<meta name="description" content="Paste a ledger and the memo drafted about it, let the four mechanical checks read it, then key each line by hand and save the case the drill runs.">
+<link rel="canonical" href="https://fiscalpatriots.github.io/beat-the-machine/author.html">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Second Pass">
+<meta property="og:url" content="https://fiscalpatriots.github.io/beat-the-machine/author.html">
+<meta property="og:title" content="Second Pass Author: build a drill from your own ledger">
+<meta property="og:description" content="Paste a ledger and the memo drafted about it, let the four mechanical checks read it, then key each line by hand and save the case the drill runs.">
+<meta property="og:image" content="https://fiscalpatriots.github.io/beat-the-machine/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Second Pass, a second pass on AI-drafted close commentary, George Mason University, Costello College of Business.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Second Pass Author: build a drill from your own ledger">
+<meta name="twitter:description" content="Paste a ledger and the memo drafted about it, let the four mechanical checks read it, then key each line by hand and save the case the drill runs.">
+<meta name="twitter:image" content="https://fiscalpatriots.github.io/beat-the-machine/assets/og-image.png">
+
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/second-pass.css">
+<script src="assets/second-pass-core.js" defer></script>
+<script src="assets/nav.js" defer></script>
+<style>
+/* Page layout only. The band, the step strip, the segmented control, the chips,
+   the buttons, the status words and the form controls all come from
+   assets/second-pass.css and are not restated here.
+
+   THE WIDTH RULE. Nothing on this page scrolls sideways at any width. Every grid
+   collapses to one column before a column is forced narrower than its content,
+   and the pasted ledger wraps inside its own box rather than pushing the page. */
+
+#page{max-width:1048px;margin:0 auto;padding:0 var(--gut) var(--s9)}
+#page>*{min-width:0;max-width:100%}
+
+.band .promise{max-width:64ch}
+
+/* ---------- the two paste panes ---------- */
+.panes{display:grid;grid-template-columns:1fr 1fr;gap:var(--s5);margin:var(--s6) 0 0}
+@media (max-width:820px){.panes{grid-template-columns:1fr}}
+.pane{min-width:0}
+.panehead{display:flex;align-items:baseline;gap:var(--s3);margin:0 0 var(--s2);flex-wrap:wrap}
+.panehead label{margin:0;font-weight:600}
+.panehead .cc{margin-left:auto;font-size:var(--t-label);color:var(--ink-soft);
+  font-variant-numeric:tabular-nums}
+.pane textarea{min-height:210px}
+.hint{margin:var(--s2) 0 0;font-size:var(--t-small);line-height:1.5;color:var(--ink-soft)}
+
+/* ---------- the case settings ---------- */
+.setgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:var(--s4);margin:var(--s5) 0 0}
+.setgrid .f{min-width:0}
+.setgrid label,.setgrid .lab{display:block;margin:0 0 var(--s2);font-size:var(--t-label);
+  font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft)}
+.setgrid .seg{width:100%}
+/* the two halves share the row evenly, and a label longer than its half wraps rather than
+   being clipped by the button it sits in */
+.setgrid .seg button{flex:1 1 0;min-width:0;white-space:normal;line-height:1.25;
+  padding-left:var(--s2);padding-right:var(--s2)}
+
+.runrow{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center;margin:var(--s6) 0 0}
+
+/* ---------- what the checks found, before a single card ---------- */
+.readout{margin:var(--s5) 0 0}
+.readout .counts{margin:0 0 var(--s3)}
+.facts{list-style:none;margin:0;padding:0;font-size:var(--t-small);line-height:1.6;
+  color:var(--ink-soft)}
+.facts li{padding:var(--s2) 0;border-top:1px solid var(--rule)}
+.facts li:first-child{border-top:0}
+
+/* ---------- one card per line the author keys ---------- */
+.kcard{background:var(--card);border:1px solid var(--rule);border-radius:var(--radius);
+  padding:var(--s5);margin:var(--s4) 0 0}
+.kcard>:last-child{margin-bottom:0}
+.kcard.done{border-color:var(--rule-strong)}
+.khead{display:flex;align-items:baseline;gap:var(--s3);flex-wrap:wrap;margin:0 0 var(--s3)}
+.khead b{font-size:var(--t-body);font-weight:700}
+.khead .no{font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:var(--t-small)}
+.kquote{margin:0 0 var(--s4);padding-left:var(--s4);border-left:2px solid var(--rule-strong);
+  font-size:var(--t-body);line-height:1.55}
+.kquote.silent{color:var(--ink-soft);font-style:italic}
+.kfig{margin:0 0 var(--s4);font-size:var(--t-small);color:var(--ink-soft);
+  font-variant-numeric:tabular-nums}
+.kfound{margin:0 0 var(--s5);padding:var(--s3) 0 0;border-top:1px solid var(--rule)}
+.kfound ul{list-style:none;margin:var(--s2) 0 0;padding:0;font-size:var(--t-small);line-height:1.6}
+.kfound li{margin:0 0 var(--s2)}
+.kfound li:last-child{margin:0}
+.kgrid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);margin:0 0 var(--s4)}
+@media (max-width:700px){.kgrid{grid-template-columns:1fr}}
+.kfield{min-width:0}
+.kfield label,.kfield .lab{display:block;margin:0 0 var(--s2);font-size:var(--t-label);
+  font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft)}
+.kfield textarea{min-height:84px}
+.kfield .seg{width:100%}
+.kfield .seg button{flex:1 1 0;min-width:0}
+.kmiss{margin:var(--s3) 0 0;font-size:var(--t-small);line-height:1.5;color:var(--red);font-weight:600}
+.suggest{font-size:var(--t-label);font-weight:700;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--ink-soft);margin-left:var(--s2)}
+
+/* ---------- the fresh set, folded away until it is wanted ---------- */
+details.more{margin:var(--s6) 0 0;border:1px solid var(--rule);border-radius:var(--radius);
+  background:var(--card)}
+details.more>summary{cursor:pointer;padding:var(--s4) var(--s5);font-weight:600;list-style:none}
+details.more>summary::-webkit-details-marker{display:none}
+details.more>summary::after{content:"\25be";float:right;color:var(--ink-soft)}
+details.more[open]>summary::after{content:"\25b4"}
+details.more>div{padding:0 var(--s5) var(--s5)}
+
+/* ---------- saving ----------
+   The three actions sit in a row on a desk and stack on a narrow phone, because a button
+   label here is a sentence and shrinking one below its text is what pushes the page sideways. */
+.actionbar .btn{flex:0 1 auto;min-width:0;white-space:normal;text-align:center}
+@media (max-width:430px){
+  .actionbar{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s3);min-width:0;max-width:100%}
+  .actionbar .btn{min-width:0;max-width:100%;overflow-wrap:anywhere}
+}
+#saybox{margin:var(--s5) 0 0}
+.problems{list-style:none;margin:var(--s3) 0 0;padding:0;font-size:var(--t-small);line-height:1.6}
+.problems li{padding:var(--s2) 0;border-top:1px solid var(--rule);color:var(--red)}
+.problems li:first-child{border-top:0}
+
+.foot{margin:var(--s9) 0 0;border-top:1px solid var(--rule);padding-top:var(--s4)}
+.foot p{margin:0 0 var(--s3);font-size:var(--t-small);line-height:1.6;color:var(--ink-soft);
+  max-width:82ch}
+.foot p:last-child{margin:0}
+</style>
+</head>
+<body>
+
+<main id="page">
+
+  <div class="band">
+    <h1>Build a drill from your own ledger</h1>
+    <p class="promise">Paste a close ledger and the memo somebody drafted about it. The four
+    mechanical checks read it the way the checker does, then you key each line: the call, the
+    error type, the basis, and the two lines a player reads when the answer comes back.</p>
+    <ol class="steps3">
+      <li><span class="disc">1</span><b>Paste</b><span class="t">A ledger and the memo, in the shapes the checker takes.</span></li>
+      <li><span class="disc">2</span><b>Key each line</b><span class="t">The checks suggest; you decide and write the reason.</span></li>
+      <li><span class="disc">3</span><b>Save</b><span class="t">A JSON file, and a copy this browser hands the drill.</span></li>
+    </ol>
+  </div>
+
+  <div class="section">
+    <h2>The case</h2>
+    <div class="setgrid">
+      <div class="f">
+        <label for="cname">Case name</label>
+        <input type="text" id="cname" placeholder="Kestrel IT Services" autocomplete="off">
+      </div>
+      <div class="f">
+        <label for="cver">Version</label>
+        <input type="text" id="cver" placeholder="v1" autocomplete="off" value="v1">
+      </div>
+      <div class="f">
+        <label for="cperiod">Period</label>
+        <input type="text" id="cperiod" placeholder="July close, prepared from the general ledger" autocomplete="off">
+      </div>
+      <div class="f">
+        <label for="ccolA">Prior column heading</label>
+        <input type="text" id="ccolA" placeholder="June" autocomplete="off">
+      </div>
+      <div class="f">
+        <label for="ccolB">Current column heading</label>
+        <input type="text" id="ccolB" placeholder="July" autocomplete="off">
+      </div>
+      <div class="f">
+        <label for="dollar">Dollar floor</label>
+        <div class="adorn"><span class="unit">$</span><input type="number" id="dollar" value="25000" min="0" step="1000"></div>
+      </div>
+      <div class="f">
+        <label for="pct">Percent floor</label>
+        <div class="adorn"><input type="number" id="pct" value="10" min="0" step="0.5"><span class="unit">%</span></div>
+      </div>
+      <div class="f">
+        <span class="lab" id="rulelab">Both legs, or either</span>
+        <div class="seg" id="ruleseg" role="group" aria-labelledby="rulelab">
+          <button type="button" data-v="both" aria-pressed="true">Both legs</button>
+          <button type="button" data-v="either" aria-pressed="false">Either leg</button>
+        </div>
+      </div>
+      <div class="f">
+        <span class="lab" id="zerolab">Zero prior balance</span>
+        <div class="seg" id="zeroseg" role="group" aria-labelledby="zerolab">
+          <button type="button" data-v="owing" aria-pressed="true">Owes commentary</button>
+          <button type="button" data-v="exclude" aria-pressed="false">Excluded</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>The ledger and the memo</h2>
+    <div class="panes">
+      <div class="pane">
+        <div class="panehead">
+          <label for="ledger">1. Ledger</label>
+          <button type="button" class="btn-text quiet" id="loadsample">Load the Kestrel sample</button>
+          <span class="cc" id="ledcc">0 characters</span>
+        </div>
+        <textarea id="ledger" spellcheck="false" placeholder="4000&#9;Recurring managed services&#9;161,500&#9;198,400&#10;Recurring managed services, 161500, 198400"></textarea>
+        <p class="hint">Tabs, commas or aligned columns, one account per line. Dollar signs, thousands
+        commas and (parentheses) for negatives are all read, and a header row is ignored.</p>
+      </div>
+      <div class="pane">
+        <div class="panehead">
+          <label for="memo">2. Memo, the drafted commentary</label>
+          <span class="cc" id="memcc">0 characters</span>
+        </div>
+        <textarea id="memo" class="prose" spellcheck="false" placeholder="1. Subcontracted engineering fell $46,500 to $88,300 as the cutover was staffed through two partner firms.&#10;2. Salaries and wages held flat at $88,500."></textarea>
+        <p class="hint">Free text. A line starting <b>S1.</b>, <b>1.</b> or <b>(a)</b> is kept whole;
+        anything else is split into sentences. One card comes back per sentence, and one more for
+        every account that clears the rule with nothing written about it.</p>
+      </div>
+    </div>
+    <div class="runrow">
+      <button class="btn green" id="read">Read it</button>
+      <button class="btn secondary" id="clear">Clear</button>
+    </div>
+    <div id="msg" role="status" aria-live="polite"></div>
+  </div>
+
+  <div id="readout" class="section hidden">
+    <h2>What the checks found</h2>
+    <p class="sub" id="readlead"></p>
+    <div class="readout"><ul class="facts" id="facts"></ul></div>
+  </div>
+
+  <div id="cardsec" class="section hidden">
+    <h2>Key each line</h2>
+    <p class="sub">The checks fill in a suggestion where they found something. A suggestion is not
+    the key: confirm it or change it, and write the two lines in your own words.</p>
+    <div id="cards"></div>
+  </div>
+
+  <details class="more" id="freshblock">
+    <summary>Add a fresh set, optional</summary>
+    <div>
+      <p class="sub">A second company the player has not read, run after the first set. Leave this
+      closed and the drill goes from the last line straight to the end screen.</p>
+      <div class="setgrid">
+        <div class="f">
+          <label for="fname">Fresh case name</label>
+          <input type="text" id="fname" placeholder="Brightwater Dental Partners" autocomplete="off">
+        </div>
+        <div class="f">
+          <label for="fperiod">Fresh period</label>
+          <input type="text" id="fperiod" placeholder="July close" autocomplete="off">
+        </div>
+        <div class="f">
+          <span class="lab" id="fmodelab">How it is scored</span>
+          <div class="seg" id="fmodeseg" role="group" aria-labelledby="fmodelab">
+            <button type="button" data-v="practice" aria-pressed="true">Reveal each line</button>
+            <button type="button" data-v="assessment" aria-pressed="false">All at the end</button>
+          </div>
+        </div>
+      </div>
+      <div class="panes">
+        <div class="pane">
+          <div class="panehead">
+            <label for="fledger">Fresh ledger</label>
+            <span class="cc" id="fledcc">0 characters</span>
+          </div>
+          <textarea id="fledger" spellcheck="false"></textarea>
+        </div>
+        <div class="pane">
+          <div class="panehead">
+            <label for="fmemo">Fresh memo</label>
+            <span class="cc" id="fmemcc">0 characters</span>
+          </div>
+          <textarea id="fmemo" class="prose" spellcheck="false"></textarea>
+        </div>
+      </div>
+      <div class="runrow">
+        <button class="btn secondary" id="fread">Read the fresh set</button>
+      </div>
+      <div id="fmsg" role="status" aria-live="polite"></div>
+      <div id="fcards"></div>
+    </div>
+  </details>
+
+  <div class="section">
+    <h2>Save it</h2>
+    <p class="sub">Saving writes the case into this browser under the key the drill reads for
+    <b>My own case</b>, and downloads the same JSON so the case can be committed to
+    <code>cases/</code> or handed to somebody else.</p>
+    <div class="actionbar">
+      <button class="btn" id="save">Save the case</button>
+      <button class="btn secondary" id="preview" disabled>Preview in the drill</button>
+      <button class="btn secondary" id="forget" hidden>Forget the saved case</button>
+    </div>
+    <div id="saybox" role="status" aria-live="polite"></div>
+  </div>
+
+  <div class="foot">
+    <p>Everything you paste is read by the script in your own browser, and the case you save is
+    written to this browser's own storage on this device. This page is served from GitHub Pages
+    and loads one Google font; nothing you paste is sent anywhere, and anything you copy into
+    another AI service goes to that service under its terms.</p>
+    <p><a href="cases/README.md">The case format</a> &middot;
+    <a href="checker.html">The checker</a> &middot;
+    <a href="index.html?case=own&amp;test=1">The drill, on your own case</a></p>
+  </div>
+
+</main>
+
+<script>
+(function(){
+"use strict";
+
+/* assets/second-pass-core.js is deferred, so it is not on the page while this script is
+   being parsed. The reader is taken when it is first needed rather than up here. */
+var C = null;
+function core(){
+  if(!C) C = window.SecondPassCore;
+  return C;
+}
+var OWN_KEY = "btm.owncase.v1";
+var AUTHOR_VERSION = "second-pass-author 1.0.0";
+
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s == null ? "" : s)
+  .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function money(v){ return "$" + Math.round(Math.abs(v)).toLocaleString("en-US"); }
+function say(box, cls, html){
+  var b = $(box);
+  b.innerHTML = html ? '<p class="status ' + cls + ' inline">' + html + '</p>' : "";
+}
+
+/* ---------- the vocabulary the drill already speaks ----------
+   These five lists have to stay identical to the ones in index.html. A type or a chip
+   this page invents is a card the drill cannot score. */
+var TYPES = ["arithmetic", "wrong direction", "unsupported driver", "unsupported attribution",
+             "timing", "no explanation", "clean line"];
+var BASIS_FLAG = ["figure does not tie", "direction wrong", "no source on file",
+                  "wrong period", "wrong account", "nothing written where owed"];
+var BASIS_HOLD = "the figure and reason hold";
+var ICONS = ["coins","truck","wrench","calendar","people","fuel","chip","alert","scales","bank",
+             "box","brief","robot","badge","glass","flag","ledger"];
+
+/* ---------- the segmented controls ---------- */
+function segValue(id){
+  var on = $(id).querySelector('[aria-pressed="true"]');
+  return on ? on.getAttribute("data-v") : "";
+}
+function wireSeg(box, onPick){
+  Array.prototype.forEach.call(box.querySelectorAll("button"), function(b){
+    b.addEventListener("click", function(){
+      Array.prototype.forEach.call(box.querySelectorAll("button"), function(o){
+        o.setAttribute("aria-pressed", o === b ? "true" : "false");
+      });
+      if(onPick) onPick(b.getAttribute("data-v"));
+    });
+  });
+}
+wireSeg($("ruleseg"));
+wireSeg($("zeroseg"));
+wireSeg($("fmodeseg"));
+
+/* ---------- the character counters ---------- */
+function count(from, to){
+  var t = $(from), c = $(to);
+  function upd(){ c.textContent = t.value.length.toLocaleString("en-US") + " characters"; }
+  t.addEventListener("input", upd); upd();
+}
+count("ledger","ledcc"); count("memo","memcc");
+count("fledger","fledcc"); count("fmemo","fmemcc");
+
+/* =============================================================================
+   The four mechanical checks.
+
+   This is the checker's own orchestration, reduced to what an author needs: what
+   every figure ties to, what every direction word says against the sign, which
+   accounts clear the rule, and which of those nobody wrote about. The reading
+   itself is done by assets/second-pass-core.js, which is the checker's reader.
+   ============================================================================= */
+function readSet(ledText, memoText, floorD, floorP, rule, zp){
+  var C = core();
+  if(!C) return {error:"The ledger reader did not load. Reload the page."};
+  var L = C.parseLedger(ledText, null);
+  if(!L.accounts.length) return {error:"No account rows could be read out of that ledger. Each row needs a name and two balances."};
+
+  L.accounts.forEach(function(a){
+    a.legs = C.legs(a, floorD, floorP, zp);
+    a.clears = C.clears(a, floorD, floorP, rule, zp);
+    a.sent = [];
+  });
+  var ties = C.tieTotals(L);
+
+  var NUMSET = {};
+  L.accounts.forEach(function(a){ if(a.num) NUMSET[a.num] = 1; });
+
+  var sents = C.splitSentences(memoText);
+  sents.forEach(function(s){
+    s.figs = C.figures(s.text, NUMSET);
+    s.residue = s.figs.rejected || [];
+    s.numset = NUMSET;
+    var spent = {};
+    s.residue.forEach(function(r){
+      var d = String(r.raw).replace(/[^0-9]/g,"");
+      if(!NUMSET[d]) return;
+      var seen = String(s.text).split(d).length - 1, used = 0;
+      s.residue.forEach(function(o){ if(String(o.raw).replace(/[^0-9]/g,"") === d) used++; });
+      if(used >= seen) spent[d] = 1;
+    });
+    var b = C.bindSentence(s, L.accounts, s.figs, spent);
+    s.bound = b.bound;
+    s.multi = s.bound.length > 1;
+    if(s.multi) C.clauseBind(s);
+    s.bound.forEach(function(a){ a.sent.push(s); });
+
+    /* check 1, arithmetic: every figure recomputed against the line it binds */
+    s.badFigs = []; s.okFigs = 0;
+    s.figs.forEach(function(f){
+      if(!s.bound.length) return;
+      var bset = (s.multi && f.bind) ? f.bind : s.bound;
+      var res = (f.unit === "dollars")
+        ? C.checkDollar(f, bset, s.bound)
+        : C.checkPercent(f, bset, [], C.zeroPolicyText(zp));
+      if(res.st === "failed") s.badFigs.push(res.txt);
+      else if(res.st === "checked") s.okFigs++;
+    });
+
+    /* check 2, direction: every direction word against the sign of the movement */
+    var dir = C.directionOn(s);
+    s.badDir = (dir && dir.bad) ? dir.bad : [];
+
+    /* check 4 in part: a threshold claim the memo makes about its own line.
+       The four claim shapes are the checker's, read the same way run() reads them. */
+    s.badPolicy = [];
+    if(s.bound.length){
+      var a0 = s.bound[0];
+      C.policyClaims(s.text).forEach(function(p){
+        if(p.leg === "both"){
+          if(a0.legs.d || a0.legs.p)
+            s.badPolicy.push("the memo says neither leg is met, but on " + C.acctId(a0) + " the " +
+              (a0.legs.d ? "dollar" : "percent") + " leg is met");
+        } else if(p.leg === "dollar"){
+          if(a0.legs.d)
+            s.badPolicy.push("the memo says the dollar leg fails, but " +
+              money(Math.abs(a0.change)) + " is more than " + money(floorD));
+        } else if(p.leg === "percent"){
+          if(a0.legs.p)
+            s.badPolicy.push("the memo says the percent leg fails, but " + C.pctCell(a0) +
+              " is at least " + floorP + " percent");
+        } else if(p.owes === false){
+          if(a0.clears)
+            s.badPolicy.push("the memo says no commentary is owed, but " + C.acctId(a0) + " clears the rule");
+        }
+      });
+    }
+  });
+
+  /* check 3 and the rest of 4: every line that clears the rule with nothing written about it */
+  var silent = L.accounts.filter(function(a){ return a.clears && !a.sent.length; });
+
+  return {L:L, sents:sents, ties:ties, silent:silent,
+          floorD:floorD, floorP:floorP, rule:rule, zp:zp};
+}
+
+/* =============================================================================
+   One card per memo sentence, and one per silent line. The mechanical result
+   arrives as a suggestion; the author confirms it or changes it.
+   ============================================================================= */
+function suggestFor(s, silentAcct){
+  if(silentAcct){
+    return {call:"flag", type:"no explanation", basis:["nothing written where owed"],
+      why:"The line clears both legs of the rule, a change of " + money(silentAcct.change) +
+          " on a prior balance of " + money(silentAcct.prior) +
+          ", and no sentence in the memo explains it. Silence on a line that owes commentary is " +
+          "itself the finding, and the ask is for what drove it.",
+      found:["Clears the rule and no sentence in the memo mentions it."]};
+  }
+  var found = [], call = "stand", type = "clean line", basis = [BASIS_HOLD], why = "";
+  if(s.badFigs.length){
+    found = found.concat(s.badFigs);
+    call = "flag"; type = "arithmetic"; basis = ["figure does not tie"];
+    why = s.badFigs.join(" ");
+  }
+  if(s.badDir.length){
+    found = found.concat(s.badDir.map(function(t){ return t.charAt(0).toUpperCase() + t.slice(1) + "."; }));
+    call = "flag";
+    if(type === "clean line" || type === "arithmetic"){
+      if(!s.badFigs.length) type = "wrong direction";
+      basis = s.badFigs.length ? ["figure does not tie","direction wrong"] : ["direction wrong"];
+    }
+    why = (why ? why + " " : "") + s.badDir.map(function(t){
+      return t.charAt(0).toUpperCase() + t.slice(1) + ".";
+    }).join(" ");
+  }
+  if(s.badPolicy.length){
+    found = found.concat(s.badPolicy.map(function(t){ return t.charAt(0).toUpperCase() + t.slice(1) + "."; }));
+    call = "flag";
+    if(type === "clean line") type = "arithmetic";
+    if(basis.indexOf("figure does not tie") < 0) basis = basis.filter(function(b){ return b !== BASIS_HOLD; }).concat(["figure does not tie"]);
+    why = (why ? why + " " : "") + s.badPolicy.map(function(t){
+      return t.charAt(0).toUpperCase() + t.slice(1) + ".";
+    }).join(" ");
+  }
+  if(!found.length){
+    found.push(s.bound.length
+      ? (s.okFigs ? "Every figure in this sentence ties, and every direction word agrees with the sign."
+                  : "Nothing numeric to recompute. The checks have nothing to say about this sentence.")
+      : "Nothing in this sentence binds it to a ledger line, so none of it was checked.");
+    why = s.bound.length && s.okFigs
+      ? "The figures tie and the direction is right, so the arithmetic is not what fails here."
+      : "";
+  }
+  return {call:call, type:type, basis:basis, why:why, found:found};
+}
+
+function cardModel(n, acct, name, prior, current, memo, sug){
+  return {
+    n:n, icon:ICONS[(n - 1) % ICONS.length], acct:acct, name:name,
+    prior:prior, current:current, memo:memo,
+    file:[], key:sug.call, type:sug.type, basis:sug.basis.slice(),
+    why:sug.why, tell:"", found:sug.found
+  };
+}
+
+function buildCards(R, thresholdLine){
+  var out = [], n = 0, used = {};
+  R.sents.forEach(function(s){
+    if(!s.bound.length) return;           /* nothing to key: it binds to no ledger line */
+    var a = s.bound[0];
+    n++;
+    var m = cardModel(n, a.num || ("row " + a.row), a.name, a.prior, a.cur, s.text, suggestFor(s, null));
+    m.file = [thresholdLine];
+    out.push(m);
+    used[a.num || ("row " + a.row)] = 1;
+  });
+  R.silent.forEach(function(a){
+    n++;
+    var m = cardModel(n, a.num || ("row " + a.row), a.name, a.prior, a.cur, "", suggestFor(null, a));
+    m.file = ["Nothing was supplied about this account for either period.", thresholdLine];
+    out.push(m);
+  });
+  return out;
+}
+
+/* ---------- the card, drawn ---------- */
+function chipRow(id, card){
+  var all = [BASIS_HOLD].concat(BASIS_FLAG);
+  return '<div class="chips" id="' + id + '">' + all.map(function(t, ix){
+    var on = card.basis.indexOf(t) > -1;
+    return '<button type="button" class="chip sm' + (on ? " on" : "") + '" data-b="' + ix +
+      '" aria-pressed="' + (on ? "true" : "false") + '">' + esc(t) + '</button>';
+  }).join("") + '</div>';
+}
+
+function drawCard(card, prefix){
+  var id = prefix + card.n;
+  var pct = card.prior ? ((card.current - card.prior) / card.prior * 100).toFixed(1) + "%" : "new line";
+  return '<section class="kcard" id="' + id + '">' +
+    '<div class="khead"><span class="no">Line ' + card.n + '</span>' +
+      '<b>' + esc(card.acct) + ' ' + esc(card.name) + '</b></div>' +
+    '<p class="kfig">' + money(card.prior) + ' to ' + money(card.current) + ', a change of ' +
+      money(card.current - card.prior) + ', ' + pct + '</p>' +
+    (card.memo
+      ? '<p class="kquote">' + esc(card.memo) + '</p>'
+      : '<p class="kquote silent">Nothing. This account is not mentioned anywhere in the commentary.</p>') +
+    '<div class="kfound"><span class="label">What the checks found</span><ul>' +
+      card.found.map(function(t){ return '<li>' + esc(t) + '</li>'; }).join("") +
+    '</ul></div>' +
+    '<div class="kgrid">' +
+      '<div class="kfield"><span class="lab" id="' + id + '-clab">The call' +
+        '<span class="suggest">suggested: ' + (card.key === "flag" ? "flag" : "stand") + '</span></span>' +
+        '<div class="seg" id="' + id + '-call" role="group" aria-labelledby="' + id + '-clab">' +
+          '<button type="button" data-v="stand" aria-pressed="' + (card.key === "stand") + '">Let it stand</button>' +
+          '<button type="button" data-v="flag" aria-pressed="' + (card.key === "flag") + '">Flag it</button>' +
+        '</div></div>' +
+      '<div class="kfield"><label for="' + id + '-type">Error type' +
+        '<span class="suggest">suggested: ' + esc(card.type) + '</span></label>' +
+        '<select id="' + id + '-type">' + TYPES.map(function(t){
+          return '<option value="' + esc(t) + '"' + (t === card.type ? " selected" : "") + '>' + esc(t) + '</option>';
+        }).join("") + '</select></div>' +
+    '</div>' +
+    '<div class="kfield"><span class="lab">The basis, at least one chip</span>' +
+      chipRow(id + "-basis", card) + '</div>' +
+    '<div class="kgrid">' +
+      '<div class="kfield"><label for="' + id + '-why">Why, the line the reveal prints</label>' +
+        '<textarea id="' + id + '-why" class="prose" spellcheck="true">' + esc(card.why) + '</textarea></div>' +
+      '<div class="kfield"><label for="' + id + '-tell">The tell, what to notice next time</label>' +
+        '<textarea id="' + id + '-tell" class="prose" spellcheck="true">' + esc(card.tell) + '</textarea></div>' +
+    '</div>' +
+    '<div class="kfield"><label for="' + id + '-file">On file, one fact per line</label>' +
+      '<textarea id="' + id + '-file" class="prose" spellcheck="true">' + esc(card.file.join("\n")) + '</textarea></div>' +
+    '<p class="kmiss" id="' + id + '-miss" hidden></p>' +
+  '</section>';
+}
+
+function wireCard(card, prefix){
+  var id = prefix + card.n;
+  wireSeg($(id + "-call"), function(v){ card.key = v; });
+  $(id + "-type").addEventListener("change", function(){ card.type = this.value; });
+  var all = [BASIS_HOLD].concat(BASIS_FLAG);
+  Array.prototype.forEach.call($(id + "-basis").querySelectorAll(".chip"), function(b){
+    b.addEventListener("click", function(){
+      var t = all[parseInt(b.getAttribute("data-b"), 10)], at = card.basis.indexOf(t);
+      if(at > -1) card.basis.splice(at, 1); else card.basis.push(t);
+      b.classList.toggle("on", at < 0);
+      b.setAttribute("aria-pressed", at < 0 ? "true" : "false");
+    });
+  });
+  $(id + "-why").addEventListener("input", function(){ card.why = this.value.trim(); });
+  $(id + "-tell").addEventListener("input", function(){ card.tell = this.value.trim(); });
+  $(id + "-file").addEventListener("input", function(){
+    card.file = this.value.split(/\r?\n/).map(function(t){ return t.trim(); })
+      .filter(function(t){ return t.length; });
+  });
+}
+
+/* =============================================================================
+   Reading a set, and drawing what came back
+   ============================================================================= */
+var SET1 = null, SET2 = null, CARDS1 = [], CARDS2 = [];
+
+function thresholdSentence(floorD, floorP, rule){
+  return "A line owes commentary only when it clears " +
+    (rule === "either" ? "either " : "both ") + money(floorD) + " and " + floorP + " percent.";
+}
+
+function factsList(R){
+  var out = [];
+  out.push(R.L.accounts.length + " account rows read, " +
+    R.L.accounts.filter(function(a){ return a.clears; }).length + " clearing the rule.");
+  var bad = R.ties.filter(function(t){ return t.ok === false; });
+  out.push(bad.length
+    ? bad.length + " section total does not tie to the lines under it: " +
+      bad.map(function(t){ return t.label; }).join(", ") + ". Check the paste before keying anything."
+    : "Every section total ties to the lines under it.");
+  var figBad = 0, dirBad = 0, polBad = 0, unbound = 0;
+  R.sents.forEach(function(s){
+    figBad += s.badFigs.length; dirBad += s.badDir.length; polBad += s.badPolicy.length;
+    if(!s.bound.length) unbound++;
+  });
+  out.push(figBad ? figBad + " figure does not recompute against the line it binds." : "Every figure recomputes.");
+  out.push(dirBad ? dirBad + " direction word runs against the sign of the movement." : "Every direction word agrees with the sign.");
+  out.push(polBad ? polBad + " threshold claim in the memo is wrong." : "Every threshold claim in the memo is right.");
+  out.push(R.silent.length
+    ? R.silent.length + " line clears the rule with nothing written about it: " +
+      R.silent.map(function(a){ return (a.num || "row " + a.row) + " " + a.name; }).join(", ") + "."
+    : "No line clears the rule unexplained.");
+  if(unbound) out.push(unbound + " memo sentence binds to no ledger line and gets no card. Name the account in it and read again.");
+  return out;
+}
+
+function readMain(){
+  var floorD = Number($("dollar").value) || 0, floorP = Number($("pct").value) || 0;
+  var rule = segValue("ruleseg"), zp = segValue("zeroseg");
+  var R = readSet($("ledger").value, $("memo").value, floorD, floorP, rule, zp);
+  if(R.error){ say("msg", "fail", esc(R.error)); return; }
+  SET1 = R;
+  CARDS1 = buildCards(R, thresholdSentence(floorD, floorP, rule));
+  if(!CARDS1.length){
+    say("msg", "fail", "No sentence bound to a ledger line and no line was left silent, so there is nothing to key.");
+    return;
+  }
+  say("msg", "pass", CARDS1.length + " line" + (CARDS1.length === 1 ? "" : "s") + " to key.");
+  $("readlead").textContent = "The reader took the ledger and the memo apart before anything is keyed by hand.";
+  $("facts").innerHTML = factsList(R).map(function(t){ return "<li>" + esc(t) + "</li>"; }).join("");
+  $("readout").classList.remove("hidden");
+  $("cards").innerHTML = CARDS1.map(function(c){ return drawCard(c, "k"); }).join("");
+  CARDS1.forEach(function(c){ wireCard(c, "k"); });
+  $("cardsec").classList.remove("hidden");
+}
+
+function readFresh(){
+  var floorD = Number($("dollar").value) || 0, floorP = Number($("pct").value) || 0;
+  var rule = segValue("ruleseg"), zp = segValue("zeroseg");
+  var R = readSet($("fledger").value, $("fmemo").value, floorD, floorP, rule, zp);
+  if(R.error){ say("fmsg", "fail", esc(R.error)); return; }
+  SET2 = R;
+  CARDS2 = buildCards(R, thresholdSentence(floorD, floorP, rule));
+  if(!CARDS2.length){ say("fmsg", "fail", "Nothing to key in the fresh set."); return; }
+  say("fmsg", "pass", CARDS2.length + " fresh line" + (CARDS2.length === 1 ? "" : "s") + " to key.");
+  $("fcards").innerHTML = CARDS2.map(function(c){ return drawCard(c, "f"); }).join("");
+  CARDS2.forEach(function(c){ wireCard(c, "f"); });
+}
+
+/* =============================================================================
+   Validation, then the case file
+   ============================================================================= */
+function cardProblems(cards, R, label){
+  var out = [];
+  cards.forEach(function(c){
+    var where = label + " line " + c.n + " (" + c.acct + " " + c.name + ")";
+    if(c.key !== "flag" && c.key !== "stand") out.push(where + " has no call.");
+    if(TYPES.indexOf(c.type) < 0) out.push(where + " has no error type.");
+    if(!c.basis.length) out.push(where + " has no basis chip. Every card needs at least one.");
+    if(c.key === "stand" && c.basis.some(function(b){ return b !== BASIS_HOLD; }))
+      out.push(where + " is a stand, so its basis can only be “" + BASIS_HOLD + "”. A chip naming a defect contradicts a line that has none.");
+    if(c.key === "flag" && c.basis.indexOf(BASIS_HOLD) > -1)
+      out.push(where + " is a flag, so it cannot carry “" + BASIS_HOLD + "”.");
+    if(c.key === "stand" && c.type !== "clean line")
+      out.push(where + " is a stand, so its error type has to be “clean line”.");
+    if(c.key === "flag" && c.type === "clean line")
+      out.push(where + " is a flag, so its error type cannot be “clean line”.");
+    if(!c.why) out.push(where + " has no why line.");
+    if(!c.tell) out.push(where + " has no tell line.");
+    /* the figures have to reconcile to the ledger row the card points at */
+    var row = R.L.accounts.filter(function(a){ return (a.num || ("row " + a.row)) === c.acct; })[0];
+    if(!row) out.push(where + " points at an account that is not in the ledger.");
+    else if(Math.abs(row.prior - c.prior) > 0.01 || Math.abs(row.cur - c.current) > 0.01)
+      out.push(where + " carries figures that do not reconcile to the ledger row.");
+  });
+  return out;
+}
+
+function groupsOf(R){
+  var by = {}, order = [];
+  R.L.accounts.forEach(function(a){
+    var nm = a.section || "Accounts";
+    if(!by[nm]){ by[nm] = []; order.push(nm); }
+    by[nm].push(a.num || ("row " + a.row));
+  });
+  return order.map(function(nm){
+    return {title:nm, accts:by[nm], total:/^total/i.test(nm) ? nm : "Total " + nm.toLowerCase()};
+  });
+}
+
+function caseObject(name, version, period, cards, R, mode){
+  var floorD = Number($("dollar").value) || 0, floorP = Number($("pct").value) || 0;
+  var rule = segValue("ruleseg");
+  var o = {
+    version: version,
+    date: new Date().toISOString().slice(0, 10),
+    company: name,
+    period: period || "Close, prepared from the general ledger",
+    caption: "The " + R.L.accounts.length + " accounts the memo was written against.",
+    /* the two month names the drill prints over the ledger columns, the strips and the chart */
+    columns: [($("ccolA").value || "Prior").trim(), ($("ccolB").value || "Current").trim()],
+    threshold: thresholdSentence(floorD, floorP, rule),
+    policyScope: "The threshold sets what the monthly management report has to explain. It does not " +
+                 "make a known error, or anything else that looks wrong, exempt from attention.",
+    evidenceNote: "Every sentence under On file is a verified case assumption. A fact that is not " +
+                  "listed was not supplied, which is not the same as saying the company has no such document.",
+    ledger: R.L.accounts.map(function(a){
+      return [a.num || ("row " + a.row), a.name, a.prior, a.cur, a.clears ? 1 : 0];
+    }),
+    groups: groupsOf(R),
+    cards: cards.map(function(c){
+      return {
+        n: c.n, icon: c.icon, acct: c.acct, name: c.name,
+        prior: c.prior, current: c.current,
+        memo: c.memo,
+        file: c.file.slice(),
+        key: c.key, type: c.type,
+        why: c.why,
+        truth: c.why,
+        over: c.why,
+        ask: c.key === "flag"
+          ? "Ask the controller for the document that settles account " + c.acct + "."
+          : "",
+        tell: c.tell,
+        post: c.key === "flag" ? {flag:"Accept", stand:"Reject"} : {flag:"Accept", stand:"Reject"},
+        basisKey: c.basis.slice()
+      };
+    }),
+    authoredBy: AUTHOR_VERSION
+  };
+  if(mode === "assessment"){
+    o.mode = "assessment";
+    o.assessmentNote = "Every figure in this memo ties and every direction word agrees with the " +
+                       "sign, so each line turns on whether the cause it names is carried by " +
+                       "something on file.";
+  }
+  return o;
+}
+
+function collectProblems(){
+  var p = [];
+  var name = $("cname").value.trim(), ver = $("cver").value.trim();
+  if(!name) p.push("The case has no name.");
+  if(!ver) p.push("The case has no version.");
+  if(!SET1 || !CARDS1.length) p.push("Nothing has been read yet. Paste a ledger and a memo, then press Read it.");
+  else p = p.concat(cardProblems(CARDS1, SET1, "Main set,"));
+  if($("freshblock").open && (($("fledger").value.trim()) || ($("fmemo").value.trim()))){
+    if(!$("fname").value.trim()) p.push("The fresh set has no name.");
+    if(!SET2 || !CARDS2.length) p.push("The fresh set has not been read. Press Read the fresh set.");
+    else p = p.concat(cardProblems(CARDS2, SET2, "Fresh set,"));
+  }
+  return p;
+}
+
+function currentPayload(){
+  var name = $("cname").value.trim(), ver = $("cver").value.trim();
+  var main = caseObject(name, ver, $("cperiod").value.trim(), CARDS1, SET1, "practice");
+  var fresh = null;
+  if($("freshblock").open && SET2 && CARDS2.length && $("fname").value.trim()){
+    fresh = caseObject($("fname").value.trim(), ver + "-fresh", $("fperiod").value.trim(),
+                       CARDS2, SET2, segValue("fmodeseg"));
+  }
+  return {
+    savedAt: new Date().toISOString(),
+    authoredBy: AUTHOR_VERSION,
+    name: name,
+    caseVersion: ver,
+    id: "own:" + name + ":" + ver,
+    "case": main,
+    fresh: fresh
+  };
+}
+
+function download(obj, filename){
+  var blob = new Blob([JSON.stringify(obj, null, 2)], {type:"application/json"});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+}
+
+function slug(s){
+  return String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"") || "own-case";
+}
+
+function doSave(){
+  var problems = collectProblems();
+  if(problems.length){
+    $("saybox").innerHTML =
+      '<p class="status fail inline">The case is not saved. ' + problems.length +
+      ' thing' + (problems.length === 1 ? "" : "s") + ' still to settle.</p>' +
+      '<ul class="problems">' + problems.map(function(t){ return "<li>" + esc(t) + "</li>"; }).join("") + '</ul>';
+    $("preview").disabled = true;
+    return;
+  }
+  var payload = currentPayload();
+  var stored = true;
+  try{ window.localStorage.setItem(OWN_KEY, JSON.stringify(payload)); }
+  catch(e){ stored = false; }
+  download(payload, slug(payload.name) + "-" + slug(payload.caseVersion) + ".json");
+  $("saybox").innerHTML = '<p class="status pass inline">Saved. ' +
+    payload["case"].cards.length + ' line' + (payload["case"].cards.length === 1 ? "" : "s") +
+    (payload.fresh ? ", and " + payload.fresh.cards.length + " on the fresh set" : "") +
+    ". The JSON has downloaded" +
+    (stored ? " and this browser now hands the drill the same case as My own case." :
+              ", but this browser refused to store it, so the drill will not find it here.") + '</p>';
+  $("preview").disabled = false;
+  $("forget").hidden = false;
+}
+
+$("read").addEventListener("click", readMain);
+$("fread").addEventListener("click", readFresh);
+$("save").addEventListener("click", doSave);
+$("preview").addEventListener("click", function(){
+  window.open("index.html?case=own&test=1", "_blank", "noopener");
+});
+$("forget").addEventListener("click", function(){
+  try{ window.localStorage.removeItem(OWN_KEY); }catch(e){}
+  $("saybox").innerHTML = '<p class="status info inline">The saved case is gone from this browser. The downloaded file is untouched.</p>';
+  $("preview").disabled = true;
+  $("forget").hidden = true;
+});
+$("clear").addEventListener("click", function(){
+  $("ledger").value = ""; $("memo").value = "";
+  $("ledger").dispatchEvent(new Event("input")); $("memo").dispatchEvent(new Event("input"));
+  SET1 = null; CARDS1 = [];
+  $("readout").classList.add("hidden"); $("cardsec").classList.add("hidden");
+  say("msg", "info", "");
+  $("saybox").innerHTML = "";
+});
+
+/* ---------- the sample, so the page can be tried without a ledger to hand ---------- */
+var SAMPLE_LEDGER = [
+"Kestrel IT Services, LLC",
+"Profit and Loss Comparison",
+"July 2026 compared with June 2026",
+"",
+"\tJul 2026\tJun 2026\t$ Change\t% Change",
+"Income",
+"   4000 Recurring managed services\t198,400.00\t161,500.00\t36,900.00\t22.85 %",
+"   4100 Project and implementation revenue\t96,400.00\t38,900.00\t57,500.00\t147.81 %",
+"Total Income\t294,800.00\t200,400.00\t94,400.00\t47.11 %",
+"Cost of Goods Sold",
+"   5000 Subcontracted engineering\t88,300.00\t41,800.00\t46,500.00\t111.24 %",
+"Total Cost of Goods Sold\t88,300.00\t41,800.00\t46,500.00\t111.24 %",
+"Gross Profit\t206,500.00\t158,600.00\t47,900.00\t30.20 %",
+"Expenses",
+"   6000 Salaries and wages\t88,500.00\t88,500.00\t0.00\t0.00 %",
+"   6200 Software licences and hosting\t57,900.00\t22,600.00\t35,300.00\t156.19 %",
+"   6400 Client acquisition costs\t14,200.00\t4,900.00\t9,300.00\t189.80 %",
+"Total Expenses\t160,600.00\t116,000.00\t44,600.00\t38.45 %",
+"Net Operating Income\t45,900.00\t42,600.00\t3,300.00\t7.75 %",
+"Net Income\t45,900.00\t42,600.00\t3,300.00\t7.75 %"
+].join("\n");
+
+var SAMPLE_MEMO = [
+"1. 4100 Project and implementation revenue rose $57.5k to $96,400, up 147.8 percent, on the Riverbend cutover that ran the whole month (source: project billing schedule).",
+"2. Project and implementation revenue carries the final Riverbend milestone, which was billed on 31 July and accepted the same day (source: signed acceptance certificate).",
+"3. 5000 Subcontracted engineering fell $46,500 to $88,300 as the cutover was staffed through two partner firms (source: partner invoices on file).",
+"4. 6000 Salaries and wages held flat at $88,500, with no headcount movement in the month (source: payroll register).",
+"5. 6200 Software licences and hosting rose $25,300 to $57,900 on the annual renewal of the monitoring platform, billed in July (source: vendor invoice).",
+"6. 6400 Client acquisition costs rose $9,300, or 189.8 percent, which fails the dollar leg of the threshold, so this line carries no driver."
+].join("\n");
+
+$("loadsample").addEventListener("click", function(){
+  $("ledger").value = SAMPLE_LEDGER;
+  $("memo").value = SAMPLE_MEMO;
+  $("ledger").dispatchEvent(new Event("input"));
+  $("memo").dispatchEvent(new Event("input"));
+  if(!$("cname").value) $("cname").value = "Kestrel IT Services";
+  if(!$("cperiod").value) $("cperiod").value = "July close, prepared from the general ledger";
+  if(!$("ccolA").value) $("ccolA").value = "June";
+  if(!$("ccolB").value) $("ccolB").value = "July";
+  say("msg", "info", "The Kestrel sample is in. Press Read it.");
+});
+
+/* a case already saved in this browser: say so, and let it be previewed or dropped */
+(function(){
+  var raw = null;
+  try{ raw = window.localStorage.getItem(OWN_KEY); }catch(e){ return; }
+  if(!raw) return;
+  var was;
+  try{ was = JSON.parse(raw); }catch(e){ return; }
+  if(!was || !was["case"]) return;
+  $("saybox").innerHTML = '<p class="status info inline">This browser already holds ' +
+    esc(was.name || "a case") + ", " + esc(was.caseVersion || "") +
+    ', saved ' + esc(String(was.savedAt || "").slice(0, 10)) +
+    '. Saving again replaces it.</p>';
+  $("preview").disabled = false;
+  $("forget").hidden = false;
+})();
+
+window.__SPA = {read:readMain, readFresh:readFresh, save:doSave,
+                cards:function(){ return CARDS1; }, fresh:function(){ return CARDS2; },
+                payload:currentPayload, problems:collectProblems,
+                sample:{ledger:SAMPLE_LEDGER, memo:SAMPLE_MEMO}, key:OWN_KEY};
+})();
+</script>
+</body>
+</html>
