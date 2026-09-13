@@ -185,10 +185,14 @@ textarea{min-height:84px;resize:vertical}
   padding:16px var(--pad) 14px;border-bottom:2px solid var(--mason-gold)}
 .stmthead b{display:block;font-size:20px;line-height:1.25;color:#fff;letter-spacing:-.2px}
 .stmthead span{display:block;font-size:13px;line-height:1.45;color:var(--mason-gold);margin-top:3px}
-.scols,.srow{display:grid;grid-template-columns:26.5% 26.5% 28% 19%}
+.scols,.srow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  column-gap:20px;row-gap:6px}
+/* four numbers only sit on one line once there is room for them; below that May and June
+   take the first line and Change and Percent the second, on the same gutters */
+@media (min-width:480px){.scols,.srow{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .scols{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--ink-soft);
   padding:12px 0 8px;border-bottom:1px solid var(--line)}
-.scols span{text-align:right;padding:0 2px}
+.scols span{text-align:right;padding:0;font-variant-numeric:tabular-nums}
 .scols .sp{display:none}
 .srow{position:relative;padding:12px 10px;margin:0 -10px;align-items:baseline;
   border-top:1px solid rgba(0,82,57,.10)}
@@ -197,21 +201,23 @@ textarea{min-height:84px;resize:vertical}
 .srow .no{flex:0 0 46px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Courier New",monospace;
   font-size:13px;line-height:1.45;color:var(--ink-soft)}
 .srow .nm{font-size:15px;line-height:1.45;color:var(--ink)}
-.srow .fg{text-align:right;font-size:15px;line-height:1.45;padding:0 2px;color:var(--ink);
+.srow .fg{text-align:right;font-size:15px;line-height:1.45;padding:0;color:var(--ink);
   font-variant-numeric:tabular-nums}
 .srow .fg.ch{font-weight:600}
 .srow .fg.neg{color:var(--neg)}
-.srow .pc{position:relative;color:var(--ink-soft)}
-.srow .pc b{position:relative;font-weight:400}
-.pbar{display:none;position:absolute;right:0;top:1px;bottom:1px;border-radius:3px;
-  background:rgba(0,82,57,.22)}
-.pbar.neg{background:rgba(168,58,28,.22)}
+.srow .pc{color:var(--ink-soft)}
+.srow .pc b{font-weight:400}
+/* the movement bar gets its own column on a desk, so it never sits behind a figure */
+.wbar{display:none;align-self:center;height:6px;border-radius:99px;background:rgba(0,82,57,.08)}
+.wbar i{display:block;height:100%;border-radius:99px;background:rgba(0,82,57,.55)}
+.wbar i.neg{background:rgba(168,58,28,.50)}
 .srow .mbar{grid-column:1/-1;height:4px;border-radius:99px;background:rgba(0,82,57,.07);
   margin-top:8px;overflow:hidden}
 .srow .mbar i{display:block;height:100%;border-radius:99px;background:rgba(0,82,57,.45)}
 .srow .mbar i.neg{background:rgba(168,58,28,.45)}
 .sgrp{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--mason);
   padding:16px 0 2px;margin-top:6px;border-top:1px solid rgba(0,82,57,.22)}
+.srow.sub,.srow.net{padding-top:14px;padding-bottom:14px}
 .srow.sub{border-top:1px solid var(--ink)}
 .srow.sub .nm,.srow.sub .fg{font-weight:700}
 .srow.net{border-top:2px solid var(--ink)}
@@ -259,16 +265,23 @@ textarea{min-height:84px;resize:vertical}
   .flaghead{pointer-events:none}
   .flaghead .chev{display:none}
   .stmt-wide{--pad:24px}
-  .stmt-wide .scols,.stmt-wide .srow{grid-template-columns:30px minmax(0,1fr) 88px 87px 86px 64px;
-    column-gap:2px}
+}
+/* one line per account, with room for every figure and a column of its own for the bar */
+@media (min-width:1200px){
+  #app.wide{max-width:1320px}
+  .orient{max-width:1280px}
+  .stmt-wide .scols,.stmt-wide .srow{
+    grid-template-columns:30px minmax(0,1fr) 116px 116px 112px 72px 72px;
+    column-gap:20px;row-gap:0}
   .stmt-wide .srow.sub .fg,.stmt-wide .srow.net .fg{font-weight:600}
   .stmt-wide .scols .sp{display:block}
   .stmt-wide .srow{align-items:center;padding:10px;min-height:28px}
+  .stmt-wide .srow.sub,.stmt-wide .srow.net{padding-top:14px;padding-bottom:14px}
   .stmt-wide .srow .acctline{display:contents}
-  .stmt-wide .srow .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .stmt-wide .srow .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:420px}
   .stmt-wide .srow .fg{font-size:16px;padding:0}
   .stmt-wide .srow .mbar{display:none}
-  .stmt-wide .pbar{display:block}
+  .stmt-wide .wbar{display:block}
 }
 
 .cardhead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
@@ -310,11 +323,18 @@ textarea{min-height:84px;resize:vertical}
 .stats b{display:block;font-size:24px;line-height:1.1;font-variant-numeric:tabular-nums}
 .stats span{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--ink-soft);margin-top:3px;line-height:1.2}
 .earned{margin:12px 0 16px;font-size:16px;color:var(--ink-soft)}
-.badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0 0 18px}
-.badge{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line);background:var(--card);
-  border-radius:99px;padding:7px 13px;font-size:13px;font-weight:700;color:#6e7174}
-.badge svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.badge.on{border-color:var(--gold-line);background:var(--mason-gold);color:#333333}
+.badges{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin:0 0 18px}
+.medal{display:flex;flex-direction:column;align-items:center;gap:8px;width:96px;
+  opacity:0;transform:translateY(6px);animation:medalin .4s ease forwards}
+.medal .disc{display:flex;align-items:center;justify-content:center;width:62px;height:62px;
+  border-radius:50%;background:var(--paper);border:2px solid var(--mason-gold);
+  box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.medal .disc svg{width:26px;height:26px;fill:none;stroke:var(--mason);stroke-width:1.8;
+  stroke-linecap:round;stroke-linejoin:round}
+.medal em{font-style:normal;font-size:14px;line-height:1.3;text-align:center;color:var(--ink)}
+@keyframes medalin{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.medal{animation:none;opacity:1;transform:none}}
+.nobadge{margin:0 0 18px;font-size:14px;line-height:1.45;color:var(--ink-soft);text-align:center}
 .sharecard{background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:14px;text-align:left}
 .sharecard p{margin:0 0 10px;font-size:16px;font-weight:600}
 .sharecard .btn{margin-top:0;padding:11px;font-size:16px}
@@ -442,10 +462,11 @@ var CARDS = [
 
  {n:5, icon:"brief", acct:"6500", name:"Professional fees",
   prior:55000, current:47500,
-  memo:"Professional fees fell $7,500 on the timing of the annual audit fee, which the prior month carried in full, and the movement fails the dollar leg of the threshold.",
-  file:[THRESHOLD],
+  memo:"Professional fees fell $7,500 because May carried a one-time $7,500 invoice from outside counsel for the depot lease renewal review, and the movement fails the dollar leg of the threshold.",
+  file:["May professional fees include a $7,500 lease review invoice from outside counsel; June has none.",
+        THRESHOLD],
   key:"stand", type:"clean line",
-  why:"The movement fails the dollar leg, so no commentary was owed here at all, and the memo explained it anyway and got it right.",
+  why:"The invoice on file accounts for the whole movement, and the movement fails the dollar leg, so no commentary was owed here at all and the memo explained it anyway and got it right.",
   over:"Thirteen percent looks like it clears, and the dollar leg is the one that decides this line.",
   tell:"Both legs have to clear before a line owes anything, and $7,500 never reaches $25,000.",
   post:{flag:"Accept", stand:"Reject"}},
@@ -476,7 +497,7 @@ var CARDS = [
   memo:"Bad debt expense increased $42,000 following the reserve taken against the Coastal Grocers receivable.",
   file:["No other sentence in the memo touches this account."],
   key:"flag", type:"arithmetic",
-  why:"The account moved $47,000 and the memo accounts for $42,000, which leaves $5,000 with nobody's name on it.",
+  why:"The account moved $47,000 and the memo accounts for $42,000, which leaves $5,000 with nobody's name on it. The $5,000 may be the routine monthly provision, but the memo has to say so.",
   tell:"The memo handed you a number, so check it against the ledger before you read the reason attached to it.",
   post:{flag:"Accept", stand:"Reject"}},
 
@@ -516,9 +537,10 @@ var CARDS = [
   memo:"Distribution revenue of $5,612,000 grew 7.1 percent over May on continued customer demand across all four depots.",
   file:["Freight billed to customers, account 4200, fell $65,000 over the same month.",
         "Inbound freight, account 5100, rose $73,800, so freight is still being incurred.",
+        "From June 1, Halyard moved its two largest customers to delivered pricing: freight is included in the product price and no longer billed on account 4200 (pricing memo of May 20 on file).",
         "No sentence in the memo connects the two revenue lines to each other."],
   key:"flag", type:"wrong account",
-  why:"Freight that used to sit on its own revenue line and now sits inside the product price is a reclassification rather than demand, and the memo owes an answer on the $65,000.",
+  why:"The $65,000 that left freight billed now sits inside product revenue by a pricing change the memo never mentions, so most of the growth it calls demand is a reclassification.",
   tell:"When one revenue line falls while a related one rises, ask whether anything moved between them.",
   post:{flag:"Accept", stand:"Reject"}},
 
@@ -526,7 +548,8 @@ var CARDS = [
   prior:3930000, current:4278000,
   memo:"Cost of product sold rose $348,000 against a $372,000 rise in revenue, so product gross margin fell from 25.0 percent in May to 23.8 percent in June on a shift toward lower margin lines.",
   file:["Product gross margin is account 4000 less account 5000, divided by account 4000.",
-        "Account 4000 ran $5,240,000 in May and $5,612,000 in June."],
+        "Account 4000 ran $5,240,000 in May and $5,612,000 in June.",
+        "June sales by category: produce and dairy rose from 31 to 36 percent of product revenue, and those two categories carry the lowest margins (category report on file)."],
   key:"stand", type:"clean line",
   why:"Recompute it and the memo is right to the tenth, at 25.0 and 23.8, and it reports the fall rather than rounding it away.",
   over:"The sentence that would have earned a flag here calls margin stable at a rounded 24 percent, and this memo does not say that.",
@@ -537,9 +560,11 @@ var CARDS = [
   prior:61200, current:92400,
   memo:"Interest expense rose $31,200 on the depot equipment additions that also sit in depreciation.",
   file:["Depreciation, account 7000, was $128,000 in May and $128,000 in June.",
+        "No fixed asset additions were recorded in May or June.",
+        "The revolver balance rose from $3.1 million to $5.6 million on June 3.",
         "Halyard has a revolver in place and the memo does not mention it."],
   key:"flag", type:"wrong account",
-  why:"Depreciation did not move by a dollar, so the equipment story fails its own test and a 51 percent rise in interest is still unexplained.",
+  why:"Nothing was added to fixed assets and depreciation did not move, so the equipment story has no support, while the revolver draw the memo never mentions explains a 51 percent rise on its own.",
   tell:"The memo pointed at another account, so go and look at that account before you accept the sentence.",
   post:{flag:"Accept", stand:"Reject"}}
 ];
@@ -697,7 +722,8 @@ function strip(acct){
 var GROUPS = [
   {title:"Revenue", accts:["4000","4100","4200"], total:"Total revenue"},
   {title:"Cost of sales", accts:["5000","5100"], total:"Total cost of sales"},
-  {title:"Operating expenses", accts:["6000","6100","6200","6300","6400","6500","7000","7100","7400"], total:"Total operating expenses"}
+  {title:"Operating expenses", accts:["6000","6100","6200","6300","6400","6500","7000","7400"], total:"Total operating expenses"},
+  {title:"Financing", accts:["7100"], total:"Total financing"}
 ];
 function sumOf(accts, col){
   var t = 0;
@@ -710,17 +736,17 @@ function changeCell(prior, current){
   return '<span class="ch '+(d<0?"neg":"pos")+'">'+moveCell(d)+'<i>'+pc+'</i></span>';
 }
 /* One row per account. On a phone it stacks, on a desk it reads as one line, and the
-   movement bar lives inside the Percent cell there and under the figures here. */
+   movement bar takes a column of its own there and a line under the figures here. */
 function figCells(prior, current, barPct){
   var d = current - prior;
   var pc = (prior ? (d/prior*100) : 0);
   var neg = d<0 ? " neg" : "";
   var bar = (barPct===null) ? "" :
-    '<i class="pbar'+neg+'" style="width:'+barPct+'%"></i>';
+    '<span class="wbar"><i class="'+(neg?"neg":"")+'" style="width:'+barPct+'%"></i></span>';
   return '<span class="fg">'+money(prior)+'</span>'+
          '<span class="fg">'+money(current)+'</span>'+
          '<span class="fg ch'+neg+'">'+moveCell(d)+'</span>'+
-         '<span class="fg pc'+neg+'">'+bar+'<b>'+pc.toFixed(1)+'%</b></span>';
+         '<span class="fg pc'+neg+'"><b>'+pc.toFixed(1)+'%</b></span>'+bar;
 }
 function movementBar(prior, current, barPct){
   var neg = current<prior ? " neg" : "";
@@ -756,14 +782,15 @@ function statement(acct, wide){
     });
     body += totalRow(g.total, sumOf(g.accts,2), sumOf(g.accts,3), "sub");
   });
-  var netP = sumOf(GROUPS[0].accts,2) - sumOf(GROUPS[1].accts,2) - sumOf(GROUPS[2].accts,2);
-  var netC = sumOf(GROUPS[0].accts,3) - sumOf(GROUPS[1].accts,3) - sumOf(GROUPS[2].accts,3);
+  var netP = sumOf(GROUPS[0].accts,2), netC = sumOf(GROUPS[0].accts,3);
+  GROUPS.slice(1).forEach(function(g){ netP -= sumOf(g.accts,2); netC -= sumOf(g.accts,3); });
   body += totalRow("Net of the accounts shown", netP, netC, "net");
   return '<div class="stmt'+(wide?" stmt-wide":"")+'">'+
     '<div class="stmthead"><b>Halyard Provisioning Group, Inc.</b>'+
       '<span>June close, prepared from the general ledger</span></div>'+
     '<div class="scols"><span class="sp"></span><span class="sp"></span>'+
-      '<span>May</span><span>June</span><span>Change</span><span>Percent</span></div>'+
+      '<span>May</span><span>June</span><span>Change</span><span>Percent</span>'+
+      '<span class="sp"></span></div>'+
     body+
     '<p class="cap">The fourteen accounts the memo was written against.</p></div>';
 }
@@ -1219,20 +1246,20 @@ function trophySvg(t){
   '</svg>';
 }
 
-/* ---------- the five badges, earned off the key ---------- */
+/* ---------- the badges, earned off the key. Only what was earned shows, best three first ---------- */
 function got(n){ var c = CARDS[n-1]; return S.calls[n-1] === c.key; }
 function badges(){
   var right = S.caught + S.cleared;
   return [
-    {t:"Arithmetic hawk",    on: got(1) && got(8), i:"scales"},
-    {t:"Timing and drift",   on: got(2) && got(3), i:"calendar"},
-    {t:"Invented driver caught", on: got(7), i:"glass"},
-    {t:"Right account",      on: got(12) && got(14), i:"brief"},
-    {t:"Read the silence",   on: got(11), i:"flag"},
-    {t:"Nothing over-flagged", on: allStandsRight(), i:"badge"},
+    {t:"Clean sweep",        on: right===14, i:"coins"},
     {t:"Hot lap",            on: S.best>=5, i:"fuel"},
-    {t:"Clean sweep",        on: right===14, i:"coins"}
-  ];
+    {t:"Nothing over-flagged", on: allStandsRight(), i:"badge"},
+    {t:"Arithmetic hawk",    on: got(1) && got(8), i:"scales"},
+    {t:"Invented driver caught", on: got(7), i:"glass"},
+    {t:"Read the silence",   on: got(11), i:"flag"},
+    {t:"Right account",      on: got(12) && got(14), i:"brief"},
+    {t:"Timing and drift",   on: got(2) && got(3), i:"calendar"}
+  ].filter(function(x){ return x.on; }).slice(0,3);
 }
 
 function earnedLine(){
@@ -1263,6 +1290,13 @@ function done(){
   }
   var share = "I called " + (S.caught+S.cleared) + " of 14 lines the way the ledger has them in Second Pass: Beat the Machine at Mason.";
   var b = badges();
+  var medals = b.length
+    ? '<div class="badges">'+b.map(function(x,i){
+        return '<span class="medal" style="animation-delay:'+(i*150)+'ms">'+
+          '<span class="disc"><svg viewBox="0 0 24 24">'+I[x.i]+'</svg></span>'+
+          '<em>'+x.t+'</em></span>';
+      }).join("")+'</div>'
+    : '<p class="nobadge">Next run, start with the arithmetic.</p>';
   screen.innerHTML =
     '<div class="final">'+
       '<div class="trophywrap">'+trophySvg(tier())+'</div>'+
@@ -1276,20 +1310,26 @@ function done(){
       '</div>'+
       '<p class="lapwrap"><span class="lap">Lap time '+lapText()+'</span>'+
         '<span class="lap">Best streak '+S.best+'</span></p>'+
-      '<div class="badges">'+
-        b.map(function(x){
-          return '<span class="badge'+(x.on?" on":"")+'"><svg viewBox="0 0 24 24">'+I[x.i]+'</svg>'+x.t+'</span>';
-        }).join("")+
-      '</div>'+
+      medals+
       '<div class="sharecard"><p>'+esc(share)+'</p><button class="btn ghost" id="copyshare">Copy</button></div>'+
+      '<button class="btn ghost" id="playagain">Play again</button>'+
       '<button class="btn ghost" id="showmiss">'+(miss.length
           ? "See the "+miss.length+" that got past you"
           : "See the full read out")+'</button>'+
       '<div id="missbox" hidden>'+coachInner+'</div>'+
-      '<p class="tiny" style="margin-top:18px">Ranks and the top three codenames get read out at the next meeting.</p>'+
     '</div>';
   document.getElementById("step").textContent = "Done";
   document.getElementById("score").classList.add("hidden");
+  /* a second run keeps the codename and the chips and posts its own row to the form */
+  document.getElementById("playagain").addEventListener("click", function(){
+    S.calls = [];
+    for(var k=0;k<14;k++){ S.calls.push(null); }
+    S.caught = 0; S.cleared = 0; S.falseFlags = 0; S.streak = 0; S.best = 0;
+    S.confPost = null; S.qd = null;
+    S.started = Date.now(); S.lapStart = 0; S.lapEnd = 0;
+    submitted = false;
+    go(1);
+  });
   var mb = document.getElementById("missbox"), sm = document.getElementById("showmiss");
   sm.addEventListener("click", function(){
     mb.hidden = !mb.hidden;

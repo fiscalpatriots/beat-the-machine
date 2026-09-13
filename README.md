@@ -59,12 +59,15 @@ choice between them has to read as even.
 ## The ledger
 
 The ledger screen is a statement, not a list. A header block names the company and the close.
-Each account occupies two rows: the name, the account number and a slim movement bar scaled to
-the largest absolute change in the month, then May, June, Change and Percent underneath it as
-four right aligned columns of tabular figures at 15px. Splitting the account name onto its own
-row is what lets all four figure columns hold full type with thousands separators inside a
-375px phone with no sideways scrolling. Negative changes print in a muted red. Revenue, cost of
-sales and operating expenses each carry a subtotal, and a net line closes the statement.
+Each account occupies three rows on a phone: the name and the account number, then May and June
+on one line and Change and Percent on the next, right aligned tabular figures at 15px on 20px
+gutters, with a slim movement bar under them scaled to the largest absolute change in the month.
+Stacking the figures two to a line is what lets every column hold full type with thousands
+separators inside a 375px phone with no sideways scrolling; from 480px up the four sit on one
+line. Negative changes print in a muted red. Revenue, cost of sales, operating expenses and
+financing each carry a subtotal, and a net line closes the statement. Interest expense reports
+in financing rather than inside operating expense, so total operating expenses reads $1,000,300
+in May and $1,188,800 in June and total financing reads $61,200 and $92,400.
 
 Nothing is tapped there. The Ledger button on every card and every reveal reopens the same
 component as a slide up sheet, with the account under review highlighted by a gold left border
@@ -73,11 +76,14 @@ One control opens the sheet and only one: the full width "See the full ledger" b
 strip on every card and every reveal, taller than 44px. The first card adds a one time hint line
 under it.
 
-On a phone each account takes two lines, the number and name above the four figures with the
-movement bar under them. From 900px up the same row reads as one line: the account number in a
-monospace column, the name, then May, June, Change and Percent as right aligned tabular columns
-at 16px, with the movement bar drawn inside the Percent cell as a background fill scaled to the
-largest absolute percent, so the figure and the picture share one cell. Section headers are
+From 1200px up the same row reads as one line: the account number in a monospace column, the
+name at a fixed width that ellipses rather than pushing the figures together, then May and June
+at 116px, Change at 112px and Percent at 72px as right aligned tabular columns at 16px on 20px
+gutters, and last a 72px column holding the movement bar on its own. The bar is a 6px rounded
+track at eight percent ink with a fill scaled to the largest absolute percent, green where the
+account rose and a muted red where it fell, and it never sits behind a figure. Subtotal and net
+rows carry 14px above and below and no bar. Below 1200px the rows stack as they do on a phone.
+Section headers are
 small caps in green over a hairline, subtotals carry a rule above them and the net line a
 heavier one, and alternate rows take a three percent green fill.
 
@@ -104,7 +110,8 @@ and lands on Trainee.
 Rows filed in the Google Form before 12 September 2026 were answered against the old key and
 are not comparable with anything filed since. The per-card entries still post the player's own
 call unchanged, so nothing about the form mapping moved. The source of truth for the new key is
-`EXERCISE-case-01-form-rev3.md` in the AINA drafts folder.
+`EXERCISE-case-01-form-rev4.md` in the AINA drafts folder, with the whole case as plain text in
+`REVIEW-FLAT-rev1.txt` beside it.
 
 ## The track
 
@@ -123,7 +130,7 @@ The run is timed from the first card to the fourteenth call. The end screen prin
 `Lap time 6:42` beside the score, with `Best streak 7` next to it, and the lap time rounded to
 whole minutes is what goes into the form's elapsed minutes question. A streak of five or more
 earns the "Hot lap" badge, and letting all six clean lines stand earns "Nothing over-flagged".
-There are eight badges.
+Eight badges can be earned and the end screen shows at most three of them.
 
 ## Spelling
 
@@ -137,8 +144,18 @@ that. The end screen leads with the reward: a trophy drawn to the rank (bronze, 
 and a starred cup for a clean sweep) with a single rise and shine that respects
 `prefers-reduced-motion`, the rank name, the codename, the earned line, the three outcomes as
 caught, let stand correctly and false flags, the lap time and the best streak under those three
-tiles, six badges with the unearned ones grayed, and the share line with a Copy button. The coaching sits behind
-one tap under it.
+tiles, then the badges. Only earned badges show, at most three, as a row of medallions with the
+icon in green on a paper disc inside a gold ring and the name under it, appearing on a 150ms
+stagger that `prefers-reduced-motion` switches off. They are chosen in a fixed order so the best
+ones survive the cut: Clean sweep, Hot lap, Nothing over-flagged, Arithmetic hawk, Invented
+driver caught, Read the silence, Right account, Timing and drift. A run that earns none prints
+one line instead. Under that sit the share line with a Copy button and a Play again button, and
+the coaching sits behind one tap below them.
+
+Play again returns to the codename screen with the codename and the chapter chips still filled
+in and the score, the streak and the clock cleared. A second run posts a fresh response through
+the same entries, so repeat runs appear in the sheet as separate rows under the same codename.
+Count distinct codenames, not rows, when the question is how many people played.
 
 ## Where the data lands
 
@@ -211,8 +228,8 @@ else in the file depends on the form.
 
 ## The answer key
 
-The key lives in the `CARDS` array as `key`, which is `flag` on the twelve lines that carry a
-problem and `stand` on the two clean ones, alongside the error type, the one line reason shown
+The key lives in the `CARDS` array as `key`, which is `flag` on the eight lines that carry a
+problem and `stand` on the six clean ones, alongside the error type, the one line reason shown
 at the reveal, and the tell the end screen uses when a player misses that line. Anyone who reads
 the source can read the key. That is the trade for instant feedback, and it is the reason to
 send the link and not the file.
@@ -233,4 +250,4 @@ curl -s https://fiscalpatriots.github.io/beat-the-machine/index.html | diff - in
 ```
 
 The source of truth for the content is
-`Coach Dashboard HQ/drafts-2026-09-05-aina/EXERCISE-case-01-form-rev2.md`.
+`Coach Dashboard HQ/drafts-2026-09-05-aina/EXERCISE-case-01-form-rev4.md`.
