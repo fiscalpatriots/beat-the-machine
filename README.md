@@ -11,7 +11,7 @@ Live at https://fiscalpatriots.github.io/beat-the-machine/ from `main`.
 | --- | --- | --- |
 | Product | `second-pass-drill 1.6.0` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
 | Round one case | `halyard-v4`, 13 September 2026 | `cases/halyard-v4.json`, question A, the local record |
-| Round two case | `brightwater-v4`, 13 September 2026 | `cases/brightwater-v4.json`, questions A and C, the local record |
+| Round two case | `brightwater-v5`, 13 September 2026 | `cases/brightwater-v5.json`, questions A and C, the local record |
 | Data notice | `notice-2026-09-13` | the notice screen, question A, the local record |
 
 One constant carries the product version. Change `PRODUCT_VERSION` and every surface follows,
@@ -102,7 +102,7 @@ never changed.
 **Fresh case accuracy.** Split question C on the semicolons. The fields after `Round2:` are the
 call score and the reason score out of five, and `=AVERAGE()` over each column is the pilot's
 fresh-case accuracy. Splitting the calls string character by character against the key string
-gives a per line figure, and all three flagged lines in `brightwater-v4` are `unsupported
+gives a per line figure, and all three flagged lines in `brightwater-v5` are `unsupported
 driver`, so the fresh case reads as a causal-evidence set rather than an arithmetic one. Report
 it beside the fourteen as two separate descriptive numbers. Calling the difference between them
 transfer, learning or improvement would require a planned comparison this pilot does not run.
@@ -842,7 +842,7 @@ saved run. Changing the select reloads the case and starts the run clean, becaus
 a line and the two sets are different lines.
 
 The chosen case's id rides into question A beside the version, as
-`Case: kestrel, version kestrel-v1 (practice, 12 lines) and brightwater-v4 (assessment, 5 lines)`,
+`Case: kestrel, version kestrel-v1 (practice, 12 lines) and brightwater-v5 (assessment, 5 lines)`,
 and into the local record at `scoring.caseId`, `attempt.caseId` and on every item. An own case
 posts its id as `own:<name>:<version>`. **Whoever writes the findings script has to group on
 that id and never pool rows from different cases**, the same rule that already applies to
@@ -857,7 +857,7 @@ that posts its first fourteen lines into those fields and the whole run into the
 
 **The two month names.** A case file names its own columns in `columns`, as
 `"columns": ["June", "July"]`, and the ledger headings, the figure strip on each card, the chart
-and the orientation statement all read them. `halyard-v4` and `brightwater-v4` predate the field
+and the orientation statement all read them. `halyard-v4` and `brightwater-v5` predate the field
 and fall back to May against June, which is what they have always been.
 
 Two badges stopped naming their lines by number at the same time, because line 12 does not exist
@@ -938,12 +938,12 @@ has a 14 pixel internal overflow on `#out` after a run. The page itself does not
 ## The answer key and the case files
 
 Since 13 September 2026 both cases live outside the page, in `cases/halyard-v4.json` and
-`cases/brightwater-v4.json`. Each file carries the company, the threshold policy, the ledger
+`cases/brightwater-v5.json`. Each file carries the company, the threshold policy, the ledger
 rows, the memo sentences, the On file facts as verified case assumptions, the key, the error
 type, the basis key, the reveal reason, the tell, its own version and date, and a `changeLog`
 recording what moved from the version before it. An assessment case also carries
 `"mode": "assessment"` and the assessment note the bridge prints. The superseded `halyard-v3`,
-`brightwater-v3` and `brightwater-v2` files stay in the folder because responses were scored
+`brightwater-v4`, `brightwater-v3` and `brightwater-v2` files stay in the folder because responses were scored
 against them. `cases/README.md` explains the format, the basis-key contract, the evidence on each
 assessment line, what a shortcut scores on the assessment case, the differences from the
 checker's Halyard sample, and what changed in this revision.
@@ -965,7 +965,7 @@ the key, in the JSON as easily as in the page. That is the trade for instant fee
 the reason to send the link and not the file.
 
 The error types are wrong direction, unsupported driver, unsupported attribution, timing,
-arithmetic, no explanation and clean line. `halyard-v4` uses all seven. `brightwater-v4` uses two
+arithmetic, no explanation and clean line. `halyard-v4` uses all seven. `brightwater-v5` uses two
 of them, unsupported driver three times and clean line twice, because every line in an assessment
 case has to test a named cause. "No explanation" covers a line where the memo says nothing about
 an account that owes commentary, which is why it belongs in the practice case and not in the
@@ -986,7 +986,7 @@ case versions.
 
 ## Deploying
 
-`index.html`, `cases/halyard-v4.json` and `cases/brightwater-v4.json`. No libraries. The only
+`index.html`, `cases/halyard-v4.json` and `cases/brightwater-v5.json`. No libraries. The only
 build step is `node build-cases.cjs`, which refreshes the inline fallback inside `index.html` and
 has to be run after any edit to either case file. The only outbound request is the Figtree
 stylesheet from Google Fonts. Commit to `main` and push;

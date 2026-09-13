@@ -155,9 +155,9 @@ drill reads, so the two surfaces cannot drift apart.
 | --- | --- |
 | `cases/README.md` | How a case file is shaped, how to pick one, how to author one, and what changed in each version |
 | `cases/halyard-v4.json` | Halyard Provisioning Group, fourteen accounts, eight problem lines and six clean ones. The practice case |
-| `cases/brightwater-v4.json` | Brightwater Dental Partners, five accounts, three problem lines and two clean ones. The assessment case |
+| `cases/brightwater-v5.json` | Brightwater Dental Partners, five accounts, three problem lines and two clean ones. The assessment case. Every on-file fact carries a dated document excerpt |
 | `cases/kestrel-v1.json` | Kestrel IT Services, twelve accounts, seven problem lines and five clean ones. The second practice case |
-| `cases/halyard-v3.json`, `cases/brightwater-v3.json`, `cases/brightwater-v2.json` | Superseded versions, kept because a response scored against one of them is not comparable to a response scored against v4 |
+| `cases/halyard-v3.json`, `cases/brightwater-v4.json`, `cases/brightwater-v3.json`, `cases/brightwater-v2.json` | Superseded versions, kept because a response scored against one of them is not comparable to a response scored against the current pair |
 | `build-cases.cjs` | Validates a case file and refuses one whose reveal text is missing |
 | `build-checker-cases.cjs` | Regenerates the checker's Halyard and Brightwater samples from the same case files the drill reads |
 

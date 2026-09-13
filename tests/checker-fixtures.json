@@ -844,7 +844,7 @@
   },
   {
     "id": "T18b",
-    "name": "Brightwater sample end to end, case brightwater-v4",
+    "name": "Brightwater sample end to end, case brightwater-v5",
     "required": "The Brightwater sample, generated from cases/brightwater-v4.json. Every figure and every direction word in the v4 memo is correct, so the mechanical pass clears all five and the whole case turns on evidence a person has to weigh. A checker that failed a line here would be wrong.",
     "sample": "brightwater",
     "expect": [
@@ -852,7 +852,7 @@
         "desc": "the sample carries the shared case version",
         "get": "json",
         "op": "includes",
-        "value": "\"caseVersion\": \"brightwater-v4\""
+        "value": "\"caseVersion\": \"brightwater-v5\""
       },
       {
         "desc": "five ledger rows read",

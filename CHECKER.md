@@ -378,7 +378,7 @@ The **Samples** dropdown carries four cases, and each one loads both panes, the 
 thresholds and the close period, then runs.
 
 **Halyard and Brightwater are generated from the shared case definitions**, `cases/halyard-v4.json`
-and `cases/brightwater-v4.json`, which are the same files the game reads, so the checker and the
+and `cases/brightwater-v5.json`, which are the same files the game reads, so the checker and the
 game run the same ledger and the same memo version rather than two drifting copies of one case.
 The generated block sits in `checker.html` between `BUILD:CHECKER-CASES-START` and
 `BUILD:CHECKER-CASES-END`, and it is rewritten by:

@@ -5,13 +5,14 @@ Two files hold the cases the public drill runs on.
 | File | Version | Company | Lines | Mode |
 | --- | --- | --- | --- | --- |
 | `halyard-v4.json` | halyard-v4, 13 September 2026 | Halyard Provisioning Group, Inc. | 14 | practice |
-| `brightwater-v4.json` | brightwater-v4, 13 September 2026 | Brightwater Dental Partners, PLLC | 5 | assessment |
+| `brightwater-v5.json` | brightwater-v5, 13 September 2026 | Brightwater Dental Partners, PLLC | 5 | assessment |
+| `brightwater-v4.json` | brightwater-v4, 13 September 2026 | Brightwater Dental Partners, PLLC | 5 | assessment, retired |
 | `halyard-v3.json` | halyard-v3, 13 September 2026 | Halyard Provisioning Group, Inc. | 14 | practice, retired |
 | `brightwater-v3.json` | brightwater-v3, 13 September 2026 | Brightwater Dental Partners, PLLC | 5 | assessment, retired |
 | `brightwater-v2.json` | brightwater-v2, 13 September 2026 | Brightwater Dental Partners, PLLC | 5 | practice, retired |
 
 The retired files are kept because responses were scored against them and a superseded key has to
-stay readable. The page loads the v4 pair only, and rows scored against one version are never
+stay readable. The page loads `halyard-v4` and `brightwater-v5` only, and rows scored against one version are never
 pooled with rows scored against another. Each v4 file carries a `changeLog` array recording what
 moved from v3 and why.
 
@@ -44,11 +45,17 @@ the memo sentence, the on-file facts, the key, the error type, the reveal reason
 the over-flag note where there is one. A file with `"mode": "assessment"` also carries
 `assessmentNote`, the sentence the bridge screen prints to say what is already settled.
 
-## The assessment case, brightwater-v4
+## The assessment case, brightwater-v5
 
 Round two is an independent assessment rather than more practice, so the page suppresses every
 signal that would leak correctness: no reveal between lines, no running score, no streak, and no
 track. All five verdicts arrive together on a results screen once the fifth call is in.
+
+Every entry under **On file** carries one line quoted out of a named, dated document, or says in the
+same place that the document was asked for and never arrived. Line 3 is the one to read twice: the
+orthodontic plan schedule is a real document, it is quoted, it ties to the ledger's May balance of
+$96,000, and it is dated 31 May, so it cannot carry a cause that starts in June. A document on the
+card is not the same as a document covering the period the sentence is about.
 
 Every one of the five lines tests causal evidence. Every figure in every sentence ties to the
 ledger, every direction word matches the sign of the movement, and every threshold reading in the
@@ -150,7 +157,7 @@ A card carries `n`, `icon`, `acct`, `name`, `prior`, `current`, `memo`, `file`, 
 flagged anyway, and `stillOpen` is the line a stand shows when its reasoning is provisional.
 
 `columns` was added on 13 September 2026 for `kestrel-v1`, which runs June against July.
-`halyard-v4` and `brightwater-v4` do not carry it and are read as May against June, which is what
+`halyard-v4` and `brightwater-v5` do not carry it and are read as May against June, which is what
 they have always printed.
 
 ## Cases authored from `author.html`
@@ -206,6 +213,17 @@ differences known on 13 September 2026:
 Until the sample is regenerated, label it in `CHECKER.md` as a different memo version with
 unresolved issues rather than as the same case. Do not port a clean verdict from the game to the
 checker sample without the evidence the game card rests on.
+
+## What changed in brightwater-v5
+
+Written on 13 September 2026, closing the two source-excerpt items the release review left open.
+
+| Line | Call | Change |
+| --- | --- | --- |
+| All five | unchanged | Every on-file fact carries a one-line excerpt from a named, dated document, or states that the document was requested and is not on file. The author-summarized facts are gone. |
+| Brightwater 3, orthodontic plan revenue | flag, unchanged | The wrong-period item now rests on a genuine dated document shown on the card: the orthodontic plan schedule of 31 May 2026, quoted as 96 active plans and $96,000 of monthly billing at that date, stating in its own words that it does not cover plans starting later. |
+
+No call, key, basis key, figure or memo sentence moved. The evidence a player reads is what changed.
 
 ## What changed in halyard-v4 and brightwater-v4
 
