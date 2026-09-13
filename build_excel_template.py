@@ -76,9 +76,9 @@ LOG_HEADERS = ["close period", "memo version", "line", "account", "sentence", "c
 LOG_ROWS = [
     ["June 2026, Halyard training case", "Draft 2", "6400", "Bad debt expense", "S2", "arithmetic", "fail",
      "S2 accounts for $42,000. Account 6400 moved $47,000, from $15,000 to $62,000. The difference is $5,000.",
-     "Say what the remaining $5,000 is and amend S2, or add a sentence that covers it.",
-     "Preparer amended S2 to $47,000 and named the routine monthly provision for the $5,000. Recomputed against the ledger and it ties.",
-     "yes", "K. Alkurd", "2026-07-08", "signed 2026-07-08"],
+     "State what the $5,000 above the Coastal Grocers reserve is and produce the June reserve rollforward, or amend S2 to a figure the ledger supports.",
+     "Preparer amended S2 to $47,000, which recomputes against the ledger and ties. What the $5,000 above the named Coastal Grocers reserve is has not been established and no June reserve rollforward is on file, so the ask stays open and the sentence is held back from release.",
+     "no", "K. Alkurd", "2026-07-08", "pending"],
     ["June 2026, Halyard training case", "Draft 2", "6000", "Warehouse wages", "none", "silence", "fail",
      "The account moved $72,500 and 11.5 percent, which clears both legs, and no sentence in the memo covers it.",
      "Produce a driver for warehouse wages, or confirm the line is released with no explanation and why.",

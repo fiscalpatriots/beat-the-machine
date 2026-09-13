@@ -9,9 +9,9 @@ Live at https://fiscalpatriots.github.io/beat-the-machine/ from `main`.
 
 | What | Version | Where it is stated |
 | --- | --- | --- |
-| Product | `second-pass-drill 1.3.0` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
-| Round one case | `halyard-v3`, 13 September 2026 | `cases/halyard-v3.json`, question A, the local record |
-| Round two case | `brightwater-v3`, 13 September 2026 | `cases/brightwater-v3.json`, questions A and C, the local record |
+| Product | `second-pass-drill 1.4.0` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
+| Round one case | `halyard-v4`, 13 September 2026 | `cases/halyard-v4.json`, question A, the local record |
+| Round two case | `brightwater-v4`, 13 September 2026 | `cases/brightwater-v4.json`, questions A and C, the local record |
 | Data notice | `notice-2026-09-13` | the notice screen, question A, the local record |
 
 One constant carries the product version. Change `PRODUCT_VERSION` and every surface follows,
@@ -74,15 +74,18 @@ come straight out of the responses sheet without any hand coding.
 | Measure | Where it comes from |
 | --- | --- |
 | Responses by organization | The chapter chips tapped on the second screen, posted in question A. One player may belong to more than one, so the counts sum above the response count and each is read as its own denominator. |
-| Catch rate by error type | The fourteen "Why" fields each carry the line, the account, the call, the key and the error type, so grouping on the type column gives a catch rate per type. The eight flagged lines carry `arithmetic` twice, `wrong account` twice, and `wrong direction`, `no explanation`, `invented driver` and `timing` once each; the six clean lines carry `clean line` and are the control. The card labels and the screen's six are close but not word for word the same. `no explanation` is what the screen calls silence, `wrong account` is a form of invented driver where the memo names a driver another account contradicts, and threshold is the machine test that decides which lines owe commentary at all rather than a label of its own. |
+| Decision accuracy by error type | The fourteen "Why" fields each carry the line, the account, the call, the key and the error type, so grouping on the type column gives an accuracy figure per type. In `halyard-v4` the eight flagged lines carry `arithmetic` twice, `unsupported driver` twice, and `timing`, `wrong direction`, `no explanation` and `unsupported attribution` once each; the six clean lines carry `clean line` and are the control. `no explanation` is what the screen calls silence, and threshold is the machine test that decides which lines owe commentary at all rather than a label of its own. |
+| Reason accuracy by error type | The same fourteen fields carry `Reason: agrees.` or `Reason: does not agree.` and the card's basis key, so the same grouping gives reason accuracy per type. Question B carries the two round totals beside the attempt identifier. A reason agrees when every chip the player tapped is in the card's basis key and at least one was tapped. |
 | False-flag rate | The six lines whose key is `stand` are the denominator. A `flag` call on any of them is a false flag, and question B carries the round's false flag count as well. |
-| Lap time | The clock runs from the first card to the last call and posts as whole minutes in the elapsed time question, off the clock rather than off a tap. |
-| Fresh case transfer rate | Question C (`entry.756559246`) opens with `Round2: 4/5; calls FSFSF; key FSFSF; seconds 61.` The fraction is the score on the five lines of a company the player had never seen, the two letter strings are the five calls and the five keyed answers in card order with `F` for flag and `S` for let it stand, and the seconds are the round two clock. Transfer is that fraction over the main fourteen expressed the same way, so a player at 12 of 14 and 4 of 5 reads 85.7 percent trained against 80.0 percent fresh. |
+| Elapsed time | The clock runs from the first card to the last call and posts as whole minutes in the elapsed time question. It is elapsed time on the page rather than measured active work, and it is reported under that name. |
+| Fresh case accuracy | Question C (`entry.756559246`) opens with `Round2: right call 4/5, right reason 3/5; calls FSFSF; key FSFSF; seconds 61.` The two fractions are the call and reason scores on the five lines of a company the player had never seen, the letter strings are the five calls and the five keyed answers in card order with `F` for flag and `S` for let it stand, and the seconds are the round two clock. |
 
-Read together these say which error types a reviewer catches unaided, which ones cost them time
-they did not have, how much of the work the deterministic checks could have taken off the desk
-before anybody read a sentence, and whether what a player learned on Halyard survives a company
-they have never opened.
+Read together these say which error types a reviewer agrees with the key on unaided, whether the
+basis they gave agrees with the key as well, and how a second unseen memo of five lines was
+scored. They do not establish a learning gain, a transfer effect, time saved or an error
+prevented in real work. Fourteen practice items and five different assessment items are not
+equivalent pre- and post-tests, so the fresh case is reported as a second, unseen set scored the
+same way and never as proof of transfer.
 
 ### Reading the two headline numbers off the sheet
 
@@ -96,13 +99,13 @@ chapters is counted in both. Rows filed before 12 September 2026 carry the older
 `Organisations:` spelling, so reach back with `Organi*ations:` or with the chapter name, which
 never changed.
 
-**Fresh case transfer rate.** Split question C on the semicolons. The first field after
-`Round2:` is the fresh score out of five, and `=AVERAGE()` over that column against the same
-average on the main fourteen is the transfer rate for the whole pilot. Splitting the calls string
-character by character against the key string gives a per line catch rate on the fresh case, and
-the three flagged lines there are `wrong direction`, `timing` and `arithmetic`, which lets a
-finding compare a type caught on Halyard with the same type caught cold on Brightwater. The
-seconds field is the fresh case clock, so pace on new material can be set beside the lap time.
+**Fresh case accuracy.** Split question C on the semicolons. The fields after `Round2:` are the
+call score and the reason score out of five, and `=AVERAGE()` over each column is the pilot's
+fresh-case accuracy. Splitting the calls string character by character against the key string
+gives a per line figure, and all three flagged lines in `brightwater-v4` are `unsupported
+driver`, so the fresh case reads as a causal-evidence set rather than an arithmetic one. Report
+it beside the fourteen as two separate descriptive numbers. Calling the difference between them
+transfer, learning or improvement would require a planned comparison this pilot does not run.
 
 ## The path in
 
@@ -420,18 +423,25 @@ American spelling throughout, in the file and in these notes. The organization c
 Ranks are Partner at 14, Manager at 13, Senior at 11 or 12, Staff at 9 or 10 and Trainee below
 that. The end screen leads with the reward: a trophy drawn to the rank (bronze, silver, gold,
 and a starred cup for a clean sweep) with a single rise and shine that respects
-`prefers-reduced-motion`, the rank name, the codename, the earned line, the fresh case as
-"Fresh case: 4 of 5" under that line, then one line of tabular counts reading caught, let stand
-correctly and false flags, and a second reading the lap time and the best streak, then the
-badges. Only earned badges show, at most three, as a row of medallions with the icon in ink on a
+`prefers-reduced-motion`, the rank name, the codename, the earned line reading
+"Right call 12 of 14. Right reason 9 of 14.", one line saying the rank and the badges are read
+off the call score only, the fresh case as "Fresh case: right call 4 of 5. Right reason 3 of 5."
+under that, then one line of tabular counts reading caught, let stand correctly and false flags,
+and a second reading the lap time and the best streak, then the badges. Only earned badges show, at most three, as a row of medallions with the icon in ink on a
 hairline disc and the name under it, appearing on a 150ms
 stagger that `prefers-reduced-motion` switches off. They are chosen in a fixed order so the best
 ones survive the cut: Clean sweep, Cold read, Hot lap, Nothing over-flagged, Arithmetic hawk,
-Invented driver caught, Read the silence, Right account, Timing and drift. "Cold read" is the
-one badge the fresh case can earn, at five of five on Brightwater, and it sits second because
-reading a company cold is the hardest thing the drill asks. A run that earns none prints
-one line instead. Under that sit the share line with a Copy button and a Play again button, and
-the coaching sits behind one tap below them.
+Unsupported driver caught, Read the silence, Traced the movement, Timing and drift. "Cold read"
+is the one badge the fresh case can earn, at five of five on Brightwater, and it sits second
+because reading a company cold is the hardest thing the drill asks. Every rank and every badge is
+read off the call score. The reason score never moves either, and the end screen says so in one
+line. A run that earns no badge prints one line instead. Under that sit the share line with a
+Copy button and a Play again button, and the coaching sits behind one tap below them.
+
+The coaching behind that tap has three blocks: the lines that got past you on Halyard, the lines
+that got past you on the fresh case, and "Right call, wrong reason", which names every line where
+the call agreed with the key and the basis did not, with the chips the player tapped and the
+card's basis key beside them.
 
 Play again returns to the codename screen with the codename and the chapter chips still filled
 in and the score, the streak and the clock cleared. A second run posts a fresh response through
@@ -542,6 +552,34 @@ Called: flag. Key: flag. Type: unsupported attribution. Correct.
 Split the cell on ` || ` to separate what the player said from what the page computed. The five
 fresh lines have no Why field of their own, so their basis rides at the end of question C.
 
+### The reason, scored separately from the call
+
+Since 13 September 2026 every card in `cases/` carries `basisKey`, the set of basis chips that
+are correct on that card. A chip outside that set contradicts the key for that card. A reason
+counts as right when the player tapped at least one chip in the key and no chip outside it. A
+card the key lets stand carries `the figure and reason hold` and nothing else, so `wrong account`
+on a clean line is a contradiction rather than a weak answer.
+
+The two scores never mix. The running pill shows the call score alone, as `Right 7 of 9`. The end
+screen shows both, as `Right call 12 of 14. Right reason 9 of 14.`, and the fresh case carries the
+same pair. Ranks and badges read the call score only and the end screen says so in one line. The
+coach section names every line where the call was right and the reason was not.
+
+Question B carries both round totals beside the attempt identifier. Each Why field carries
+`Reason: agrees.` or `Reason: does not agree.` and the card's basis key after the call verdict.
+The downloadable record carries `basisKey` and `reasonResult` on each of the nineteen items and
+`rightReason` beside `right` in both rounds.
+
+This exists because an independent release review completed the whole drill on 13 September 2026
+while tapping `wrong account` on every one of the nineteen lines, and the page awarded 14 of 14
+and 5 of 5. The same run now scores zero on reason.
+
+The reason score is a compatibility check on the stated basis. It is not a rubric score, it does
+not establish that a player reasoned, and a player who taps `no source on file` on every flag and
+the hold chip on every stand would score well on it without having reasoned. The three-dimension
+reasoning rubric is scored by a person outside the page, and reviewer disagreements with the key
+are retained rather than settled by it.
+
 ## Counting the organizations
 
 The intake screen asks which chapters the player belongs to, multi-select, at least one. The
@@ -572,39 +610,48 @@ else in the file depends on the form.
 
 ## The answer key and the case files
 
-Since 13 September 2026 both cases live outside the page, in `cases/halyard-v3.json` and
-`cases/brightwater-v3.json`. Each file carries the company, the threshold policy, the ledger
+Since 13 September 2026 both cases live outside the page, in `cases/halyard-v4.json` and
+`cases/brightwater-v4.json`. Each file carries the company, the threshold policy, the ledger
 rows, the memo sentences, the On file facts as verified case assumptions, the key, the error
-type, the reveal reason, the tell, and its own version and date. An assessment case also carries
-`"mode": "assessment"` and the assessment note the bridge prints. `cases/README.md` explains the
-format, the evidence on each assessment line, the differences from the checker's Halyard sample,
-and what changed in this revision.
+type, the basis key, the reveal reason, the tell, its own version and date, and a `changeLog`
+recording what moved from the version before it. An assessment case also carries
+`"mode": "assessment"` and the assessment note the bridge prints. The superseded `halyard-v3`,
+`brightwater-v3` and `brightwater-v2` files stay in the folder because responses were scored
+against them. `cases/README.md` explains the format, the basis-key contract, the evidence on each
+assessment line, what a shortcut scores on the assessment case, the differences from the
+checker's Halyard sample, and what changed in this revision.
 
 The page fetches both files at load. When the fetch fails, which is what happens when the file is
 opened from a folder rather than served, it falls back to a generated copy written into
 `index.html` between the `BUILD:CASES-START` and `BUILD:CASES-END` markers. Edit the JSON, then
 run `node build-cases.cjs` to rewrite that copy. The script refuses to write if a card points at
-an account that is not in the ledger, if a card's figures do not tie, or if a card is missing its
-key, its reason or its tell. On an assessment case it also refuses if a memo states a dollar
-figure the account does not produce, states a percent that is not the movement, uses a direction
-word against the sign, or if the case does not carry exactly one no-explanation line with an
-empty memo.
+an account that is not in the ledger, if a card's figures do not tie, if a card is missing its
+key, its reason or its tell, if a card has no basis key, if a stand carries anything but the hold
+chip, if a flag carries the hold chip, or if a key names a chip the page does not offer. On an
+assessment case it also refuses if a memo states a dollar figure the account does not produce,
+states a percent that is not the movement, uses a direction word against the sign, if a line
+carries no memo sentence, or if a line is a no-explanation line.
 
 The key is `flag` on eight of the fourteen Halyard lines and `stand` on the six clean ones; three
 of the five Brightwater lines are `flag` and two are `stand`. Anyone who reads the source can read
 the key, in the JSON as easily as in the page. That is the trade for instant feedback, and it is
 the reason to send the link and not the file.
 
-The error types are wrong direction, unsupported driver, unsupported attribution, wrong account,
-timing, arithmetic, no explanation and clean line. brightwater-v3 uses three of them:
-unsupported driver twice, no explanation once, and clean line twice. "No explanation" covers the one line where the
-memo says nothing about an account that owes commentary. "Unsupported driver" replaced "invented
-driver" on 13 September 2026, because a sentence with nothing behind it is not established from
-the supplied evidence, which is a different and smaller claim than saying it was fabricated.
+The error types are wrong direction, unsupported driver, unsupported attribution, timing,
+arithmetic, no explanation and clean line. `halyard-v4` uses all seven. `brightwater-v4` uses two
+of them, unsupported driver three times and clean line twice, because every line in an assessment
+case has to test a named cause. "No explanation" covers a line where the memo says nothing about
+an account that owes commentary, which is why it belongs in the practice case and not in the
+scored one. "Unsupported driver" replaced "invented driver" on 13 September 2026, because a
+sentence with nothing behind it is not established from the supplied evidence, which is a
+different and smaller claim than saying it was fabricated.
 
 A flag can be correct while the reason behind it is wrong. The reveals credit the call and correct
-the reasoning separately, and they ask for a bridge (billing bridge, payroll bridge, reserve
-rollforward, depot revenue bridge) rather than handing the player a derived cause.
+the reasoning separately, the page scores the two separately, and they ask for a bridge (billing
+bridge, payroll bridge, reserve rollforward, depot revenue bridge) rather than handing the player
+a derived cause. A stand can be provisional as well: Halyard 13 carries a `stillOpen` line saying
+the calculation holds and the mix cause stays a hypothesis until the category bridge is on file,
+and the reveal prints it whichever way the call went.
 
 The version and date of both cases ride into question A and into the local copy, so a response can
 always be tied to the key it was scored against. Never pool responses scored against different
@@ -612,7 +659,7 @@ case versions.
 
 ## Deploying
 
-`index.html`, `cases/halyard-v3.json` and `cases/brightwater-v3.json`. No libraries. The only
+`index.html`, `cases/halyard-v4.json` and `cases/brightwater-v4.json`. No libraries. The only
 build step is `node build-cases.cjs`, which refreshes the inline fallback inside `index.html` and
 has to be run after any edit to either case file. The only outbound request is the Figtree
 stylesheet from Google Fonts. Commit to `main` and push;
