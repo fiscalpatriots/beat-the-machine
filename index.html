@@ -1089,7 +1089,8 @@ function intro(){
     '<p>The explanations are the assistant\'s own guesswork, because the ledger doesn\'t carry any. Some of them are wrong, and they sound good enough that a busy reviewer would sign off and move on. You\'ll read fourteen lines and flag the ones that don\'t hold.</p>'+
     '<button class="btn" id="go">Play</button>'+
     '<div class="linkrow"><button class="howlink" id="howlink">How this works in a real close</button>'+
-      '<a class="howlink" href="checker.html">Checker</a></div>';
+      '<a class="howlink" href="checker.html">Checker</a>'+
+      '<a class="howlink" href="review.html">For reviewers: the entry in one page</a></div>';
   document.getElementById("go").addEventListener("click", function(){ S.started = Date.now(); go(1); });
   document.getElementById("howlink").addEventListener("click", openHow);
 }

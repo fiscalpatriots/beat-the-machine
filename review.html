@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#005239">
+<title>Second Pass: the entry in one page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* George Mason Green, George Mason Gold and the accent palette,
+     from brand.gmu.edu/brand-guide/brand-colors */
+  --mason:#005239;
+  --mason-deep:#003527;
+  --mason-gold:#ffc733;
+  --gold-line:#e0ac00;
+  --ink:#333333;
+  --ink-soft:#5a5d61;
+  --paper:#f6f3ec;
+  --card:#ffffff;
+  --line:#dfd8c9;
+  --gut:22px;
+  --shadow:0 2px 0 rgba(0,82,57,.09), 0 8px 24px rgba(0,82,57,.09);
+}
+@media (max-width:420px){:root{--gut:14px}}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;overflow-x:hidden}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font:17px/1.5 Figtree,"Open Sans","Franklin Gothic Book","Franklin Gothic",
+       -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+#page{max-width:900px;margin:0 auto;padding:0 var(--gut) 44px}
+
+#mason{background:var(--mason);color:#fff;margin:0 calc(var(--gut) * -1);
+  padding:12px var(--gut) 20px;border-bottom:3px solid var(--mason-gold)}
+#mason b{display:block;font-size:15px;font-weight:800;letter-spacing:.2px;line-height:1.2}
+#mason span{display:block;font-size:12.5px;letter-spacing:.3px;color:#dff0e4;margin-top:2px}
+#masonfoot{margin:34px calc(var(--gut) * -1) 0;padding:16px var(--gut) 4px;border-top:1px solid var(--line);
+  font-size:12.5px;line-height:1.4;color:var(--ink-soft);text-align:center}
+
+h1{font-size:32px;line-height:1.12;margin:26px 0 8px;letter-spacing:-.6px;color:var(--mason)}
+h2{font-size:22px;line-height:1.2;margin:0 0 12px;letter-spacing:-.3px;color:var(--mason)}
+h3{font-size:17px;line-height:1.25;margin:0 0 5px;letter-spacing:-.1px;color:var(--mason)}
+p{margin:0 0 14px;max-width:66ch}
+.sub{color:var(--ink-soft);font-size:16px;margin-bottom:26px}
+.tiny{font-size:13.5px;color:var(--ink-soft)}
+
+section{border-top:1px solid var(--line);padding:26px 0 6px}
+section:first-of-type{border-top:none}
+.num{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.8px;
+  text-transform:uppercase;color:var(--gold-line);margin:0 0 6px}
+
+/* the four artefacts */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:4px 0 8px}
+@media (max-width:640px){.grid{grid-template-columns:minmax(0,1fr)}}
+.artefact{background:var(--card);border:2px solid var(--line);border-radius:16px;
+  overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.shot{display:block;width:100%;height:210px;object-fit:cover;object-position:top center;
+  background:var(--paper);border-bottom:1px solid var(--line)}
+.artefact .body{padding:14px 16px 16px;display:flex;flex-direction:column;flex:1}
+.artefact p{font-size:15px;line-height:1.45;margin:0 0 14px;flex:1}
+.btn{display:block;text-align:center;text-decoration:none;
+  border:2px solid var(--mason);background:var(--mason);color:#fff;
+  border-radius:12px;padding:11px 12px;font-size:15px;font-weight:700}
+.btn:hover{background:var(--mason-deep);border-color:var(--mason-deep)}
+
+/* governance and replicability lines */
+.lines{margin:0;padding:0;list-style:none}
+.lines li{background:var(--card);border:2px solid var(--line);border-left:4px solid var(--mason);
+  border-radius:14px;padding:13px 16px;margin:0 0 10px;box-shadow:var(--shadow)}
+.lines li p{margin:0;font-size:15.5px;line-height:1.45;max-width:none}
+.lines.judge li{border-left-color:var(--gold-line)}
+
+.findings{background:#fff;border:2px dashed var(--gold-line);border-radius:14px;
+  padding:16px;margin:0 0 12px}
+.findings p{margin:0;font-size:15.5px;line-height:1.5;color:var(--ink);max-width:none}
+
+.scope li{border-left-color:var(--gold-line)}
+.scope em{display:block;font-style:normal;font-size:12px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.7px;color:var(--ink-soft);margin:0 0 3px}
+img{max-width:100%}
+</style>
+</head>
+<body>
+<div id="page">
+
+  <div id="mason"><b>George Mason University</b><span>Costello College of Business</span></div>
+
+  <h1>Second Pass: the entry in one page</h1>
+  <p class="sub">Khaled Alkurd. A checker, a protocol, an evidence log and a ten-minute drill for the review after the assistant writes the memo.</p>
+
+  <section>
+    <span class="num">One</span>
+    <h2>The problem</h2>
+    <p>At PwC Deals this summer I read management's explanations of the variances and tested them against the ledger, and the ones that read best were not always the ones that tied. In the home services company my family runs I have watched the close memo get signed at the end of a long day. An AI assistant drafts those explanations now, and they read better than what a person writes on deadline.</p>
+  </section>
+
+  <section>
+    <span class="num">Two</span>
+    <h2>What was built</h2>
+    <div class="grid">
+
+      <div class="artefact">
+        <img class="shot" src="screenshots/review/01-checker-halyard.png" alt="The Second Pass Checker with the Halyard sample run: fourteen lines checked, two arithmetic fails, one direction fail, one silent line.">
+        <div class="body">
+          <h3>The checker</h3>
+          <p>Paste in the ledger and the memo, and four checks run in the browser: every figure recomputed, every direction tested against the sign, every account over the threshold that no sentence mentions.</p>
+          <a class="btn" href="checker.html">Run the checker</a>
+        </div>
+      </div>
+
+      <div class="artefact">
+        <img class="shot" src="screenshots/review/02-game-card.png" alt="A game card: account 7400, inventory shrink adjustment, up $2,500, with nothing said about it in the commentary.">
+        <div class="body">
+          <h3>The drill</h3>
+          <p>Fourteen ledger lines, eight with a planted problem and six clean, each called against a key, and flagging all fourteen scores eight because a false flag costs what a miss costs.</p>
+          <a class="btn" href="index.html">Play the ten-minute drill</a>
+        </div>
+      </div>
+
+      <div class="artefact">
+        <img class="shot" src="screenshots/review/04-protocol-page-1.png" alt="The first page of the Second Pass Review Protocol, showing the control objective, the scope and the threshold.">
+        <div class="body">
+          <h3>The protocol</h3>
+          <p>It fixes the scope and the threshold, puts the four checks ahead of the two questions only a person answers, and names who may sign.</p>
+          <a class="btn" href="Second-Pass-Review-Protocol.pdf">Read the protocol (one page)</a>
+        </div>
+      </div>
+
+      <div class="artefact">
+        <img class="shot" src="screenshots/review/03-game-end-screen.png" alt="The end screen of the drill: rank, caught, let stand correctly, false flags, lap time and the fresh case score.">
+        <div class="body">
+          <h3>The record</h3>
+          <p>Every run records the call, the error type and the time under an organization code, and the repository holds the code and the records.</p>
+          <a class="btn" href="https://github.com/fiscalpatriots/beat-the-machine" target="_blank" rel="noopener">Code and pilot records</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <span class="num">Three</span>
+    <h2>Governance</h2>
+    <ul class="lines">
+      <li><p><b>Objective.</b> No commentary drafted with AI assistance is released until a second pass ties every figure to the ledger and a named reviewer signs the two judgment questions.</p></li>
+      <li><p><b>The four mechanical checks.</b> Recompute every figure, test every direction word against the sign, list every account clearing both legs of the threshold, and name the ones no sentence mentions.</p></li>
+    </ul>
+    <ul class="lines judge">
+      <li><p><b>The two signed questions.</b> Is the driver named in the sentence supported by a document on file, and does that driver belong to the period the sentence covers.</p></li>
+      <li><p><b>Who may not review.</b> The preparer, and anyone who prompted the assistant for this memo.</p></li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="num">Four</span>
+    <h2>Outcomes</h2>
+    <div class="findings">
+      <p>[Findings, updated when the response export is run: players by organization, catch rate by error type, false-flag rate, median lap time, fresh-case transfer rate]</p>
+    </div>
+    <p class="tiny">The figures are computed from the response sheet by the script in the repository, one row per run.</p>
+  </section>
+
+  <section>
+    <span class="num">Five</span>
+    <h2>Scope</h2>
+    <ul class="lines scope">
+      <li><em>Does</em><p>Today it runs the four mechanical checks, holds the evidence log and trains the two judgment calls.</p></li>
+      <li><em>Does not yet</em><p>It does not yet judge a driver or a timing claim, match an account loosely, or read Excel.</p></li>
+      <li><em>Next</em><p>Next is the Excel template, and the checks running on every AI memo before a reviewer reads it.</p></li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="num">Six</span>
+    <h2>Replicability</h2>
+    <ul class="lines">
+      <li><p><b>Any ledger.</b> The checker reads an account, a prior balance and a current balance, from any system.</p></li>
+      <li><p><b>Any AI tool.</b> The protocol governs the memo, not the model that drafted it.</p></li>
+      <li><p><b>Any firm.</b> The threshold is a setting, and the drill runs inside a chapter meeting.</p></li>
+    </ul>
+  </section>
+
+  <p id="masonfoot">Built by Khaled Alkurd. A drill for the AI-native accounting student.</p>
+
+</div>
+</body>
+</html>

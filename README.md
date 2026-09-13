@@ -5,6 +5,9 @@ Halyard's June close commentary, and the player is the second pass on it.
 
 Live at https://fiscalpatriots.github.io/beat-the-machine/ from `main`.
 
+**Start here for reviewers:** [review.html](review.html), the whole entry on one page, live at
+https://fiscalpatriots.github.io/beat-the-machine/review.html
+
 ## For reviewers of the AINA entry
 
 The game is the front end of a review workflow rather than a quiz. A close produces a ledger. An
