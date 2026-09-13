@@ -566,6 +566,32 @@ var E = {
         "1909355166","1698083372","384511552","834190193","1124939383","141672655","629644346"]
 };
 
+/* ---------- the receipt endpoint ----------
+   Empty until the Apps Script in receipts/Code.gs is deployed and its /exec URL is pasted
+   between these quotes. While it is empty the page behaves exactly as it always has: it posts
+   to the form and says the receiver does not confirm receipt. With a URL in it the attempt
+   record goes there first, the page shows the receipt the endpoint answers with, and the form
+   post happens afterwards either way. One constant is the whole switch. */
+var RECEIPT_ENDPOINT = "";
+
+/* The local test harness, and nothing else. With test mode on, ?receipt= and ?form= in the
+   address point the two posts at a server running on this machine, which is how the mock in
+   receipts/mock-endpoint.cjs proves the three cases without a row reaching Google. A value
+   that is not localhost is ignored, and both are ignored outright when test mode is off, so a
+   link handed to a player cannot send their attempt somewhere else. */
+function localOverride(name){
+  if(!TEST_MODE) return "";
+  var m = null;
+  try{ m = new RegExp("[?&]" + name + "=([^&]*)").exec(window.location.search); }catch(e){ return ""; }
+  if(!m) return "";
+  var url = "";
+  try{ url = decodeURIComponent(m[1]); }catch(e){ return ""; }
+  return /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?\//.test(url) ? url : "";
+}
+function receiptEndpoint(){ return localOverride("receipt") || RECEIPT_ENDPOINT; }
+function formEndpoint(){ return localOverride("form") || FORM_POST; }
+function onHarness(){ return !!(localOverride("receipt") || localOverride("form")); }
+
 /* ---------- icons ---------- */
 var I = {
   coins:'<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>',
@@ -785,6 +811,8 @@ var S = {
   r2caught:0, r2cleared:0, r2false:0, r2Start:0, r2End:0, r2Revealed:0,
   attemptId:newAttemptId(), runIndex:1, testAttempt:TEST_MODE,
   sendState:"not sent", sendAttempts:0, completedAt:0,
+  /* what the receipt endpoint answered, empty until one is set and one answers */
+  receipt:"", receiptAt:"", receiptState:"not offered",
   /* the case this run is being played on, so a reload comes back on the same one */
   casePick:"halyard"
 };
@@ -817,6 +845,7 @@ function freshRun(){
      which is what keeps a retry of one run distinct from a fresh run */
   S.attemptId = newAttemptId();
   S.sendState = "not sent"; S.sendAttempts = 0;
+  S.receipt = ""; S.receiptAt = ""; S.receiptState = "not offered";
   S.casePick = CASE_PICK;
   S.step = 0;
   sending = false;
@@ -1458,12 +1487,25 @@ var NOTICE = {
     "You can finish the whole run without sending anything. At the end you can save your own record as a file, and sending your results to the form is a separate button you do not have to press."
   ]
 };
+/* One more line, and only once a receipt endpoint is set. It names the second place a sent
+   attempt lands, because the notice has to describe what the page actually does; with the
+   constant empty there is no second place and the line does not appear. receipts/README.md
+   prints this sentence as well, so the two never drift. */
+var NOTICE_RECEIPT_LINE = "If you send your results, the same record is also stored in the " +
+  "Second Pass receipts sheet, owned by Khaled Alkurd, the same as the form responses sheet. " +
+  "That sheet answers this page with a receipt, so you can see your results were stored and " +
+  "keep the receipt in your own file.";
+function noticeItems(){
+  var items = NOTICE.items.slice();
+  if(receiptEndpoint()) items.splice(3, 0, NOTICE_RECEIPT_LINE);
+  return items;
+}
 function noticeScreen(){
   screen.innerHTML =
     whyLine("Before anything is collected, here is what this drill records and where it goes.")+
     '<h2>Before you pick a codename</h2>'+
     '<div class="notice"><h3>'+esc(NOTICE.head)+'</h3><ul>'+
-      NOTICE.items.map(function(t){ return '<li>'+esc(t)+'</li>'; }).join("")+
+      noticeItems().map(function(t){ return '<li>'+esc(t)+'</li>'; }).join("")+
     '</ul>'+
     '<p class="noticever">Notice version '+esc(NOTICE_VERSION)+', product '+esc(PRODUCT_STAMP)+'.</p></div>'+
     '<button class="btn" id="noticego">Continue</button>';
@@ -2559,6 +2601,25 @@ function attemptRecord(sentPayload){
         ? "Test mode was on. Nothing was posted and this attempt is excluded from reports."
         : "Test mode was off."
     },
+    /* ---- the receipt ----
+       A receipt is the endpoint in receipts/Code.gs saying it stored this record: the sha256
+       of the record it stored and the time it wrote the row. It is written here as well as on
+       screen, so the file the player keeps carries the same string the sheet carries and the
+       two can be matched line for line. The form gives no such confirmation and never has. */
+    receipt: {
+      endpoint: receiptEndpoint() || null,
+      receipt: S.receipt || null,
+      receiptShort: S.receipt ? S.receipt.slice(0,12) : null,
+      storedAt: S.receiptAt || null,
+      state: S.receiptState || "not offered",
+      note: S.receipt
+        ? "The endpoint stored this record and answered with this receipt, which is the sha256 " +
+          "of the record as it was stored. A second send under the same attempt id returns this " +
+          "same receipt and writes no second row."
+        : (receiptEndpoint()
+          ? "A receipt endpoint is set and it did not confirm this attempt. The state field says why."
+          : "No receipt endpoint is set in this build, so nothing confirms receipt to this page.")
+    },
     prepicks: {
       picks: (S.prepicks || []).slice(),
       skipped: !!S.prepickSkipped,
@@ -2616,10 +2677,13 @@ function attemptRecord(sentPayload){
       placeholderMode: PLACEHOLDER_MODE
     },
     payload: sentPayload || payload(),
-    payloadNote: S.testAttempt
+    payloadNote: (S.testAttempt && !onHarness())
       ? "Test mode. This is the payload the page would have sent, and it was not sent."
       : (S.sendState === "sent, not confirmed"
-        ? "This payload was posted to the form. The receiver does not confirm receipt to this page."
+        ? ("This payload was posted to the form. The form does not confirm receipt to this page. " +
+           (S.receipt
+             ? "The record above was stored by the receipt endpoint under receipt " + S.receipt.slice(0,12) + "."
+             : "Nothing else confirms it either."))
         : "This payload has not been posted.")
   };
 }
@@ -2627,16 +2691,24 @@ function recordText(){ return JSON.stringify(attemptRecord(window.__BTM_LAST_POS
 
 /* ---------- the send ----------
    Voluntary, and off entirely in test mode. A retry reuses the same attempt id, so two rows
-   under one id are one attempt sent twice and get counted once. The hidden frame's load event
-   proves the request left the page and nothing more, which is what the state says. */
+   under one id are one attempt sent twice and get counted once. The form post proves only that
+   the request left the page: the hidden frame's load event fires either way, which is why the
+   wording for a form-only send says sent and not stored.
+
+   With RECEIPT_ENDPOINT set, the record goes there first. That endpoint answers with a receipt
+   or it does not, and the form post runs afterwards in both cases, so a player whose receipt
+   fails is in exactly the position they were in before this existed and never worse. */
 var sending = false;
 function sendResults(onState){
   if(sending) return;
   var p = payload();
   window.__BTM_LAST_POST = p;
   S.sendAttempts++;
-  if(S.testAttempt){
+  /* test mode posts nothing anywhere, unless the local harness is pointing both posts at a
+     server on this machine, which is the only way the receipt path can be proven end to end */
+  if(S.testAttempt && !onHarness()){
     S.sendState = "not sent, test mode";
+    S.receiptState = "not offered, test mode";
     saveRun();
     return onState();
   }
@@ -2644,8 +2716,60 @@ function sendResults(onState){
   S.sendState = "sending";
   saveRun();
   onState();
+
+  var rcpt = receiptEndpoint();
+  if(!rcpt){
+    S.receiptState = "not offered";
+    return postToForm(formEndpoint(), p, onState);
+  }
+  postReceipt(rcpt, function(res){
+    if(res && res.ok && res.receipt){
+      S.receipt = String(res.receipt);
+      S.receiptAt = String(res.storedAt || new Date().toISOString());
+      S.receiptState = res.duplicate ? "confirmed, this attempt was already stored" : "confirmed";
+    } else {
+      S.receipt = ""; S.receiptAt = "";
+      S.receiptState = "no receipt: " + ((res && res.error) || "the endpoint did not answer");
+    }
+    saveRun();
+    postToForm(formEndpoint(), p, onState);
+  });
+}
+
+/* The record, posted as JSON, with no header set on purpose. A request with no custom headers
+   and the default content type is a simple one, and a simple one is what an Apps Script web app
+   answers across origins; adding a JSON content type would ask for a preflight it never answers. */
+function postReceipt(url, done){
+  var settled = false;
+  function finish(res){ if(settled) return; settled = true; done(res); }
+  if(typeof window.fetch !== "function"){
+    return finish({ok:false, error:"this browser cannot post the record"});
+  }
+  var body;
+  try{ body = JSON.stringify(attemptRecord(window.__BTM_LAST_POST)); }
+  catch(e){ return finish({ok:false, error:"the record could not be written out"}); }
+  var timer = setTimeout(function(){
+    finish({ok:false, error:"the endpoint did not answer within twelve seconds"});
+  }, 12000);
+  window.fetch(url, {method:"POST", body:body, redirect:"follow"})
+    .then(function(r){ return r.text(); })
+    .then(function(text){
+      clearTimeout(timer);
+      var res = null;
+      try{ res = JSON.parse(text); }catch(e){ res = null; }
+      if(res && res.ok && res.receipt) finish(res);
+      else finish({ok:false, error:(res && res.error) ? String(res.error) : "the endpoint did not confirm"});
+    })
+    .catch(function(){
+      clearTimeout(timer);
+      finish({ok:false, error:"the endpoint could not be reached"});
+    });
+}
+
+/* The form post, unchanged in what it does and now taking its address from one place. */
+function postToForm(action, p, onState){
   var f = document.createElement("form");
-  f.action = FORM_POST; f.method = "POST"; f.target = "gfsink"; f.style.display = "none";
+  f.action = action; f.method = "POST"; f.target = "gfsink"; f.style.display = "none";
   Object.keys(p).forEach(function(k){
     var inp = document.createElement("input");
     inp.type = "hidden"; inp.name = k; inp.value = p[k];
@@ -2765,7 +2889,9 @@ function actionsBlock(){
       '<button class="btn-text" id="copyrec">Copy the record</button></div>'+
     '<h3 class="sendhead">Send your results</h3>'+
     '<p>Voluntary. It posts your calls to the Google Form responses sheet described in the '+
-      'notice at the start.</p>'+
+      'notice at the start.'+
+      (receiptEndpoint() ? ' The same record goes to the receipts sheet, which answers with a '+
+        'receipt you can keep.' : '')+'</p>'+
     '<button class="btn" id="sendres">Send my results</button>'+
     '<p class="sendstate" id="sendstate"></p>'+
   '</div>';
@@ -2794,14 +2920,30 @@ function wireActions(){
   });
   var state = document.getElementById("sendstate");
   var btn = document.getElementById("sendres");
+  /* The time the endpoint says it wrote the row, in the player's own clock. If the string it
+     sent back is not a time this browser can read, it is printed as it arrived. */
+  function storedTime(iso){
+    var d = new Date(iso);
+    if(isNaN(d.getTime())) return String(iso);
+    try{ return d.toLocaleTimeString([], {hour:"numeric", minute:"2-digit", second:"2-digit"}); }
+    catch(e){ return d.toTimeString().slice(0,8); }
+  }
   function paint(){
     var s = S.sendState;
     if(s === "sending"){ btn.disabled = true; btn.textContent = "Sending"; state.textContent = "Sending."; return; }
     btn.disabled = false;
-    if(s === "sent, not confirmed"){
+    if(S.receipt && (s === "sent, not confirmed" || s === "send did not go through")){
+      btn.textContent = "Send again";
+      state.textContent = "Receipt " + S.receipt.slice(0,12) + ". Stored at " +
+        storedTime(S.receiptAt) + ". " +
+        "The receipt is in your record above, and a second send under attempt id " +
+        S.attemptId + " returns this same receipt rather than a second row.";
+    } else if(s === "sent, not confirmed"){
       btn.textContent = "Send again";
       state.textContent = "Sent. The receiver does not confirm receipt to this page. " +
-        "A second send reuses attempt id " + S.attemptId + ", so a retry cannot double count.";
+        "A second send reuses attempt id " + S.attemptId + ", so a retry cannot double count." +
+        (String(S.receiptState || "").indexOf("no receipt") === 0
+          ? " The receipt endpoint did not confirm it, so this send stands unconfirmed." : "");
     } else if(s === "send did not go through"){
       btn.textContent = "Try sending again";
       state.textContent = "The send did not go through. Nothing is lost: save your record above " +
@@ -2991,6 +3133,13 @@ function boot(){
   window.__BTM_CARDS2 = CARDS2;
   window.__BTM_RECORD = attemptRecord;
   window.__BTM_REASON = {one:reasonCount, right:reasonRightAt, key:basisKeyOf};
+  /* the receipt path, readable from outside so a check can see which endpoint is in force
+     and what the last send came back with */
+  window.__BTM_RECEIPT = function(){
+    return {endpoint:receiptEndpoint(), form:formEndpoint(), harness:onHarness(),
+            receipt:S.receipt, storedAt:S.receiptAt, state:S.receiptState,
+            sendState:S.sendState, attempt:S.attemptId};
+  };
   /* the verification hooks: the step jump and the points engine, so a run can be walked and
      a layout checked at every screen without clicking through it by hand */
   window.__BTM_GO = go;

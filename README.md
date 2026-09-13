@@ -283,6 +283,32 @@ retry. A refresh in the middle of a run keeps the id, because the whole run live
 `sessionStorage` under `btm.run.v1` and the page resumes on the screen it was left on. A send
 that was in flight when the tab reloaded comes back as not sent rather than as sent.
 
+### The receipt, once one endpoint is set
+
+`receipts/Code.gs` is a Google Apps Script web app that takes the attempt record, writes one row
+to a sheet in Khaled's Drive, and answers with a receipt: the sha256 of the record it stored and
+the time it wrote the row. The page prints the first twelve characters on screen and writes the
+whole receipt into the saved record, so the player's copy and the sheet's copy carry the same
+string.
+
+It is off until one constant in `index.html` carries the deployed URL:
+
+```js
+var RECEIPT_ENDPOINT = "";
+```
+
+While it is empty the page behaves exactly as the section above describes. With a URL in it the
+record goes to the endpoint first and to the form straight after, in that order, every time. A
+stored record reads `Receipt 4db5710dfcaa. Stored at 8:53:45 AM.` on screen; an endpoint that
+fails or times out leaves the wording above untouched and says the receipt endpoint did not
+confirm it, so a player whose receipt fails is where they were before this existed and never
+worse. Test mode posts nothing anywhere. A retry carries the same attempt id, and the endpoint
+answers a repeat with the first receipt and writes no second row.
+
+The four clicks that turn it on, the sentence the data notice gains when it is on, and the way
+`tools/findings.py` reads the receipts sheet instead of the form export are in
+[`receipts/README.md`](receipts/README.md).
+
 ## The practitioner route
 
 The organization row carries an eighth chip, "Outside Mason", after Professor. A practitioner
@@ -514,13 +540,20 @@ clean line without `over`, so the face can never come up empty.
 | Every streak step from the third correct call onward | 25 |
 | A cover story caught: a right flag on an unsupported driver or an unsupported attribution | 75 |
 
-| Rank | From |
-| --- | --- |
-| Trainee | 0 |
-| Staff | 900 |
-| Senior | 1,500 |
-| Manager | 2,000 |
-| Partner | 2,500 |
+Since 1.6.1 the ladder is a share of what the case in front of the player is worth, not a fixed
+count of points. Fourteen Halyard lines and twelve Kestrel lines cannot be worth the same run, and
+while the thresholds were absolute a perfect twelve-line run stopped at Manager. Each rank now
+starts at a share of the most that case can give: Staff at 34 percent, Senior at 57, Manager at 76
+and Partner at 95. One floor sits under that arithmetic: the Senior line is held above the
+blanket-call ceiling, the most a player can score by calling every line the same way without
+reading one of them, so a blanket call stops at Staff on any case.
+
+| Case | Lines | Most the case can give | Blanket-call ceiling | Staff | Senior | Manager | Partner |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Halyard | 14 | 2,625 | 1,450 | 893 | 1,496 | 1,995 | 2,494 |
+| Kestrel | 12 | 2,200 | 1,200 | 748 | 1,254 | 1,672 | 2,090 |
+
+A case authored in `author.html` gets its own ladder the same way, built when the case loads.
 
 Points and rank are read off the fourteen trained lines. The fresh case runs as an assessment and
 is scored on its own, because a points total that moved between those five lines would tell the
@@ -915,12 +948,13 @@ Every run below was played through the page's own handlers, click by click, in t
 | --- | --- |
 | Halyard, every call matching the key | Partner, 14 of 14 and 5 of 5, badges unchanged |
 | Halyard, flag every line | Staff, 8 of 14 and 3 of 5 |
-| Kestrel, every call matching the key | 12 of 12 and 5 of 5, Manager, `caseId` `kestrel` |
+| Kestrel, every call matching the key | 12 of 12 and 5 of 5, Partner at 2,200 of 2,200, `caseId` `kestrel` |
 | An own case authored from the Kestrel sample | 7 of 7, `caseId` `own:Kestrel IT Services:v1`, round two skipped |
 
-A perfect Kestrel run lands at Manager rather than Partner because the rank ladder reads absolute
-points and twelve lines earn fewer than fourteen. That is the ladder working as written, and it
-is the reason a rank is only ever comparable within one case.
+A perfect Kestrel run reaches Partner on twelve lines, as a perfect Halyard run does on fourteen,
+because the ladder is read as a share of what each case can give rather than as a fixed count of
+points. A rank still compares players on one case and never across two, since the cases differ in
+length and in how much of the score a blanket call can reach.
 
 No console errors on any run. No horizontal scrolling on `index.html`, `author.html` or
 `checker.html` at 320, 375, 768 or 1280, measured as `scrollWidth` against `clientWidth` at every
