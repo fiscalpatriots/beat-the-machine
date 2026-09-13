@@ -300,7 +300,7 @@
 @keyframes sweep{from{transform:translateX(0)}to{transform:translateX(130px)}}
 @media (prefers-reduced-motion:reduce){.trophy,.trophy .glint{animation:none}.trophy .glint{opacity:0}}
 /* the gold underline moved to the points numeral, which is the headline figure on this
-   screen. The rank is the word under it and carries no colour of its own. */
+   screen. The rank is the word under it and carries no color of its own. */
 .rankbig{font-size:var(--t-h2);font-weight:700;letter-spacing:-.01em;line-height:1.2;color:var(--ink)}
 .ranknote{margin:var(--s3) 0 0;font-size:var(--t-small);line-height:1.5;color:var(--ink-soft)}
 .earned{margin:var(--s4) 0 var(--s2);font-size:var(--t-lead);line-height:1.5}
@@ -713,7 +713,7 @@ function dirWord(c){ return c.current>=c.prior ? "up" : "down"; }
 /* ---------- the track. Fourteen segments, one car, a chequered flag at the end. ---------- */
 var CAR_X0 = 9, CAR_X1 = 283;
 /* fourteen segments, one per trained line. Round two runs in assessment mode, where a car
-   that moved or changed colour would tell the player how they were doing, so the whole bar
+   that moved or changed color would tell the player how they were doing, so the whole bar
    comes off the screen from the bridge to the results and the finish sits at line fourteen. */
 var SEGS = 14;
 function buildTrack(){
@@ -1166,7 +1166,7 @@ function copyText(btn, text, okLabel){
 
 /* four boxes and arrows, green and gold, sized to read on a 375 pixel phone */
 function howDiagram(){
-  /* four steps, one of them filled: the step this product is. No gold, no third colour. */
+  /* four steps, one of them filled: the step this product is. No gold, no third color. */
   var labels = ["Ledger","AI drafts the memo","Second Pass checks","Reviewer signs off"];
   var fills  = ["none","none","var(--mason)","none"];
   var texts  = ["var(--ink)","var(--ink)","#ffffff","var(--ink)"];
