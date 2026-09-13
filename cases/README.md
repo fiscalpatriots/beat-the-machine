@@ -2,15 +2,63 @@
 
 Two files hold the cases the public drill runs on.
 
-| File | Version | Company | Lines |
-| --- | --- | --- | --- |
-| `halyard-v3.json` | halyard-v3, 13 September 2026 | Halyard Provisioning Group, Inc. | 14 |
-| `brightwater-v2.json` | brightwater-v2, 13 September 2026 | Brightwater Dental Partners, PLLC | 5 |
+| File | Version | Company | Lines | Mode |
+| --- | --- | --- | --- | --- |
+| `halyard-v3.json` | halyard-v3, 13 September 2026 | Halyard Provisioning Group, Inc. | 14 | practice |
+| `brightwater-v3.json` | brightwater-v3, 13 September 2026 | Brightwater Dental Partners, PLLC | 5 | assessment |
+| `brightwater-v2.json` | brightwater-v2, 13 September 2026 | Brightwater Dental Partners, PLLC | 5 | practice, retired |
+
+`brightwater-v2.json` is kept because responses were scored against it and a superseded key has
+to stay readable. The page no longer loads it, and rows scored against v2 are never pooled with
+rows scored against v3.
 
 Each file carries the company and period, the threshold policy and a sentence on its scope, a
 note on what On file means, the ledger rows, the statement groups, and one entry per line with
 the memo sentence, the on-file facts, the key, the error type, the reveal reason, the tell, and
-the over-flag note where there is one.
+the over-flag note where there is one. A file with `"mode": "assessment"` also carries
+`assessmentNote`, the sentence the bridge screen prints to say what is already settled.
+
+## The assessment case, brightwater-v3
+
+Round two is an independent assessment rather than more practice, so the page suppresses every
+signal that would leak correctness: no reveal between lines, no running score, no streak, and no
+track. All five verdicts arrive together on a results screen once the fifth call is in.
+
+The case is built so the only thing being tested is causal evidence. Every figure in every
+sentence ties to the ledger, every direction word matches the sign of the movement, and every
+threshold reading in the memo is correct. What is left on each line is whether the cause the
+memo names is carried by something on file.
+
+| Line | Account | May | June | Change | Percent | Owes commentary | Call | Type |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 5210 Dental supplies and lab fees | $138,500 | $191,200 | +$52,700 | 38.1% | yes | Flag | unsupported driver |
+| 2 | 6110 Hygienist wages | $214,000 | $268,900 | +$54,900 | 25.7% | yes | Let it stand | clean line |
+| 3 | 4220 Orthodontic plan revenue | $96,000 | $138,400 | +$42,400 | 44.2% | yes | Flag | no explanation |
+| 4 | 4010 Patient service revenue, net | $742,000 | $803,500 | +$61,500 | 8.3% | no | Flag | unsupported driver |
+| 5 | 6610 Marketing and patient outreach | $18,400 | $24,100 | +$5,700 | 31.0% | no | Let it stand | clean line |
+
+The threshold cannot be used as a shortcut. Of the three lines that clear both legs, two are
+flags and one stands; of the two that clear neither, one is a flag and one stands. A participant
+who reasons only from the threshold scores no better than chance.
+
+The two stands are carried by a document. Line 2 has a June payroll register putting the whole
+$54,900 on the two hygienists hired for the second chair, with no other hygienist pay moving.
+Line 5 has the vendor invoice for the mailer and $18,400 of unchanged recurring spend, which
+together reconcile the whole of June's $24,100.
+
+The two unsupported drivers name a cause nothing supplied establishes. Line 1 attributes $52,700
+to a new surgical suite with no case mix report, no lab invoice summary and no implant count on
+file. Line 4 attributes $61,500 to two associate dentists with no production report by provider
+and no visit count on file.
+
+Lines 4 and 5 both say plainly on file that the threshold required no commentary and the memo
+explained the line anyway, so the question on both is the explanation rather than whether one was
+owed. That sentence appears on both, so it separates nothing except the evidence.
+
+`build-cases.cjs` enforces the assessment contract. It refuses to write if a memo states a dollar
+figure the account does not produce, states a percent that is not the movement, uses a direction
+word against the sign, or if the case does not carry exactly one no-explanation line with an
+empty memo.
 
 ## How the page reads them
 
@@ -60,6 +108,9 @@ unresolved issues rather than as the same case. Do not port a clean verdict from
 checker sample without the evidence the game card rests on.
 
 ## What changed in halyard-v3 and brightwater-v2
+
+These are the 13 September revisions that produced halyard-v3 and the retired brightwater-v2.
+brightwater-v3 replaced v2 the same day and is described above.
 
 Substance changed on six lines. The rest kept their call and tightened the reasoning.
 
