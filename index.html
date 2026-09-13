@@ -345,6 +345,33 @@ textarea{min-height:84px;resize:vertical}
 .miss b{display:block;font-size:15px}
 .miss em{display:inline-block;font-style:normal;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--machine);margin:2px 0 4px}
 .miss span{display:block;font-size:14px;color:var(--ink-soft);line-height:1.4}
+
+/* the practitioner note, reachable from the intro and from the end screen */
+.howlink{display:block;width:100%;background:none;border:none;padding:12px 0 0;
+  text-decoration:underline;font-size:15px;line-height:1.4;color:var(--ink-soft);text-align:center}
+.linkrow{display:flex;gap:20px;justify-content:center;align-items:center;flex-wrap:wrap;padding:12px 0 0}
+.linkrow .howlink{width:auto;display:inline-block;padding:0}
+.howwrap{text-align:left}
+.howwrap h2{margin:0 0 14px}
+.howwrap p{font-size:16px;line-height:1.45}
+.howdiag{display:block;width:100%;max-width:420px;height:auto;margin:0 auto 18px}
+.howlead{font-weight:700;color:var(--ink);margin:18px 0 10px}
+.howgrp{background:var(--card);border:2px solid var(--line);border-left:4px solid var(--mason);
+  border-radius:14px;padding:14px 16px;margin:0 0 12px;box-shadow:var(--shadow)}
+.howgrp.judge{border-left-color:var(--gold-line)}
+.howgrp h3{margin:0 0 6px;font-size:17px}
+.howgrp p{margin:0;font-size:15px;line-height:1.45}
+.howscope{background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  padding:14px 16px;margin:16px 0 0}
+.howscope h3{margin:0 0 6px;font-size:17px}
+.howscope p{margin:0;font-size:15px;line-height:1.45}
+.howuse{background:var(--card);border:2px solid var(--line);border-left:4px solid var(--mason-gold);
+  border-radius:14px;padding:14px 16px;margin:16px 0 0;box-shadow:var(--shadow)}
+.howuse h3{margin:0 0 6px;font-size:17px}
+.howuse p{margin:0 0 10px;font-size:15px;line-height:1.45;color:var(--ink-soft)}
+.howuse textarea{min-height:210px;font-size:14px;line-height:1.5;background:var(--paper)}
+.howuse .btn{margin-top:10px;padding:12px;font-size:16px}
+a.btn{text-decoration:none;text-align:center}
 </style>
 </head>
 <body>
@@ -846,9 +873,97 @@ function render(){
   if(s===1) return identity();
   if(s===2) return roundOne();
   if(s>=3 && s<=16) return card(s-3);
+  if(s===90) return howScreen();
   if(s===17) return submitScreen();
   if(s>=18) return done();
 }
+
+/* ---------- the practitioner note. One tap from the intro, one tap from the end. ---------- */
+/* The reviewer prompt, in the wording the Second Pass challenger prompt already uses.
+   One line per paragraph, so a paste into a chat box keeps its sentences whole. */
+var HOWPROMPT = [
+"You are a review assistant working inside a month-end close. You raise challenges. You never approve, never sign off, and you never rewrite the memo. The conclusion is mine.",
+"",
+"My threshold: a line owes commentary only when it clears both $[AMOUNT] and [PERCENT] percent. Both legs have to pass.",
+"",
+"Below this I paste a ledger, one row per account with the account number, the prior balance and the current balance, and under it the draft memo, sentence by sentence.",
+"",
+"Run these four checks first, on every sentence, before you read for meaning.",
+"",
+"1. Recompute every figure and every percent in the memo against the ledger. Variance is current less prior, and percent is variance over prior.",
+"2. Test every direction word (rose, fell, declined, improved) against the sign of that account's movement.",
+"3. List every account that clears both legs of my threshold.",
+"4. From that list, name every account no sentence in the memo mentions. That silence is itself a challenge.",
+"",
+"Then take the sentences that survive and ask two questions of each. Is the driver it names supported by anything on file, and what artefact would settle it. Is the period right, or does the amount belong to another month.",
+"",
+"Return one table and nothing else, with these columns: line, sentence, check, result, what to ask the controller."
+].join("\n");
+
+/* one copy handler, used by the prompt box */
+function copyText(btn, text, okLabel){
+  function ok(){ btn.textContent = okLabel; }
+  function fallback(){
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); ok(); }catch(e){ btn.textContent = "Select the text above"; }
+    ta.remove();
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(ok, fallback);
+  } else { fallback(); }
+}
+
+/* four boxes and arrows, green and gold, sized to read on a 375 pixel phone */
+function howDiagram(){
+  var labels = ["Ledger","AI drafts the memo","Second Pass checks","Reviewer signs off"];
+  var fills  = ["#ffffff","var(--mason)","var(--mason-gold)","var(--mason)"];
+  var strokes= ["var(--mason)","var(--mason)","var(--gold-line)","var(--mason)"];
+  var texts  = ["var(--mason)","#ffffff","#333333","#ffffff"];
+  var out = "", i, y;
+  for(i=0;i<4;i++){
+    y = i*56;
+    out += '<rect x="10" y="'+y+'" width="280" height="42" rx="10" fill="'+fills[i]+'" stroke="'+strokes[i]+'" stroke-width="2"/>'+
+           '<text x="150" y="'+(y+27)+'" text-anchor="middle" font-size="15" font-weight="700" fill="'+texts[i]+'">'+labels[i]+'</text>';
+    if(i<3){
+      out += '<path d="M150 '+(y+44)+'V'+(y+50)+'" stroke="var(--mason)" stroke-width="2" stroke-linecap="round"/>'+
+             '<path d="M144 '+(y+49)+'h12l-6 6z" fill="var(--mason)"/>';
+    }
+  }
+  return '<svg class="howdiag" viewBox="0 0 300 212" role="img" '+
+    'aria-label="Ledger, then the AI drafts the memo, then Second Pass checks it, then the reviewer signs off">'+
+    out+'</svg>';
+}
+
+function howScreen(){
+  screen.innerHTML =
+    '<div class="howwrap">'+
+      '<h2>How this works in a real close</h2>'+
+      howDiagram()+
+      '<p>Second Pass sits between the AI draft and the sign-off. The reviewer still signs, and nothing else does.</p>'+
+      '<p class="howlead">Six ways a memo fails, in two groups.</p>'+
+      '<div class="howgrp"><h3>Machine-checkable</h3>'+
+        '<p>Arithmetic, wrong direction, threshold, silence. A script tests every figure in every sentence against the ledger, and lists every line that clears both legs of the threshold with no sentence written about it.</p></div>'+
+      '<div class="howgrp judge"><h3>Reviewer judgment</h3>'+
+        '<p>Invented driver, timing. Both need the facts on file and a person who knows the business.</p></div>'+
+      '<div class="howscope"><h3>Scope</h3>'+
+        '<p>This build is a static case: fourteen lines, one month, answers keyed by hand. It does not run on a live ledger, and the checks exist as code in the repository rather than wired into this page. Next, the deterministic checks run first on every AI memo, and the reviewer\'s time goes only to the two judgment types.</p></div>'+
+      '<a class="btn" href="checker.html">Run the checker on your own ledger and memo</a>'+
+      '<div class="howuse"><h3>Use it on your own memo</h3>'+
+        '<p>Paste this into the AI tool your firm already uses, then paste your ledger and the memo under it.</p>'+
+        '<textarea id="howprompt" readonly rows="10" spellcheck="false">'+esc(HOWPROMPT)+'</textarea>'+
+        '<button class="btn ghost" id="howcopy">Copy the prompt</button></div>'+
+      '<a class="btn ghost" href="https://github.com/fiscalpatriots/second-pass" target="_blank" rel="noopener">The code and the pilot records</a>'+
+      '<button class="btn ghost" id="howback">Back</button>'+
+    '</div>';
+  document.getElementById("howcopy").addEventListener("click", function(){
+    copyText(this, HOWPROMPT, "Copied");
+  });
+  document.getElementById("howback").addEventListener("click", function(){ go(howFrom); });
+}
+var howFrom = 0;
+function openHow(){ howFrom = S.step; go(90); }
 
 function intro(){
   screen.innerHTML =
@@ -856,8 +971,11 @@ function intro(){
     '<h1>Second Pass:<br>Beat the Machine</h1>'+
     '<p>The June close commentary at Halyard wasn\'t written by a person. The controller gave an AI assistant the ledger and asked it to explain the month, and every figure it quotes is right.</p>'+
     '<p>The explanations are the assistant\'s own guesswork, because the ledger doesn\'t carry any. Some of them are wrong, and they sound good enough that a busy reviewer would sign off and move on. You\'ll read fourteen lines and flag the ones that don\'t hold.</p>'+
-    '<button class="btn" id="go">Play</button>';
+    '<button class="btn" id="go">Play</button>'+
+    '<div class="linkrow"><button class="howlink" id="howlink">How this works in a real close</button>'+
+      '<a class="howlink" href="checker.html">Checker</a></div>';
   document.getElementById("go").addEventListener("click", function(){ S.started = Date.now(); go(1); });
+  document.getElementById("howlink").addEventListener("click", openHow);
 }
 
 function identity(){
@@ -1317,7 +1435,9 @@ function done(){
           ? "See the "+miss.length+" that got past you"
           : "See the full read out")+'</button>'+
       '<div id="missbox" hidden>'+coachInner+'</div>'+
+      '<button class="howlink" id="howlink">How this works in a real close</button>'+
     '</div>';
+  document.getElementById("howlink").addEventListener("click", openHow);
   document.getElementById("step").textContent = "Done";
   document.getElementById("score").classList.add("hidden");
   /* a second run keeps the codename and the chips and posts its own row to the form */

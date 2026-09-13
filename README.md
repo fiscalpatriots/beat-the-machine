@@ -5,6 +5,55 @@ Halyard's June close commentary, and the player is the second pass on it.
 
 Live at https://fiscalpatriots.github.io/beat-the-machine/ from `main`.
 
+## For reviewers of the AINA entry
+
+The game is the front end of a review workflow rather than a quiz. A close produces a ledger. An
+AI assistant drafts the month's commentary from it. Second Pass checks that draft. A reviewer
+signs off, and only the reviewer signs off. The screen "How this works in a real close" says the
+same thing on the page, one tap from the intro screen and one tap from the end screen, with the
+flow drawn as four boxes.
+
+A memo fails in six ways, and they split into two groups that need different things.
+
+Four are machine-checkable: arithmetic, wrong direction, threshold and silence. A script
+recomputes every figure and percent in every sentence against the ledger, tests each direction
+word against the sign of the movement, lists every account that clears both legs of the
+materiality threshold, and from that list names every account no sentence mentions. None of that
+needs a person.
+
+Two are reviewer judgment: invented driver and timing. Both need the facts on file and somebody
+who knows the business, so both stay with the human.
+
+**Scope.** This build is a static case: fourteen lines, one month, answers keyed by hand. It does
+not run on a live ledger, and the checks exist as code in the repository rather than wired into
+this page. Next, the deterministic checks run first on every AI memo, and the reviewer's time
+goes only to the two judgment types.
+
+The code and the pilot records are at https://github.com/fiscalpatriots/second-pass, which is
+public: `curl -s -o /dev/null -w "%{http_code}"` returned **200** signed out on 12 September 2026,
+as did the game itself at https://fiscalpatriots.github.io/beat-the-machine/.
+
+The sibling page https://fiscalpatriots.github.io/beat-the-machine/checker.html runs the four
+deterministic checks on a ledger and a memo the visitor pastes in, and `CHECKER.md` in this
+repository documents it. It is linked from the intro screen's link row and from the top of the
+"Use it on your own memo" block.
+
+### How the game's data feeds the findings
+
+Every round posts to the Google Form described under "Where the data lands", and four measures
+come straight out of the responses sheet without any hand coding.
+
+| Measure | Where it comes from |
+| --- | --- |
+| Responses by organization | The chapter chips tapped on the second screen, posted in question A. One player may belong to more than one, so the counts sum above the response count and each is read as its own denominator. |
+| Catch rate by error type | The fourteen "Why" fields each carry the line, the account, the call, the key and the error type, so grouping on the type column gives a catch rate per type. The eight flagged lines carry `arithmetic` twice, `wrong account` twice, and `wrong direction`, `no explanation`, `invented driver` and `timing` once each; the six clean lines carry `clean line` and are the control. The card labels and the screen's six are close but not word for word the same. `no explanation` is what the screen calls silence, `wrong account` is a form of invented driver where the memo names a driver another account contradicts, and threshold is the machine test that decides which lines owe commentary at all rather than a label of its own. |
+| False-flag rate | The six lines whose key is `stand` are the denominator. A `flag` call on any of them is a false flag, and question B carries the round's false flag count as well. |
+| Lap time | The clock runs from the first card to the last call and posts as whole minutes in the elapsed time question, off the clock rather than off a tap. |
+
+Read together these say which error types a reviewer catches unaided, which ones cost them time
+they did not have, and how much of the work the deterministic checks could have taken off the
+desk before anybody read a sentence.
+
 ## The path in
 
 Three screens stand between the link and the first card.
