@@ -544,8 +544,8 @@ function brief(){
   screen.innerHTML =
     icon("glass")+
     '<h2>What you are reviewing</h2>'+
-    '<p>Halyard\'s controller gave the June ledger to an AI assistant and asked it to explain why each account moved. The arithmetic holds. The reasons are another matter: they are not in the ledger, so it wrote whatever sounded plausible. Some of that is a mistake. Some of it is a cover story.</p>'+
-    '<p>You are the second pass. Fourteen lines, one at a time: flag it or let it stand. The sentence nobody checks is where a real one hides.</p>'+
+    '<p>Halyard\'s controller handed the June ledger to an AI assistant and had it write the close commentary. The numbers it quotes are all correct, so there\'s nothing to catch there.</p>'+
+    '<p>The reasons it gives are just guesses, since nothing in a ledger says why. A few are honest errors, and a few are wrong in a way that would satisfy a reviewer and stop them checking. You\'ll read fourteen lines and flag the ones that don\'t hold up.</p>'+
     '<button class="btn" id="next">Start</button>';
   document.getElementById("next").addEventListener("click", function(){ go(2); });
 }
@@ -715,7 +715,7 @@ function reveal(i, right){
                    : (c.key==="flag" ? "That one got past you" : "You flagged a clean line");
   progress();
   var celebration = "";
-  if(right && c.key==="flag" && c.type==="invented driver") celebration = '<span class="bonus">Cover story caught</span>';
+  if(right && c.key==="flag" && c.type==="invented driver") celebration = '<span class="bonus">Invented driver caught</span>';
   var streakLine = "";
   if(right && S.streak>=3) streakLine = '<p class="streak">'+S.streak+' in a row.</p>';
   screen.innerHTML =
@@ -983,7 +983,7 @@ function badges(){
   var picked = S.round1.map(function(i){ return ROWS[i][0]; });
   var instinct = picked.some(function(code){ return flaggedAccounts().indexOf(code)>-1; });
   return [
-    {t:"Cover story caught", on: got(7) && got(10), i:"glass"},
+    {t:"Invented driver caught", on: got(7) && got(10), i:"glass"},
     {t:"Perfect timing",     on: got(2) && got(4) && got(9), i:"calendar"},
     {t:"Arithmetic hawk",    on: got(1) && got(8) && got(13), i:"scales"},
     {t:"First-pass instinct",on: instinct, i:"flag"},
