@@ -20,6 +20,7 @@
   --machine-bg:#ecebfd;
   --gold:#9a6a00;
   --gold-bg:#fdf2d8;
+  --bar-old:#cfc6b2;
   --shadow:0 2px 0 rgba(18,38,63,.08), 0 8px 24px rgba(18,38,63,.08);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -33,11 +34,11 @@ body{
 #app{max-width:520px;margin:0 auto;padding:0 18px 40px;min-height:100vh;display:flex;flex-direction:column}
 h1{font-size:30px;line-height:1.12;margin:0 0 10px;letter-spacing:-.5px}
 h2{font-size:22px;line-height:1.2;margin:0 0 10px;letter-spacing:-.3px}
+h3{font-size:19px;line-height:1.22;margin:0 0 6px;letter-spacing:-.2px}
 p{margin:0 0 14px}
 .sub{color:var(--ink-soft);font-size:16px}
 .tiny{font-size:13px;color:var(--ink-soft)}
 
-/* progress */
 #bar{position:sticky;top:0;z-index:5;background:var(--paper);padding:12px 0 8px}
 #track{height:8px;border-radius:99px;background:#e6e0d2;overflow:hidden}
 #fill{height:100%;width:0;background:var(--ink);border-radius:99px;transition:width .3s ease}
@@ -83,50 +84,67 @@ input[type=text]:focus,textarea:focus{outline:none;border-color:var(--ink)}
 textarea{min-height:84px;resize:vertical}
 
 .card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
-.acct{display:inline-block;font-weight:700;font-size:14px;letter-spacing:.3px;background:var(--machine-bg);color:var(--machine);border-radius:99px;padding:5px 12px;margin-bottom:10px}
-.nums{font-variant-numeric:tabular-nums;font-weight:700;font-size:17px;margin:0 0 12px}
-.nums .up{color:var(--reject)}
-.nums .down{color:var(--accept)}
-.quote{font-size:18px;line-height:1.4;margin:0}
+.acct{display:inline-block;font-weight:700;font-size:13px;letter-spacing:.3px;background:var(--machine-bg);color:var(--machine);border-radius:99px;padding:5px 12px;margin-bottom:10px}
+.move{font-size:16px;line-height:1.35;margin:0 0 12px}
+.chart{width:100%;height:auto;display:block;margin:0 0 14px}
 .says{display:flex;gap:8px;align-items:center;font-size:13px;font-weight:700;color:var(--machine);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
 .says svg{width:20px;height:20px;fill:none;stroke:var(--machine);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.quote{font-size:17px;line-height:1.4;margin:0}
 
-.ask{font-weight:700;font-size:15px;margin:14px 0 0;color:var(--ink-soft)}
+.file{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:14px 0 0}
+.file h4{margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:var(--ink-soft)}
+.file ul{margin:0;padding:0 0 0 16px}
+.file li{font-size:14px;line-height:1.4;margin:0 0 5px}
+.file li:last-child{margin-bottom:0}
+
+.ask{font-weight:700;font-size:15px;margin:16px 0 0;color:var(--ink-soft)}
 .two{display:flex;gap:10px;margin-top:10px}
-.two .btn{margin-top:0;flex:1;padding:18px 8px;font-size:19px}
-.btn.acc{background:var(--accept);border-color:var(--accept)}
-.btn.rej{background:var(--reject);border-color:var(--reject)}
+.two .btn{margin-top:0;flex:1;padding:17px 6px;font-size:18px}
+.btn.acc{background:var(--reject);border-color:var(--reject)}
+.btn.rej{background:var(--accept);border-color:var(--accept)}
 
 .verdict{border-radius:18px;padding:16px 18px;margin-bottom:12px;border:2px solid}
 .verdict.good{background:var(--accept-bg);border-color:var(--accept)}
 .verdict.bad{background:var(--reject-bg);border-color:var(--reject)}
 .verdict h2{margin:0 0 4px;font-size:20px}
-.verdict .call{font-weight:700}
-.bonus{display:inline-block;background:var(--gold-bg);color:var(--gold);border:2px solid var(--gold);border-radius:99px;padding:4px 12px;font-weight:700;font-size:14px;margin-top:8px}
-.why{margin:0}
-.scoreline{display:flex;gap:10px;margin:14px 0 0;font-variant-numeric:tabular-nums}
-.scorebox{flex:1;text-align:center;border:2px solid var(--line);border-radius:14px;padding:10px;background:var(--card)}
-.scorebox b{display:block;font-size:26px;line-height:1.1}
-.scorebox span{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--ink-soft)}
-.scorebox.lead{border-color:var(--ink)}
+.type{display:inline-block;background:#fff;border:2px solid var(--ink);border-radius:99px;padding:4px 12px;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.6px}
+.bonus{display:inline-block;background:var(--gold-bg);color:var(--gold);border:2px solid var(--gold);border-radius:99px;padding:4px 12px;font-weight:700;font-size:14px;margin-top:10px}
+.why{margin:0 0 4px}
+.streak{font-size:15px;font-weight:700;color:var(--gold);margin:10px 0 0}
+
+.split{margin:16px 0 0}
+.splitbar{height:12px;border-radius:99px;background:#e6e0d2;overflow:hidden;display:flex}
+.splitbar i{display:block;height:100%}
+.splitbar i.c{background:var(--ink)}
+.splitbar i.k{background:var(--accept)}
+.splitlab{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-top:6px}
+.key{display:inline-block;width:9px;height:9px;border-radius:99px;vertical-align:middle;margin-right:5px}
+.key.c{background:var(--ink)}
+.key.k{background:var(--accept)}
 
 .link{background:none;border:none;padding:8px 0;text-decoration:underline;font-size:15px;color:var(--ink-soft)}
 .hidden{display:none!important}
 
-/* numbers sheet */
 #sheet{position:fixed;inset:0;background:rgba(18,38,63,.55);z-index:20;display:flex;align-items:flex-end}
 #sheetbody{background:var(--paper);width:100%;max-height:88vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px 16px 28px;max-width:520px;margin:0 auto}
-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:13px}
-th,td{text-align:right;padding:6px 4px;border-bottom:1px solid var(--line);white-space:nowrap}
-th:first-child,td:first-child{text-align:left;white-space:normal}
-thead th{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-soft)}
+table{width:100%;table-layout:fixed;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:12px}
+th,td{text-align:right;padding:5px 2px;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left;white-space:normal;width:29%}
+thead th{font-size:10px;text-transform:uppercase;letter-spacing:.3px;color:var(--ink-soft)}
 tr.star td{background:#fdf8ea}
-.wrap{overflow-x:auto}
+.wrap{max-width:100%}
 
 .final{text-align:center}
-.big{font-size:56px;font-weight:800;line-height:1;letter-spacing:-2px;font-variant-numeric:tabular-nums}
+.big{font-size:52px;font-weight:800;line-height:1;letter-spacing:-2px;font-variant-numeric:tabular-nums}
 .rank{display:inline-block;background:var(--gold-bg);color:var(--gold);border:2px solid var(--gold);border-radius:99px;padding:6px 16px;font-weight:800;font-size:18px;margin:10px 0}
-.share{background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:14px;font-size:17px;font-weight:600}
+.share{background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:14px;font-size:16px;font-weight:600;text-align:left}
+.coach{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:16px 18px;margin:18px 0 0;text-align:left;box-shadow:var(--shadow)}
+.coach h3{margin:0 0 10px}
+.miss{border-top:1px solid var(--line);padding:10px 0 0;margin:10px 0 0}
+.miss:first-of-type{border-top:none;padding-top:0;margin-top:0}
+.miss b{display:block;font-size:15px}
+.miss em{display:inline-block;font-style:normal;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--machine);margin:2px 0 4px}
+.miss span{display:block;font-size:14px;color:var(--ink-soft);line-height:1.4}
 </style>
 </head>
 <body>
@@ -142,7 +160,7 @@ tr.star td{background:#fdf8ea}
 (function(){
 "use strict";
 
-/* ---------- Google Form wiring ---------- */
+/* ---------- Google Form wiring. Thirty eight entry ids, unchanged. ---------- */
 var FORM_POST = "https://docs.google.com/forms/d/e/1FAIpQLSfteTMPZrDKhYmRjxPKADAZERjyDntdMLIVZMH-FoIrcHusKg/formResponse";
 var E = {
   codename:"532722612", round1:"1115022539", expect:"53437742", confPre:"538678778", experience:"1421470415",
@@ -174,196 +192,343 @@ var I = {
 };
 function icon(name, big){ return '<span class="icon'+(big?' big':'')+'"><svg viewBox="0 0 24 24">'+I[name]+'</svg></span>'; }
 
-/* ---------- the numbers ---------- */
+/* ---------- the ledger ---------- */
 var ROWS = [
- ["4000","Product revenue, distribution","$5,240,000","$5,612,000","+$372,000","7.1%",0],
- ["4100","Service revenue, maintenance","$812,000","$1,041,000","+$229,000","28.2%",1],
- ["4200","Freight billed to customers","$186,000","$121,000","($65,000)","-34.9%",1],
- ["5000","Cost of product sold","$3,930,000","$4,278,000","+$348,000","8.9%",0],
- ["5100","Inbound freight","$214,000","$287,800","+$73,800","34.5%",1],
- ["6000","Warehouse wages","$630,000","$702,500","+$72,500","11.5%",1],
- ["6100","Fleet fuel","$96,400","$91,200","($5,200)","-5.4%",0],
- ["6200","Repairs and maintenance","$41,000","$118,600","+$77,600","189.3%",1],
- ["6300","Software subscriptions","$28,500","$30,100","+$1,600","5.6%",0],
- ["6400","Bad debt expense","$15,000","$62,000","+$47,000","313.3%",1],
- ["6500","Professional fees","$55,000","$47,500","($7,500)","-13.6%",0],
- ["7000","Depreciation","$128,000","$128,000","$0","0.0%",0],
- ["7100","Interest expense","$61,200","$92,400","+$31,200","51.0%",1],
- ["7400","Inventory shrink","$6,400","$8,900","+$2,500","39.1%",0]
+ ["4000","Product revenue, distribution",5240000,5612000,1],
+ ["4100","Service revenue, equipment maintenance",812000,1041000,1],
+ ["4200","Freight billed to customers",186000,121000,1],
+ ["5000","Cost of product sold",3930000,4278000,0],
+ ["5100","Inbound freight",214000,287800,1],
+ ["6000","Warehouse wages",630000,702500,1],
+ ["6100","Fleet fuel",96400,91200,0],
+ ["6200","Repairs and maintenance, depots",41000,118600,1],
+ ["6300","Software subscriptions",28500,30100,0],
+ ["6400","Bad debt expense",15000,62000,1],
+ ["6500","Professional fees",55000,47500,0],
+ ["7000","Depreciation",128000,128000,0],
+ ["7100","Interest expense",61200,92400,1],
+ ["7400","Inventory shrink adjustment",6400,8900,0]
 ];
 
-/* ---------- the fourteen cards ---------- */
+var THRESHOLD = "Commentary is owed only where a movement clears both tests, more than $25,000 and at least 10 percent of the prior balance.";
+
+/* ---------- the fourteen lines, and the key ----------
+   key "flag"  the memo's line on this account does not hold
+   key "stand" the line is clean and a careful reviewer leaves it alone
+   post        what the answer sends to the existing form, which asks C1 the
+               other way round from the rest, so card one is inverted on purpose */
 var CARDS = [
- {n:1, icon:"coins", acct:"4200 Freight billed to customers",
-  nums:'$186,000 <span class="down">to $121,000</span>',
-  says:"That fall is only $6,500 and 3.5 percent, so nothing is owed here.",
-  answer:"reject", trap:true,
-  why:"The fall is $65,000 and 34.9 percent. Both legs clear. The machine cannot subtract."},
- {n:2, icon:"wrench", acct:"6200 Repairs and maintenance",
-  nums:'$41,000 <span class="up">to $118,600</span>',
-  says:"Two sentences here cannot both be true: the roof program finished on June 30, and the rest finishes in August.",
-  answer:"accept", trap:false,
-  why:"Both cannot be true, and the answer decides whether June owes an accrual."},
- {n:3, icon:"truck", acct:"5100 Inbound freight",
-  nums:'$214,000 <span class="up">to $287,800</span>',
-  says:"The memo says inbound freight declined. It moved $73,800 the other way.",
-  answer:"accept", trap:false,
-  why:"It rose $73,800, up 34.5 percent. The memo has the direction backwards."},
- {n:4, icon:"calendar", acct:"4100 Service revenue",
-  nums:'$812,000 <span class="up">to $1,041,000</span>',
-  says:"The memo books all $84,000 of twelve month plans as June revenue. Wrong period.",
-  answer:"accept", trap:false,
-  why:"June earns one twelfth. Around $77,000 belongs in deferred revenue."},
- {n:5, icon:"brief", acct:"6500 Professional fees",
-  nums:'$55,000 <span class="down">to $47,500</span>',
-  says:"Make the controller confirm which month carried the audit fee and produce the engagement letter.",
-  answer:"reject", trap:true,
-  why:"S12 already answered it, and $7,500 does not clear the dollar leg."},
- {n:6, icon:"box", acct:"7400 Inventory shrink",
-  nums:'$6,400 <span class="up">to $8,900</span>',
-  says:"Shrink is up 39 percent and never mentioned. Pull the cycle count file.",
-  answer:"reject", trap:true,
-  why:"$2,500 fails the dollar leg. Both legs must clear, so nothing is owed."},
- {n:7, icon:"glass", acct:"4000 Product revenue",
-  nums:'$5,240,000 <span class="up">to $5,612,000</span>',
-  says:"The growth is credited to the Tri-State depot ramp with nothing attached to support it.",
-  answer:"accept", trap:false,
-  why:"No volume, no customer count, no depot split. The driver is asserted, not shown."},
- {n:8, icon:"alert", acct:"6400 Bad debt expense",
-  nums:'$15,000 <span class="up">to $62,000</span>',
-  says:"The memo says bad debt rose $42,000. That does not agree with the account.",
-  answer:"accept", trap:false,
-  why:"It rose $47,000. The memo is $5,000 light and does not tie."},
- {n:9, icon:"fuel", acct:"6100 Fleet fuel",
-  nums:'$96,400 <span class="down">to $91,200</span>',
-  says:"The memo parks $19,400 of June fuel invoices in July and calls it routine.",
-  answer:"accept", trap:false,
-  why:"A June cost belongs in June. Accrued, fuel rose instead of falling."},
- {n:10, icon:"chip", acct:"6300 Software subscriptions",
-  nums:'$28,500 <span class="up">to $30,100</span>',
-  says:"A $1,600 move gets the longest sentence in the memo. Test it against the threshold.",
-  answer:"accept", trap:false,
-  why:"It fails both legs, while $72,500 of wages gets no sentence at all."},
- {n:11, icon:"people", acct:"6000 Warehouse wages",
-  nums:'$630,000 <span class="up">to $702,500</span>',
-  says:"Wages moved $72,500 and the memo never mentions them.",
-  answer:"accept", trap:false,
-  why:"It clears both legs and carries no commentary at all."},
- {n:12, icon:"flag", acct:"4000 and 4200 together",
-  nums:'Revenue <span class="up">+$372,000</span>, freight <span class="down">($65,000)</span>',
-  says:"The growth is called customer demand, and nobody mentions the $65,000 that left freight billed.",
-  answer:"accept", trap:false,
-  why:"$65,000 moved between the two lines. A fifth of the growth is a reclass."},
- {n:13, icon:"scales", acct:"5000 Cost of product sold",
-  nums:'$3,930,000 <span class="up">to $4,278,000</span>',
-  says:"The stable margin conclusion rests on rounded figures. Recompute both months unrounded.",
-  answer:"accept", trap:false,
-  why:"May was 25.0 and June 23.8. That is a 1.2 point fall, near $69,000."},
- {n:14, icon:"bank", acct:"7100 Interest expense",
-  nums:'$61,200 <span class="up">to $92,400</span>',
-  says:"The interest rise is blamed on depot equipment that also sits in depreciation.",
-  answer:"accept", trap:false,
-  why:"Depreciation did not move, $128,000 both months. Wrong account."}
-];
-var MACHINE_MAX = 11; /* the machine got eleven of its fourteen right */
+ {n:1, icon:"coins", acct:"4200", name:"Freight billed to customers",
+  prior:186000, current:121000,
+  memo:"Freight billed to customers fell from $186,000 to $121,000, a decrease of $6,500 and 3.5 percent, so neither leg of the threshold is met and no commentary is owed on this line.",
+  file:["The ledger carries account 4200 at $186,000 in May and $121,000 in June.",
+        THRESHOLD,
+        "Inbound freight, account 5100, rose 34.5 percent in the same month."],
+  key:"flag", type:"arithmetic",
+  why:"The fall is $65,000 and 34.9 percent, so both legs clear and this line owes an explanation that the memo never gives.",
+  tell:"The subtraction is right there on the ledger. $186,000 less $121,000 is $65,000, not $6,500.",
+  post:{flag:"Reject", stand:"Accept"}},
 
-var LINES = ROWS.map(function(r){ return r[0]+" "+r[1]; });
-var MACHINE_LINES = ["4200","6200","5100","4100","6500","7400","4000","6400","6100","6300","6000","4000","5000","7100"];
+ {n:2, icon:"wrench", acct:"6200", name:"Repairs and maintenance, depots",
+  prior:41000, current:118600,
+  memo:"Depot repairs and maintenance of $118,600 reflects the roof and dock leveler program, which finished on June 30. The remaining depot repairs are scheduled to finish in August, and that spend is not yet in these numbers.",
+  file:["Sentence one of the memo puts the roof and dock leveler program as finished on June 30.",
+        "Sentence ten of the memo puts the remaining depot repairs in August, with that spend not yet in these numbers.",
+        "Halyard closes on the fifth business day of the following month.",
+        "The ledger carries account 6200 at $41,000 in May and $118,600 in June."],
+  key:"flag", type:"timing",
+  why:"One programme cannot be finished on June 30 and still have work running into August, and which version is true decides whether June owes an accrual.",
+  tell:"Two sentences in the same memo describe the same programme as finished and as unfinished.",
+  post:{flag:"Accept", stand:"Reject"}},
+
+ {n:3, icon:"truck", acct:"5100", name:"Inbound freight",
+  prior:214000, current:287800,
+  memo:"Inbound freight declined to $287,800 as carrier fuel surcharges eased.",
+  file:["The ledger carries account 5100 at $214,000 in May and $287,800 in June.",
+        "The memo gives no figure for the movement, only the closing balance.",
+        "Fleet fuel, account 6100, fell 5.4 percent over the same month."],
+  key:"flag", type:"wrong direction",
+  why:"Inbound freight rose $73,800, up 34.5 percent, so the sentence has the movement backwards and the real cause is still missing.",
+  tell:"The memo used the word declined next to a June balance that is higher than May's.",
+  post:{flag:"Accept", stand:"Reject"}},
+
+ {n:4, icon:"calendar", acct:"4100", name:"Service revenue, equipment maintenance",
+  prior:812000, current:1041000,
+  memo:"Service revenue includes $84,000 of annual maintenance plans billed in June and covering the twelve months to May 2027, all of it recognised in June.",
+  file:["The plans were billed in June and cover the twelve months to May 2027.",
+        "The whole $84,000 sits inside the $229,000 the account moved.",
+        "The ledger carries account 4100 at $812,000 in May and $1,041,000 in June."],
+  key:"flag", type:"timing",
+  why:"June earns one month of a twelve month plan, so about $7,000 belongs in June revenue and roughly $77,000 belongs in deferred revenue.",
+  tell:"A twelve month plan billed in June cannot be twelve months of revenue in June.",
+  post:{flag:"Accept", stand:"Reject"}},
+
+ {n:5, icon:"brief", acct:"6500", name:"Professional fees",
+  prior:55000, current:47500,
+  memo:"Professional fees fell $7,500 on the timing of the annual audit fee, which the prior month carried in full, and the movement fails the dollar leg of the threshold.",
+  file:["The ledger carries account 6500 at $55,000 in May and $47,500 in June.",
+        THRESHOLD,
+        "$7,500 is under the $25,000 leg, and 13.6 percent is over the percentage leg."],
+  key:"stand", type:"clean line",
+  why:"The movement fails the dollar leg, so no commentary was owed here at all, and the memo explained it anyway and got it right.",
+  tell:"Both legs have to clear before a line owes anything, and $7,500 never reaches $25,000.",
+  post:{flag:"Accept", stand:"Reject"}},
+
+ {n:6, icon:"box", acct:"7400", name:"Inventory shrink adjustment",
+  prior:6400, current:8900,
+  memo:"",
+  file:["Account 7400 does not appear anywhere in the commentary.",
+        "The ledger carries account 7400 at $6,400 in May and $8,900 in June.",
+        THRESHOLD,
+        "$2,500 is under the $25,000 leg, and 39.1 percent is over the percentage leg."],
+  key:"stand", type:"clean line",
+  why:"Thirty nine percent looks alarming until you test the dollar leg, and $2,500 does not reach $25,000, so nothing is owed on this line.",
+  tell:"A big percentage of a small balance is still a small number.",
+  post:{flag:"Accept", stand:"Reject"}},
+
+ {n:7, icon:"glass", acct:"4000", name:"Product revenue, distribution",
+  prior:5240000, current:5612000,
+  memo:"The growth in both revenue lines is driven by the Tri-State depot ramp, which management expects to continue through the third quarter.",
+  file:["The ledger carries account 4000 at $5,240,000 in May and $5,612,000 in June.",
+        "The memo cites no volume, no customer count and no split by depot behind the Tri-State claim.",
+        "Halyard runs four regional depots and the ledger is not broken out by depot."],
+  key:"flag", type:"invented driver",
+  why:"A named depot and a forecast quarter read like detail, and nothing in the file ties either of them to the $372,000.",
+  tell:"Ask what document would prove the sentence, and when the answer is nothing in the file, it is a guess wearing a fact's clothes.",
+  post:{flag:"Accept", stand:"Reject"}},
+
+ {n:8, icon:"alert", acct:"6400", name:"Bad debt expense",
+  prior:15000, current:62000,
+  memo:"Bad debt expense increased $42,000 following the reserve taken against the Coastal Grocers receivable.",
+  file:["The ledger carries account 6400 at $15,000 in May and $62,000 in June.",
+        "The memo puts the increase at $42,000 and names one customer.",
+        "No other sentence in the memo touches account 6400."],
+  key:"flag", type:"arithmetic",
+  why:"The account moved $47,000 and the memo accounts for $42,000, which leaves $5,000 with nobody's name on it.",
+  tell:"The memo handed you a number, so check it against the ledger before you read the reason attached to it.",
+  post:{flag:"Accept", stand:"Reject"}},
+
+ {n:9, icon:"fuel", acct:"6100", name:"Fleet fuel",
+  prior:96400, current:91200,
+  memo:"Two June fuel invoices from the fleet servicer totaling $19,400 arrived after the books closed and will be recorded in July.",
+  file:["The invoices are for fuel burned in June.",
+        "The ledger carries account 6100 at $96,400 in May and $91,200 in June.",
+        "Halyard closes on the fifth business day of the following month, so the invoices arrived inside the close window."],
+  key:"flag", type:"timing",
+  why:"A June cost belongs in June, and accruing the $19,400 turns a $5,200 fall into a $14,200 rise.",
+  tell:"An invoice arriving late does not move the month the cost belongs to.",
+  post:{flag:"Accept", stand:"Reject"}},
+
+ {n:10, icon:"chip", acct:"6300", name:"Software subscriptions",
+  prior:28500, current:30100,
+  memo:"Software subscriptions rose $1,600 because the inventory planning module added six seats across two depots at the contracted per seat rate, with two of those seats prorated from the middle of the month and the annual plan discount applied to the balance.",
+  file:["The ledger carries account 6300 at $28,500 in May and $30,100 in June.",
+        THRESHOLD,
+        "Warehouse wages, account 6000, moved $72,500 in the same month and carry no sentence at all."],
+  key:"flag", type:"invented driver",
+  why:"This is the longest sentence in the memo and it explains a movement that owes nothing, while the $72,500 that does owe one gets no sentence.",
+  tell:"Detail is not evidence, so look at what the memo skipped in order to make room for it.",
+  post:{flag:"Accept", stand:"Reject"}},
+
+ {n:11, icon:"people", acct:"6000", name:"Warehouse wages",
+  prior:630000, current:702500,
+  memo:"",
+  file:["Account 6000 does not appear anywhere in the commentary.",
+        "The ledger carries account 6000 at $630,000 in May and $702,500 in June.",
+        THRESHOLD,
+        "Halyard employs roughly 240 people across four depots, and the ledger gives no headcount by month."],
+  key:"flag", type:"no explanation",
+  why:"It clears both legs with room to spare and the memo is silent, so the largest unexplained movement in operating expense is the one nobody wrote a sentence about.",
+  tell:"Read the ledger for what the memo left out, not only for what it got wrong.",
+  post:{flag:"Accept", stand:"Reject"}},
+
+ {n:12, icon:"flag", acct:"4000", name:"Product revenue, distribution",
+  prior:5240000, current:5612000,
+  memo:"Distribution revenue of $5,612,000 grew 7.1 percent over May on continued customer demand across all four depots.",
+  file:["Freight billed to customers, account 4200, fell $65,000 over the same month.",
+        "Inbound freight, account 5100, rose $73,800, so freight is still being incurred.",
+        "No sentence in the memo connects the two revenue lines to each other."],
+  key:"flag", type:"wrong account",
+  why:"Freight that used to sit on its own revenue line and now sits inside the product price is a reclassification rather than demand, and the memo owes an answer on the $65,000.",
+  tell:"When one revenue line falls while a related one rises, ask whether anything moved between them.",
+  post:{flag:"Accept", stand:"Reject"}},
+
+ {n:13, icon:"scales", acct:"5000", name:"Cost of product sold",
+  prior:3930000, current:4278000,
+  memo:"Product gross margin was 24 percent in both May and June once rounded, so mix and pricing were stable.",
+  file:["Product gross margin is account 4000 less account 5000, divided by account 4000.",
+        "Account 4000 ran $5,240,000 in May and $5,612,000 in June.",
+        "Account 5000 ran $3,930,000 in May and $4,278,000 in June."],
+  key:"flag", type:"arithmetic",
+  why:"Unrounded, May was 25.0 percent and June 23.8 percent, and that 1.2 point fall is $69,000 of margin hiding behind the word stable.",
+  tell:"Rounding to whole percent on an eighty five million dollar business buries six figures, so recompute before you accept the word stable.",
+  post:{flag:"Accept", stand:"Reject"}},
+
+ {n:14, icon:"bank", acct:"7100", name:"Interest expense",
+  prior:61200, current:92400,
+  memo:"Interest expense rose $31,200 on the depot equipment additions that also sit in depreciation.",
+  file:["Depreciation, account 7000, was $128,000 in May and $128,000 in June.",
+        "The ledger carries account 7100 at $61,200 in May and $92,400 in June.",
+        "Halyard has a revolver in place and the memo does not mention it."],
+  key:"flag", type:"wrong account",
+  why:"Depreciation did not move by a dollar, so the equipment story fails its own test and a 51 percent rise in interest is still unexplained.",
+  tell:"The memo pointed at another account, so go and look at that account before you accept the sentence.",
+  post:{flag:"Accept", stand:"Reject"}}
+];
+
+var PROBLEMS = CARDS.filter(function(c){ return c.key==="flag"; }).length;   /* 12 */
+var CLEANS   = CARDS.length - PROBLEMS;                                      /* 2  */
 
 /* ---------- state ---------- */
-var S = {
-  step:0, codename:"", round1:[], expect:null, confPre:null, experience:null,
-  calls:[], whys:[], confPost:null, qa:"", qb:"", qc:"", qd:null,
-  you:0, machine:0, revealed:false, started:0
-};
-for(var i=0;i<14;i++){ S.calls.push(null); S.whys.push(""); }
+/* organisations, tapped on the way in so the pooled results can be counted by chapter */
+var ORGS = ["Beta Alpha Psi", "ACFE", "ASM", "NABA", "AAA", "GMU Student"];
 
-var TOTAL = 26;
+var S = {
+  step:0, codename:"", orgs:[], round1:[], expect:null, confPre:null, experience:null,
+  calls:[], confPost:null, qc:"", qd:null,
+  caught:0, cleared:0, streak:0, best:0, started:0
+};
+for(var i=0;i<14;i++){ S.calls.push(null); }
+
+var TOTAL = 27;
 var screen = document.getElementById("screen");
 
 function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
-function go(n){ S.step = n; S.revealed = false; render(); window.scrollTo(0,0); }
+function go(n){ S.step = n; render(); window.scrollTo(0,0); }
+function money(v){ return "$" + Math.round(Math.abs(v)).toLocaleString("en-US"); }
+function pctOf(c){ return (Math.abs(c.current-c.prior)/c.prior*100).toFixed(1); }
+function dirWord(c){ return c.current>=c.prior ? "up" : "down"; }
 
 function progress(){
   var f = document.getElementById("fill");
   f.style.width = Math.round((S.step/TOTAL)*100)+"%";
   var lab = document.getElementById("step");
   var sc = document.getElementById("score");
-  if(S.step>=6 && S.step<=19){
-    lab.textContent = "Card "+(S.step-5)+" of 14";
+  if(S.step>=8 && S.step<=21){
+    lab.textContent = "Line "+(S.step-7)+" of 14";
     sc.classList.remove("hidden");
-    sc.textContent = "You "+S.you+", Machine "+S.machine;
+    sc.textContent = S.caught+" caught, "+S.cleared+" cleared";
   } else if(S.step===0){ lab.textContent=""; sc.classList.add("hidden"); }
   else { lab.textContent = "Second Pass"; sc.classList.add("hidden"); }
 }
 
-/* ---------- numbers sheet ---------- */
+/* ---------- the ledger sheet, available while you make your own calls ---------- */
 function openSheet(){
-  var body = '<div class="wrap"><table><thead><tr><th>Account</th><th>May</th><th>June</th><th>Move</th><th>%</th></tr></thead><tbody>';
+  var body = '<div class="wrap"><table><thead><tr><th>Account</th><th>May</th><th>June</th><th>Move</th><th>Percent</th></tr></thead><tbody>';
   ROWS.forEach(function(r){
-    body += '<tr class="'+(r[6]?"star":"")+'"><td>'+r[0]+' '+esc(r[1])+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td><td>'+r[5]+'</td></tr>';
+    var d = r[3]-r[2];
+    var pc = r[2] ? (d/r[2]*100).toFixed(1) : "0.0";
+    body += '<tr class="'+(r[4]?"star":"")+'"><td>'+r[0]+' '+esc(r[1])+'</td><td>'+money(r[2])+'</td><td>'+money(r[3])+
+            '</td><td>'+(d<0?"("+money(d)+")":(d>0?"+"+money(d):"$0"))+'</td><td>'+pc+'%</td></tr>';
   });
   body += '</tbody></table></div>';
   var d = document.createElement("div");
   d.id="sheet";
-  d.innerHTML = '<div id="sheetbody"><h2>The numbers</h2><p class="tiny">Commentary is owed only above $25,000 AND 10 percent. Both, not either. Shaded rows clear both.</p>'+body+'<button class="btn" id="closesheet">Close</button></div>';
+  d.innerHTML = '<div id="sheetbody"><h2>The ledger</h2><p class="tiny">'+THRESHOLD+' Shaded rows clear both.</p>'+body+'<button class="btn" id="closesheet">Close</button></div>';
   document.body.appendChild(d);
   d.addEventListener("click", function(ev){ if(ev.target.id==="sheet"||ev.target.id==="closesheet") d.remove(); });
 }
-function sheetBtn(){ return '<button class="link" id="opensheet">See the numbers</button>'; }
-function wireSheet(){
-  var b = document.getElementById("opensheet");
-  if(b) b.addEventListener("click", openSheet);
+
+/* ---------- the two bar chart that rides on every card ---------- */
+function chart(c){
+  var max = Math.max(c.prior, c.current);
+  var wa = Math.round(200 * c.prior / max);
+  var wb = Math.round(200 * c.current / max);
+  var d = c.current - c.prior;
+  var delta = (d>=0 ? "Up " : "Down ") + money(d) + ", " + pctOf(c) + " percent";
+  return '<svg class="chart" viewBox="0 0 340 112" role="img" aria-label="'+esc(c.name+', May '+money(c.prior)+', June '+money(c.current)+', '+delta)+'">'+
+    '<text x="0" y="11" font-size="11" font-weight="700" letter-spacing="0.6" fill="var(--ink-soft)">'+esc(c.name.toUpperCase())+'</text>'+
+    '<text x="0" y="40" font-size="13" fill="var(--ink-soft)">May</text>'+
+    '<rect x="44" y="26" width="'+wa+'" height="20" rx="3" fill="var(--bar-old)"/>'+
+    '<text x="340" y="41" font-size="14" font-weight="700" text-anchor="end" fill="var(--ink-soft)">'+money(c.prior)+'</text>'+
+    '<text x="0" y="72" font-size="13" fill="var(--ink)">June</text>'+
+    '<rect x="44" y="58" width="'+wb+'" height="20" rx="3" fill="var(--ink)"/>'+
+    '<text x="340" y="73" font-size="14" font-weight="700" text-anchor="end" fill="var(--ink)">'+money(c.current)+'</text>'+
+    '<text x="0" y="103" font-size="14" font-weight="700" fill="var(--ink)">'+esc(delta)+'</text>'+
+  '</svg>';
 }
 
-/* ---------- render ---------- */
+/* ---------- screens ---------- */
 function render(){
   progress();
   var s = S.step;
   if(s===0) return title();
-  if(s===1) return codename();
-  if(s===2) return experience();
-  if(s===3) return expect();
-  if(s===4) return confPre();
-  if(s===5) return roundOne();
-  if(s>=6 && s<=19) return card(s-6);
-  if(s===20) return confPost();
-  if(s===21) return debriefA();
-  if(s===22) return debriefB();
-  if(s===23) return debriefC();
+  if(s===1) return brief();
+  if(s===2) return codename();
+  if(s===3) return orgs();
+  if(s===4) return experience();
+  if(s===5) return expect();
+  if(s===6) return confPre();
+  if(s===7) return roundOne();
+  if(s>=8 && s<=21) return card(s-8);
+  if(s===22) return confPost();
+  if(s===23) return habit();
   if(s===24) return minutes();
   if(s===25) return submitScreen();
-  if(s===26) return done();
+  if(s>=26) return done();
 }
 
 function title(){
   screen.innerHTML =
     icon("robot", true)+
     '<h1>Second Pass:<br>Beat the Machine</h1>'+
-    '<p class="sub">Ten minutes. Fourteen calls. The machine scored 11. Can you?</p>'+
+    '<p class="sub">An assistant wrote this month\'s close commentary and the balances it quotes are real. The reasons it attached to them are where the work is.</p>'+
     '<button class="btn" id="go">Play</button>'+
-    '<p class="tiny" style="margin-top:14px">Anonymous. You play under a codename. Nothing to install.</p>';
+    '<p class="tiny" style="margin-top:14px">About ten minutes on a phone. You play under a codename and nothing here identifies you.</p>';
   document.getElementById("go").addEventListener("click", function(){ S.started = Date.now(); go(1); });
+}
+
+function brief(){
+  screen.innerHTML =
+    icon("glass")+
+    '<h2>What you are reviewing</h2>'+
+    '<p>Halyard\'s controller handed the June ledger to an assistant and asked it to write the commentary that explains why each account moved. It read the balances correctly and its arithmetic on the totals holds, because adding and subtracting is the part these tools are dependable at.</p>'+
+    '<p>Where it struggles is the reason behind a movement, which is not in the ledger anywhere, so it supplies whatever sounds plausible. Some of what it wrote is an ordinary mistake and some of it has the shape of a cover story, which is a confident sentence with nothing standing behind it.</p>'+
+    '<p>You are the second pass. Fourteen accounts come at you one at a time with the numbers and whatever the memo said about them, and you either flag the line or let it stand. A fraud examiner should care because the sentence nobody checked is where a real one gets to live.</p>'+
+    '<button class="btn" id="next">Start</button>';
+  document.getElementById("next").addEventListener("click", function(){ go(2); });
 }
 
 function codename(){
   screen.innerHTML =
     icon("badge")+
     '<h2>Pick a codename</h2>'+
-    '<p class="sub">Two words. The top three get called out at the meeting.</p>'+
+    '<p class="sub">Two words you will remember. The top three get read out at the next meeting.</p>'+
     '<input type="text" id="cn" placeholder="Silver Ledger" autocomplete="off" value="'+esc(S.codename)+'">'+
     '<button class="btn" id="next" disabled>Next</button>';
   var inp = document.getElementById("cn"), nx = document.getElementById("next");
   function check(){ S.codename = inp.value.trim(); nx.disabled = S.codename.length < 2; }
   inp.addEventListener("input", check);
   inp.addEventListener("keydown", function(e){ if(e.key==="Enter" && !nx.disabled) nx.click(); });
-  nx.addEventListener("click", function(){ go(2); });
+  nx.addEventListener("click", function(){ go(3); });
   check();
+}
+
+function orgs(){
+  var html = icon("people")+'<h2>Which chapters are you in?</h2>'+
+    '<p class="sub">Tap every one that applies, because the results get counted by organisation.</p><div class="chips" id="orgs">';
+  ORGS.forEach(function(o,idx){
+    html += '<button class="chip'+(S.orgs.indexOf(o)>-1?" on":"")+'" data-i="'+idx+'">'+esc(o)+'</button>';
+  });
+  html += '</div><button class="btn" id="next" disabled>Next</button>';
+  screen.innerHTML = html;
+  var nx = document.getElementById("next");
+  function upd(){ nx.disabled = S.orgs.length===0; }
+  Array.prototype.forEach.call(screen.querySelectorAll("#orgs .chip"), function(b){
+    b.addEventListener("click", function(){
+      var o = ORGS[parseInt(b.getAttribute("data-i"),10)], at = S.orgs.indexOf(o);
+      if(at>-1){ S.orgs.splice(at,1); b.classList.remove("on"); }
+      else { S.orgs.push(o); b.classList.add("on"); }
+      upd();
+    });
+  });
+  nx.addEventListener("click", function(){ go(4); });
+  upd();
 }
 
 function pick(iconName, head, sub, options, key, next){
   var html = icon(iconName)+'<h2>'+head+'</h2>'+(sub?'<p class="sub">'+sub+'</p>':'');
-  options.forEach(function(o,idx){
+  options.forEach(function(o){
     html += '<button class="choice'+(S[key]===o.v?" on":"")+'" data-v="'+esc(o.v)+'"><span class="tick"></span><span>'+o.t+'</span></button>';
   });
   screen.innerHTML = html;
@@ -373,15 +538,15 @@ function pick(iconName, head, sub, options, key, next){
 }
 
 function experience(){
-  pick("glass","Have you worked a month-end close?","", [
+  pick("brief","Have you worked a month-end close?","", [
     {v:"Never",t:"Never"},{v:"Once or twice",t:"Once or twice"},{v:"Regularly",t:"Regularly"}
-  ], "experience", 3);
+  ], "experience", 5);
 }
 
 function expect(){
-  pick("robot","How good is the machine's memo going to be?","One tap.", [
+  pick("robot","How good do you expect the commentary to be?","One tap.", [
     {v:"1",t:"Mostly wrong"},{v:"2",t:"Shaky"},{v:"3",t:"Half and half"},{v:"4",t:"Pretty solid"},{v:"5",t:"Mostly right"}
-  ], "expect", 4);
+  ], "expect", 6);
 }
 
 function scaleChips(iconName, head, sub, key, next){
@@ -396,19 +561,19 @@ function scaleChips(iconName, head, sub, key, next){
   });
 }
 
-function confPre(){ scaleChips("flag","How much will you catch?","One tap and you are in.","confPre",5); }
-function confPost(){ scaleChips("badge","How much did you catch?","Honest guess.","confPost",21); }
+function confPre(){ scaleChips("flag","How much of it will you catch?","One tap and you are in.","confPre",7); }
+function confPost(){ scaleChips("badge","How much do you think you caught?","Your honest guess, before the answer.","confPost",23); }
 
 function roundOne(){
-  var html = icon("glass")+'<h2>Your calls first</h2>'+
-    '<p class="sub">Tap up to five lines you would make them explain.</p><div class="chips" id="lines">';
+  var html = icon("glass")+'<h2>Your own calls first</h2>'+
+    '<p class="sub">Before you read a word of the commentary, tap up to five lines you would make somebody explain.</p><div class="chips" id="lines">';
   ROWS.forEach(function(r,idx){
     var on = S.round1.indexOf(idx)>-1;
     html += '<button class="chip sm'+(on?" on":"")+'" data-i="'+idx+'">'+r[0]+' '+esc(r[1])+'</button>';
   });
-  html += '</div>'+sheetBtn()+'<button class="btn" id="next" disabled>Lock my calls</button>';
+  html += '</div><button class="link" id="opensheet">Open the full ledger</button><button class="btn" id="next" disabled>Lock my calls</button>';
   screen.innerHTML = html;
-  wireSheet();
+  document.getElementById("opensheet").addEventListener("click", openSheet);
   var nx = document.getElementById("next");
   function upd(){ nx.disabled = S.round1.length===0; nx.textContent = S.round1.length? "Lock in "+S.round1.length+" call"+(S.round1.length>1?"s":"") : "Lock my calls"; }
   Array.prototype.forEach.call(screen.querySelectorAll(".chip"), function(b){
@@ -419,126 +584,90 @@ function roundOne(){
       upd();
     });
   });
-  nx.addEventListener("click", function(){ go(6); });
+  nx.addEventListener("click", function(){ go(8); });
   upd();
 }
 
 function card(i){
   var c = CARDS[i];
+  var sentence = c.name + ", account " + c.acct + ", went from " + money(c.prior) + " in May to " +
+                 money(c.current) + " in June, " + dirWord(c) + " " + money(c.current-c.prior) +
+                 " or " + pctOf(c) + " percent.";
+  var memoBlock = c.memo
+    ? '<div class="says"><svg viewBox="0 0 24 24">'+I.robot+'</svg> What the memo says</div><p class="quote">'+esc(c.memo)+'</p>'
+    : '<div class="says"><svg viewBox="0 0 24 24">'+I.robot+'</svg> What the memo says</div><p class="quote">Nothing. Account '+c.acct+' is not mentioned anywhere in the commentary.</p>';
+  var fileBlock = '<div class="file"><h4>On file</h4><ul>'+
+      c.file.map(function(f){ return '<li>'+esc(f)+'</li>'; }).join("")+'</ul></div>';
   screen.innerHTML =
     '<div class="card">'+
       icon(c.icon)+
-      '<span class="acct">'+esc(c.acct)+'</span>'+
-      '<p class="nums">'+c.nums+'</p>'+
-      '<div class="says"><svg viewBox="0 0 24 24">'+I.robot+'</svg> The machine says</div>'+
-      '<p class="quote">'+esc(c.says)+'</p>'+
-      '<p class="ask">Does that challenge hold?</p>'+
+      '<span class="acct">Account '+c.acct+'</span>'+
+      '<p class="move">'+esc(sentence)+'</p>'+
+      chart(c)+
+      memoBlock+
+      fileBlock+
+      '<p class="ask">Does that line stand?</p>'+
       '<div class="two">'+
-        '<button class="btn acc" id="acc">Accept</button>'+
-        '<button class="btn rej" id="rej">Reject</button>'+
+        '<button class="btn acc" id="flag">Flag it</button>'+
+        '<button class="btn rej" id="stand">Let it stand</button>'+
       '</div>'+
-    '</div>'+
-    sheetBtn();
-  wireSheet();
-  document.getElementById("acc").addEventListener("click", function(){ answer(i,"Accept"); });
-  document.getElementById("rej").addEventListener("click", function(){ answer(i,"Reject"); });
+    '</div>';
+  document.getElementById("flag").addEventListener("click", function(){ answer(i,"flag"); });
+  document.getElementById("stand").addEventListener("click", function(){ answer(i,"stand"); });
 }
 
 function answer(i, val){
   var c = CARDS[i];
   S.calls[i] = val;
-  /* one point only when the player's call equals the key, and the two point
-     trap bonus only on a correct Reject of a trap. Nothing else scores. */
-  var right = (val === "Accept" && c.answer === "accept") ||
-              (val === "Reject" && c.answer === "reject");
-  var gained = 0;
+  var right = (val === c.key);
   if(right){
-    gained = 1;
-    if(c.trap && val === "Reject") gained += 2;
+    if(c.key==="flag") S.caught++; else S.cleared++;
+    S.streak++;
+    if(S.streak > S.best) S.best = S.streak;
+  } else {
+    S.streak = 0;
   }
-  S.you += gained;
-  if(!c.trap) S.machine += 1;  /* the machine banks a point only where its challenge was sound */
-  reveal(i, right, gained);
+  reveal(i, right);
 }
 
-function reveal(i, right, gained){
+function splitBar(){
+  var cw = Math.round(S.caught/14*100), kw = Math.round(S.cleared/14*100);
+  return '<div class="split"><div class="splitbar"><i class="c" style="width:'+cw+'%"></i><i class="k" style="width:'+kw+'%"></i></div>'+
+    '<div class="splitlab"><span><span class="key c"></span>'+S.caught+' of '+PROBLEMS+' problems caught</span>'+
+    '<span><span class="key k"></span>'+S.cleared+' of '+CLEANS+' clean lines cleared</span></div></div>';
+}
+
+function reveal(i, right){
   var c = CARDS[i];
-  var correctCall = c.answer === "accept" ? "Accept" : "Reject";
-  var head = right ? "Nice call" : "Not this one";
-  var lead = S.you > S.machine ? "lead" : "";
-  var mlead = S.machine > S.you ? "lead" : "";
+  var head = right ? (c.key==="flag" ? "Caught it" : "Cleared it")
+                   : (c.key==="flag" ? "That one got past you" : "You flagged a clean line");
   progress();
-  var html =
+  var celebration = "";
+  if(right && c.key==="flag" && c.type==="invented driver") celebration = '<span class="bonus">Cover story caught</span>';
+  var streakLine = "";
+  if(right && S.streak>=3) streakLine = '<p class="streak">'+S.streak+' in a row.</p>';
+  screen.innerHTML =
     '<div class="verdict '+(right?"good":"bad")+'">'+
       '<h2>'+head+'</h2>'+
-      '<p class="call" style="margin:0">The right call was '+correctCall+'.</p>'+
-      (c.trap && right ? '<span class="bonus">Trap caught, plus 2</span>' : "")+
-      (c.trap && !right ? '<span class="bonus">That one was a trap</span>' : "")+
+      '<span class="type">'+esc(c.type)+'</span>'+
+      celebration+
     '</div>'+
     '<p class="why">'+esc(c.why)+'</p>'+
-    '<div class="scoreline">'+
-      '<div class="scorebox '+lead+'"><b>'+S.you+'</b><span>You</span></div>'+
-      '<div class="scorebox '+mlead+'"><b>'+S.machine+'</b><span>Machine</span></div>'+
-    '</div>'+
-    '<button class="link" id="addwhy">Say why (optional)</button>'+
-    '<div id="whybox" class="hidden"><input type="text" id="whyin" placeholder="One line" value="'+esc(S.whys[i])+'"></div>'+
-    '<button class="btn" id="next">'+(i===13?"Finish the round":"Next card")+'</button>';
-  screen.innerHTML = html;
-  document.getElementById("addwhy").addEventListener("click", function(){
-    var wb = document.getElementById("whybox");
-    wb.classList.remove("hidden");
-    this.classList.add("hidden");
-    document.getElementById("whyin").focus();
-  });
-  document.getElementById("next").addEventListener("click", function(){
-    var w = document.getElementById("whyin");
-    if(w) S.whys[i] = w.value.trim();
-    go(S.step+1);
-  });
+    streakLine+
+    splitBar()+
+    '<button class="btn" id="next">'+(i===13?"See how you did":"Next line")+'</button>';
+  document.getElementById("next").addEventListener("click", function(){ go(S.step+1); });
   window.scrollTo(0,0);
 }
 
-function textStep(iconName, head, sub, key, placeholder, next, required, prefill){
-  if(!S[key] && prefill) S[key] = prefill;
-  screen.innerHTML =
-    icon(iconName)+'<h2>'+head+'</h2>'+(sub?'<p class="sub">'+sub+'</p>':'')+
-    '<textarea id="tx" placeholder="'+esc(placeholder)+'">'+esc(S[key])+'</textarea>'+
-    '<button class="btn" id="next"'+(required && !S[key]?" disabled":"")+'>Next</button>'+
-    (required?"":'<button class="btn ghost" id="skip">Skip</button>');
-  var tx = document.getElementById("tx"), nx = document.getElementById("next");
-  tx.addEventListener("input", function(){ S[key] = tx.value.trim(); if(required) nx.disabled = !S[key]; });
-  nx.addEventListener("click", function(){ S[key] = tx.value.trim(); go(next); });
-  var sk = document.getElementById("skip");
-  if(sk) sk.addEventListener("click", function(){ S[key] = tx.value.trim(); go(next); });
-}
-
-function myLines(){ return S.round1.map(function(i){ return ROWS[i][0]+" "+ROWS[i][1]; }); }
-
-function debriefA(){
-  var overlap = S.round1.filter(function(i){ return MACHINE_LINES.indexOf(ROWS[i][0])>-1; })
-                        .map(function(i){ return ROWS[i][0]+" "+ROWS[i][1]; });
-  var pre = overlap.length ? "The machine also raised "+overlap.join(", ")+"." : "The machine raised none of mine.";
-  textStep("badge","Which of your calls did the machine raise too?","Edit if you like.","qa","One line",22,true,pre);
-}
-
-function debriefB(){
-  var mine = S.round1.map(function(i){ return ROWS[i][0]; });
-  var missed = [];
-  CARDS.forEach(function(c,idx){
-    if(c.trap) return;
-    var code = MACHINE_LINES[idx];
-    if(mine.indexOf(code)===-1 && missed.indexOf(code)===-1) missed.push(code);
-  });
-  var names = missed.map(function(code){
-    for(var i=0;i<ROWS.length;i++){ if(ROWS[i][0]===code) return code+" "+ROWS[i][1]; }
-    return code;
-  });
-  var pre = names.length ? "I missed "+names.slice(0,4).join(", ")+"." : "I had the list covered.";
-  textStep("glass","What did it catch that you missed?","And why did you miss it? Edit the line.","qb","One or two lines",23,true,pre);
-}
-
-function debriefC(){
-  textStep("flag","One thing you will do differently?","Optional.","qc","One line",24,false,"");
+function habit(){
+  pick("flag","One thing you will do differently next time?","One tap.", [
+    {v:"Recompute every number before I read the reason",t:"Recompute every number before I read the reason"},
+    {v:"Read the sentences against each other for contradictions",t:"Read the sentences against each other"},
+    {v:"Test both legs of the threshold before I accept a line",t:"Test both legs of the threshold"},
+    {v:"Ask what document supports a named driver",t:"Ask what document supports a driver"},
+    {v:"Check the ledger for movements the memo skipped",t:"Check what the memo skipped"}
+  ], "qc", 24);
 }
 
 function minutes(){
@@ -547,16 +676,105 @@ function minutes(){
   function paint(){
     screen.innerHTML =
       icon("calendar")+'<h2>How long did that take?</h2>'+
-      '<p class="sub">Par is ten minutes. Your clock says '+mins+'.</p>'+
+      '<p class="sub">Par is ten minutes and your own clock says '+mins+'.</p>'+
       '<div class="chips"><button class="chip" id="minus">Less</button>'+
       '<span class="chip on" style="pointer-events:none">'+S.qd+(S.qd===1?" minute":" minutes")+'</span>'+
       '<button class="chip" id="plus">More</button></div>'+
-      '<button class="btn" id="next">Send it in</button>';
+      '<button class="btn" id="next">Send my calls in</button>';
     document.getElementById("minus").addEventListener("click", function(){ S.qd = Math.max(1,S.qd-1); paint(); });
     document.getElementById("plus").addEventListener("click", function(){ S.qd = S.qd+1; paint(); });
     document.getElementById("next").addEventListener("click", function(){ go(25); });
   }
   paint();
+}
+
+/* ---------- generated summaries. Nothing here is typed by the player. ---------- */
+function myLines(){ return S.round1.map(function(i){ return ROWS[i][0]+" "+ROWS[i][1]; }); }
+
+function flaggedAccounts(){
+  var out = [];
+  CARDS.forEach(function(c){ if(c.key==="flag" && out.indexOf(c.acct)===-1) out.push(c.acct); });
+  return out;
+}
+function acctName(code){
+  for(var i=0;i<ROWS.length;i++){ if(ROWS[i][0]===code) return code+" "+ROWS[i][1]; }
+  return code;
+}
+function missedCards(){
+  var out = [];
+  CARDS.forEach(function(c,idx){ if(S.calls[idx] !== c.key) out.push(c); });
+  return out;
+}
+/* The organisation taps ride at the front of question A, behind a fixed prefix, so the
+   responses sheet can be counted by chapter without a new form question. */
+function orgLine(){ return "Organisations: " + S.orgs.join("; ") + "."; }
+function summaryA(){
+  var flagged = flaggedAccounts();
+  var hit = S.round1.map(function(i){ return ROWS[i][0]; }).filter(function(code){ return flagged.indexOf(code)>-1; });
+  var tail = hit.length
+    ? "Round one picks that did carry a problem: " + hit.map(acctName).join("; ") + "."
+    : "None of my round one picks turned out to carry a problem.";
+  return orgLine() + " " + tail;
+}
+function summaryB(){
+  var miss = missedCards();
+  var parts = [];
+  parts.push(miss.length
+    ? "Lines missed: " + miss.map(function(c){ return c.n+" "+c.acct+" ("+c.type+")"; }).join("; ") + "."
+    : "No lines missed.");
+  parts.push("Pattern: " + patternLine());
+  parts.push("Result: caught " + S.caught + " of " + PROBLEMS + " problems, cleared " + S.cleared + " of " + CLEANS + " clean lines, rank " + rank() + ".");
+  var flagged = flaggedAccounts();
+  var picked = S.round1.map(function(i){ return ROWS[i][0]; });
+  var notPicked = flagged.filter(function(code){ return picked.indexOf(code)===-1; });
+  parts.push(notPicked.length
+    ? "Problem accounts I did not pick in round one: " + notPicked.map(acctName).join("; ") + "."
+    : "Round one covered every problem account.");
+  parts.push("Longest run of correct calls: " + S.best + ".");
+  return parts.join(" ");
+}
+
+function typeNoun(type, n){
+  if(type==="clean line") return n===1 ? "clean line" : "clean lines";
+  return type + (n===1 ? " problem" : " problems");
+}
+function patternLine(){
+  var tally = {};
+  CARDS.forEach(function(c,idx){
+    if(!tally[c.type]) tally[c.type] = {tot:0, miss:0};
+    tally[c.type].tot++;
+    if(S.calls[idx] !== c.key) tally[c.type].miss++;
+  });
+  var clean = [], bad = [];
+  Object.keys(tally).forEach(function(t){
+    var v = tally[t];
+    if(v.miss===0 && v.tot>=2) clean.push({t:t, tot:v.tot});
+    if(v.miss>0) bad.push({t:t, tot:v.tot, miss:v.miss});
+  });
+  if(!bad.length) return "you called all fourteen lines the way the ledger has them.";
+  bad.sort(function(a,b){ return b.miss - a.miss; });
+  var worst = bad[0];
+  var badBit;
+  if(worst.miss === worst.tot && worst.tot > 1) badBit = "all " + (worst.tot===2?"both ":worst.tot+" ") + typeNoun(worst.t, worst.tot) + " got past you";
+  else if(worst.miss === worst.tot) badBit = "the " + typeNoun(worst.t,1) + " got past you";
+  else badBit = "you missed " + worst.miss + " of the " + worst.tot + " " + typeNoun(worst.t, worst.tot);
+  if(clean.length){
+    clean.sort(function(a,b){ return b.tot - a.tot; });
+    return "you caught every " + typeNoun(clean[0].t, 1) + ", and " + badBit + ".";
+  }
+  if(bad.length > 1){
+    var second = bad[1];
+    return badBit + ", and the " + typeNoun(second.t,1) + " went the same way.";
+  }
+  return badBit + ".";
+}
+
+function rank(){
+  var right = S.caught + S.cleared;
+  if(right>=13) return "Partner";
+  if(right>=11) return "Manager";
+  if(right>=8) return "Senior";
+  return "Trainee";
 }
 
 /* ---------- payload and submit ---------- */
@@ -568,13 +786,16 @@ function payload(){
   p["entry."+E.confPre] = S.confPre;
   p["entry."+E.experience] = S.experience;
   for(var i=0;i<14;i++){
-    p["entry."+E.call[i]] = S.calls[i] || "";
-    if(S.whys[i]) p["entry."+E.why[i]] = S.whys[i];
+    var c = CARDS[i];
+    var call = S.calls[i] || "stand";
+    p["entry."+E.call[i]] = c.post[call];
+    p["entry."+E.why[i]] = "Line "+c.n+", account "+c.acct+". Called: "+call+". Key: "+c.key+
+                           ". Type: "+c.type+". "+(S.calls[i]===c.key ? "Correct." : "Missed.");
   }
   p["entry."+E.confPost] = S.confPost;
-  p["entry."+E.qa] = S.qa;
-  p["entry."+E.qb] = S.qb;
-  if(S.qc) p["entry."+E.qc] = S.qc;
+  p["entry."+E.qa] = summaryA();
+  p["entry."+E.qb] = summaryB();
+  p["entry."+E.qc] = S.qc;
   p["entry."+E.qd] = String(S.qd);
   var fbzx = String(Math.floor(Math.random()*9007199254740991));
   p["fvv"] = "1";
@@ -586,22 +807,21 @@ function payload(){
 }
 
 function asText(){
-  var out = ["Second Pass: Beat the Machine", "Codename: "+S.codename, ""];
+  var out = ["Second Pass: Beat the Machine", "Codename: "+S.codename, orgLine(), ""];
   out.push("Round one: "+myLines().join("; "));
   out.push("Expected quality: "+S.expect+" of 5");
   out.push("Confidence before: "+(S.confPre*10)+"%");
   out.push("Close experience: "+S.experience);
   out.push("");
   for(var i=0;i<14;i++){
-    out.push("C"+(i+1)+": "+S.calls[i]+(S.whys[i]?" ("+S.whys[i]+")":""));
+    out.push("Line "+(i+1)+" ("+CARDS[i].acct+"): "+S.calls[i]+", key "+CARDS[i].key+", "+CARDS[i].type);
   }
   out.push("");
   out.push("Confidence after: "+(S.confPost*10)+"%");
-  out.push("A: "+S.qa);
-  out.push("B: "+S.qb);
-  if(S.qc) out.push("C: "+S.qc);
-  out.push("D: "+S.qd+" minutes");
-  out.push("Score: you "+S.you+", machine "+MACHINE_MAX);
+  out.push(summaryA());
+  out.push(summaryB());
+  out.push("Habit: "+S.qc);
+  out.push("Minutes: "+S.qd);
   return out.join("\n");
 }
 
@@ -611,6 +831,7 @@ function submitScreen(){
   if(submitted) return;
   submitted = true;
   var p = payload();
+  window.__BTM_LAST_POST = p;
   var f = document.createElement("form");
   f.action = FORM_POST; f.method = "POST"; f.target = "gfsink"; f.style.display = "none";
   Object.keys(p).forEach(function(k){
@@ -635,7 +856,7 @@ function failScreen(){
     icon("alert",true)+
     '<h2>The send did not go through</h2>'+
     '<p class="sub">Nothing is lost. Copy this and send it to Khaled.</p>'+
-    '<textarea id="dump" style="min-height:220px">'+esc(asText())+'</textarea>'+
+    '<textarea id="dump" readonly style="min-height:220px">'+esc(asText())+'</textarea>'+
     '<button class="btn" id="copy">Copy my answers</button>'+
     '<button class="btn ghost" id="retry">Try sending again</button>';
   document.getElementById("copy").addEventListener("click", function(){
@@ -646,29 +867,34 @@ function failScreen(){
   document.getElementById("retry").addEventListener("click", function(){ submitted = false; go(25); });
 }
 
-function rank(v){
-  if(v>=18) return "Partner";
-  if(v>=13) return "Manager";
-  if(v>=8) return "Senior";
-  return "Trainee";
-}
-
 function done(){
-  var won = S.you > MACHINE_MAX;
-  var tie = S.you === MACHINE_MAX;
-  var line = won ? "I beat the machine "+S.you+" to "+MACHINE_MAX+"."
-           : tie ? "I tied the machine "+S.you+" to "+MACHINE_MAX+"."
-                 : "The machine held me "+S.you+" to "+MACHINE_MAX+".";
+  var miss = missedCards();
+  var coach;
+  if(!miss.length){
+    coach = '<div class="coach"><h3>Nothing to fix</h3><p class="tiny" style="margin:0">You called all fourteen lines the way the ledger has them, so the only thing left is to do it again on a memo you have not read yet.</p></div>';
+  } else {
+    coach = '<div class="coach"><h3>Where it got past you</h3>'+
+      miss.map(function(c){
+        return '<div class="miss"><b>Line '+c.n+', '+esc(c.name)+', account '+c.acct+'</b>'+
+               '<em>'+esc(c.type)+'</em>'+
+               '<span>'+esc(c.tell)+'</span></div>';
+      }).join("")+
+      '<p class="tiny" style="margin:14px 0 0">'+esc(patternLine().charAt(0).toUpperCase()+patternLine().slice(1))+'</p></div>';
+  }
+  var share = "I caught " + S.caught + " of the " + PROBLEMS + " problems in the machine's close memo and cleared " +
+              (S.cleared===CLEANS ? (CLEANS===2?"both":"all "+CLEANS) : S.cleared+" of the "+CLEANS) +
+              " clean lines. Second Pass: Beat the Machine.";
   screen.innerHTML =
     '<div class="final">'+
-      icon(won?"badge":"robot", true).replace('class="icon big"','class="icon big" style="margin:0 auto 14px"')+
+      icon((S.caught+S.cleared)>=11 ? "badge" : "robot", true).replace('class="icon big"','class="icon big" style="margin:0 auto 14px"')+
       '<p class="tiny" style="margin:0">'+esc(S.codename)+'</p>'+
-      '<div class="big">'+S.you+' <span style="font-size:26px;color:var(--ink-soft)">to</span> '+MACHINE_MAX+'</div>'+
-      '<p class="tiny" style="margin:6px 0 0">You against the machine</p>'+
-      '<div class="rank">'+rank(S.you)+'</div>'+
-      '<p class="share">'+esc(line)+'</p>'+
-      '<p class="sub" style="margin-top:16px">Your answers are in. Ranks and the top three codenames come at the next meeting.</p>'+
-      '<p class="tiny">Round one is scored by hand against the key, so your final rank can climb.</p>'+
+      '<div class="big">'+S.caught+'<span style="font-size:24px;color:var(--ink-soft)"> of '+PROBLEMS+'</span></div>'+
+      '<p class="sub" style="margin:8px 0 0">You caught '+S.caught+' of the '+PROBLEMS+' problems and cleared '+S.cleared+' of the '+CLEANS+' clean lines.</p>'+
+      '<div class="rank">'+rank()+'</div>'+
+      coach+
+      '<p class="share" style="margin-top:18px">'+esc(share)+'</p>'+
+      '<p class="sub" style="margin-top:16px">Your calls are in. Ranks and the top three codenames get read out at the next meeting, along with what the room caught and what it walked past.</p>'+
+      '<p class="tiny">Your own round one calls are scored by hand against the key, so your rank on the night can climb.</p>'+
     '</div>';
   document.getElementById("fill").style.width = "100%";
   document.getElementById("step").textContent = "Done";
@@ -677,6 +903,7 @@ function done(){
 
 render();
 window.__BTM = S;
+window.__BTM_CARDS = CARDS;
 })();
 </script>
 </body>
