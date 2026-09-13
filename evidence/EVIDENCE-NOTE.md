@@ -26,7 +26,7 @@ Fails are counted at figure level; review and not-checked are rows in the export
 
 Halyard changed most. Its blind draft gave a cause for all fourteen accounts, wrote commentary on seven lines below the rule, and closed with a summary paragraph naming subtotals without naming an account. All seven failures sit in that paragraph, where the checker tied the figures to 6400 and read "declined" against a rising balance. Under Prompt 1 the summary went, every reason became "no source on file", and the failures went with them.
 
-Brightwater and Kestrel barely moved, because their blind drafts had already declined to name a cause: each stated the movement, then named the document that would settle the driver. Prompt 1 raised their review counts rather than lowering them. The checker will not read "prior $96,000" or "current $138,400" as roles, so each of those figures came back unresolved and went to the queue. That is the prompt and the checker disagreeing, not the memo being wrong.
+Brightwater and Kestrel barely moved, because their blind drafts had already declined to name a cause: each stated the movement, then named the document that would settle the driver. Neither invented a fact, though the Kestrel draft did assert that only the recurring base carries into the next month, which nothing in the ledger supports. Prompt 1 raised their review counts rather than lowering them. The checker will not read "prior $96,000" or "current $138,400" as roles, so each of those figures came back unresolved and went to the queue. That is the prompt and the checker disagreeing, not the memo being wrong.
 
 ## Across the three
 
