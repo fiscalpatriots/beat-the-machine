@@ -9,7 +9,7 @@ Live at https://fiscalpatriots.github.io/beat-the-machine/ from `main`.
 
 | What | Version | Where it is stated |
 | --- | --- | --- |
-| Product | `second-pass-drill 1.4.0` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
+| Product | `second-pass-drill 1.5.0` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
 | Round one case | `halyard-v4`, 13 September 2026 | `cases/halyard-v4.json`, question A, the local record |
 | Round two case | `brightwater-v4`, 13 September 2026 | `cases/brightwater-v4.json`, questions A and C, the local record |
 | Data notice | `notice-2026-09-13` | the notice screen, question A, the local record |
@@ -111,8 +111,12 @@ transfer, learning or improvement would require a planned comparison this pilot 
 
 Four screens stand between the link and the first card.
 
-1. The opening screen, two short paragraphs. Three candidate wordings live in
-   `INTRO-CANDIDATES.md` and the one marked live there is the one in `index.html`.
+1. The opening screen, two short paragraphs and a drawn three frame strip headed "How to play,
+   in twenty seconds": read the line against the ledger and the file behind it, choose whether
+   the memo's explanation holds, lock it in and the answer key comes back with the points. The
+   frames are inline SVG in `playFrames()` and carry no text of their own, so they scale with the
+   column. Three candidate wordings for the paragraphs live in `INTRO-CANDIDATES.md` and the one
+   marked live there is the one in `index.html`.
 2. The data notice, read before anything is collected. See "The data notice" below.
 3. One screen for the codename and the chapters, on the same screen and both required.
 4. The ledger, read once as orientation, with a block under it saying what earns a flag and
@@ -121,6 +125,16 @@ Four screens stand between the link and the first card.
 
 Nothing else is asked on the way in. After the round the player is offered a local record and a
 separate voluntary send, and neither is required to finish.
+
+Every screen opens with one line in soft type saying what the player is doing and why, from the
+intro through the end screen. The drill loads the shared header and footer from `assets/nav.js`,
+the same pair `checker.html` and `review.html` load, so the three pages wear one chrome; the
+drill's own footer line under it carries the version stamp and nothing else, and three taps on it
+still toggle test mode.
+
+`screenshots/game/` holds the five verification shots at 375: a card mid-call, a right reveal, a
+wrong reveal, a level up and the end screen. They are written from the running page by a headless
+pass rather than cropped by hand, so a rebuild reproduces them.
 
 ## The data notice
 
@@ -416,8 +430,78 @@ Every card is scored. Flagging a line that was already right costs exactly what 
 problem costs, and the running count reads `Right N of M` over the cards seen so far. The split
 is eight problem lines and six clean ones, rebalanced on 12 September 2026 from the twelve and
 two the first version carried, because twelve and two let a player flag everything and score
-twelve. Neither number is ever printed for the player. Flagging all fourteen now scores eight
-and lands on Trainee.
+twelve. Neither number is ever printed for the player. Flagging all fourteen scores eight calls,
+1,150 points, and lands on Staff.
+
+### The call commits in two steps
+
+Since 13 September 2026 a tap on Flag it or Let it stand does not commit anything. It selects the
+call: the button fills, the other one dims and stays live, and the basis row opens underneath it
+with the memo, the figures and the On file facts still on screen above. A second control, **Lock
+it in**, is what commits. Until it is pressed the player can tap the other button, change chips,
+edit their line of words, or press **Back** to reopen the line before this one with its call
+uncommitted and its basis and words exactly as they left them. Nothing is scored, the car does
+not move and nothing is revealed until the lock.
+
+A committed line wears a small padlock over its segment on the track, so the player can see at a
+glance which calls are settled and which one is still theirs to change. The keyboard runs the
+same loop: `1` selects Let it stand, `2` selects Flag it, `Enter` locks, `Backspace` goes back,
+and `Escape` closes the ledger sheet.
+
+Round one is practice and reveals each call, so a line reopened with Back can be changed after
+its verdict has been seen. That is what practice is for, and the attempt record keeps the first
+call and the committed one apart on every line (`originalDecision`, `finalDecision` and
+`decisionChanged`) so a researcher can see it. The fresh case never reveals anything, so the same
+two steps there are a plain change of mind.
+
+### The reveal
+
+The verdict takes the card area for a beat. A call that agrees with the key turns the card over
+in 300ms, which `prefers-reduced-motion` serves as a fade, onto a face carrying the error type,
+the verdict word (`Caught it` or `Cleared it`), the tell in one line, and the points the line
+earned counting up. A call that does not agree gets a calm face: `It got past you` when the key
+says flag, `A false flag` when it says stand, then what was actually true in one line, the ask
+the reviewer should have made, the line saying no points and which streak ended, and one line of
+coaching from the case's tell. Both faces carry the running score and the rank bar underneath.
+There is no sound on either.
+
+The two lines the wrong face reads are `truth` and `ask` on each flag card in `cases/`, and
+`over` on each clean line. `build-cases.cjs` refuses a flag card without `truth` and `ask` and a
+clean line without `over`, so the face can never come up empty.
+
+### Points and the rank ladder
+
+| What | Points |
+| --- | --- |
+| A call that agrees with the key | 100 |
+| A basis that agrees with the key | 50 |
+| Every streak step from the third correct call onward | 25 |
+| A cover story caught: a right flag on an unsupported driver or an unsupported attribution | 75 |
+
+| Rank | From |
+| --- | --- |
+| Trainee | 0 |
+| Staff | 900 |
+| Senior | 1,500 |
+| Manager | 2,000 |
+| Partner | 2,500 |
+
+Points and rank are read off the fourteen trained lines. The fresh case runs as an assessment and
+is scored on its own, because a points total that moved between those five lines would tell the
+player how the last call went.
+
+The header carries the ladder: the rank name, the points, the points the next rank starts at, and
+a bar filling toward it. Crossing a rank flashes the bar gold once for 400ms and changes the name
+under it, and the reveal face says `New rank, Staff.` beside the points. Verified in test mode on
+13 September 2026:
+
+| Run | Right calls | Points | Rank |
+| --- | --- | --- | --- |
+| Every call and every basis agrees with the key | 14 of 14 | 2,625 | Partner |
+| Flag every line | 8 of 14 | 1,150 | Staff |
+| Let every line stand | 6 of 14 | 925 | Staff |
+| Every call against the key | 0 of 14 | 0 | Trainee |
+| Clean run with three calls changed, one of them after its reveal | 14 of 14 | 2,575 | Partner |
 
 ## Round two, the assessment
 
@@ -443,7 +527,7 @@ screen follows.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | 5210 Dental supplies and lab fees | $138,500 | $191,200 | +$52,700 | 38.1% | yes | Flag | unsupported driver |
 | 2 | 6110 Hygienist wages | $214,000 | $268,900 | +$54,900 | 25.7% | yes | Let it stand | clean line |
-| 3 | 4220 Orthodontic plan revenue | $96,000 | $138,400 | +$42,400 | 44.2% | yes | Flag | no explanation |
+| 3 | 4220 Orthodontic plan revenue | $96,000 | $138,400 | +$42,400 | 44.2% | yes | Flag | unsupported driver |
 | 4 | 4010 Patient service revenue, net | $742,000 | $803,500 | +$61,500 | 8.3% | no | Flag | unsupported driver |
 | 5 | 6610 Marketing and patient outreach | $18,400 | $24,100 | +$5,700 | 31.0% | no | Let it stand | clean line |
 
@@ -476,11 +560,12 @@ that moved or changed colour would tell the player how they were doing, so the w
 the screen from the bridge through the results and comes back on the end screen with the car at
 the finish. There
 is a car that advances one segment per card, a pit lane under the main lane and a chequered flag
-at the finish that lights once all fourteen are called. A right call gives the car a short forward burst with two speed lines behind it, a
+at the finish that lights once all fourteen are called, and a small padlock over every segment
+whose call is committed. A right call gives the car a short forward burst with two speed lines behind it, a
 wrong call drops it into the pit lane for a beat before it rejoins, and three correct calls in a
 row light a flame behind it. Streaks build in three steps: two in a row gives the car a speed
-trail, three adds the flame and a "Streak 3" line on the reveal, and five grows both and lights
-the track behind the car gold under an "On fire" line. A wrong call ends the streak, the
+trail, three adds the flame and the streak line in the points list on the reveal, and five grows both
+and lights the track behind the car gold. A wrong call ends the streak, the
 trail and the flame fade out and the car takes the pit lane dip. Every animation is 250ms or
 under, there is no sound, and everything is switched off under `prefers-reduced-motion: reduce`. The bar holds a fixed height from the first
 paint, so nothing on the page moves when the car does.
@@ -505,23 +590,28 @@ American spelling throughout, in the file and in these notes. The organization c
 
 ## The end screen
 
-Ranks are Partner at 14, Manager at 13, Senior at 11 or 12, Staff at 9 or 10 and Trainee below
-that. The end screen leads with the reward: a trophy drawn to the rank (bronze, silver, gold,
-and a starred cup for a clean sweep) with a single rise and shine that respects
-`prefers-reduced-motion`, the rank name, the codename, the earned line reading
-"Right call 12 of 14. Right reason 9 of 14.", one line saying the rank and the badges are read
-off the call score only, the fresh case as "Fresh case: right call 4 of 5. Right reason 3 of 5."
-under that, then one line of tabular counts reading caught, let stand correctly and false flags,
-and a second reading the lap time and the best streak, then the badges. Only earned badges show, at most three, as a row of medallions with the icon in ink on a
-hairline disc and the name under it, appearing on a 150ms
-stagger that `prefers-reduced-motion` switches off. They are chosen in a fixed order so the best
-ones survive the cut: Clean sweep, Cold read, Hot lap, Nothing over-flagged, Arithmetic hawk,
-Unsupported driver caught, Read the silence, Traced the movement, Timing and drift. "Cold read"
-is the one badge the fresh case can earn, at five of five on Brightwater, and it sits second
-because reading a company cold is the hardest thing the drill asks. Every rank and every badge is
-read off the call score. The reason score never moves either, and the end screen says so in one
-line. A run that earns no badge prints one line instead. Under that sit the share line with a
-Copy button and a Play again button, and the coaching sits behind one tap below them.
+The end screen runs in one order: a trophy drawn to the call score (bronze, silver, gold, and a
+starred cup for a clean sweep) with a single rise and shine that respects
+`prefers-reduced-motion`, the codename, the earned line reading "Right call 12 of 14. Right
+reason 9 of 14.", the points total as the headline numeral under the one gold underline this
+screen carries, the rank with how far short of the next one the run finished, the best streak and
+the lap time, the counts of caught, let stand correctly and false flags, the fresh case pair, the
+badges, the share card, the coaching behind one tap, the record and the send, and Play again
+last.
+
+Only earned badges show, at most three, as a row of medallions with the icon in ink on a hairline
+disc and the name under it, appearing on a 150ms stagger that `prefers-reduced-motion` switches
+off. They are chosen in a fixed order so the best ones survive the cut: Clean sweep, Cold read,
+Hot lap, Steady hand, Second thoughts, Nothing over-flagged, Arithmetic hawk, Unsupported driver
+caught, Read the silence, Traced the movement, Timing and drift. "Cold read" is the one badge the
+fresh case can earn, at five of five on Brightwater, and it sits second because reading a company
+cold is the hardest thing the drill asks. "Steady hand" is a run with no false flag on either
+case, and "Second thoughts" is a call the player changed and got right. Nothing over-flagged is
+the round one half of Steady hand, so it stands down whenever Steady hand is earned rather than
+printing the same fact twice. A run that earns no badge prints one line instead.
+
+The share card is a copyable block: the drill's name, the rank and the points, the call and
+reason scores, the fresh case, and the best streak.
 
 The coaching behind that tap has three blocks: the lines that got past you on Halyard, the lines
 that got past you on the fresh case, and "Right call, wrong reason", which names every line where
@@ -617,9 +707,11 @@ the round two string, the round two basis and the case version. Rows filed befor
 ## The basis a player gives
 
 Since 13 September 2026 every line asks for a basis between the call and the reveal. The player
-taps Flag it or Let it stand, the two buttons are replaced in place by a chip row, and the reveal
-waits until at least one chip is tapped. The memo, the figures and the On file facts stay on
-screen underneath, so nothing has to be remembered to answer.
+taps Flag it or Let it stand, the chip row opens under the two buttons, and Lock it in stays
+disabled until at least one chip is tapped. The memo, the figures and the On file facts stay on
+screen underneath, so nothing has to be remembered to answer. Switching to the other call keeps
+every chip that exists on both rows and drops the ones that do not, and the line of words is
+kept either way.
 
 The chips are: figure does not tie; direction wrong; no source on file; wrong period; wrong
 account; nothing written where owed. A let-it-stand also offers "the figure and reason hold",
