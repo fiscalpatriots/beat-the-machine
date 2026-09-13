@@ -21,8 +21,8 @@ The June close commentary at Halyard wasn't written by a person. The controller 
 assistant the ledger and asked it to explain the month, and every figure it quotes is right.
 
 The explanations are the assistant's own guesswork, because the ledger doesn't carry any.
-Enough of them are wrong in a way that would satisfy a reviewer and stop them looking further.
-You'll read fourteen lines and flag the ones that don't hold.
+Some of them are wrong, and they sound good enough that a busy reviewer would sign off and move
+on. You'll read fourteen lines and flag the ones that don't hold.
 
 ## C
 
