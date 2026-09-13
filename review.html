@@ -4,14 +4,36 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#005239">
-<title>Second Pass: the entry in one page</title>
+
+<title>Second Pass: the review after the AI draft</title>
+<meta name="description" content="A second pass on AI-drafted close commentary. A browser checker, a one-page protocol and a ten-minute drill, built at George Mason.">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Second Pass">
+<meta property="og:url" content="https://fiscalpatriots.github.io/beat-the-machine/review.html">
+<meta property="og:title" content="Second Pass: the review after the AI draft">
+<meta property="og:description" content="A second pass on AI-drafted close commentary. A browser checker, a one-page protocol and a ten-minute drill, built at George Mason.">
+<meta property="og:image" content="https://fiscalpatriots.github.io/beat-the-machine/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Second Pass, a second pass on AI-drafted close commentary, George Mason University, Costello College of Business.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Second Pass: the review after the AI draft">
+<meta name="twitter:description" content="A second pass on AI-drafted close commentary. A browser checker, a one-page protocol and a ten-minute drill, built at George Mason.">
+<meta name="twitter:image" content="https://fiscalpatriots.github.io/beat-the-machine/assets/og-image.png">
+
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/second-pass.css">
+<script src="assets/nav.js" defer></script>
 <style>
 /* This page layers on assets/second-pass.css and repeats its tokens so the
-   page still stands if the sheet is missing. Contrast on #f6f3ec:
+   page still stands if the sheet is missing. The header and the footer come
+   from assets/nav.js, which every page loads. Contrast on #f6f3ec:
    ink #1a1a1a 15.4:1, green #005239 8.4:1, soft ink #5f6366 5.3:1.
    Gold #ffc733 is the masthead rule alone; the numerals take the deeper
    #e0ac00 so they carry on paper. */
@@ -20,10 +42,12 @@
   --mason:#005239;--mason-deep:#003527;--gold:#ffc733;--gold-ink:#e0ac00;
   --red:#a33a1c;--rule:#d9d3c5;--rule-strong:#b9b2a1;
   --radius:12px;--shadow:0 1px 2px rgba(26,26,26,.05),0 10px 24px rgba(26,26,26,.06);
-  --face:Figtree,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --face:Figtree,"Open Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Courier New",monospace;
   --gut:24px;
 }
 @media (max-width:520px){:root{--gut:20px}}
+@media (max-width:360px){:root{--gut:14px}}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;max-width:100%;overflow-x:hidden}
 body{background:var(--paper);color:var(--ink);font:18px/1.55 var(--face);-webkit-font-smoothing:antialiased}
@@ -31,15 +55,15 @@ img{max-width:100%}
 svg text{font-family:var(--face)}
 a{color:var(--mason);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.16em}
 a:hover{color:var(--mason-deep);text-decoration-thickness:2px}
-#page{max-width:1048px;margin:0 auto;padding:0 var(--gut) 64px}
+#page{max-width:1048px;margin:0 auto;padding:0 var(--gut) 8px}
 
 /* masthead */
-.masthead{padding:34px 0 0}
+.masthead{padding:30px 0 0}
 .masthead .inst{font-size:13px;letter-spacing:.11em;text-transform:uppercase;font-weight:600;color:var(--mason)}
 .masthead .coll{font-size:13px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-soft);margin-top:3px}
 .masthead hr{border:0;border-top:3px solid var(--gold);margin:16px 0 0}
 
-.titleblock{padding:28px 0 26px;max-width:720px}
+.titleblock{padding:28px 0 22px;max-width:720px}
 .byline{margin:0 0 10px;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
 h1{margin:0;font-size:42px;line-height:1.12;letter-spacing:-.02em;color:var(--mason);font-weight:700}
 .standfirst{margin:12px 0 0;font-size:20px;line-height:1.5}
@@ -49,28 +73,48 @@ h1{margin:0;font-size:42px;line-height:1.12;letter-spacing:-.02em;color:var(--ma
 .fig{border:1px solid var(--rule);border-radius:var(--radius);background:var(--card);padding:18px;margin:0 0 16px}
 .fig>svg{display:block;width:100%;height:auto}
 .cap{margin:12px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink-soft)}
-.hero{margin:0 0 14px;padding:22px}
+.hero{margin:0;padding:24px 26px}
 .fig>svg.wide{display:block}.fig>svg.narrow{display:none}
-@media (max-width:720px){.fig>svg.wide{display:none}.fig>svg.narrow{display:block}}
+@media (max-width:720px){.fig>svg.wide{display:none}.fig>svg.narrow{display:block}
+  .hero{padding:20px}}
 
-/* the four artefacts, two by two */
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:34px 0 56px}
-@media (max-width:620px){.grid{grid-template-columns:minmax(0,1fr)}}
-.shotcard{background:var(--card);border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;
-  box-shadow:var(--shadow);display:flex;flex-direction:column}
-.shotcard img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:top center;
+/* the hero statement and the two calls */
+.statement{max-width:44ch;margin:26px 0 0;font-size:23px;line-height:1.4;letter-spacing:-.01em}
+@media (max-width:640px){.statement{font-size:20px;margin-top:22px}}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin:22px 0 0}
+.cta .btn{flex:0 1 auto}
+@media (max-width:420px){.cta{display:grid;grid-template-columns:minmax(0,1fr)}.cta .btn{width:100%}}
+
+/* who this is for: three plain lines, no boxes */
+.who{margin:44px 0 0;border-top:1px solid var(--rule);padding-top:18px}
+.who .lbl{margin:0 0 10px;font-size:12px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-soft);font-weight:700}
+.who ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;
+  grid-template-columns:repeat(3,minmax(0,1fr))}
+.who li{font-size:16.5px;line-height:1.45;color:var(--ink)}
+.who b{font-weight:700}
+@media (max-width:760px){.who ul{grid-template-columns:minmax(0,1fr);gap:10px}}
+
+/* how a review runs: four small screenshots, 4:3 */
+.runs{margin:48px 0 0}
+.runs h2{margin:0 0 4px;font-size:22px;line-height:1.25;letter-spacing:-.01em;font-weight:700;color:var(--ink)}
+.runs .sub{margin:0 0 18px;font-size:16px;color:var(--ink-soft)}
+.strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:0}
+@media (max-width:880px){.strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.strip{grid-template-columns:minmax(0,1fr);gap:14px}}
+.shot{background:var(--card);border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow);display:flex;flex-direction:column;min-width:0}
+.shot img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:top center;
   background:var(--paper);border-bottom:1px solid var(--rule)}
-.shotcard .body{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1}
-.shotcard h2{margin:0 0 6px;font-size:20px;line-height:1.25;color:var(--mason);font-weight:700}
-.shotcard p{margin:0 0 16px;font-size:16px;line-height:1.5;flex:1}
-.btn{display:block;text-align:center;text-decoration:none;background:var(--mason);color:#fff;border:1px solid var(--mason);
-  border-radius:var(--radius);padding:12px 14px;font-size:16px;font-weight:600;min-height:44px}
-.btn:hover{background:var(--mason-deep);border-color:var(--mason-deep);color:#fff;text-decoration:none}
+.shot .body{padding:12px 14px 14px}
+.shot .n{font-size:12px;font-weight:700;color:var(--gold-ink);font-variant-numeric:tabular-nums;
+  letter-spacing:.06em}
+.shot p{margin:2px 0 0;font-size:15px;line-height:1.4}
 
 /* the dossier: a sticky margin column and the text column */
-.split{display:grid;grid-template-columns:300px minmax(0,640px);gap:60px;align-items:start}
+.split{display:grid;grid-template-columns:300px minmax(0,640px);gap:60px;align-items:start;margin-top:56px}
 @media (max-width:1000px){.split{grid-template-columns:minmax(0,1fr);gap:34px}}
-.rail{position:sticky;top:32px}
+.rail{position:sticky;top:24px}
 @media (max-width:1000px){.rail{position:static}}
 .railhead{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin:0 0 10px}
 .rail nav{border-top:1.5px solid var(--ink);padding-top:14px}
@@ -87,8 +131,8 @@ h1{margin:0;font-size:42px;line-height:1.12;letter-spacing:-.02em;color:var(--ma
 .railblock ul{list-style:none;margin:0;padding:0;font-size:15.5px;line-height:1.5}
 .railblock li{margin:0 0 7px}
 
-section{margin:0 0 46px;scroll-margin-top:24px}
-section:last-of-type{margin-bottom:0}
+section{margin:0 0 46px;scroll-margin-top:64px}
+main section:last-of-type{margin-bottom:0}
 h3{margin:0 0 18px;font-size:28px;line-height:1.2;letter-spacing:-.015em;color:var(--ink);font-weight:600}
 h3 .n{color:var(--gold-ink);font-size:19px;font-weight:700;font-variant-numeric:tabular-nums;margin-right:16px;vertical-align:2px}
 @media (max-width:640px){h3{font-size:24px}h3 .n{margin-right:12px;font-size:17px}}
@@ -108,6 +152,21 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
 @media (max-width:560px){ol.steps{padding-left:44px}ol.steps::before{left:13px}
   ol.steps .disc{left:-44px;width:27px;height:27px;font-size:13px}}
 
+/* the evidence run: the bars, and the two drafts quoted beside them */
+.evid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:620px){.evid{grid-template-columns:minmax(0,1fr);gap:18px}}
+.quote{margin:0 0 14px}
+.quote:last-child{margin-bottom:0}
+.quote .who2{margin:0 0 5px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  font-weight:700;color:var(--ink-soft)}
+.quote blockquote{margin:0;padding:0 0 0 12px;border-left:2px solid var(--rule-strong);
+  font-family:var(--mono);font-size:11.5px;line-height:1.55;color:var(--ink);
+  overflow-wrap:break-word}
+.quote.bad blockquote{border-left-color:var(--red)}
+.quote.good blockquote{border-left-color:var(--mason)}
+.counts2{margin:14px 0 0;font-size:15px;line-height:1.5;color:var(--ink-soft);
+  font-variant-numeric:tabular-nums}
+
 /* outcomes, four tiles waiting on the export */
 .tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 14px}
 @media (max-width:560px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -119,11 +178,9 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
 /* scope, three ruled lines */
 .rows{margin:0;border-top:1px solid var(--rule)}
 .rows div{display:grid;grid-template-columns:150px minmax(0,1fr);gap:18px;padding:14px 0;border-bottom:1px solid var(--rule)}
-.rows dt,.rows b{font-weight:700;font-size:17px}
+.rows b{font-weight:700;font-size:17px}
 .rows p{margin:0;font-size:17px}
 @media (max-width:560px){.rows div{grid-template-columns:minmax(0,1fr);gap:4px}}
-
-footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--rule);font-size:14.5px;line-height:1.6;color:var(--ink-soft)}
 </style>
 </head>
 <body>
@@ -142,99 +199,112 @@ footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--rule);font-si
   </div>
 
   <figure class="fig hero">
-    <svg class="wide" viewBox="0 0 1120 236" role="img" aria-label="Flow: the ledger goes to an AI draft, the draft goes through the Second Pass, and the Second Pass goes to sign-off.">
+    <svg class="wide" viewBox="0 0 1120 252" role="img" aria-label="Flow: the ledger goes to an AI draft, the draft goes through the Second Pass, and the Second Pass goes to sign-off.">
       <g fill="none" stroke="var(--rule-strong)" stroke-width="1">
-        <rect x="0.5" y="20.5" width="237" height="172" rx="12"/>
-        <rect x="294.5" y="20.5" width="237" height="172" rx="12"/>
-        <rect x="882.5" y="20.5" width="237" height="172" rx="12"/>
+        <rect x="0.5" y="16.5" width="237" height="220" rx="14"/>
+        <rect x="294.5" y="16.5" width="237" height="220" rx="14"/>
+        <rect x="882.5" y="16.5" width="237" height="220" rx="14"/>
       </g>
-      <rect x="588.5" y="20.5" width="237" height="172" rx="12" fill="none" stroke="var(--mason)" stroke-width="2"/>
-      <g fill="var(--mason)" font-size="31" font-weight="700">
-        <text x="26" y="88">Ledger</text><text x="320" y="88">AI draft</text>
-        <text x="614" y="88">Second Pass</text><text x="908" y="88">Sign-off</text>
+      <rect x="588.5" y="16.5" width="237" height="220" rx="14" fill="none" stroke="var(--mason)" stroke-width="2"/>
+      <g fill="var(--mason)" font-size="36" font-weight="700">
+        <text x="28" y="100">Ledger</text><text x="322" y="100">AI draft</text>
+        <text x="616" y="100">Second Pass</text><text x="910" y="100">Sign-off</text>
       </g>
-      <g fill="var(--ink-soft)" font-size="19">
-        <text x="26" y="130">fourteen accounts,</text><text x="26" y="158">prior and current</text>
-        <text x="320" y="130">every figure ties,</text><text x="320" y="158">the reasons do not</text>
-        <text x="614" y="130">four checks, then</text><text x="614" y="158">two questions</text>
-        <text x="908" y="130">a named reviewer,</text><text x="908" y="158">never the preparer</text>
+      <g fill="var(--ink-soft)" font-size="21">
+        <text x="28" y="152">fourteen accounts,</text><text x="28" y="184">prior and current</text>
+        <text x="322" y="152">every figure ties,</text><text x="322" y="184">the reasons do not</text>
+        <text x="616" y="152">four checks, then</text><text x="616" y="184">two questions</text>
+        <text x="910" y="152">a named reviewer,</text><text x="910" y="184">never the preparer</text>
       </g>
       <g stroke="var(--ink-soft)" stroke-width="1.5" fill="var(--ink-soft)">
-        <line x1="250" y1="106" x2="277" y2="106"/><polygon points="288,106 276,100 276,112" stroke="none"/>
-        <line x1="544" y1="106" x2="571" y2="106"/><polygon points="582,106 570,100 570,112" stroke="none"/>
-        <line x1="838" y1="106" x2="865" y2="106"/><polygon points="876,106 864,100 864,112" stroke="none"/>
+        <line x1="250" y1="128" x2="277" y2="128"/><polygon points="288,128 276,122 276,134" stroke="none"/>
+        <line x1="544" y1="128" x2="571" y2="128"/><polygon points="582,128 570,122 570,134" stroke="none"/>
+        <line x1="838" y1="128" x2="865" y2="128"/><polygon points="876,128 864,122 864,134" stroke="none"/>
       </g>
     </svg>
-    <svg class="narrow" viewBox="0 0 340 528" role="img" aria-label="Flow: the ledger goes to an AI draft, the draft goes through the Second Pass, and the Second Pass goes to sign-off.">
+    <svg class="narrow" viewBox="0 0 340 560" role="img" aria-label="Flow: the ledger goes to an AI draft, the draft goes through the Second Pass, and the Second Pass goes to sign-off.">
       <g fill="none" stroke="var(--rule-strong)" stroke-width="1">
-        <rect x="0.5" y="0.5" width="339" height="108" rx="12"/>
-        <rect x="0.5" y="140.5" width="339" height="108" rx="12"/>
-        <rect x="0.5" y="420.5" width="339" height="107" rx="12"/>
+        <rect x="0.5" y="0.5" width="339" height="116" rx="12"/>
+        <rect x="0.5" y="148.5" width="339" height="116" rx="12"/>
+        <rect x="0.5" y="444.5" width="339" height="115" rx="12"/>
       </g>
-      <rect x="1" y="281" width="338" height="108" rx="12" fill="none" stroke="var(--mason)" stroke-width="2"/>
-      <g fill="var(--mason)" font-size="24" font-weight="700">
-        <text x="20" y="42">Ledger</text><text x="20" y="182">AI draft</text>
-        <text x="20" y="322">Second Pass</text><text x="20" y="461">Sign-off</text>
+      <rect x="1" y="297" width="338" height="115" rx="12" fill="none" stroke="var(--mason)" stroke-width="2"/>
+      <g fill="var(--mason)" font-size="25" font-weight="700">
+        <text x="20" y="44">Ledger</text><text x="20" y="192">AI draft</text>
+        <text x="20" y="341">Second Pass</text><text x="20" y="488">Sign-off</text>
       </g>
-      <g fill="var(--ink-soft)" font-size="16">
-        <text x="20" y="72">fourteen accounts,</text><text x="20" y="94">prior and current</text>
-        <text x="20" y="212">every figure ties,</text><text x="20" y="234">the reasons do not</text>
-        <text x="20" y="352">four checks, then</text><text x="20" y="374">two questions</text>
-        <text x="20" y="491">a named reviewer,</text><text x="20" y="513">never the preparer</text>
+      <g fill="var(--ink-soft)" font-size="16.5">
+        <text x="20" y="76">fourteen accounts,</text><text x="20" y="99">prior and current</text>
+        <text x="20" y="224">every figure ties,</text><text x="20" y="247">the reasons do not</text>
+        <text x="20" y="373">four checks, then</text><text x="20" y="396">two questions</text>
+        <text x="20" y="520">a named reviewer,</text><text x="20" y="543">never the preparer</text>
       </g>
       <g stroke="var(--ink-soft)" stroke-width="1.5" fill="var(--ink-soft)">
-        <line x1="30" y1="114" x2="30" y2="128"/><polygon points="30,139 24,127 36,127" stroke="none"/>
-        <line x1="30" y1="254" x2="30" y2="268"/><polygon points="30,279 24,267 36,267" stroke="none"/>
-        <line x1="30" y1="394" x2="30" y2="408"/><polygon points="30,419 24,407 36,407" stroke="none"/>
+        <line x1="30" y1="122" x2="30" y2="136"/><polygon points="30,147 24,135 36,135" stroke="none"/>
+        <line x1="30" y1="270" x2="30" y2="284"/><polygon points="30,295 24,283 36,283" stroke="none"/>
+        <line x1="30" y1="418" x2="30" y2="432"/><polygon points="30,443 24,431 36,431" stroke="none"/>
       </g>
     </svg>
-    <figcaption class="cap">The control sits between the draft and the signature, which is where the memo is still cheap to fix.</figcaption>
   </figure>
 
-  <div class="grid">
+  <p class="statement">Every figure in the drafted memo can tie to the ledger while the reason
+  printed beside it rests on nothing. The control belongs between the draft and the signature,
+  where the memo is still cheap to fix.</p>
 
-    <div class="shotcard">
-      <img src="screenshots/review/01-checker-halyard.png" alt="The Second Pass Checker on the Halyard sample: fourteen lines checked, two arithmetic fails, one direction fail, one silent line.">
-      <div class="body">
-        <h2>The checker</h2>
-        <p>Paste the ledger and the memo, and four checks run in the browser.</p>
-        <a class="btn" href="checker.html">Run the checker</a>
-      </div>
+  <div class="cta">
+    <a class="btn green" href="checker.html">Run the checker</a>
+    <a class="btn secondary" href="index.html">Play the ten-minute drill</a>
+  </div>
+
+  <div class="who">
+    <p class="lbl">Who this is for</p>
+    <ul>
+      <li><b>The controller</b> who has to sign a memo an assistant wrote.</li>
+      <li><b>The audit senior</b> testing whether that memo was reviewed at all.</li>
+      <li><b>The student</b> who will be handed this work in their first month.</li>
+    </ul>
+  </div>
+
+  <div class="runs">
+    <h2>How a review runs</h2>
+    <p class="sub">Ten minutes, in the browser, with nothing to install.</p>
+    <div class="strip">
+
+      <figure class="shot">
+        <img src="screenshots/review/strip-01-checker-empty.png" alt="The checker before a run: a pane for the ledger, a pane for the memo, the two threshold floors, and an empty result area.">
+        <figcaption class="body"><span class="n">01</span>
+          <p>Paste the ledger and the memo beside it.</p>
+        </figcaption>
+      </figure>
+
+      <figure class="shot">
+        <img src="screenshots/review/strip-02-checker-results.png" alt="The checker results: a coverage bar, counts for checked within scope, needs review, not checked and failed, and the results table under them.">
+        <figcaption class="body"><span class="n">02</span>
+          <p>Four checks run and print a verdict per line.</p>
+        </figcaption>
+      </figure>
+
+      <figure class="shot">
+        <img src="screenshots/review/strip-03-drill-card.png" alt="A drill card: account 4200, the May and June balances, the change in red, and a link to the full ledger.">
+        <figcaption class="body"><span class="n">03</span>
+          <p>The drill puts one account in front of you.</p>
+        </figcaption>
+      </figure>
+
+      <figure class="shot">
+        <img src="screenshots/review/strip-04-drill-end.png" alt="The end screen: the rank, the codename, right call twelve of fourteen and right reason two of fourteen.">
+        <figcaption class="body"><span class="n">04</span>
+          <p>The record keeps every call and its basis.</p>
+        </figcaption>
+      </figure>
+
     </div>
-
-    <div class="shotcard">
-      <img src="screenshots/review/02-game-card.png" alt="A drill card: account 7400, inventory shrink adjustment, up $2,500, with nothing said about it in the commentary.">
-      <div class="body">
-        <h2>The drill</h2>
-        <p>Fourteen ledger lines, eight carrying a planted problem, each called against a key.</p>
-        <a class="btn" href="index.html">Play the ten-minute drill</a>
-      </div>
-    </div>
-
-    <div class="shotcard">
-      <img src="screenshots/review/04-protocol-page-1.png" alt="The first page of the Second Pass Review Protocol, showing the control objective, the scope and the threshold.">
-      <div class="body">
-        <h2>The protocol</h2>
-        <p>One page fixing the scope, the threshold and who may sign.</p>
-        <a class="btn" href="Second-Pass-Review-Protocol.pdf">Read the protocol</a>
-      </div>
-    </div>
-
-    <div class="shotcard">
-      <img src="screenshots/review/03-game-end-screen.png" alt="The end screen of the drill: rank, caught, let stand correctly, false flags, lap time and the fresh case score.">
-      <div class="body">
-        <h2>The record</h2>
-        <p>Every call, its basis, the error type and the time, downloaded as a file.</p>
-        <a class="btn" href="https://github.com/fiscalpatriots/beat-the-machine" target="_blank" rel="noopener">Code and records</a>
-      </div>
-    </div>
-
   </div>
 
   <div class="split">
 
     <aside class="rail">
-      <nav>
+      <nav aria-label="In this entry">
         <p class="railhead">In this entry</p>
         <ol>
           <li><span class="n">01</span><a href="#problem">The problem</a></li>
@@ -247,15 +317,16 @@ footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--rule);font-si
       </nav>
       <div class="railblock">
         <dl>
-          <dt>Product</dt><dd>second-pass-drill 1.3.0</dd>
-          <dt>Practice case</dt><dd>halyard-v3, 13 September 2026</dd>
-          <dt>Assessment case</dt><dd>brightwater-v3, 13 September 2026</dd>
-          <dt>Data notice</dt><dd>notice-2026-09-13</dd>
+          <dt>Product</dt><dd id="v-product">second-pass-drill 1.4.0</dd>
+          <dt>Practice case</dt><dd id="v-practice">halyard-v4, 13 September 2026</dd>
+          <dt>Assessment case</dt><dd id="v-assessment">brightwater-v4, 13 September 2026</dd>
+          <dt>Data notice</dt><dd id="v-notice">notice-2026-09-13</dd>
         </dl>
       </div>
       <div class="railblock">
         <p class="railhead">On file</p>
         <ul>
+          <li><a href="Second-Pass-Review-Protocol.pdf">The protocol, one page</a></li>
           <li><a href="PROVENANCE.md">How the case was made</a></li>
           <li><a href="cases/README.md">Case files and changes</a></li>
           <li><a href="evidence/EVIDENCE-NOTE.md">What a real AI draft got wrong</a></li>
@@ -327,25 +398,45 @@ footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--rule);font-si
       <section id="evidence">
         <h3><span class="n">03</span>The evidence run</h3>
         <figure class="fig">
-          <svg class="wide" viewBox="0 0 600 200" role="img" aria-label="Bar pair. The blind draft invented fourteen of fourteen reasons. The Prompt 1 draft invented none, and seven of its lines say no source on file.">
-            <text x="0" y="18" fill="var(--ink)" font-size="19" font-weight="600">Blind draft</text>
-            <rect x="0" y="32" width="600" height="26" rx="4" fill="var(--red)"/>
-            <text x="0" y="84" fill="var(--ink-soft)" font-size="17">14 of 14 reasons invented</text>
-            <text x="0" y="132" fill="var(--ink)" font-size="19" font-weight="600">Prompt 1 draft</text>
-            <rect x="0.5" y="146.5" width="599" height="25" rx="4" fill="none" stroke="var(--rule-strong)" stroke-width="1"/>
-            <rect x="0" y="146" width="3" height="26" fill="var(--mason)"/>
-            <text x="16" y="165" fill="var(--ink-soft)" font-size="17">0 invented, 7 lines say no source on file</text>
-          </svg>
-          <svg class="narrow" viewBox="0 0 340 216" role="img" aria-label="Bar pair. The blind draft invented fourteen of fourteen reasons. The Prompt 1 draft invented none, and seven of its lines say no source on file.">
-            <text x="0" y="18" fill="var(--ink)" font-size="18" font-weight="600">Blind draft</text>
-            <rect x="0" y="32" width="340" height="24" rx="4" fill="var(--red)"/>
-            <text x="0" y="84" fill="var(--ink-soft)" font-size="16">14 of 14 reasons invented</text>
-            <text x="0" y="136" fill="var(--ink)" font-size="18" font-weight="600">Prompt 1 draft</text>
-            <rect x="0.5" y="150.5" width="339" height="23" rx="4" fill="none" stroke="var(--rule-strong)" stroke-width="1"/>
-            <rect x="0" y="150" width="3" height="24" fill="var(--mason)"/>
-            <text x="0" y="202" fill="var(--ink-soft)" font-size="16">0 invented, 7 lines say no source</text>
-          </svg>
-          <figcaption class="cap">Two runs against the same ledger, 13 September 2026. Both got the arithmetic right, so the reasons are where the reviewer's hour goes.</figcaption>
+          <div class="evid">
+            <div>
+              <svg viewBox="0 0 330 214" role="img" aria-label="Two runs against the same ledger. The blind draft gave a cause to all fourteen accounts and eleven of them had no support on file. The Prompt 1 draft wrote seven lines and every reason reads no source on file.">
+                <text x="0" y="13" fill="var(--ink)" font-size="15" font-weight="700">Blind run</text>
+                <text x="0" y="34" fill="var(--ink-soft)" font-size="13">14 accounts, 14 causes given</text>
+                <g>
+                  <rect x="0" y="44" width="254.8" height="22" fill="var(--red)"/>
+                  <rect x="260.5" y="44.5" width="69" height="21" fill="none" stroke="var(--rule-strong)"/>
+                </g>
+                <text x="0" y="84" fill="var(--red)" font-size="13" font-weight="700">11 with no support on file</text>
+                <text x="0" y="102" fill="var(--ink-soft)" font-size="13">3 matched a fact by luck</text>
+
+                <line x1="0" y1="124" x2="330" y2="124" stroke="var(--rule)" stroke-width="1"/>
+
+                <text x="0" y="152" fill="var(--ink)" font-size="15" font-weight="700">Prompt 1 run</text>
+                <text x="0" y="173" fill="var(--ink-soft)" font-size="13">7 lines, 0 causes given</text>
+                <g>
+                  <rect x="0.5" y="183.5" width="329" height="21" fill="none" stroke="var(--rule-strong)"/>
+                  <rect x="0" y="183" width="3" height="22" fill="var(--mason)"/>
+                </g>
+              </svg>
+              <p class="counts2">The checker read 112 sentences in the blind draft and failed 3, sending 34 to a
+              reviewer. On the second draft it read 43, failed none and sent 8.</p>
+            </div>
+            <div>
+              <div class="quote bad">
+                <p class="who2">Blind run, account 6400</p>
+                <blockquote>6400 Bad debt expense: +$47,000 (+313.3%)<br>
+                &mdash; Specific reserve established against&hellip;</blockquote>
+              </div>
+              <div class="quote good">
+                <p class="who2">Prompt 1 run, account 6400</p>
+                <blockquote>6400 Bad debt expense: &hellip; rose $47,000,<br>
+                313.3 percent, because no source on file.</blockquote>
+              </div>
+            </div>
+          </div>
+          <figcaption class="cap">Same ledger, same account, 13 September 2026. The first run names a reserve nobody
+          put on file. The second refuses to name one, which is the answer a reviewer can work with.</figcaption>
         </figure>
       </section>
 
@@ -353,11 +444,11 @@ footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--rule);font-si
         <h3><span class="n">04</span>Outcomes</h3>
         <div class="tiles">
           <div class="tile"><span class="v">pending</span><span class="k">Players</span></div>
-          <div class="tile"><span class="v">pending</span><span class="k">Catch rate</span></div>
+          <div class="tile"><span class="v">pending</span><span class="k">Right call</span></div>
+          <div class="tile"><span class="v">pending</span><span class="k">Right reason</span></div>
           <div class="tile"><span class="v">pending</span><span class="k">False flags</span></div>
-          <div class="tile"><span class="v">pending</span><span class="k">Fresh-case rate</span></div>
         </div>
-        <p>The response export fills these, one row per run. Every run downloads as a file first, sending it is a separate voluntary step, and a codename is a pseudonym rather than anonymity.</p>
+        <p>The response export fills these, one row per run. The call and the reason are scored separately, so a run can agree with the answer key and give a basis that does not. These are answer-key agreement on a keyed exercise and nothing more. Every run downloads as a file first, sending it is a separate voluntary step, and a codename is a pseudonym rather than anonymity.</p>
       </section>
 
       <section id="scope">
@@ -412,11 +503,37 @@ footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--rule);font-si
     </main>
   </div>
 
-  <footer>
-    Second Pass drill 1.3.0. Cases halyard-v3 and brightwater-v3, data notice notice-2026-09-13.
-    Built by Khaled Alkurd, George Mason University, Costello College of Business.
-  </footer>
-
 </div>
+
+<script>
+/* The rail states the versions the pages actually ship. Read them off the case
+   files so the stamp cannot drift from the JSON; the markup already carries the
+   same text, so a failed fetch (a file:// open, an offline copy) changes
+   nothing on screen. */
+(function () {
+  'use strict';
+  var MONTHS = ['January','February','March','April','May','June',
+                'July','August','September','October','November','December'];
+  function longDate(iso) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ''));
+    if (!m) return '';
+    return Number(m[3]) + ' ' + MONTHS[Number(m[2]) - 1] + ' ' + m[1];
+  }
+  function stamp(id, file) {
+    var el = document.getElementById(id);
+    if (!el || !window.fetch) return;
+    fetch(file, { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        if (!j || !j.version) return;
+        var d = longDate(j.date);
+        el.textContent = j.version + (d ? ', ' + d : '');
+      })
+      .catch(function () { /* the printed fallback stands */ });
+  }
+  stamp('v-practice', 'cases/halyard-v4.json');
+  stamp('v-assessment', 'cases/brightwater-v4.json');
+})();
+</script>
 </body>
 </html>
