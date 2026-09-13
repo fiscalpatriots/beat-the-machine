@@ -1,8 +1,8 @@
 # What an AI assistant produced from three ledgers
 
-Six drafting runs, 13 September 2026, Claude Opus through Claude Code. Every company was drafted twice. The blind draft saw the company header, the threshold rule and the account lines and nothing else, under one plain request: write the month-end variance commentary for the accounts that need explaining, one line per account, with the amount, the percent and the reason. The second used Prompt 1, copied from checker.html. No draft was edited. All six were then run through the current build of the checker, and the exports sit beside this note with the six raw drafts.
+Six drafting runs, 13 September 2026, Claude Opus through Claude Code. Every company was drafted twice. The blind draft saw the company header, the threshold rule and the account lines and nothing else, under one plain request: write the month-end variance commentary for the accounts that need explaining, one line per account, with the amount, the percent and the reason. The second used Prompt 1, copied from checker.html. No draft was edited. All six were then run through the current build of the checker; the exports and the raw drafts sit beside this note.
 
-Two things about the setup belong in the record. Halyard was drafted by the session building the exercise; Brightwater and Kestrel were drafted in fresh contexts holding only the ledger, because that session had read the sample memo printed beside the Kestrel ledger in checker.html and could no longer draft it blind. Two earlier passes were discarded: each told the model it could not look anything up, which is the restraint Prompt 1 is meant to supply.
+Two things about the setup belong in the record. Halyard was drafted by the session building the exercise, while Brightwater and Kestrel were drafted in fresh contexts holding only the ledger, because that session had read the sample memo printed beside the Kestrel ledger in checker.html and could no longer draft it blind. Two earlier passes were discarded: each told the model it could not look anything up, which is the restraint Prompt 1 is meant to supply.
 
 ## The blind drafts
 
@@ -43,4 +43,4 @@ The arithmetic was never the problem in any of the six runs: no draft got a chan
 | Kestrel blind | 7 | 3 | 2 | 2 | 0 | 6 | 10 |
 | Kestrel Prompt 1 | 5 | 0 | 4 | 1 | 0 | 6 | 10 |
 
-No run skipped a ledger row or left a qualifying line silent. The Halyard figures come from re-checking its two original drafts on the current build, so all three sit on one scale; the earlier exports are kept as blind-run.csv and prompt1-run.csv and use the older columns.
+No run skipped a ledger row or left a qualifying line silent. The Halyard figures come from re-checking its two original drafts on the current build, so all three sit on one scale; the earlier exports are kept and use the older columns.
