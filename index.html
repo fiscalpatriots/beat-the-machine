@@ -393,22 +393,97 @@ textarea{min-height:84px;resize:vertical}
 .howuse textarea{min-height:210px;font-size:14px;line-height:1.5;background:var(--paper)}
 .howuse .btn{margin-top:10px;padding:12px;font-size:16px}
 a.btn{text-decoration:none;text-align:center}
+
+/* ---------- test mode. Nothing leaves the page while this band is up. ---------- */
+#testband{margin:0 calc(var(--gut) * -1);padding:9px var(--gut);background:#3a2a00;color:var(--mason-gold);
+  border-bottom:2px solid var(--gold-line);font-size:13px;font-weight:800;letter-spacing:.4px;
+  line-height:1.35;text-align:center;overflow-wrap:anywhere}
+#testband span{display:block;font-weight:600;letter-spacing:0;color:#f3e2b0}
+#masonfoot b{display:block;font-weight:600;margin-top:4px;color:var(--ink-soft);font-size:12px}
+
+/* ---------- the data notice, read before anything is collected ---------- */
+.notice{background:var(--card);border:2px solid var(--line);border-left:4px solid var(--mason);
+  border-radius:16px;padding:16px 18px;margin:0 0 12px;box-shadow:var(--shadow);text-align:left}
+.notice h3{margin:0 0 8px;font-size:17px}
+.notice ul{margin:0;padding:0 0 0 18px}
+.notice li{font-size:15px;line-height:1.45;margin:0 0 8px}
+.notice li:last-child{margin-bottom:0}
+.notice p{margin:0;font-size:15px;line-height:1.45}
+.noticever{margin:10px 0 0;font-size:12.5px;line-height:1.4;color:var(--ink-soft)}
+
+/* ---------- the ledger-only picks, one optional step before the memo ---------- */
+.prepick{background:var(--card);border:2px solid var(--line);border-left:4px solid var(--gold-line);
+  border-radius:16px;padding:16px 18px;margin:16px 0 0;box-shadow:var(--shadow)}
+.prepick h3{margin:0 0 4px;font-size:17px}
+.prepick p{margin:0 0 10px;font-size:14px;line-height:1.45;color:var(--ink-soft)}
+.prepick .chips{margin:0 0 12px}
+.prepick .chip{font-size:14px;font-weight:600;line-height:1.25;text-align:left;overflow-wrap:anywhere}
+.prepick .chip:disabled{opacity:.4;cursor:not-allowed}
+.prepick .two{margin-top:0}
+
+/* ---------- the round two results screen, everything at once ---------- */
+.res{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:16px 18px;
+  margin:0 0 12px;box-shadow:var(--shadow);border-left:4px solid var(--line)}
+.res.good{border-left-color:var(--accept)}
+.res.bad{border-left-color:var(--reject)}
+.resline{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;margin:0 0 6px}
+.resline b{font-size:16px;line-height:1.3}
+.rescall{display:inline-block;border-radius:99px;padding:3px 10px;font-size:12px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.5px;border:2px solid}
+.rescall.good{background:var(--accept-bg);border-color:var(--accept);color:var(--accept)}
+.rescall.bad{background:var(--reject-bg);border-color:var(--reject);color:var(--reject)}
+.res em{display:inline-block;font-style:normal;font-size:12px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.6px;color:var(--machine)}
+.res p{margin:6px 0 0;font-size:15px;line-height:1.45}
+.res .yours{margin:8px 0 0;font-size:13px;line-height:1.45;color:var(--ink-soft);overflow-wrap:anywhere}
+
+/* ---------- the record and the send, side by side at the end ---------- */
+.actions{margin:18px 0 0;text-align:left}
+.actions h3{margin:0 0 6px}
+.actions p{margin:0 0 10px;font-size:14px;line-height:1.45;color:var(--ink-soft)}
+.sendstate{margin:10px 0 0;font-size:14px;line-height:1.45;color:var(--ink);overflow-wrap:anywhere}
+.recordbox{width:100%;min-height:190px;font:inherit;font-size:12px;line-height:1.45;padding:12px;
+  border:2px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);
+  margin:10px 0 0;white-space:pre;overflow:auto}
+:focus-visible{outline:3px solid var(--mason-gold);outline-offset:2px}
 </style>
 </head>
 <body>
 <div id="app">
   <div id="mason"><b>George Mason University</b><span>Costello College of Business</span><span id="codetag" hidden></span></div>
+  <div id="testband" hidden role="status">TEST MODE, nothing is sent<span>The would-be form payload is written to your local record instead.</span></div>
   <div id="bar">
     <div id="track"></div>
     <div id="label"><span id="step"></span><span id="score" class="scorepill hidden"></span></div>
   </div>
   <div id="screen"></div>
-  <p id="masonfoot">Built by Khaled Alkurd. A drill for the AI-native accounting student.</p>
+  <p id="masonfoot">Built by Khaled Alkurd. A drill for the AI-native accounting student.<b id="verline"></b></p>
 </div>
 <iframe name="gfsink" id="gfsink" class="hidden" title="submit"></iframe>
 <script>
 (function(){
 "use strict";
+
+/* ---------- the product version ----------
+   One constant. It prints under the footer line on every screen, rides into the posted
+   payload on question A, and stamps the local record. README and review.html state it too. */
+var PRODUCT_NAME = "Second Pass: Beat the Machine";
+var PRODUCT_VERSION = "1.3.0";
+var PRODUCT_STAMP = "second-pass-drill " + PRODUCT_VERSION;
+var NOTICE_VERSION = "notice-2026-09-13";
+
+/* ---------- test mode ----------
+   ?test=1 in the address, or three taps on the footer line. While it is on the page never
+   posts to the form: the payload it would have sent is written into the local record and
+   labelled as a test attempt, so the live participant dataset is never seeded from here. */
+var TEST_MODE = false;
+try{ TEST_MODE = /(?:^|[?&])test=1(?:&|$)/.test(window.location.search); }catch(e){ TEST_MODE = false; }
+function paintTestBand(){
+  var band = document.getElementById("testband");
+  if(band) band.hidden = !TEST_MODE;
+  var ver = document.getElementById("verline");
+  if(ver) ver.textContent = PRODUCT_STAMP + (TEST_MODE ? ", test mode" : "");
+}
 
 /* ---------- Google Form wiring. Thirty eight entry ids, unchanged. ---------- */
 var FORM_POST = "https://docs.google.com/forms/d/e/1FAIpQLSfteTMPZrDKhYmRjxPKADAZERjyDntdMLIVZMH-FoIrcHusKg/formResponse";
@@ -452,15 +527,18 @@ function icon(name, big){ return '<span class="icon'+(big?' big':'')+'"><svg vie
    fails, which is what happens when the file is opened from a folder. */
 
 /* BUILD:CASES-START  generated by build-cases.cjs, 2026-09-13.
-   Source of truth: cases/halyard-v3.json and cases/brightwater-v2.json.
+   Source of truth: cases/halyard-v3.json and cases/brightwater-v3.json.
    Used only when the fetch of those files fails, which is what happens on file://. */
 var CASE1_FALLBACK = {"version":"halyard-v3","date":"2026-09-13","company":"Halyard Provisioning Group, Inc.","period":"June close, prepared from the general ledger","caption":"The fourteen accounts the memo was written against.","threshold":"A line owes commentary only when it clears both $25,000 and 10 percent.","policyScope":"The threshold sets what the monthly management report has to explain. It does not make a known error, or anything else that looks wrong, exempt from attention.","evidenceNote":"Every sentence under On file is a verified case assumption. A fact that is not listed was not supplied, which is not the same as saying the company has no such document.","ledger":[["4000","Product revenue, distribution",5240000,5612000,1],["4100","Service revenue, equipment maintenance",812000,1041000,1],["4200","Freight billed to customers",186000,121000,1],["5000","Cost of product sold",3930000,4278000,0],["5100","Inbound freight",214000,287800,1],["6000","Warehouse wages",630000,702500,1],["6100","Fleet fuel",96400,91200,0],["6200","Repairs and maintenance, depots",41000,118600,1],["6300","Software subscriptions",28500,30100,0],["6400","Bad debt expense",15000,62000,1],["6500","Professional fees",55000,47500,0],["7000","Depreciation",128000,128000,0],["7100","Interest expense",61200,92400,1],["7400","Inventory shrink adjustment",6400,8900,0]],"groups":[{"title":"Revenue","accts":["4000","4100","4200"],"total":"Total revenue"},{"title":"Cost of sales","accts":["5000","5100"],"total":"Total cost of sales"},{"title":"Operating expenses","accts":["6000","6100","6200","6300","6400","6500","7000","7400"],"total":"Total operating expenses"},{"title":"Financing","accts":["7100"],"total":"Total financing"}],"cards":[{"n":1,"icon":"coins","acct":"4200","name":"Freight billed to customers","prior":186000,"current":121000,"memo":"Freight billed to customers fell from $186,000 to $121,000, a decrease of $6,500 and 3.5 percent, so neither leg of the threshold is met and no commentary is owed on this line.","file":["Inbound freight, account 5100, rose 34.5 percent in the same month.","A line owes commentary only when it clears both $25,000 and 10 percent."],"key":"flag","type":"arithmetic","why":"The fall is $65,000 and 34.9 percent, so both legs clear and this line owes an explanation the memo never gives. The rise in inbound freight is context, not proof of what happened to the billing, so the ask here is a billing bridge for account 4200 rather than a cause you supply yourself.","tell":"The subtraction is right there on the ledger. $186,000 less $121,000 is $65,000, not $6,500.","post":{"flag":"Reject","stand":"Accept"}},{"n":2,"icon":"wrench","acct":"6200","name":"Repairs and maintenance, depots","prior":41000,"current":118600,"memo":"Depot repairs and maintenance of $118,600 reflects the roof and dock leveler program, which finished on June 30. The remaining work on that same roof and dock leveler program is scheduled to finish in August, and that spend is not yet in these numbers.","file":["Halyard closes on the fifth business day of the following month."],"key":"flag","type":"timing","why":"One program cannot be finished on June 30 and still have work running into August, so the memo contradicts itself and a reviewer cannot tell which version is true. Completion on its own does not settle the accounting either: the question is what June work was performed, how much of it is recorded, and whether any performed June work is still unrecorded. If roof and dock leveler work does continue, ask as well whether it is a routine repair or an improvement that belongs in fixed assets.","tell":"Two sentences in the same memo describe one program as finished and as unfinished, and neither one tells you what June work was actually performed.","post":{"flag":"Accept","stand":"Reject"}},{"n":3,"icon":"truck","acct":"5100","name":"Inbound freight","prior":214000,"current":287800,"memo":"Inbound freight declined to $287,800 as carrier fuel surcharges eased.","file":["Fleet fuel, account 6100, fell 5.4 percent over the same month."],"key":"flag","type":"wrong direction","why":"Inbound freight rose $73,800, up 34.5 percent, so the sentence has the movement backwards and the reason for an increase that size is still missing. Easing surcharges are not disproved by the total: a lower rate per shipment can sit inside a higher total cost when volume moves.","tell":"The memo used the word declined next to a June balance that is higher than May's.","post":{"flag":"Accept","stand":"Reject"}},{"n":4,"icon":"calendar","acct":"4100","name":"Service revenue, equipment maintenance","prior":812000,"current":1041000,"memo":"Service revenue rose $229,000 as the twelve equipment maintenance contracts signed in the spring began service in June, and each month's fee is earned in the month it covers.","file":["Twelve equipment maintenance contracts signed in March and April began service on 1 June. The service-date schedule for all twelve is on file.","The earned revenue bridge is on file: $812,000 of continuing contracts, unchanged in June, plus $229,000 of June service on the twelve new contracts, equals $1,041,000.","The maintenance contracts bill monthly in arrears, so the June invoice covers June service, and nothing on these contracts is billed ahead of the service period."],"key":"stand","type":"clean line","why":"The bridge on file reconciles the whole $229,000 to June service on twelve contracts that started on 1 June, and billing in arrears puts each fee in the month it was earned, so nothing sitting in June belongs to a later period.","over":"The trap on this account is a plan billed a year ahead, and the service dates on file show the opposite.","tell":"Billing dates alone would not settle this line. The service dates and the earned revenue bridge are what let it stand.","post":{"flag":"Accept","stand":"Reject"}},{"n":5,"icon":"brief","acct":"6500","name":"Professional fees","prior":55000,"current":47500,"memo":"Professional fees fell $7,500 because May carried a one-time $7,500 invoice from outside counsel for the depot lease renewal review, and the movement fails the dollar leg of the threshold.","file":["May professional fees include a $7,500 invoice from outside counsel for the depot lease renewal review. The work was performed in May and expensed in May.","June carries no equivalent item.","A line owes commentary only when it clears both $25,000 and 10 percent."],"key":"stand","type":"clean line","why":"The invoice on file covers May services, was expensed in May, and has no June counterpart, so $55,000 less $7,500 is $47,500 and the whole movement is accounted for. It fails the dollar leg as well, so no commentary was owed here at all and the memo explained it anyway and got it right.","over":"Thirteen percent looks like it clears, and the dollar leg is the one that decides this line.","tell":"Both legs have to clear before a line owes anything, and $7,500 never reaches $25,000.","post":{"flag":"Accept","stand":"Reject"}},{"n":6,"icon":"box","acct":"7400","name":"Inventory shrink adjustment","prior":6400,"current":8900,"memo":"","file":["A line owes commentary only when it clears both $25,000 and 10 percent.","The threshold sets what the monthly management report has to explain. It does not make anything exempt from attention."],"key":"stand","type":"clean line","why":"Thirty nine percent looks alarming until you test the dollar leg, and $2,500 does not reach $25,000, so this reporting policy asks for nothing on the line. The policy decides what the management report must explain; it does not put a known error or a suspicious item beyond attention.","over":"The percentage pulled you in, and a big percentage of a small balance is still a small number.","tell":"A big percentage of a small balance is still a small number.","post":{"flag":"Accept","stand":"Reject"}},{"n":7,"icon":"glass","acct":"4000","name":"Product revenue, distribution","prior":5240000,"current":5612000,"memo":"Product revenue of $5,612,000 grew on the Tri-State depot ramp, which management expects to continue through the third quarter.","file":["The memo cites no volume, no customer count and no split by depot.","Halyard runs four regional depots and the ledger is not broken out by depot.","No depot revenue bridge and no documented forecast were supplied."],"key":"flag","type":"unsupported driver","why":"A named depot and a forecast quarter read like detail, and nothing supplied ties either of them to the $372,000. Neither is established from the evidence on file, which is not the same as saying either is false. A depot revenue bridge or a documented forecast would settle it.","over":"","tell":"Ask what document would prove the sentence. When nothing on file does, the sentence is not established, whatever else may turn out to be true.","post":{"flag":"Accept","stand":"Reject"}},{"n":8,"icon":"alert","acct":"6400","name":"Bad debt expense","prior":15000,"current":62000,"memo":"Bad debt expense increased $42,000 following the reserve taken against the Coastal Grocers receivable.","file":["No other sentence in the memo touches this account.","No reserve rollforward for June was supplied, and no document establishes the amount of the Coastal Grocers reserve."],"key":"flag","type":"arithmetic","why":"The account moved $47,000 and the memo says $42,000, so the figure does not tie to the ledger. Nothing supplied establishes $42,000 as the Coastal Grocers piece either, so the $5,000 difference cannot be assigned to anything. The ask is a reserve rollforward for June, not a guess at the remainder.","tell":"The memo handed you a number, so check it against the ledger before you read the reason attached to it.","post":{"flag":"Accept","stand":"Reject"}},{"n":9,"icon":"fuel","acct":"6100","name":"Fleet fuel","prior":96400,"current":91200,"memo":"Fleet fuel fell $5,200, and the movement fails both legs of the threshold, so the line owes no commentary at all.","file":["Every June fuel invoice from the fleet servicer was received and recorded before the books closed.","The fleet servicer confirmed that all June fuel consumption is billed on those invoices, so June consumption and June invoices are the same population.","A line owes commentary only when it clears both $25,000 and 10 percent."],"key":"stand","type":"clean line","why":"It fails both legs, so the policy asks for nothing, and the case facts state that all June consumption was billed and recorded, which is what closes the accrual question. Invoices received on their own would not have done it.","over":"You went looking for a cost that arrived late, and the case facts close that door. Every invoice received is not the same claim as every cost incurred was billed, and here the file states both.","tell":"Read the file before you decide a cost is missing, and check whether it covers completeness or only receipt.","post":{"flag":"Accept","stand":"Reject"}},{"n":10,"icon":"chip","acct":"6300","name":"Software subscriptions","prior":28500,"current":30100,"memo":"Software subscriptions rose $1,600, which clears neither leg of the threshold, so this line carries no driver.","file":["A line owes commentary only when it clears both $25,000 and 10 percent."],"key":"stand","type":"clean line","why":"It fails both legs, so no explanation is required under this commentary policy, and the memo says so rather than inventing a reason, which is the right answer on a line this size.","over":"A short sentence is not a weak one, and no explanation was required on this movement.","tell":"A line under the threshold owes nothing, and saying so is a correct answer.","post":{"flag":"Accept","stand":"Reject"}},{"n":11,"icon":"people","acct":"6000","name":"Warehouse wages","prior":630000,"current":702500,"memo":"","file":["A line owes commentary only when it clears both $25,000 and 10 percent.","Halyard employs roughly 240 people across four depots. The count is approximate and the ledger gives no headcount by month.","No payroll bridge, rate change or hours summary was supplied."],"key":"flag","type":"no explanation","why":"$72,500 is 11.5 percent and clears both legs with room to spare, and the memo is silent on this line, so the movement reaches the reviewer with no sentence attached to it at all. The approximate headcount does not establish a cause, so the ask is a payroll bridge showing rates, hours and staffing.","tell":"Read the ledger for what the memo left out, not only for what it got wrong.","post":{"flag":"Accept","stand":"Reject"}},{"n":12,"icon":"flag","acct":"4000","name":"Product revenue, distribution","prior":5240000,"current":5612000,"memo":"Distribution revenue of $5,612,000 grew 7.1 percent over May on continued customer demand across all four depots.","file":["Freight billed to customers, account 4200, fell $65,000 over the same month.","Inbound freight, account 5100, rose $73,800, so freight is still being incurred.","From June 1, Halyard moved its two largest customers to delivered pricing: freight is included in the product price and no longer billed on account 4200 (pricing memo of May 20 on file).","No billing bridge for account 4200 by customer was supplied, so the gross movement behind the $65,000 net fall is not known.","No sentence in the memo connects the two revenue lines to each other."],"key":"flag","type":"unsupported attribution","why":"From 1 June the freight for the two largest customers sits inside the product price rather than on account 4200, and the memo never mentions the change, so calling the growth continued customer demand is not established. How much of the $372,000 is that reclassification is not established either: $65,000 is only the net fall on 4200, and $80,000 could have moved into bundled pricing while other freight billings rose $15,000. The ask is a billing bridge for 4200 by customer.","tell":"When one revenue line falls while a related one rises, ask whether anything moved between them, and ask for the bridge rather than reading the net fall as the amount that moved.","post":{"flag":"Accept","stand":"Reject"}},{"n":13,"icon":"scales","acct":"5000","name":"Cost of product sold","prior":3930000,"current":4278000,"memo":"Cost of product sold rose $348,000 against a $372,000 rise in product revenue. Product gross profit rose from $1,310,000 to $1,334,000, while product gross margin fell from 25.0 percent in May to 23.8 percent in June. The category report points to a shift toward lower margin produce and dairy lines as the likely cause, and a category sales and cost bridge has been requested to confirm it.","file":["Product gross margin is account 4000 less account 5000, divided by account 4000.","Account 4000 ran $5,240,000 in May and $5,612,000 in June. Account 5000 ran $3,930,000 and $4,278,000.","June sales by category: produce and dairy rose from 31 to 36 percent of product revenue, and those two categories carry the lowest margins (category report on file).","The category report carries revenue shares only. No category cost is in it, and no category sales and cost bridge has been supplied."],"key":"stand","type":"clean line","why":"Recompute it and the figures tie: margin falls from 25.0 percent to 23.8, a fall of 1.2 percentage points, while gross profit dollars still rise $24,000, and the memo reports both rather than blending them. The mix sentence is offered as a likely cause with a bridge requested, which is as far as the category report on file can carry it, so there is nothing here to reject.","over":"A margin that falls while gross profit dollars rise is not a contradiction, and this memo states both. The mix claim is written as a hypothesis with the bridge requested, not asserted as fact.","tell":"Recompute the ratio, and keep gross profit dollars separate from the margin percentage, before you decide the memo buried something.","post":{"flag":"Accept","stand":"Reject"}},{"n":14,"icon":"bank","acct":"7100","name":"Interest expense","prior":61200,"current":92400,"memo":"Interest expense rose $31,200 on the depot equipment additions that also sit in depreciation.","file":["Depreciation, account 7000, was $128,000 in May and $128,000 in June.","No fixed asset additions were recorded in May or June.","The revolver balance rose from $3.1 million to $5.6 million on June 3.","No draw dates, daily balances, rates or fee schedule were supplied, and the memo does not mention the revolver."],"key":"flag","type":"unsupported driver","why":"Nothing was added to fixed assets and depreciation did not move, so the equipment story is not established by anything supplied. The revolver rose $2.5 million on 3 June and the memo never mentions it, which makes the draw the candidate to investigate rather than the proved cause: dates, balances, rates and fees would be needed to quantify how much of the $31,200 it explains.","tell":"The memo pointed at another account, so go and look at that account before you accept the sentence.","post":{"flag":"Accept","stand":"Reject"}}]};
-var CASE2_FALLBACK = {"version":"brightwater-v2","date":"2026-09-13","company":"Brightwater Dental Partners, PLLC","period":"June close, prepared from the practice general ledger","caption":"The five accounts the second memo was written against.","threshold":"A line owes commentary only when it clears both $25,000 and 10 percent.","policyScope":"The threshold sets what the monthly management report has to explain. It does not make a known error, or anything else that looks wrong, exempt from attention.","evidenceNote":"Every sentence under On file is a verified case assumption. A fact that is not listed was not supplied, which is not the same as saying the practice has no such document.","ledger":[["4010","Patient service revenue, net",742000,803500,1],["4220","Orthodontic plan revenue",96000,138400,1],["5210","Dental supplies and lab fees",138500,191200,1],["6110","Hygienist wages",214000,268900,1],["6610","Marketing and patient outreach",18400,24100,1]],"groups":[{"title":"Revenue","accts":["4010","4220"],"total":"Total revenue"},{"title":"Clinical cost of care","accts":["5210"],"total":"Total clinical cost of care"},{"title":"Operating expenses","accts":["6110","6610"],"total":"Total operating expenses"}],"cards":[{"n":1,"icon":"truck","acct":"5210","name":"Dental supplies and lab fees","prior":138500,"current":191200,"memo":"Dental supplies and lab fees eased to $191,200 in June as the group moved its crown and bridge work to a lower priced lab.","file":["The two associate dentists who started in May began seeing a full schedule of patients in June.","The lab bills Brightwater in the month a case is sent out, and every June case has been billed.","A line owes commentary only when it clears both $25,000 and 10 percent."],"key":"flag","type":"wrong direction","why":"Supplies and lab fees rose $52,700, up 38.1 percent, so the sentence has the movement backwards and the reason for an increase that size is still missing. The cheaper lab is not disproved by the total: lower prices per case can sit inside higher total spending when case volume rises.","tell":"The memo used the word eased next to a June balance that is higher than May's.","post":{"flag":"Accept","stand":"Reject"}},{"n":2,"icon":"coins","acct":"4010","name":"Patient service revenue, net","prior":742000,"current":803500,"memo":"Patient service revenue rose $61,500, which is 8.3 percent of May, so the movement fails the percentage leg of the threshold and this line carries no driver.","file":["$61,500 is the largest dollar movement on this statement.","A line owes commentary only when it clears both $25,000 and 10 percent."],"key":"stand","type":"clean line","why":"Recompute it and the memo is right on both figures, because $61,500 against a May balance of $742,000 is 8.3 percent, so the percentage leg is not met and no explanation is required under this policy.","over":"The dollar figure is the biggest one on the page, and the largest movement still owes nothing until the percentage leg clears as well.","tell":"Both legs have to clear before a line owes anything, and 8.3 percent never reaches 10.","post":{"flag":"Accept","stand":"Reject"}},{"n":3,"icon":"calendar","acct":"4220","name":"Orthodontic plan revenue","prior":96000,"current":138400,"memo":"Orthodontic plan revenue of $138,400 includes the eleven treatment plans families paid in full during June, and the whole payment on each plan was taken to revenue in June.","file":["Orthodontic plans run eighteen months and the practice earns the fee as treatment is delivered.","The eleven plans paid in full during June carry a combined fee of $38,500, and treatment on all eleven starts in July.","No separately earned setup, records or initial assessment service was delivered on those eleven plans in June.","Brightwater closes on the fourth business day of the following month."],"key":"flag","type":"timing","why":"The file earns these fees as treatment is delivered, treatment on all eleven plans starts in July, and no separately earned June service exists on them, so $38,500 collected in advance sits in June revenue instead of deferred revenue. Take it out and June is $99,900, up $3,900 or 4.1 percent. How the fee is then earned across the eighteen months is a separate question the plan length alone does not settle.","tell":"Cash in the door in June is not revenue in June when the work it pays for happens later.","post":{"flag":"Accept","stand":"Reject"}},{"n":4,"icon":"brief","acct":"6610","name":"Marketing and patient outreach","prior":18400,"current":24100,"memo":"Marketing and patient outreach rose $5,700, or 31.0 percent, on the new patient mailer that went out in the first week of June, and the movement fails the dollar leg of the threshold.","file":["The June mailer was printed and delivered in the first week of June. The $5,700 vendor invoice is recorded in June.","May carried $18,400 of recurring outreach spend, and the same recurring items continue unchanged in June.","A line owes commentary only when it clears both $25,000 and 10 percent."],"key":"stand","type":"clean line","why":"The mailer was delivered in June and its $5,700 invoice is recorded in June, and $18,400 of unchanged recurring spend plus that $5,700 reconciles the whole of June's $24,100. $5,700 never reaches $25,000, so nothing was owed on this line and the memo explained it anyway and got it right.","over":"Thirty one percent reads alarming until you test the dollar leg. The expense sits in June because the mailer was delivered in June, not merely because the invoice is dated then.","tell":"Test the dollar leg before the percentage talks you into a flag, and check delivery rather than invoice date.","post":{"flag":"Accept","stand":"Reject"}},{"n":5,"icon":"people","acct":"6110","name":"Hygienist wages","prior":214000,"current":268900,"memo":"Hygienist wages increased $44,900 after the second hygiene chair opened at the Ashburn office on June 1.","file":["The second hygiene chair added one full time hygienist from June 1, and the payroll register is on file.","No payroll bridge was supplied, so nothing establishes what the second chair cost in June.","No other sentence in the memo touches this account."],"key":"flag","type":"arithmetic","why":"The account moved $54,900 and the memo says $44,900, so the figure does not tie to the ledger. Nothing supplied establishes $44,900 as the cost of the second chair either, so the $10,000 difference cannot be assigned to anything. The ask is a payroll bridge, not a reason invented for the remainder.","tell":"The memo handed you a number, so check it against the ledger before you read the reason attached to it.","post":{"flag":"Accept","stand":"Reject"}}]};
+var CASE2_FALLBACK = {"version":"brightwater-v3","date":"2026-09-13","mode":"assessment","company":"Brightwater Dental Partners, PLLC","period":"June close, prepared from the practice general ledger","caption":"The five accounts the second memo was written against.","threshold":"A line owes commentary only when it clears both $25,000 and 10 percent.","policyScope":"The threshold sets what the monthly management report has to explain. It does not make a known error, or anything else that looks wrong, exempt from attention.","evidenceNote":"Every sentence under On file is a verified case assumption. A fact that is not listed was not supplied, which is not the same as saying the practice has no such document.","assessmentNote":"Every figure in this memo ties to the ledger and every direction word is right, so arithmetic, direction and the threshold reading are settled before you start. What is left on each line is whether the cause the memo names is carried by something on file.","ledger":[["4010","Patient service revenue, net",742000,803500,1],["4220","Orthodontic plan revenue",96000,138400,1],["5210","Dental supplies and lab fees",138500,191200,1],["6110","Hygienist wages",214000,268900,1],["6610","Marketing and patient outreach",18400,24100,1]],"groups":[{"title":"Revenue","accts":["4010","4220"],"total":"Total revenue"},{"title":"Clinical cost of care","accts":["5210"],"total":"Total clinical cost of care"},{"title":"Operating expenses","accts":["6110","6610"],"total":"Total operating expenses"}],"cards":[{"n":1,"icon":"box","acct":"5210","name":"Dental supplies and lab fees","prior":138500,"current":191200,"memo":"Dental supplies and lab fees rose $52,700, or 38.1 percent, on the implant cases the new surgical suite took on in June.","file":["The surgical suite at the Ashburn office opened on 1 June.","No case mix report, no lab invoice summary and no implant case count was supplied for May or for June.","Nothing on file states how many cases the surgical suite took in June or what those cases cost.","A line owes commentary only when it clears both $25,000 and 10 percent."],"key":"flag","type":"unsupported driver","why":"The figures tie and the direction is right, so the arithmetic is not what fails here. Nothing supplied connects the surgical suite to the $52,700: there is no case mix report, no lab invoice summary and no implant count, so the driver is not established from the evidence on file, which is a smaller claim than saying it is false. A lab invoice summary by case type for May and June would settle it.","tell":"The figure ties, so read the reason instead and ask which document would prove it.","post":{"flag":"Accept","stand":"Reject"}},{"n":2,"icon":"people","acct":"6110","name":"Hygienist wages","prior":214000,"current":268900,"memo":"Hygienist wages rose $54,900, or 25.7 percent, on the second hygiene chair that opened at the Ashburn office on 1 June.","file":["The second hygiene chair opened at the Ashburn office on 1 June, and the staffing plan for it is on file.","The June payroll register is on file. Two hygienists hired for the second chair were paid $54,900 in June between them.","No other hygienist rate, hour or headcount changed between May and June, so the two new hygienists are the whole of the movement.","A line owes commentary only when it clears both $25,000 and 10 percent."],"key":"stand","type":"clean line","why":"The figures tie, the direction is right, and the payroll register on file puts the whole $54,900 on the two hygienists hired for the second chair with no other hygienist pay moving, so the cause is carried by a document rather than asserted. The line clears both legs of the threshold and the commentary it owes is the commentary it received.","over":"The largest movement on the statement is not automatically the weakest sentence, and the payroll register carries this one from end to end.","tell":"Ask which document would prove the sentence, and here the payroll register does.","post":{"flag":"Accept","stand":"Reject"}},{"n":3,"icon":"scales","acct":"4220","name":"Orthodontic plan revenue","prior":96000,"current":138400,"memo":"","file":["No sentence anywhere in the memo mentions account 4220.","No plan count, contract schedule or deferred revenue rollforward was supplied for June.","A line owes commentary only when it clears both $25,000 and 10 percent."],"key":"flag","type":"no explanation","why":"$42,400 is 44.2 percent of May and clears both legs of the threshold with room to spare, and the memo says nothing about this account at all, so the largest percentage movement on the statement reaches the reviewer with no sentence attached to it. The ask is the plan schedule and a deferred revenue rollforward for June rather than a cause you supply yourself.","tell":"Read the ledger for what the memo left out, not only for what it got wrong.","post":{"flag":"Accept","stand":"Reject"}},{"n":4,"icon":"coins","acct":"4010","name":"Patient service revenue, net","prior":742000,"current":803500,"memo":"Patient service revenue rose $61,500, or 8.3 percent, as the two associate dentists who started in May reached a full patient schedule in June. The movement fails the percentage leg of the threshold.","file":["The two associate dentists started in May.","No production report by provider, patient visit count or fee schedule was supplied for May or for June, so nothing states how much of the movement the two associates account for.","This line fails the percentage leg of the threshold, so no commentary was required on it. The memo explains it anyway, and that explanation is what is under review.","A line owes commentary only when it clears both $25,000 and 10 percent."],"key":"flag","type":"unsupported driver","why":"$61,500 is 8.3 percent of May and the threshold reading is right, so the figures are not what fails here. Nothing supplied ties the two associates to the $61,500, because there is no production report by provider and no visit count, so the driver is not established from the evidence on file. A production report by provider for both months would settle it, and a line owing no commentary does not make an unsupported sentence hold once the memo writes it.","tell":"A sentence nobody required still has to be supported once the memo puts it on the page.","post":{"flag":"Accept","stand":"Reject"}},{"n":5,"icon":"brief","acct":"6610","name":"Marketing and patient outreach","prior":18400,"current":24100,"memo":"Marketing and patient outreach rose $5,700, or 31.0 percent, on the new patient mailer delivered in the first week of June. The movement fails the dollar leg of the threshold.","file":["The mailer was printed and delivered in the first week of June, and the $5,700 vendor invoice for it is recorded in June.","May carried $18,400 of recurring outreach spend and the same recurring items continue unchanged in June, so $18,400 plus the $5,700 mailer is the whole of June's $24,100.","This line fails the dollar leg of the threshold, so no commentary was required on it. The memo explains it anyway, and that explanation is what is under review.","A line owes commentary only when it clears both $25,000 and 10 percent."],"key":"stand","type":"clean line","why":"The figures tie, the direction is right, and the vendor invoice and the unchanged recurring spend on file reconcile the whole of June's $24,100, so the mailer is a supported cause rather than an asserted one. The threshold reading is right as well, because $5,700 never reaches $25,000.","over":"Thirty one percent reads alarming until you test the dollar leg, and the invoice and the recurring spend on file account for every dollar of this movement.","tell":"A cause carried by a document on file holds, whatever the percentage looks like.","post":{"flag":"Accept","stand":"Reject"}}]};
 /* BUILD:CASES-END */
 
 var CASE1 = CASE1_FALLBACK, CASE2 = CASE2_FALLBACK;
 var CASE_SOURCE = "inline fallback";
 var ROWS, ROWS2, THRESHOLD, POLICY_SCOPE, EVIDENCE_NOTE, CARDS, CARDS2, GROUPS, GROUPS2, BOOK1, BOOK2;
+/* round two runs in assessment mode when its case file says so: no reveal between lines,
+   no score, no streak and no track, and everything comes back at once at the end */
+var ASSESS = false;
 
 /* Eight of the fourteen Halyard lines carry a problem and six are clean. Neither number
    is printed anywhere, because a player who knew the split could work the odds instead
@@ -477,13 +555,14 @@ function bindCases(){
   GROUPS2 = CASE2.groups;
   BOOK1 = {rows:ROWS, groups:GROUPS, name:CASE1.company, sub:CASE1.period, cap:CASE1.caption};
   BOOK2 = {rows:ROWS2, groups:GROUPS2, name:CASE2.company, sub:CASE2.period, cap:CASE2.caption};
+  ASSESS = CASE2.mode === "assessment";
 }
 
 /* the fetch, with the generated copy behind it. Nothing renders until one of the two wins. */
 function loadCases(then){
   function fallback(){ CASE_SOURCE = "inline fallback"; bindCases(); then(); }
   if(typeof fetch !== "function"){ return fallback(); }
-  var want = ["cases/halyard-v3.json", "cases/brightwater-v2.json"];
+  var want = ["cases/halyard-v3.json", "cases/brightwater-v3.json"];
   Promise.all(want.map(function(u){
     return fetch(u, {cache:"no-store"}).then(function(r){
       if(!r.ok) throw new Error(u+" "+r.status);
@@ -500,48 +579,89 @@ function loadCases(then){
 
 
 /* ---------- state ---------- */
-/* organizations, tapped on the way in so the pooled results can be counted by chapter */
-var ORGS = ["Beta Alpha Psi", "ACFE", "ASM", "NABA", "AAA", "GMU Student", "Professor"];
+/* organizations, tapped on the way in so the pooled results can be counted by chapter.
+   "Outside Mason" is the practitioner route: somebody with no campus tie answers truthfully
+   rather than claiming an affiliation they do not have. */
+var ORGS = ["Beta Alpha Psi", "ACFE", "ASM", "NABA", "AAA", "GMU Student", "Professor", "Outside Mason"];
+
+/* one attempt identifier per run, reused by every retry so a retry cannot double count */
+function newAttemptId(){
+  var t = Date.now().toString(36);
+  var r = Math.floor(Math.random()*1679616).toString(36);
+  while(r.length < 4) r = "0" + r;
+  return "att-" + t + "-" + r;
+}
 
 var S = {
-  step:0, codename:"", orgs:[],
-  calls:[], basis:[], words:[], confPost:null, qd:null,
+  step:0, codename:"", orgs:[], prepicks:[], prepickSkipped:false,
+  calls:[], basis:[], words:[], secs:[], confPost:null, qd:null,
   caught:0, cleared:0, falseFlags:0, streak:0, best:0, started:0,
-  lapStart:0, lapEnd:0,
+  lapStart:0, lapEnd:0, itemStart:0,
   /* round two keeps its own counters, because the fresh case is scored on its own and
      the rank and the badges are still read off the fourteen trained lines */
-  r2calls:[], r2basis:[], r2words:[], r2caught:0, r2cleared:0, r2false:0, r2Start:0, r2End:0
+  r2calls:[], r2basis:[], r2words:[], r2secs:[], r2caught:0, r2cleared:0, r2false:0,
+  r2Start:0, r2End:0, r2Revealed:0,
+  attemptId:newAttemptId(), runIndex:1, testAttempt:TEST_MODE,
+  sendState:"not sent", sendAttempts:0, completedAt:0
 };
-for(var i=0;i<14;i++){ S.calls.push(null); S.basis.push(null); S.words.push(""); }
-for(var i2=0;i2<5;i2++){ S.r2calls.push(null); S.r2basis.push(null); S.r2words.push(""); }
+for(var i=0;i<14;i++){ S.calls.push(null); S.basis.push(null); S.words.push(""); S.secs.push(0); }
+for(var i2=0;i2<5;i2++){ S.r2calls.push(null); S.r2basis.push(null); S.r2words.push(""); S.r2secs.push(0); }
 
 var screen = document.getElementById("screen");
 
+/* ---------- the run survives a refresh ----------
+   Everything above lives in sessionStorage under one key, written after every state change,
+   so a reload drops the player back on the screen they were on with their calls intact.
+   It is per tab and it goes when the tab goes, which is the right lifetime for a drill. */
+var SKEY = "btm.run.v1";
+var restoring = false;
+function saveRun(){
+  if(restoring) return;
+  try{ window.sessionStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){}
+}
+function clearRun(){ try{ window.sessionStorage.removeItem(SKEY); }catch(e){} }
+function restoreRun(){
+  var raw = null;
+  try{ raw = window.sessionStorage.getItem(SKEY); }catch(e){ return false; }
+  if(!raw) return false;
+  var was;
+  try{ was = JSON.parse(raw); }catch(e){ return false; }
+  if(!was || typeof was !== "object" || !was.attemptId) return false;
+  if(!Array.isArray(was.calls) || was.calls.length !== 14) return false;
+  if(!Array.isArray(was.r2calls) || was.r2calls.length !== 5) return false;
+  restoring = true;
+  Object.keys(was).forEach(function(k){ S[k] = was[k]; });
+  restoring = false;
+  /* a send that was in flight when the tab reloaded is not a send that landed */
+  if(S.sendState === "sending") S.sendState = "not sent";
+  S.testAttempt = S.testAttempt || TEST_MODE;
+  return true;
+}
+
 function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
-function go(n){ S.step = n; render(); window.scrollTo(0,0); }
+function go(n){ S.step = n; saveRun(); render(); window.scrollTo(0,0); }
 function money(v){ return "$" + Math.round(Math.abs(v)).toLocaleString("en-US"); }
 function pctOf(c){ return (Math.abs(c.current-c.prior)/c.prior*100).toFixed(1); }
 function dirWord(c){ return c.current>=c.prior ? "up" : "down"; }
 
 /* ---------- the track. Fourteen segments, one car, a chequered flag at the end. ---------- */
 var CAR_X0 = 9, CAR_X1 = 283;
-/* nineteen segments since 12 September 2026: fourteen trained lines and five fresh ones.
-   The tick at fourteen is gold, so the handover to the second company reads on the track. */
-var SEGS = 19, SEG1 = 14;
+/* fourteen segments, one per trained line. Round two runs in assessment mode, where a car
+   that moved or changed colour would tell the player how they were doing, so the whole bar
+   comes off the screen from the bridge to the results and the finish sits at line fourteen. */
+var SEGS = 14;
 function buildTrack(){
   var ticks = "", k, x;
   for(k=1;k<SEGS;k++){
     x = CAR_X0 + (k/SEGS)*(CAR_X1-CAR_X0);
-    ticks += (k===SEG1)
-      ? '<rect x="'+(x-0.5).toFixed(1)+'" y="8" width="1" height="9" fill="var(--mason-gold)" opacity=".95"/>'
-      : '<rect x="'+(x-0.4).toFixed(1)+'" y="9" width="0.8" height="7" fill="#fff" opacity=".7"/>';
+    ticks += '<rect x="'+(x-0.4).toFixed(1)+'" y="9" width="0.8" height="7" fill="#fff" opacity=".7"/>';
   }
   var chq = "", r, c;
   for(r=0;r<4;r++){ for(c=0;c<2;c++){
     if((r+c)%2===0) chq += '<rect x="'+(287.4+c*3.4)+'" y="'+(8+r*3.5)+'" width="3.4" height="3.5" fill="var(--mason)"/>';
   } }
   document.getElementById("track").innerHTML =
-    '<svg id="trk" viewBox="0 0 300 26" role="img" aria-label="Nineteen lines, one segment each">'+
+    '<svg id="trk" viewBox="0 0 300 26" role="img" aria-label="Fourteen lines, one segment each">'+
       '<rect x="4" y="19" width="292" height="3.4" rx="1.7" fill="#ece6d8"/>'+
       '<rect x="4" y="8" width="292" height="9" rx="4.5" fill="#e6e0d2"/>'+
       '<rect id="fill" x="4" y="8" width="0.1" height="9" rx="4.5" fill="var(--mason)" opacity=".32"/>'+
@@ -565,7 +685,9 @@ function buildTrack(){
     '</svg>';
 }
 function doneIn(list){ return list.filter(function(v){ return v!==null; }).length; }
-function lapsDone(){ return doneIn(S.calls) + doneIn(S.r2calls); }
+function lapsDone(){ return doneIn(S.calls); }
+/* the bar is off from the round two bridge through the results screen */
+function barQuiet(){ return S.step>=17 && S.step<=22 || S.step===92; }
 function paintTrack(){
   var done = lapsDone();
   var x = CAR_X0 + (done/SEGS)*(CAR_X1-CAR_X0);
@@ -626,7 +748,10 @@ function lapText(){
 function lapMinutes(){ return String(Math.max(1, Math.round(lapMs()/60000))); }
 
 function progress(){
-  paintTrack();
+  var trk = document.getElementById("track");
+  var quiet = barQuiet();
+  if(trk) trk.hidden = quiet;
+  if(!quiet) paintTrack();
   var lab = document.getElementById("step");
   var sc = document.getElementById("score");
   if(S.step>=3 && S.step<=16){
@@ -635,9 +760,11 @@ function progress(){
     if(seen){ sc.classList.remove("hidden"); sc.textContent = "Right "+(S.caught+S.cleared)+" of "+seen; }
     else sc.classList.add("hidden");
   } else if(S.step>=18 && S.step<=22){
+    /* assessment: progress and nothing else. No running score, because a pill that moved
+       after every call would tell the player whether the last one landed. */
     var seen2 = doneIn(S.r2calls);
-    lab.textContent = "Fresh line "+(S.step-17)+" of 5";
-    if(seen2){ sc.classList.remove("hidden"); sc.textContent = "Right "+(S.r2caught+S.r2cleared)+" of "+seen2; }
+    lab.textContent = ASSESS ? ((S.step-17)+" of 5") : ("Fresh line "+(S.step-17)+" of 5");
+    if(!ASSESS && seen2){ sc.classList.remove("hidden"); sc.textContent = "Right "+(S.r2caught+S.r2cleared)+" of "+seen2; }
     else sc.classList.add("hidden");
   } else if(S.step===0){ lab.textContent=""; sc.classList.add("hidden"); }
   else { lab.textContent = "Second Pass"; sc.classList.add("hidden"); }
@@ -790,9 +917,10 @@ function render(){
   if(s===2) return roundOne();
   if(s>=3 && s<=16) return card(s-3);
   if(s===90) return howScreen();
+  if(s===91) return noticeScreen();
+  if(s===92) return r2Results();
   if(s===17) return bridge();
   if(s>=18 && s<=22) return card2(s-18);
-  if(s===23) return submitScreen();
   if(s>=24) return done();
 }
 
@@ -887,6 +1015,30 @@ function howScreen(){
 var howFrom = 0;
 function openHow(){ howFrom = S.step; go(90); }
 
+/* ---------- the data notice ----------
+   It sits between the intro and the codename screen, so nothing has been collected by the
+   time it is read. The wording is the same on screen as it is in the README. */
+var NOTICE = {
+  head: "What this records",
+  items: [
+    "What is collected: the codename you pick, the chapters you tap, your call on each of the nineteen lines, the basis chips behind each call, the optional line of your own words, and how long each line and each round took you.",
+    "A codename is a pseudonym and not anonymity. Anyone who knows which codename you chose can read your run, so pick one you are willing to be known by.",
+    "Where it goes if you send it: the Google Form responses sheet owned by Khaled Alkurd, who built this drill and writes the findings from it.",
+    "You can finish the whole run without sending anything. At the end you can save your own record as a file, and sending your results to the form is a separate button you do not have to press."
+  ]
+};
+function noticeScreen(){
+  screen.innerHTML =
+    icon("brief")+
+    '<h2>Before you pick a codename</h2>'+
+    '<div class="notice"><h3>'+esc(NOTICE.head)+'</h3><ul>'+
+      NOTICE.items.map(function(t){ return '<li>'+esc(t)+'</li>'; }).join("")+
+    '</ul>'+
+    '<p class="noticever">Notice version '+esc(NOTICE_VERSION)+', product '+esc(PRODUCT_STAMP)+'.</p></div>'+
+    '<button class="btn" id="noticego">Continue</button>';
+  document.getElementById("noticego").addEventListener("click", function(){ go(1); });
+}
+
 function intro(){
   screen.innerHTML =
     icon("robot", true)+
@@ -897,7 +1049,7 @@ function intro(){
     '<div class="linkrow"><button class="howlink" id="howlink">How this works in a real close</button>'+
       '<a class="howlink" href="checker.html">Checker</a>'+
       '<a class="howlink" href="review.html">For reviewers: the entry in one page</a></div>';
-  document.getElementById("go").addEventListener("click", function(){ S.started = Date.now(); go(1); });
+  document.getElementById("go").addEventListener("click", function(){ S.started = Date.now(); go(91); });
   document.getElementById("howlink").addEventListener("click", openHow);
 }
 
@@ -968,19 +1120,81 @@ function wireFlagCards(){
   });
 }
 
+/* ---------- the ledger-only judgment ----------
+   One optional step on the orientation screen, before a single memo sentence is read: up to
+   three accounts the player would ask about first, tapped rather than typed, so it costs a
+   few seconds. Skip is a real answer and is recorded as one. The picks post into the round
+   one free text question, entry.1115022539, which collected nothing before this. */
+var PREPICK_MAX = 3;
+function prepickBlock(){
+  var chips = ROWS.map(function(r,idx){
+    return '<button type="button" class="chip sm" data-p="'+idx+'" aria-pressed="false">'+
+      esc(r[0]+" "+r[1])+'</button>';
+  }).join("");
+  return '<section class="prepick">'+
+    '<h3>Before the memo</h3>'+
+    '<p>Tap up to three lines you would ask about first, or skip. Nothing here is scored, '+
+      'and it takes a few seconds.</p>'+
+    '<div class="chips" id="prepicks" role="group" aria-label="Lines you would ask about first">'+chips+'</div>'+
+    '<div class="two"><button class="btn call" id="preskip">Skip</button>'+
+      '<button class="btn call" id="precont">Continue</button></div>'+
+  '</section>';
+}
+function wirePrepicks(){
+  var box = document.getElementById("prepicks");
+  if(!box) return;
+  var picked = S.prepicks.slice();
+  var btns = Array.prototype.slice.call(box.querySelectorAll(".chip"));
+  function paint(){
+    btns.forEach(function(b){
+      var code = ROWS[Number(b.getAttribute("data-p"))][0];
+      var on = picked.indexOf(code) > -1;
+      b.classList.toggle("on", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+      b.disabled = !on && picked.length >= PREPICK_MAX;
+    });
+  }
+  btns.forEach(function(b){
+    function toggle(){
+      var code = ROWS[Number(b.getAttribute("data-p"))][0];
+      var at = picked.indexOf(code);
+      if(at > -1) picked.splice(at,1);
+      else if(picked.length < PREPICK_MAX) picked.push(code);
+      else return;
+      paint();
+    }
+    b.addEventListener("click", toggle);
+    b.addEventListener("keydown", function(e){
+      if(e.key === " " || e.key === "Spacebar" || e.code === "Space" || e.key === "Enter"){ e.preventDefault(); toggle(); }
+    });
+  });
+  paint();
+  function leave(skipped){
+    S.prepicks = skipped ? [] : picked.slice();
+    S.prepickSkipped = skipped || picked.length === 0;
+    saveRun();
+    go(3);
+  }
+  document.getElementById("precont").addEventListener("click", function(){ leave(false); });
+  document.getElementById("preskip").addEventListener("click", function(){ leave(true); });
+  /* the sticky bar on a phone and the rail on a desk are the escape hatch: they leave the
+     picks behind rather than pretending a player who never scrolled made one */
+  Array.prototype.forEach.call(screen.querySelectorAll("[data-go3]"), function(b){
+    b.addEventListener("click", function(){ leave(true); });
+  });
+}
+
 function roundOne(){
   var hero = '<div class="hero"><h2>The ledger, May against June</h2>'+
     '<p>Read it before the memo. You can open it again from any card.</p></div>';
-  var go3 = '<button class="btn" data-go3="1">Continue</button>';
+  var go3 = '<button class="btn ghost" data-go3="1">Skip the picks and continue</button>';
   screen.innerHTML = hero+
     '<div class="orient stmtwrap">'+
-      '<div class="orientmain">'+flagCard()+statement("", true)+go3+'</div>'+
+      '<div class="orientmain">'+flagCard()+statement("", true)+prepickBlock()+'</div>'+
       '<aside class="orientside">'+flagCard()+go3+'</aside>'+
     '</div>'+
     '<div class="stickygo">'+go3+'</div>';
-  Array.prototype.forEach.call(screen.querySelectorAll("[data-go3]"), function(b){
-    b.addEventListener("click", function(){ go(3); });
-  });
+  wirePrepicks();
   wireFlagCards();
   /* on a desk the legend is always open */
   if(window.matchMedia && window.matchMedia("(min-width:900px)").matches){
@@ -1015,6 +1229,8 @@ function cardBody(c, round, i){
 function card(i){
   var c = CARDS[i];
   if(!S.lapStart) S.lapStart = Date.now();
+  S.itemStart = Date.now();
+  saveRun();
   screen.innerHTML =
     '<div class="card">'+
       cardBody(c, 1, i)+
@@ -1078,7 +1294,7 @@ function basisStep(i, val, round){
     /* the space bar and the return key, spelled out rather than left to the default,
        so the row works the same on a keyboard as it does under a thumb */
     b.addEventListener("keydown", function(e){
-      if(e.key === " " || e.key === "Spacebar" || e.key === "Enter"){ e.preventDefault(); toggle(); }
+      if(e.key === " " || e.key === "Spacebar" || e.code === "Space" || e.key === "Enter"){ e.preventDefault(); toggle(); }
     });
   });
   go2.addEventListener("click", function(){
@@ -1087,8 +1303,9 @@ function basisStep(i, val, round){
     var chosen = picked.map(function(k){ return opts[k]; });
     var wordsEl = document.getElementById("basiswords");
     var words = wordsEl ? wordsEl.value.replace(/[\r\n|]+/g," ").trim() : "";
-    if(round===2){ S.r2basis[i] = chosen; S.r2words[i] = words; answer2(i,val); }
-    else { S.basis[i] = chosen; S.words[i] = words; answer(i,val); }
+    var spent = S.itemStart ? Math.max(0, Math.round((Date.now()-S.itemStart)/1000)) : 0;
+    if(round===2){ S.r2basis[i] = chosen; S.r2words[i] = words; S.r2secs[i] = spent; answer2(i,val); }
+    else { S.basis[i] = chosen; S.words[i] = words; S.secs[i] = spent; answer(i,val); }
   });
   window.scrollTo(0,0);
 }
@@ -1154,20 +1371,60 @@ function reveal(i, right){
 
 /* ---------- round two. A company the player has never seen, scored on its own. ---------- */
 function bridge(){
+  var scored = ASSESS
+    ? '<p class="sub" style="margin-top:10px"><b>Round two is scored at the end, so you get no hints.</b> '+
+      'Nothing comes back between the lines, and all five verdicts arrive together once the fifth call is in.</p>'
+    : "";
+  var note = (ASSESS && CASE2.assessmentNote)
+    ? '<div class="file"><h4>What is already settled</h4><ul><li>'+esc(CASE2.assessmentNote)+'</li></ul></div>'
+    : "";
   screen.innerHTML =
     '<div class="card">'+
       '<div class="cardhead">'+icon("ledger")+'</div>'+
       '<h2>Round two: a memo you have not seen</h2>'+
       '<p class="sub">Another made-up company, a memo built the same way, same job. Five lines.</p>'+
       '<p class="tiny" style="margin:2px 0 0">Brightwater Dental Partners, a four office dental group.</p>'+
+      scored+
+      note+
       '<button class="btn" id="r2go">Continue</button>'+
     '</div>';
   document.getElementById("r2go").addEventListener("click", function(){ go(18); });
 }
 
+/* ---------- the results of round two, all five at once ----------
+   The first thing the player has seen since the bridge. Each line carries the call they made,
+   whether it agreed with the key, the error type and the reason, with their own basis under it. */
+function r2Results(){
+  if(!S.r2Revealed) S.r2Revealed = Date.now();
+  var blocks = CARDS2.map(function(c, idx){
+    var call = S.r2calls[idx] || "stand";
+    var right = call === c.key;
+    var said = (call === "flag") ? "You flagged it" : "You let it stand";
+    var verdict = right ? "Agrees with the key" : "Does not agree";
+    return '<section class="res '+(right?"good":"bad")+'">'+
+      '<div class="resline"><b>Line '+c.n+', '+esc(c.name)+', account '+c.acct+'</b></div>'+
+      '<div class="resline"><span class="rescall '+(right?"good":"bad")+'">'+verdict+'</span>'+
+        '<em>'+esc(c.type)+'</em></div>'+
+      '<p>'+esc((!right && c.key==="stand" && c.over) ? c.over : c.why)+'</p>'+
+      '<p class="yours">'+esc(said)+'. '+esc(basisText(S.r2basis[idx], S.r2words[idx]))+'</p>'+
+    '</section>';
+  }).join("");
+  screen.innerHTML =
+    '<div class="cardhead plain"><span class="revlabel">Round two, all five</span></div>'+
+    '<h2>How the five went</h2>'+
+    '<p class="sub">'+r2Right()+' of your five calls agree with the answer key. '+
+      'The figures and the directions were already right on every line, so each one turned on '+
+      'whether the cause was carried by something on file.</p>'+
+    blocks+
+    '<button class="btn" id="r2done">See how you did overall</button>';
+  document.getElementById("r2done").addEventListener("click", function(){ go(24); });
+}
+
 function card2(i){
   var c = CARDS2[i];
   if(!S.r2Start) S.r2Start = Date.now();
+  S.itemStart = Date.now();
+  saveRun();
   screen.innerHTML =
     '<div class="card">'+
       cardBody(c, 2, i)+
@@ -1187,15 +1444,15 @@ function answer2(i, val){
   S.r2calls[i] = val;
   if(i === 4) S.r2End = Date.now();
   var right = (val === c.key);
-  if(right){
-    if(c.key==="flag") S.r2caught++; else S.r2cleared++;
-    /* the streak carries on so the car behaves the same, and the best streak stays
-       frozen at what the fourteen trained lines earned, because the badge reads off those */
-    S.streak++;
-  } else {
-    if(val === "flag") S.r2false++;
-    S.streak = 0;
+  if(right){ if(c.key==="flag") S.r2caught++; else S.r2cleared++; }
+  else if(val === "flag"){ S.r2false++; }
+  if(ASSESS){
+    /* nothing is shown back: no verdict, no streak, no car and no colour. The counters are
+       still kept, and the player sees all five of them on the results screen at the end. */
+    saveRun();
+    return go(i === 4 ? 92 : S.step+1);
   }
+  S.streak = right ? S.streak+1 : 0;
   carFx(right);
   reveal2(i, right);
 }
@@ -1225,7 +1482,7 @@ function reveal2(i, right){
     splitBar(2)+
     '<button class="btn" id="next">'+(i===4?"See how you did":"Next line")+'</button>';
   wireLedger();
-  document.getElementById("next").addEventListener("click", function(){ go(S.step+1); });
+  document.getElementById("next").addEventListener("click", function(){ go(i===4 ? 24 : S.step+1); });
   window.scrollTo(0,0);
 }
 
@@ -1234,7 +1491,12 @@ function reveal2(i, right){
 
 
 /* ---------- generated summaries. Nothing here is typed by the player. ---------- */
-var ROUND1_NOTE = "Not collected. The ledger screen is orientation only in this version.";
+/* the round one free text question, entry.1115022539, now carries the ledger-only picks.
+   A skip posts as a skip rather than as an empty cell, so the two can be told apart. */
+function prepickLine(){
+  if(!S.prepicks || !S.prepicks.length) return "Prepicks: skipped.";
+  return "Prepicks: " + S.prepicks.join("; ") + ".";
+}
 /* the player's own basis, in the shape the response sheet reads:
    Basis: no source on file; wrong period | Words: the freight moved */
 function basisText(chips, words){
@@ -1287,16 +1549,25 @@ function r2Line(){
    responses sheet can be counted by chapter without a new form question. */
 function orgLine(){ return "Organizations: " + S.orgs.join("; ") + "."; }
 function caseLine(){
-  return "Cases: " + CASE1.version + " and " + CASE2.version + ", dated " + CASE1.date +
+  return "Cases: " + CASE1.version + " (practice, 14 lines) and " + CASE2.version +
+         " (" + (ASSESS ? "assessment" : "practice") + ", 5 lines), dated " + CASE1.date +
          ", loaded from " + CASE_SOURCE + ".";
 }
+function versionLine(){
+  return "Product: " + PRODUCT_STAMP + ". Notice: " + NOTICE_VERSION +
+         ". Mode: round one practice, round two " + (ASSESS ? "assessment" : "practice") +
+         (S.testAttempt ? ". TEST ATTEMPT, exclude from reports." : ".");
+}
 function summaryA(){
-  return orgLine() + " " + ROUND1_NOTE + " " + caseLine();
+  return orgLine() + " " + versionLine() + " " + caseLine();
 }
 
 function summaryB(){
   var miss = missedCards();
   var parts = [];
+  /* the attempt identifier. Every retry of the same run posts this same string, so a row
+     that appears twice is one attempt sent twice and must be counted once. */
+  parts.push("Attempt id: " + S.attemptId + ", run " + S.runIndex + " in this tab.");
   parts.push(miss.length
     ? "Lines missed: " + miss.map(function(c){ return c.n+" "+c.acct+" ("+c.type+")"; }).join("; ") + "."
     : "No lines missed.");
@@ -1378,7 +1649,8 @@ var PLACEHOLDERS = PLACEHOLDER_MODE === "empty"
 function payload(){
   var p = {};
   p["entry."+E.codename] = S.codename;
-  p["entry."+E.round1] = ROUND1_NOTE;
+  /* the ledger-only picks, taken before a memo sentence was read */
+  p["entry."+E.round1] = prepickLine();
   /* Four questions on the form are not asked in this version: expected quality, confidence
      before, close experience and, below, final confidence. All four are marked required and
      three of them are linear scales, so the posted value has to be one the question accepts.
@@ -1400,8 +1672,10 @@ function payload(){
   p["entry."+E.qb] = summaryB();
   /* question C asks the player nothing, so the fresh case rides here rather than
      costing the form a new question. The fourteen Why fields are left alone. */
-  p["entry."+E.qc] = r2Line() + " Fresh case: Brightwater Dental Partners, five lines, " +
-                     "a company the player had not seen. Not a player answer to question C.";
+  p["entry."+E.qc] = r2Line() + " Fresh case: " + CASE2.company + ", case version " +
+                     CASE2.version + ", five lines, " +
+                     (ASSESS ? "run as an assessment with no feedback between lines. " : "run as practice. ") +
+                     "A company the player had not seen. Not a player answer to question C.";
   p["entry."+E.qd] = lapMinutes();
   var fbzx = String(Math.floor(Math.random()*9007199254740991));
   p["fvv"] = "1";
@@ -1413,8 +1687,9 @@ function payload(){
 }
 
 function asText(){
-  var out = ["Second Pass: Beat the Machine at Mason", "Codename: "+S.codename, orgLine(), caseLine(), ""];
-  out.push("Round one: "+ROUND1_NOTE);
+  var out = ["Second Pass: Beat the Machine at Mason", "Codename: "+S.codename, orgLine(),
+             versionLine(), caseLine(), "Attempt id: "+S.attemptId, ""];
+  out.push("Round one: "+prepickLine());
   out.push("Four questions on the form were not asked in this version and carry a placeholder value, not an answer.");
   out.push("");
   for(var i=0;i<14;i++){
@@ -1434,13 +1709,138 @@ function asText(){
   return out.join("\n");
 }
 
-var submitted = false;
-function submitScreen(){
-  screen.innerHTML = icon("robot",true)+'<h2>Sending your calls</h2>';
-  if(submitted) return;
-  submitted = true;
+/* ---------- the attempt record ----------
+   The fields the build handoff calls the minimum attempt record, in the names this codebase
+   already uses. Everything shown to the player is in it, nothing is invented, and the four
+   form questions nobody was asked are reported as not asked rather than as answers. */
+function itemRecord(c, idx, round){
+  var call = (round===2) ? S.r2calls[idx] : S.calls[idx];
+  var chips = (round===2) ? S.r2basis[idx] : S.basis[idx];
+  var words = (round===2) ? S.r2words[idx] : S.words[idx];
+  var secs  = (round===2) ? S.r2secs[idx] : S.secs[idx];
+  return {
+    item: (round===2 ? "r2-" : "r1-") + c.n,
+    round: round,
+    caseVersion: (round===2 ? CASE2.version : CASE1.version),
+    mode: (round===2 && ASSESS) ? "assessment" : "practice",
+    account: c.acct,
+    accountName: c.name,
+    errorType: c.type,
+    /* one call per line in this build, so the original decision and the final decision are
+       the same value. They are kept apart because a later build lets a challenge change one. */
+    originalDecision: call,
+    finalDecision: call,
+    actualReasonChips: chips || [],
+    actualReasonWords: words || "",
+    evidenceReferences: (c.file || []).slice(),
+    confidence: null,
+    confidenceNote: "not asked in this version",
+    assistanceRevealed: false,
+    elapsedActiveSeconds: secs || 0,
+    skippedOrMissing: (call === null) ? "no call recorded" : null,
+    feedbackRevealedAt: (round===2 && ASSESS)
+      ? (S.r2Revealed ? new Date(S.r2Revealed).toISOString() : null)
+      : "immediately after the call",
+    keyDecision: c.key,
+    decisionResult: (call === c.key) ? "agrees with key" : "does not agree"
+  };
+}
+function attemptRecord(sentPayload){
+  var responses = [];
+  CARDS.forEach(function(c,i){ responses.push(itemRecord(c,i,1)); });
+  CARDS2.forEach(function(c,i){ responses.push(itemRecord(c,i,2)); });
+  var active = 0;
+  responses.forEach(function(r){ active += r.elapsedActiveSeconds; });
+  return {
+    record: "Second Pass attempt record",
+    recordFormat: "btm-attempt-1",
+    attempt: {
+      id: S.attemptId,
+      pseudonym: S.codename,
+      pseudonymNote: "A codename is a pseudonym and not anonymity.",
+      organizations: S.orgs.slice(),
+      role: null,
+      roleNote: "not collected in this version",
+      noticeVersion: NOTICE_VERSION,
+      productVersion: PRODUCT_STAMP,
+      caseVersions: {roundOne: CASE1.version, roundTwo: CASE2.version, caseSource: CASE_SOURCE},
+      form: FORM_POST,
+      modes: {roundOne: "practice", roundTwo: ASSESS ? "assessment" : "practice"},
+      firstAttempt: S.runIndex === 1,
+      runIndex: S.runIndex,
+      assistanceSource: "none. No model challenge runs in this build.",
+      started: S.started ? new Date(S.started).toISOString() : null,
+      completed: S.completedAt ? new Date(S.completedAt).toISOString() : null,
+      submissionState: S.sendState,
+      submissionAttempts: S.sendAttempts,
+      testAttempt: !!S.testAttempt,
+      testAttemptNote: S.testAttempt
+        ? "Test mode was on. Nothing was posted and this attempt is excluded from reports."
+        : "Test mode was off."
+    },
+    prepicks: {
+      picks: (S.prepicks || []).slice(),
+      skipped: !!S.prepickSkipped,
+      postedTo: "entry." + E.round1,
+      question: "Before the memo: tap up to three lines you would ask about first, or skip."
+    },
+    responses: responses,
+    scoring: {
+      keyVersions: {roundOne: CASE1.version, roundTwo: CASE2.version},
+      roundOne: {right: S.caught + S.cleared, of: 14, caught: S.caught,
+                 letStandCorrectly: S.cleared, falseFlags: S.falseFlags,
+                 longestRun: S.best, rank: rank()},
+      roundTwo: {right: r2Right(), of: 5, caught: S.r2caught,
+                 letStandCorrectly: S.r2cleared, falseFlags: S.r2false},
+      humanRubricScores: null,
+      scorerId: null,
+      outOfKeyFinding: null,
+      adjudication: null,
+      exclusionReason: S.testAttempt ? "test attempt" : null,
+      finalResolution: null,
+      rubricNote: "The three-dimension reasoning rubric is scored by a person outside this page."
+    },
+    timing: {
+      roundOneLapSeconds: Math.round(lapMs()/1000),
+      roundOneLapMinutesPosted: lapMinutes(),
+      roundTwoSeconds: r2Seconds(),
+      elapsedActiveSeconds: active
+    },
+    notAsked: {
+      questions: ["expected quality", "confidence before", "confidence after", "close experience"],
+      note: "Not asked on screen. The form marks all four required, so a placeholder the " +
+            "question accepts is posted. Drop these four columns rather than averaging them.",
+      placeholderMode: PLACEHOLDER_MODE
+    },
+    payload: sentPayload || payload(),
+    payloadNote: S.testAttempt
+      ? "Test mode. This is the payload the page would have sent, and it was not sent."
+      : (S.sendState === "sent, not confirmed"
+        ? "This payload was posted to the form. The receiver does not confirm receipt to this page."
+        : "This payload has not been posted.")
+  };
+}
+function recordText(){ return JSON.stringify(attemptRecord(window.__BTM_LAST_POST), null, 2); }
+
+/* ---------- the send ----------
+   Voluntary, and off entirely in test mode. A retry reuses the same attempt id, so two rows
+   under one id are one attempt sent twice and get counted once. The hidden frame's load event
+   proves the request left the page and nothing more, which is what the state says. */
+var sending = false;
+function sendResults(onState){
+  if(sending) return;
   var p = payload();
   window.__BTM_LAST_POST = p;
+  S.sendAttempts++;
+  if(S.testAttempt){
+    S.sendState = "not sent, test mode";
+    saveRun();
+    return onState();
+  }
+  sending = true;
+  S.sendState = "sending";
+  saveRun();
+  onState();
   var f = document.createElement("form");
   f.action = FORM_POST; f.method = "POST"; f.target = "gfsink"; f.style.display = "none";
   Object.keys(p).forEach(function(k){
@@ -1451,29 +1851,18 @@ function submitScreen(){
   document.body.appendChild(f);
   var settled = false;
   var sink = document.getElementById("gfsink");
-  var timer = setTimeout(function(){ if(!settled){ settled = true; failScreen(); } }, 12000);
-  sink.addEventListener("load", function(){
+  function finish(state){
     if(settled) return;
-    settled = true; clearTimeout(timer); go(24);
+    settled = true; sending = false;
+    S.sendState = state; saveRun(); onState();
+  }
+  var timer = setTimeout(function(){ finish("send did not go through"); }, 12000);
+  sink.addEventListener("load", function(){
+    clearTimeout(timer);
+    finish("sent, not confirmed");
   });
   try{ f.submit(); }
-  catch(err){ clearTimeout(timer); settled = true; failScreen(); }
-}
-
-function failScreen(){
-  screen.innerHTML =
-    icon("alert",true)+
-    '<h2>The send did not go through</h2>'+
-    '<p class="sub">Nothing is lost. Copy this and send it to Khaled.</p>'+
-    '<textarea id="dump" readonly style="min-height:220px">'+esc(asText())+'</textarea>'+
-    '<button class="btn" id="copy">Copy my answers</button>'+
-    '<button class="btn ghost" id="retry">Try sending again</button>';
-  document.getElementById("copy").addEventListener("click", function(){
-    var t = document.getElementById("dump");
-    t.select(); t.setSelectionRange(0,99999);
-    try{ document.execCommand("copy"); this.textContent = "Copied"; }catch(e){ this.textContent = "Select and copy"; }
-  });
-  document.getElementById("retry").addEventListener("click", function(){ submitted = false; go(23); });
+  catch(err){ clearTimeout(timer); finish("send did not go through"); }
 }
 
 /* ---------- the trophy, drawn to the tier ---------- */
@@ -1532,7 +1921,77 @@ function earnedLine(){
 }
 
 
+/* ---------- the two actions at the end ----------
+   The run is finished either way. One button hands the player their own record, the other
+   posts to the form, and neither is required to reach this screen. */
+function actionsBlock(){
+  return '<div class="actions">'+
+    '<h3>Your record</h3>'+
+    '<p>Everything this run collected, as a file you keep. It needs nobody\'s permission and it '+
+      'does not send anything.</p>'+
+    '<button class="btn ghost" id="saverec">Save my record</button>'+
+    '<div id="recwrap" hidden><textarea class="recordbox" id="recbox" readonly spellcheck="false"></textarea>'+
+      '<button class="btn ghost" id="copyrec">Copy the record</button></div>'+
+    '<h3 style="margin-top:18px">Send your results</h3>'+
+    '<p>Voluntary. It posts your calls to the Google Form responses sheet described in the '+
+      'notice at the start.</p>'+
+    '<button class="btn" id="sendres">Send my results</button>'+
+    '<p class="sendstate" id="sendstate"></p>'+
+  '</div>';
+}
+function wireActions(){
+  var wrap = document.getElementById("recwrap"), box = document.getElementById("recbox");
+  document.getElementById("saverec").addEventListener("click", function(){
+    var text = recordText();
+    box.value = text;
+    wrap.hidden = false;
+    var name = "second-pass-" + S.attemptId + ".json";
+    var saved = false;
+    try{
+      var blob = new Blob([text], {type:"application/json"});
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url; a.download = name;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+      saved = true;
+    }catch(e){ saved = false; }
+    this.textContent = saved ? ("Saved as " + name) : "Your record is below, copy it";
+  });
+  document.getElementById("copyrec").addEventListener("click", function(){
+    copyText(this, box.value, "Copied");
+  });
+  var state = document.getElementById("sendstate");
+  var btn = document.getElementById("sendres");
+  function paint(){
+    var s = S.sendState;
+    if(s === "sending"){ btn.disabled = true; btn.textContent = "Sending"; state.textContent = "Sending."; return; }
+    btn.disabled = false;
+    if(s === "sent, not confirmed"){
+      btn.textContent = "Send again";
+      state.textContent = "Sent. The receiver does not confirm receipt to this page. " +
+        "A second send reuses attempt id " + S.attemptId + ", so a retry cannot double count.";
+    } else if(s === "send did not go through"){
+      btn.textContent = "Try sending again";
+      state.textContent = "The send did not go through. Nothing is lost: save your record above " +
+        "and send it to Khaled, or try again. A retry reuses attempt id " + S.attemptId + ".";
+    } else if(s === "not sent, test mode"){
+      btn.textContent = "Send my results";
+      state.textContent = "Test mode is on, so nothing was sent. The payload the page would have " +
+        "posted is in your record above under \"payload\".";
+    } else {
+      btn.textContent = "Send my results";
+      state.textContent = S.testAttempt
+        ? "Test mode is on. This button writes the would-be payload into your record and posts nothing."
+        : "";
+    }
+  }
+  btn.addEventListener("click", function(){ sendResults(paint); });
+  paint();
+}
+
 function done(){
+  if(!S.completedAt){ S.completedAt = Date.now(); saveRun(); }
   var miss = missedCards();
   var miss2 = missedCards2();
   var freshBlock = miss2.length
@@ -1592,22 +2051,30 @@ function done(){
           ? "See the "+(miss.length+miss2.length)+" that got past you"
           : "See the full read out")+'</button>'+
       '<div id="missbox" hidden>'+coachInner+'</div>'+
+      actionsBlock()+
       '<button class="howlink" id="howlink">How this works in a real close</button>'+
     '</div>';
+  wireActions();
   document.getElementById("howlink").addEventListener("click", openHow);
   document.getElementById("step").textContent = "Done";
   document.getElementById("score").classList.add("hidden");
   /* a second run keeps the codename and the chips and posts its own row to the form */
   document.getElementById("playagain").addEventListener("click", function(){
-    S.calls = []; S.basis = []; S.words = [];
-    for(var k=0;k<14;k++){ S.calls.push(null); S.basis.push(null); S.words.push(""); }
-    S.r2calls = []; S.r2basis = []; S.r2words = [];
-    for(var k2=0;k2<5;k2++){ S.r2calls.push(null); S.r2basis.push(null); S.r2words.push(""); }
+    S.calls = []; S.basis = []; S.words = []; S.secs = [];
+    for(var k=0;k<14;k++){ S.calls.push(null); S.basis.push(null); S.words.push(""); S.secs.push(0); }
+    S.r2calls = []; S.r2basis = []; S.r2words = []; S.r2secs = [];
+    for(var k2=0;k2<5;k2++){ S.r2calls.push(null); S.r2basis.push(null); S.r2words.push(""); S.r2secs.push(0); }
     S.caught = 0; S.cleared = 0; S.falseFlags = 0; S.streak = 0; S.best = 0;
-    S.r2caught = 0; S.r2cleared = 0; S.r2false = 0; S.r2Start = 0; S.r2End = 0;
+    S.r2caught = 0; S.r2cleared = 0; S.r2false = 0; S.r2Start = 0; S.r2End = 0; S.r2Revealed = 0;
     S.confPost = null; S.qd = null;
-    S.started = Date.now(); S.lapStart = 0; S.lapEnd = 0;
-    submitted = false;
+    S.prepicks = []; S.prepickSkipped = false;
+    S.started = Date.now(); S.lapStart = 0; S.lapEnd = 0; S.itemStart = 0; S.completedAt = 0;
+    /* a second run is a second attempt, so it gets its own id rather than reusing the first
+       one, which is what keeps a retry of one run distinct from a fresh run */
+    S.attemptId = newAttemptId();
+    S.runIndex = (S.runIndex || 1) + 1;
+    S.sendState = "not sent"; S.sendAttempts = 0;
+    sending = false;
     go(1);
   });
   var mb = document.getElementById("missbox"), sm = document.getElementById("showmiss");
@@ -1633,16 +2100,44 @@ function done(){
   });
 }
 
+/* three taps on the footer line turn test mode on and off, for a facilitator standing at the
+   front of a room with no address bar to edit. It is a toggle, and the band says which way. */
+function wireTestTap(){
+  var foot = document.getElementById("masonfoot");
+  if(!foot) return;
+  var taps = 0, last = 0;
+  foot.addEventListener("click", function(){
+    var now = Date.now();
+    taps = (now - last < 700) ? taps + 1 : 1;
+    last = now;
+    if(taps >= 3){
+      taps = 0;
+      TEST_MODE = !TEST_MODE;
+      S.testAttempt = TEST_MODE;
+      if(!TEST_MODE && S.sendState === "not sent, test mode") S.sendState = "not sent";
+      saveRun();
+      paintTestBand();
+      render();
+    }
+  });
+}
+
 loadCases(function(){
+  restoreRun();
+  paintTestBand();
+  wireTestTap();
   buildTrack();
   render();
   /* the brand face lands after the first paint and the codename gets wider, so place it again */
-  if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ paintTrack(); });
-  window.addEventListener("resize", function(){ paintTrack(); });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ if(!barQuiet()) paintTrack(); });
+  window.addEventListener("resize", function(){ if(!barQuiet()) paintTrack(); });
   window.__BTM = S;
   window.__BTM_CARDS = CARDS;
   window.__BTM_CARDS2 = CARDS2;
-  window.__BTM_CASES = {source:CASE_SOURCE, one:CASE1.version, two:CASE2.version, date:CASE1.date};
+  window.__BTM_RECORD = attemptRecord;
+  window.__BTM_CASES = {source:CASE_SOURCE, one:CASE1.version, two:CASE2.version,
+                        date:CASE1.date, assessment:ASSESS, product:PRODUCT_STAMP,
+                        test:TEST_MODE, attempt:S.attemptId};
 });
 })();
 </script>
