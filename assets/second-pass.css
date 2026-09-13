@@ -252,3 +252,121 @@ td.mono{font-family:var(--mono);font-size:13px;white-space:nowrap;color:var(--in
 
 /* ---------- one focus ring ---------- */
 :focus-visible{outline:2px solid var(--mason);outline-offset:2px;border-radius:2px}
+
+/* =============================================================================
+   CHECKER LANE ADDITIONS — 13 September 2026
+   Components the checker introduced. Every rule a reader would notice as a
+   difference between two pages belongs here rather than in a page, so these are
+   written to be used anywhere: the promise band, the three-step strip, the
+   segmented control, an input with a unit, the four stat tiles, the actions
+   bar, the empty state and the table that cannot scroll sideways.
+   ADDITIVE ONLY. Nothing above this line is edited, and another lane is adding
+   its own block below this one.
+   ============================================================================= */
+
+/* ---------- the opening band: a promise, then three steps ---------- */
+.band{padding:var(--s6) 0 var(--s7)}
+.band h1{margin:0 0 var(--s3);font-size:34px;line-height:1.1;letter-spacing:-.02em;color:var(--mason)}
+.band .promise{margin:0;font-size:var(--t-lead);line-height:1.5;max-width:62ch}
+@media (max-width:620px){.band h1{font-size:27px}}
+
+/* three numbered discs threaded on one ink line. The line is drawn behind the
+   discs and stops at the first and the last, so it never runs off the card. */
+.steps3{list-style:none;display:flex;margin:var(--s6) 0 0;padding:0;position:relative;gap:var(--s5)}
+.steps3::before{content:"";position:absolute;left:16px;right:16px;top:16px;height:1px;background:var(--ink)}
+.steps3 li{flex:1 1 0;min-width:0;position:relative;padding:0;font-size:var(--t-small);line-height:1.45}
+.steps3 .disc{display:flex;align-items:center;justify-content:center;position:relative;
+  width:33px;height:33px;border-radius:50%;background:var(--paper);border:1px solid var(--ink);
+  color:var(--ink);font-size:var(--t-small);font-weight:700;font-variant-numeric:tabular-nums;
+  margin:0 0 var(--s3)}
+.steps3 b{display:block;font-size:var(--t-body);font-weight:600;line-height:1.35}
+.steps3 span.t{display:block;color:var(--ink-soft)}
+@media (max-width:520px){
+  .steps3{display:block}
+  .steps3::before{left:16px;right:auto;top:8px;bottom:14px;height:auto;width:1px}
+  .steps3 li{padding:0 0 0 48px;margin:0 0 var(--s4)}
+  .steps3 li:last-child{margin:0}
+  .steps3 .disc{position:absolute;left:0;top:-2px;margin:0;width:33px;height:33px}
+}
+
+/* ---------- segmented control. A toggle, so it keeps the outlined rectangle ---------- */
+.seg{display:inline-flex;border:1px solid var(--rule-strong);border-radius:var(--radius);
+  overflow:hidden;background:var(--card);max-width:100%}
+.seg button{min-height:42px;padding:var(--s2) var(--s4);border:0;background:transparent;
+  color:var(--ink-soft);font-size:var(--t-small);font-weight:600;line-height:1.3;white-space:nowrap}
+.seg button+button{border-left:1px solid var(--rule-strong)}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.seg:focus-within{border-color:var(--ink)}
+@media (max-width:420px){.seg button{padding:var(--s2) var(--s3);font-size:13px}}
+
+/* ---------- an input wearing its unit ---------- */
+.adorn{display:flex;align-items:stretch;border:1px solid var(--rule-strong);
+  border-radius:var(--radius);background:var(--card);overflow:hidden;max-width:100%}
+.adorn:hover{border-color:var(--ink-soft)}
+.adorn:focus-within{border-color:var(--ink)}
+.adorn .unit{display:flex;align-items:center;padding:0 var(--s3);color:var(--ink-soft);
+  font-size:var(--t-small);font-weight:600;background:var(--zebra)}
+.adorn input{border:0;border-radius:0;background:transparent;min-height:42px;
+  padding:var(--s2) var(--s3);font-variant-numeric:tabular-nums}
+.adorn input:focus{outline:none}
+
+/* ---------- four stat tiles ---------- */
+.stats4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s3);margin:var(--s5) 0 0}
+@media (max-width:560px){.stats4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stat{border:1px solid var(--rule);border-radius:var(--radius);background:var(--card);
+  padding:var(--s4);min-width:0;display:flex;flex-direction:column;gap:var(--s2)}
+.stat .v{font-size:28px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums;color:var(--ink)}
+.stat.pass .v{color:var(--mason)}
+.stat.fail .v{color:var(--red)}
+.stat.info .v{color:var(--ink-soft)}
+.stat .k{font-size:var(--t-label);font-weight:700;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--ink-soft);line-height:1.35;overflow-wrap:anywhere}
+
+/* ---------- the actions bar. Sticky on a phone, a plain row above it ---------- */
+.actionbar{display:flex;flex-wrap:wrap;gap:var(--s3);margin:var(--s6) 0 0}
+.actionbar .btn{flex:0 1 auto}
+@media (max-width:759px){
+  .actionbar{position:sticky;bottom:0;z-index:5;margin:var(--s5) calc(var(--gut) * -1) 0;
+    padding:var(--s3) var(--gut) calc(var(--s3) + env(safe-area-inset-bottom,0px));
+    background:var(--paper);border-top:1px solid var(--rule-strong);
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2)}
+  .actionbar .btn{width:100%;min-height:46px;padding:var(--s2) var(--s3);font-size:var(--t-small)}
+}
+
+/* ---------- a keyboard hint riding a button ---------- */
+.kbd{display:inline-block;margin-left:var(--s3);padding:2px var(--s2);border-radius:6px;
+  border:1px solid rgba(255,255,255,.45);font-size:11px;font-weight:600;letter-spacing:.04em;
+  font-variant-numeric:tabular-nums;opacity:.9}
+@media (max-width:520px){.kbd{display:none}}
+
+/* ---------- the quiet empty state ---------- */
+.empty{border:1px dashed var(--rule-strong);border-radius:var(--radius);background:var(--card);
+  padding:var(--s8) var(--s5);text-align:center;margin:var(--s7) 0 0}
+.empty svg{display:block;width:168px;max-width:70%;height:auto;margin:0 auto var(--s5)}
+.empty p{margin:0;font-size:var(--t-body);color:var(--ink-soft);line-height:1.5}
+
+/* ---------- a table that cannot scroll sideways ---------- */
+/* The rule from the dashboards: data fits the window, and a cell wraps rather
+   than forcing a width. Nothing here is allowed an overflow that scrolls. */
+.datatable{max-width:100%;overflow:visible;min-width:0}
+.datatable table{width:100%;min-width:0;table-layout:fixed;font-size:15px;
+  font-variant-numeric:tabular-nums}
+.datatable td,.datatable th{overflow-wrap:anywhere;word-break:normal}
+.datatable td.mono{white-space:normal}
+.datatable tbody tr:hover td{background:rgba(0,82,57,.045)}
+.datatable tbody tr.grp:hover td{background:transparent}
+
+/* ---------- micro-interaction: the summary bar fills once ---------- */
+.fillbar{transform-box:fill-box;transform-origin:left center;animation:spfill .45s ease-out 1}
+@keyframes spfill{from{transform:scaleX(.001)}to{transform:scaleX(1)}}
+
+/* ---------- a run that takes long enough to see draws a line at the top ---------- */
+#progress{position:fixed;left:0;top:0;height:3px;width:100%;background:var(--mason);
+  transform-origin:left center;animation:spprog .5s ease-out 1;z-index:40}
+@keyframes spprog{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+@media (prefers-reduced-motion:reduce){
+  .fillbar,#progress{animation:none}
+  .btn:active{transform:none}
+}
