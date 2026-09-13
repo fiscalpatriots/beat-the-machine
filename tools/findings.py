@@ -24,6 +24,17 @@ The field names printed under "Readout fields" are the names READOUT-TEMPLATE.md
 its cells, so a facilitator can copy a value across without translating it. --fields writes
 the same set as JSON.
 
+Two attempt-record fields were renamed in product 1.6.1, because the old names claimed more
+than the fields held. This script reads the form export rather than the saved record, so the
+rename does not move a number here; it is named so that a reader holding both files can line
+them up. ``evidenceReferences`` became ``evidenceSupplied``, and a separate ``evidenceSelected``
+was added and left null, because the page does not ask which document the player read.
+``elapsedActiveSeconds`` became ``elapsedSecondsOnCard`` per item and ``elapsedSecondsOnCards``
+in the timing block, because the clock does not pause when the tab is in the background. The
+old names are written beside the new ones for one version. The minutes this script reports come
+from question D, which the page fills from the same clock, so ``r1.lap_median`` is elapsed time
+on the page and is reported under that name and never as active review time.
+
 Run it from the repository root:
 
     python tools/findings.py responses.csv
@@ -1153,7 +1164,8 @@ def write_sentences(r):
 
     if minutes:
         s1 = ("%s %s ran the case and caught %s of the eight planted problems, in a "
-              "median of %g minutes." % (spell(n), player_word, catch, round(minutes)))
+              "median of %g minutes elapsed on the page." % (spell(n), player_word, catch,
+                                                             round(minutes)))
     else:
         s1 = ("%s %s ran the case and caught %s of the eight planted problems."
               % (spell(n), player_word, catch))
@@ -1182,7 +1194,8 @@ def write_sentences(r):
             sentences[2] = "False flags on the six clean lines ran %s." % false_flag
         if sum(len(s.split()) for s in sentences) > 60 and minutes:
             sentences[0] = ("%s %s caught %s of the eight planted problems in a median "
-                            "of %g minutes." % (spell(n), player_word, catch, round(minutes)))
+                            "of %g minutes elapsed on the page."
+                            % (spell(n), player_word, catch, round(minutes)))
         if sum(len(s.split()) for s in sentences) > 60 and worst and best and worst[0] != best[0]:
             sentences[1] = ("The %s line was caught %s, the %s line only %s."
                             % (best[0], as_percent(best[1]["rate"]),

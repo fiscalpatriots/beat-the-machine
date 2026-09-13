@@ -4,12 +4,12 @@ Built 2026-09-13 from `findings-sample.csv`.
 
 ## Paste into the write-up
 
-Ten reviewers caught 85 percent of the eight planted problems in a median of 10 minutes.
+Ten reviewers caught 85 percent of the eight planted problems in a median of 10 minutes elapsed on the page.
 The wrong direction line was caught 90 percent, the no explanation line only 80 percent.
 False flags on the six clean lines ran 25 percent.
 On five lines of a company nobody had seen the rate held at 80 percent (n=4).
 
-(57 words)
+(61 words)
 
 One more sentence, on the reason behind the call, if the write-up has room for it:
 

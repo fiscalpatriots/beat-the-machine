@@ -242,11 +242,22 @@ their run. The fields are the ones the build handoff calls the minimum attempt r
 | --- | --- |
 | `attempt` | id, pseudonym and the note that a codename is not anonymity, organizations, role (null, not collected), notice version, product version, case versions and which path loaded them, form URL, mode per round, first attempt, run index, assistance source, started, completed, submission state, submission attempts, test attempt |
 | `prepicks` | picks, skipped, the entry id they post to, the question as it was asked |
-| `responses` | one per line for all nineteen: item id, round, case version, mode, account and name, error type, original decision, final decision, basis chips, the player's own words, the on-file facts that were shown, confidence (null, not asked), assistance revealed, elapsed active seconds, skipped or missing reason, when feedback was revealed, the keyed decision, and whether the call agrees with the key |
+| `responses` | one per line for all nineteen: item id, round, case version, mode, account and name, error type, original decision, final decision, basis chips, the player's own words, `evidenceSupplied` (the on-file facts the card showed) and `evidenceSelected` (null, the page does not ask what the player read), confidence (null, not asked), assistance revealed, `elapsedSecondsOnCard`, skipped or missing reason, when feedback was revealed, the keyed decision, and whether the call agrees with the key |
 | `scoring` | key versions, the round one and round two counts, human rubric scores (null), scorer id (null), out-of-key finding (null), adjudication (null), exclusion reason, final resolution (null) |
-| `timing` | round one lap seconds, the whole minutes actually posted, round two seconds, elapsed active seconds summed over the nineteen lines |
+| `timing` | round one lap seconds, the whole minutes actually posted, round two seconds, `elapsedSecondsOnCards` summed over the nineteen lines |
 | `notAsked` | the four form questions nobody was asked, why a placeholder is posted, and the placeholder mode |
 | `payload` | the exact payload, with a note saying whether it was posted, would have been posted, or has not been posted |
+
+**Two fields were renamed in 1.6.1, and the old names ride along for this version only.** The
+release review found that `evidenceReferences` held the card's whole supplied file list under a
+name that read as the documents the participant used. It is now `evidenceSupplied`, and
+`evidenceSelected` was added beside it and left `null`, because the page does not ask which
+document the player relied on and will not imply an answer it did not collect.
+`elapsedActiveSeconds` measured wall-clock time that does not pause when the tab is in the
+background, so it is now `elapsedSecondsOnCard` per line and `elapsedSecondsOnCards` in the
+timing block, with a note on the record saying what the clock does and does not do. Both old
+names are written beside the new ones in 1.6.1 so a script reading an older export keeps
+working, and `renamedFields` on the record names the pairs. They come out in the next version.
 
 Nothing in it is invented. The four unasked questions are reported as not asked rather than as
 answers, and confidence is `null` on every line because the page never asks for it.
@@ -605,8 +616,9 @@ player how the last call went.
 
 The round two clock is separate from the lap time. It starts on the first fresh card and stops
 on the fifth call, and it posts in seconds rather than minutes, because five lines on a company
-nobody has seen is a short run. Each line also carries its own elapsed active seconds in the
-local record, timed from the card appearing to the basis Continue.
+nobody has seen is a short run. Each line also carries its own `elapsedSecondsOnCard` in the
+local record, timed from the card appearing to the basis Continue. It is wall-clock time and it
+does not pause for tab inactivity, which is why it no longer carries the word active.
 
 ## Spelling
 

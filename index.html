@@ -2450,10 +2450,25 @@ function itemRecord(c, idx, round){
     reasonResult: (call === null || call === undefined) ? "no call recorded"
       : (reasonRight(c, chips) ? "agrees with key" : "does not agree"),
     reasonScoringNote: "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call and never used for the rank or the badges.",
+    /* what the card put in front of the player, which is not the same thing as
+       what the player read. The release review asked for both names apart, so
+       the supplied list keeps its own name and the participant-selected list is
+       declared and left null rather than implied. */
+    evidenceSupplied: (c.file || []).slice(),
+    evidenceSelected: null,
+    evidenceNote: "evidenceSupplied is the card's whole On file list. evidenceSelected is what the " +
+      "player said they relied on, and this version does not ask, so it is null rather than the " +
+      "supplied list under another name.",
+    /* kept for one version so a reader of an older export is not left guessing */
     evidenceReferences: (c.file || []).slice(),
     confidence: null,
     confidenceNote: "not asked in this version",
     assistanceRevealed: false,
+    elapsedSecondsOnCard: secs || 0,
+    elapsedSecondsNote: "Wall-clock seconds from the card appearing to the call being locked. It " +
+      "does not pause when the tab is in the background, so it is elapsed time rather than active " +
+      "review time.",
+    /* kept for one version under its old name, which claimed more than it measured */
     elapsedActiveSeconds: secs || 0,
     skippedOrMissing: (call === null) ? "no call recorded" : null,
     feedbackRevealedAt: (round===2 && ASSESS)
@@ -2468,10 +2483,16 @@ function attemptRecord(sentPayload){
   CARDS.forEach(function(c,i){ responses.push(itemRecord(c,i,1)); });
   CARDS2.forEach(function(c,i){ responses.push(itemRecord(c,i,2)); });
   var active = 0;
-  responses.forEach(function(r){ active += r.elapsedActiveSeconds; });
+  responses.forEach(function(r){ active += r.elapsedSecondsOnCard; });
   return {
     record: "Second Pass attempt record",
     recordFormat: "btm-attempt-1",
+    renamedFields: {
+      note: "Two fields were renamed in 1.6.1 because their old names claimed more than they held. " +
+            "The old names are written beside the new ones for this version only and come out in the next.",
+      evidenceReferences: "evidenceSupplied",
+      elapsedActiveSeconds: "elapsedSecondsOnCard, and elapsedSecondsOnCards in the timing block"
+    },
     attempt: {
       id: S.attemptId,
       pseudonym: S.codename,
@@ -2539,6 +2560,10 @@ function attemptRecord(sentPayload){
       roundOneLapSeconds: Math.round(lapMs()/1000),
       roundOneLapMinutesPosted: lapMinutes(),
       roundTwoSeconds: r2Seconds(),
+      elapsedSecondsOnCards: active,
+      elapsedSecondsNote: "Summed wall-clock seconds on the nineteen cards. The clock does not " +
+        "pause for tab inactivity, so this is elapsed time and not active review time.",
+      /* kept for one version under its old name */
       elapsedActiveSeconds: active
     },
     notAsked: {
