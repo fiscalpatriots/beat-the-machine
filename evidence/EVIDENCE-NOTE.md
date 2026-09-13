@@ -1,25 +1,46 @@
-# What an AI assistant produced from the Halyard ledger
+# What an AI assistant produced from three ledgers
 
-Two runs, 13 September 2026, Claude Opus through Claude Code. The first was blind: the model saw only the fourteen account lines, the threshold rule and the subtotals, not the exercise memo, the facts on file or the key. The second used Prompt 1 from checker.html on the same ledger. Both raw outputs sit unedited beside this note.
+Six drafting runs, 13 September 2026, Claude Opus through Claude Code. Every company was drafted twice. The blind draft saw the company header, the threshold rule and the account lines and nothing else, under one plain request: write the month-end variance commentary for the accounts that need explaining, one line per account, with the amount, the percent and the reason. The second used Prompt 1, copied from checker.html. No draft was edited. All six were then run through the current build of the checker, and the exports sit beside this note with the six raw drafts.
 
-## What the blind draft got right
+Two things about the setup belong in the record. Halyard was drafted by the session building the exercise; Brightwater and Kestrel were drafted in fresh contexts holding only the ledger, because that session had read the sample memo printed beside the Kestrel ledger in checker.html and could no longer draft it blind. Two earlier passes were discarded: each told the model it could not look anything up, which is the restraint Prompt 1 is meant to supply.
 
-Every figure it quoted was correct and every direction word matched the sign of the movement. It reported product gross margin unrounded, falling from 25.0 to 23.8 percent, and covered all seven lines that clear both legs with no arithmetic or direction fail on any line level sentence.
+## The blind drafts
 
-## What it invented
+Fails are counted at figure level; review and not-checked are rows in the export.
 
-It gave a cause for all fourteen accounts and the ledger supports none of them. Three match facts on file by luck: delivered pricing on 4200, no fixed asset additions behind 7000, the revolver draw behind 7100. Eleven have no support anywhere. Seasonal demand and produce price competition on 4000. Contract renewals and peak refrigeration calls on 4100. Protein and dairy vendor cost increases on 5000, where the real driver on file is a mix shift. A July carrier renewal and a July 4 expedite on 5100. Overtime, seasonal temporary labor and three extra payroll days on 6000. Lower diesel and route density on 6100. A Southeast depot compressor and annual dock leveler work on 6200. Seat additions on 6300. A named aged customer at collections plus an allowance true up on 6400. A revolver covenant review invoice on 6500, where the invoice on file is a lease review. Frozen category shrink on 7400. The Southeast depot and the three payroll days are invented facts, not just invented causes. A closing paragraph claimed results would have been roughly flat without two items.
+| Company | Lines explained | Reasons invented | Fabricated facts | Arithmetic fails | Direction fails | Review | Not checked | Rows |
+|---|---|---|---|---|---|---|---|---|
+| Halyard | 14 | 14 | 2 | 6 | 1 | 98 | 34 | 199 |
+| Brightwater | 3 | 0 | 0 | 0 | 0 | 9 | 4 | 39 |
+| Kestrel | 4 | 0 | 0 | 0 | 0 | 17 | 7 | 60 |
 
-## Threshold discipline
+## The same three under Prompt 1
 
-It stayed silent on nothing above the rule and explained seven lines below it: 4000, 5000, 6100, 6300, 6500, 7000 and 7400. On three it wrote the reason first and "no commentary required" after it.
+| Company | Lines explained | Reasons invented | Fabricated facts | Arithmetic fails | Direction fails | Review | Not checked | Rows |
+|---|---|---|---|---|---|---|---|---|
+| Halyard | 7 | 0 | 0 | 0 | 0 | 37 | 2 | 81 |
+| Brightwater | 3 | 0 | 0 | 0 | 0 | 17 | 2 | 36 |
+| Kestrel | 4 | 0 | 0 | 0 | 0 | 22 | 5 | 52 |
 
-## What the checker caught
+## What changed under Prompt 1
 
-Blind draft: three fails and thirty four review rows across one hundred and twelve. All three sit in the summary paragraph, which named subtotals without naming an account, so the checker tied those figures to 6400 and read "declined" against a rising balance. Eleven sentences tied to no ledger line at all.
+Halyard changed most. Its blind draft gave a cause for all fourteen accounts, wrote commentary on seven lines below the rule, and closed with a summary paragraph naming subtotals without naming an account. All seven failures sit in that paragraph, where the checker tied the figures to 6400 and read "declined" against a rising balance. Under Prompt 1 the summary went, every reason became "no source on file", and the failures went with them.
 
-Prompt 1 draft: zero fails and eight review rows across forty three. Seven numbered lines, one per qualifying account, one closing sentence, and "no source on file" in place of every reason.
+Brightwater and Kestrel barely moved, because their blind drafts had already declined to name a cause: each stated the movement, then named the document that would settle the driver. Prompt 1 raised their review counts rather than lowering them. The checker will not read "prior $96,000" or "current $138,400" as roles, so each of those figures came back unresolved and went to the queue. That is the prompt and the checker disagreeing, not the memo being wrong.
 
-## Where a reviewer's time goes
+## Across the three
 
-The machine does not get the arithmetic wrong. It gets the causes wrong, fluently. A reviewer who recomputes variances is checking the part that was already right. The work is asking where each reason came from, and the second run shows that when invention is forbidden the reasons vanish rather than improve.
+The arithmetic was never the problem in any of the six runs: no draft got a change or a percent wrong, and the only figure failures anywhere were in a summary paragraph that named no account. What differed was invention, one blind draft giving a reason for every line and two giving none at all, so a blind draft cannot be relied on either to fabricate or to abstain. What Prompt 1 did in all three was remove the summary paragraph and put "no source on file" where an unsupported reason would have gone, which leaves a queue of missing sources rather than claims to disprove.
+
+## Coverage of each run
+
+| Run | Sentences | Checked | Review | Not checked | Failed | Rows used | Queue |
+|---|---|---|---|---|---|---|---|
+| Halyard blind | 30 | 2 | 13 | 13 | 2 | 14 | 54 |
+| Halyard Prompt 1 | 8 | 0 | 7 | 1 | 0 | 14 | 16 |
+| Brightwater blind | 6 | 3 | 1 | 2 | 0 | 5 | 5 |
+| Brightwater Prompt 1 | 4 | 0 | 3 | 1 | 0 | 5 | 8 |
+| Kestrel blind | 7 | 3 | 2 | 2 | 0 | 6 | 10 |
+| Kestrel Prompt 1 | 5 | 0 | 4 | 1 | 0 | 6 | 10 |
+
+No run skipped a ledger row or left a qualifying line silent. The Halyard figures come from re-checking its two original drafts on the current build, so all three sit on one scale; the earlier exports are kept as blind-run.csv and prompt1-run.csv and use the older columns.
