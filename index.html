@@ -230,7 +230,10 @@
   .stmt-wide .srow{align-items:center;padding:var(--s2);min-height:28px}
   .stmt-wide .srow.sub,.stmt-wide .srow.net{padding-top:var(--s4);padding-bottom:var(--s4)}
   .stmt-wide .srow .acctline{display:contents}
-  .stmt-wide .srow .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:420px}
+  /* an account name wraps rather than ending in an ellipsis. At 1280 the name column runs
+     about 193 pixels and five of the fourteen names are longer than that, so truncating
+     them hid the very thing the row is named for. */
+  .stmt-wide .srow .nm{overflow-wrap:anywhere}
   .stmt-wide .srow .fg{font-size:var(--t-body);padding:0}
   .stmt-wide .srow .mbar{display:none}
   .stmt-wide .wbar{display:block}
@@ -284,7 +287,7 @@
 .ranknote{margin:var(--s3) 0 0;font-size:var(--t-small);line-height:1.5;color:var(--ink-soft)}
 .earned{margin:var(--s4) 0 var(--s2);font-size:var(--t-lead);line-height:1.5}
 .fresh{margin:0 0 var(--s1);font-size:var(--t-body);font-weight:600;font-variant-numeric:tabular-nums}
-.lapwrap{margin:0 0 var(--s5);font-size:var(--t-body);color:var(--ink-soft);
+.lapwrap{margin:var(--s4) 0 var(--s5);font-size:var(--t-body);color:var(--ink-soft);
   font-variant-numeric:tabular-nums}
 .lapwrap span:not(:last-child)::after{content:"";display:inline-block;width:1px;height:.85em;
   margin:0 var(--s3);background:var(--rule-strong);vertical-align:-.05em}
@@ -390,6 +393,7 @@ body{overflow-x:clip}
 /* ---------- the commit step ---------- */
 .commit{margin-top:var(--s5);padding-top:var(--s5);border-top:1px solid var(--rule)}
 .commit .basis{margin-top:0}
+.commit .basis .ask{margin-top:0}
 .locknote{margin:var(--s3) 0 0;text-align:center}
 .backrow{display:flex;justify-content:center;margin-top:var(--s2)}
 
@@ -492,7 +496,7 @@ body{overflow-x:clip}
    One constant. It prints under the footer line on every screen, rides into the posted
    payload on question A, and stamps the local record. README and review.html state it too. */
 var PRODUCT_NAME = "Second Pass: Beat the Machine";
-var PRODUCT_VERSION = "1.4.0";
+var PRODUCT_VERSION = "1.5.0";
 var PRODUCT_STAMP = "second-pass-drill " + PRODUCT_VERSION;
 var NOTICE_VERSION = "notice-2026-09-13";
 
@@ -1774,8 +1778,6 @@ function reveal(i, round){
   var right = call === c.key;
   var scored = (round === 1);
   var last = i === lastIndex(round);
-  var total = (round === 2) ? 5 : 14;
-  var label = (round === 2 ? "Fresh line " : "Line ") + c.n + " of " + total;
   progress();
 
   var head = right
@@ -1832,7 +1834,6 @@ function reveal(i, round){
     : "Next line";
   screen.innerHTML =
     whyLine("This is what the answer key says about the call you just locked in.")+
-    '<div class="cardhead plain"><span class="revlabel">'+esc(label)+'</span></div>'+
     face+
     (reasonRightAt(i, round) ? "" : reasonNote(i, round))+
     openNote(c)+
@@ -2629,6 +2630,10 @@ loadCases(function(){
   window.__BTM_CARDS2 = CARDS2;
   window.__BTM_RECORD = attemptRecord;
   window.__BTM_REASON = {one:reasonCount, right:reasonRightAt, key:basisKeyOf};
+  /* the verification hooks: the step jump and the points engine, so a run can be walked and
+     a layout checked at every screen without clicking through it by hand */
+  window.__BTM_GO = go;
+  window.__BTM_POINTS = {line:linePoints, rescore:rescore, ranks:RANKS, progress:rankProgress};
   window.__BTM_CASES = {source:CASE_SOURCE, one:CASE1.version, two:CASE2.version,
                         date:CASE1.date, assessment:ASSESS, product:PRODUCT_STAMP,
                         test:TEST_MODE, attempt:S.attemptId};
