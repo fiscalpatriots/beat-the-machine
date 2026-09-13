@@ -5,192 +5,113 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#005239">
 <title>Second Pass Checker</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%23005239%27/%3E%3Cpath d=%277 20l5 5 13-14%27 fill=%27none%27 stroke=%27%23ffc733%27 stroke-width=%273%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/second-pass.css">
 <style>
-:root{
-  /* George Mason Green, George Mason Gold, Logo Black and the accent palette,
-     from brand.gmu.edu/brand-guide/brand-colors */
-  --mason:#005239;
-  --mason-deep:#003527;
-  --mason-gold:#ffc733;
-  --gold-line:#e0ac00;
-  --ink:#333333;
-  --ink-soft:#5a5d61;
-  --paper:#f6f3ec;
-  --card:#ffffff;
-  --line:#dfd8c9;
-  --accept:#005239;
-  --accept-bg:#e3f2e8;
-  --reject:#cc4824;
-  --reject-bg:#fbe9e4;
-  --machine:#004f71;
-  --machine-bg:#e3eef4;
-  --neg:#a83a1c;
-  --gut:18px;
-  --shadow:0 2px 0 rgba(0,82,57,.09), 0 8px 24px rgba(0,82,57,.09);
-}
-@media (max-width:399px){:root{--gut:12px}}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;padding:0;max-width:100%;overflow-x:hidden}
-body{
-  background:var(--paper);
-  color:var(--ink);
-  font:17px/1.45 Figtree,"Open Sans","Franklin Gothic Book","Franklin Gothic",
-       -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  min-height:100vh;
-}
-#app{max-width:1180px;margin:0 auto;padding:0 var(--gut) 40px;min-height:100vh;display:flex;flex-direction:column}
-/* every block in the column may shrink below its content, so the wide table scrolls
-   inside its own box instead of stretching the page */
+/* Page layout only. Everything shared lives in assets/second-pass.css. */
+#app{max-width:1180px;margin:0 auto;padding:0 var(--gut) var(--s9);min-height:100vh;
+  display:flex;flex-direction:column}
 #app>*{min-width:0;max-width:100%}
-h1{font-size:30px;line-height:1.12;margin:0 0 10px;letter-spacing:-.5px;color:var(--mason)}
-h2{font-size:22px;line-height:1.2;margin:0 0 10px;letter-spacing:-.3px;color:var(--mason)}
-h3{font-size:17px;line-height:1.22;margin:0 0 6px;letter-spacing:-.2px;color:var(--mason)}
-p{margin:0 0 14px}
-.sub{color:var(--ink-soft);font-size:16px}
-.tiny{font-size:13px;line-height:1.45;color:var(--ink-soft)}
 
-#mason{position:relative;background:var(--mason);color:#fff;margin:0 calc(var(--gut) * -1);
-  padding:12px var(--gut) 14px;border-bottom:3px solid var(--mason-gold)}
-#mason b{display:block;font-size:15px;font-weight:800;letter-spacing:.2px;line-height:1.2}
-#mason span{display:block;font-size:12.5px;letter-spacing:.3px;color:#dff0e4;margin-top:2px}
-#masonfoot{margin:24px calc(var(--gut) * -1) 0;padding:14px var(--gut) 4px;border-top:1px solid var(--line);
-  font-size:12.5px;line-height:1.4;color:var(--ink-soft);text-align:center}
-#masonfoot a{color:var(--ink-soft)}
+.intro{padding:var(--s7) 0 var(--s2)}
+.intro h1{margin-bottom:var(--s3)}
+.intro .sub{max-width:74ch}
+.privacy{margin:var(--s6) 0 0;padding-top:var(--s4);border-top:1px solid var(--rule);max-width:74ch}
+.privacy p{margin:0;font-size:var(--t-small);line-height:1.6;color:var(--ink-soft)}
 
-.intro{padding:18px 0 4px}
-.privacy{display:flex;gap:10px;align-items:flex-start;background:var(--accept-bg);
-  border:1px solid rgba(0,82,57,.25);border-radius:12px;padding:11px 13px;margin:0 0 16px}
-.privacy svg{width:19px;height:19px;flex:0 0 auto;margin-top:1px;fill:none;stroke:var(--mason);
-  stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.privacy p{margin:0;font-size:14px;line-height:1.45;color:var(--ink)}
-
-.panes{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.panes{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s4);margin-top:var(--s7)}
 @media (min-width:900px){.panes{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
-.pane{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px 16px 16px;
-  box-shadow:var(--shadow);min-width:0}
-.pane label{display:block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;
-  color:var(--ink-soft);margin:0 0 6px}
-textarea,input[type=text],input[type=number],select{
-  width:100%;font:inherit;padding:11px 12px;border:2px solid var(--line);border-radius:12px;
-  background:var(--paper);color:var(--ink);
+.pane{min-width:0}
+.pane label{display:block;font-size:var(--t-label);font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--ink-soft);margin:0 0 var(--s2)}
+.pane textarea{min-height:190px}
+.pane textarea#ledger{font-family:var(--mono);font-size:var(--t-small);white-space:pre;overflow:auto}
+.hint{margin:var(--s2) 0 0;font-size:var(--t-small);line-height:1.5;color:var(--ink-soft)}
+
+.settings{margin:var(--s6) 0 0}
+.setgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:var(--s4)}
+.setgrid label{display:block;font-size:var(--t-label);font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--ink-soft);margin:0 0 var(--s2)}
+.ratiobox{margin-top:var(--s4)}
+.ratiobox textarea{min-height:74px}
+.row{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center;margin:var(--s5) 0 0}
+.row select{width:auto;min-width:230px}
+
+.note{margin:var(--s4) 0 0;padding:var(--s4);border:1px solid var(--rule-strong);
+  border-radius:var(--radius);font-size:var(--t-small);line-height:1.55}
+.note b{display:block;margin-bottom:var(--s1)}
+.note ul{margin:var(--s2) 0 0;padding-left:var(--s5)}
+.note li{margin:0 0 var(--s1)}
+.note.bad{border-color:var(--red)}
+.note.bad>b{color:var(--red);font-size:var(--t-label);text-transform:uppercase;letter-spacing:.09em}
+
+#out{margin:var(--s7) 0 0}
+#msg{margin:var(--s4) 0 0}
+
+/* ---------- the results table. Columns on a desk, stacked rows on a phone. ---------- */
+.tablewrap{max-width:100%;margin:var(--s5) 0 0}
+table col.t1{width:9%}table col.t2{width:30%}table col.t3{width:12%}
+table col.t4{width:28%}table col.t5{width:21%}
+td.subj b{display:block;font-size:var(--t-label);letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink-soft);margin-bottom:2px}
+td.chk{font-weight:600}
+td.res .det{display:block;margin-top:2px}
+td.ask{color:var(--ink-soft)}
+td.ask ul{margin:0;padding-left:var(--s4)}
+td.ask li{margin:0 0 var(--s1)}
+td.ask li:last-child{margin:0}
+.rolelab{display:block;font-size:var(--t-label);font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--ink-soft);margin:var(--s3) 0 var(--s1)}
+.rolesel{max-width:240px;min-height:38px;padding:var(--s2) var(--s3);font-size:var(--t-small)}
+@media (max-width:860px){
+  .tablewrap thead{position:absolute;width:1px;height:1px;overflow:hidden;
+    clip:rect(0 0 0 0);white-space:nowrap}
+  .tablewrap table{table-layout:auto}
+  .tablewrap tbody tr{display:block;padding:var(--s4) 0;border-bottom:1px solid var(--rule)}
+  .tablewrap tbody tr:nth-child(even) td{background:transparent}
+  .tablewrap tbody td{display:block;border:0;padding:var(--s1) 0}
+  .tablewrap tbody td::before{content:attr(data-label);display:block;font-size:var(--t-label);
+    font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);margin-bottom:2px}
+  .tablewrap tbody td:empty{display:none}
+  .tablewrap tbody tr.grp{padding:var(--s6) 0 0;border-bottom:1px solid var(--rule-strong)}
+  .tablewrap tbody tr.grp td{padding:0 0 var(--s2)}
+  .tablewrap tbody tr.grp td::before{content:none}
 }
-textarea{min-height:190px;resize:vertical;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Courier New",monospace;
-  font-size:13px;line-height:1.5;white-space:pre;overflow:auto}
-textarea.prose{white-space:pre-wrap;font-size:13.5px}
-textarea.small{min-height:74px}
-textarea:focus,input:focus,select:focus{outline:none;border-color:var(--mason)}
-.hint{margin:6px 0 0;font-size:12.5px;line-height:1.4;color:var(--ink-soft)}
 
-.settings{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px 16px;
-  margin:14px 0 0;box-shadow:var(--shadow)}
-.setgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-.setgrid label{display:block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;
-  color:var(--ink-soft);margin:0 0 6px}
+/* ---------- the parse preview ---------- */
+#preview{margin:var(--s6) 0 0;min-width:0}
+#preview .lead{font-size:var(--t-small);line-height:1.55;color:var(--ink-soft);margin:0 0 var(--s4);max-width:74ch}
+.pvgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--s4);margin:0 0 var(--s4)}
+.pvgrid label{display:block;font-size:var(--t-label);font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--ink-soft);margin:0 0 var(--s2)}
+.facts{margin:0;padding:0;list-style:none;border-top:1px solid var(--rule)}
+.facts li{display:flex;gap:var(--s4);align-items:baseline;padding:var(--s3) 0;
+  border-bottom:1px solid var(--rule);font-size:var(--t-small);line-height:1.5}
+.facts li .status{flex:0 0 8.5em;margin:0}
+.facts li span:last-child{min-width:0;overflow-wrap:anywhere}
+#preview ul.plain{margin:var(--s3) 0 0;padding-left:var(--s5);font-size:var(--t-small);
+  line-height:1.6;color:var(--ink-soft)}
+#preview ul.plain li{margin:0 0 var(--s1);overflow-wrap:anywhere}
 
-button{font:inherit;color:inherit;cursor:pointer}
-.btn{display:inline-block;border:2px solid var(--ink);background:var(--ink);color:#fff;
-  border-radius:12px;padding:13px 18px;font-size:16px;font-weight:700}
-.btn:active{transform:translateY(1px)}
-.btn.ghost{background:transparent;color:var(--ink)}
-.btn.green{background:var(--mason);border-color:var(--mason)}
-.btn.sm{padding:9px 13px;font-size:14px;border-radius:10px}
-.btn:disabled{opacity:.35;cursor:default}
-.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0 0}
-.note{margin:12px 0 0;border-left:4px solid var(--gold-line);background:#fff7e0;border-radius:0 10px 10px 0;
-  padding:10px 12px;font-size:14px;line-height:1.45}
-.note.bad{border-left-color:var(--reject);background:var(--reject-bg)}
-
-#out{margin:22px 0 0}
-.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px;margin:0 0 14px}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
-.stat b{display:block;font-size:26px;line-height:1.1;font-variant-numeric:tabular-nums}
-.stat span{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-soft);margin-top:3px;line-height:1.25}
-.stat.f b{color:var(--reject)}
-.stat.c b{color:var(--accept)}
-.stat.n b{color:var(--ink-soft)}
-.stat.s b{color:var(--neg)}
-.stat.r b{color:var(--machine)}
-
-.tablewrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;
-  background:var(--card);border:2px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
-table{border-collapse:collapse;width:100%;min-width:880px;font-size:14px}
-thead th{position:sticky;top:0;background:var(--mason);color:#fff;text-align:left;font-size:11px;
-  text-transform:uppercase;letter-spacing:.6px;padding:10px 12px;border-bottom:2px solid var(--mason-gold)}
-tbody td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top;line-height:1.4}
-tbody tr.grp td{background:var(--paper);font-weight:800;font-size:11.5px;text-transform:uppercase;
-  letter-spacing:.7px;color:var(--mason)}
-td.ln{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Courier New",monospace;font-size:12.5px;white-space:nowrap;color:var(--ink-soft)}
-td.subj{min-width:250px;max-width:360px}
-td.subj b{display:block;font-size:12px;letter-spacing:.4px;color:var(--mason)}
-td.chk{white-space:nowrap;font-weight:600}
-td.res{min-width:210px;max-width:330px}
-td.ask{min-width:210px;max-width:330px;color:var(--ink-soft)}
-.badge{display:inline-block;border-radius:99px;padding:2px 9px;font-size:11px;font-weight:800;
-  text-transform:uppercase;letter-spacing:.5px;margin:0 0 4px}
-.badge.pass{background:var(--accept-bg);color:var(--mason)}
-.badge.fail{background:var(--reject-bg);color:var(--reject)}
-.badge.review{background:#fff2cf;color:#7a5a00}
-.badge.info{background:var(--machine-bg);color:var(--machine)}
-.badge.silent{background:var(--reject-bg);color:var(--neg)}
-.badge.clears{background:var(--accept-bg);color:var(--mason)}
-.badge.below{background:#ece6d8;color:var(--ink-soft)}
-.det{display:block}
-.ask ul{margin:0;padding-left:16px}
-.ask li{margin:0 0 3px}
-.ask li:last-child{margin:0}
-#msg{margin:14px 0 0}
-.hidden{display:none!important}
-.foothow{background:var(--card);border:2px solid var(--line);border-left:4px solid var(--mason-gold);
-  border-radius:14px;padding:14px 16px;margin:20px 0 0;box-shadow:var(--shadow)}
-.foothow h3{margin:0 0 6px}
-.foothow p{margin:0 0 8px;font-size:15px;line-height:1.45}
-.foothow p:last-child{margin:0}
-
-/* ============================================== the parse preview */
-#preview{background:var(--card);border:2px solid var(--line);border-left:4px solid var(--machine);
-  border-radius:14px;padding:14px 16px;margin:14px 0 0;box-shadow:var(--shadow);min-width:0}
-#preview h3{margin:0 0 4px}
-#preview .lead{font-size:13.5px;line-height:1.45;color:var(--ink-soft);margin:0 0 10px}
-.pvgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:0 0 12px}
-.pvgrid label{display:block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;
-  color:var(--ink-soft);margin:0 0 6px}
-.pvfacts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 4px}
-#prevruns{margin:18px 0 0;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:14px 16px}
-#prevruns h3{margin:0 0 4px}
-.prevrow{border-top:1px solid var(--line);padding:10px 0 12px}
+#prevruns{margin:var(--s7) 0 0}
+.prevrow{border-top:1px solid var(--rule);padding:var(--s3) 0 var(--s4)}
 .prevrow:first-child{border-top:0}
-.prevrow .tiny{margin:2px 0 6px}
-.rolelab{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;
-  color:var(--ink-soft);margin:8px 0 3px}
-.rolesel{width:100%;max-width:220px;border:1px solid var(--line);border-radius:8px;padding:6px 8px;
-  font:inherit;font-size:13px;background:#fff;color:inherit}
-.chip{display:inline-block;border-radius:99px;padding:3px 11px;font-size:12px;font-weight:700;
-  background:var(--machine-bg);color:var(--machine)}
-.chip.ok{background:var(--accept-bg);color:var(--mason)}
-.chip.warn{background:#fff2cf;color:#7a5a00}
-.chip.bad{background:var(--reject-bg);color:var(--reject)}
-#preview ul{margin:8px 0 0;padding-left:18px;font-size:13px;line-height:1.5;color:var(--ink-soft)}
-#preview li{margin:0 0 3px;overflow-wrap:anywhere}
-#preview code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px}
+.prevrow .tiny{margin:2px 0 var(--s2)}
 
-/* ============================================== the two prompts */
-#prompts{margin:24px 0 0;min-width:0}
-#prompts>.lead{font-size:14px;line-height:1.5;color:var(--ink-soft);margin:0 0 12px}
-.pcards{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
-@media (min-width:820px){.pcards{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
-.pcard{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px 16px 16px;
-  box-shadow:var(--shadow);min-width:0;display:flex;flex-direction:column}
-.pcard.one{border-left:4px solid var(--gold-line)}
-.pcard.two{border-left:4px solid var(--mason)}
-.pcard h3{margin:0 0 4px}
-.pcard .when{font-size:13px;line-height:1.45;color:var(--ink-soft);margin:0 0 10px;
-  text-transform:uppercase;letter-spacing:.5px;font-weight:800;font-size:11.5px}
-.pcard .body{font-size:14.5px;line-height:1.5;margin:0 0 12px;flex:1 1 auto}
-.pcard .btn{align-self:flex-start}
-select#samplepick{width:auto;max-width:100%;min-width:210px}
+/* ---------- the two prompts, two plain sections ---------- */
+#prompts{margin:var(--s8) 0 0;min-width:0}
+#prompts>.lead{font-size:var(--t-body);line-height:1.6;color:var(--ink-soft);margin:0 0 var(--s5);max-width:82ch}
+.prompt{border-top:1px solid var(--rule);padding:var(--s5) 0 var(--s4);max-width:82ch}
+.prompt h3{margin:0 0 var(--s1)}
+.prompt .when{margin:0 0 var(--s3);font-size:var(--t-label);font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft)}
+.prompt .body{margin:0 0 var(--s2);font-size:var(--t-body);line-height:1.6}
+
+.foothow{border-top:1px solid var(--rule);padding:var(--s5) 0 0;margin:var(--s8) 0 0;max-width:82ch}
+.foothow p{font-size:var(--t-body);line-height:1.6}
 
 /* ============================================== the printable review summary */
 #printdoc{display:none}
@@ -199,31 +120,34 @@ select#samplepick{width:auto;max-width:100%;min-width:210px}
   html,body{background:#fff;overflow:visible}
   body{font-size:10.5pt;color:#000;font-family:Figtree,Arial,Helvetica,sans-serif}
   #app{max-width:none;padding:0;display:block;min-height:0}
-  #mason,.intro,.panes,.settings,#preview,#msg,#out,#prompts,.foothow,#masonfoot,.row{display:none!important}
+  #mason,.intro,.panes,.settings,#preview,#msg,#out,#prompts,.foothow,#masonfoot,.row,#prevruns{display:none!important}
   #printdoc{display:block}
   #printdoc h1{font-size:16pt;line-height:1.15;margin:0 0 1mm;color:#000;letter-spacing:0}
   #printdoc .psub{font-size:9.5pt;color:#333;margin:0 0 3mm}
-  #printdoc .phead{border-bottom:1.6pt solid #000;padding:0 0 3mm;margin:0 0 5mm}
+  #printdoc .phead{border-bottom:1.4pt solid #000;padding:0 0 3mm;margin:0 0 5mm}
   #printdoc .pmeta{display:grid;grid-template-columns:1fr 1fr;gap:0 7mm;font-size:9.5pt}
   #printdoc .pmeta div{border-bottom:.4pt solid #999;padding:1.4mm 0}
   #printdoc .pmeta b{display:inline-block;min-width:36mm;font-weight:700}
   #printdoc h2{font-size:11.5pt;margin:6mm 0 2.5mm;color:#000;border-bottom:.8pt solid #000;padding-bottom:1mm}
   #printdoc h2:first-of-type{margin-top:0}
-  #printdoc .pstrip{display:flex;flex-wrap:wrap;gap:3mm;margin:0 0 4mm;font-size:9pt}
-  #printdoc .pstrip span{border:.6pt solid #000;padding:1.5mm 3mm;display:block}
-  #printdoc .pstrip b{display:block;font-size:13pt;line-height:1.1}
+  #printdoc .pstrip{margin:0 0 4mm;font-size:9pt;line-height:1.9;font-variant-numeric:tabular-nums}
+  #printdoc .pstrip span{white-space:nowrap}
+  #printdoc .pstrip span:not(:last-child)::after{content:"";display:inline-block;width:.4pt;height:.8em;
+    margin:0 2.5mm;background:#000;vertical-align:-.05em}
+  #printdoc .pstrip b{font-weight:700}
   #printdoc table{width:100%;min-width:0;border-collapse:collapse;font-size:8pt;table-layout:fixed}
   #printdoc col.c1{width:11%}#printdoc col.c2{width:35%}#printdoc col.c3{width:10%}
   #printdoc col.c4{width:26%}#printdoc col.c5{width:18%}
-  #printdoc th{background:#ebebeb!important;color:#000;text-align:left;border:.4pt solid #777;padding:1.2mm 1.6mm;
-    font-size:7pt;text-transform:uppercase;letter-spacing:.4pt;position:static;overflow-wrap:anywhere;
-    -webkit-print-color-adjust:exact;print-color-adjust:exact}
-  #printdoc td{border:.4pt solid #777;padding:1.2mm 1.6mm;vertical-align:top;overflow-wrap:anywhere}
-  #printdoc tr.grp td{background:#f4f4f4!important;font-weight:700;font-size:7.5pt;text-transform:uppercase;
-    -webkit-print-color-adjust:exact;print-color-adjust:exact}
-  #printdoc td .bx{font-weight:700}
+  #printdoc th{background:none;color:#000;text-align:left;border:0;border-bottom:1pt solid #000;
+    padding:0 1.6mm 1.2mm;font-size:7pt;text-transform:uppercase;letter-spacing:.4pt;
+    position:static;overflow-wrap:anywhere}
+  #printdoc td{border:0;border-bottom:.3pt solid #999;padding:1.2mm 1.6mm;vertical-align:top;overflow-wrap:anywhere}
+  #printdoc tbody tr:nth-child(even) td{background:#f7f7f7;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #printdoc tr.grp td{background:none;border-bottom:.6pt solid #000;padding-top:3mm;
+    font-weight:700;font-size:7.5pt;text-transform:uppercase;letter-spacing:.4pt}
+  #printdoc td .bx{display:block;font-weight:700;font-size:7pt;text-transform:uppercase;letter-spacing:.4pt}
   #printdoc tr,#printdoc .qitem,#printdoc .sigbox,#printdoc .evbox{page-break-inside:avoid}
-  #printdoc .qitem{border:.4pt solid #777;padding:2mm 2.5mm;margin:0 0 2.5mm}
+  #printdoc .qitem{border:0;border-bottom:.3pt solid #999;padding:2mm 0;margin:0}
   #printdoc .qitem .qs{font-weight:700;font-size:9pt;margin:0 0 1mm}
   #printdoc .qitem .ql{font-size:8pt;margin:0 0 1.5mm;color:#333}
   #printdoc .qitem .ans{font-size:8pt;margin:2mm 0 0}
@@ -249,7 +173,6 @@ select#samplepick{width:auto;max-width:100%;min-width:210px}
     ties each sentence to an account, and tests the arithmetic, the direction and the silence. What is left
     over is the part that needs a person, and it prints as a short list of questions.</p>
     <div class="privacy">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.4-3 8.4-7 10-4-1.6-7-5.6-7-10V6z"></path><path d="M9 12l2 2 4-4"></path></svg>
       <p><b>Where your data goes.</b> This page is served from GitHub Pages and loads one Google font from
       fonts.googleapis.com; everything you paste is processed by the script in your own browser, this page stores
       nothing on a server, and anything you copy from here into another AI service goes to that service under its
@@ -272,7 +195,7 @@ select#samplepick{width:auto;max-width:100%;min-width:210px}
     </div>
   </div>
 
-  <div id="preview" class="hidden">
+  <div id="preview" class="hidden section">
     <h3>Parse preview</h3>
     <p class="lead">What the ledger reader found, before anything is checked. Confirm the two period columns if the
     guess is wrong.</p>
@@ -286,11 +209,11 @@ select#samplepick{width:auto;max-width:100%;min-width:210px}
         <select id="colcur"></select>
       </div>
     </div>
-    <div class="pvfacts" id="pvfacts"></div>
+    <ul class="facts" id="pvfacts"></ul>
     <div id="pvbody"></div>
   </div>
 
-  <div class="settings">
+  <div class="settings section">
     <div class="setgrid">
       <div>
         <label for="dollar">Dollar floor</label>
@@ -336,14 +259,14 @@ select#samplepick{width:auto;max-width:100%;min-width:210px}
     exactly the floor does clear it. Both are decided on unrounded values, not on the figures as they print.
     A line with a zero prior balance has no percent at all, so the dropdown above settles it rather than a default
     nobody chose; the default is that it owes commentary on any movement.</p>
-    <div style="margin-top:12px">
-      <label for="ratios" style="display:block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--ink-soft);margin:0 0 6px">Ratios (optional)</label>
-      <textarea id="ratios" class="small" spellcheck="false" placeholder="One per line: Product gross margin = (4000 - 5000) / 4000"></textarea>
+    <div class="ratiobox">
+      <label for="ratios" class="label">Ratios (optional)</label>
+      <textarea id="ratios" spellcheck="false" placeholder="One per line: Product gross margin = (4000 - 5000) / 4000"></textarea>
       <p class="hint">Account numbers only, with plus, minus, times, divide and parentheses. A percent in the memo
       that is not a line percent is tested against every ratio, for both months and for the change between them.</p>
     </div>
     <div class="row">
-      <button class="btn green" id="run">Run Second Pass</button>
+      <button class="btn" id="run">Run Second Pass</button>
       <select id="samplepick" aria-label="Samples, load a case">
         <option value="">Samples: load a case&hellip;</option>
         <option value="halyard">Halyard Provisioning Group, June 2026 &mdash; 14 lines, case halyard-v3</option>
@@ -351,13 +274,13 @@ select#samplepick{width:auto;max-width:100%;min-width:210px}
         <option value="kestrel">Kestrel IT Services, July 2026 &mdash; 6 lines, QuickBooks export</option>
         <option value="ridgeline">Ridgeline Partners, July 2026 &mdash; 5 lines, comma separated</option>
       </select>
-      <button class="btn ghost sm" id="clear">Clear</button>
+      <button class="btn secondary" id="clear">Clear</button>
     </div>
   </div>
 
   <div id="msg"></div>
   <div id="out"></div>
-  <div id="prevruns" class="hidden">
+  <div id="prevruns" class="hidden section">
     <h3>Previous runs</h3>
     <p class="tiny">Changing any input clears the statuses on the page and stamps the next run with a new
     identifier. The runs before it are kept here so a reviewer can see what an earlier version of the memo or the
@@ -372,24 +295,22 @@ select#samplepick{width:auto;max-width:100%;min-width:210px}
     <b>Prompt 1 is written in a fixed shape on purpose.</b> A numbered line that carries the account number, the
     prior and current figures exactly as the ledger prints them, and one direction word, ties to a ledger line on the
     strongest tier of the match, so a memo drafted this way does not land in <i>Unmatched, review by hand</i>.</p>
-    <div class="pcards">
-      <div class="pcard one">
-        <h3>Prompt 1, draft the memo</h3>
-        <p class="when">Use it before the memo exists</p>
-        <p class="body">Hands your ledger and your threshold to the drafting tool and fixes the shape of every line:
-        account number, prior, current, change, percent, direction, one reason and the source that reason came from.
-        Lines below the threshold get one closing sentence and nothing else.</p>
-        <button class="btn sm" id="copydraft">Copy Prompt 1</button>
-      </div>
-      <div class="pcard two">
-        <h3>Prompt 2, second pass</h3>
-        <p class="when">Use it after a run, on what survived</p>
-        <p class="body">Hands over the ledger, the memo and only the sentences that passed the arithmetic and the
-        direction, with the two judgment questions and an instruction not to recompute what the checker already
-        computed. Run the checker first, or this one has nothing to carry.</p>
-        <button class="btn ghost sm" id="copyreview">Copy Prompt 2</button>
-      </div>
-    </div>
+    <section class="prompt">
+      <h3>Prompt 1, draft the memo</h3>
+      <p class="when">Use it before the memo exists</p>
+      <p class="body">Hands your ledger and your threshold to the drafting tool and fixes the shape of every line:
+      account number, prior, current, change, percent, direction, one reason and the source that reason came from.
+      Lines below the threshold get one closing sentence and nothing else.</p>
+      <button class="btn-text" id="copydraft">Copy</button>
+    </section>
+    <section class="prompt">
+      <h3>Prompt 2, second pass</h3>
+      <p class="when">Use it after a run, on what survived</p>
+      <p class="body">Hands over the ledger, the memo and only the sentences that passed the arithmetic and the
+      direction, with the two judgment questions and an instruction not to recompute what the checker already
+      computed. Run the checker first, or this one has nothing to carry.</p>
+      <button class="btn-text" id="copyreview">Copy</button>
+    </section>
   </div>
 
   <div class="foothow">
@@ -1235,13 +1156,13 @@ function refreshPreview(pre){
   var box=$("preview"),facts=$("pvfacts"),body=$("pvbody"),cols=$("pvcols");
   var txt=$("ledger").value;
   if(!txt.replace(/\s/g,"")){
-    box.className="hidden";PVSIG="";
+    box.className="hidden section";PVSIG="";
     while(facts.firstChild)facts.removeChild(facts.firstChild);
     while(body.firstChild)body.removeChild(body.firstChild);
     return;
   }
   var L=pre||parseLedger(txt,USERCOLS);
-  box.className="";
+  box.className="section";
 
   /* the two dropdowns, rebuilt only when the columns themselves change */
   var sig=L.T+"|"+L.labels.join("|");
@@ -1274,7 +1195,15 @@ function refreshPreview(pre){
   var dropped=L.skipped.filter(function(s){return !s.keep;});
   var kept=L.skipped.filter(function(s){return s.keep;});
 
-  function chip(cls,txt){facts.appendChild(el("span","chip"+(cls?" "+cls:""),txt));}
+  /* one fact per line, the severity carried by a word rather than a coloured pill */
+  var FACTWORD={"":"read","ok":"confirmed","warn":"check","bad":"blocked"};
+  var FACTCLS={"":"info","ok":"pass","warn":"review","bad":"fail"};
+  function chip(cls,txt){
+    var li=el("li");
+    li.appendChild(el("span","status "+(FACTCLS[cls]||"info"),FACTWORD[cls]||"read"));
+    li.appendChild(el("span",null,txt));
+    facts.appendChild(li);
+  }
   chip("",shape);
   chip(L.accounts.length?"ok":"bad",L.accounts.length+" account line"+(L.accounts.length===1?"":"s")+" found");
   if(L.T>=2)chip("",L.T+" numeric column"+(L.T===1?"":"s")+", prior is \""+L.labels[L.pick.p]+
@@ -1294,7 +1223,7 @@ function refreshPreview(pre){
     var p=el("p","tiny","Rows the reader did not treat as account lines:");
     p.style.margin="10px 0 0";
     body.appendChild(p);
-    var ul=el("ul");
+    var ul=el("ul","plain");
     dropped.concat(kept).sort(function(a,b){return a.n-b.n;}).forEach(function(s){
       var t=String(s.t).replace(/\s+/g," ");
       if(t.length>90)t=t.slice(0,88)+"…";
@@ -1830,12 +1759,15 @@ function coverage(stats){
           ["queue",stats.queue,"In the reviewer queue","r"]];
 }
 function render(out,rows,stats){
-  var strip=el("div","strip");
+  out.appendChild(el("h2",null,"Coverage"));
+  /* one line of tabular counts, not a wall of tiles */
+  var strip=el("p","counts");
   coverage(stats).forEach(function(t){
-    var d=el("div","stat"+(t[3]?" "+t[3]:""));
-    d.appendChild(el("b",null,String(t[1])));
-    d.appendChild(el("span",null,t[2]));
-    strip.appendChild(d);
+    var cls=t[3]==="f"||t[3]==="s"?"fail":(t[3]==="c"?"pass":"");
+    var sp=el("span",cls||null);
+    sp.appendChild(el("b",null,String(t[1])));
+    sp.appendChild(document.createTextNode(t[2]));
+    strip.appendChild(sp);
   });
   out.appendChild(strip);
 
@@ -1865,29 +1797,34 @@ function render(out,rows,stats){
   }
 
   var wrap=el("div","tablewrap"),tbl=el("table");
+  var HEADS=["Line","Sentence or account","Check","Result","Ask the controller"];
+  var cg=el("colgroup");
+  ["t1","t2","t3","t4","t5"].forEach(function(c){cg.appendChild(el("col",c));});
+  tbl.appendChild(cg);
   var thead=el("thead"),tr=el("tr");
-  ["Line","Sentence or account","Check","Result","Ask the controller"].forEach(function(h){
-    tr.appendChild(el("th",null,h));
-  });
+  HEADS.forEach(function(h){ tr.appendChild(el("th",null,h)); });
   thead.appendChild(tr);tbl.appendChild(thead);
   var tb=el("tbody");
+  /* the header repeats as a per-cell label once the columns stack on a narrow screen,
+     which is what keeps the table off a horizontal scrollbar */
+  function cell(cls,txt,i){ var td=el("td",cls,txt); td.setAttribute("data-label",HEADS[i]); return td; }
   rows.forEach(function(r){
     var t=el("tr");
     if(r.grp){
       t.className="grp";
       var td=el("td",null,r.grp);td.colSpan=5;t.appendChild(td);tb.appendChild(t);return;
     }
-    t.appendChild(el("td","ln",r.line));
-    var subj=el("td","subj");
+    t.appendChild(cell("mono",r.line,0));
+    var subj=cell("subj",null,1);
     if(r.label)subj.appendChild(el("b",null,r.label));
     subj.appendChild(document.createTextNode(r.subj));
     t.appendChild(subj);
-    t.appendChild(el("td","chk",r.check));
-    var res=el("td","res");
-    res.appendChild(el("span","badge "+r.badge,r.result));
+    t.appendChild(cell("chk",r.check,2));
+    var res=cell("res",null,3);
+    res.appendChild(el("span","status "+r.badge,r.result));
     res.appendChild(el("span","det",r.det));
     t.appendChild(res);
-    var ask=el("td","ask");
+    var ask=cell("ask",null,4);
     if(Array.isArray(r.ask)){
       var ul=el("ul");
       r.ask.forEach(function(qq){ul.appendChild(el("li",null,qq));});
@@ -1914,13 +1851,13 @@ function render(out,rows,stats){
   tbl.appendChild(tb);wrap.appendChild(tbl);out.appendChild(wrap);
 
   var row=el("div","row");
-  var b0=el("button","btn green sm","Print review summary");
+  var b0=el("button","btn","Print review summary");
   b0.onclick=printSummary;
-  var b1=el("button","btn sm","Copy results as table");
+  var b1=el("button","btn secondary","Copy results as table");
   b1.onclick=function(){copy(tsv(),b1,"Copy results as table");};
-  var b2=el("button","btn ghost sm","Download CSV");
+  var b2=el("button","btn secondary","Download CSV");
   b2.onclick=downloadCsv;
-  var b3=el("button","btn ghost sm","Download JSON record");
+  var b3=el("button","btn secondary","Download JSON record");
   b3.onclick=downloadJson;
   row.appendChild(b0);row.appendChild(b1);row.appendChild(b2);row.appendChild(b3);
   out.appendChild(row);
@@ -1936,8 +1873,8 @@ function renderPrev(){
   var box=$("prevruns"),list=$("prevlist");
   if(!box||!list)return;
   while(list.firstChild)list.removeChild(list.firstChild);
-  if(!PREV.length){box.className="hidden";return;}
-  box.className="";
+  if(!PREV.length){box.className="hidden section";return;}
+  box.className="section";
   PREV.forEach(function(p){
     var d=el("div","prevrow");
     var b=el("b",null,p.runId);
@@ -1947,7 +1884,7 @@ function renderPrev(){
     d.appendChild(el("div","tiny",p.stats.checked+" checked within scope, "+p.stats.review+" needs review, "+
       p.stats.notchecked+" not checked, "+p.stats.failed+" failed, "+p.stats.rowsUsed+" rows used, "+
       p.stats.rowsSkipped+" rows skipped."));
-    var bt=el("button","btn ghost sm","Copy this run's CSV");
+    var bt=el("button","btn-text","Copy this run's CSV");
     bt.onclick=function(){copy(p.csv,bt,"Copy this run's CSV");};
     d.appendChild(bt);
     list.appendChild(d);
@@ -2006,7 +1943,7 @@ function printSummary(){
     t.appendChild(el("td",null,(r.label?r.label+". ":"")+r.subj));
     t.appendChild(el("td",null,r.check));
     var res=el("td");
-    res.appendChild(el("span","bx",r.result+". "));
+    res.appendChild(el("span","bx",r.result));
     res.appendChild(document.createTextNode(r.det));
     t.appendChild(res);
     t.appendChild(el("td",null,Array.isArray(r.ask)?r.ask.join(" "):r.ask));
@@ -2464,15 +2401,15 @@ $("samplepick").onchange=function(){
   if(loadSample(k))run();
   window.scrollTo(0,0);
 };
-$("copydraft").onclick=function(){copy(draftPrompt(),$("copydraft"),"Copy Prompt 1");};
+$("copydraft").onclick=function(){copy(draftPrompt(),$("copydraft"),"Copy");};
 $("copyreview").onclick=function(){
   var b=$("copyreview");
   if(!LAST){
     b.textContent="Run the checker first";
-    setTimeout(function(){b.textContent="Copy Prompt 2";},1800);
+    setTimeout(function(){b.textContent="Copy";},1800);
     return;
   }
-  copy(reviewerPrompt(),b,"Copy Prompt 2");
+  copy(reviewerPrompt(),b,"Copy");
 };
 $("clear").onclick=function(){
   ["ledger","memo","ratios","period","memover","company","reviewer"].forEach(function(id){$(id).value="";});
