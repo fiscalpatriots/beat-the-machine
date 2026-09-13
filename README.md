@@ -283,6 +283,47 @@ https://brand.gmu.edu/brand-guide/fonts-and-typography.
 The two call buttons are the same outlined ink button, side by side. They are never green or
 gold and neither is filled, because the choice between them has to read as even.
 
+### The shared header, the footer and the link preview
+
+One template draws the chrome. `assets/nav.js` injects a slim header at the top of the body (the
+Second Pass wordmark in green, then Drill, Checker and Review as text links with the current page
+marked and underlined in green, all three still visible at 375 with no hamburger) and the footer at
+the bottom ("Built by Khaled Alkurd. A drill for the AI-native accounting student." over text links
+to the protocol, the provenance note, the facilitator guide and the code). `review.html` loads it
+already. **For the other lanes: add `<script src="assets/nav.js" defer></script>` to the head of
+`index.html` and `checker.html` and the header and footer appear; nothing else needs wiring, since
+the script carries its own rules.**
+
+Every page carries the same three metadata lines so a pasted link previews in LinkedIn and in mail:
+a `<title>`, a `<meta name="description">`, and the Open Graph and Twitter card block. Only the
+title and the description change from page to page; the image, the card type and the site name are
+the same everywhere. `review.html` shows the full block. For the other two:
+
+| Page | `<title>` | `<meta name="description">` |
+| --- | --- | --- |
+| `index.html` | Second Pass: the ten-minute drill | Fourteen ledger lines, eight carrying a planted problem, called against an answer key. A drill on AI-drafted close commentary, built at George Mason. |
+| `checker.html` | Second Pass Checker: tie every figure back to the ledger | Paste a ledger and the memo somebody drafted about it. Four checks settle every figure, every direction word and every account nobody mentioned. |
+
+The Open Graph block to repeat on each page, with `og:url` pointed at that page:
+
+```html
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Second Pass">
+<meta property="og:url" content="https://fiscalpatriots.github.io/beat-the-machine/index.html">
+<meta property="og:title" content="...the page title...">
+<meta property="og:description" content="...the page description...">
+<meta property="og:image" content="https://fiscalpatriots.github.io/beat-the-machine/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+```
+
+The card art is `assets/og-image.png`, 1200 by 630, a Mason green field carrying the wordmark, the
+line "A second pass on AI-drafted close commentary" and the university and college names in small
+type. It is rendered from `assets/og-image.svg`; the build command sits in a comment at the top of
+that file. The icon is `assets/favicon.svg` with `assets/favicon-32.png` beside it for browsers that
+will not take the vector, a ledger page ticked in green on the green field over the gold rule.
+
 ## The ledger
 
 The ledger screen is a statement, not a list. A header block names the company and the close.
