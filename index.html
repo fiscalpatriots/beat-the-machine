@@ -460,7 +460,7 @@ var CARDS = [
 
  {n:2, icon:"wrench", acct:"6200", name:"Repairs and maintenance, depots",
   prior:41000, current:118600,
-  memo:"Depot repairs and maintenance of $118,600 reflects the roof and dock leveler program, which finished on June 30. The remaining depot repairs are scheduled to finish in August, and that spend is not yet in these numbers.",
+  memo:"Depot repairs and maintenance of $118,600 reflects the roof and dock leveler program, which finished on June 30. The remaining work on that same roof and dock leveler program is scheduled to finish in August, and that spend is not yet in these numbers.",
   file:["Halyard closes on the fifth business day of the following month."],
   key:"flag", type:"timing",
   why:"One program cannot be finished on June 30 and still have work running into August, and which version is true decides whether June owes an accrual.",
@@ -480,7 +480,8 @@ var CARDS = [
   prior:812000, current:1041000,
   memo:"Service revenue rose $229,000 as the equipment maintenance contracts signed in the spring moved onto monthly billing in June, and each month's fee is earned in the month it covers.",
   file:["The maintenance contracts bill monthly in arrears, so the June invoice covers June.",
-        "Nothing on these contracts is billed ahead of the service period."],
+        "Nothing on these contracts is billed ahead of the service period.",
+        "Twelve equipment maintenance contracts signed in March and April began billing in June, and the contract schedule is on file."],
   key:"stand", type:"clean line",
   why:"Billing monthly in arrears puts the whole fee in the month it was earned, so there is nothing sitting in June that belongs to a later month.",
   over:"The trap on this account is a plan billed a year ahead, and the file says these contracts are the opposite of that.",
@@ -510,7 +511,7 @@ var CARDS = [
 
  {n:7, icon:"glass", acct:"4000", name:"Product revenue, distribution",
   prior:5240000, current:5612000,
-  memo:"The growth in both revenue lines is driven by the Tri-State depot ramp, which management expects to continue through the third quarter.",
+  memo:"Product revenue of $5,612,000 grew on the Tri-State depot ramp, which management expects to continue through the third quarter.",
   file:["The memo cites no volume, no customer count and no split by depot.",
         "Halyard runs four regional depots and the ledger is not broken out by depot."],
   key:"flag", type:"invented driver",
@@ -530,7 +531,7 @@ var CARDS = [
 
  {n:9, icon:"fuel", acct:"6100", name:"Fleet fuel",
   prior:96400, current:91200,
-  memo:"Fleet fuel fell $5,200 on lower pump prices through June, and the movement fails both legs of the threshold, so the line owes no commentary at all.",
+  memo:"Fleet fuel fell $5,200, and the movement fails both legs of the threshold, so the line owes no commentary at all.",
   file:["Every June fuel invoice from the fleet servicer was received and recorded before the books closed.",
         THRESHOLD],
   key:"stand", type:"clean line",
@@ -555,7 +556,7 @@ var CARDS = [
   file:[THRESHOLD,
         "Halyard employs roughly 240 people across four depots, and the ledger gives no headcount by month."],
   key:"flag", type:"no explanation",
-  why:"It clears both legs with room to spare and the memo is silent, so the largest unexplained movement in operating expense is the one nobody wrote a sentence about.",
+  why:"It clears both legs with room to spare and the memo is silent on this line, so $72,500 goes to the reviewer with no sentence attached to it at all.",
   tell:"Read the ledger for what the memo left out, not only for what it got wrong.",
   post:{flag:"Accept", stand:"Reject"}},
 
@@ -567,7 +568,7 @@ var CARDS = [
         "From June 1, Halyard moved its two largest customers to delivered pricing: freight is included in the product price and no longer billed on account 4200 (pricing memo of May 20 on file).",
         "No sentence in the memo connects the two revenue lines to each other."],
   key:"flag", type:"wrong account",
-  why:"The $65,000 that left freight billed now sits inside product revenue by a pricing change the memo never mentions, so most of the growth it calls demand is a reclassification.",
+  why:"The $65,000 that left freight billed now sits inside product revenue by a pricing change the memo never mentions, so $65,000 of the growth it calls demand is a reclassification rather than new business.",
   tell:"When one revenue line falls while a related one rises, ask whether anything moved between them.",
   post:{flag:"Accept", stand:"Reject"}},
 
@@ -591,7 +592,7 @@ var CARDS = [
         "The revolver balance rose from $3.1 million to $5.6 million on June 3.",
         "Halyard has a revolver in place and the memo does not mention it."],
   key:"flag", type:"wrong account",
-  why:"Nothing was added to fixed assets and depreciation did not move, so the equipment story has no support, while the revolver draw the memo never mentions explains a 51 percent rise on its own.",
+  why:"Nothing was added to fixed assets and depreciation did not move, so the equipment story has no support, and the $2.5 million revolver draw of 3 June that the memo never mentions is the change the reviewer has to ask about.",
   tell:"The memo pointed at another account, so go and look at that account before you accept the sentence.",
   post:{flag:"Accept", stand:"Reject"}}
 ];
@@ -942,14 +943,16 @@ function howScreen(){
       '<h2>How this works in a real close</h2>'+
       howDiagram()+
       '<p>Second Pass sits between the AI draft and the sign-off. The reviewer still signs, and nothing else does.</p>'+
-      '<p class="howlead">Six ways a memo fails, in two groups.</p>'+
+      '<p class="howlead">Seven ways a memo fails, in two groups.</p>'+
       '<div class="howgrp"><h3>Machine-checkable</h3>'+
-        '<p>Arithmetic, wrong direction, threshold, silence. A script tests every figure in every sentence against the ledger, and lists every line that clears both legs of the threshold with no sentence written about it.</p></div>'+
+        '<p>Arithmetic, wrong direction, threshold, silence. A script ties each sentence to an account and tests the figures it can match against the ledger, then lists every line that clears both legs of the threshold with no sentence written about it.</p></div>'+
       '<div class="howgrp judge"><h3>Reviewer judgment</h3>'+
-        '<p>Invented driver, timing. Both need the facts on file and a person who knows the business.</p></div>'+
+        '<p>Invented driver, timing, wrong account. All three need the facts on file and a person who knows the business.</p></div>'+
       '<div class="howscope"><h3>Scope</h3>'+
-        '<p>This build is a static case: fourteen lines, one month, answers keyed by hand. It does not run on a live ledger, and the checks exist as code in the repository rather than wired into this page. Next, the deterministic checks run first on every AI memo, and the reviewer\'s time goes only to the two judgment types.</p></div>'+
+        '<p>This build is a static case: fourteen lines, one month, answers keyed by hand. It does not run on a live ledger, and the four mechanical checks run on any ledger and memo in the checker on this site; driver and timing stay with the reviewer. Next, the deterministic checks run first on every AI memo, and the reviewer\'s time goes only to the two judgment types.</p></div>'+
       '<a class="btn" href="checker.html">Run the checker on your own ledger and memo</a>'+
+      '<div class="linkrow"><a class="howlink" href="PROTOCOL.md">The review protocol, one page</a>'+
+        '<a class="howlink" href="Second-Pass-Review-Protocol.pdf">The same page as a PDF</a></div>'+
       '<div class="howuse"><h3>Use it on your own memo</h3>'+
         '<p>Paste this into the AI tool your firm already uses, then paste your ledger and the memo under it.</p>'+
         '<textarea id="howprompt" readonly rows="10" spellcheck="false">'+esc(HOWPROMPT)+'</textarea>'+
@@ -969,7 +972,7 @@ function intro(){
   screen.innerHTML =
     icon("robot", true)+
     '<h1>Second Pass:<br>Beat the Machine</h1>'+
-    '<p>The June close commentary at Halyard wasn\'t written by a person. The controller gave an AI assistant the ledger and asked it to explain the month, and every figure it quotes is right.</p>'+
+    '<p>The June close commentary at Halyard wasn\'t written by a person. The controller gave an AI assistant the ledger and asked it to explain the month, and it wrote with the confidence of something that had checked.</p>'+
     '<p>The explanations are the assistant\'s own guesswork, because the ledger doesn\'t carry any. Some of them are wrong, and they sound good enough that a busy reviewer would sign off and move on. You\'ll read fourteen lines and flag the ones that don\'t hold.</p>'+
     '<button class="btn" id="go">Play</button>'+
     '<div class="linkrow"><button class="howlink" id="howlink">How this works in a real close</button>'+

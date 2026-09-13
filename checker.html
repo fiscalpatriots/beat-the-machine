@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#005239">
+<title>Second Pass Checker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* George Mason Green, George Mason Gold, Logo Black and the accent palette,
+     from brand.gmu.edu/brand-guide/brand-colors */
+  --mason:#005239;
+  --mason-deep:#003527;
+  --mason-gold:#ffc733;
+  --gold-line:#e0ac00;
+  --ink:#333333;
+  --ink-soft:#5a5d61;
+  --paper:#f6f3ec;
+  --card:#ffffff;
+  --line:#dfd8c9;
+  --accept:#005239;
+  --accept-bg:#e3f2e8;
+  --reject:#cc4824;
+  --reject-bg:#fbe9e4;
+  --machine:#004f71;
+  --machine-bg:#e3eef4;
+  --neg:#a83a1c;
+  --gut:18px;
+  --shadow:0 2px 0 rgba(0,82,57,.09), 0 8px 24px rgba(0,82,57,.09);
+}
+@media (max-width:399px){:root{--gut:12px}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;max-width:100%;overflow-x:hidden}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font:17px/1.45 Figtree,"Open Sans","Franklin Gothic Book","Franklin Gothic",
+       -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  min-height:100vh;
+}
+#app{max-width:1180px;margin:0 auto;padding:0 var(--gut) 40px;min-height:100vh;display:flex;flex-direction:column}
+/* every block in the column may shrink below its content, so the wide table scrolls
+   inside its own box instead of stretching the page */
+#app>*{min-width:0;max-width:100%}
+h1{font-size:30px;line-height:1.12;margin:0 0 10px;letter-spacing:-.5px;color:var(--mason)}
+h2{font-size:22px;line-height:1.2;margin:0 0 10px;letter-spacing:-.3px;color:var(--mason)}
+h3{font-size:17px;line-height:1.22;margin:0 0 6px;letter-spacing:-.2px;color:var(--mason)}
+p{margin:0 0 14px}
+.sub{color:var(--ink-soft);font-size:16px}
+.tiny{font-size:13px;line-height:1.45;color:var(--ink-soft)}
+
+#mason{position:relative;background:var(--mason);color:#fff;margin:0 calc(var(--gut) * -1);
+  padding:12px var(--gut) 14px;border-bottom:3px solid var(--mason-gold)}
+#mason b{display:block;font-size:15px;font-weight:800;letter-spacing:.2px;line-height:1.2}
+#mason span{display:block;font-size:12.5px;letter-spacing:.3px;color:#dff0e4;margin-top:2px}
+#masonfoot{margin:24px calc(var(--gut) * -1) 0;padding:14px var(--gut) 4px;border-top:1px solid var(--line);
+  font-size:12.5px;line-height:1.4;color:var(--ink-soft);text-align:center}
+#masonfoot a{color:var(--ink-soft)}
+
+.intro{padding:18px 0 4px}
+.privacy{display:flex;gap:10px;align-items:flex-start;background:var(--accept-bg);
+  border:1px solid rgba(0,82,57,.25);border-radius:12px;padding:11px 13px;margin:0 0 16px}
+.privacy svg{width:19px;height:19px;flex:0 0 auto;margin-top:1px;fill:none;stroke:var(--mason);
+  stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.privacy p{margin:0;font-size:14px;line-height:1.45;color:var(--ink)}
+
+.panes{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+@media (min-width:900px){.panes{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.pane{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px 16px 16px;
+  box-shadow:var(--shadow);min-width:0}
+.pane label{display:block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;
+  color:var(--ink-soft);margin:0 0 6px}
+textarea,input[type=text],input[type=number],select{
+  width:100%;font:inherit;padding:11px 12px;border:2px solid var(--line);border-radius:12px;
+  background:var(--paper);color:var(--ink);
+}
+textarea{min-height:190px;resize:vertical;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Courier New",monospace;
+  font-size:13px;line-height:1.5;white-space:pre;overflow:auto}
+textarea.prose{white-space:pre-wrap;font-size:13.5px}
+textarea.small{min-height:74px}
+textarea:focus,input:focus,select:focus{outline:none;border-color:var(--mason)}
+.hint{margin:6px 0 0;font-size:12.5px;line-height:1.4;color:var(--ink-soft)}
+
+.settings{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px 16px;
+  margin:14px 0 0;box-shadow:var(--shadow)}
+.setgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.setgrid label{display:block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;
+  color:var(--ink-soft);margin:0 0 6px}
+
+button{font:inherit;color:inherit;cursor:pointer}
+.btn{display:inline-block;border:2px solid var(--ink);background:var(--ink);color:#fff;
+  border-radius:12px;padding:13px 18px;font-size:16px;font-weight:700}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.green{background:var(--mason);border-color:var(--mason)}
+.btn.sm{padding:9px 13px;font-size:14px;border-radius:10px}
+.btn:disabled{opacity:.35;cursor:default}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0 0}
+.note{margin:12px 0 0;border-left:4px solid var(--gold-line);background:#fff7e0;border-radius:0 10px 10px 0;
+  padding:10px 12px;font-size:14px;line-height:1.45}
+.note.bad{border-left-color:var(--reject);background:var(--reject-bg)}
+
+#out{margin:22px 0 0}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px;margin:0 0 14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
+.stat b{display:block;font-size:26px;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-soft);margin-top:3px;line-height:1.25}
+.stat.f b{color:var(--reject)}
+.stat.s b{color:var(--neg)}
+.stat.r b{color:var(--machine)}
+
+.tablewrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;
+  background:var(--card);border:2px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;min-width:880px;font-size:14px}
+thead th{position:sticky;top:0;background:var(--mason);color:#fff;text-align:left;font-size:11px;
+  text-transform:uppercase;letter-spacing:.6px;padding:10px 12px;border-bottom:2px solid var(--mason-gold)}
+tbody td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top;line-height:1.4}
+tbody tr.grp td{background:var(--paper);font-weight:800;font-size:11.5px;text-transform:uppercase;
+  letter-spacing:.7px;color:var(--mason)}
+td.ln{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Courier New",monospace;font-size:12.5px;white-space:nowrap;color:var(--ink-soft)}
+td.subj{min-width:250px;max-width:360px}
+td.subj b{display:block;font-size:12px;letter-spacing:.4px;color:var(--mason)}
+td.chk{white-space:nowrap;font-weight:600}
+td.res{min-width:210px;max-width:330px}
+td.ask{min-width:210px;max-width:330px;color:var(--ink-soft)}
+.badge{display:inline-block;border-radius:99px;padding:2px 9px;font-size:11px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.5px;margin:0 0 4px}
+.badge.pass{background:var(--accept-bg);color:var(--mason)}
+.badge.fail{background:var(--reject-bg);color:var(--reject)}
+.badge.review{background:#fff2cf;color:#7a5a00}
+.badge.info{background:var(--machine-bg);color:var(--machine)}
+.badge.silent{background:var(--reject-bg);color:var(--neg)}
+.badge.clears{background:var(--accept-bg);color:var(--mason)}
+.badge.below{background:#ece6d8;color:var(--ink-soft)}
+.det{display:block}
+.ask ul{margin:0;padding-left:16px}
+.ask li{margin:0 0 3px}
+.ask li:last-child{margin:0}
+#msg{margin:14px 0 0}
+.hidden{display:none!important}
+.foothow{background:var(--card);border:2px solid var(--line);border-left:4px solid var(--mason-gold);
+  border-radius:14px;padding:14px 16px;margin:20px 0 0;box-shadow:var(--shadow)}
+.foothow h3{margin:0 0 6px}
+.foothow p{margin:0 0 8px;font-size:15px;line-height:1.45}
+.foothow p:last-child{margin:0}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="mason"><b>George Mason University</b><span>Costello College of Business</span></div>
+
+  <div class="intro">
+    <h1>Second Pass Checker</h1>
+    <p class="sub">Paste a ledger and the memo somebody drafted about it. The checker recomputes every line,
+    ties each sentence to an account, and tests the arithmetic, the direction and the silence. What is left
+    over is the part that needs a person, and it prints as a short list of questions.</p>
+    <div class="privacy">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.4-3 8.4-7 10-4-1.6-7-5.6-7-10V6z"></path><path d="M9 12l2 2 4-4"></path></svg>
+      <p><b>Nothing you paste leaves this page.</b> The checker is one HTML file with no libraries, no network
+      calls and no storage. Close the tab and the ledger is gone.</p>
+    </div>
+  </div>
+
+  <div class="panes">
+    <div class="pane">
+      <label for="ledger">1. Ledger</label>
+      <textarea id="ledger" spellcheck="false" placeholder="Account number (optional), account name, prior balance, current balance&#10;One account per line, tabs or commas. A header row is ignored.&#10;&#10;4000&#9;Product revenue&#9;5,240,000&#9;5,612,000"></textarea>
+      <p class="hint">Tab separated, comma separated or column aligned. Dollar signs, commas and (parentheses)
+      for negatives are all read.</p>
+    </div>
+    <div class="pane">
+      <label for="memo">2. Memo (the drafted commentary)</label>
+      <textarea id="memo" class="prose" spellcheck="false" placeholder="Paste the commentary. One sentence per line reads best, and a label such as S1. is kept."></textarea>
+      <p class="hint">Free text. Lines that start with a label such as <b>S1.</b> are kept whole; anything else is
+      split into sentences.</p>
+    </div>
+  </div>
+
+  <div class="settings">
+    <div class="setgrid">
+      <div>
+        <label for="dollar">Dollar floor</label>
+        <input type="number" id="dollar" value="25000" min="0" step="1000">
+      </div>
+      <div>
+        <label for="pct">Percent floor</label>
+        <input type="number" id="pct" value="10" min="0" step="0.5">
+      </div>
+      <div>
+        <label for="rule">Rule</label>
+        <select id="rule">
+          <option value="both">Both legs</option>
+          <option value="either">Either leg</option>
+        </select>
+      </div>
+      <div>
+        <label for="period">Close period</label>
+        <input type="text" id="period" placeholder="June 2026">
+      </div>
+      <div>
+        <label for="memover">Memo version</label>
+        <input type="text" id="memover" placeholder="AI draft, first pass">
+      </div>
+    </div>
+    <div style="margin-top:12px">
+      <label for="ratios" style="display:block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--ink-soft);margin:0 0 6px">Ratios (optional)</label>
+      <textarea id="ratios" class="small" spellcheck="false" placeholder="One per line: Product gross margin = (4000 - 5000) / 4000"></textarea>
+      <p class="hint">Account numbers only, with plus, minus, times, divide and parentheses. A percent in the memo
+      that is not a line percent is tested against every ratio, for both months and for the change between them.</p>
+    </div>
+    <div class="row">
+      <button class="btn green" id="run">Run Second Pass</button>
+      <button class="btn ghost sm" id="sample">Load the Halyard sample</button>
+      <button class="btn ghost sm" id="sample2">Load a second, unrelated ledger</button>
+      <button class="btn ghost sm" id="clear">Clear</button>
+    </div>
+  </div>
+
+  <div id="msg"></div>
+  <div id="out"></div>
+
+  <div class="foothow">
+    <h3>How to use it in a close</h3>
+    <p>Run it first, before anybody reads the memo. The four mechanical checks settle what can be settled from
+    the numbers, and the reviewer's time then goes only to the queue at the bottom: whether the driver is
+    supported by something on file, and whether the period is right. Those two need a person.</p>
+    <p class="tiny">It does not judge drivers or timing, it does not guess at accounts beyond the matching rules,
+    and it reads one currency. <a href="CHECKER.md">What it does and does not do</a> &middot;
+    <a href="index.html">Back to the game</a></p>
+  </div>
+
+  <p id="masonfoot">Built by Khaled Alkurd. A drill for the AI-native accounting student.</p>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================ helpers */
+function $(id){return document.getElementById(id);}
+function el(tag,cls,txt){var n=document.createElement(tag);if(cls)n.className=cls;if(txt!=null)n.textContent=txt;return n;}
+function money(v){
+  if(v==null||!isFinite(v))return "n/a";
+  var neg=v<0,a=Math.abs(v);
+  var s=(Math.round(a*100)/100).toFixed(Math.abs(a-Math.round(a))<0.005?0:2);
+  s=s.replace(/\B(?=(\d{3})+(?!\d))/g,",");
+  return (neg?"-$":"$")+s;
+}
+function pctTxt(v){
+  if(v==null||!isFinite(v))return "n/a";
+  return (Math.round(v*10)/10).toFixed(1)+"%";
+}
+function parseNum(s){
+  if(s==null)return NaN;
+  var t=String(s).trim();
+  if(!t)return NaN;
+  var neg=false;
+  if(/^\(.*\)$/.test(t)){neg=true;t=t.slice(1,-1);}
+  t=t.replace(/[$ \s,]/g,"").replace(/%$/,"");
+  if(t.charAt(0)==="-"){neg=!neg;t=t.slice(1);}
+  else if(t.charAt(0)==="+"){t=t.slice(1);}
+  if(!/^\d*\.?\d+$/.test(t))return NaN;
+  var v=parseFloat(t);
+  if(!isFinite(v))return NaN;
+  return neg?-v:v;
+}
+function splitFields(line){
+  var out=[],cur="",q=false,i,ch;
+  if(line.indexOf("\t")>-1){out=line.split("\t");}
+  else{
+    for(i=0;i<line.length;i++){
+      ch=line.charAt(i);
+      if(ch==='"'){ if(q&&line.charAt(i+1)==='"'){cur+='"';i++;} else q=!q; }
+      else if(ch===","&&!q){out.push(cur);cur="";}
+      else cur+=ch;
+    }
+    out.push(cur);
+  }
+  out=out.map(function(x){return x.replace(/^\s+|\s+$/g,"");});
+  if(out.length<3){
+    var alt=line.split(/\s{2,}/).map(function(x){return x.replace(/^\s+|\s+$/g,"");}).filter(function(x){return x!=="";});
+    if(alt.length>out.length)out=alt;
+  }
+  return out;
+}
+
+/* ============================================================ ledger */
+var STOP={"and":1,"the":1,"for":1,"its":1,"per":1,"from":1,"with":1,"into":1,"that":1,"this":1,
+          "all":1,"but":1,"not":1,"other":1,"total":1,"net":1};
+
+function parseLedger(text){
+  var lines=String(text).split(/\r?\n/),accounts=[],skipped=[],seenData=false;
+  lines.forEach(function(raw,idx){
+    var line=raw.replace(/^\s+|\s+$/g,"");
+    if(!line)return;
+    if(/^[-=_~\s|+*.]+$/.test(line))return;
+    var f=splitFields(line);
+    while(f.length&&(f[f.length-1]===""||f[f.length-1]==="*"))f.pop();
+    while(f.length&&f[0]==="")f.shift();
+    if(!f.length)return;
+    var k=-1,tail=0,i;
+    for(i=f.length-1;i>=0;i--){
+      if(!isNaN(parseNum(f[i]))){k=i;tail++;}
+      else break;
+    }
+    if(tail<2||k<1){
+      if(!seenData)skipped.push({n:idx+1,t:line,why:"header or label row, ignored"});
+      else skipped.push({n:idx+1,t:line,why:"could not read a prior and a current balance"});
+      return;
+    }
+    var head=f.slice(0,k),num="",name="";
+    if(head.length>1&&/^\d{2,8}[a-z]?$/i.test(head[0])){num=head[0];name=head.slice(1).join(", ");}
+    else{name=head.join(", ");}
+    name=name.replace(/\s+/g," ").replace(/^[,\s]+|[,\s]+$/g,"");
+    if(!name){skipped.push({n:idx+1,t:line,why:"no account name"});return;}
+    var prior=parseNum(f[k]),cur=parseNum(f[k+1]);
+    var change=cur-prior;
+    var pct=(prior===0)?null:(change/Math.abs(prior))*100;
+    var words=name.toLowerCase().replace(/[^a-z0-9\s]/g," ").split(/\s+/)
+      .filter(function(w){return w.length>=3&&!STOP[w];});
+    var flat=name.toLowerCase().replace(/[^a-z0-9\s]/g," ").replace(/\s+/g," ").replace(/^ | $/g,"");
+    var two=flat.split(" ").slice(0,2).join(" ");
+    accounts.push({num:num,name:name,prior:prior,cur:cur,change:change,pct:pct,
+                   words:words,flat:flat,two:two,row:idx+1,sent:[]});
+    seenData=true;
+  });
+  return {accounts:accounts,skipped:skipped};
+}
+
+function clears(a,floorD,floorP,rule){
+  var legD=Math.abs(a.change)>floorD;
+  var legP=(a.pct===null)?(a.change!==0):(Math.abs(a.pct)>=floorP);
+  return rule==="either"?(legD||legP):(legD&&legP);
+}
+
+/* ============================================================ memo */
+function splitSentences(text){
+  var out=[],lines=String(text).split(/\r?\n/),auto=0;
+  lines.forEach(function(raw){
+    var line=raw.replace(/^\s+|\s+$/g,"");
+    if(!line)return;
+    if(/^[-=_~\s|+*]{4,}$/.test(line))return;
+    var m=line.match(/^([A-Za-z]{1,2}\s?\d{1,3}|\d{1,2})\s*[.)\]:-]\s+(.*)$/);
+    if(m&&m[2]){
+      out.push({label:m[1].replace(/\s+/g,"").toUpperCase(),text:m[2].replace(/\s+/g," ")});
+      return;
+    }
+    /* no label: split the line into sentences */
+    var buf="",i,ch,nx;
+    for(i=0;i<line.length;i++){
+      ch=line.charAt(i);buf+=ch;
+      if(ch==="."||ch==="!"||ch==="?"){
+        nx=line.slice(i+1);
+        if(/^\s+["“(]?[A-Z0-9]/.test(nx)&&!/\d\.$/.test(buf)){
+          out.push({label:null,text:buf.replace(/^\s+|\s+$/g,"").replace(/\s+/g," ")});
+          buf="";i++;
+          while(i<line.length&&/\s/.test(line.charAt(i)))i++;
+          i--;
+        }
+      }
+    }
+    if(buf.replace(/^\s+|\s+$/g,""))out.push({label:null,text:buf.replace(/^\s+|\s+$/g,"").replace(/\s+/g," ")});
+  });
+  out.forEach(function(s){
+    if(!s.label){auto++;s.label="S"+auto;}
+    else{var n=parseInt(s.label.replace(/\D/g,""),10);if(isFinite(n)&&n>auto)auto=n;}
+  });
+  return out;
+}
+
+/* figures inside a sentence */
+function figures(text){
+  var pcts=[],dollars=[],taken=[],m;
+  var rp=/(-?\$?\s?\(?\d[\d,]*(?:\.\d+)?\)?)\s*(?:percent\b|per cent\b|%|pp\b|percentage points?\b)/gi;
+  while((m=rp.exec(text))!==null){
+    var v=parseNum(m[1]);
+    if(!isNaN(v)){pcts.push({raw:m[1].replace(/^\s+|\s+$/g,""),v:v,at:m.index});}
+    taken.push([m.index,m.index+m[0].length]);
+  }
+  function isTaken(i,j){
+    for(var t=0;t<taken.length;t++){if(i>=taken[t][0]&&i<taken[t][1])return true;}
+    return false;
+  }
+  var rd=/\$\s?\(?-?\d(?:[\d,]*\d)?(?:\.\d+)?\)?|\b\d{1,3}(?:,\d{3})+(?:\.\d+)?\b/g;
+  while((m=rd.exec(text))!==null){
+    if(isTaken(m.index,m.index+m[0].length))continue;
+    var d=parseNum(m[0]);
+    if(!isNaN(d))dollars.push({raw:m[0].replace(/^\s+|\s+$/g,""),v:d,at:m.index});
+  }
+  return {pcts:pcts,dollars:dollars};
+}
+
+var TOL_P=0.05,TOL_D=0.005;
+function near(a,b,t){return Math.abs(Math.abs(a)-Math.abs(b))<=t;}
+
+/* ============================================================ matching */
+function matchSentence(s,accounts){
+  var text=" "+s.text.toLowerCase().replace(/[^a-z0-9$.,%\s-]/g," ").replace(/\s+/g," ")+" ";
+  var tokens={},i;
+  s.text.toLowerCase().replace(/[a-z]+/g,function(w){tokens[w]=1;return w;});
+  var fg=s.fig||figures(s.text);
+  var t1=[],t2=[],t3=[],t4=[];
+  accounts.forEach(function(a){
+    if(a.num&&new RegExp("(^|[^0-9])"+a.num+"([^0-9]|$)").test(s.text)){t1.push(a);return;}
+    var hit=false;
+    fg.dollars.forEach(function(d){
+      if(near(d.v,a.prior,TOL_D)||near(d.v,a.cur,TOL_D)||near(d.v,a.change,TOL_D))hit=true;
+    });
+    if(hit){t2.push(a);return;}
+    if(a.flat&&text.indexOf(" "+a.flat+" ")>-1){t3.push(a);return;}
+    if(a.two&&a.two.indexOf(" ")>-1&&text.indexOf(" "+a.two+" ")>-1){t3.push(a);return;}
+    for(i=0;i<a.words.length;i++){if(tokens[a.words[i]]){t4.push(a);return;}}
+  });
+  if(t1.length)return {accts:t1,how:"by account number"};
+  if(t2.length)return {accts:t2,how:"by an amount that ties"};
+  if(t3.length)return {accts:t3,how:"by account name"};
+  if(t4.length)return {accts:t4,how:"by a word in the account name"};
+  return {accts:[],how:""};
+}
+
+/* ============================================================ ratios */
+function tokenizeExpr(x){
+  var s=" "+x.toLowerCase()+" ";
+  s=s.replace(/\bdivided by\b/g," / ").replace(/\bdivide by\b/g," / ").replace(/\bdivide\b/g," / ")
+     .replace(/\bover\b/g," / ").replace(/\btimes\b/g," * ").replace(/\bmultiplied by\b/g," * ")
+     .replace(/\bplus\b/g," + ").replace(/\bminus\b/g," - ").replace(/\bless\b/g," - ");
+  var toks=s.match(/\d+|[()+\-*\/]/g);
+  var junk=s.replace(/\d+|[()+\-*\/\s]/g,"");
+  return {toks:toks||[],junk:junk};
+}
+function parseRatios(text,byNum){
+  var out=[],errs=[];
+  String(text).split(/\r?\n/).forEach(function(raw){
+    var line=raw.replace(/^\s+|\s+$/g,"");
+    if(!line)return;
+    var i=line.indexOf("=");
+    var name=i>-1?line.slice(0,i).replace(/^\s+|\s+$/g,""):"Ratio "+(out.length+1);
+    var expr=i>-1?line.slice(i+1):line;
+    var tk=tokenizeExpr(expr);
+    if(tk.junk){errs.push(name+": cannot read \""+tk.junk.replace(/\s+/g," ")+"\"");return;}
+    if(!tk.toks.length){errs.push(name+": nothing to compute");return;}
+    var vals={};
+    var ok=true,said={};
+    ["prior","cur"].forEach(function(mo){
+      try{vals[mo]=evalToks(tk.toks.slice(),byNum,mo)*100;}
+      catch(e){ok=false;if(!said[e.message]){said[e.message]=1;errs.push(name+": "+e.message);}}
+    });
+    if(!ok)return;
+    if(!isFinite(vals.prior)||!isFinite(vals.cur)){errs.push(name+": the ratio does not compute on these balances");return;}
+    out.push({name:name,expr:expr.replace(/\s+/g," ").replace(/^\s+|\s+$/g,""),
+              prior:vals.prior,cur:vals.cur,change:vals.cur-vals.prior});
+  });
+  return {ratios:out,errs:errs};
+}
+function evalToks(toks,byNum,month){
+  var pos=0;
+  function peek(){return toks[pos];}
+  function factor(){
+    var t=toks[pos++];
+    if(t===undefined)throw new Error("the expression stops early");
+    if(t==="("){var v=expr();if(toks[pos++]!==")")throw new Error("a bracket is not closed");return v;}
+    if(t==="-")return -factor();
+    if(t==="+")return factor();
+    if(/^\d+$/.test(t)){
+      var a=byNum[t];
+      if(!a)throw new Error("no account "+t+" in the ledger");
+      return month==="prior"?a.prior:a.cur;
+    }
+    throw new Error("cannot read \""+t+"\"");
+  }
+  function term(){
+    var v=factor(),op,r;
+    while(peek()==="*"||peek()==="/"){
+      op=toks[pos++];r=factor();
+      if(op==="/"){if(r===0)throw new Error("that ratio divides by zero");v=v/r;}
+      else v=v*r;
+    }
+    return v;
+  }
+  function expr(){
+    var v=term(),op;
+    while(peek()==="+"||peek()==="-"){op=toks[pos++];v=(op==="+")?v+term():v-term();}
+    return v;
+  }
+  var val=expr();
+  if(pos<toks.length)throw new Error("there is something extra after the expression");
+  return val;
+}
+
+/* ============================================================ direction */
+var UP=["rose","rise","rises","risen","rising","increased","increase","increases","increasing",
+        "grew","grow","grows","growth","growing","up","higher","climbed","climb","climbs","gained","jumped","added"];
+var DOWN=["fell","fall","falls","fallen","falling","declined","decline","declines","declining",
+          "decreased","decrease","decreases","decreasing","down","lower","dropped","drop","drops","reduced","shrank"];
+function dirWords(txt){
+  var t=" "+txt.toLowerCase().replace(/[^a-z\s]/g," ").replace(/\s+/g," ")+" ",out=[];
+  UP.forEach(function(w){if(t.indexOf(" "+w+" ")>-1)out.push({w:w,d:1});});
+  DOWN.forEach(function(w){if(t.indexOf(" "+w+" ")>-1)out.push({w:w,d:-1});});
+  return out;
+}
+function clausesOf(txt){
+  /* a comma inside a figure is part of the figure, never a clause break */
+  var guard="~COMMA~";
+  var t=String(txt).replace(/(\d),(\d)/g,"$1"+guard+"$2");
+  return t.split(/[,;:]|\bso\b|\bbecause\b|\bwhile\b|\bbut\b|\bas\b|\bafter\b|\bbefore\b|\bwhich\b|\bthough\b/i)
+          .map(function(c){return String(c).split(guard).join(",");})
+          .filter(function(c){return c&&c.replace(/\s/g,"")!=="";});
+}
+
+/* ============================================================ the run */
+var LAST=null;
+
+function run(){
+  var msg=$("msg"),out=$("out");
+  msg.innerHTML="";out.innerHTML="";
+  LAST=null;
+
+  var floorD=parseNum($("dollar").value);
+  var floorP=parseNum($("pct").value);
+  if(isNaN(floorD)||floorD<0)floorD=0;
+  if(isNaN(floorP)||floorP<0)floorP=0;
+  var rule=$("rule").value;
+
+  var L=parseLedger($("ledger").value);
+  if(!L.accounts.length){
+    note(msg,"bad","Nothing to check yet. Paste a ledger with at least one line that carries an account name, "+
+      "a prior balance and a current balance, or press <b>Load the Halyard sample</b> to see the shape it expects.");
+    return;
+  }
+  var sents=splitSentences($("memo").value);
+  if(!sents.length){
+    note(msg,"bad","The ledger read fine, but the memo pane is empty. Paste the commentary you want checked.");
+    return;
+  }
+
+  var byNum={};
+  L.accounts.forEach(function(a){if(a.num&&!byNum[a.num])byNum[a.num]=a;});
+  var R=parseRatios($("ratios").value,byNum);
+
+  if(L.skipped.length){
+    note(msg,"","Lines the ledger reader skipped: "+L.skipped.map(function(s){
+      return "line "+s.n+" ("+s.why+")";}).join("; ")+".");
+  }
+  if(R.errs.length){
+    note(msg,"bad","Ratios that could not be read, so they were left out: "+R.errs.join("; ")+".");
+  }
+
+  var rows=[],stats={lines:L.accounts.length,arith:0,dir:0,silent:0,queue:0};
+
+  /* ---- check 1, recompute */
+  rows.push({grp:"1. Recompute every line"});
+  L.accounts.forEach(function(a){
+    a.clears=clears(a,floorD,floorP,rule);
+    rows.push({
+      line:a.num||("row "+a.row),subj:a.name,check:"Recompute",
+      badge:a.clears?"clears":"below",
+      result:a.clears?"CLEARS THE RULE":"BELOW THE RULE",
+      det:"Change "+money(a.change)+", "+pctTxt(a.pct)+" of the prior balance"+
+          (a.clears?"":", no commentary owed"),
+      ask:""
+    });
+  });
+
+  /* ---- check 2, matching */
+  rows.push({grp:"2. Tie each sentence to an account"});
+  sents.forEach(function(s){
+    s.fig=figures(s.text);
+    var m=matchSentence(s,L.accounts);
+    s.accts=m.accts;s.how=m.how;
+    s.accts.forEach(function(a){a.sent.push(s);});
+    rows.push({
+      line:s.accts.length?s.accts.map(function(a){return a.num||a.name;}).join(", "):"none",
+      subj:s.text,label:s.label,check:"Match",
+      badge:s.accts.length?"pass":"review",
+      result:s.accts.length?"MATCHED":"UNMATCHED, REVIEW BY HAND",
+      det:s.accts.length?(s.accts.map(function(a){return (a.num?a.num+" ":"")+a.name;}).join("; ")+" ("+m.how+")")
+                        :"No account number, no name and no amount in this sentence ties to a ledger line.",
+      ask:s.accts.length?"":"Which account is this sentence about, and what amount does it rest on?"
+    });
+  });
+
+  /* ---- check 3, arithmetic */
+  rows.push({grp:"3. Arithmetic in every figure"});
+  sents.forEach(function(s){
+    if(!s.accts.length)return;
+    var fails=[],passes=[],reviews=[];
+    s.fig.dollars.forEach(function(d){
+      var hit=null;
+      s.accts.forEach(function(a){
+        if(hit)return;
+        if(near(d.v,a.prior,TOL_D))hit={a:a,what:"prior balance"};
+        else if(near(d.v,a.cur,TOL_D))hit={a:a,what:"current balance"};
+        else if(near(d.v,a.change,TOL_D))hit={a:a,what:"change"};
+      });
+      if(hit)passes.push(d.raw+" is the "+hit.what+" on "+(hit.a.num?hit.a.num+" ":"")+hit.a.name);
+      else{
+        var best=null;
+        s.accts.forEach(function(a){
+          [["prior balance",a.prior],["current balance",a.cur],["change",a.change]].forEach(function(c){
+            var gap=Math.abs(Math.abs(d.v)-Math.abs(c[1]));
+            if(best===null||gap<best.gap)best={gap:gap,txt:"ledger "+c[0]+" is "+money(c[1]),a:a};
+          });
+        });
+        fails.push("memo says "+d.raw+"; "+(best?best.txt:"nothing on the matched line comes close"));
+      }
+    });
+    s.fig.pcts.forEach(function(p){
+      var hit=null,cands=[];
+      s.accts.forEach(function(a){
+        if(a.pct!==null)cands.push({lab:(a.num?a.num+" ":"")+a.name+" percent change",v:a.pct});
+      });
+      R.ratios.forEach(function(r){
+        cands.push({lab:r.name+", prior month",v:r.prior});
+        cands.push({lab:r.name+", current month",v:r.cur});
+        cands.push({lab:r.name+", change in points",v:r.change});
+      });
+      s.accts.forEach(function(a){
+        if(hit)return;
+        if(a.pct!==null&&near(p.v,a.pct,TOL_P))hit=(a.num?a.num+" ":"")+a.name+" moved "+pctTxt(a.pct);
+      });
+      if(!hit){
+        R.ratios.forEach(function(r){
+          if(hit)return;
+          if(near(p.v,r.prior,TOL_P))hit=r.name+" in the prior month is "+pctTxt(r.prior);
+          else if(near(p.v,r.cur,TOL_P))hit=r.name+" in the current month is "+pctTxt(r.cur);
+          else if(near(p.v,r.change,TOL_P))hit=r.name+" changed "+pctTxt(r.change)+" points";
+        });
+      }
+      if(hit)passes.push(p.raw+" percent ties to "+hit);
+      else{
+        cands.sort(function(x,y){return Math.abs(Math.abs(p.v)-Math.abs(x.v))-Math.abs(Math.abs(p.v)-Math.abs(y.v));});
+        var three=cands.slice(0,3).map(function(c){return c.lab+" "+pctTxt(c.v);});
+        reviews.push(p.raw+" percent is not a line percent; nearest values: "+
+          (three.length?three.join("; "):"nothing on the matched line or in the ratios"));
+      }
+    });
+    s.arithFail=fails.length>0;
+    if(!s.fig.dollars.length&&!s.fig.pcts.length){
+      rows.push({line:acctLine(s),subj:s.text,label:s.label,check:"Arithmetic",badge:"pass",
+        result:"NO FIGURES",det:"This sentence carries no dollar figure and no percent, so there is nothing to recompute.",ask:""});
+      return;
+    }
+    if(fails.length)stats.arith++;
+    rows.push({
+      line:acctLine(s),subj:s.text,label:s.label,check:"Arithmetic",
+      badge:fails.length?"fail":(reviews.length?"review":"pass"),
+      result:fails.length?"FAIL":(reviews.length?"REVIEW":"PASS"),
+      det:fails.concat(reviews).concat(passes.filter(function(x,i){return passes.indexOf(x)===i;})).join(". ")+".",
+      ask:fails.length?"Which figure is right, the memo or the ledger, and where did the memo's number come from?"
+         :(reviews.length?"Confirm what this percent is measuring, since it is not the movement on the line.":"")
+    });
+  });
+
+  /* ---- check 4, direction */
+  rows.push({grp:"4. Direction against the sign of the movement"});
+  sents.forEach(function(s){
+    if(!s.accts.length)return;
+    var anchored=[],bad=[],good=[];
+    clausesOf(s.text).forEach(function(c){
+      var cf=figures(c),anchor=null;
+      cf.dollars.forEach(function(d){
+        if(anchor)return;
+        s.accts.forEach(function(a){
+          if(anchor)return;
+          if(near(d.v,a.prior,TOL_D)||near(d.v,a.cur,TOL_D)||near(d.v,a.change,TOL_D))anchor=a;
+        });
+      });
+      if(!anchor)return;
+      anchored.push(c);
+      var sign=anchor.change>0?1:(anchor.change<0?-1:0);
+      dirWords(c).forEach(function(w){
+        if(sign===0)return;
+        if(w.d===sign)good.push("\""+w.w+"\" agrees with "+(anchor.num?anchor.num+" ":"")+anchor.name);
+        else bad.push("the memo says \""+w.w+"\" but "+(anchor.num?anchor.num+" ":"")+anchor.name+
+          " "+(sign>0?"rose ":"fell ")+money(Math.abs(anchor.change))+
+          (anchor.pct===null?"":" ("+pctTxt(anchor.pct)+")"));
+      });
+    });
+    if(!anchored.length){
+      var words=dirWords(s.text);
+      words.forEach(function(w){
+        var agrees=false,names=[];
+        s.accts.forEach(function(a){
+          var sign=a.change>0?1:(a.change<0?-1:0);
+          if(sign===0)return;
+          names.push((a.num?a.num+" ":"")+a.name+" "+(sign>0?"rose":"fell"));
+          if(w.d===sign)agrees=true;
+        });
+        if(!names.length)return;
+        if(agrees)good.push("\""+w.w+"\" agrees with the matched line");
+        else bad.push("the memo says \""+w.w+"\" but "+names.join(" and "));
+      });
+    }
+    s.dirFail=bad.length>0;
+    if(bad.length)stats.dir++;
+    if(!bad.length&&!good.length){
+      rows.push({line:acctLine(s),subj:s.text,label:s.label,check:"Direction",badge:"pass",
+        result:"NOT STATED",det:"This sentence makes no claim about which way the account moved.",ask:""});
+      return;
+    }
+    rows.push({
+      line:acctLine(s),subj:s.text,label:s.label,check:"Direction",
+      badge:bad.length?"fail":"pass",
+      result:bad.length?"FAIL":"PASS",
+      det:(bad.length?bad.join("; "):good.join("; "))+".",
+      ask:bad.length?"Which way did this account actually move, and does the driver still hold once the sign is right?":""
+    });
+  });
+
+  /* ---- check 5, threshold and silence */
+  rows.push({grp:"5. Threshold and silence"});
+  L.accounts.forEach(function(a){
+    if(a.clears&&!a.sent.length){
+      stats.silent++;
+      rows.push({line:a.num||("row "+a.row),subj:a.name,check:"Silence",badge:"silent",result:"SILENT",
+        det:"Change "+money(a.change)+", "+pctTxt(a.pct)+", clears the rule and no sentence in the memo explains it. This line owes an explanation.",
+        ask:"What drove "+(a.num?a.num+" ":"")+a.name+" this month, and what supports it?"});
+    }
+  });
+  sents.forEach(function(s){
+    if(!s.accts.length)return;
+    var anyClears=false;
+    s.accts.forEach(function(a){if(a.clears)anyClears=true;});
+    if(anyClears)return;
+    rows.push({line:acctLine(s),subj:s.text,label:s.label,check:"Threshold",badge:"info",result:"INFO",
+      det:"No commentary owed; fine if correct. "+s.accts.map(function(a){
+        return (a.num?a.num+" ":"")+a.name+" moved "+money(a.change)+", "+pctTxt(a.pct);}).join("; ")+
+        ", which does not clear the rule.",ask:""});
+  });
+
+  /* ---- check 6, reviewer queue */
+  rows.push({grp:"6. The reviewer's queue, what a person still has to answer"});
+  var queue=[];
+  sents.forEach(function(s){
+    if(!s.accts.length)return;
+    if(s.arithFail||s.dirFail)return;
+    queue.push(s);
+    stats.queue++;
+    rows.push({line:acctLine(s),subj:s.text,label:s.label,check:"Reviewer",badge:"review",result:"FOR THE REVIEWER",
+      det:"The arithmetic and the direction hold. What is left is judgment, and the checker does not make it.",
+      ask:["Is the driver named here supported by anything on file?",
+           "Is the period right (nothing pulled forward or deferred)?"]});
+  });
+  L.accounts.forEach(function(a){
+    if(a.sent.length<2)return;
+    rows.push({line:a.num||("row "+a.row),subj:a.name,check:"Read together",badge:"review",result:"REVIEW",
+      det:"Read together: "+a.sent.length+" sentences on this account ("+a.sent.map(function(s){return s.label;}).join(", ")+
+        "). The checker does not test them against each other.",
+      ask:"Do these sentences agree with one another, and if not, which one holds?"});
+  });
+  if(!queue.length&&!rows.length){
+    note(msg,"","Nothing came back. Check that the memo pane carries sentences.");
+  }
+
+  LAST={rows:rows,stats:stats,accounts:L.accounts,sents:sents,queue:queue,ratios:R.ratios,
+        ledgerText:$("ledger").value,memoText:$("memo").value,
+        period:$("period").value,version:$("memover").value,
+        floorD:floorD,floorP:floorP,rule:rule};
+  render(out,rows,stats);
+}
+
+function acctLine(s){
+  return s.accts.length?s.accts.map(function(a){return a.num||a.name;}).join(", "):"none";
+}
+function note(where,cls,html){
+  var n=el("div","note"+(cls?" "+cls:""));
+  n.innerHTML=html;
+  where.appendChild(n);
+}
+
+/* ============================================================ render */
+function render(out,rows,stats){
+  var strip=el("div","strip");
+  [["lines",stats.lines,"Lines checked",""],
+   ["arith",stats.arith,"Arithmetic fails","f"],
+   ["dir",stats.dir,"Direction fails","f"],
+   ["silent",stats.silent,"Silent lines","s"],
+   ["queue",stats.queue,"Sentences for the reviewer","r"]].forEach(function(t){
+    var d=el("div","stat"+(t[3]?" "+t[3]:""));
+    d.appendChild(el("b",null,String(t[1])));
+    d.appendChild(el("span",null,t[2]));
+    strip.appendChild(d);
+  });
+  out.appendChild(strip);
+
+  var wrap=el("div","tablewrap"),tbl=el("table");
+  var thead=el("thead"),tr=el("tr");
+  ["Line","Sentence or account","Check","Result","Ask the controller"].forEach(function(h){
+    tr.appendChild(el("th",null,h));
+  });
+  thead.appendChild(tr);tbl.appendChild(thead);
+  var tb=el("tbody");
+  rows.forEach(function(r){
+    var t=el("tr");
+    if(r.grp){
+      t.className="grp";
+      var td=el("td",null,r.grp);td.colSpan=5;t.appendChild(td);tb.appendChild(t);return;
+    }
+    t.appendChild(el("td","ln",r.line));
+    var subj=el("td","subj");
+    if(r.label)subj.appendChild(el("b",null,r.label));
+    subj.appendChild(document.createTextNode(r.subj));
+    t.appendChild(subj);
+    t.appendChild(el("td","chk",r.check));
+    var res=el("td","res");
+    res.appendChild(el("span","badge "+r.badge,r.result));
+    res.appendChild(el("span","det",r.det));
+    t.appendChild(res);
+    var ask=el("td","ask");
+    if(Array.isArray(r.ask)){
+      var ul=el("ul");
+      r.ask.forEach(function(q){ul.appendChild(el("li",null,q));});
+      ask.appendChild(ul);
+    }else if(r.ask)ask.appendChild(document.createTextNode(r.ask));
+    t.appendChild(ask);
+    tb.appendChild(t);
+  });
+  tbl.appendChild(tb);wrap.appendChild(tbl);out.appendChild(wrap);
+
+  var row=el("div","row");
+  var b1=el("button","btn sm","Copy results as table");
+  b1.onclick=function(){copy(tsv(),b1,"Copy results as table");};
+  var b2=el("button","btn ghost sm","Download CSV");
+  b2.onclick=downloadCsv;
+  var b3=el("button","btn ghost sm","Copy the reviewer prompt");
+  b3.onclick=function(){copy(reviewerPrompt(),b3,"Copy the reviewer prompt");};
+  row.appendChild(b1);row.appendChild(b2);row.appendChild(b3);
+  out.appendChild(row);
+  var tip=el("p","tiny","Copy is the reliable one. A download can be blocked inside an embedded viewer.");
+  tip.style.margin="8px 0 0";
+  out.appendChild(tip);
+}
+
+/* ============================================================ exports */
+function tsv(){
+  if(!LAST)return "";
+  var lines=[["Line","Sentence or account","Check","Result","Ask the controller"].join("\t")];
+  LAST.rows.forEach(function(r){
+    if(r.grp){lines.push(r.grp);return;}
+    lines.push([r.line,(r.label?r.label+". ":"")+r.subj,r.check,r.result+": "+r.det,
+      Array.isArray(r.ask)?r.ask.join(" | "):r.ask].map(function(c){
+      return String(c).replace(/[\t\r\n]+/g," ");}).join("\t"));
+  });
+  return lines.join("\n");
+}
+var CSV_COLS=["close period","memo version","line","account","sentence","check","result","finding",
+              "ask to the controller","reviewer answer","resolved","reviewer name","date","controller sign-off"];
+function csv(){
+  if(!LAST)return "";
+  function q(v){v=String(v==null?"":v);return '"'+v.replace(/"/g,'""').replace(/[\r\n]+/g," ")+'"';}
+  function names(line){
+    return String(line).split(/,\s*/).map(function(t){
+      var hit=null;
+      LAST.accounts.forEach(function(a){if(!hit&&(a.num===t||a.name===t))hit=a;});
+      return hit?hit.name:t;
+    }).join("; ");
+  }
+  var lines=[CSV_COLS.map(q).join(",")];
+  LAST.rows.forEach(function(r){
+    if(r.grp)return;
+    lines.push([LAST.period,LAST.version,r.line,r.label?names(r.line):r.subj,r.label||"none",
+      r.check.toLowerCase(),r.badge,r.det,Array.isArray(r.ask)?r.ask.join(" "):r.ask,
+      "","","","",""].map(q).join(","));
+  });
+  return lines.join("\r\n");
+}
+function downloadCsv(){
+  var data=csv();
+  try{
+    var a=document.createElement("a");
+    a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(data);
+    a.download="second-pass-"+(LAST&&LAST.period?LAST.period.replace(/[^A-Za-z0-9]+/g,"-").toLowerCase():"results")+".csv";
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+  }catch(e){
+    copy(data,null,"");
+  }
+}
+function reviewerPrompt(){
+  if(!LAST)return "";
+  var p=[];
+  p.push("Second pass, reviewer questions only.");
+  p.push("Close period: "+(LAST.period||"not stated")+". Memo version: "+(LAST.version||"not stated")+".");
+  p.push("Commentary rule: a movement owes an explanation when it clears "+money(LAST.floorD)+
+         " and "+LAST.floorP+" percent of the prior balance ("+(LAST.rule==="both"?"both legs":"either leg")+").");
+  p.push("");
+  p.push("The mechanical work is done. A deterministic checker has already recomputed every line, tied each "+
+         "sentence to an account, tested every figure and every percent against the ledger, and tested the "+
+         "direction words against the sign of each movement. Do not recompute any of that.");
+  p.push("");
+  p.push("LEDGER AS PASTED");
+  p.push(LAST.ledgerText.replace(/^\s+|\s+$/g,""));
+  p.push("");
+  p.push("MEMO AS PASTED");
+  p.push(LAST.memoText.replace(/^\s+|\s+$/g,""));
+  p.push("");
+  p.push("THE SENTENCES THAT SURVIVED THE MECHANICAL CHECKS. For each one, answer only these two questions:");
+  p.push("1. Is the driver named here supported by anything on file?");
+  p.push("2. Is the period right (nothing pulled forward or deferred)?");
+  p.push("");
+  LAST.queue.forEach(function(s){
+    p.push(s.label+" ("+s.accts.map(function(a){return (a.num?a.num+" ":"")+a.name;}).join("; ")+"): "+s.text);
+  });
+  var dup=[];
+  LAST.accounts.forEach(function(a){
+    if(a.sent.length>1)dup.push((a.num?a.num+" ":"")+a.name+": "+a.sent.map(function(s){return s.label;}).join(", "));
+  });
+  if(dup.length){
+    p.push("");
+    p.push("READ TOGETHER. More than one sentence lands on each of these accounts, and the checker does not "+
+           "test them against each other: "+dup.join("; ")+".");
+  }
+  p.push("");
+  p.push("Answer from the close binder. Where nothing on file supports a driver, say \"not on file\" and name "+
+         "what you would ask the controller to produce.");
+  return p.join("\n");
+}
+function copy(text,btn,label){
+  function done(ok){
+    if(!btn)return;
+    btn.textContent=ok?"Copied":"Select it and copy by hand";
+    setTimeout(function(){btn.textContent=label;},1800);
+  }
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){done(true);},function(){done(fallback(text));});
+      return;
+    }
+  }catch(e){}
+  done(fallback(text));
+}
+function fallback(text){
+  try{
+    var ta=document.createElement("textarea");
+    ta.value=text;ta.setAttribute("readonly","");
+    ta.style.position="fixed";ta.style.left="-9999px";
+    document.body.appendChild(ta);ta.select();
+    var ok=document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  }catch(e){return false;}
+}
+
+/* ============================================================ samples */
+var HALYARD_LEDGER=[
+"Line\tAccount\tPrior (May 2026)\tCurrent (June 2026)",
+"4000\tProduct revenue, distribution\t$5,240,000\t$5,612,000",
+"4100\tService revenue, equipment maintenance\t$812,000\t$1,041,000",
+"4200\tFreight billed to customers\t$186,000\t$121,000",
+"5000\tCost of product sold\t$3,930,000\t$4,278,000",
+"5100\tInbound freight\t$214,000\t$287,800",
+"6000\tWarehouse wages\t$630,000\t$702,500",
+"6100\tFleet fuel\t$96,400\t$91,200",
+"6200\tRepairs and maintenance, depots\t$41,000\t$118,600",
+"6300\tSoftware subscriptions\t$28,500\t$30,100",
+"6400\tBad debt expense\t$15,000\t$62,000",
+"6500\tProfessional fees\t$55,000\t$47,500",
+"7000\tDepreciation\t$128,000\t$128,000",
+"7100\tInterest expense\t$61,200\t$92,400",
+"7400\tInventory shrink adjustment\t$6,400\t$8,900"
+].join("\n");
+
+var HALYARD_MEMO=[
+"S0. Freight billed to customers fell from $186,000 to $121,000, a decrease of $6,500 and 3.5 percent.",
+"S1. Depot repairs and maintenance of $118,600 reflects the roof and dock leveler program, which finished on June 30.",
+"S2. Bad debt expense increased $42,000 following the reserve taken against the Coastal Grocers receivable.",
+"S3. Software subscriptions rose $1,600, which clears neither leg of the threshold, so this line carries no driver.",
+"S4. Distribution revenue of $5,612,000 grew 7.1 percent over May on continued customer demand across all four depots.",
+"S5. The growth in both revenue lines is driven by the Tri-State depot ramp, which management expects to continue through the third quarter.",
+"S6. Inbound freight declined to $287,800 as carrier fuel surcharges eased.",
+"S7. Interest expense rose $31,200 on the depot equipment additions that also sit in depreciation.",
+"S8. Fleet fuel fell $5,200 on lower pump prices through June, and the movement fails both legs of the threshold, so the line owes no commentary at all. Every June fuel invoice from the fleet servicer was received and recorded before the books closed.",
+"S9. Service revenue rose $229,000 as the equipment maintenance contracts signed in the spring moved onto monthly billing in June, and each month's fee is earned in the month it covers. These contracts bill monthly in arrears, so the June invoice covers June and nothing is billed ahead of the service period.",
+"S10. The remaining depot repairs are scheduled to finish in August, and that spend is not yet in these numbers.",
+"S11. Cost of product sold rose $348,000 against a $372,000 rise in revenue, so product gross margin fell from 25.0 percent in May to 23.8 percent in June on a shift toward lower margin lines.",
+"S12. Professional fees fell $7,500 because May carried a one-time $7,500 invoice from outside counsel for the depot lease renewal review, and the movement fails the dollar leg of the threshold."
+].join("\n");
+
+var RIDGE_LEDGER=[
+"1000,Cash and equivalents,412000,388500",
+"4300,Consulting revenue,240000,301000",
+"5200,Subcontractor costs,150000,118000",
+"6600,Travel and entertainment,12000,19400",
+"6700,Insurance,44000,96000"
+].join("\n");
+
+var RIDGE_MEMO=[
+"T1. Consulting revenue rose $61,000 on two new retainers that began in July.",
+"T2. Subcontractor costs increased $32,000 as work moved off the bench.",
+"T3. Travel and entertainment rose $9,400 on the regional sales trip."
+].join("\n");
+
+function loadHalyard(){
+  $("ledger").value=HALYARD_LEDGER;
+  $("memo").value=HALYARD_MEMO;
+  $("ratios").value="Product gross margin = (4000 - 5000) / 4000";
+  $("dollar").value="25000";$("pct").value="10";$("rule").value="both";
+  $("period").value="June 2026";$("memover").value="AI draft commentary, revision 4";
+  $("msg").innerHTML="";$("out").innerHTML="";
+}
+function loadRidge(){
+  $("ledger").value=RIDGE_LEDGER;
+  $("memo").value=RIDGE_MEMO;
+  $("ratios").value="";
+  $("dollar").value="25000";$("pct").value="10";$("rule").value="both";
+  $("period").value="July 2026";$("memover").value="Ridgeline test memo";
+  $("msg").innerHTML="";$("out").innerHTML="";
+}
+
+$("run").onclick=run;
+$("sample").onclick=function(){loadHalyard();run();window.scrollTo(0,0);};
+$("sample2").onclick=function(){loadRidge();run();window.scrollTo(0,0);};
+$("clear").onclick=function(){
+  ["ledger","memo","ratios","period","memover"].forEach(function(id){$(id).value="";});
+  $("msg").innerHTML="";$("out").innerHTML="";LAST=null;
+};
+
+/* a link can open with a sample already run: ?sample=halyard or ?sample=ridgeline */
+(function(){
+  var q=(window.location.search||"").toLowerCase();
+  if(q.indexOf("sample=halyard")>-1){loadHalyard();run();}
+  else if(q.indexOf("sample=ridgeline")>-1){loadRidge();run();}
+})();
+
+/* exposed so a run can be checked from the console, nothing on the page uses it */
+window.__secondPass=function(what){
+  if(what==="csv")return csv();
+  if(what==="table")return tsv();
+  if(what==="prompt")return reviewerPrompt();
+  return LAST;
+};
+})();
+</script>
+</body>
+</html>

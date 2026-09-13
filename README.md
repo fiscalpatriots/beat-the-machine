@@ -25,9 +25,9 @@ Two are reviewer judgment: invented driver and timing. Both need the facts on fi
 who knows the business, so both stay with the human.
 
 **Scope.** This build is a static case: fourteen lines, one month, answers keyed by hand. It does
-not run on a live ledger, and the checks exist as code in the repository rather than wired into
-this page. Next, the deterministic checks run first on every AI memo, and the reviewer's time
-goes only to the two judgment types.
+not run on a live ledger, and the four mechanical checks run on any ledger and memo in the
+checker on this site; driver and timing stay with the reviewer. Next, the deterministic checks
+run first on every AI memo, and the reviewer's time goes only to the two judgment types.
 
 The code and the pilot records are at https://github.com/fiscalpatriots/second-pass, which is
 public: `curl -s -o /dev/null -w "%{http_code}"` returned **200** signed out on 12 September 2026,
@@ -37,6 +37,13 @@ The sibling page https://fiscalpatriots.github.io/beat-the-machine/checker.html 
 deterministic checks on a ledger and a memo the visitor pastes in, and `CHECKER.md` in this
 repository documents it. It is linked from the intro screen's link row and from the top of the
 "Use it on your own memo" block.
+
+`PROTOCOL.md` is the one page a reviewer works from, and `Second-Pass-Review-Protocol.pdf` is the
+same page to print or hand across a desk; both are linked from the "How this works in a real
+close" screen. `EVIDENCE-LOG-TEMPLATE.csv` is the log the protocol fills in, and it is the column
+order the checker's **Download CSV** writes, so an exported run drops straight into it with the
+reviewer columns left blank. `GOVERNANCE-NOTE.md` records who signs and what the tool is not
+allowed to decide.
 
 ### How the game's data feeds the findings
 
