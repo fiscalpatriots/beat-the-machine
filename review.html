@@ -7,192 +7,248 @@
 <title>Second Pass: the entry in one page</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
+/* George Mason Green, George Mason Gold and the accent palette,
+   from brand.gmu.edu/brand-guide/brand-colors.
+
+   Contrast on the #f6f3ec ground, sRGB relative luminance, WCAG 2.1 ratios:
+     #333333 body text      11.4:1
+     #005239 Mason green     8.4:1   headings, links
+     #5a5d61 soft ink        5.5:1   margin labels, captions, footer
+   Gold is used for rules only and never carries text. */
 :root{
-  /* George Mason Green, George Mason Gold and the accent palette,
-     from brand.gmu.edu/brand-guide/brand-colors */
   --mason:#005239;
   --mason-deep:#003527;
-  --mason-gold:#ffc733;
   --gold-line:#e0ac00;
   --ink:#333333;
   --ink-soft:#5a5d61;
   --paper:#f6f3ec;
-  --card:#ffffff;
-  --line:#dfd8c9;
+  --line:#cfc7b5;
+  --hair:#ded7c7;
   --gut:22px;
-  --shadow:0 2px 0 rgba(0,82,57,.09), 0 8px 24px rgba(0,82,57,.09);
+  --label:160px;
+  --gap:40px;
+  /* 540px is 66 characters of this face at 18px, inside the 62 to 68 the page is set to */
+  --measure:540px;
 }
-@media (max-width:420px){:root{--gut:14px}}
+@media (max-width:420px){:root{--gut:18px}}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;overflow-x:hidden}
 body{
   background:var(--paper);
   color:var(--ink);
-  font:17px/1.5 Figtree,"Open Sans","Franklin Gothic Book","Franklin Gothic",
+  font:18px/1.72 Figtree,"Open Sans","Franklin Gothic Book","Franklin Gothic",
        -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
 }
-#page{max-width:900px;margin:0 auto;padding:0 var(--gut) 44px}
+#page{max-width:784px;margin:0 auto;padding:0 var(--gut) 56px}
 
-#mason{background:var(--mason);color:#fff;margin:0 calc(var(--gut) * -1);
-  padding:12px var(--gut) 20px;border-bottom:3px solid var(--mason-gold)}
-#mason b{display:block;font-size:15px;font-weight:800;letter-spacing:.2px;line-height:1.2}
-#mason span{display:block;font-size:12.5px;letter-spacing:.3px;color:#dff0e4;margin-top:2px}
-#masonfoot{margin:34px calc(var(--gut) * -1) 0;padding:16px var(--gut) 4px;border-top:1px solid var(--line);
-  font-size:12.5px;line-height:1.4;color:var(--ink-soft);text-align:center}
+/* the measure: every run of body text sits between 62 and 68 characters */
+.measure{max-width:var(--measure)}
 
-h1{font-size:32px;line-height:1.12;margin:26px 0 8px;letter-spacing:-.6px;color:var(--mason)}
-h2{font-size:22px;line-height:1.2;margin:0 0 12px;letter-spacing:-.3px;color:var(--mason)}
-h3{font-size:17px;line-height:1.25;margin:0 0 5px;letter-spacing:-.1px;color:var(--mason)}
-p{margin:0 0 14px;max-width:66ch}
-.sub{color:var(--ink-soft);font-size:16px;margin-bottom:26px}
-.tiny{font-size:13.5px;color:var(--ink-soft)}
-.tiny a{color:var(--mason);text-decoration:underline;text-underline-offset:2px}
+a{color:var(--mason);text-decoration:underline;text-decoration-thickness:1px;
+  text-underline-offset:.16em}
+a:hover{color:var(--mason-deep);text-decoration-thickness:2px}
 
-section{border-top:1px solid var(--line);padding:26px 0 6px}
-section:first-of-type{border-top:none}
-.num{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.8px;
-  text-transform:uppercase;color:var(--gold-line);margin:0 0 6px}
+/* masthead, plain type over a rule, no panel */
+.masthead{padding:26px 0 0}
+.masthead .inst{font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+  font-weight:600;color:var(--mason)}
+.masthead .coll{font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-soft);margin-top:2px}
+.masthead hr{border:0;border-top:2px solid var(--gold-line);margin:14px 0 0}
 
-/* the four artefacts */
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:4px 0 8px}
-@media (max-width:640px){.grid{grid-template-columns:minmax(0,1fr)}}
-.artefact{background:var(--card);border:2px solid var(--line);border-radius:16px;
-  overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
-.shot{display:block;width:100%;height:210px;object-fit:cover;object-position:top center;
-  background:var(--paper);border-bottom:1px solid var(--line)}
-.artefact .body{padding:14px 16px 16px;display:flex;flex-direction:column;flex:1}
-.artefact p{font-size:15px;line-height:1.45;margin:0 0 14px;flex:1}
-.btn{display:block;text-align:center;text-decoration:none;
-  border:2px solid var(--mason);background:var(--mason);color:#fff;
-  border-radius:12px;padding:11px 12px;font-size:15px;font-weight:700}
-.btn:hover{background:var(--mason-deep);border-color:var(--mason-deep)}
+/* title block */
+.titleblock{padding:38px 0 30px}
+h1{font:300 46px/1.1 Figtree,sans-serif;letter-spacing:-.02em;color:var(--mason);
+  margin:0 0 14px;max-width:18ch}
+.standfirst{font-size:20px;line-height:1.55;color:var(--ink-soft);margin:0;max-width:var(--measure)}
+.byline{font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);
+  margin:0 0 16px}
 
-/* governance and replicability lines */
-.lines{margin:0;padding:0;list-style:none}
-.lines li{background:var(--card);border:2px solid var(--line);border-left:4px solid var(--mason);
-  border-radius:14px;padding:13px 16px;margin:0 0 10px;box-shadow:var(--shadow)}
-.lines li p{margin:0;font-size:15.5px;line-height:1.45;max-width:none}
-.lines.judge li{border-left-color:var(--gold-line)}
+/* sections: a label column in the left margin on desktop, inline above on mobile */
+section{display:grid;grid-template-columns:var(--label) minmax(0,1fr);gap:0 var(--gap);
+  border-top:1px solid var(--hair);padding:32px 0 8px}
+.lab{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;
+  color:var(--ink-soft);line-height:1.5;padding-top:6px}
+.col{min-width:0}
+h2{font:600 21px/1.3 Figtree,sans-serif;color:var(--mason);margin:0 0 12px;letter-spacing:-.01em}
+p{margin:0 0 18px;max-width:var(--measure)}
+p:last-child{margin-bottom:10px}
+.note{font-size:15px;line-height:1.6;color:var(--ink-soft);max-width:var(--measure)}
 
-.findings{background:#fff;border:2px dashed var(--gold-line);border-radius:14px;
-  padding:16px;margin:0 0 12px}
-.findings p{margin:0;font-size:15.5px;line-height:1.5;color:var(--ink);max-width:none}
+@media (max-width:760px){
+  section{grid-template-columns:minmax(0,1fr);gap:0}
+  .lab{padding:0 0 10px}
+  h1{font-size:34px;max-width:none}
+  .standfirst{font-size:17px}
+  body{font-size:17px}
+}
 
-.scope li{border-left-color:var(--gold-line)}
-.scope em{display:block;font-style:normal;font-size:12px;font-weight:800;
-  text-transform:uppercase;letter-spacing:.7px;color:var(--ink-soft);margin:0 0 3px}
+/* the four things built: a numbered list, nothing else */
+ol.built{list-style:none;margin:4px 0 26px;padding:0;counter-reset:b}
+ol.built li{counter-increment:b;display:grid;grid-template-columns:64px minmax(0,1fr);
+  gap:0 14px;padding:0 0 22px}
+ol.built li::before{content:counter(b);font:300 44px/1 Figtree,sans-serif;
+  color:var(--ink-soft);text-align:right;padding-top:2px}
+ol.built b{display:block;font-weight:700;color:var(--ink);margin:0 0 2px}
+ol.built p{margin:0 0 4px;font-size:16.5px;line-height:1.6}
+ol.built .go{font-size:15px}
+@media (max-width:760px){
+  ol.built li{grid-template-columns:46px minmax(0,1fr)}
+  ol.built li::before{font-size:32px}
+}
+
+/* figures: full measure, one hairline, caption in italic below */
+figure{margin:0 0 26px;max-width:var(--measure)}
+figure img{display:block;width:100%;height:auto;border:1px solid var(--line);
+  background:#fff}
+figcaption{font-size:14.5px;line-height:1.55;font-style:italic;color:var(--ink-soft);
+  margin-top:8px}
+
+/* the three-line scope, the only list left on the page */
+dl.scope{margin:0 0 18px;max-width:var(--measure)}
+dl.scope dt{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;
+  color:var(--ink-soft);margin:0 0 2px}
+dl.scope dd{margin:0 0 16px}
+
+footer{border-top:1px solid var(--hair);margin-top:38px;padding:16px 0 0;
+  font-size:13.5px;line-height:1.6;color:var(--ink-soft)}
 img{max-width:100%}
 </style>
 </head>
 <body>
 <div id="page">
 
-  <div id="mason"><b>George Mason University</b><span>Costello College of Business</span></div>
+  <div class="masthead">
+    <div class="inst">George Mason University</div>
+    <div class="coll">Costello College of Business</div>
+    <hr>
+  </div>
 
-  <h1>Second Pass: the entry in one page</h1>
-  <p class="sub">Khaled Alkurd. A checker, a protocol, an evidence log and a ten-minute drill for the review that comes after an AI assistant drafts the memo.</p>
+  <div class="titleblock">
+    <p class="byline">Khaled Alkurd</p>
+    <h1>Second Pass: the entry in one page</h1>
+    <p class="standfirst">A checker, a protocol, an evidence log and a ten-minute drill for the review that comes after an AI assistant drafts the memo.</p>
+  </div>
 
   <section>
-    <span class="num">One</span>
-    <h2>The problem</h2>
-    <p>At PwC Deals this summer I read management's explanations of the variances and tested them against the ledger, and the ones that read best were not always the ones that tied. In the home services company my family runs I have watched the close memo get signed at the end of a long day. An AI assistant drafts those explanations now, and they read better than what a person writes on deadline.</p>
-    <p>The case in the drill is built, not captured. Halyard is a made-up company, and its June memo reads the way an AI assistant writes close commentary, with the mistakes they make planted line by line so they can be taught and scored.</p>
-  </section>
-
-  <section>
-    <span class="num">Two</span>
-    <h2>What was built</h2>
-    <div class="grid">
-
-      <div class="artefact">
-        <img class="shot" src="screenshots/review/01-checker-halyard.png" alt="The Second Pass Checker with the Halyard sample run: fourteen lines checked, two arithmetic fails, one direction fail, one silent line.">
-        <div class="body">
-          <h3>The checker</h3>
-          <p>Paste in the ledger and the memo, and four checks run in the browser: every figure recomputed, every direction tested against the sign, every account over the threshold that no sentence mentions.</p>
-          <a class="btn" href="checker.html">Run the checker</a>
-        </div>
-      </div>
-
-      <div class="artefact">
-        <img class="shot" src="screenshots/review/02-game-card.png" alt="A game card: account 7400, inventory shrink adjustment, up $2,500, with nothing said about it in the commentary.">
-        <div class="body">
-          <h3>The drill</h3>
-          <p>Fourteen ledger lines from a made-up company, eight with a planted problem and six clean, each called against a key, and flagging all fourteen scores eight because a false flag costs what a miss costs.</p>
-          <a class="btn" href="index.html">Play the ten-minute drill</a>
-        </div>
-      </div>
-
-      <div class="artefact">
-        <img class="shot" src="screenshots/review/04-protocol-page-1.png" alt="The first page of the Second Pass Review Protocol, showing the control objective, the scope and the threshold.">
-        <div class="body">
-          <h3>The protocol</h3>
-          <p>It fixes the scope and the threshold, puts the four checks ahead of the two questions only a person answers, and names who may sign.</p>
-          <a class="btn" href="Second-Pass-Review-Protocol.pdf">Read the protocol (one page)</a>
-        </div>
-      </div>
-
-      <div class="artefact">
-        <img class="shot" src="screenshots/review/03-game-end-screen.png" alt="The end screen of the drill: rank, caught, let stand correctly, false flags, lap time and the fresh case score.">
-        <div class="body">
-          <h3>The record</h3>
-          <p>Every run records the call, the basis behind it, the error type and the time under an organization code. The participant downloads that record as a file, and sending it anywhere is a separate voluntary step.</p>
-          <a class="btn" href="https://github.com/fiscalpatriots/beat-the-machine" target="_blank" rel="noopener">Code and pilot records</a>
-        </div>
-      </div>
-
+    <div class="lab">The problem</div>
+    <div class="col">
+      <p>In diligence rooms this summer I read management's explanations of the variances and tested them against the ledger, and the ones that read best were not always the ones that tied. In the home services company my family runs I have watched the close memo get signed at the end of a long day. An AI assistant drafts those explanations now, and they read better than what a person writes on deadline.</p>
+      <p>The case in the drill is built, not captured. Halyard is a made-up company, and its June memo reads the way an AI assistant writes close commentary, with the mistakes they make planted line by line so they can be taught and scored.</p>
     </div>
   </section>
 
   <section>
-    <span class="num">Three</span>
-    <h2>Governance</h2>
-    <ul class="lines">
-      <li><p><b>Objective.</b> No commentary drafted with AI assistance is released until a second pass ties every figure to the ledger and a named reviewer signs the two judgment questions.</p></li>
-      <li><p><b>The four mechanical checks.</b> Recompute every figure, test every direction word against the sign, list every account clearing both legs of the threshold, and name the ones no sentence mentions.</p></li>
-    </ul>
-    <ul class="lines judge">
-      <li><p><b>The two signed questions.</b> Is the driver named in the sentence supported by a document on file, and does that driver belong to the period the sentence covers.</p></li>
-      <li><p><b>Who may not review.</b> The preparer, and anyone who prompted the assistant for this memo.</p></li>
-    </ul>
-  </section>
+    <div class="lab">What was built</div>
+    <div class="col">
+      <ol class="built">
+        <li>
+          <div>
+            <b>The checker</b>
+            <p>Paste in the ledger and the memo, and four checks run in the browser: every figure recomputed, every direction tested against the sign, every account over the threshold that no sentence mentions.</p>
+            <p class="go"><a href="checker.html">Run the checker</a></p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <b>The drill</b>
+            <p>Fourteen ledger lines from a made-up company, eight with a planted problem and six clean, each called against a key, and flagging all fourteen scores eight because a false flag costs what a miss costs.</p>
+            <p class="go"><a href="index.html">Play the ten-minute drill</a></p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <b>The protocol</b>
+            <p>It fixes the scope and the threshold, puts the four checks ahead of the two questions only a person answers, and names who may sign.</p>
+            <p class="go"><a href="Second-Pass-Review-Protocol.pdf">Read the protocol, one page</a></p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <b>The record</b>
+            <p>Every run records the call, the basis behind it, the error type and the time under an organization code. The participant downloads that record as a file, and sending it anywhere is a separate voluntary step.</p>
+            <p class="go"><a href="https://github.com/fiscalpatriots/beat-the-machine" target="_blank" rel="noopener">Code and pilot records</a></p>
+          </div>
+        </li>
+      </ol>
 
-  <section>
-    <span class="num">Four</span>
-    <h2>Outcomes</h2>
-    <div class="findings">
-      <p>[Findings, updated when the response export is run: players by organization, catch rate by error type, false-flag rate, median lap time, fresh-case transfer rate]</p>
+      <figure>
+        <img src="screenshots/review/01-checker-halyard.png" alt="The Second Pass Checker with the Halyard sample run: fourteen lines checked, two arithmetic fails, one direction fail, one silent line.">
+        <figcaption>The checker on the Halyard sample. Fourteen lines checked, two figures that do not recompute, one direction word contradicted by the sign, and one account over the threshold that no sentence mentions.</figcaption>
+      </figure>
+
+      <figure>
+        <img src="screenshots/review/02-game-card.png" alt="A game card: account 7400, inventory shrink adjustment, up $2,500, with nothing said about it in the commentary.">
+        <figcaption>One card from the drill. Account 7400 moved and the commentary says nothing about it, so the call is whether silence on this line is a problem.</figcaption>
+      </figure>
+
+      <figure>
+        <img src="screenshots/review/04-protocol-page-1.png" alt="The first page of the Second Pass Review Protocol, showing the control objective, the scope and the threshold.">
+        <figcaption>The first page of the protocol, carrying the control objective, the scope and the threshold that decides which movements owe commentary at all.</figcaption>
+      </figure>
+
+      <figure>
+        <img src="screenshots/review/03-game-end-screen.png" alt="The end screen of the drill: rank, caught, let stand correctly, false flags, lap time and the fresh case score.">
+        <figcaption>The end screen. Caught, let stand correctly, false flags, lap time and the score on a fresh case the player had never seen, which is the transfer measure.</figcaption>
+      </figure>
     </div>
-    <p class="tiny">The figures are computed from the response sheet by the script in the repository, one row per run.</p>
   </section>
 
   <section>
-    <span class="num">Five</span>
-    <h2>Scope</h2>
-    <ul class="lines scope">
-      <li><em>Does</em><p>Today it runs the four mechanical checks, holds the evidence log, trains the two judgment calls, and records the basis a player gives for every one of the nineteen calls.</p></li>
-      <li><em>Does not yet</em><p>It does not yet judge a driver or a timing claim, match an account loosely, or read Excel. Four questions the form still marks required are not asked, and the drill posts a placeholder value each question accepts rather than anything that should be read as an answer. Those four columns are dropped from the findings rather than averaged.</p></li>
-      <li><em>Next</em><p>Next is the Excel template, and the checks running on every AI memo before a reviewer reads it.</p></li>
-      <li><em>Versions</em><p>The product is second-pass-drill 1.3.0. The two cases are versioned outside the page, as halyard-v3 for the fourteen practice lines and brightwater-v3 for the five assessment lines, both dated 13 September 2026, and the data notice is notice-2026-09-13. All four stamps travel with every response and with every local record, and responses scored against different case versions are never pooled. Responses scored against the retired brightwater-v2 measured a different thing and are excluded.</p></li>
-      <li><em>Assessment</em><p>Round one is practice with a reveal after every call. Round two is scored at the end: no reveal between lines, no running score, no streak and no progress track, only a count of five, with every verdict arriving together once the fifth call is in. Every figure in that memo ties and every direction word is right, so the five lines test causal evidence and nothing else.</p></li>
-      <li><em>Consent and record</em><p>A data notice is read before anything is collected, and it says plainly that a codename is a pseudonym and not anonymity. Completion never depends on sharing: the run ends with a local record the participant downloads and a separate voluntary send. A sent run is labelled sent but unconfirmed, because the receiver returns no receipt this page can read, and a retry reuses the same attempt identifier so it cannot double count.</p></li>
-      <li><em>Evidence</em><p>Every sentence a card shows under On file is a verified case assumption. A document that is not listed was not supplied, which is not a claim that it does not exist, so an unsupported sentence is not established rather than false. A flag can be correct while the reason behind it is wrong, and the reveal says so.</p></li>
-    </ul>
-    <p class="tiny">Second Pass drill 1.3.0, cases halyard-v3 and brightwater-v3, notice notice-2026-09-13. How the case and its memo were made is written down in <a href="PROVENANCE.md">PROVENANCE.md</a>, the case files and what changed in them are in <a href="cases/README.md">cases/README.md</a>, and a live drafting run against the same ledger is recorded separately in <a href="evidence/EVIDENCE-NOTE.md">What a real AI draft got wrong</a>.</p>
+    <div class="lab">Governance</div>
+    <div class="col">
+      <p>The objective is one sentence. No commentary drafted with AI assistance is released until a second pass ties every figure to the ledger and a named reviewer signs the two judgment questions.</p>
+      <p>Four checks are mechanical and come first. Recompute every figure, test every direction word against the sign, list every account clearing both legs of the threshold, and name the ones no sentence mentions. Two questions are left for a person to sign, and they are the ones a machine cannot answer: whether the driver named in the sentence is supported by a document on file, and whether that driver belongs to the period the sentence covers.</p>
+      <p>Two people may not sign the second pass. The preparer may not, and neither may anyone who prompted the assistant for this memo.</p>
+    </div>
   </section>
 
   <section>
-    <span class="num">Six</span>
-    <h2>Replicability</h2>
-    <ul class="lines">
-      <li><p><b>Any ledger.</b> The checker reads an account, a prior balance and a current balance, from any system.</p></li>
-      <li><p><b>Any AI tool.</b> The protocol governs the memo, not the model that drafted it.</p></li>
-      <li><p><b>Any firm.</b> The threshold is a setting, and the drill runs inside a chapter meeting.</p></li>
-    </ul>
+    <div class="lab">Outcomes</div>
+    <div class="col">
+      <p>[Findings, updated when the response export is run: players by organization, catch rate by error type, false-flag rate, median lap time, fresh-case transfer rate.] The figures are computed from the response sheet by the script in the repository, one row per run.</p>
+    </div>
   </section>
 
-  <p id="masonfoot">Built by Khaled Alkurd. A drill for the AI-native accounting student.</p>
+  <section>
+    <div class="lab">Scope</div>
+    <div class="col">
+      <dl class="scope">
+        <dt>Does</dt>
+        <dd>Today it runs the four mechanical checks, holds the evidence log, trains the two judgment calls, and records the basis a player gives for every one of the nineteen calls.</dd>
+        <dt>Does not yet</dt>
+        <dd>It does not yet judge a driver or a timing claim, match an account loosely, or read Excel. Four questions the form still marks required are not asked, and the drill posts a placeholder value each question accepts rather than anything that should be read as an answer. Those four columns are dropped from the findings rather than averaged.</dd>
+        <dt>Next</dt>
+        <dd>Next is the Excel template, and the checks running on every AI memo before a reviewer reads it.</dd>
+      </dl>
+
+      <p>The product is second-pass-drill 1.3.0. The two cases are versioned outside the page, as halyard-v3 for the fourteen practice lines and brightwater-v3 for the five assessment lines, both dated 13 September 2026, and the data notice is notice-2026-09-13. All four stamps travel with every response and with every local record, and responses scored against different case versions are never pooled. Responses scored against the retired brightwater-v2 measured a different thing and are excluded.</p>
+
+      <p>Round one is practice with a reveal after every call. Round two is scored at the end: no reveal between lines, no running score, no streak and no progress track, only a count of five, with every verdict arriving together once the fifth call is in. Every figure in that memo ties and every direction word is right, so the five lines test causal evidence and nothing else.</p>
+
+      <p>A data notice is read before anything is collected, and it says plainly that a codename is a pseudonym and not anonymity. Completion never depends on sharing: the run ends with a local record the participant downloads and a separate voluntary send. A sent run is labelled sent but unconfirmed, because the receiver returns no receipt this page can read, and a retry reuses the same attempt identifier so it cannot double count.</p>
+
+      <p>Every sentence a card shows under On file is a verified case assumption. A document that is not listed was not supplied, which is not a claim that it does not exist, so an unsupported sentence is not established rather than false. A flag can be correct while the reason behind it is wrong, and the reveal says so.</p>
+
+      <p class="note">How the case and its memo were made is written down in <a href="PROVENANCE.md">PROVENANCE.md</a>, the case files and what changed in them are in <a href="cases/README.md">cases/README.md</a>, and a live drafting run against the same ledger is recorded separately in <a href="evidence/EVIDENCE-NOTE.md">what a real AI draft got wrong</a>.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="lab">Replicability</div>
+    <div class="col">
+      <p>The checker reads an account, a prior balance and a current balance, which is what every general ledger exports, so the ledger it runs on can come from any system. The protocol governs the memo rather than the model that drafted it, so the tool can change without the control changing. The threshold is a setting rather than a rule of the page, and the drill runs inside a chapter meeting in ten minutes, which is what makes it something a small firm can adopt without a project.</p>
+    </div>
+  </section>
+
+  <footer>
+    Second Pass drill 1.3.0. Cases halyard-v3 and brightwater-v3, data notice notice-2026-09-13.
+    Built by Khaled Alkurd, George Mason University, Costello College of Business.
+    A drill for the AI-native accounting student.
+  </footer>
 
 </div>
 </body>
