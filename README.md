@@ -12,35 +12,38 @@ Three screens stand between the link and the first card.
 1. The opening screen, two short paragraphs. Three candidate wordings live in
    `INTRO-CANDIDATES.md` and the one marked live there is the one in `index.html`.
 2. One screen for the codename and the chapters, on the same screen and both required.
-3. The ledger, read once as orientation with a single Continue.
+3. The ledger, read once as orientation, with a block under it saying what earns a flag and
+   what "Let it stand" means, and a single Continue.
 
-Nothing else is asked on the way in. The one tap after the round is the confidence scale.
+Nothing else is asked, on the way in or after the round.
 
 ## Mason branding
 
 Every screen carries a green band at the top with "George Mason University" and, beneath it,
-"Costello College of Business", both set in type. There is no logo file and no Patriot mark in
+"Costello College of Business", both set in type. Once the player has entered a codename it
+appears in gold on the bottom edge of that band, tracking sideways so it always sits directly
+above their car on the track. There is no logo file and no Patriot mark in
 this repository, because those are trademarks and a text lockup is the safe way to say whose
 drill this is. The footer line under every screen reads "A drill by the ACFE student chapter and
 Beta Alpha Psi Theta Alpha at Mason".
 
-The colours are the published university values, not approximations:
+The colors are the published university values, not approximations:
 
 | Name | Hex | Where it is used |
 | --- | --- | --- |
-| George Mason Green | `#005239` | the band, headings, the rank, the car, the chequered flag, the travelled track |
+| George Mason Green | `#005239` | the band, headings, the rank, the car, the chequered flag, the traveled track |
 | George Mason Gold | `#ffc733` | the rule under the band, the car cabin, the streak flame, earned badges, the top trophy |
 | Logo Black | `#333333` | body copy, the two call buttons, badge text on gold |
 | Accent, Navy | `#004f71` | the machine's voice, the account strip and the highlighted ledger row |
 | Accent, Red | `#cc4824` | the wrong-call verdict and negative changes (darkened to `#a83a1c` where it sets figures) |
 
-Those values come from the Mason brand guide colour page,
+Those values come from the Mason brand guide color page,
 https://brand.gmu.edu/brand-guide/brand-colors. The Bynder toolkit page supplied by Khaled
 (`gmu.bynder.com/guidelines/guide/bd8609ea.../page/b053e82e...`) redirects to the public Brand
-Toolbox root without signing in, so the colour and typography values were taken from the
+Toolbox root without signing in, so the color and typography values were taken from the
 published brand guide pages instead.
 
-Two brand rules shape the palette here. Accent colours are for emphasis only and never replace
+Two brand rules shape the palette here. Accent colors are for emphasis only and never replace
 green and gold, and gold may not set text on white, so gold appears as a fill with Logo Black
 text on it and never as type on the paper. Every text pair on the band and on the cards clears
 4.5:1 at body size, the lowest being the footer and the earned line at 5.97:1.
@@ -65,7 +68,14 @@ sales and operating expenses each carry a subtotal, and a net line closes the st
 
 Nothing is tapped there. The Ledger button on every card and every reveal reopens the same
 component as a slide up sheet, with the account under review highlighted and scrolled to, and
-that account also prints as a strip at the top of its card.
+that account also prints as a strip at the top of its card. Every card carries a full width
+"See the full ledger" button under that strip as well as the Ledger control in its header, both
+opening the same sheet, and both taller than 44px. The first card adds a one time hint line
+under the button.
+
+The account number and its name share one line at 15px in the ink color, the number in tabular
+figures on a fixed width so the names line up under each other. The card holds 16px of inner
+padding on a phone and 24px from 480px up, rows are 12px apart, and no text touches the border.
 
 ## The round
 
@@ -86,21 +96,30 @@ The progress bar is a race track drawn as one inline SVG in `buildTrack()`. Four
 a car that advances one segment per card, a pit lane under the main lane and a chequered flag at
 the finish. A right call gives the car a short forward burst with two speed lines behind it, a
 wrong call drops it into the pit lane for a beat before it rejoins, and three correct calls in a
-row light a flame behind it. Every animation is 200ms, there is no sound, and everything is
-switched off under `prefers-reduced-motion: reduce`. The bar holds a fixed height from the first
+row light a flame behind it. Streaks build in three steps: two in a row gives the car a speed
+trail, three adds the gold flame and a "Streak 3" toast on the reveal, and five grows both and
+lights the track behind the car gold under an "On fire" toast. A wrong call ends the streak, the
+trail and the flame fade out and the car takes the pit lane dip. Every animation is 250ms or
+under, there is no sound, and everything is switched off under `prefers-reduced-motion: reduce`. The bar holds a fixed height from the first
 paint, so nothing on the page moves when the car does.
 
 The run is timed from the first card to the fourteenth call. The end screen prints it as
-`Lap time 6:42` beside the score, and the same figure rounded to whole minutes is what goes into
-the form's elapsed minutes question.
+`Lap time 6:42` beside the score, with `Best streak 7` next to it, and the lap time rounded to
+whole minutes is what goes into the form's elapsed minutes question. A streak of five or more
+earns the "Hot lap" badge, which is the sixth of the six.
+
+## Spelling
+
+American spelling throughout, in the file and in these notes. The organization chips post as
+`Organizations: ...` with a z.
 
 ## The end screen
 
 The end screen leads with the reward: a trophy drawn to the rank (bronze, silver, gold, and a
 starred cup for a clean sweep) with a single rise and shine that respects
 `prefers-reduced-motion`, the rank name, the codename, the earned line, the three outcomes as
-caught, let stand correctly and false flags, the lap time under those three tiles, five badges
-with the unearned ones greyed, and the share line with a Copy button. The coaching sits behind
+caught, let stand correctly and false flags, the lap time and the best streak under those three
+tiles, six badges with the unearned ones grayed, and the share line with a Copy button. The coaching sits behind
 one tap under it. Ranks are Trainee, Staff, Senior, Manager and Partner, off correct calls out
 of fourteen.
 
@@ -120,7 +139,7 @@ Try sending again button that reruns the post rather than losing the round.
 Nobody types anything after the round. The fourteen calls post as `Accept` or `Reject` so the
 existing multiple choice questions keep working, and every text question receives a generated
 summary instead of player prose: the fourteen "Why" fields carry the call, the key and the error
-type for that line, question A carries the organisations, and question B carries the lines
+type for that line, question A carries the organizations, and question B carries the lines
 missed, the pattern, the result and the longest run. The elapsed minutes question receives the
 lap time, off the clock rather than a tap.
 
@@ -130,13 +149,15 @@ line posts `Accept`. Each card carries its own `post` mapping for that reason.
 
 ## The placeholders
 
-Three questions the form marks required are no longer asked on screen, because the path to the
-first card is three screens and these are not part of it:
+Four questions the form marks required are no longer asked on screen. Three were intake
+questions the three-screen path has no room for, and the fourth was the confidence tap after
+the round, which came out so the last card leads straight into the send:
 
 | Form question | Entry id | Posted value |
 | --- | --- | --- |
 | Expected quality of the commentary | `entry.53437742` | `3` |
 | Confidence before the round | `entry.538678778` | `5` |
+| Confidence after the round | `entry.439643836` | `5` |
 | Month end close experience | `entry.1421470415` | `Once or twice` |
 
 Question B says so in the same cell, in the sentence beginning "Intake scales", so nobody in the
@@ -144,15 +165,20 @@ responses sheet reads them as player answers. Filter them out before any analysi
 free text field (`entry.1115022539`) carries the same kind of note, because the ledger screen is
 orientation only and collects no picks.
 
-## Counting the organisations
+## Counting the organizations
 
 The intake screen asks which chapters the player belongs to, multi-select, at least one. The
 taps ride at the front of question A (`entry.117652481`) behind a fixed prefix, so no new form
 question was needed. The cell reads:
 
 ```
-Organisations: ACFE; NABA. Not collected. The ledger screen is orientation only in this version.
+Organizations: ACFE; NABA. Not collected. The ledger screen is orientation only in this version.
 ```
+
+The prefix used to read `Organisations:` with an s. Rows filed before 12 September 2026, which
+includes the AUDIT-TEST-DELETE test row, carry that older British form, so a count that has to
+reach back through them should test for `Organi*ations:` or simply for the chapter name, which
+is unchanged either way.
 
 The six chips are Beta Alpha Psi, ACFE, ASM, NABA, AAA and GMU Student. To count a chapter in
 the responses sheet, test the question A column for the name, for example

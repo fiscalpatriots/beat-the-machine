@@ -29,8 +29,10 @@
   --machine-bg:#e3eef4;
   --bar-old:#cfc6b2;
   --neg:#a83a1c;
+  --gut:18px;
   --shadow:0 2px 0 rgba(0,82,57,.09), 0 8px 24px rgba(0,82,57,.09);
 }
+@media (max-width:399px){:root{--gut:12px}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0}
 body{
@@ -40,17 +42,22 @@ body{
        -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   min-height:100vh;
 }
-#app{max-width:520px;margin:0 auto;padding:0 18px 40px;min-height:100vh;display:flex;flex-direction:column}
+#app{max-width:520px;margin:0 auto;padding:0 var(--gut) 40px;min-height:100vh;display:flex;flex-direction:column}
 h1{font-size:30px;line-height:1.12;margin:0 0 10px;letter-spacing:-.5px;color:var(--mason)}
 h2{font-size:22px;line-height:1.2;margin:0 0 10px;letter-spacing:-.3px;color:var(--mason)}
 h3{font-size:19px;line-height:1.22;margin:0 0 6px;letter-spacing:-.2px;color:var(--mason)}
 
 /* The university and college names set in type. No logo file and no Patriot mark. */
-#mason{background:var(--mason);color:#fff;margin:0 -18px;padding:12px 18px 11px;
-  border-bottom:3px solid var(--mason-gold)}
+#mason{position:relative;background:var(--mason);color:#fff;margin:0 calc(var(--gut) * -1);
+  padding:12px var(--gut) 22px;border-bottom:3px solid var(--mason-gold)}
+/* the codename rides the band, right above the player's car */
+#codetag{position:absolute;bottom:4px;left:0;transform:translateX(-50%);white-space:nowrap;
+  font-size:12px;font-weight:800;letter-spacing:.4px;color:var(--mason-gold);
+  transition:left .32s cubic-bezier(.3,.8,.35,1)}
+@media (prefers-reduced-motion:reduce){#codetag{transition:none}}
 #mason b{display:block;font-size:15px;font-weight:800;letter-spacing:.2px;line-height:1.2}
 #mason span{display:block;font-size:12.5px;letter-spacing:.3px;color:#dff0e4;margin-top:2px}
-#masonfoot{margin:20px -18px 0;padding:14px 18px 4px;border-top:1px solid var(--line);
+#masonfoot{margin:20px calc(var(--gut) * -1) 0;padding:14px var(--gut) 4px;border-top:1px solid var(--line);
   font-size:12.5px;line-height:1.4;color:var(--ink-soft);text-align:center}
 p{margin:0 0 14px}
 .sub{color:var(--ink-soft);font-size:16px}
@@ -59,7 +66,7 @@ p{margin:0 0 14px}
 #bar{position:sticky;top:0;z-index:5;background:var(--paper);padding:12px 0 8px}
 #track{line-height:0}
 #trk{display:block;width:100%;height:auto;overflow:visible}
-#fill{transition:width .32s cubic-bezier(.3,.8,.35,1)}
+#fill{transition:width .32s cubic-bezier(.3,.8,.35,1),fill .24s ease,fill-opacity .24s ease}
 #carpos{transition:transform .32s cubic-bezier(.3,.8,.35,1)}
 #carfx.burst{animation:burst .2s ease-out}
 #carfx.pit{animation:pit .2s ease-in-out}
@@ -68,13 +75,18 @@ p{margin:0 0 14px}
 #burst{opacity:0}
 #burst.on{animation:speedlines .2s ease-out}
 @keyframes speedlines{0%{opacity:0;transform:translateX(3px)}35%{opacity:.85}100%{opacity:0;transform:translateX(-7px)}}
-#flame{opacity:0;transition:opacity .2s ease}
-#flame.on{opacity:1}
+#trail,#flame{transform-box:fill-box;transform-origin:100% 50%;opacity:0;
+  transition:opacity .24s ease,transform .24s ease}
+#trail.on,#flame.on{opacity:1}
+#trail.big{transform:scaleX(1.7)}
+#flame.big{transform:scale(1.4,1.15)}
 #chq{opacity:.5;transition:opacity .2s ease}
 #chq.lit{opacity:1}
 @media (prefers-reduced-motion:reduce){
-  #fill,#carpos,#flame,#chq{transition:none}
+  #fill,#carpos,#flame,#trail,#chq{transition:none}
   #carfx.burst,#carfx.pit,#burst.on{animation:none}
+  #trail.big,#flame.big{transform:none}
+  .toast{animation:none}
 }
 #label{display:flex;justify-content:space-between;align-items:center;min-height:25px;margin-top:6px;font-size:13px;color:var(--ink-soft)}
 .scorepill{font-weight:700;color:var(--ink);background:#ece6d8;border-radius:99px;padding:3px 10px}
@@ -132,6 +144,10 @@ textarea{min-height:84px;resize:vertical}
 .file li:last-child{margin-bottom:0}
 
 .ask{font-weight:700;font-size:15px;margin:16px 0 0;color:var(--ink-soft)}
+.rules{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:16px;margin:14px 2px 0}
+.rules h3{margin:0 0 8px;font-size:16px}
+.rules p{margin:0;font-size:15px;line-height:1.45}
+.rules p+p{margin-top:8px}
 .two{display:flex;gap:10px;margin-top:10px}
 .two .btn{margin-top:0;flex:1;padding:17px 6px;font-size:17px}
 .btn.call{background:#fff;color:var(--ink);border-color:var(--ink)}
@@ -144,7 +160,10 @@ textarea{min-height:84px;resize:vertical}
 .type{display:inline-block;background:#fff;border:2px solid var(--ink);border-radius:99px;padding:4px 12px;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.6px}
 .bonus{display:inline-block;background:var(--mason-gold);color:#333333;border:2px solid var(--gold-line);border-radius:99px;padding:4px 12px;font-weight:700;font-size:14px;margin-top:10px}
 .why{margin:0 0 4px}
-.streak{font-size:15px;font-weight:700;color:var(--mason);margin:10px 0 0}
+.toast{display:inline-block;background:var(--mason-gold);color:#333333;border:2px solid var(--gold-line);
+  border-radius:99px;padding:5px 14px;font-weight:800;font-size:14px;margin:10px 0 0;
+  animation:pop .22s ease-out both}
+@keyframes pop{0%{transform:scale(.82);opacity:0}100%{transform:scale(1);opacity:1}}
 
 .split{margin:16px 0 0}
 .splitbar{height:12px;border-radius:99px;background:#e6e0d2;overflow:hidden;display:flex}
@@ -162,46 +181,60 @@ textarea{min-height:84px;resize:vertical}
 #sheet{position:fixed;inset:0;background:rgba(0,53,39,.58);z-index:20;display:flex;align-items:flex-end}
 #sheetbody{background:var(--paper);width:100%;max-height:88vh;overflow:auto;border-radius:18px 18px 0 0;padding:14px 12px 24px;max-width:520px;margin:0 auto}
 /* the statement: round one reads it, and the Ledger button reopens it during play */
-.stmt{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+.stmt{background:#fff;border:1px solid var(--line);border-radius:14px;margin:4px 0;padding:16px;
   box-shadow:0 1px 0 rgba(0,82,57,.06), 0 10px 28px rgba(0,82,57,.08)}
-.stmthead{padding:14px 12px 12px;border-bottom:1px solid var(--line)}
+@media (min-width:480px){.stmt{padding:24px;margin:6px 2px}}
+.stmthead{padding:0 0 12px;border-bottom:1px solid var(--line)}
 .stmthead b{display:block;font-size:17px;letter-spacing:-.2px;color:var(--mason)}
 .stmthead span{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:2px}
-.stmttbl{width:100%;table-layout:fixed;border-collapse:collapse;font-variant-numeric:tabular-nums}
-.stmttbl col.c1{width:27.5%}.stmttbl col.c2{width:27.5%}.stmttbl col.c3{width:26%}.stmttbl col.c4{width:19%}
+.stmtscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.stmttbl{width:100%;min-width:317px;table-layout:fixed;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.stmttbl col.c1{width:26.5%}.stmttbl col.c2{width:26.5%}.stmttbl col.c3{width:28%}.stmttbl col.c4{width:19%}
 .stmttbl th{font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-soft);
-  padding:9px 3px;text-align:right;border-bottom:1px solid var(--line);vertical-align:bottom}
-.stmttbl td{padding:3px;text-align:right;font-size:15px;vertical-align:top;border:none}
+  padding:10px 2px;text-align:right;border-bottom:1px solid var(--line);vertical-align:bottom}
+.stmttbl td{padding:2px;text-align:right;font-size:15px;vertical-align:top;border:none}
 .stmttbl tr.z td{background:#fbf9f4}
 .stmttbl tr.grp td{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--ink-soft);
-  background:#f3efe6;padding:7px 6px;text-align:left;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.stmttbl tr.nmrow td{text-align:left;padding:9px 6px 3px;border-top:1px solid #f0ece2}
-.stmttbl tr.figrow td{padding:0 3px 9px}
+  background:#f3efe6;padding:8px;text-align:left;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stmttbl tr.nmrow td{text-align:left;padding:12px 4px 4px;border-top:1px solid #f0ece2}
+.stmttbl tr.figrow td{padding:0 2px 12px}
 .stmttbl tr.grp+tr.nmrow td{border-top:none}
-.stmttbl .nm{display:block;font-size:13px;line-height:1.2;font-weight:600}
-.stmttbl .no{display:inline-block;font-size:11px;color:var(--ink-soft);margin-top:1px}
-.stmttbl .mbar{display:block;height:4px;border-radius:99px;background:#efeadd;margin-top:5px;overflow:hidden}
+.stmttbl .acctline{display:flex;gap:8px;align-items:baseline}
+.stmttbl .no{flex:0 0 42px;font-size:15px;font-weight:700;line-height:1.25;color:var(--ink);
+  font-variant-numeric:tabular-nums}
+.stmttbl .nm{font-size:15px;line-height:1.25;font-weight:600;color:var(--ink)}
+.stmttbl .mbar{display:block;height:4px;border-radius:99px;background:#efeadd;margin-top:7px;overflow:hidden}
 .stmttbl .mbar i{display:block;height:100%;background:var(--bar-old);border-radius:99px}
 .stmttbl td.ch{color:var(--ink);font-weight:600}
 .stmttbl td.ch.neg{color:var(--neg)}
 .stmttbl td.pc{color:var(--ink-soft)}
 .stmttbl td.pc.neg{color:var(--neg)}
-.stmttbl tr.subnm td{border-top:1px solid var(--ink);padding-top:9px;text-align:left}
-.stmttbl tr.subnm td,.stmttbl tr.subfig td{font-weight:700;background:#fff}
-.stmttbl tr.netnm td{border-top:3px double var(--ink);padding-top:10px;text-align:left}
-.stmttbl tr.netnm td,.stmttbl tr.netfig td{font-weight:800;background:#fff}
+.stmttbl tr.subnm td{border-top:1px solid var(--ink);padding-top:12px;text-align:left;font-size:15px}
+.stmttbl tr.subnm td{font-weight:700;background:#fff}
+.stmttbl tr.subfig td{font-weight:600;background:#fff}
+.stmttbl tr.netnm td{border-top:3px double var(--ink);padding-top:12px;text-align:left;font-size:15px}
+.stmttbl tr.netnm td{font-weight:800;background:#fff}
+.stmttbl tr.netfig td{font-weight:700;background:#fff}
 .stmttbl tr.here td{background:var(--machine-bg)}
 .stmttbl tr.here td:first-child{box-shadow:inset 3px 0 0 var(--machine)}
 .stmttbl tr.here .mbar i{background:var(--machine)}
-.cap{margin:0;padding:10px 12px 12px;font-size:12px;color:var(--ink-soft);border-top:1px solid var(--line)}
+.cap{margin:12px 0 0;padding:12px 0 0;font-size:12px;color:var(--ink-soft);border-top:1px solid var(--line)}
 
 /* the card header and the account's own statement line */
 .cardhead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .cardhead.plain{margin-bottom:10px;align-items:center}
 .revlabel{font-size:13px;font-weight:700;color:var(--ink-soft)}
-.ledgerbtn{flex:0 0 auto;border:2px solid var(--line);background:var(--card);color:var(--ink-soft);
-  border-radius:99px;padding:7px 14px;font-size:13px;font-weight:700}
+.ledgerbtn{flex:0 0 auto;border:2px solid var(--line);background:var(--card);color:var(--ink);
+  border-radius:99px;padding:12px 16px;min-height:46px;font-size:14px;font-weight:700}
 .ledgerbtn:active{transform:translateY(1px)}
+/* the obvious way in, under the account row on every card */
+.ledgerbig{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:48px;
+  border:2px solid var(--ink-soft);background:var(--card);color:var(--ink);border-radius:99px;
+  padding:13px 16px;font-size:16px;font-weight:700;margin:0 0 12px}
+.ledgerbig svg{width:19px;height:19px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round}
+.ledgerbig:active{background:var(--paper);transform:translateY(1px)}
+.ledgerhint{margin:0 0 14px;font-size:13px;line-height:1.4;color:var(--ink-soft);text-align:center}
 .strip{background:var(--machine-bg);border-left:3px solid var(--machine);border-radius:0 10px 10px 0;
   padding:10px 12px;margin:0 0 14px;font-variant-numeric:tabular-nums}
 .striptop{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
@@ -224,7 +257,7 @@ textarea{min-height:84px;resize:vertical}
 @media (prefers-reduced-motion:reduce){.trophy,.trophy .glint{animation:none}.trophy .glint{opacity:0}}
 .rankbig{font-size:38px;font-weight:800;letter-spacing:-1px;line-height:1.05;color:var(--mason)}
 .stats{display:flex;gap:8px;margin:0 0 10px}
-.lapwrap{margin:0 0 18px}
+.lapwrap{margin:0 0 18px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .lap{display:inline-block;border:1px solid var(--line);background:#fff;border-radius:99px;
   padding:6px 14px;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
 .stats div{flex:1;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 6px}
@@ -250,13 +283,13 @@ textarea{min-height:84px;resize:vertical}
 </head>
 <body>
 <div id="app">
-  <div id="mason"><b>George Mason University</b><span>Costello College of Business</span></div>
+  <div id="mason"><b>George Mason University</b><span>Costello College of Business</span><span id="codetag" hidden></span></div>
   <div id="bar">
     <div id="track"></div>
     <div id="label"><span id="step"></span><span id="score" class="scorepill hidden"></span></div>
   </div>
   <div id="screen"></div>
-  <p id="masonfoot">A drill by the ACFE student chapter and Beta Alpha Psi Theta Alpha at Mason</p>
+  <p id="masonfoot">Built by Khaled Alkurd. A drill for the AI-native accounting student.</p>
 </div>
 <iframe name="gfsink" id="gfsink" class="hidden" title="submit"></iframe>
 <script>
@@ -291,7 +324,8 @@ var I = {
   robot:'<rect x="4" y="8" width="16" height="11" rx="3.5"/><circle cx="12" cy="3.2" r="1.4"/><path d="M12 4.6V8M9 13h.01M15 13h.01M9.5 16h5"/>',
   badge:'<circle cx="12" cy="8.5" r="5.8"/><path d="M8 13.6 6 21l6-3 6 3-2-7.4"/>',
   glass:'<circle cx="11" cy="11" r="7"/><path d="M16 16l5.5 5.5"/>',
-  flag:'<path d="M5 21V3"/><path d="M5 4h13l-2.5 4L18 12H5z"/>'
+  flag:'<path d="M5 21V3"/><path d="M5 4h13l-2.5 4L18 12H5z"/>',
+  ledger:'<path d="M4 4.5h11a2 2 0 0 1 2 2V21H6a2 2 0 0 1-2-2z"/><path d="M17 8h3v11a2 2 0 0 1-2 2"/><path d="M7.5 9h6M7.5 13h6M7.5 17h3.5"/>'
 };
 function icon(name, big){ return '<span class="icon'+(big?' big':'')+'"><svg viewBox="0 0 24 24">'+I[name]+'</svg></span>'; }
 
@@ -336,8 +370,8 @@ var CARDS = [
   memo:"Depot repairs and maintenance of $118,600 reflects the roof and dock leveler program, which finished on June 30. The remaining depot repairs are scheduled to finish in August, and that spend is not yet in these numbers.",
   file:["Halyard closes on the fifth business day of the following month."],
   key:"flag", type:"timing",
-  why:"One programme cannot be finished on June 30 and still have work running into August, and which version is true decides whether June owes an accrual.",
-  tell:"Two sentences in the same memo describe the same programme as finished and as unfinished.",
+  why:"One program cannot be finished on June 30 and still have work running into August, and which version is true decides whether June owes an accrual.",
+  tell:"Two sentences in the same memo describe the same program as finished and as unfinished.",
   post:{flag:"Accept", stand:"Reject"}},
 
  {n:3, icon:"truck", acct:"5100", name:"Inbound freight",
@@ -351,7 +385,7 @@ var CARDS = [
 
  {n:4, icon:"calendar", acct:"4100", name:"Service revenue, equipment maintenance",
   prior:812000, current:1041000,
-  memo:"Service revenue includes $84,000 of annual maintenance plans billed in June and covering the twelve months to May 2027, all of it recognised in June.",
+  memo:"Service revenue includes $84,000 of annual maintenance plans billed in June and covering the twelve months to May 2027, all of it recognized in June.",
   file:["The whole $84,000 sits inside the movement on this account."],
   key:"flag", type:"timing",
   why:"June earns one month of a twelve month plan, so about $7,000 belongs in June revenue and roughly $77,000 belongs in deferred revenue.",
@@ -460,7 +494,7 @@ var CARDS = [
    printed anywhere, because a player who knew the split could flag everything. */
 
 /* ---------- state ---------- */
-/* organisations, tapped on the way in so the pooled results can be counted by chapter */
+/* organizations, tapped on the way in so the pooled results can be counted by chapter */
 var ORGS = ["Beta Alpha Psi", "ACFE", "ASM", "NABA", "AAA", "GMU Student"];
 
 var S = {
@@ -501,6 +535,8 @@ function buildTrack(){
       '<g id="carpos" style="transform:translate('+CAR_X0+'px,0px)">'+
         '<g id="burst"><rect x="-21" y="11.3" width="7" height="1.2" rx=".6" fill="var(--ink-soft)"/>'+
           '<rect x="-17.5" y="14.1" width="5" height="1.2" rx=".6" fill="var(--ink-soft)"/></g>'+
+        '<g id="trail"><rect x="-25" y="11.5" width="11" height="1.5" rx=".75" fill="var(--mason)" fill-opacity=".5"/>'+
+          '<rect x="-21" y="14.3" width="8" height="1.5" rx=".75" fill="var(--mason)" fill-opacity=".38"/></g>'+
         '<g id="flame"><path d="M-7.5 12.9 q-6.5 -3.4 -11.5 0 q5 3.4 11.5 0z" fill="var(--gold-line)"/>'+
           '<path d="M-7.5 12.9 q-3.8 -1.9 -6.8 0 q3 1.9 6.8 0z" fill="var(--mason-gold)"/></g>'+
         '<g id="carfx">'+
@@ -518,12 +554,37 @@ function paintTrack(){
   var done = lapsDone();
   var x = CAR_X0 + (done/14)*(CAR_X1-CAR_X0);
   var pos = document.getElementById("carpos"), f = document.getElementById("fill"),
-      fl = document.getElementById("flame"), cq = document.getElementById("chq");
+      fl = document.getElementById("flame"), tr = document.getElementById("trail"),
+      cq = document.getElementById("chq");
+  var hot = S.streak>=5;
   if(pos) pos.style.transform = "translate("+x.toFixed(1)+"px,0px)";
-  if(f) f.setAttribute("width", Math.max(0.1, x-4).toFixed(1));
-  if(fl) fl.classList.toggle("on", S.streak>=3);
+  if(f){
+    f.setAttribute("width", Math.max(0.1, x-4).toFixed(1));
+    /* at five in a row the ground the car has covered lights gold */
+    f.style.fill = hot ? "var(--mason-gold)" : "var(--mason)";
+    f.style.fillOpacity = hot ? ".9" : ".32";
+  }
+  if(tr){ tr.classList.toggle("on", S.streak>=2); tr.classList.toggle("big", hot); }
+  if(fl){ fl.classList.toggle("on", S.streak>=3); fl.classList.toggle("big", hot); }
   if(cq) cq.classList.toggle("lit", done>=14);
+  placeCodename(x);
 }
+/* the codename sits on the band directly over the car, once the player has picked one */
+function placeCodename(x){
+  var tag = document.getElementById("codetag"), trk = document.getElementById("trk"),
+      band = document.getElementById("mason");
+  if(!tag || !trk || !band) return;
+  if(!S.codename){ tag.hidden = true; return; }
+  tag.hidden = false;
+  if(tag.textContent !== S.codename) tag.textContent = S.codename;
+  var tr = trk.getBoundingClientRect(), br = band.getBoundingClientRect();
+  if(!tr.width) return;
+  var px = (tr.left - br.left) + (x/300)*tr.width;
+  var half = tag.offsetWidth/2;
+  px = Math.max(half+6, Math.min(br.width-half-6, px));
+  tag.style.left = px.toFixed(1)+"px";
+}
+
 /* a right call is a short burst, a wrong one drops into the pit and rejoins */
 function carFx(right){
   var fx = document.getElementById("carfx"), bu = document.getElementById("burst");
@@ -608,7 +669,7 @@ function acctRows(r, acct, max, z){
   var mark = (r[0]===acct) ? " here" : "";
   var id = (r[0]===acct) ? ' id="hererow"' : "";
   return '<tr class="nmrow'+(z%2?" z":"")+mark+'"'+id+'><td colspan="4">'+
-      '<span class="nm">'+esc(r[1])+'</span><span class="no">'+r[0]+'</span>'+
+      '<span class="acctline"><span class="no">'+r[0]+'</span><span class="nm">'+esc(r[1])+'</span></span>'+
       '<span class="mbar"><i style="width:'+w+'%"></i></span></td></tr>'+
     '<tr class="figrow'+(z%2?" z":"")+mark+'"><td>'+money(r[2])+'</td><td>'+money(r[3])+'</td>'+
       changeTds(r[2], r[3])+'</tr>';
@@ -635,9 +696,9 @@ function statement(acct){
   body += totalRows("Net of the accounts shown", netP, netC, "net");
   return '<div class="stmt">'+
     '<div class="stmthead"><b>Halyard Provisioning Group, Inc.</b><span>June close, prepared from the general ledger</span></div>'+
-    '<table class="stmttbl"><colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup>'+
+    '<div class="stmtscroll"><table class="stmttbl"><colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup>'+
     '<thead><tr><th>May</th><th>June</th><th>Change</th><th>Percent</th></tr></thead>'+
-    '<tbody>'+body+'</tbody></table>'+
+    '<tbody>'+body+'</tbody></table></div>'+
     '<p class="cap">The fourteen accounts the memo was written against.</p></div>';
 }
 
@@ -658,9 +719,14 @@ function openSheet(acct){
   });
 }
 function ledgerBtn(acct){ return '<button class="ledgerbtn" data-acct="'+acct+'">Ledger</button>'; }
+function ledgerBig(acct){
+  return '<button class="ledgerbig" data-acct="'+acct+'">'+
+    '<svg viewBox="0 0 24 24">'+I.ledger+'</svg>See the full ledger</button>';
+}
 function wireLedger(){
-  var b = screen.querySelector(".ledgerbtn");
-  if(b) b.addEventListener("click", function(){ openSheet(b.getAttribute("data-acct")); });
+  Array.prototype.forEach.call(screen.querySelectorAll("[data-acct]"), function(b){
+    b.addEventListener("click", function(){ openSheet(b.getAttribute("data-acct")); });
+  });
 }
 
 /* ---------- the picture of the movement. Every figure lives in the strip above it. ---------- */
@@ -685,9 +751,8 @@ function render(){
   if(s===1) return identity();
   if(s===2) return roundOne();
   if(s>=3 && s<=16) return card(s-3);
-  if(s===17) return confPost();
-  if(s===18) return submitScreen();
-  if(s>=19) return done();
+  if(s===17) return submitScreen();
+  if(s>=18) return done();
 }
 
 function intro(){
@@ -733,24 +798,16 @@ function identity(){
 
 
 
-function scaleChips(iconName, head, sub, key, next){
-  var html = icon(iconName)+'<h2>'+head+'</h2>'+(sub?'<p class="sub">'+sub+'</p>':'')+'<div class="chips">';
-  for(var i=0;i<=10;i++){
-    html += '<button class="chip'+(S[key]===String(i)?" on":"")+'" data-v="'+i+'">'+(i*10)+'%</button>';
-  }
-  html += '</div>';
-  screen.innerHTML = html;
-  Array.prototype.forEach.call(screen.querySelectorAll(".chip"), function(b){
-    b.addEventListener("click", function(){ S[key] = b.getAttribute("data-v"); go(next); });
-  });
-}
-
-function confPost(){ scaleChips("badge","How much do you think you got right?","One tap, then your calls go in.","confPost",18); }
-
 function roundOne(){
   screen.innerHTML = '<h2>The ledger, May against June</h2>'+
     '<p class="sub">Read it before the memo. You can open it again from any card.</p>'+
     statement("")+
+    '<div class="rules"><h3>What earns a flag</h3>'+
+      '<p>Flag a line when the memo\'s number does not match the ledger, when the direction is '+
+      'backwards, when the reason names something the ledger and the file do not support, when the '+
+      'reason belongs to another account, when the timing is off, or when a line that owes an '+
+      'explanation gets none.</p>'+
+      '<p>Let it stand when the figure and the reason both hold.</p></div>'+
     '<button class="btn" id="next">Continue</button>';
   document.getElementById("next").addEventListener("click", function(){ go(3); });
 }
@@ -768,6 +825,8 @@ function card(i){
     '<div class="card">'+
       '<div class="cardhead">'+icon(c.icon)+ledgerBtn(c.acct)+'</div>'+
       strip(c.acct)+
+      ledgerBig(c.acct)+
+      (i===0 ? '<p class="ledgerhint">Tap any time to open the full ledger.</p>' : "")+
       chart(c)+
       memoBlock+
       fileBlock+
@@ -817,7 +876,8 @@ function reveal(i, right){
   var celebration = "";
   if(right && c.key==="flag" && c.type==="invented driver") celebration = '<span class="bonus">Invented driver caught</span>';
   var streakLine = "";
-  if(right && S.streak>=3) streakLine = '<p class="streak">'+S.streak+' in a row.</p>';
+  if(right && S.streak>=5) streakLine = '<p><span class="toast">On fire</span></p>';
+  else if(right && S.streak>=3) streakLine = '<p><span class="toast">Streak '+S.streak+'</span></p>';
   var costLine = (!right && c.key==="stand")
     ? '<p class="tiny" style="margin:8px 0 0">A false flag scores the same as a line that gets past you.</p>'
     : "";
@@ -860,9 +920,9 @@ function missedCards(){
   CARDS.forEach(function(c,idx){ if(S.calls[idx] !== c.key) out.push(c); });
   return out;
 }
-/* The organisation taps ride at the front of question A, behind a fixed prefix, so the
+/* The organization taps ride at the front of question A, behind a fixed prefix, so the
    responses sheet can be counted by chapter without a new form question. */
-function orgLine(){ return "Organisations: " + S.orgs.join("; ") + "."; }
+function orgLine(){ return "Organizations: " + S.orgs.join("; ") + "."; }
 function summaryA(){
   return orgLine() + " " + ROUND1_NOTE;
 }
@@ -877,7 +937,7 @@ function summaryB(){
   parts.push("Result: " + (S.caught+S.cleared) + " of 14 calls correct, " + S.caught + " caught, " +
              S.cleared + " let stand correctly, " + S.falseFlags + " false flag" + (S.falseFlags===1?"":"s") +
              ", rank " + rank() + ".");
-  parts.push("Intake scales (expected quality, confidence before, close experience) were not asked in this version and carry placeholder values.");
+  parts.push("The four scale questions (expected quality, confidence before, confidence after, close experience) were not asked in this version and carry placeholder values.");
   parts.push("Longest run of correct calls: " + S.best + ".");
   return parts.join(" ");
 }
@@ -950,7 +1010,7 @@ function payload(){
     p["entry."+E.why[i]] = "Line "+c.n+", account "+c.acct+". Called: "+call+". Key: "+c.key+
                            ". Type: "+c.type+". "+(S.calls[i]===c.key ? "Correct." : "Missed.");
   }
-  p["entry."+E.confPost] = S.confPost;
+  p["entry."+E.confPost] = "5";
   p["entry."+E.qa] = summaryA();
   p["entry."+E.qb] = summaryB();
   p["entry."+E.qc] = "Not asked in this version.";
@@ -967,13 +1027,12 @@ function payload(){
 function asText(){
   var out = ["Second Pass: Beat the Machine at Mason", "Codename: "+S.codename, orgLine(), ""];
   out.push("Round one: "+ROUND1_NOTE);
-  out.push("Intake scales not asked in this version.");
+  out.push("The four scale questions were not asked in this version and carry placeholders.");
   out.push("");
   for(var i=0;i<14;i++){
     out.push("Line "+(i+1)+" ("+CARDS[i].acct+"): "+S.calls[i]+", key "+CARDS[i].key+", "+CARDS[i].type);
   }
   out.push("");
-  out.push("Confidence after: "+(S.confPost*10)+"%");
   out.push(summaryA());
   out.push(summaryB());
   out.push("Lap time: "+lapText()+", posted as "+lapMinutes()+" minute(s)");
@@ -1000,7 +1059,7 @@ function submitScreen(){
   var timer = setTimeout(function(){ if(!settled){ settled = true; failScreen(); } }, 12000);
   sink.addEventListener("load", function(){
     if(settled) return;
-    settled = true; clearTimeout(timer); go(19);
+    settled = true; clearTimeout(timer); go(18);
   });
   try{ f.submit(); }
   catch(err){ clearTimeout(timer); settled = true; failScreen(); }
@@ -1019,7 +1078,7 @@ function failScreen(){
     t.select(); t.setSelectionRange(0,99999);
     try{ document.execCommand("copy"); this.textContent = "Copied"; }catch(e){ this.textContent = "Select and copy"; }
   });
-  document.getElementById("retry").addEventListener("click", function(){ submitted = false; go(18); });
+  document.getElementById("retry").addEventListener("click", function(){ submitted = false; go(17); });
 }
 
 /* ---------- the trophy, drawn to the tier ---------- */
@@ -1058,6 +1117,7 @@ function badges(){
     {t:"Perfect timing",     on: got(2) && got(4) && got(9), i:"calendar"},
     {t:"Arithmetic hawk",    on: got(1) && got(8) && got(13), i:"scales"},
     {t:"Read the silence",   on: got(6) && got(11), i:"flag"},
+    {t:"Hot lap",            on: S.best>=5, i:"fuel"},
     {t:"Clean sweep",        on: right===14, i:"badge"}
   ];
 }
@@ -1101,7 +1161,8 @@ function done(){
         '<div><b>'+S.cleared+'</b><span>let stand correctly</span></div>'+
         '<div><b>'+S.falseFlags+'</b><span>false flags</span></div>'+
       '</div>'+
-      '<p class="lapwrap"><span class="lap">Lap time '+lapText()+'</span></p>'+
+      '<p class="lapwrap"><span class="lap">Lap time '+lapText()+'</span>'+
+        '<span class="lap">Best streak '+S.best+'</span></p>'+
       '<div class="badges">'+
         b.map(function(x){
           return '<span class="badge'+(x.on?" on":"")+'"><svg viewBox="0 0 24 24">'+I[x.i]+'</svg>'+x.t+'</span>';
