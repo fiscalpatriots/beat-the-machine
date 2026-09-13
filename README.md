@@ -312,25 +312,62 @@ Card one is inverted on purpose. Its form question asks the player to agree or d
 nothing is owed on account 4200, so flagging that line posts `Reject` while flagging any other
 line posts `Accept`. Each card carries its own `post` mapping for that reason.
 
-## The placeholders
+## The four questions that are not asked
 
-Four questions the form marks required are no longer asked on screen. Three were intake
-questions the three-screen path has no room for, and the fourth was the confidence tap after
-the round, which came out so the last card leads straight into the send:
+Four questions the form marks required are not asked on screen. Three were intake questions the
+three-screen path has no room for, and the fourth was the confidence tap after the round, which
+came out so the last card leads straight into the send.
+
+Until 13 September 2026 all four carried fixed values, which arrived in the responses sheet
+looking exactly like participant answers and could not support any analysis. They now carry the
+literal string `not asked`:
 
 | Form question | Entry id | Posted value |
 | --- | --- | --- |
-| Expected quality of the commentary | `entry.53437742` | `3` |
-| Confidence before the round | `entry.538678778` | `5` |
-| Confidence after the round | `entry.439643836` | `5` |
-| Month end close experience | `entry.1421470415` | `Once or twice` |
+| Expected quality of the commentary | `entry.53437742` | `not asked` |
+| Confidence before the round | `entry.538678778` | `not asked` |
+| Confidence after the round | `entry.439643836` | `not asked` |
+| Month end close experience | `entry.1421470415` | `not asked` |
 
-Question B says so in the same cell, in the sentence beginning "Intake scales", so nobody in the
-responses sheet reads them as player answers. Filter them out before any analysis. The round one
-free text field (`entry.1115022539`) carries the same kind of note, because the ledger screen is
-orientation only and collects no picks. Question C (`entry.756559246`) was a placeholder of the
-same kind until 13 September 2026 and now carries the round two string, so it is the one former
-placeholder that is real data.
+Empty would have been the cleaner value. The form does not take it: all four questions are marked
+required, three of them are linear scales and the fourth is multiple choice, so an empty value and
+an off-list string are both refused by Google Forms. **Google Forms will very probably reject a
+response carrying `not asked` on these four, and the hidden iframe cannot tell a stored response
+from a rejected one, so the drill may show a completion screen for a response the sheet never
+received.** The player always has the local copy on the fallback screen.
+
+The fix belongs on the form, not in the page: make those four questions optional, or delete them.
+Once they are optional, change `NOT_ASKED` in `index.html` to `""`. Whoever maintains the findings
+script needs to know that these four columns now read `not asked` and must not be pooled with the
+numbers earlier responses carry.
+
+The round one free text field (`entry.1115022539`) carries its own note, because the ledger screen
+is orientation only and collects no picks. Question C (`entry.756559246`) was a placeholder of the
+same kind until 13 September 2026 and now carries the round two string and the round two basis, so
+it is the one former placeholder that is real data.
+
+## The basis a player gives
+
+Since 13 September 2026 every line asks for a basis between the call and the reveal. The player
+taps Flag it or Let it stand, the two buttons are replaced in place by a chip row, and the reveal
+waits until at least one chip is tapped. The memo, the figures and the On file facts stay on
+screen underneath, so nothing has to be remembered to answer.
+
+The chips are: figure does not tie; direction wrong; no source on file; wrong period; wrong
+account; nothing written where owed. A let-it-stand also offers "the figure and reason hold",
+first in the row. More than one chip is allowed and at least one is required. On a flag, an
+optional single line field, "In your words (optional)", appears under the chips. It never blocks.
+
+Both ride into the fourteen per-line Why fields the form already has, ahead of the generated
+metadata, in this shape:
+
+```
+Basis: no source on file; wrong period | Words: the freight moved || Line 12, account 4000.
+Called: flag. Key: flag. Type: unsupported attribution. Correct.
+```
+
+Split the cell on ` || ` to separate what the player said from what the page computed. The five
+fresh lines have no Why field of their own, so their basis rides at the end of question C.
 
 ## Counting the organizations
 
@@ -359,24 +396,45 @@ Rebuilding the Google Form issues new `entry.NNNN` ids. Fetch the responder page
 out of the `FB_PUBLIC_LOAD_DATA_` block, and replace the `E` object and `FORM_POST` URL. Nothing
 else in the file depends on the form.
 
-## The answer key
+## The answer key and the case files
 
-The key lives in the `CARDS` array as `key`, which is `flag` on the eight lines that carry a
-problem and `stand` on the six clean ones, alongside the error type, the one line reason shown
-at the reveal, and the tell the end screen uses when a player misses that line. Anyone who reads
-the source can read the key. That is the trade for instant feedback, and it is the reason to
-send the link and not the file.
+Since 13 September 2026 both cases live outside the page, in `cases/halyard-v3.json` and
+`cases/brightwater-v2.json`. Each file carries the company, the threshold policy, the ledger
+rows, the memo sentences, the On file facts as verified case assumptions, the key, the error
+type, the reveal reason, the tell, and its own version and date. `cases/README.md` explains the
+format, the differences from the checker's Halyard sample, and what changed in this revision.
 
-The fresh case keeps its key the same way in `CARDS2`, where three of the five lines are `flag`
-and two are `stand`, and the reveal, the tell and the over-flag note all read from that array.
+The page fetches both files at load. When the fetch fails, which is what happens when the file is
+opened from a folder rather than served, it falls back to a generated copy written into
+`index.html` between the `BUILD:CASES-START` and `BUILD:CASES-END` markers. Edit the JSON, then
+run `node build-cases.cjs` to rewrite that copy. The script refuses to write if a card points at
+an account that is not in the ledger, if a card's figures do not tie, or if a card is missing its
+key, its reason or its tell.
 
-The error types are wrong direction, invented driver, wrong account, timing, arithmetic, no
-explanation and clean line. "No explanation" covers the one line where the memo simply says
-nothing about an account that owes commentary, which none of the other names fits.
+The key is `flag` on eight of the fourteen Halyard lines and `stand` on the six clean ones; three
+of the five Brightwater lines are `flag` and two are `stand`. Anyone who reads the source can read
+the key, in the JSON as easily as in the page. That is the trade for instant feedback, and it is
+the reason to send the link and not the file.
+
+The error types are wrong direction, unsupported driver, unsupported attribution, wrong account,
+timing, arithmetic, no explanation and clean line. "No explanation" covers the one line where the
+memo says nothing about an account that owes commentary. "Unsupported driver" replaced "invented
+driver" on 13 September 2026, because a sentence with nothing behind it is not established from
+the supplied evidence, which is a different and smaller claim than saying it was fabricated.
+
+A flag can be correct while the reason behind it is wrong. The reveals credit the call and correct
+the reasoning separately, and they ask for a bridge (billing bridge, payroll bridge, reserve
+rollforward, depot revenue bridge) rather than handing the player a derived cause.
+
+The version and date of both cases ride into question A and into the local copy, so a response can
+always be tied to the key it was scored against. Never pool responses scored against different
+case versions.
 
 ## Deploying
 
-One file, `index.html`. No libraries and no build step. The only outbound request is the Figtree
+`index.html`, `cases/halyard-v3.json` and `cases/brightwater-v2.json`. No libraries. The only
+build step is `node build-cases.cjs`, which refreshes the inline fallback inside `index.html` and
+has to be run after any edit to either case file. The only outbound request is the Figtree
 stylesheet from Google Fonts. Commit to `main` and push;
 GitHub Pages serves the root of `main` and the change is live within a minute or two.
 
