@@ -289,10 +289,15 @@ One template draws the chrome. `assets/nav.js` injects a slim header at the top 
 Second Pass wordmark in green, then Drill, Checker and Review as text links with the current page
 marked and underlined in green, all three still visible at 375 with no hamburger) and the footer at
 the bottom ("Built by Khaled Alkurd. A drill for the AI-native accounting student." over text links
-to the protocol, the provenance note, the facilitator guide and the code). `review.html` loads it
-already. **For the other lanes: add `<script src="assets/nav.js" defer></script>` to the head of
-`index.html` and `checker.html` and the header and footer appear; nothing else needs wiring, since
-the script carries its own rules.**
+to the protocol, the provenance note, the facilitator guide and the code). All three pages load it.
+A page only adds `<script src="assets/nav.js" defer></script>` to its head; nothing else needs
+wiring, since the script carries its own rules.
+
+It carries three more things a page would otherwise have to wire itself. It prints the skip link as
+the first thing in the body and points it at that page's main region, taking the page's `<main>`
+where there is one and the outer container where there is not, and giving that region a `tabindex`
+of -1 so focus lands where the link sends it. And it hides itself, the footer and the skip link in
+print media, so the checker's summary sheet prints as the summary sheet alone.
 
 Every page carries the same three metadata lines so a pasted link previews in LinkedIn and in mail:
 a `<title>`, a `<meta name="description">`, and the Open Graph and Twitter card block. Only the
@@ -323,6 +328,45 @@ line "A second pass on AI-drafted close commentary" and the university and colle
 type. It is rendered from `assets/og-image.svg`; the build command sits in a comment at the top of
 that file. The icon is `assets/favicon.svg` with `assets/favicon-32.png` beside it for browsers that
 will not take the vector, a ledger page ticked in green on the green field over the gold rule.
+
+`checker.html` and `review.html` both carry the whole block described above. `review.html` is the
+one to copy from.
+
+### Site hygiene, and the four lines index.html still needs
+
+Three files sit at the root and cover the whole site, so no page has to repeat them.
+`robots.txt` allows every crawler everything and names the sitemap. `sitemap.xml` lists the three
+pages and the protocol PDF. `404.html` is the page GitHub Pages serves for an address that matches
+nothing: the same paper, the same Mason band, the same shared chrome, and links to the drill, the
+checker and the review page, with `<meta name="robots" content="noindex">` on it so the error page
+itself never turns up in a search result.
+
+Each page names its own canonical address so a link carrying a tracking parameter does not read as
+a second copy of the page. `checker.html`, `review.html` and `404.html` carry theirs already.
+
+**For the drill lane, four things `index.html` still needs, in the head, none of which touch the
+game:**
+
+1. The canonical line, which is the only one not already documented above:
+
+```html
+<link rel="canonical" href="https://fiscalpatriots.github.io/beat-the-machine/index.html">
+```
+
+2. The title and description from the table above, if they are not in yet.
+3. The Open Graph and Twitter block from the code sample above, with `og:url` on `index.html`.
+4. The two favicon links, replacing any inline data URI:
+
+```html
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+```
+
+Nothing else is owed. `assets/nav.js` is already on the page, and the skip link, the main region it
+points at, and the print rule that hides the chrome on paper all come from that script, so
+`index.html` gets them without another line. Every image on the page needs `width` and `height`
+attributes and, below the first screen, `loading="lazy"`; the two audits under `audit/` record how
+the other two pages were measured against the same rules.
 
 ## The ledger
 
