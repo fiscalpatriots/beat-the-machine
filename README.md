@@ -773,6 +773,119 @@ Rebuilding the Google Form issues new `entry.NNNN` ids. Fetch the responder page
 out of the `FB_PUBLIC_LOAD_DATA_` block, and replace the `E` object and `FORM_POST` URL. Nothing
 else in the file depends on the form.
 
+<!-- GAME LANE SECTION START: case selection, the author page, the shared reader. Owned by the
+     game lane, 13 September 2026. Nothing outside these markers is edited by this lane. -->
+
+## Picking a case, and authoring one
+
+The drill is no longer one case. The intro screen carries a quiet **Case** control, a plain
+select, and it only appears when more than one case is actually available:
+
+| Option | Where it comes from | Fresh case |
+| --- | --- | --- |
+| Halyard Provisioning | `cases/halyard-v4.json`, the default, 14 lines | Brightwater, assessment |
+| Kestrel IT Services | `cases/kestrel-v1.json`, 12 lines, offered only when that file answers | Brightwater, assessment |
+| My own case | this browser's `localStorage`, written by `author.html` | only if its author wrote one |
+
+`?case=halyard`, `?case=kestrel` and `?case=own` in the address pick a case before the intro
+screen is drawn, which is how the author page's Preview button arrives. The address wins over a
+saved run. Changing the select reloads the case and starts the run clean, because a call indexes
+a line and the two sets are different lines.
+
+The chosen case's id rides into question A beside the version, as
+`Case: kestrel, version kestrel-v1 (practice, 12 lines) and brightwater-v4 (assessment, 5 lines)`,
+and into the local record at `scoring.caseId`, `attempt.caseId` and on every item. An own case
+posts its id as `own:<name>:<version>`. **Whoever writes the findings script has to group on
+that id and never pool rows from different cases**, the same rule that already applies to
+versions.
+
+Two things stopped being hard-wired to Halyard's fourteen lines on 13 September 2026.
+
+**The line count.** Every screen number is derived from the loaded case rather than counted from
+three to sixteen. A case of any length runs, and a case with no fresh set goes from its last line
+straight to the end screen. The form carries fourteen per-line questions, so a case longer than
+that posts its first fourteen lines into those fields and the whole run into the local record.
+
+**The two month names.** A case file names its own columns in `columns`, as
+`"columns": ["June", "July"]`, and the ledger headings, the figure strip on each card, the chart
+and the orientation statement all read them. `halyard-v4` and `brightwater-v4` predate the field
+and fall back to May against June, which is what they have always been.
+
+Two badges stopped naming their lines by number at the same time, because line 12 does not exist
+on a seven-line case. Each now reads the error type: a badge is earned when every line of that
+type agreed with the key and the case has at least one. On Halyard a perfect run earns the same
+set it always did.
+
+### author.html, building a case from your own ledger
+
+`author.html` takes a ledger and a memo in the same two shapes the checker takes, runs the four
+mechanical checks over them, and hands back one card per memo sentence plus one for every account
+that clears the rule with nothing written about it.
+
+The checks suggest; the author decides. A failed arithmetic check pre-selects flag with the type
+`arithmetic`, the chip `figure does not tie` and the checker's own sentence as the why; a
+direction word against the sign pre-selects `wrong direction`; a silent line pre-selects
+`no explanation`. Every one of those is a suggestion sitting in a control the author can change,
+and the two lines a player reads at the reveal, the why and the tell, are written by hand.
+
+Saving refuses until every card carries a call, an error type, at least one basis chip, a why and
+a tell, and it names what is missing rather than saying no. It enforces the basis-key contract
+`cases/README.md` states: a stand carries the hold chip and nothing else, a flag carries no hold
+chip, a stand is a clean line and a flag is not. Every card's figures are checked back against the
+ledger row it points at. Saving then writes the case into this browser under `btm.owncase.v1`,
+which is the key the drill reads for **My own case**, and downloads the same JSON so the case can
+be committed to `cases/` or handed to somebody else. An optional second block authors a fresh set
+the same way, and can run it as an assessment.
+
+Nothing pasted into that page leaves the browser. There is no upload, and the saved case lives in
+that one browser on that one device.
+
+### assets/second-pass-core.js, and a decision to record
+
+The four mechanical checks are the checker's, not a second implementation of them.
+`assets/second-pass-core.js` holds the checker's reader, copied verbatim out of `checker.html`
+(lines 501-504, 513-1490, 1591-1614 and 2092-2159 as that file stood on 13 September 2026), with
+nothing in it that touches the DOM.
+
+**`checker.html` was not changed and does not load it.** The extraction the build called for
+would have edited a file the checker lane owns, against whose code the 53 fixtures in
+`tests/run-checker-tests.cjs` are scored, so the copy path was taken instead and is recorded here
+rather than left to be discovered. `author.html` loads the module; `checker.html` still carries
+its own copy.
+
+**The task to unify:** point `checker.html` at `assets/second-pass-core.js`, delete its own copy
+of those functions, run `node tests/run-checker-tests.cjs` and confirm 53 of 53 still pass. Until
+that lands a fix made in one copy has to be made in the other, and the comment at the top of the
+module says so.
+
+### What was verified, 13 September 2026
+
+Every run below was played through the page's own handlers, click by click, in test mode.
+
+| Run | Result |
+| --- | --- |
+| Halyard, every call matching the key | Partner, 14 of 14 and 5 of 5, badges unchanged |
+| Halyard, flag every line | Staff, 8 of 14 and 3 of 5 |
+| Kestrel, every call matching the key | 12 of 12 and 5 of 5, Manager, `caseId` `kestrel` |
+| An own case authored from the Kestrel sample | 7 of 7, `caseId` `own:Kestrel IT Services:v1`, round two skipped |
+
+A perfect Kestrel run lands at Manager rather than Partner because the rank ladder reads absolute
+points and twelve lines earn fewer than fourteen. That is the ladder working as written, and it
+is the reason a rank is only ever comparable within one case.
+
+No console errors on any run. No horizontal scrolling on `index.html`, `author.html` or
+`checker.html` at 320, 375, 768 or 1280, measured as `scrollWidth` against `clientWidth` at every
+screen of a full run. The nav marks Drill current on the drill. `index.html` carries no `<img>`
+element at all, every figure on it being drawn SVG, so the width, height and lazy-loading rule has
+nothing on that page to apply to.
+
+Screenshots are in `screenshots/game/` and `screenshots/author/`, each at 375 and 1280.
+
+One thing found and not fixed, because it is not this lane's file: at 320 pixels `checker.html`
+has a 14 pixel internal overflow on `#out` after a run. The page itself does not scroll sideways.
+
+<!-- GAME LANE SECTION END -->
+
 ## The answer key and the case files
 
 Since 13 September 2026 both cases live outside the page, in `cases/halyard-v4.json` and

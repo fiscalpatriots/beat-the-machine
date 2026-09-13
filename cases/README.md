@@ -127,6 +127,58 @@ block.
 `window.__BTM_CASES` on the live page reports which of the two paths won, and the version and
 date ride into the response record on question A and into the local copy.
 
+<!-- GAME LANE SECTION START: authored cases, the columns field, what the drill requires of a
+     case file. Owned by the game lane, 13 September 2026. -->
+
+## A case the drill can run
+
+Nothing in the drill counts to fourteen any more. A case file of any length runs, and a case with
+no fresh set beside it goes from its last line to the end screen. What a file has to carry:
+
+| Field | What it is |
+| --- | --- |
+| `version`, `date`, `company`, `period` | the stamps that ride into the response and the record |
+| `columns` | the two month names, as `["June", "July"]`. Optional; without it the drill prints May against June |
+| `caption`, `threshold`, `policyScope`, `evidenceNote` | the sentences the orientation screen and the legend print |
+| `ledger` | one row per account, `[number, name, prior, current, owesCommentary]` |
+| `groups` | the statement sections, `{title, accts, total}` |
+| `cards` | one per line, in the shape the table below sets out |
+| `mode` | `"assessment"` on a case scored at the end rather than line by line, with `assessmentNote` beside it |
+
+A card carries `n`, `icon`, `acct`, `name`, `prior`, `current`, `memo`, `file`, `key`, `type`,
+`why`, `truth`, `ask`, `tell`, `post` and `basisKey`. `over` is the line a stand shows when it was
+flagged anyway, and `stillOpen` is the line a stand shows when its reasoning is provisional.
+
+`columns` was added on 13 September 2026 for `kestrel-v1`, which runs June against July.
+`halyard-v4` and `brightwater-v4` do not carry it and are read as May against June, which is what
+they have always printed.
+
+## Cases authored from `author.html`
+
+`author.html` writes a case file in exactly this format, plus two fields of its own, and that file
+can be committed straight into this folder once it has been read.
+
+| Field | What it is |
+| --- | --- |
+| `authoredBy` | the author page and its version, so a hand-written case and a generated one can be told apart |
+| `savedAt`, `id`, `name`, `caseVersion` | the wrapper the browser stores, under `btm.owncase.v1` |
+
+The wrapper is `{savedAt, authoredBy, name, caseVersion, id, case, fresh}`. The drill reads the
+`case` object and, when it is not null, the `fresh` one. `id` is `own:<name>:<version>`, and it is
+what the record and question A report for that run.
+
+The author page will not save a case that breaks the basis-key contract above: a stand carries
+`the figure and reason hold` and nothing else and its type is `clean line`, a flag carries no hold
+chip and its type is not `clean line`, every card has at least one chip, a why and a tell, and
+every card's figures reconcile to the ledger row it points at. It names what is missing instead of
+refusing silently.
+
+An authored case is generated rather than policed. `build-cases.cjs` is still the gate for
+anything that goes into `index.html`'s inline fallback, and an authored file has to pass it before
+it is treated as a published case rather than as one facilitator's own.
+
+<!-- GAME LANE SECTION END -->
+
 ## For the checker lane
 
 `checker.html` ships a Halyard sample. It must be regenerated from `halyard-v4.json` by the
