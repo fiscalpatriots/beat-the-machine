@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#12263f">
+<title>Second Pass: Beat the Machine</title>
+<style>
+:root{
+  --ink:#12263f;
+  --ink-soft:#4a5b70;
+  --paper:#f6f3ec;
+  --card:#ffffff;
+  --line:#dfd8c9;
+  --accept:#0f7a52;
+  --accept-bg:#e4f4ec;
+  --reject:#b3261e;
+  --reject-bg:#fbe9e7;
+  --machine:#5746e3;
+  --machine-bg:#ecebfd;
+  --gold:#9a6a00;
+  --gold-bg:#fdf2d8;
+  --shadow:0 2px 0 rgba(18,38,63,.08), 0 8px 24px rgba(18,38,63,.08);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font:17px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  min-height:100vh;
+}
+#app{max-width:520px;margin:0 auto;padding:0 18px 40px;min-height:100vh;display:flex;flex-direction:column}
+h1{font-size:30px;line-height:1.12;margin:0 0 10px;letter-spacing:-.5px}
+h2{font-size:22px;line-height:1.2;margin:0 0 10px;letter-spacing:-.3px}
+p{margin:0 0 14px}
+.sub{color:var(--ink-soft);font-size:16px}
+.tiny{font-size:13px;color:var(--ink-soft)}
+
+/* progress */
+#bar{position:sticky;top:0;z-index:5;background:var(--paper);padding:12px 0 8px}
+#track{height:8px;border-radius:99px;background:#e6e0d2;overflow:hidden}
+#fill{height:100%;width:0;background:var(--ink);border-radius:99px;transition:width .3s ease}
+#label{display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:13px;color:var(--ink-soft)}
+.scorepill{font-weight:700;color:var(--ink);background:#ece6d8;border-radius:99px;padding:3px 10px}
+
+#screen{flex:1;display:flex;flex-direction:column;justify-content:center;padding:8px 0 16px}
+.icon{width:68px;height:68px;display:block;margin:0 0 14px}
+.icon svg{width:100%;height:100%;fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.icon.big{width:96px;height:96px}
+
+button{font:inherit;color:inherit;cursor:pointer}
+.btn{
+  display:block;width:100%;border:2px solid var(--ink);background:var(--ink);color:#fff;
+  border-radius:14px;padding:16px;font-size:18px;font-weight:700;margin-top:12px;
+}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn:disabled{opacity:.35;cursor:default}
+.choice{
+  display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+  border:2px solid var(--line);background:var(--card);border-radius:14px;
+  padding:15px 16px;font-size:17px;margin-top:10px;box-shadow:var(--shadow);
+}
+.choice:active{transform:translateY(1px)}
+.choice.on{border-color:var(--ink);background:#fff}
+.choice .tick{width:22px;height:22px;border-radius:99px;border:2px solid var(--line);flex:0 0 auto}
+.choice.on .tick{border-color:var(--ink);background:var(--ink);box-shadow:inset 0 0 0 3px #fff}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 6px}
+.chip{
+  border:2px solid var(--line);background:var(--card);border-radius:99px;
+  padding:10px 14px;font-size:15px;font-weight:600;
+}
+.chip.on{border-color:var(--ink);background:var(--ink);color:#fff}
+.chip.sm{padding:8px 12px;font-size:14px}
+
+input[type=text],textarea{
+  width:100%;font:inherit;padding:15px;border:2px solid var(--line);border-radius:14px;
+  background:var(--card);color:var(--ink);
+}
+input[type=text]:focus,textarea:focus{outline:none;border-color:var(--ink)}
+textarea{min-height:84px;resize:vertical}
+
+.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.acct{display:inline-block;font-weight:700;font-size:14px;letter-spacing:.3px;background:var(--machine-bg);color:var(--machine);border-radius:99px;padding:5px 12px;margin-bottom:10px}
+.nums{font-variant-numeric:tabular-nums;font-weight:700;font-size:17px;margin:0 0 12px}
+.nums .up{color:var(--reject)}
+.nums .down{color:var(--accept)}
+.quote{font-size:18px;line-height:1.4;margin:0}
+.says{display:flex;gap:8px;align-items:center;font-size:13px;font-weight:700;color:var(--machine);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.says svg{width:20px;height:20px;fill:none;stroke:var(--machine);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+.two{display:flex;gap:10px;margin-top:14px}
+.two .btn{margin-top:0;flex:1;padding:18px 8px;font-size:19px}
+.btn.acc{background:var(--accept);border-color:var(--accept)}
+.btn.rej{background:var(--reject);border-color:var(--reject)}
+
+.verdict{border-radius:18px;padding:16px 18px;margin-bottom:12px;border:2px solid}
+.verdict.good{background:var(--accept-bg);border-color:var(--accept)}
+.verdict.bad{background:var(--reject-bg);border-color:var(--reject)}
+.verdict h2{margin:0 0 4px;font-size:20px}
+.verdict .call{font-weight:700}
+.bonus{display:inline-block;background:var(--gold-bg);color:var(--gold);border:2px solid var(--gold);border-radius:99px;padding:4px 12px;font-weight:700;font-size:14px;margin-top:8px}
+.why{margin:0}
+.scoreline{display:flex;gap:10px;margin:14px 0 0;font-variant-numeric:tabular-nums}
+.scorebox{flex:1;text-align:center;border:2px solid var(--line);border-radius:14px;padding:10px;background:var(--card)}
+.scorebox b{display:block;font-size:26px;line-height:1.1}
+.scorebox span{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--ink-soft)}
+.scorebox.lead{border-color:var(--ink)}
+
+.link{background:none;border:none;padding:8px 0;text-decoration:underline;font-size:15px;color:var(--ink-soft)}
+.hidden{display:none!important}
+
+/* numbers sheet */
+#sheet{position:fixed;inset:0;background:rgba(18,38,63,.55);z-index:20;display:flex;align-items:flex-end}
+#sheetbody{background:var(--paper);width:100%;max-height:88vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px 16px 28px;max-width:520px;margin:0 auto}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:13px}
+th,td{text-align:right;padding:6px 4px;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left;white-space:normal}
+thead th{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-soft)}
+tr.star td{background:#fdf8ea}
+.wrap{overflow-x:auto}
+
+.final{text-align:center}
+.big{font-size:56px;font-weight:800;line-height:1;letter-spacing:-2px;font-variant-numeric:tabular-nums}
+.rank{display:inline-block;background:var(--gold-bg);color:var(--gold);border:2px solid var(--gold);border-radius:99px;padding:6px 16px;font-weight:800;font-size:18px;margin:10px 0}
+.share{background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:14px;font-size:17px;font-weight:600}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="bar">
+    <div id="track"><div id="fill"></div></div>
+    <div id="label"><span id="step"></span><span id="score" class="scorepill hidden"></span></div>
+  </div>
+  <div id="screen"></div>
+</div>
+<iframe name="gfsink" id="gfsink" class="hidden" title="submit"></iframe>
+<script>
+(function(){
+"use strict";
+
+/* ---------- Google Form wiring ---------- */
+var FORM_POST = "https://docs.google.com/forms/d/e/1FAIpQLSfteTMPZrDKhYmRjxPKADAZERjyDntdMLIVZMH-FoIrcHusKg/formResponse";
+var E = {
+  codename:"532722612", round1:"1115022539", expect:"53437742", confPre:"538678778", experience:"1421470415",
+  confPost:"439643836", qa:"117652481", qb:"2117607519", qc:"756559246", qd:"1863650976",
+  call:["1719784748","950376538","1014635891","527367554","363739544","354296315","876625635",
+        "1063447631","775417723","132643271","251525850","1926373397","280418964","1426775958"],
+  why: ["1007467850","741189318","163524303","66342284","1894832252","1877294718","377170412",
+        "1909355166","1698083372","384511552","834190193","1124939383","141672655","629644346"]
+};
+
+/* ---------- icons ---------- */
+var I = {
+  coins:'<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>',
+  truck:'<rect x="2" y="7" width="12" height="8" rx="1"/><path d="M14 10h4l3 3v2h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
+  wrench:'<path d="M15.5 3a5 5 0 0 0-4.4 7.2L3 18.3 5.7 21l8.1-8.1A5 5 0 1 0 15.5 3z"/><circle cx="17" cy="6.5" r="1"/>',
+  calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M8 15h4"/>',
+  people:'<circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5"/><path d="M16 5.5a3 3 0 0 1 0 5.8M18 20c0-2.4-.8-4.3-1.9-5.6"/>',
+  fuel:'<rect x="4" y="4" width="9" height="16" rx="1.5"/><path d="M3 20h11M6.5 8h4M16 9.5V16a2 2 0 0 0 4 0V8.5L17 5.5"/>',
+  chip:'<rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/>',
+  alert:'<path d="M12 3 2.5 20h19z"/><path d="M12 10v4.5M12 17.2h.01"/>',
+  scales:'<path d="M12 3v18M5.5 7h13M5.5 7 2.5 14h6zM18.5 7l-3 7h6zM8 21h8"/>',
+  bank:'<path d="M2.5 10 12 4l9.5 6"/><path d="M5 10.5v8M9.5 10.5v8M14.5 10.5v8M19 10.5v8M2.5 20h19"/>',
+  box:'<path d="M3 7 12 3l9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/>',
+  brief:'<rect x="2.5" y="7" width="19" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M2.5 13h19"/>',
+  robot:'<rect x="4" y="8" width="16" height="11" rx="3.5"/><circle cx="12" cy="3.2" r="1.4"/><path d="M12 4.6V8M9 13h.01M15 13h.01M9.5 16h5"/>',
+  badge:'<circle cx="12" cy="8.5" r="5.8"/><path d="M8 13.6 6 21l6-3 6 3-2-7.4"/>',
+  glass:'<circle cx="11" cy="11" r="7"/><path d="M16 16l5.5 5.5"/>',
+  flag:'<path d="M5 21V3"/><path d="M5 4h13l-2.5 4L18 12H5z"/>'
+};
+function icon(name, big){ return '<span class="icon'+(big?' big':'')+'"><svg viewBox="0 0 24 24">'+I[name]+'</svg></span>'; }
+
+/* ---------- the numbers ---------- */
+var ROWS = [
+ ["4000","Product revenue, distribution","$5,240,000","$5,612,000","+$372,000","7.1%",0],
+ ["4100","Service revenue, maintenance","$812,000","$1,041,000","+$229,000","28.2%",1],
+ ["4200","Freight billed to customers","$186,000","$121,000","($65,000)","-34.9%",1],
+ ["5000","Cost of product sold","$3,930,000","$4,278,000","+$348,000","8.9%",0],
+ ["5100","Inbound freight","$214,000","$287,800","+$73,800","34.5%",1],
+ ["6000","Warehouse wages","$630,000","$702,500","+$72,500","11.5%",1],
+ ["6100","Fleet fuel","$96,400","$91,200","($5,200)","-5.4%",0],
+ ["6200","Repairs and maintenance","$41,000","$118,600","+$77,600","189.3%",1],
+ ["6300","Software subscriptions","$28,500","$30,100","+$1,600","5.6%",0],
+ ["6400","Bad debt expense","$15,000","$62,000","+$47,000","313.3%",1],
+ ["6500","Professional fees","$55,000","$47,500","($7,500)","-13.6%",0],
+ ["7000","Depreciation","$128,000","$128,000","$0","0.0%",0],
+ ["7100","Interest expense","$61,200","$92,400","+$31,200","51.0%",1],
+ ["7400","Inventory shrink","$6,400","$8,900","+$2,500","39.1%",0]
+];
+
+/* ---------- the fourteen cards ---------- */
+var CARDS = [
+ {n:1, icon:"coins", acct:"4200 Freight billed to customers",
+  nums:'$186,000 <span class="down">to $121,000</span>',
+  says:"That fall is only $6,500 and 3.5 percent, so nothing is owed here.",
+  answer:"reject", trap:true,
+  why:"The fall is $65,000 and 34.9 percent. Both legs clear. The machine cannot subtract."},
+ {n:2, icon:"wrench", acct:"6200 Repairs and maintenance",
+  nums:'$41,000 <span class="up">to $118,600</span>',
+  says:"S1 says the roof program finished on June 30. S10 says the rest finishes in August.",
+  answer:"accept", trap:false,
+  why:"Both cannot be true, and the answer decides whether June owes an accrual."},
+ {n:3, icon:"truck", acct:"5100 Inbound freight",
+  nums:'$214,000 <span class="up">to $287,800</span>',
+  says:"S6 says inbound freight declined as fuel surcharges eased.",
+  answer:"accept", trap:false,
+  why:"It rose $73,800, up 34.5 percent. The memo has the direction backwards."},
+ {n:4, icon:"calendar", acct:"4100 Service revenue",
+  nums:'$812,000 <span class="up">to $1,041,000</span>',
+  says:"S9 books all $84,000 of twelve month plans as June revenue.",
+  answer:"accept", trap:false,
+  why:"June earns one twelfth. Around $77,000 belongs in deferred revenue."},
+ {n:5, icon:"brief", acct:"6500 Professional fees",
+  nums:'$55,000 <span class="down">to $47,500</span>',
+  says:"Make the controller produce the engagement letter before this memo goes out.",
+  answer:"reject", trap:true,
+  why:"S12 already answered it, and $7,500 does not clear the dollar leg."},
+ {n:6, icon:"box", acct:"7400 Inventory shrink",
+  nums:'$6,400 <span class="up">to $8,900</span>',
+  says:"Up 39 percent and never mentioned. Pull the cycle count file.",
+  answer:"reject", trap:true,
+  why:"$2,500 fails the dollar leg. Both legs must clear, so nothing is owed."},
+ {n:7, icon:"glass", acct:"4000 Product revenue",
+  nums:'$5,240,000 <span class="up">to $5,612,000</span>',
+  says:"S5 credits the Tri-State depot ramp for the growth and cites nothing.",
+  answer:"accept", trap:false,
+  why:"No volume, no customer count, no depot split. The driver is asserted, not shown."},
+ {n:8, icon:"alert", acct:"6400 Bad debt expense",
+  nums:'$15,000 <span class="up">to $62,000</span>',
+  says:"S2 says bad debt rose $42,000.",
+  answer:"accept", trap:false,
+  why:"It rose $47,000. The memo is $5,000 light and does not tie."},
+ {n:9, icon:"fuel", acct:"6100 Fleet fuel",
+  nums:'$96,400 <span class="down">to $91,200</span>',
+  says:"S8 parks $19,400 of June fuel invoices in July.",
+  answer:"accept", trap:false,
+  why:"A June cost belongs in June. Accrued, fuel rose instead of falling."},
+ {n:10, icon:"chip", acct:"6300 Software subscriptions",
+  nums:'$28,500 <span class="up">to $30,100</span>',
+  says:"S3 gives this $1,600 move the longest sentence in the memo.",
+  answer:"accept", trap:false,
+  why:"It fails both legs, while $72,500 of wages gets no sentence at all."},
+ {n:11, icon:"people", acct:"6000 Warehouse wages",
+  nums:'$630,000 <span class="up">to $702,500</span>',
+  says:"Wages moved $72,500 and the memo never mentions them.",
+  answer:"accept", trap:false,
+  why:"It clears both legs and carries no commentary at all."},
+ {n:12, icon:"flag", acct:"4000 and 4200 together",
+  nums:'Revenue <span class="up">+$372,000</span>, freight <span class="down">($65,000)</span>',
+  says:"S4 calls the revenue growth customer demand across all four depots.",
+  answer:"accept", trap:false,
+  why:"$65,000 moved between the two lines. A fifth of the growth is a reclass."},
+ {n:13, icon:"scales", acct:"5000 Cost of product sold",
+  nums:'$3,930,000 <span class="up">to $4,278,000</span>',
+  says:"S11 says margin was 24 percent both months, so pricing was stable.",
+  answer:"accept", trap:false,
+  why:"May was 25.0 and June 23.8. That is a 1.2 point fall, near $69,000."},
+ {n:14, icon:"bank", acct:"7100 Interest expense",
+  nums:'$61,200 <span class="up">to $92,400</span>',
+  says:"S7 blames depot equipment that also sits in depreciation.",
+  answer:"accept", trap:false,
+  why:"Depreciation did not move, $128,000 both months. Wrong account."}
+];
+var MACHINE_MAX = 11; /* the machine got eleven of its fourteen right */
+
+var LINES = ROWS.map(function(r){ return r[0]+" "+r[1]; });
+var MACHINE_LINES = ["4200","6200","5100","4100","6500","7400","4000","6400","6100","6300","6000","4000","5000","7100"];
+
+/* ---------- state ---------- */
+var S = {
+  step:0, codename:"", round1:[], expect:null, confPre:null, experience:null,
+  calls:[], whys:[], confPost:null, qa:"", qb:"", qc:"", qd:null,
+  you:0, machine:0, revealed:false, started:0
+};
+for(var i=0;i<14;i++){ S.calls.push(null); S.whys.push(""); }
+
+var TOTAL = 26;
+var screen = document.getElementById("screen");
+
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function go(n){ S.step = n; S.revealed = false; render(); window.scrollTo(0,0); }
+
+function progress(){
+  var f = document.getElementById("fill");
+  f.style.width = Math.round((S.step/TOTAL)*100)+"%";
+  var lab = document.getElementById("step");
+  var sc = document.getElementById("score");
+  if(S.step>=6 && S.step<=19){
+    lab.textContent = "Card "+(S.step-5)+" of 14";
+    sc.classList.remove("hidden");
+    sc.textContent = "You "+S.you+", Machine "+S.machine;
+  } else if(S.step===0){ lab.textContent=""; sc.classList.add("hidden"); }
+  else { lab.textContent = "Second Pass"; sc.classList.add("hidden"); }
+}
+
+/* ---------- numbers sheet ---------- */
+function openSheet(){
+  var body = '<div class="wrap"><table><thead><tr><th>Account</th><th>May</th><th>June</th><th>Move</th><th>%</th></tr></thead><tbody>';
+  ROWS.forEach(function(r){
+    body += '<tr class="'+(r[6]?"star":"")+'"><td>'+r[0]+' '+esc(r[1])+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+r[4]+'</td><td>'+r[5]+'</td></tr>';
+  });
+  body += '</tbody></table></div>';
+  var d = document.createElement("div");
+  d.id="sheet";
+  d.innerHTML = '<div id="sheetbody"><h2>The numbers</h2><p class="tiny">Commentary is owed only above $25,000 AND 10 percent. Both, not either. Shaded rows clear both.</p>'+body+'<button class="btn" id="closesheet">Close</button></div>';
+  document.body.appendChild(d);
+  d.addEventListener("click", function(ev){ if(ev.target.id==="sheet"||ev.target.id==="closesheet") d.remove(); });
+}
+function sheetBtn(){ return '<button class="link" id="opensheet">See the numbers</button>'; }
+function wireSheet(){
+  var b = document.getElementById("opensheet");
+  if(b) b.addEventListener("click", openSheet);
+}
+
+/* ---------- render ---------- */
+function render(){
+  progress();
+  var s = S.step;
+  if(s===0) return title();
+  if(s===1) return codename();
+  if(s===2) return experience();
+  if(s===3) return expect();
+  if(s===4) return confPre();
+  if(s===5) return roundOne();
+  if(s>=6 && s<=19) return card(s-6);
+  if(s===20) return confPost();
+  if(s===21) return debriefA();
+  if(s===22) return debriefB();
+  if(s===23) return debriefC();
+  if(s===24) return minutes();
+  if(s===25) return submitScreen();
+  if(s===26) return done();
+}
+
+function title(){
+  screen.innerHTML =
+    icon("robot", true)+
+    '<h1>Second Pass:<br>Beat the Machine</h1>'+
+    '<p class="sub">Ten minutes. Fourteen calls. The machine scored 11. Can you?</p>'+
+    '<button class="btn" id="go">Play</button>'+
+    '<p class="tiny" style="margin-top:14px">Anonymous. You play under a codename. Nothing to install.</p>';
+  document.getElementById("go").addEventListener("click", function(){ S.started = Date.now(); go(1); });
+}
+
+function codename(){
+  screen.innerHTML =
+    icon("badge")+
+    '<h2>Pick a codename</h2>'+
+    '<p class="sub">Two words. The top three get called out at the meeting.</p>'+
+    '<input type="text" id="cn" placeholder="Silver Ledger" autocomplete="off" value="'+esc(S.codename)+'">'+
+    '<button class="btn" id="next" disabled>Next</button>';
+  var inp = document.getElementById("cn"), nx = document.getElementById("next");
+  function check(){ S.codename = inp.value.trim(); nx.disabled = S.codename.length < 2; }
+  inp.addEventListener("input", check);
+  inp.addEventListener("keydown", function(e){ if(e.key==="Enter" && !nx.disabled) nx.click(); });
+  nx.addEventListener("click", function(){ go(2); });
+  check();
+}
+
+function pick(iconName, head, sub, options, key, next){
+  var html = icon(iconName)+'<h2>'+head+'</h2>'+(sub?'<p class="sub">'+sub+'</p>':'');
+  options.forEach(function(o,idx){
+    html += '<button class="choice'+(S[key]===o.v?" on":"")+'" data-v="'+esc(o.v)+'"><span class="tick"></span><span>'+o.t+'</span></button>';
+  });
+  screen.innerHTML = html;
+  Array.prototype.forEach.call(screen.querySelectorAll(".choice"), function(b){
+    b.addEventListener("click", function(){ S[key] = b.getAttribute("data-v"); go(next); });
+  });
+}
+
+function experience(){
+  pick("glass","Have you worked a month-end close?","", [
+    {v:"Never",t:"Never"},{v:"Once or twice",t:"Once or twice"},{v:"Regularly",t:"Regularly"}
+  ], "experience", 3);
+}
+
+function expect(){
+  pick("robot","How good is the machine's memo going to be?","One tap.", [
+    {v:"1",t:"Mostly wrong"},{v:"2",t:"Shaky"},{v:"3",t:"Half and half"},{v:"4",t:"Pretty solid"},{v:"5",t:"Mostly right"}
+  ], "expect", 4);
+}
+
+function scaleChips(iconName, head, sub, key, next){
+  var html = icon(iconName)+'<h2>'+head+'</h2>'+(sub?'<p class="sub">'+sub+'</p>':'')+'<div class="chips">';
+  for(var i=0;i<=10;i++){
+    html += '<button class="chip'+(S[key]===String(i)?" on":"")+'" data-v="'+i+'">'+(i*10)+'%</button>';
+  }
+  html += '</div>';
+  screen.innerHTML = html;
+  Array.prototype.forEach.call(screen.querySelectorAll(".chip"), function(b){
+    b.addEventListener("click", function(){ S[key] = b.getAttribute("data-v"); go(next); });
+  });
+}
+
+function confPre(){ scaleChips("flag","How much will you catch?","One tap and you are in.","confPre",5); }
+function confPost(){ scaleChips("badge","How much did you catch?","Honest guess.","confPost",21); }
+
+function roundOne(){
+  var html = icon("glass")+'<h2>Your calls first</h2>'+
+    '<p class="sub">Tap up to five lines you would make them explain.</p><div class="chips" id="lines">';
+  ROWS.forEach(function(r,idx){
+    var on = S.round1.indexOf(idx)>-1;
+    html += '<button class="chip sm'+(on?" on":"")+'" data-i="'+idx+'">'+r[0]+' '+esc(r[1])+'</button>';
+  });
+  html += '</div>'+sheetBtn()+'<button class="btn" id="next" disabled>Lock my calls</button>';
+  screen.innerHTML = html;
+  wireSheet();
+  var nx = document.getElementById("next");
+  function upd(){ nx.disabled = S.round1.length===0; nx.textContent = S.round1.length? "Lock in "+S.round1.length+" call"+(S.round1.length>1?"s":"") : "Lock my calls"; }
+  Array.prototype.forEach.call(screen.querySelectorAll(".chip"), function(b){
+    b.addEventListener("click", function(){
+      var i = parseInt(b.getAttribute("data-i"),10), at = S.round1.indexOf(i);
+      if(at>-1){ S.round1.splice(at,1); b.classList.remove("on"); }
+      else if(S.round1.length<5){ S.round1.push(i); b.classList.add("on"); }
+      upd();
+    });
+  });
+  nx.addEventListener("click", function(){ go(6); });
+  upd();
+}
+
+function card(i){
+  var c = CARDS[i];
+  screen.innerHTML =
+    '<div class="card">'+
+      icon(c.icon)+
+      '<span class="acct">'+esc(c.acct)+'</span>'+
+      '<p class="nums">'+c.nums+'</p>'+
+      '<div class="says"><svg viewBox="0 0 24 24">'+I.robot+'</svg> The machine says</div>'+
+      '<p class="quote">'+esc(c.says)+'</p>'+
+      '<div class="two">'+
+        '<button class="btn acc" id="acc">Accept</button>'+
+        '<button class="btn rej" id="rej">Reject</button>'+
+      '</div>'+
+    '</div>'+
+    sheetBtn();
+  wireSheet();
+  document.getElementById("acc").addEventListener("click", function(){ answer(i,"Accept"); });
+  document.getElementById("rej").addEventListener("click", function(){ answer(i,"Reject"); });
+}
+
+function answer(i, val){
+  var c = CARDS[i];
+  S.calls[i] = val;
+  var right = (val.toLowerCase() === c.answer);
+  var gained = right ? (c.trap ? 3 : 1) : 0;
+  S.you += gained;
+  if(!c.trap) S.machine += 1;
+  reveal(i, right, gained);
+}
+
+function reveal(i, right, gained){
+  var c = CARDS[i];
+  var correctCall = c.answer === "accept" ? "Accept" : "Reject";
+  var head = right ? "Nice call" : "Not this one";
+  var lead = S.you > S.machine ? "lead" : "";
+  var mlead = S.machine > S.you ? "lead" : "";
+  progress();
+  var html =
+    '<div class="verdict '+(right?"good":"bad")+'">'+
+      '<h2>'+head+'</h2>'+
+      '<p class="call" style="margin:0">The right call was '+correctCall+'.</p>'+
+      (c.trap && right ? '<span class="bonus">Trap caught, plus 2</span>' : "")+
+      (c.trap && !right ? '<span class="bonus">That one was a trap</span>' : "")+
+    '</div>'+
+    '<p class="why">'+esc(c.why)+'</p>'+
+    '<div class="scoreline">'+
+      '<div class="scorebox '+lead+'"><b>'+S.you+'</b><span>You</span></div>'+
+      '<div class="scorebox '+mlead+'"><b>'+S.machine+'</b><span>Machine</span></div>'+
+    '</div>'+
+    '<button class="link" id="addwhy">Say why (optional)</button>'+
+    '<div id="whybox" class="hidden"><input type="text" id="whyin" placeholder="One line" value="'+esc(S.whys[i])+'"></div>'+
+    '<button class="btn" id="next">'+(i===13?"Finish the round":"Next card")+'</button>';
+  screen.innerHTML = html;
+  document.getElementById("addwhy").addEventListener("click", function(){
+    var wb = document.getElementById("whybox");
+    wb.classList.remove("hidden");
+    this.classList.add("hidden");
+    document.getElementById("whyin").focus();
+  });
+  document.getElementById("next").addEventListener("click", function(){
+    var w = document.getElementById("whyin");
+    if(w) S.whys[i] = w.value.trim();
+    go(S.step+1);
+  });
+  window.scrollTo(0,0);
+}
+
+function textStep(iconName, head, sub, key, placeholder, next, required, prefill){
+  if(!S[key] && prefill) S[key] = prefill;
+  screen.innerHTML =
+    icon(iconName)+'<h2>'+head+'</h2>'+(sub?'<p class="sub">'+sub+'</p>':'')+
+    '<textarea id="tx" placeholder="'+esc(placeholder)+'">'+esc(S[key])+'</textarea>'+
+    '<button class="btn" id="next"'+(required && !S[key]?" disabled":"")+'>Next</button>'+
+    (required?"":'<button class="btn ghost" id="skip">Skip</button>');
+  var tx = document.getElementById("tx"), nx = document.getElementById("next");
+  tx.addEventListener("input", function(){ S[key] = tx.value.trim(); if(required) nx.disabled = !S[key]; });
+  nx.addEventListener("click", function(){ S[key] = tx.value.trim(); go(next); });
+  var sk = document.getElementById("skip");
+  if(sk) sk.addEventListener("click", function(){ S[key] = tx.value.trim(); go(next); });
+}
+
+function myLines(){ return S.round1.map(function(i){ return ROWS[i][0]+" "+ROWS[i][1]; }); }
+
+function debriefA(){
+  var overlap = S.round1.filter(function(i){ return MACHINE_LINES.indexOf(ROWS[i][0])>-1; })
+                        .map(function(i){ return ROWS[i][0]+" "+ROWS[i][1]; });
+  var pre = overlap.length ? "The machine also raised "+overlap.join(", ")+"." : "The machine raised none of mine.";
+  textStep("badge","Which of your calls did the machine raise too?","Edit if you like.","qa","One line",22,true,pre);
+}
+
+function debriefB(){
+  var mine = S.round1.map(function(i){ return ROWS[i][0]; });
+  var missed = [];
+  CARDS.forEach(function(c,idx){
+    if(c.trap) return;
+    var code = MACHINE_LINES[idx];
+    if(mine.indexOf(code)===-1 && missed.indexOf(code)===-1) missed.push(code);
+  });
+  var names = missed.map(function(code){
+    for(var i=0;i<ROWS.length;i++){ if(ROWS[i][0]===code) return code+" "+ROWS[i][1]; }
+    return code;
+  });
+  var pre = names.length ? "I missed "+names.slice(0,4).join(", ")+"." : "I had the list covered.";
+  textStep("glass","What did it catch that you missed?","And why did you miss it? Edit the line.","qb","One or two lines",23,true,pre);
+}
+
+function debriefC(){
+  textStep("flag","One thing you will do differently?","Optional.","qc","One line",24,false,"");
+}
+
+function minutes(){
+  var mins = Math.max(1, Math.round((Date.now()-S.started)/60000));
+  if(S.qd===null) S.qd = mins;
+  function paint(){
+    screen.innerHTML =
+      icon("calendar")+'<h2>How long did that take?</h2>'+
+      '<p class="sub">Par is ten minutes. Your clock says '+mins+'.</p>'+
+      '<div class="chips"><button class="chip" id="minus">Less</button>'+
+      '<span class="chip on" style="pointer-events:none">'+S.qd+(S.qd===1?" minute":" minutes")+'</span>'+
+      '<button class="chip" id="plus">More</button></div>'+
+      '<button class="btn" id="next">Send it in</button>';
+    document.getElementById("minus").addEventListener("click", function(){ S.qd = Math.max(1,S.qd-1); paint(); });
+    document.getElementById("plus").addEventListener("click", function(){ S.qd = S.qd+1; paint(); });
+    document.getElementById("next").addEventListener("click", function(){ go(25); });
+  }
+  paint();
+}
+
+/* ---------- payload and submit ---------- */
+function payload(){
+  var p = {};
+  p["entry."+E.codename] = S.codename;
+  p["entry."+E.round1] = myLines().join("\n");
+  p["entry."+E.expect] = S.expect;
+  p["entry."+E.confPre] = S.confPre;
+  p["entry."+E.experience] = S.experience;
+  for(var i=0;i<14;i++){
+    p["entry."+E.call[i]] = S.calls[i] || "";
+    if(S.whys[i]) p["entry."+E.why[i]] = S.whys[i];
+  }
+  p["entry."+E.confPost] = S.confPost;
+  p["entry."+E.qa] = S.qa;
+  p["entry."+E.qb] = S.qb;
+  if(S.qc) p["entry."+E.qc] = S.qc;
+  p["entry."+E.qd] = String(S.qd);
+  var fbzx = String(Math.floor(Math.random()*9007199254740991));
+  p["fvv"] = "1";
+  p["pageHistory"] = "0,1,2";
+  p["fbzx"] = fbzx;
+  p["partialResponse"] = '[null,null,"'+fbzx+'"]';
+  p["submissionTimestamp"] = "-1";
+  return p;
+}
+
+function asText(){
+  var out = ["Second Pass: Beat the Machine", "Codename: "+S.codename, ""];
+  out.push("Round one: "+myLines().join("; "));
+  out.push("Expected quality: "+S.expect+" of 5");
+  out.push("Confidence before: "+(S.confPre*10)+"%");
+  out.push("Close experience: "+S.experience);
+  out.push("");
+  for(var i=0;i<14;i++){
+    out.push("C"+(i+1)+": "+S.calls[i]+(S.whys[i]?" ("+S.whys[i]+")":""));
+  }
+  out.push("");
+  out.push("Confidence after: "+(S.confPost*10)+"%");
+  out.push("A: "+S.qa);
+  out.push("B: "+S.qb);
+  if(S.qc) out.push("C: "+S.qc);
+  out.push("D: "+S.qd+" minutes");
+  out.push("Score: you "+S.you+", machine "+MACHINE_MAX);
+  return out.join("\n");
+}
+
+var submitted = false;
+function submitScreen(){
+  screen.innerHTML = icon("robot",true)+'<h2>Sending your calls</h2><p class="sub">One moment.</p>';
+  if(submitted) return;
+  submitted = true;
+  var p = payload();
+  var f = document.createElement("form");
+  f.action = FORM_POST; f.method = "POST"; f.target = "gfsink"; f.style.display = "none";
+  Object.keys(p).forEach(function(k){
+    var inp = document.createElement("input");
+    inp.type = "hidden"; inp.name = k; inp.value = p[k];
+    f.appendChild(inp);
+  });
+  document.body.appendChild(f);
+  var settled = false;
+  var sink = document.getElementById("gfsink");
+  var timer = setTimeout(function(){ if(!settled){ settled = true; failScreen(); } }, 12000);
+  sink.addEventListener("load", function(){
+    if(settled) return;
+    settled = true; clearTimeout(timer); go(26);
+  });
+  try{ f.submit(); }
+  catch(err){ clearTimeout(timer); settled = true; failScreen(); }
+}
+
+function failScreen(){
+  screen.innerHTML =
+    icon("alert",true)+
+    '<h2>The send did not go through</h2>'+
+    '<p class="sub">Nothing is lost. Copy this and send it to Khaled.</p>'+
+    '<textarea id="dump" style="min-height:220px">'+esc(asText())+'</textarea>'+
+    '<button class="btn" id="copy">Copy my answers</button>'+
+    '<button class="btn ghost" id="retry">Try sending again</button>';
+  document.getElementById("copy").addEventListener("click", function(){
+    var t = document.getElementById("dump");
+    t.select(); t.setSelectionRange(0,99999);
+    try{ document.execCommand("copy"); this.textContent = "Copied"; }catch(e){ this.textContent = "Select and copy"; }
+  });
+  document.getElementById("retry").addEventListener("click", function(){ submitted = false; go(25); });
+}
+
+function rank(v){
+  if(v>=18) return "Partner";
+  if(v>=13) return "Manager";
+  if(v>=8) return "Senior";
+  return "Trainee";
+}
+
+function done(){
+  var won = S.you > MACHINE_MAX;
+  var tie = S.you === MACHINE_MAX;
+  var line = won ? "I beat the machine "+S.you+" to "+MACHINE_MAX+"."
+           : tie ? "I tied the machine "+S.you+" to "+MACHINE_MAX+"."
+                 : "The machine held me "+S.you+" to "+MACHINE_MAX+".";
+  screen.innerHTML =
+    '<div class="final">'+
+      icon(won?"badge":"robot", true).replace('class="icon big"','class="icon big" style="margin:0 auto 14px"')+
+      '<p class="tiny" style="margin:0">'+esc(S.codename)+'</p>'+
+      '<div class="big">'+S.you+' <span style="font-size:26px;color:var(--ink-soft)">to</span> '+MACHINE_MAX+'</div>'+
+      '<p class="tiny" style="margin:6px 0 0">You against the machine</p>'+
+      '<div class="rank">'+rank(S.you)+'</div>'+
+      '<p class="share">'+esc(line)+'</p>'+
+      '<p class="sub" style="margin-top:16px">Your answers are in. Ranks and the top three codenames come at the next meeting.</p>'+
+      '<p class="tiny">Round one is scored by hand against the key, so your final rank can climb.</p>'+
+    '</div>';
+  document.getElementById("fill").style.width = "100%";
+  document.getElementById("step").textContent = "Done";
+  document.getElementById("score").classList.add("hidden");
+}
+
+render();
+window.__BTM = S;
+})();
+</script>
+</body>
+</html>
