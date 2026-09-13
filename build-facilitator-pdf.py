@@ -1,6 +1,8 @@
 # Builds Second-Pass-Facilitator-Guide.pdf, the one page facilitator's guide.
 #
-# Content of record: FACILITATOR-ONE-PAGE.md. Nothing is typed into this script. The long form
+# Content of record: FACILITATOR-ONE-PAGE.md and READOUT-TEMPLATE.md. Nothing is typed into
+# this script. The readout ships as a docx alone, so its PDF and page render are built to
+# prove one page and then deleted. The long form of the guide
 # is FACILITATOR-GUIDE.md and it is not built to PDF, because it does not fit on one page.
 #
 # Typography and the build route are carried over from
@@ -31,9 +33,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 AUTHOR = 'Khaled Alkurd'
 SUBJECT = 'Second Pass: Beat the Machine, running the session in forty minutes'
 
-# source markdown, output basename, maximum pages allowed
+# source markdown, output basename, maximum pages allowed, keep the PDF beside the docx
 JOBS = [
-    ('FACILITATOR-ONE-PAGE.md', 'Second-Pass-Facilitator-Guide', 1),
+    ('FACILITATOR-ONE-PAGE.md', 'Second-Pass-Facilitator-Guide', 1, True),
+    ('READOUT-TEMPLATE.md', 'Second-Pass-Results-Readout', 1, False),
 ]
 
 FIT = [(10.5, 1.00, 1.00), (10.5, 0.80, 1.00), (10.5, 0.60, 1.00), (10.5, 0.45, 1.00),
@@ -407,7 +410,7 @@ def banned(blocks):
     return sorted({label for ch, label in BAD_CHARS.items() if ch in joined})
 
 
-def run(source, basename, max_pages):
+def run(source, basename, max_pages, keep_pdf=True):
     path = os.path.join(HERE, source)
     blocks = parse(path)
     docx_path = os.path.join(HERE, basename + '.docx')
@@ -441,15 +444,22 @@ def run(source, basename, max_pages):
     print('  page 1 image       : %s' % os.path.basename(rep['png']))
     print('  banned characters  : %s' % (', '.join(banned(blocks)) or 'none'))
     print('  docx               : %s' % os.path.basename(docx_path))
+    ok = rep['pages'] <= max_pages and not rep['clipped']
+    if not keep_pdf:
+        # The readout ships as a docx. The PDF and the render only exist to prove one page.
+        for path in (pdf_path, rep['png']):
+            if os.path.exists(path):
+                os.remove(path)
+        print('  pdf and render     : removed, this job ships the docx alone')
     print('')
-    return rep['pages'] <= max_pages and not rep['clipped']
+    return ok
 
 
 if __name__ == '__main__':
     want = sys.argv[1:]
     jobs = [j for j in JOBS if not want or any(w.lower() in j[1].lower() for w in want)]
     ok = True
-    for source, basename, max_pages in jobs:
+    for source, basename, max_pages, keep_pdf in jobs:
         print(basename)
-        ok = run(source, basename, max_pages) and ok
+        ok = run(source, basename, max_pages, keep_pdf) and ok
     print('all %d within their page allowance and nothing clipped: %s' % (len(jobs), ok))
