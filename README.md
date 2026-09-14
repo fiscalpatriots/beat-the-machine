@@ -894,10 +894,12 @@ set it always did.
 
 `author.html` takes a ledger and a memo in the same shapes the checker takes, runs the mechanical
 checks over them, and hands back a card for each memo sentence it binds to a ledger line plus one
-for every account that clears the rule with nothing written about it. A sentence that binds to no
-line gets a warning rather than a card, and the author page is being brought into line with the
-checker's statuses, so its suggestions are a starting point for the author and not a checker
-result.
+for every account that clears the rule with nothing written about it. Each sentence carries the
+checker's own status, and a call is suggested only where that status settles one; a sentence held
+for review or not checked comes back with no suggestion. A sentence that binds to no ledger line is
+kept as an open item and holds the save until it is left out with a written reason or rewritten and
+read again, and any change to the inputs after a read turns Save and Preview off until the case is
+read again.
 
 The checks suggest; the author decides. A failed arithmetic check pre-selects flag with the type
 `arithmetic`, the chip `figure does not tie` and the checker's own sentence as the why; a
