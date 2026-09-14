@@ -159,7 +159,7 @@ no fresh set beside it goes from its last line to the end screen. What a file ha
 | `version`, `date`, `company`, `period` | the stamps that ride into the response and the record |
 | `columns` | the two month names, as `["June", "July"]`. Optional; without it the drill prints May against June |
 | `caption`, `threshold`, `policyScope`, `evidenceNote` | the sentences the orientation screen and the legend print |
-| `ledger` | one row per account, `[number, name, prior, current, owesCommentary]` |
+| `ledger` | one row per account, `[number, name, prior, current, owesCommentary]`. Each row is one chip on the read the player takes before the memo |
 | `groups` | the statement sections, `{title, accts, total}` |
 | `cards` | one per line, in the shape the table below sets out |
 | `mode` | `"assessment"` on a case scored at the end rather than line by line, with `assessmentNote` beside it |
@@ -167,6 +167,12 @@ no fresh set beside it goes from its last line to the end screen. What a file ha
 A card carries `n`, `icon`, `acct`, `name`, `prior`, `current`, `memo`, `file`, `key`, `type`,
 `why`, `truth`, `ask`, `tell`, `post` and `basisKey`. `over` is the line a stand shows when it was
 flagged anyway, and `stillOpen` is the line a stand shows when its reasoning is provisional.
+
+The read before the draft is taken per ledger account, not per card. A player taps accounts, and a
+tapped account reads as a flag on every card whose `acct` is that number, so two cards on one
+account (Halyard's lines 7 and 12 on 4000, Kestrel's 4 and 8 on 4100) share one tap. A ledger row
+with no card, such as Halyard's depreciation, can be tapped and compares with nothing. Keep card accounts
+exactly as the ledger spells them, or a tap will not reach its card.
 
 `columns` was added on 13 September 2026 for `kestrel-v1`, which runs June against July.
 `halyard-v4` and `brightwater-v5` do not carry it and are read as May against June, which is what

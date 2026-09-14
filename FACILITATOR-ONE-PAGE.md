@@ -13,7 +13,7 @@ Forty minutes for a chapter meeting, a classroom or a firm's staff training. Ver
 | Minutes | Segment | What happens |
 | --- | --- | --- |
 | 5 | Framing | A built case carrying the mistakes an AI assistant makes. Read the threshold rule aloud: above both $25,000 and 10 percent. Name no error types. |
-| 12 | Play | The fourteen Halyard lines, alone, par ten minutes, no question about a line answered. |
+| 12 | Play | The ledger alone first, tapping every line worth a second look, then the fourteen Halyard lines, alone, par ten minutes, no question about a line answered. |
 | 3 | Fresh case | Five lines of a dental group nobody has seen: no reveal, no score, no track. Say only what the bridge screen says. |
 | 15 | Debrief | The six questions below, two answers each, then three minutes on the reason. |
 | 5 | Close | The numbers back, the voluntary send, and the argument: four checks recompute and two stay with a person. |

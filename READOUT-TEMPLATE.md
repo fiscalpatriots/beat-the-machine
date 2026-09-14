@@ -103,6 +103,10 @@ With five items and no comparable baseline, these scores do not establish learni
 | --- | --- | --- |
 | | | |
 
+## 8. The read before the draft, fields carrying the prefix `prepick.`
+
+Each player taps, from the ledger alone and before any AI draft, the lines worth a second look. First attempts with that read `prepick.first_attempts_with_read`, and with a final call moved off it `prepick.first_attempts_changed_any`. Lines compared `prepick.lines_compared`, moved `prepick.lines_changed`, toward the key `prepick.changed_toward_key`, away from it `prepick.changed_away_from_key`, held `prepick.lines_held`. Descriptive agreement on a keyed exercise, never a learning gain.
+
 ## The roster, when you keep one
 
 A roster confirms people without adding accounts to the product. Write it after the session as a CSV with the columns `participant,codename,consent,role`, one row per codename a person used. `participant` is your own label, such as P01, and two codenames under one label count as one participant. `consent` must read yes for the row to be read at all. `role` is what you observed, such as student, practitioner or educator, and it is your record rather than anything the page asked. Keep names out of the file and keep the key from label to person with you.

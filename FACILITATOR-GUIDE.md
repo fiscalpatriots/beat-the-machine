@@ -95,7 +95,7 @@ denominator.
 | Minutes | Segment | What happens |
 | --- | --- | --- |
 | 5 | Framing | You say what the memo is and what the threshold rule is, and nothing else. |
-| 12 | Play | Each person plays the fourteen Halyard lines alone, calling each one and then giving a basis for it. |
+| 12 | Play | Each person reads the Halyard ledger and taps the lines they would give a second look, then plays the fourteen lines alone, calling each one and then giving a basis for it. |
 | 3 | Fresh case | Five lines of a company nobody has seen, run as an assessment with no reveal and no score on screen. |
 | 15 | Debrief | Six questions on the call, then one pass on the reason. |
 | 5 | Close | The numbers back to the room, the send, and what this looks like in a real close. |
@@ -109,7 +109,11 @@ prior balance, both legs and not either one. Do not name the six ways a memo fai
 play. Naming them is handing over the answer.
 
 **Play, twelve minutes.** Phones or laptops out, nothing on the projector, and no questions
-answered about a specific line while the round is running. Par is ten minutes and the game shows
+answered about a specific line while the round is running. The first screen after the codename is
+the ledger on its own, and nobody gets past it without tapping at least one line they would give a
+second look. There is no skip, and that is the point: each player commits to a read of the numbers
+before a single sentence of the AI draft is on the screen. Say so before they start, and do not
+suggest which lines to tap. Par is ten minutes and the game shows
 each player their own clock. The two extra minutes are for the people who read slowly, and you will
 need them.
 
@@ -193,6 +197,13 @@ from the ledger to the memo instead of from the memo to the ledger. Say that out
 is the single habit most likely to change what somebody does on Monday. Once you have run a
 session, `findings.py` prints the rate for your own room with its denominator, and that is the
 number to use.
+
+**Then ask about the read they made before the draft.** Every end screen says on how many lines the
+player's final call moved off the lines they tapped from the ledger alone, and whether each change
+moved toward the key or away from it. Ask for one example of each, and ask who tapped warehouse
+wages before the memo. Treat what the room says as their own account of one sitting. `findings.py`
+reports the same comparison for first attempts as descriptive agreement with the key, and it is
+not evidence that anybody learned anything.
 
 **Close the debrief on the clean lines.** Six of the fourteen are sound and the careful call is to
 leave them alone. Ask which line somebody flagged that they should have let stand, and take one

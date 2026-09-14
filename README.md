@@ -12,7 +12,7 @@ Live at https://fiscalpatriots.github.io/beat-the-machine/ from `main`.
 | Product | `second-pass-drill 1.6.1` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
 | Round one case | `halyard-v4`, 13 September 2026 | `cases/halyard-v4.json`, question A, the local record |
 | Round two case | `brightwater-v5`, 13 September 2026 | `cases/brightwater-v5.json`, questions A and C, the local record |
-| Data notice | `notice-2026-09-13` | the notice screen, question A, the local record |
+| Data notice | `notice-2026-09-13c` | the notice screen, question A, the local record |
 
 One constant carries the product version. Change `PRODUCT_VERSION` and every surface follows,
 except `review.html` and this file, which state it in prose and have to be edited by hand.
@@ -79,6 +79,7 @@ come straight out of the responses sheet without any hand coding.
 | Decision accuracy by error type | The fourteen "Why" fields each carry the line, the account, the call, the key and the error type, so grouping on the type column gives an accuracy figure per type. In `halyard-v4` the eight flagged lines carry `arithmetic` twice, `unsupported driver` twice, and `timing`, `wrong direction`, `no explanation` and `unsupported attribution` once each; the six clean lines carry `clean line` and are the control. `no explanation` is what the screen calls silence, and threshold is the machine test that decides which lines owe commentary at all rather than a label of its own. |
 | Reason category agreement by error type | The same fourteen fields carry `Reason: agrees.` or `Reason: does not agree.` and the card's basis key, so the same grouping gives agreement with the accepted reason categories per type. Question B carries the two round totals beside the attempt identifier. A reason agrees when every chip the player tapped is in the card's basis key and at least one was tapped. |
 | False-flag rate | The six lines whose key is `stand` are the denominator. A `flag` call on any of them is a false flag, and question B carries the round's false flag count as well. |
+| The read before the draft | The round one free text question (`entry.1115022539`) carries the accounts the player tapped from the ledger alone before any memo sentence was shown, the case version, that read and the final call on every line as letter strings, and the counts that changed toward the key, changed away from it and held. `findings.py` rebuilds the read from the accounts against the recorded version and reports the counts for first attempts only, as descriptive agreement on a keyed exercise. See "The read before the draft" below. |
 | Elapsed time | The clock runs from the first card to the last call and posts as whole minutes in the elapsed time question. It is elapsed time on the page rather than measured active work, and it is reported under that name. |
 | Fresh case accuracy | Question C (`entry.756559246`) opens with `Round2: right call 4/5, right reason 3/5; calls FSFFS; key FSFFS; seconds 61.` The two fractions are the call and reason scores on the five lines of a company the player had never seen, the letter strings are the five calls and the five keyed answers in card order with `F` for flag and `S` for let it stand, and the seconds are the round two clock. |
 
@@ -160,9 +161,10 @@ Four screens stand between the link and the first card.
    marked live there is the one in `index.html`.
 2. The data notice, read before anything is collected. See "The data notice" below.
 3. One screen for the codename and the chapters, on the same screen and both required.
-4. The ledger, read once as orientation, with a block under it saying what earns a flag and
-   what "Let it stand" means, and one optional step of ledger-only picks. See "The ledger-only
-   picks" below.
+4. The ledger, with a block beside it saying what earns a flag and what "Let it stand" means,
+   and the player's own read of it: before any memo sentence is shown, they tap every line they
+   would give a second look, at least one, and there is no skip. See "The read before the draft"
+   below.
 
 Nothing else is asked on the way in. After the round the player is offered a local record and a
 separate voluntary send, and neither is required to finish.
@@ -183,9 +185,11 @@ It sits between the intro and the codename screen, so nothing has been collected
 is read. The four items, word for word as they appear on screen under the heading "What this
 records":
 
-> What is collected: the codename you pick, the chapters you tap, your call on each of the
-> nineteen lines, the basis chips behind each call, the optional line of your own words, and how
-> long each line and each round took you.
+> What is collected: the codename you pick, the chapters you tap, the lines you tap on the ledger
+> before the memo, your call on each line of the run, the basis chips behind each call, whether
+> that basis agrees with the card's key, the optional line of your own words, the three short
+> written answers each line of the fresh case asks for, and how long each line and each round took
+> you.
 >
 > A codename is a pseudonym and not anonymity. Anyone who knows which codename you chose can read
 > your run, so pick one you are willing to be known by.
@@ -200,32 +204,56 @@ Under those four the screen prints the notice version and the product version. T
 rides into question A and into the local record, so a response can be tied to the wording the
 player actually read. Change the wording and the version goes up with it.
 
-## The ledger-only picks
+## The read before the draft
 
-**Subject to Khaled's ruling.** This step was added on 13 September 2026 because the build
-handoff asks for a short ledger-only judgment before the narrative. It was removed and then
-restored the same evening, and it stays until the question of whether the drill needs one decision
-taken before the AI's text is read is settled. Removing it means deleting `prepickBlock`,
-`wirePrepicks` and `prepickLine` from `index.html` and restoring the plain Continue on the
-orientation screen.
+**Khaled's ruling, about 9:40 PM on 13 September 2026: keep it and make it count.** It is the one
+point in a run where the player decides from the ledger alone, before reading a single sentence
+the AI drafted, which is the principle of deciding before you see the AI's recommendation. An
+optional version, capped at three accounts with a Skip, ran for part of that evening; it was
+removed in `cc29007` and restored in `ea639f1` before this ruling replaced it.
 
-Under the statement on the orientation screen: "Before the memo: tap up to three lines you would
-ask about first, or skip." Fourteen chips, one per ledger account, capped at three, with Skip and
-Continue side by side under them. Once three are tapped the rest go grey until one is released.
-Nothing is typed and nothing is scored, so it costs a few seconds. The sticky bar on a phone and
-the rail on a desk read "Skip the picks and continue" and record a skip rather than pretending a
-player who never scrolled made a pick.
+**The screen.** Under the ledger on the orientation screen, headed "Your read, before any AI
+draft": "Tap every line you would give a second look, judging from these figures alone. A line
+you leave untapped counts as one you would let stand. Nothing here is scored, and at the end you
+will see where your calls moved once you had read the draft." One chip per ledger account, with
+no cap. The onward button, fixed to the bottom on a phone and in the rail on a desk, reads "Tap
+at least one line" until one is tapped, and pressing it then scrolls to the chips and puts focus
+on the first one. Once a line is tapped it reads "Lock in my read and continue". Taps are saved as
+they happen, so a reload keeps them. Focus starts on the screen's heading.
 
-The picks post into the round one free text question, `entry.1115022539`, which collected nothing
-before this. The cell reads:
+**It cannot be skipped.** There is no skip control. `render()` refuses to draw any screen after
+the read until it is locked in, so the onward button, the keyboard, the `__BTM_GO` step hook, a
+restored run and a hand-edited saved run all land back on the ledger with no memo sentence shown.
+A saved read naming an account that is not on the ledger is not a read. The address has no step
+parameter. Once the player goes on, the read is locked: the chips come back disabled if the screen
+is ever drawn again, and Play again clears it for the next run.
+
+**What it counts toward.** A tapped account reads as a flag on every round one line on that
+account, and an untapped one as let it stand. The end screen, under the round's counts, says how
+many accounts were tapped, on how many lines the final call moved off that read, how many of those
+changes moved toward the key and how many away, and how many held. The moved lines sit behind one
+disclosure. It adds no points and moves no rank or badge.
+
+**What it posts.** The round one free text question, `entry.1115022539`, reads:
 
 ```
-Prepicks: 4200; 6000; 6400.
+Prepicks: 4100; 4200; 7000. Required read before the AI draft, case halyard-v4, by line, F tapped for a second look and S left untapped: FSSFSSSSSSSSSS. Final calls after the draft: SFFFSSFFSSFFSF. Against the key: 7 changed toward it, 1 changed away from it, 6 held.
 ```
 
-A skip posts `Prepicks: skipped.` rather than an empty cell, so a deliberate skip and a missing
-answer can be told apart. The picks are also in the local record under `prepicks`, with the
-question text and the entry id beside them.
+A read locked in after a call had been made, which no control allows, adds "Taken after a call
+was locked, so not a read before the draft." and the findings leave it out. The record carries
+the same facts under `prepicks`, and every round one response carries `ledgerOnlyRead` (flag or
+stand) and `readVersusFinal` (held, changed toward the key, changed away from the key) beside its
+own case version.
+
+**What the findings say about it.** `findings.py` rebuilds the read from the accounts tapped
+against the recorded case version, checks the letters and counts the page posted, and reports for
+first attempts only, inside each case set, how many attempts moved at least one call off the read,
+how many lines moved, and which way, with a table by line. Rows from the optional step
+(`Prepicks: 4200; 6000; 6400.` or `Prepicks: skipped.`) are counted apart and enter no count. Each
+final call came after the draft, the file on the card and, in practice, the reveals of the lines
+before it, so the result is descriptive agreement on a keyed exercise. It is not a pre-test and
+post-test and never a learning gain. The readout fields carry the prefix `prepick.`.
 
 ## Test mode
 
@@ -247,8 +275,8 @@ their run. The fields are the ones the build handoff calls the minimum attempt r
 | Block | Fields |
 | --- | --- |
 | `attempt` | id, pseudonym and the note that a codename is not anonymity, organizations, role (null, not collected), notice version, product version, case versions and which path loaded them, form URL, mode per round, first attempt, run index, assistance source, started, completed, submission state, submission attempts, test attempt |
-| `prepicks` | picks, skipped, the entry id they post to, the question as it was asked |
-| `responses` | one per line for all nineteen: item id, round, case version, mode, account and name, error type, original decision, final decision, basis chips, the player's own words, `evidenceSupplied` (the on-file facts the card showed) and `evidenceSelected` (null, the page does not ask what the player read), confidence (null, not asked), assistance revealed, `elapsedSecondsOnCard`, skipped or missing reason, when feedback was revealed, the keyed decision, and whether the call agrees with the key |
+| `prepicks` | required, taken, the accounts tapped, when the read was locked in, whether it came before any call, the case id and version, the read and the final calls as letter strings, the counts after the draft, the entry id it posts to, the question as it was asked, and a note on what the comparison does and does not describe |
+| `responses` | one per line for all nineteen: item id, round, case version, mode, account and name, error type, original decision, final decision, basis chips, the player's own words, `evidenceSupplied` (the on-file facts the card showed) and `evidenceSelected` (null, the page does not ask what the player read), confidence (null, not asked), assistance revealed, `elapsedSecondsOnCard`, skipped or missing reason, when feedback was revealed, the keyed decision, whether the call agrees with the key, and on round one lines `ledgerOnlyRead` and `readVersusFinal` |
 | `scoring` | key versions, the round one and round two counts, human rubric scores (null), scorer id (null), out-of-key finding (null), adjudication (null), exclusion reason, final resolution (null) |
 | `timing` | round one lap seconds, the whole minutes actually posted, round two seconds, `elapsedSecondsOnCards` summed over the nineteen lines |
 | `notAsked` | the four form questions nobody was asked, why a placeholder is posted, and the placeholder mode |
@@ -482,10 +510,10 @@ small caps in green over a hairline, subtotals carry a rule above them and the n
 heavier one, and alternate rows take a three percent green fill.
 
 The orientation page is two columns from 900px up: the ledger on the left and a sticky legend on
-the right holding "What earns a flag" with the six defect types as a list, with Continue at the
-foot of both columns. On a phone the legend comes first, collapsed to its title and the six
-chips until it is tapped, the ledger follows, and Continue is fixed to the bottom of the
-viewport.
+the right holding "What earns a flag" with the six defect types as a list and the onward button
+under it, and the read before the draft under the ledger. On a phone the legend comes first,
+collapsed to its title and the six chips until it is tapped, the ledger follows, then the read,
+and the onward button is fixed to the bottom of the viewport.
 
 ## The round
 
@@ -721,7 +749,7 @@ Nobody types anything after the round. The fourteen calls post as `Accept` or `R
 existing multiple choice questions keep working, and every text question receives the player's
 basis plus generated metadata rather than player prose: the fourteen "Why" fields carry the
 basis, the call, the key and the error type for that line, the round one free text field carries
-the ledger-only picks, question A carries the organizations and the three version stamps,
+the required read before the draft, question A carries the organizations and the three version stamps,
 question B carries the attempt id, the lines missed, the pattern, the result and the longest run.
 The elapsed minutes question receives the lap time, off the clock rather than a tap.
 
@@ -778,7 +806,7 @@ apart from the outside. The hidden iframe the page uses cannot read either one, 
 the only way to check this from a script.
 
 Two former placeholders now carry real data. The round one free text field
-(`entry.1115022539`) carries the ledger-only picks, and question C (`entry.756559246`) carries
+(`entry.1115022539`) carries the required read before the draft, and question C (`entry.756559246`) carries
 the round two string, the round two basis and the case version. Rows filed before 13 September
 2026 carry the old placeholder note in both.
 
