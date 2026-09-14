@@ -123,7 +123,14 @@
 .revlabel{font-size:var(--t-label);font-weight:700;text-transform:uppercase;
   letter-spacing:.08em;color:var(--ink-soft)}
 .ledgerhint{margin:0 0 var(--s4);font-size:var(--t-small);line-height:1.5;color:var(--ink-soft)}
-.chart{width:100%;height:auto;display:block;margin:0 0 var(--s4)}
+.chart{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;
+  column-gap:var(--s3);row-gap:var(--s3);width:100%;margin:0 0 var(--s4)}
+.chartlab{font-size:var(--t-small);line-height:1.2;color:var(--ink-soft);white-space:nowrap}
+.chartlab.now{color:var(--ink)}
+.charttrack{display:block;min-width:0}
+.chartbar{display:block;height:18px;min-width:2px;border-radius:3px;background:var(--ink)}
+.chartbar.old{background:var(--bar-old)}
+.chartbar.neg{background:var(--neg)}
 .says{margin:0 0 var(--s2);font-size:var(--t-label);font-weight:700;text-transform:uppercase;
   letter-spacing:.08em;color:var(--ink-soft)}
 .quote{font-size:var(--t-lead);line-height:1.5;margin:0}
@@ -240,7 +247,11 @@
 .prepickgo .btn{max-width:484px}
 @media (max-width:899px){#app.hasbar{padding-bottom:98px}}
 @media (min-width:900px){
-  #app.wide{max-width:1076px}
+  /* the header's own box (assets/nav.js, 1,048 pixels with a 20 pixel gutter), so the band, the
+     track, the heading and the ledger start where the wordmark does at every desk width. The
+     read screen used to widen to 1,320 pixels from 1,200, and at 1,280 and 1,600 its edges lined
+     up with nothing else on the site. */
+  #app.wide{max-width:1048px}
   .hero h2{font-size:var(--t-h1)}
   .orient{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:var(--s6);align-items:start;
     max-width:1040px;margin:0 auto}
@@ -255,25 +266,10 @@
   .flaghead .chev{display:none}
   .stmt-wide{--pad:var(--s6)}
 }
-@media (min-width:1200px){
-  #app.wide{max-width:1320px}
-  .orient{max-width:1280px}
-  .stmt-wide .scols,.stmt-wide .srow{
-    grid-template-columns:30px minmax(0,1fr) 116px 116px 112px 72px 72px;
-    column-gap:var(--s5);row-gap:0}
-  .stmt-wide .srow.sub .fg,.stmt-wide .srow.net .fg{font-weight:600}
-  .stmt-wide .scols .sp{display:block}
-  .stmt-wide .srow{align-items:center;padding:var(--s2);min-height:28px}
-  .stmt-wide .srow.sub,.stmt-wide .srow.net{padding-top:var(--s4);padding-bottom:var(--s4)}
-  .stmt-wide .srow .acctline{display:contents}
-  /* an account name wraps rather than ending in an ellipsis. At 1280 the name column runs
-     about 193 pixels and five of the fourteen names are longer than that, so truncating
-     them hid the very thing the row is named for. */
-  .stmt-wide .srow .nm{overflow-wrap:anywhere}
-  .stmt-wide .srow .fg{font-size:var(--t-body);padding:0}
-  .stmt-wide .srow .mbar{display:none}
-  .stmt-wide .wbar{display:block}
-}
+/* The one-row ledger that ran from 1,200 (code, name, May, June, change, percent and a bar on
+   one line) needed about 840 pixels beside the legend rail. Inside the header's 1,008 pixel
+   column the ledger has 664, so every desk width reads it in the two-line rows 1,024 already
+   used, and the one-row rules are gone rather than kept for a width no screen reaches. */
 
 /* ---------- the basis row ---------- */
 .basis{margin-top:var(--s2)}
@@ -283,9 +279,24 @@
 .basiswords{display:block;font-size:var(--t-small);font-weight:600;color:var(--ink-soft);
   margin:0 0 var(--s2)}
 .basis .btn{display:flex;width:100%;margin-top:var(--s4)}
-/* the three written answers on an assessment line */
+/* the three written answers on an assessment line. Each box carries its label, a visible hint
+   under the label (the placeholder it replaced was cut off on a phone), and an error line that
+   appears only after Lock it in refuses, in words rather than in color alone. The box grows with
+   what is typed, so an answer is never read through a two-line slot. */
 .explain{margin:0 0 var(--s2)}
-.explain textarea{display:block;width:100%;max-width:100%;min-height:64px;resize:vertical;margin:0 0 var(--s3)}
+.explain .basiswords{margin:0 0 2px;color:var(--ink)}
+.explain .exhint{margin:0 0 var(--s2)}
+.explain textarea{display:block;width:100%;max-width:100%;min-height:72px;max-height:320px;
+  resize:vertical;margin:0 0 var(--s3);overflow-wrap:anywhere}
+.explain textarea[aria-invalid="true"]{border-color:var(--red);box-shadow:inset 4px 0 0 var(--red)}
+.explain .explainerr{margin:calc(-1 * var(--s2)) 0 var(--s3);font-size:var(--t-small);
+  line-height:1.5;font-weight:600;color:var(--red)}
+.lockstat{margin:var(--s3) 0 0;padding:var(--s2) var(--s3);border-left:4px solid var(--red);
+  background:var(--paper);font-size:var(--t-small);line-height:1.5;color:var(--ink)}
+.lockstat:empty{display:none}
+.lockstat.ok{border-left-color:var(--mason)}
+.lockstat b{font-weight:700}
+.basis .btn[aria-disabled="true"]{opacity:.45;cursor:not-allowed}
 
 /* ---------- the required read before the draft, and what the end screen makes of it ---------- */
 .prepick{margin:var(--s6) 0 0;padding:var(--s5) 0 0;border-top:1px solid var(--rule)}
@@ -1035,7 +1046,11 @@ function placeCodename(x){
   if(!tr.width) return;
   var px = (tr.left - br.left) + (x/300)*tr.width;
   var half = tag.getBoundingClientRect().width/2;
-  px = Math.max(half+6, Math.min(br.width-half-6, px));
+  /* held inside the band's own gutter, so at the start of the track the name lines up with the
+     university and college lines above it rather than sitting left of them */
+  var cs = window.getComputedStyle ? getComputedStyle(band) : null;
+  var padL = cs ? (parseFloat(cs.paddingLeft) || 6) : 6, padR = cs ? (parseFloat(cs.paddingRight) || 6) : 6;
+  px = Math.max(half+padL, Math.min(br.width-half-padR, px));
   tag.style.left = px.toFixed(1)+"px";
 }
 
@@ -1369,18 +1384,21 @@ function wireLedger(){
 }
 
 /* ---------- the picture of the movement. Every figure lives in the strip above it. ---------- */
+/* The two month labels are page text rather than text inside a drawing, so they stay at the
+   page's small size at every width. As an SVG they scaled with the card and fell to about 10.8
+   pixels on a 320 pixel phone. */
 function chart(c, mo){
   mo = mo || MONTHS_DEFAULT;
-  var max = Math.max(c.prior, c.current) || 1;
-  var wa = Math.round(250 * c.prior / max);
-  var wb = Math.round(250 * c.current / max);
+  var max = Math.max(Math.abs(c.prior), Math.abs(c.current)) || 1;
+  var wa = Math.max(0, Math.min(100, 100 * Math.abs(c.prior) / max)).toFixed(1);
+  var wb = Math.max(0, Math.min(100, 100 * Math.abs(c.current) / max)).toFixed(1);
   var d = c.current - c.prior;
-  return '<svg class="chart" viewBox="0 0 300 74" role="img" aria-label="'+esc(c.name+', '+mo[0]+' '+money(c.prior)+', '+mo[1]+' '+money(c.current))+'">'+
-    '<text x="0" y="21" font-size="13" fill="var(--ink-soft)">'+esc(mo[0])+'</text>'+
-    '<rect x="44" y="7" width="'+wa+'" height="18" rx="3" fill="var(--bar-old)"/>'+
-    '<text x="0" y="55" font-size="13" fill="var(--ink)">'+esc(mo[1])+'</text>'+
-    '<rect x="44" y="41" width="'+wb+'" height="18" rx="3" fill="'+(d<0?"var(--neg)":"var(--ink)")+'"/>'+
-  '</svg>';
+  return '<div class="chart" role="img" aria-label="'+esc(c.name+', '+mo[0]+' '+money(c.prior)+', '+mo[1]+' '+money(c.current))+'">'+
+    '<span class="chartlab" aria-hidden="true">'+esc(mo[0])+'</span>'+
+    '<span class="charttrack" aria-hidden="true"><i class="chartbar old" style="width:'+wa+'%"></i></span>'+
+    '<span class="chartlab now" aria-hidden="true">'+esc(mo[1])+'</span>'+
+    '<span class="charttrack" aria-hidden="true"><i class="chartbar'+(d<0 ? " neg" : "")+'" style="width:'+wb+'%"></i></span>'+
+  '</div>';
 }
 
 /* ---------- screens ---------- */
@@ -1393,6 +1411,21 @@ function render(){
      whether the step came from a button, a restored run, the step hook or an edited saved run,
      so every one of those lands back on the ledger with nothing of the memo shown. */
   if(S.step >= 3 && S.step !== 90 && S.step !== 91 && !prepickTaken()){ S.step = 2; saveRun(); }
+  /* The same holds for the written answers on an assessment line. A fresh call locked with an
+     answer below the minimum can only come from an edited saved run or an older build, and no
+     screen past that line draws until the line is unlocked and the answer rewritten. */
+  if(HAS_R2 && ASSESS && S.step >= STEP_L2 && S.step !== 90 && S.step !== 91){
+    var gap = explainGap();
+    if(gap > -1 && S.step >= STEP_L2 + gap){
+      if(!S.r2sel[gap]) S.r2sel[gap] = S.r2calls[gap];
+      S.r2calls[gap] = null;
+      S.r2End = 0;
+      rescore2();
+      S.step = STEP_L2 + gap;
+      EXPLAIN_REOPENED = gap;
+      saveRun();
+    }
+  }
   var app = document.getElementById("app");
   app.classList.toggle("wide", S.step===2);
   app.classList.toggle("hasbar", S.step===2);
@@ -1612,13 +1645,13 @@ function wireCaseControl(){
 
 function intro(){
   var fresh = HAS_R2
-    ? " Then a second company you have not read, "+numWord(LINES2)+" lines, scored on its own."
+    ? " Then a second company you have not read, "+numWord(LINES2)+" "+plural(LINES2, "line")+", scored on its own."
     : "";
   screen.innerHTML =
     whyLine("You are about to review a close memo an AI assistant wrote, one line at a time.")+
     '<h1>Second Pass:<br>Beat the Machine</h1>'+
     '<p>'+originIntro(CASE1)+'</p>'+
-    '<p>The ledger does not explain itself, so the causes in the memo are guesses, and some of them are wrong. They read well enough that a busy reviewer would sign off and move on. You are the second pass. Before any of the memo appears, you read the ledger on its own and tap the lines you would give a second look. Then you read '+numWord(LINES)+' lines of the memo and flag the ones that do not hold.'+fresh+'</p>'+
+    '<p>The ledger does not explain itself, so the causes in the memo are guesses, and some of them are wrong. They read well enough that a busy reviewer would sign off and move on. You are the second pass. Before any of the memo appears, you read the ledger on its own and tap the lines you would give a second look. Then you read '+numWord(LINES)+' '+plural(LINES, 'line')+' of the memo and flag the ones that do not hold.'+fresh+'</p>'+
     caseControl()+
     playFrames()+
     '<button class="btn" id="go">Play</button>'+
@@ -1636,6 +1669,8 @@ var NUMWORDS = ["zero","one","two","three","four","five","six","seven","eight","
                 "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen",
                 "eighteen","nineteen","twenty"];
 function numWord(n){ return NUMWORDS[n] || String(n); }
+/* the noun that agrees with a count, so no screen prints "1 false flags" or "one lines" */
+function plural(n, one, many){ return n === 1 ? one : (many || one + "s"); }
 /* "Halyard Provisioning Group, Inc." reads as "Halyard" in a sentence */
 function shortName(n){
   return String(n||"The company").split(/,| - /)[0].replace(/\s+(Inc|LLC|PLLC|Ltd|LLP)\.?$/i,"").trim();
@@ -1903,7 +1938,7 @@ function cardBody(c, round, i){
   var bk = (round===2) ? BOOK2 : BOOK1;
   var hint = "";
   if(i===0) hint = (round===2)
-    ? '<p class="ledgerhint">The ledger button now opens the '+ROWS2.length+' accounts of the fresh case.</p>'
+    ? '<p class="ledgerhint">The ledger button now opens the '+ROWS2.length+' '+plural(ROWS2.length, 'account')+' of the fresh case.</p>'
     : '<p class="ledgerhint">Tap any time to open the full ledger.</p>';
   return strip(c.acct, bk)+
     ledgerBig(c.acct, round===2 ? 2 : undefined)+
@@ -1949,29 +1984,108 @@ function lineScreen(i, round){
    locks, beside the chips. The page does not score them and they never touch the points, the
    rank or the badges; they ride into the record and the send so a person can score them. A
    practice line never asks. */
-var EXPLAIN_VERSION = "explain-2026-09-13";
+var EXPLAIN_VERSION = "explain-2026-09-13b";
 var EXPLAIN_PROMPTS = [
-  {k:"decisiveEvidence", label:"The decisive evidence", hint:"The fact or document on this card that settles your call."},
-  {k:"periodRelevance",  label:"Why it matters for this period", hint:"What that evidence does or does not show about this month."},
-  {k:"actionOrRequest",  label:"The action or source request that follows", hint:"What you would do next, or the document you would ask for."}
+  {k:"decisiveEvidence", label:"The decisive evidence", short:"the decisive evidence", hint:"The fact or document on this card that settles your call."},
+  {k:"periodRelevance",  label:"Why it matters for this period", short:"why it matters for this period", hint:"What that evidence does or does not show about this month."},
+  {k:"actionOrRequest",  label:"The action or source request that follows", short:"the action or source request", hint:"What you would do next, or the document you would ask for."}
 ];
-var EXPLAIN_MIN = 3;
-function explainAsked(round){ return round === 2 && ASSESS; }
+/* the minimum, in the words the player and the record read */
+var EXPLAIN_MINIMUM_NOTE = "Each answer needs at least two words and eight letters or digits, and a stock non-answer such as none, n/a or same as above does not count.";
+
+/* explain-minimum:start */
+/* The minimum a written answer needs before the call locks. tools/findings.py applies the same
+   rule to every record it reads (explanation_problem), and tools/tests/explain-minimum.cjs runs
+   this block on its own against tools/tests/explanation-minimum.json, so change the two
+   together. A part is answered when it holds at least two words and at least eight letters or
+   digits between them, and is not a stock non-answer. A word is a run of letters or digits after
+   NFKC normalization and lowercasing, with apostrophes dropped, and a character from a script
+   written without spaces (Chinese, Japanese kana, Thai, Lao, Khmer, Myanmar) is a word by itself.
+   explainProblem() returns "" for an answer that meets it, or "empty", "no words", "stock" or
+   "short". */
+var EXPLAIN_MIN_WORDS = 2, EXPLAIN_MIN_CHARS = 8;
+var EXPLAIN_STOCK_WORDS = ("none nothing nil null na nan no nope nah yes yep ok okay idk dunno unknown unsure " +
+  "same ditto tbd tba todo pass skip skipped test testing asdf asdfg qwerty x xx xxx blah etc whatever").split(" ");
+var EXPLAIN_STOCK_PHRASES = ["n a", "not applicable", "not relevant", "no answer", "no comment", "no idea",
+  "not sure", "i dont know", "i do not know", "dont know", "do not know", "im not sure", "i am not sure",
+  "same as above", "same as before", "same as previous", "see above", "as above", "see previous",
+  "see before", "nothing to add", "nothing else", "does not apply", "doesnt apply", "no reason",
+  "just because", "i guess", "to do", "to be done", "to be determined", "fill in later"];
+var EXPLAIN_NO_SPACE = [[0x0E00,0x0EFF],[0x1000,0x109F],[0x1780,0x17FF],[0x3040,0x30FF],
+                        [0x3400,0x4DBF],[0x4E00,0x9FFF],[0xF900,0xFAFF],[0x20000,0x3134F]];
+var EXPLAIN_APOSTROPHES = new RegExp("['" + String.fromCharCode(0x2018, 0x2019, 0x02bc) + "]", "g");
+var EXPLAIN_WORDCHAR = (function(){ try{ return new RegExp("[\\p{L}\\p{N}]", "u"); }catch(e){ return null; } })();
 function explainClean(t){ return String(t || "").replace(/[\r\n|]+/g, " ").replace(/\s+/g, " ").trim(); }
-function explainAt(i){ return (S.r2explain || [])[i] || null; }
-function explainDone(i){
-  var e = explainAt(i);
-  return !!e && EXPLAIN_PROMPTS.every(function(p){ return explainClean(e[p.k]).length >= EXPLAIN_MIN; });
+function explainWordChar(ch){
+  if(EXPLAIN_WORDCHAR) return EXPLAIN_WORDCHAR.test(ch);
+  return /[0-9]/.test(ch) || ch.toLowerCase() !== ch.toUpperCase();
 }
+function explainWords(t){
+  var s = explainClean(t);
+  if(s.normalize) s = s.normalize("NFKC");
+  s = s.toLowerCase().replace(EXPLAIN_APOSTROPHES, "");
+  var words = [], cur = "";
+  Array.from(s).forEach(function(ch){
+    if(explainWordChar(ch)){
+      var cp = ch.codePointAt(0);
+      var alone = EXPLAIN_NO_SPACE.some(function(r){ return cp >= r[0] && cp <= r[1]; });
+      if(alone){ if(cur){ words.push(cur); cur = ""; } words.push(ch); }
+      else cur += ch;
+    } else if(cur){ words.push(cur); cur = ""; }
+  });
+  if(cur) words.push(cur);
+  return words;
+}
+function explainProblem(t){
+  if(!explainClean(t)) return "empty";
+  var words = explainWords(t);
+  if(!words.length) return "no words";
+  if(EXPLAIN_STOCK_PHRASES.indexOf(words.join(" ")) > -1 ||
+     words.every(function(w){ return EXPLAIN_STOCK_WORDS.indexOf(w) > -1; })) return "stock";
+  var chars = 0;
+  words.forEach(function(w){ chars += Array.from(w).length; });
+  if(words.length < EXPLAIN_MIN_WORDS || chars < EXPLAIN_MIN_CHARS) return "short";
+  return "";
+}
+/* explain-minimum:end */
+
+/* what the player reads under a box the lock refused, one sentence each */
+var EXPLAIN_NEEDED = {
+  "empty": "Needed: this answer is still empty.",
+  "no words": "Needed: words, not only punctuation or symbols.",
+  "stock": "Needed: an answer in your own words. None, n/a and answers like them do not count.",
+  "short": "Needed: at least two words and eight letters or digits."
+};
+function explainAsked(round){ return round === 2 && ASSESS; }
+function explainAt(i){ return (S.r2explain || [])[i] || null; }
+function explainPartProblem(i, k){ return explainProblem((explainAt(i) || {})[k]); }
+function explainDone(i){
+  return EXPLAIN_PROMPTS.every(function(p){ return !explainPartProblem(i, p.k); });
+}
+/* the first fresh line locked with a written answer below the minimum, or -1. Nothing on the page
+   locks one, so only an edited saved run or a run from an older build can carry one. */
+function explainGap(){
+  if(!HAS_R2 || !ASSESS) return -1;
+  for(var i=0;i<LINES2;i++){
+    var call = S.r2calls[i];
+    if((call === "flag" || call === "stand") && !explainDone(i)) return i;
+  }
+  return -1;
+}
+/* set when render() had to unlock a line, so its card opens with the reason on screen */
+var EXPLAIN_REOPENED = -1;
 function explainBlock(i){
   var e = explainAt(i) || {};
-  return '<div class="explain">'+
-    '<p class="ask">Now say why, in three short answers.</p>'+
-    '<p class="tiny basishint">All three are needed before this call locks. The page does not score them; a person reads them.</p>'+
+  return '<div class="explain" role="group" aria-labelledby="exask">'+
+    '<p class="ask" id="exask">Now say why, in three short answers.</p>'+
+    '<p class="tiny basishint" id="exrule">All three are needed before this call locks. '+esc(EXPLAIN_MINIMUM_NOTE)+
+      ' The page does not score them; a person reads them.</p>'+
     EXPLAIN_PROMPTS.map(function(p){
       return '<label class="basiswords" for="ex-'+p.k+'">'+esc(p.label)+'</label>'+
+        '<p class="tiny exhint" id="ex-'+p.k+'-hint">'+esc(p.hint)+'</p>'+
         '<textarea id="ex-'+p.k+'" class="basisinput explain" rows="2" maxlength="400" data-k="'+p.k+'" '+
-        'placeholder="'+esc(p.hint)+'">'+esc(e[p.k] || "")+'</textarea>';
+        'aria-required="true" aria-describedby="ex-'+p.k+'-hint exrule">'+esc(e[p.k] || "")+'</textarea>'+
+        '<p class="explainerr" id="ex-'+p.k+'-err" hidden></p>';
     }).join("")+
   '</div>';
 }
@@ -2027,12 +2141,93 @@ function callCard(i, round){
     });
   }
 
+  /* On an assessment line the lock stays pressable while it is not ready, and says why when
+     pressed: aria-disabled tells a screen reader it is not ready yet, the status line under it
+     says what is still needed, each short answer says what it lacks, and focus moves to the
+     first thing missing. A practice line keeps its plain disabled lock. */
+  var refused = false;
+  function ready(){
+    return !!(basisOf(round)[i] || []).length && (!explainAsked(round) || explainDone(i));
+  }
+  function paintLock(){
+    var lockBtn = document.getElementById("lockin");
+    if(!lockBtn) return;
+    if(explainAsked(round)) lockBtn.setAttribute("aria-disabled", ready() ? "false" : "true");
+    else lockBtn.disabled = !ready();
+  }
+  function growBox(t){
+    t.style.height = "auto";
+    t.style.height = Math.min(t.scrollHeight + 2, 320) + "px";
+  }
+  function paintErrors(){
+    EXPLAIN_PROMPTS.forEach(function(p, n){
+      var box = document.getElementById("ex-" + p.k), err = document.getElementById("ex-" + p.k + "-err");
+      if(!box || !err) return;
+      var problem = refused ? explainPartProblem(i, p.k) : "";
+      var described = "ex-" + p.k + "-hint" + (n === 0 ? " exrule" : "");
+      if(problem){
+        err.textContent = EXPLAIN_NEEDED[problem];
+        err.hidden = false;
+        box.setAttribute("aria-invalid", "true");
+        box.setAttribute("aria-describedby", "ex-" + p.k + "-err " + described);
+      } else {
+        err.textContent = "";
+        err.hidden = true;
+        box.removeAttribute("aria-invalid");
+        box.setAttribute("aria-describedby", described);
+      }
+    });
+  }
+  function missingList(){
+    var out = [];
+    if(!(basisOf(round)[i] || []).length) out.push("a basis chip");
+    EXPLAIN_PROMPTS.forEach(function(p){ if(explainPartProblem(i, p.k)) out.push(p.short); });
+    return out;
+  }
+  function sayList(list){
+    return list.length < 2 ? list.join("") : list.slice(0, -1).join(", ") + " and " + list[list.length - 1];
+  }
+  function announce(html, ok){
+    var stat = document.getElementById("lockstat");
+    if(!stat) return;
+    stat.classList.toggle("ok", !!ok);
+    stat.innerHTML = html;
+  }
+  function refuse(reopened){
+    refused = true;
+    var missing = missingList();
+    paintErrors();
+    paintLock();
+    announce('<b>' + (reopened ? "This call was unlocked." : "Not locked yet.") + '</b> ' +
+      (reopened ? "A written answer on it falls short of the minimum. " : "") +
+      "Still needed: " + esc(sayList(missing)) + ".");
+    var first = !(basisOf(round)[i] || []).length ? commit.querySelector(".chip")
+      : document.getElementById("ex-" + EXPLAIN_PROMPTS.filter(function(p){ return explainPartProblem(i, p.k); })[0].k);
+    if(first){
+      try{ first.scrollIntoView({block:"center"}); }catch(e){}
+      try{ first.focus({preventScroll:true}); }catch(e){ first.focus(); }
+    }
+  }
+  /* after a refusal, every change says whether the call can lock now */
+  function recheck(){
+    paintLock();
+    if(!refused) return;
+    paintErrors();
+    var missing = missingList();
+    var stat = document.getElementById("lockstat");
+    var now = missing.length ? '<b>Not locked yet.</b> Still needed: ' + esc(sayList(missing)) + '.'
+                             : '<b>Ready.</b> Press Lock it in when you are sure of the call.';
+    if(stat && stat.innerHTML !== now) announce(now, !missing.length);
+  }
+
   function paintCommit(){
     var sel = selOf(round)[i];
     if(!sel){ commit.hidden = true; commit.innerHTML = ""; return; }
     var opts = basisChips(sel);
     var picked = (basisOf(round)[i] || []).slice();
     var asked = explainAsked(round);
+    var reopened = asked && EXPLAIN_REOPENED === i;
+    if(reopened) EXPLAIN_REOPENED = -1;
     var wordsBox = asked ? explainBlock(i) : (sel === "flag")
       ? '<label class="basiswords" for="basiswords">In your words (optional)</label>'+
         '<input type="text" id="basiswords" class="basisinput" maxlength="140" '+
@@ -2051,8 +2246,12 @@ function callCard(i, round){
           }).join("")+
         '</div>'+
         wordsBox+
-        '<button class="btn" id="lockin"'+(picked.length && (!asked || explainDone(i)) ? "" : " disabled")+'>Lock it in'+
-          '<span class="kbd">Enter</span></button>'+
+        (asked
+          ? '<button class="btn" id="lockin" aria-disabled="'+(ready() ? "false" : "true")+'" aria-describedby="lockstat">Lock it in'+
+            '<span class="kbd">Enter</span></button>'+
+            '<p class="lockstat" id="lockstat" role="status" aria-live="polite"></p>'
+          : '<button class="btn" id="lockin"'+(picked.length ? "" : " disabled")+'>Lock it in'+
+            '<span class="kbd">Enter</span></button>')+
         '<p class="tiny locknote">Nothing is scored until you lock it in, and you can change '+
           'your call until then.</p>'+
       '</div>';
@@ -2069,7 +2268,7 @@ function callCard(i, round){
         basisOf(round)[i] = list;
         b.classList.toggle("on", at === -1);
         b.setAttribute("aria-pressed", at === -1 ? "true" : "false");
-        lockBtn.disabled = list.length === 0 || (asked && !explainDone(i));
+        recheck();
         saveRun();
       }
       b.addEventListener("click", toggle);
@@ -2088,14 +2287,19 @@ function callCard(i, round){
       });
     }
     Array.prototype.forEach.call(commit.querySelectorAll("textarea.explain"), function(t){
+      growBox(t);
       t.addEventListener("input", function(){
         var e = S.r2explain[i] || (S.r2explain[i] = {decisiveEvidence:"", periodRelevance:"", actionOrRequest:""});
         e[t.getAttribute("data-k")] = t.value;
-        lockBtn.disabled = !(basisOf(round)[i] || []).length || !explainDone(i);
+        growBox(t);
+        recheck();
         saveRun();
       });
     });
     lockBtn.addEventListener("click", lock);
+    refused = false;
+    paintLock();
+    if(reopened) refuse(true);
   }
 
   function select(val){
@@ -2113,11 +2317,12 @@ function callCard(i, round){
   function lock(){
     var val = selOf(round)[i];
     var chips = basisOf(round)[i] || [];
-    if(!val || !chips.length) return;
+    if(!val) return;
     if(explainAsked(round)){
-      if(!explainDone(i)) return;
+      /* the one gate: a button press, the Enter key and a forced click all come through here */
+      if(!chips.length || !explainDone(i)) return refuse(false);
       EXPLAIN_PROMPTS.forEach(function(p){ S.r2explain[i][p.k] = explainClean(S.r2explain[i][p.k]); });
-    }
+    } else if(!chips.length) return;
     var wordsEl = document.getElementById("basiswords");
     wordsOf(round)[i] = wordsEl ? wordsEl.value.replace(/[\r\n|]+/g, " ").trim() : "";
     secsOf(round)[i] = S.itemStart ? Math.max(0, Math.round((Date.now() - S.itemStart)/1000)) : 0;
@@ -2379,7 +2584,7 @@ function reveal(i, round){
 function bridge(){
   var scored = ASSESS
     ? '<p class="sub" style="margin-top:10px"><b>Round two is scored at the end, so you get no hints.</b> '+
-      'Nothing comes back between the lines, and all '+numWord(LINES2)+' verdicts arrive together once the last call is in. '+
+      'Nothing comes back between the lines, and '+(LINES2 === 1 ? 'the verdict arrives once the call is in. ' : 'all '+numWord(LINES2)+' verdicts arrive together once the last call is in. ')+
       'Each call also asks for three short written answers before it locks: the decisive evidence, why it matters for this period, and the action or source request that follows.</p>'
     : "";
   var note = (ASSESS && CASE2 && CASE2.assessmentNote)
@@ -2389,7 +2594,7 @@ function bridge(){
     whyLine("The same job on a company you have never read, which is the part that tells you whether the habit transferred.")+
     '<div class="card">'+
       '<h2>Round two: a memo you have not seen</h2>'+
-      '<p class="sub">'+originBridge(CASE2)+' '+numWord(LINES2).replace(/^./, function(c){return c.toUpperCase();})+' lines.</p>'+
+      '<p class="sub">'+originBridge(CASE2)+' '+numWord(LINES2).replace(/^./, function(c){return c.toUpperCase();})+' '+plural(LINES2, 'line')+'.</p>'+
       '<p class="tiny" style="margin:2px 0 0">'+esc(CASE2.company)+'.</p>'+
       scored+
       note+
@@ -2422,8 +2627,8 @@ function r2Results(){
   }).join("");
   screen.innerHTML =
     whyLine("All the fresh calls come back together now that the last one is in.")+
-    '<div class="cardhead plain"><span class="revlabel">Round two, all '+numWord(LINES2)+'</span></div>'+
-    '<h2>How the '+numWord(LINES2)+' went</h2>'+
+    '<div class="cardhead plain"><span class="revlabel">Round two, '+(LINES2 === 1 ? 'the one line' : 'all '+numWord(LINES2))+'</span></div>'+
+    '<h2>How the '+(LINES2 === 1 ? 'one line' : numWord(LINES2))+' went</h2>'+
     '<p class="sub">Right call '+r2Right()+' of '+LINES2+'. Right reason '+reasonCount(2)+' of '+LINES2+'. '+
       'The call and the reason are counted separately. The figures, the directions and the '+
       'threshold readings were already right on every line, so each one turned on whether '+
@@ -2511,8 +2716,8 @@ function r2Line(){
    responses sheet can be counted by chapter without a new form question. */
 function orgLine(){ return "Organizations: " + S.orgs.join("; ") + "."; }
 function caseLine(){
-  return "Case: " + CASE_RUN_ID + ", version " + CASE1.version + " (practice, " + LINES + " lines)" +
-         (HAS_R2 ? " and " + CASE2.version + " (" + (ASSESS ? "assessment" : "practice") + ", " + LINES2 + " lines)" : ", no fresh case") +
+  return "Case: " + CASE_RUN_ID + ", version " + CASE1.version + " (practice, " + LINES + " " + plural(LINES, "line") + ")" +
+         (HAS_R2 ? " and " + CASE2.version + " (" + (ASSESS ? "assessment" : "practice") + ", " + LINES2 + " " + plural(LINES2, "line") + ")" : ", no fresh case") +
          ", dated " + CASE1.date + ", loaded from " + CASE_SOURCE + ".";
 }
 function versionLine(){
@@ -2564,7 +2769,7 @@ function patternLine(){
     if(v.miss===0 && v.tot>=2) clean.push({t:t, tot:v.tot});
     if(v.miss>0) bad.push({t:t, tot:v.tot, miss:v.miss});
   });
-  if(!bad.length) return "you agreed with the answer key on all " + numWord(LINES) + " lines.";
+  if(!bad.length) return LINES === 1 ? "you agreed with the answer key on the one line." : "you agreed with the answer key on all " + numWord(LINES) + " lines.";
   bad.sort(function(a,b){ return b.miss - a.miss; });
   var worst = bad[0];
   var badBit;
@@ -2635,7 +2840,7 @@ function payload(){
   /* question C asks the player nothing, so the fresh case rides here rather than
      costing the form a new question. The fourteen Why fields are left alone. */
   p["entry."+E.qc] = r2Line() + (HAS_R2
-      ? " Fresh case: " + CASE2.company + ", case version " + CASE2.version + ", " + LINES2 + " lines, " +
+      ? " Fresh case: " + CASE2.company + ", case version " + CASE2.version + ", " + LINES2 + " " + plural(LINES2, "line") + ", " +
         (ASSESS ? "run as an assessment with no feedback between lines. " : "run as practice. ") +
         "A company the player had not seen."
       : " This case carried no fresh set, so round two did not run.") +
@@ -2674,7 +2879,7 @@ function asText(){
   out.push(summaryA());
   out.push(summaryB());
   out.push(r2Line());
-  out.push("Lap time: "+lapText()+", posted as "+lapMinutes()+" minute(s)");
+  out.push("Lap time: "+lapText()+", posted as "+lapMinutes()+" "+plural(Number(lapMinutes()), "minute"));
   return out.join("\n");
 }
 
@@ -2859,6 +3064,7 @@ function attemptRecord(sentPayload){
       decisiveEvidence: EXPLAIN_PROMPTS[0].label,
       periodRelevance: EXPLAIN_PROMPTS[1].label,
       actionOrRequest: EXPLAIN_PROMPTS[2].label,
+      minimum: EXPLAIN_MINIMUM_NOTE,
       scoring: "Not scored by the page and never used for points, the rank or the badges. Kept for a person to score."
     },
     responses: responses,
@@ -2876,11 +3082,11 @@ function attemptRecord(sentPayload){
                             "Staff 34, Senior 57, Manager 76 and Partner 95 percent of " +
                             RANK_MAX + ". The Senior line is held above " + RANK_BLANKET +
                             ", the most a blanket call can score on this case.",
-               basis: "Points and rank are read off the " + LINES + " trained lines" +
+               basis: "Points and rank are read off the " + LINES + " trained " + plural(LINES, "line") +
                       (HAS_R2 ? ". The fresh case is scored on its own." : ". This case carried no fresh set.")},
       roundTwo: {right: r2Right(), of: LINES2, rightReason: reasonCount(2), reasonOf: LINES2,
                  caught: S.r2caught, letStandCorrectly: S.r2cleared, falseFlags: S.r2false},
-      rankBasis: "points earned on the " + LINES + " trained lines. The reason score adds points " +
+      rankBasis: "points earned on the " + LINES + " trained " + plural(LINES, "line") + ". The reason score adds points " +
                  "and never moves the badges.",
       badgesEarned: badges().map(function(b){ return b.t; }),
       changedCallsRight: changedMind(),
@@ -2936,6 +3142,8 @@ function recordText(){ return JSON.stringify(attemptRecord(window.__BTM_LAST_POS
 var sending = false;
 function sendResults(onState){
   if(sending) return;
+  /* nothing is sent with a written answer below the minimum; render() reopens that line */
+  if(explainGap() > -1){ render(); return; }
   var p = payload();
   window.__BTM_LAST_POST = p;
   S.sendAttempts++;
@@ -3129,10 +3337,11 @@ function readShiftBlock(){
   function cap(t){ return t.charAt(0).toUpperCase() + t.slice(1); }
   var lead = 'Before the memo you tapped '+numWord(n)+' account'+(n === 1 ? '' : 's')+' on the ledger for a second look. ';
   if(!changed){
-    lead += 'After reading the AI draft, all '+numWord(r.compared)+' of your final calls matched that read.';
+    lead += r.compared === 1 ? 'After reading the AI draft, your one final call matched that read.'
+      : 'After reading the AI draft, all '+numWord(r.compared)+' of your final calls matched that read.';
   } else {
     lead += 'After reading the AI draft, your final call moved off that read on '+numWord(changed)+' of the '+
-      numWord(r.compared)+' lines. ';
+      numWord(r.compared)+' '+plural(r.compared, 'line')+'. ';
     if(r.toward && r.away){
       lead += cap(numWord(r.toward))+' of those changes moved toward the answer key and '+numWord(r.away)+' moved away from it. ';
     } else {
@@ -3317,10 +3526,10 @@ function done(){
         '<span>Lap time '+lapText()+'</span></p>'+
       '<p class="counts"><span><b>'+S.caught+'</b>caught</span>'+
         '<span><b>'+S.cleared+'</b>let stand correctly</span>'+
-        '<span'+(S.falseFlags?' class="fail"':'')+'><b>'+S.falseFlags+'</b>false flags</span></p>'+
+        '<span'+(S.falseFlags?' class="fail"':'')+'><b>'+S.falseFlags+'</b>'+plural(S.falseFlags, 'false flag')+'</span></p>'+
       (HAS_R2 ? '<p class="fresh">Fresh case: right call '+r2Right()+' of '+LINES2+'. Right reason '+reasonCount(2)+' of '+LINES2+'.</p>' : '')+
       (HAS_R2 ? '<p class="tiny" style="margin:4px 0 0">A second company, read once, scored on its own. '+
-        'The points, the rank and the badges are read off the '+numWord(LINES)+' trained lines.</p>' : '')+
+        'The points, the rank and the badges are read off the '+numWord(LINES)+' trained '+plural(LINES, 'line')+'.</p>' : '')+
       readShiftBlock()+
       medals+
       '<div class="sharecard"><span class="label">Your card</span>'+
