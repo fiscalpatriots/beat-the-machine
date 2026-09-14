@@ -1,0 +1,6 @@
+as sent: set halyard-v4 with brightwater-v6, completed True, explanation gaps 0, parts posted [1, 2, 3, 4, 5]
+cut short: completed False, gaps [(2, 'evidence', 'a b', 'short'), (2, 'period', '...', 'no words'), (2, 'action', 'none', 'stock')]
+scoring sheet: 10 rows, 1 marked below the minimum: [('2', 'decisive evidence: under two words and eight letters or digits; why it matters for this period: punctuation or symbols only; action or source request: a stock non-answer')]
+cells beginning with a formula lead: 0
+disagreements: none
+RESULT: AS EXPECTED

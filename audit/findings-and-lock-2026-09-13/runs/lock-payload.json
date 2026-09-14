@@ -1,0 +1,1371 @@
+{
+ "payload": {
+  "entry.532722612": "Lock Walk",
+  "entry.1115022539": "Prepicks: 4200. Required read before the AI draft, case halyard-v4, by line, F tapped for a second look and S left untapped: FSSSSSSSSSSSSS. Final calls after the draft: FFFFSSFFSSFFSF. Against the key: 7 changed toward it, 1 changed away from it, 6 held.",
+  "entry.53437742": "3",
+  "entry.538678778": "5",
+  "entry.1421470415": "Once or twice",
+  "entry.1719784748": "Reject",
+  "entry.1007467850": "Basis: figure does not tie || Line 1, account 4200. Called: flag. Key: flag. Type: arithmetic. Correct. Reason: agrees. Key basis: figure does not tie; nothing written where owed.",
+  "entry.950376538": "Accept",
+  "entry.741189318": "Basis: wrong period || Line 2, account 6200. Called: flag. Key: flag. Type: timing. Correct. Reason: agrees. Key basis: wrong period; no source on file.",
+  "entry.1014635891": "Accept",
+  "entry.163524303": "Basis: direction wrong || Line 3, account 5100. Called: flag. Key: flag. Type: wrong direction. Correct. Reason: agrees. Key basis: direction wrong; no source on file.",
+  "entry.527367554": "Accept",
+  "entry.66342284": "Basis: no source on file || Line 4, account 4100. Called: flag. Key: stand. Type: clean line. Missed. Reason: does not agree. Key basis: the figure and reason hold.",
+  "entry.363739544": "Reject",
+  "entry.1894832252": "Basis: the figure and reason hold || Line 5, account 6500. Called: stand. Key: stand. Type: clean line. Correct. Reason: agrees. Key basis: the figure and reason hold.",
+  "entry.354296315": "Reject",
+  "entry.1877294718": "Basis: the figure and reason hold || Line 6, account 7400. Called: stand. Key: stand. Type: clean line. Correct. Reason: agrees. Key basis: the figure and reason hold.",
+  "entry.876625635": "Accept",
+  "entry.377170412": "Basis: no source on file || Line 7, account 4000. Called: flag. Key: flag. Type: unsupported driver. Correct. Reason: agrees. Key basis: no source on file.",
+  "entry.1063447631": "Accept",
+  "entry.1909355166": "Basis: figure does not tie || Line 8, account 6400. Called: flag. Key: flag. Type: arithmetic. Correct. Reason: agrees. Key basis: figure does not tie; no source on file.",
+  "entry.775417723": "Reject",
+  "entry.1698083372": "Basis: the figure and reason hold || Line 9, account 6100. Called: stand. Key: stand. Type: clean line. Correct. Reason: agrees. Key basis: the figure and reason hold.",
+  "entry.132643271": "Reject",
+  "entry.384511552": "Basis: the figure and reason hold || Line 10, account 6300. Called: stand. Key: stand. Type: clean line. Correct. Reason: agrees. Key basis: the figure and reason hold.",
+  "entry.251525850": "Accept",
+  "entry.834190193": "Basis: nothing written where owed || Line 11, account 6000. Called: flag. Key: flag. Type: no explanation. Correct. Reason: agrees. Key basis: nothing written where owed; no source on file.",
+  "entry.1926373397": "Accept",
+  "entry.1124939383": "Basis: no source on file || Line 12, account 4000. Called: flag. Key: flag. Type: unsupported attribution. Correct. Reason: agrees. Key basis: no source on file.",
+  "entry.280418964": "Reject",
+  "entry.141672655": "Basis: the figure and reason hold || Line 13, account 5000. Called: stand. Key: stand. Type: clean line. Correct. Reason: agrees. Key basis: the figure and reason hold.",
+  "entry.1426775958": "Accept",
+  "entry.629644346": "Basis: no source on file || Line 14, account 7100. Called: flag. Key: flag. Type: unsupported driver. Correct. Reason: agrees. Key basis: no source on file.",
+  "entry.439643836": "5",
+  "entry.117652481": "Organizations: Beta Alpha Psi. Product: second-pass-drill 1.6.1. Notice: notice-2026-09-13c. Mode: round one practice, round two assessment. TEST ATTEMPT, exclude from reports. Case: halyard, version halyard-v4 (practice, 14 lines) and brightwater-v6 (assessment, 5 lines), dated 2026-09-13, loaded from cases/ files.",
+  "entry.2117607519": "Attempt id: att-mu0q2qnt-x4cy, run 1 in this tab. Reason score: 13 of 14 in round one and 5 of 5 on the fresh case. A reason counts as right when every chip tapped is in the card's basis key and at least one was tapped. It is scored apart from the call, and its points count toward the rank. Lines missed: 4 4100 (clean line). Pattern: you caught every arithmetic problem, and you missed 1 of the 6 clean lines. Result: right call 13 of 14, right reason 13 of 14, 8 caught, 5 let stand correctly, 1 false flag, 2,400 points, rank Manager. Four questions on the form (expected quality, confidence before, confidence after, close experience) are not asked in this version. They carry a placeholder value the question accepts and are not participant answers. Longest run of correct calls: 10.",
+  "entry.756559246": "Round2: right call 5/5, right reason 5/5; calls FSFFS; key FSFFS; seconds 5. Round2 basis, by line: 1: Basis: no source on file | Evidence: The June invoice from the lab is on file. | Period: It dates the charge to June, the month the memo covers. | Action: Ask for the June case log to confirm the volume. | Reason: agrees | Key basis: no source on file || 2: Basis: the figure and reason hold | Evidence: Line 2: The June invoice from the lab is on file. | Period: It dates the charge to June, the month the memo covers. | Action: Ask for the June case log to confirm the volume. | Reason: agrees | Key basis: the figure and reason hold || 3: Basis: wrong period | Evidence: Line 3: The June invoice from the lab is on file. | Period: It dates the charge to June, the month the memo covers. | Action: Ask for the June case log to confirm the volume. | Reason: agrees | Key basis: wrong period; no source on file || 4: Basis: no source on file | Evidence: Line 4: The June invoice from the lab is on file. | Period: It dates the charge to June, the month the memo covers. | Action: Ask for the June case log to confirm the volume. | Reason: agrees | Key basis: no source on file || 5: Basis: the figure and reason hold | Evidence: Line 5: The June invoice from the lab is on file. | Period: It dates the charge to June, the month the memo covers. | Action: Ask for the June case log to confirm the volume. | Reason: agrees | Key basis: the figure and reason hold. Fresh case: Brightwater Dental Partners, PLLC, case version brightwater-v6, 5 lines, run as an assessment with no feedback between lines. A company the player had not seen. Not a player answer to question C.",
+  "entry.1863650976": "1",
+  "fvv": "1",
+  "pageHistory": "0,1,2",
+  "fbzx": "681635923855129",
+  "partialResponse": "[null,null,\"681635923855129\"]",
+  "submissionTimestamp": "-1"
+ },
+ "record": {
+  "record": "Second Pass attempt record",
+  "recordFormat": "btm-attempt-1",
+  "renamedFields": {
+   "note": "Two fields were renamed in 1.6.1 because their old names claimed more than they held. The old names are written beside the new ones for this version only and come out in the next.",
+   "evidenceReferences": "evidenceSupplied",
+   "firstAttempt": "firstRunInThisTab",
+   "elapsedActiveSeconds": "elapsedSecondsOnCard and activeSecondsOnCard, and the two matching fields in the timing block"
+  },
+  "attempt": {
+   "id": "att-mu0q2qnt-x4cy",
+   "pseudonym": "Lock Walk",
+   "pseudonymNote": "A codename is a pseudonym and not anonymity.",
+   "organizations": [
+    "Beta Alpha Psi"
+   ],
+   "role": null,
+   "roleNote": "not collected in this version",
+   "noticeVersion": "notice-2026-09-13c",
+   "productVersion": "second-pass-drill 1.6.1",
+   "caseId": "halyard",
+   "caseVersions": {
+    "roundOne": "halyard-v4",
+    "roundTwo": "brightwater-v6",
+    "caseSource": "cases/ files"
+   },
+   "form": "https://docs.google.com/forms/d/e/1FAIpQLSfteTMPZrDKhYmRjxPKADAZERjyDntdMLIVZMH-FoIrcHusKg/formResponse",
+   "modes": {
+    "roundOne": "practice",
+    "roundTwo": "assessment"
+   },
+   "firstRunInThisTab": true,
+   "firstRunNote": "True when this is the first run in this browser tab. The page cannot tell a first-time person from a returning one, and it does not claim to.",
+   "firstAttempt": true,
+   "runIndex": 1,
+   "assistanceSource": "none. No model challenge runs in this build.",
+   "started": "2026-09-14T04:07:58.210Z",
+   "completed": "2026-09-14T04:08:06.946Z",
+   "submissionState": "not sent, test mode",
+   "submissionAttempts": 1,
+   "testAttempt": true,
+   "testAttemptNote": "Test mode was on. Nothing was posted and this attempt is excluded from reports."
+  },
+  "receipt": {
+   "endpoint": null,
+   "receipt": null,
+   "receiptShort": null,
+   "storedAt": null,
+   "state": "not offered, test mode",
+   "note": "No receipt endpoint is set in this build, so nothing confirms receipt to this page."
+  },
+  "prepicks": {
+   "required": true,
+   "taken": true,
+   "picks": [
+    "4200"
+   ],
+   "takenAt": "2026-09-14T04:07:58.640Z",
+   "beforeAnyCall": true,
+   "caseId": "halyard",
+   "caseVersion": "halyard-v4",
+   "readByLine": "FSSSSSSSSSSSSS",
+   "finalByLine": "FFFFSSFFSSFFSF",
+   "afterDraft": {
+    "changedTowardKey": 7,
+    "changedAwayFromKey": 1,
+    "held": 6,
+    "linesCompared": 14
+   },
+   "postedTo": "entry.1115022539",
+   "question": "Before any AI draft is shown: tap every line you would give a second look, judging from the ledger alone. A line you leave untapped counts as one you would let stand.",
+   "note": "Taken from the ledger alone, before any sentence of the AI draft is shown, and required: the page offers no way past it without at least one tapped line. A tapped account counts as a flag on each of its round one lines and an untapped one as let it stand. readByLine and finalByLine run in card order, F a flag and S let it stand. afterDraft compares the read with the final call on each line, which was made after reading the draft and the file on the card and, in practice mode, the reveals of the lines before it. It describes agreement with the key on a keyed exercise. It is not scored, adds no points, and is not a measure of learning."
+  },
+  "writtenExplanationPrompts": {
+   "version": "explain-2026-09-13b",
+   "asked": "on every line of the fresh case, required before the call locks",
+   "decisiveEvidence": "The decisive evidence",
+   "periodRelevance": "Why it matters for this period",
+   "actionOrRequest": "The action or source request that follows",
+   "minimum": "Each answer needs at least two words and eight letters or digits, and a stock non-answer such as none, n/a or same as above does not count.",
+   "scoring": "Not scored by the page and never used for points, the rank or the badges. Kept for a person to score."
+  },
+  "responses": [
+   {
+    "item": "r1-1",
+    "round": 1,
+    "caseId": "halyard",
+    "caseVersion": "halyard-v4",
+    "mode": "practice",
+    "account": "4200",
+    "accountName": "Freight billed to customers",
+    "errorType": "arithmetic",
+    "originalDecision": "flag",
+    "finalDecision": "flag",
+    "decisionChanged": false,
+    "actualReasonChips": [
+     "figure does not tie"
+    ],
+    "actualReasonWords": "",
+    "writtenExplanationRequired": false,
+    "writtenExplanation": null,
+    "basisKey": [
+     "figure does not tie",
+     "nothing written where owed"
+    ],
+    "reasonResult": "agrees with key",
+    "reasonScoringNote": "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
+    "evidenceSupplied": [
+     "Inbound freight, account 5100, rose 34.5 percent in the same month.",
+     "A line owes commentary only when it clears both $25,000 and 10 percent."
+    ],
+    "evidenceSelected": null,
+    "evidenceNote": "evidenceSupplied is the card's whole On file list. evidenceSelected is what the player said they relied on, and this version does not ask, so it is null rather than the supplied list under another name.",
+    "evidenceReferences": [
+     "Inbound freight, account 5100, rose 34.5 percent in the same month.",
+     "A line owes commentary only when it clears both $25,000 and 10 percent."
+    ],
+    "confidence": null,
+    "confidenceNote": "not asked in this version",
+    "assistanceRevealed": false,
+    "elapsedSecondsOnCard": 0,
+    "activeSecondsOnCard": 0,
+    "elapsedSecondsNote": "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden taken out of it, measured on visibilitychange. Neither knows whether the player was reading the card while the tab was in front.",
+    "elapsedActiveSeconds": 0,
+    "skippedOrMissing": null,
+    "feedbackRevealedAt": "immediately after the call",
+    "keyDecision": "flag",
+    "decisionResult": "agrees with key",
+    "ledgerOnlyRead": "flag",
+    "readVersusFinal": "held"
+   },
+   {
+    "item": "r1-2",
+    "round": 1,
+    "caseId": "halyard",
+    "caseVersion": "halyard-v4",
+    "mode": "practice",
+    "account": "6200",
+    "accountName": "Repairs and maintenance, depots",
+    "errorType": "timing",
+    "originalDecision": "flag",
+    "finalDecision": "flag",
+    "decisionChanged": false,
+    "actualReasonChips": [
+     "wrong period"
+    ],
+    "actualReasonWords": "",
+    "writtenExplanationRequired": false,
+    "writtenExplanation": null,
+    "basisKey": [
+     "wrong period",
+     "no source on file"
+    ],
+    "reasonResult": "agrees with key",
+    "reasonScoringNote": "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
+    "evidenceSupplied": [
+     "Halyard closes on the fifth business day of the following month."
+    ],
+    "evidenceSelected": null,
+    "evidenceNote": "evidenceSupplied is the card's whole On file list. evidenceSelected is what the player said they relied on, and this version does not ask, so it is null rather than the supplied list under another name.",
+    "evidenceReferences": [
+     "Halyard closes on the fifth business day of the following month."
+    ],
+    "confidence": null,
+    "confidenceNote": "not asked in this version",
+    "assistanceRevealed": false,
+    "elapsedSecondsOnCard": 0,
+    "activeSecondsOnCard": 0,
+    "elapsedSecondsNote": "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden taken out of it, measured on visibilitychange. Neither knows whether the player was reading the card while the tab was in front.",
+    "elapsedActiveSeconds": 0,
+    "skippedOrMissing": null,
+    "feedbackRevealedAt": "immediately after the call",
+    "keyDecision": "flag",
+    "decisionResult": "agrees with key",
+    "ledgerOnlyRead": "stand",
+    "readVersusFinal": "changed toward the key"
+   },
+   {
+    "item": "r1-3",
+    "round": 1,
+    "caseId": "halyard",
+    "caseVersion": "halyard-v4",
+    "mode": "practice",
+    "account": "5100",
+    "accountName": "Inbound freight",
+    "errorType": "wrong direction",
+    "originalDecision": "flag",
+    "finalDecision": "flag",
+    "decisionChanged": false,
+    "actualReasonChips": [
+     "direction wrong"
+    ],
+    "actualReasonWords": "",
+    "writtenExplanationRequired": false,
+    "writtenExplanation": null,
+    "basisKey": [
+     "direction wrong",
+     "no source on file"
+    ],
+    "reasonResult": "agrees with key",
+    "reasonScoringNote": "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
+    "evidenceSupplied": [
+     "Fleet fuel, account 6100, fell 5.4 percent over the same month."
+    ],
+    "evidenceSelected": null,
+    "evidenceNote": "evidenceSupplied is the card's whole On file list. evidenceSelected is what the player said they relied on, and this version does not ask, so it is null rather than the supplied list under another name.",
+    "evidenceReferences": [
+     "Fleet fuel, account 6100, fell 5.4 percent over the same month."
+    ],
+    "confidence": null,
+    "confidenceNote": "not asked in this version",
+    "assistanceRevealed": false,
+    "elapsedSecondsOnCard": 0,
+    "activeSecondsOnCard": 0,
+    "elapsedSecondsNote": "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden taken out of it, measured on visibilitychange. Neither knows whether the player was reading the card while the tab was in front.",
+    "elapsedActiveSeconds": 0,
+    "skippedOrMissing": null,
+    "feedbackRevealedAt": "immediately after the call",
+    "keyDecision": "flag",
+    "decisionResult": "agrees with key",
+    "ledgerOnlyRead": "stand",
+    "readVersusFinal": "changed toward the key"
+   },
+   {
+    "item": "r1-4",
+    "round": 1,
+    "caseId": "halyard",
+    "caseVersion": "halyard-v4",
+    "mode": "practice",
+    "account": "4100",
+    "accountName": "Service revenue, equipment maintenance",
+    "errorType": "clean line",
+    "originalDecision": "flag",
+    "finalDecision": "flag",
+    "decisionChanged": false,
+    "actualReasonChips": [
+     "no source on file"
+    ],
+    "actualReasonWords": "",
+    "writtenExplanationRequired": false,
+    "writtenExplanation": null,
+    "basisKey": [
+     "the figure and reason hold"
+    ],
+    "reasonResult": "does not agree",
+    "reasonScoringNote": "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
+    "evidenceSupplied": [
+     "Twelve equipment maintenance contracts signed in March and April began service on 1 June. The service-date schedule for all twelve is on file.",
+     "The earned revenue bridge is on file: $812,000 of continuing contracts, unchanged in June, plus $229,000 of June service on the twelve new contracts, equals $1,041,000.",
+     "The maintenance contracts bill monthly in arrears, so the June invoice covers June service, and nothing on these contracts is billed ahead of the service period."
+    ],
+    "evidenceSelected": null,
+    "evidenceNote": "evidenceSupplied is the card's whole On file list. evidenceSelected is what the player said they relied on, and this version does not ask, so it is null rather than the supplied list under another name.",
+    "evidenceReferences": [
+     "Twelve equipment maintenance contracts signed in March and April began service on 1 June. The service-date schedule for all twelve is on file.",
+     "The earned revenue bridge is on file: $812,000 of continuing contracts, unchanged in June, plus $229,000 of June service on the twelve new contracts, equals $1,041,000.",
+     "The maintenance contracts bill monthly in arrears, so the June invoice covers June service, and nothing on these contracts is billed ahead of the service period."
+    ],
+    "confidence": null,
+    "confidenceNote": "not asked in this version",
+    "assistanceRevealed": false,
+    "elapsedSecondsOnCard": 0,
+    "activeSecondsOnCard": 0,
+    "elapsedSecondsNote": "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden taken out of it, measured on visibilitychange. Neither knows whether the player was reading the card while the tab was in front.",
+    "elapsedActiveSeconds": 0,
+    "skippedOrMissing": null,
+    "feedbackRevealedAt": "immediately after the call",
+    "keyDecision": "stand",
+    "decisionResult": "does not agree",
+    "ledgerOnlyRead": "stand",
+    "readVersusFinal": "changed away from the key"
+   },
+   {
+    "item": "r1-5",
+    "round": 1,
+    "caseId": "halyard",
+    "caseVersion": "halyard-v4",
+    "mode": "practice",
+    "account": "6500",
+    "accountName": "Professional fees",
+    "errorType": "clean line",
+    "originalDecision": "stand",
+    "finalDecision": "stand",
+    "decisionChanged": false,
+    "actualReasonChips": [
+     "the figure and reason hold"
+    ],
+    "actualReasonWords": "",
+    "writtenExplanationRequired": false,
+    "writtenExplanation": null,
+    "basisKey": [
+     "the figure and reason hold"
+    ],
+    "reasonResult": "agrees with key",
+    "reasonScoringNote": "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
+    "evidenceSupplied": [
+     "May professional fees include a $7,500 invoice from outside counsel for the depot lease renewal review. The work was performed in May and expensed in May.",
+     "June carries no equivalent item.",
+     "A line owes commentary only when it clears both $25,000 and 10 percent."
+    ],
+    "evidenceSelected": null,
+    "evidenceNote": "evidenceSupplied is the card's whole On file list. evidenceSelected is what the player said they relied on, and this version does not ask, so it is null rather than the supplied list under another name.",
+    "evidenceReferences": [
+     "May professional fees include a $7,500 invoice from outside counsel for the depot lease renewal review. The work was performed in May and expensed in May.",
+     "June carries no equivalent item.",
+     "A line owes commentary only when it clears both $25,000 and 10 percent."
+    ],
+    "confidence": null,
+    "confidenceNote": "not asked in this version",
+    "assistanceRevealed": false,
+    "elapsedSecondsOnCard": 0,
+    "activeSecondsOnCard": 0,
+    "elapsedSecondsNote": "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden taken out of it, measured on visibilitychange. Neither knows whether the player was reading the card while the tab was in front.",
+    "elapsedActiveSeconds": 0,
+    "skippedOrMissing": null,
+    "feedbackRevealedAt": "immediately after the call",
+    "keyDecision": "stand",
+    "decisionResult": "agrees with key",
+    "ledgerOnlyRead": "stand",
+    "readVersusFinal": "held"
+   },
+   {
+    "item": "r1-6",
+    "round": 1,
+    "caseId": "halyard",
+    "caseVersion": "halyard-v4",
+    "mode": "practice",
+    "account": "7400",
+    "accountName": "Inventory shrink adjustment",
+    "errorType": "clean line",
+    "originalDecision": "stand",
+    "finalDecision": "stand",
+    "decisionChanged": false,
+    "actualReasonChips": [
+     "the figure and reason hold"
+    ],
+    "actualReasonWords": "",
+    "writtenExplanationRequired": false,
+    "writtenExplanation": null,
+    "basisKey": [
+     "the figure and reason hold"
+    ],
+    "reasonResult": "agrees with key",
+    "reasonScoringNote": "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
+    "evidenceSupplied": [
+     "A line owes commentary only when it clears both $25,000 and 10 percent.",
+     "The threshold sets what the monthly management report has to explain. It does not make anything exempt from attention."
+    ],
+    "evidenceSelected": null,
+    "evidenceNote": "evidenceSupplied is the card's whole On file list. evidenceSelected is what the player said they relied on, and this version does not ask, so it is null rather than the supplied list under another name.",
+    "evidenceReferences": [
+     "A line owes commentary only when it clears both $25,000 and 10 percent.",
+     "The threshold sets what the monthly management report has to explain. It does not make anything exempt from attention."
+    ],
+    "confidence": null,
+    "confidenceNote": "not asked in this version",
+    "assistanceRevealed": false,
+    "elapsedSecondsOnCard": 0,
+    "activeSecondsOnCard": 0,
+    "elapsedSecondsNote": "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden taken out of it, measured on visibilitychange. Neither knows whether the player was reading the card while the tab was in front.",
+    "elapsedActiveSeconds": 0,
+    "skippedOrMissing": null,
+    "feedbackRevealedAt": "immediately after the call",
+    "keyDecision": "stand",
+    "decisionResult": "agrees with key",
+    "ledgerOnlyRead": "stand",
+    "readVersusFinal": "held"
+   },
+   {
+    "item": "r1-7",
+    "round": 1,
+    "caseId": "halyard",
+    "caseVersion": "halyard-v4",
+    "mode": "practice",
+    "account": "4000",
+    "accountName": "Product revenue, distribution",
+    "errorType": "unsupported driver",
+    "originalDecision": "flag",
+    "finalDecision": "flag",
+    "decisionChanged": false,
+    "actualReasonChips": [
+     "no source on file"
+    ],
+    "actualReasonWords": "",
+    "writtenExplanationRequired": false,
+    "writtenExplanation": null,
+    "basisKey": [
+     "no source on file"
+    ],
+    "reasonResult": "agrees with key",
+    "reasonScoringNote": "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
+    "evidenceSupplied": [
+     "The memo cites no volume, no customer count and no split by depot.",
+     "Halyard runs four regional depots and the ledger is not broken out by depot.",
+     "No depot revenue bridge and no documented forecast were supplied."
+    ],
+    "evidenceSelected": null,
+    "evidenceNote": "evidenceSupplied is the card's whole On file list. evidenceSelected is what the player said they relied on, and this version does not ask, so it is null rather than the supplied list under another name.",
+    "evidenceReferences": [
+     "The memo cites no volume, no customer count and no split by depot.",
+     "Halyard runs four regional depots and the ledger is not broken out by depot.",
+     "No depot revenue bridge and no documented forecast were supplied."
+    ],
+    "confidence": null,
+    "confidenceNote": "not asked in this version",
+    "assistanceRevealed": false,
+    "elapsedSecondsOnCard": 0,
+    "activeSecondsOnCard": 0,
+    "elapsedSecondsNote": "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden taken out of it, measured on visibilitychange. Neither knows whether the player was reading the card while the tab was in front.",
+    "elapsedActiveSeconds": 0,
+    "skippedOrMissing": null,
+    "feedbackRevealedAt": "immediately after the call",
+    "keyDecision": "flag",
+    "decisionResult": "agrees with key",
+    "ledgerOnlyRead": "stand",
+    "readVersusFinal": "changed toward the key"
+   },
+   {
+    "item": "r1-8",
+    "round": 1,
+    "caseId": "halyard",
+    "caseVersion": "halyard-v4",
+    "mode": "practice",
+    "account": "6400",
+    "accountName": "Bad debt expense",
+    "errorType": "arithmetic",
+    "originalDecision": "flag",
+    "finalDecision": "flag",
+    "decisionChanged": false,
+    "actualReasonChips": [
+     "figure does not tie"
+    ],
+    "actualReasonWords": "",
+    "writtenExplanationRequired": false,
+    "writtenExplanation": null,
+    "basisKey": [
+     "figure does not tie",
+     "no source on file"
+    ],
+    "reasonResult": "agrees with key",
+    "reasonScoringNote": "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
+    "evidenceSupplied": [
+     "No other sentence in the memo touches this account.",
+     "No reserve rollforward for June was supplied, and no document establishes the amount of the Coastal Grocers reserve."
+    ],
+    "evidenceSelected": null,
+    "evidenceNote": "evidenceSupplied is the card's whole On file list. evidenceSelected is what the player said they relied on, and this version does not ask, so it is null rather than the supplied list under another name.",
+    "evidenceReferences": [
+     "No other sentence in the memo touches this account.",
+     "No reserve rollforward for June was supplied, and no document establishes the amount of the Coastal Grocers reserve."
+    ],
+    "confidence": null,
+    "confidenceNote": "not asked in this version",
+    "assistanceRevealed": false,
+    "elapsedSecondsOnCard": 0,
+    "activeSecondsOnCard": 0,
+    "elapsedSecondsNote": "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden taken out of it, measured on visibilitychange. Neither knows whether the player was reading the card while the tab was in front.",
+    "elapsedActiveSeconds": 0,
+    "skippedOrMissing": null,
+    "feedbackRevealedAt": "immediately after the call",
+    "keyDecision": "flag",
+    "decisionResult": "agrees with key",
+    "ledgerOnlyRead": "stand",
+    "readVersusFinal": "changed toward the key"
+   },
+   {
+    "item": "r1-9",
+    "round": 1,
+    "caseId": "halyard",
+    "caseVersion": "halyard-v4",
+    "mode": "practice",
+    "account": "6100",
+    "accountName": "Fleet fuel",
+    "errorType": "clean line",
+    "originalDecision": "stand",
+    "finalDecision": "stand",
+    "decisionChanged": false,
+    "actualReasonChips": [
+     "the figure and reason hold"
+    ],
+    "actualReasonWords": "",
+    "writtenExplanationRequired": false,
+    "writtenExplanation": null,
+    "basisKey": [
+     "the figure and reason hold"
+    ],
+    "reasonResult": "agrees with key",
+    "reasonScoringNote": "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
+    "evidenceSupplied": [
+     "Every June fuel invoice from the fleet servicer was received and recorded before the books closed.",
+     "The fleet servicer confirmed that all June fuel consumption is billed on those invoices, so June consumption and June invoices are the same population.",
+     "A line owes commentary only when it clears both $25,000 and 10 percent."
+    ],
+    "evidenceSelected": null,
+    "evidenceNote": "evidenceSupplied is the card's whole On file list. evidenceSelected is what the player said they relied on, and this version does not ask, so it is null rather than the supplied list under another name.",
+    "evidenceReferences": [
+     "Every June fuel invoice from the fleet servicer was received and recorded before the books closed.",
+     "The fleet servicer confirmed that all June fuel consumption is billed on those invoices, so June consumption and June invoices are the same population.",
+     "A line owes commentary only when it clears both $25,000 and 10 percent."
+    ],
+    "confidence": null,
+    "confidenceNote": "not asked in this version",
+    "assistanceRevealed": false,
+    "elapsedSecondsOnCard": 0,
+    "activeSecondsOnCard": 0,
+    "elapsedSecondsNote": "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden taken out of it, measured on visibilitychange. Neither knows whether the player was reading the card while the tab was in front.",
+    "elapsedActiveSeconds": 0,
+    "skippedOrMissing": null,
+    "feedbackRevealedAt": "immediately after the call",
+    "keyDecision": "stand",
+    "decisionResult": "agrees with key",
+    "ledgerOnlyRead": "stand",
+    "readVersusFinal": "held"
+   },
+   {
+    "item": "r1-10",
+    "round": 1,
+    "caseId": "halyard",
+    "caseVersion": "halyard-v4",
+    "mode": "practice",
+    "account": "6300",
+    "accountName": "Software subscriptions",
+    "errorType": "clean line",
+    "originalDecision": "stand",
+    "finalDecision": "stand",
+    "decisionChanged": false,
+    "actualReasonChips": [
+     "the figure and reason hold"
+    ],
+    "actualReasonWords": "",
+    "writtenExplanationRequired": false,
+    "writtenExplanation": null,
+    "basisKey": [
+     "the figure and reason hold"
+    ],
+    "reasonResult": "agrees with key",
+    "reasonScoringNote": "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
+    "evidenceSupplied": [
+     "A line owes commentary only when it clears both $25,000 and 10 percent."
+    ],
+    "evidenceSelected": null,
+    "evidenceNote": "evidenceSupplied is the card's whole On file list. evidenceSelected is what the player said they relied on, and this version does not ask, so it is null rather than the supplied list under another name.",
+    "evidenceReferences": [
+     "A line owes commentary only when it clears both $25,000 and 10 percent."
+    ],
+    "confidence": null,
+    "confidenceNote": "not asked in this version",
+    "assistanceRevealed": false,
+    "elapsedSecondsOnCard": 0,
+    "activeSecondsOnCard": 0,
+    "elapsedSecondsNote": "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden taken out of it, measured on visibilitychange. Neither knows whether the player was reading the card while the tab was in front.",
+    "elapsedActiveSeconds": 0,
+    "skippedOrMissing": null,
+    "feedbackRevealedAt": "immediately after the call",
+    "keyDecision": "stand",
+    "decisionResult": "agrees with key",
+    "ledgerOnlyRead": "stand",
+    "readVersusFinal": "held"
+   },
+   {
+    "item": "r1-11",
+    "round": 1,
+    "caseId": "halyard",
+    "caseVersion": "halyard-v4",
+    "mode": "practice",
+    "account": "6000",
+    "accountName": "Warehouse wages",
+    "errorType": "no explanation",
+    "originalDecision": "flag",
+    "finalDecision": "flag",
+    "decisionChanged": false,
+    "actualReasonChips": [
+     "nothing written where owed"
+    ],
+    "actualReasonWords": "",
+    "writtenExplanationRequired": false,
+    "writtenExplanation": null,
+    "basisKey": [
+     "nothing written where owed",
+     "no source on file"
+    ],
+    "reasonResult": "agrees with key",
+    "reasonScoringNote": "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
+    "evidenceSupplied": [
+     "A line owes commentary only when it clears both $25,000 and 10 percent.",
+     "Halyard employs roughly 240 people across four depots. The count is approximate and the ledger gives no headcount by month.",
+     "No payroll bridge, rate change or hours summary was supplied."
+    ],
+    "evidenceSelected": null,
+    "evidenceNote": "evidenceSupplied is the card's whole On file list. evidenceSelected is what the player said they relied on, and this version does not ask, so it is null rather than the supplied list under another name.",
+    "evidenceReferences": [
+     "A line owes commentary only when it clears both $25,000 and 10 percent.",
+     "Halyard employs roughly 240 people across four depots. The count is approximate and the ledger gives no headcount by month.",
+     "No payroll bridge, rate change or hours summary was supplied."
+    ],
+    "confidence": null,
+    "confidenceNote": "not asked in this version",
+    "assistanceRevealed": false,
+    "elapsedSecondsOnCard": 0,
+    "activeSecondsOnCard": 0,
+    "elapsedSecondsNote": "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden taken out of it, measured on visibilitychange. Neither knows whether the player was reading the card while the tab was in front.",
+    "elapsedActiveSeconds": 0,
+    "skippedOrMissing": null,
+    "feedbackRevealedAt": "immediately after the call",
+    "keyDecision": "flag",
+    "decisionResult": "agrees with key",
+    "ledgerOnlyRead": "stand",
+    "readVersusFinal": "changed toward the key"
+   },
+   {
+    "item": "r1-12",
+    "round": 1,
+    "caseId": "halyard",
+    "caseVersion": "halyard-v4",
+    "mode": "practice",
+    "account": "4000",
+    "accountName": "Product revenue, distribution",
+    "errorType": "unsupported attribution",
+    "originalDecision": "flag",
+    "finalDecision": "flag",
+    "decisionChanged": false,
+    "actualReasonChips": [
+     "no source on file"
+    ],
+    "actualReasonWords": "",
+    "writtenExplanationRequired": false,
+    "writtenExplanation": null,
+    "basisKey": [
+     "no source on file"
+    ],
+    "reasonResult": "agrees with key",
+    "reasonScoringNote": "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
+    "evidenceSupplied": [
+     "Freight billed to customers, account 4200, fell $65,000 over the same month.",
+     "Inbound freight, account 5100, rose $73,800, so freight is still being incurred.",
+     "From June 1, Halyard moved its two largest customers to delivered pricing: freight is included in the product price and no longer billed on account 4200 (pricing memo of May 20 on file).",
+     "No billing bridge for account 4200 by customer was supplied, so the gross movement behind the $65,000 net fall is not known.",
+     "No sentence in the memo connects the two revenue lines to each other."
+    ],
+    "evidenceSelected": null,
+    "evidenceNote": "evidenceSupplied is the card's whole On file list. evidenceSelected is what the player said they relied on, and this version does not ask, so it is null rather than the supplied list under another name.",
+    "evidenceReferences": [
+     "Freight billed to customers, account 4200, fell $65,000 over the same month.",
+     "Inbound freight, account 5100, rose $73,800, so freight is still being incurred.",
+     "From June 1, Halyard moved its two largest customers to delivered pricing: freight is included in the product price and no longer billed on account 4200 (pricing memo of May 20 on file).",
+     "No billing bridge for account 4200 by customer was supplied, so the gross movement behind the $65,000 net fall is not known.",
+     "No sentence in the memo connects the two revenue lines to each other."
+    ],
+    "confidence": null,
+    "confidenceNote": "not asked in this version",
+    "assistanceRevealed": false,
+    "elapsedSecondsOnCard": 0,
+    "activeSecondsOnCard": 0,
+    "elapsedSecondsNote": "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden taken out of it, measured on visibilitychange. Neither knows whether the player was reading the card while the tab was in front.",
+    "elapsedActiveSeconds": 0,
+    "skippedOrMissing": null,
+    "feedbackRevealedAt": "immediately after the call",
+    "keyDecision": "flag",
+    "decisionResult": "agrees with key",
+    "ledgerOnlyRead": "stand",
+    "readVersusFinal": "changed toward the key"
+   },
+   {
+    "item": "r1-13",
+    "round": 1,
+    "caseId": "halyard",
+    "caseVersion": "halyard-v4",
+    "mode": "practice",
+    "account": "5000",
+    "accountName": "Cost of product sold",
+    "errorType": "clean line",
+    "originalDecision": "stand",
+    "finalDecision": "stand",
+    "decisionChanged": false,
+    "actualReasonChips": [
+     "the figure and reason hold"
+    ],
+    "actualReasonWords": "",
+    "writtenExplanationRequired": false,
+    "writtenExplanation": null,
+    "basisKey": [
+     "the figure and reason hold"
+    ],
+    "reasonResult": "agrees with key",
+    "reasonScoringNote": "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
+    "evidenceSupplied": [
+     "Product gross margin is account 4000 less account 5000, divided by account 4000.",
+     "Account 4000 ran $5,240,000 in May and $5,612,000 in June. Account 5000 ran $3,930,000 and $4,278,000.",
+     "June sales by category: produce and dairy rose from 31 to 36 percent of product revenue, and those two categories carry the lowest margins (category report on file).",
+     "The category report carries revenue shares only. No category cost is in it, and no category sales and cost bridge has been supplied."
+    ],
+    "evidenceSelected": null,
+    "evidenceNote": "evidenceSupplied is the card's whole On file list. evidenceSelected is what the player said they relied on, and this version does not ask, so it is null rather than the supplied list under another name.",
+    "evidenceReferences": [
+     "Product gross margin is account 4000 less account 5000, divided by account 4000.",
+     "Account 4000 ran $5,240,000 in May and $5,612,000 in June. Account 5000 ran $3,930,000 and $4,278,000.",
+     "June sales by category: produce and dairy rose from 31 to 36 percent of product revenue, and those two categories carry the lowest margins (category report on file).",
+     "The category report carries revenue shares only. No category cost is in it, and no category sales and cost bridge has been supplied."
+    ],
+    "confidence": null,
+    "confidenceNote": "not asked in this version",
+    "assistanceRevealed": false,
+    "elapsedSecondsOnCard": 0,
+    "activeSecondsOnCard": 0,
+    "elapsedSecondsNote": "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden taken out of it, measured on visibilitychange. Neither knows whether the player was reading the card while the tab was in front.",
+    "elapsedActiveSeconds": 0,
+    "skippedOrMissing": null,
+    "feedbackRevealedAt": "immediately after the call",
+    "keyDecision": "stand",
+    "decisionResult": "agrees with key",
+    "ledgerOnlyRead": "stand",
+    "readVersusFinal": "held"
+   },
+   {
+    "item": "r1-14",
+    "round": 1,
+    "caseId": "halyard",
+    "caseVersion": "halyard-v4",
+    "mode": "practice",
+    "account": "7100",
+    "accountName": "Interest expense",
+    "errorType": "unsupported driver",
+    "originalDecision": "flag",
+    "finalDecision": "flag",
+    "decisionChanged": false,
+    "actualReasonChips": [
+     "no source on file"
+    ],
+    "actualReasonWords": "",
+    "writtenExplanationRequired": false,
+    "writtenExplanation": null,
+    "basisKey": [
+     "no source on file"
+    ],
+    "reasonResult": "agrees with key",
+    "reasonScoringNote": "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
+    "evidenceSupplied": [
+     "Depreciation, account 7000, was $128,000 in May and $128,000 in June.",
+     "No fixed asset additions were recorded in May or June.",
+     "The revolver balance rose from $3.1 million to $5.6 million on June 3.",
+     "Other draw and repayment dates, daily balances, rates and fees were not supplied, and the memo does not mention the revolver."
+    ],
+    "evidenceSelected": null,
+    "evidenceNote": "evidenceSupplied is the card's whole On file list. evidenceSelected is what the player said they relied on, and this version does not ask, so it is null rather than the supplied list under another name.",
+    "evidenceReferences": [
+     "Depreciation, account 7000, was $128,000 in May and $128,000 in June.",
+     "No fixed asset additions were recorded in May or June.",
+     "The revolver balance rose from $3.1 million to $5.6 million on June 3.",
+     "Other draw and repayment dates, daily balances, rates and fees were not supplied, and the memo does not mention the revolver."
+    ],
+    "confidence": null,
+    "confidenceNote": "not asked in this version",
+    "assistanceRevealed": false,
+    "elapsedSecondsOnCard": 0,
+    "activeSecondsOnCard": 0,
+    "elapsedSecondsNote": "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden taken out of it, measured on visibilitychange. Neither knows whether the player was reading the card while the tab was in front.",
+    "elapsedActiveSeconds": 0,
+    "skippedOrMissing": null,
+    "feedbackRevealedAt": "immediately after the call",
+    "keyDecision": "flag",
+    "decisionResult": "agrees with key",
+    "ledgerOnlyRead": "stand",
+    "readVersusFinal": "changed toward the key"
+   },
+   {
+    "item": "r2-1",
+    "round": 2,
+    "caseId": "halyard",
+    "caseVersion": "brightwater-v6",
+    "mode": "assessment",
+    "account": "5210",
+    "accountName": "Dental supplies and lab fees",
+    "errorType": "unsupported driver",
+    "originalDecision": "flag",
+    "finalDecision": "flag",
+    "decisionChanged": false,
+    "actualReasonChips": [
+     "no source on file"
+    ],
+    "actualReasonWords": "",
+    "writtenExplanationRequired": true,
+    "writtenExplanation": {
+     "decisiveEvidence": "The June invoice from the lab is on file.",
+     "periodRelevance": "It dates the charge to June, the month the memo covers.",
+     "actionOrRequest": "Ask for the June case log to confirm the volume."
+    },
+    "basisKey": [
+     "no source on file"
+    ],
+    "reasonResult": "agrees with key",
+    "reasonScoringNote": "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
+    "evidenceSupplied": [
+     {
+      "fact": "The surgical suite at the Ashburn office opened on 1 June.",
+      "doc": "Ashburn build-out completion certificate",
+      "date": "1 June 2026",
+      "quote": "Surgical suite, two operatories, accepted for clinical use on 1 June 2026."
+     },
+     {
+      "fact": "No case mix report, no lab invoice summary and no implant case count was supplied for May or for June.",
+      "missing": "Requested from the practice on 6 July 2026. Nothing received, so nothing is on file."
+     },
+     {
+      "fact": "A line owes commentary only when it clears both $25,000 and 10 percent.",
+      "doc": "Brightwater monthly reporting policy, section 4",
+      "date": "1 January 2026",
+      "quote": "Commentary is owed on a line only where the movement clears both $25,000 and 10 percent of the prior balance."
+     }
+    ],
+    "evidenceSelected": null,
+    "evidenceNote": "evidenceSupplied is the card's whole On file list. evidenceSelected is what the player said they relied on, and this version does not ask, so it is null rather than the supplied list under another name.",
+    "evidenceReferences": [
+     {
+      "fact": "The surgical suite at the Ashburn office opened on 1 June.",
+      "doc": "Ashburn build-out completion certificate",
+      "date": "1 June 2026",
+      "quote": "Surgical suite, two operatories, accepted for clinical use on 1 June 2026."
+     },
+     {
+      "fact": "No case mix report, no lab invoice summary and no implant case count was supplied for May or for June.",
+      "missing": "Requested from the practice on 6 July 2026. Nothing received, so nothing is on file."
+     },
+     {
+      "fact": "A line owes commentary only when it clears both $25,000 and 10 percent.",
+      "doc": "Brightwater monthly reporting policy, section 4",
+      "date": "1 January 2026",
+      "quote": "Commentary is owed on a line only where the movement clears both $25,000 and 10 percent of the prior balance."
+     }
+    ],
+    "confidence": null,
+    "confidenceNote": "not asked in this version",
+    "assistanceRevealed": false,
+    "elapsedSecondsOnCard": 1,
+    "activeSecondsOnCard": 1,
+    "elapsedSecondsNote": "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden taken out of it, measured on visibilitychange. Neither knows whether the player was reading the card while the tab was in front.",
+    "elapsedActiveSeconds": 1,
+    "skippedOrMissing": null,
+    "feedbackRevealedAt": "2026-09-14T04:08:06.791Z",
+    "keyDecision": "flag",
+    "decisionResult": "agrees with key",
+    "ledgerOnlyRead": null,
+    "readVersusFinal": null
+   },
+   {
+    "item": "r2-2",
+    "round": 2,
+    "caseId": "halyard",
+    "caseVersion": "brightwater-v6",
+    "mode": "assessment",
+    "account": "6110",
+    "accountName": "Hygienist wages",
+    "errorType": "clean line",
+    "originalDecision": "stand",
+    "finalDecision": "stand",
+    "decisionChanged": false,
+    "actualReasonChips": [
+     "the figure and reason hold"
+    ],
+    "actualReasonWords": "",
+    "writtenExplanationRequired": true,
+    "writtenExplanation": {
+     "decisiveEvidence": "Line 2: The June invoice from the lab is on file.",
+     "periodRelevance": "It dates the charge to June, the month the memo covers.",
+     "actionOrRequest": "Ask for the June case log to confirm the volume."
+    },
+    "basisKey": [
+     "the figure and reason hold"
+    ],
+    "reasonResult": "agrees with key",
+    "reasonScoringNote": "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
+    "evidenceSupplied": [
+     {
+      "fact": "The second hygiene chair opened at the Ashburn office on 1 June, and the staffing plan for it is on file.",
+      "doc": "Hygiene staffing plan, Ashburn",
+      "date": "12 May 2026",
+      "quote": "Second hygiene chair in service 1 June 2026, staffed by two hygienists hired for it."
+     },
+     {
+      "fact": "The June payroll register is on file.",
+      "doc": "Payroll register, June 2026",
+      "date": "30 June 2026",
+      "quote": "Hygienist gross pay June 2026 $268,900, of which A. Rivas $27,600 and D. Okafor $27,300, both hired 1 June for the second chair."
+     },
+     {
+      "fact": "The May payroll register and the June rate change report are on file.",
+      "doc": "Payroll register, May 2026, with the June rate change report",
+      "date": "30 June 2026",
+      "quote": "Hygienist gross pay May 2026 $214,000, six hygienists. Rate changes effective in June 2026: none."
+     },
+     {
+      "fact": "A line owes commentary only when it clears both $25,000 and 10 percent.",
+      "doc": "Brightwater monthly reporting policy, section 4",
+      "date": "1 January 2026",
+      "quote": "Commentary is owed on a line only where the movement clears both $25,000 and 10 percent of the prior balance."
+     }
+    ],
+    "evidenceSelected": null,
+    "evidenceNote": "evidenceSupplied is the card's whole On file list. evidenceSelected is what the player said they relied on, and this version does not ask, so it is null rather than the supplied list under another name.",
+    "evidenceReferences": [
+     {
+      "fact": "The second hygiene chair opened at the Ashburn office on 1 June, and the staffing plan for it is on file.",
+      "doc": "Hygiene staffing plan, Ashburn",
+      "date": "12 May 2026",
+      "quote": "Second hygiene chair in service 1 June 2026, staffed by two hygienists hired for it."
+     },
+     {
+      "fact": "The June payroll register is on file.",
+      "doc": "Payroll register, June 2026",
+      "date": "30 June 2026",
+      "quote": "Hygienist gross pay June 2026 $268,900, of which A. Rivas $27,600 and D. Okafor $27,300, both hired 1 June for the second chair."
+     },
+     {
+      "fact": "The May payroll register and the June rate change report are on file.",
+      "doc": "Payroll register, May 2026, with the June rate change report",
+      "date": "30 June 2026",
+      "quote": "Hygienist gross pay May 2026 $214,000, six hygienists. Rate changes effective in June 2026: none."
+     },
+     {
+      "fact": "A line owes commentary only when it clears both $25,000 and 10 percent.",
+      "doc": "Brightwater monthly reporting policy, section 4",
+      "date": "1 January 2026",
+      "quote": "Commentary is owed on a line only where the movement clears both $25,000 and 10 percent of the prior balance."
+     }
+    ],
+    "confidence": null,
+    "confidenceNote": "not asked in this version",
+    "assistanceRevealed": false,
+    "elapsedSecondsOnCard": 0,
+    "activeSecondsOnCard": 0,
+    "elapsedSecondsNote": "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden taken out of it, measured on visibilitychange. Neither knows whether the player was reading the card while the tab was in front.",
+    "elapsedActiveSeconds": 0,
+    "skippedOrMissing": null,
+    "feedbackRevealedAt": "2026-09-14T04:08:06.791Z",
+    "keyDecision": "stand",
+    "decisionResult": "agrees with key",
+    "ledgerOnlyRead": null,
+    "readVersusFinal": null
+   },
+   {
+    "item": "r2-3",
+    "round": 2,
+    "caseId": "halyard",
+    "caseVersion": "brightwater-v6",
+    "mode": "assessment",
+    "account": "4220",
+    "accountName": "Orthodontic plan revenue",
+    "errorType": "unsupported driver",
+    "originalDecision": "flag",
+    "finalDecision": "flag",
+    "decisionChanged": false,
+    "actualReasonChips": [
+     "wrong period"
+    ],
+    "actualReasonWords": "",
+    "writtenExplanationRequired": true,
+    "writtenExplanation": {
+     "decisiveEvidence": "Line 3: The June invoice from the lab is on file.",
+     "periodRelevance": "It dates the charge to June, the month the memo covers.",
+     "actionOrRequest": "Ask for the June case log to confirm the volume."
+    },
+    "basisKey": [
+     "wrong period",
+     "no source on file"
+    ],
+    "reasonResult": "agrees with key",
+    "reasonScoringNote": "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
+    "evidenceSupplied": [
+     {
+      "fact": "The orthodontic plan schedule on file is dated 31 May.",
+      "doc": "Orthodontic plan schedule",
+      "date": "31 May 2026",
+      "quote": "Active plans at 31 May 2026: 96. Monthly plan billing at 31 May 2026: $96,000. Plans starting after 31 May 2026: not covered by this schedule."
+     },
+     {
+      "fact": "No June plan schedule, no plan count for June and no deferred revenue rollforward for June was supplied.",
+      "missing": "Requested from the practice on 6 July 2026. Nothing received, so nothing is on file."
+     },
+     {
+      "fact": "A line owes commentary only when it clears both $25,000 and 10 percent.",
+      "doc": "Brightwater monthly reporting policy, section 4",
+      "date": "1 January 2026",
+      "quote": "Commentary is owed on a line only where the movement clears both $25,000 and 10 percent of the prior balance."
+     }
+    ],
+    "evidenceSelected": null,
+    "evidenceNote": "evidenceSupplied is the card's whole On file list. evidenceSelected is what the player said they relied on, and this version does not ask, so it is null rather than the supplied list under another name.",
+    "evidenceReferences": [
+     {
+      "fact": "The orthodontic plan schedule on file is dated 31 May.",
+      "doc": "Orthodontic plan schedule",
+      "date": "31 May 2026",
+      "quote": "Active plans at 31 May 2026: 96. Monthly plan billing at 31 May 2026: $96,000. Plans starting after 31 May 2026: not covered by this schedule."
+     },
+     {
+      "fact": "No June plan schedule, no plan count for June and no deferred revenue rollforward for June was supplied.",
+      "missing": "Requested from the practice on 6 July 2026. Nothing received, so nothing is on file."
+     },
+     {
+      "fact": "A line owes commentary only when it clears both $25,000 and 10 percent.",
+      "doc": "Brightwater monthly reporting policy, section 4",
+      "date": "1 January 2026",
+      "quote": "Commentary is owed on a line only where the movement clears both $25,000 and 10 percent of the prior balance."
+     }
+    ],
+    "confidence": null,
+    "confidenceNote": "not asked in this version",
+    "assistanceRevealed": false,
+    "elapsedSecondsOnCard": 0,
+    "activeSecondsOnCard": 0,
+    "elapsedSecondsNote": "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden taken out of it, measured on visibilitychange. Neither knows whether the player was reading the card while the tab was in front.",
+    "elapsedActiveSeconds": 0,
+    "skippedOrMissing": null,
+    "feedbackRevealedAt": "2026-09-14T04:08:06.791Z",
+    "keyDecision": "flag",
+    "decisionResult": "agrees with key",
+    "ledgerOnlyRead": null,
+    "readVersusFinal": null
+   },
+   {
+    "item": "r2-4",
+    "round": 2,
+    "caseId": "halyard",
+    "caseVersion": "brightwater-v6",
+    "mode": "assessment",
+    "account": "4010",
+    "accountName": "Patient service revenue, net",
+    "errorType": "unsupported driver",
+    "originalDecision": "flag",
+    "finalDecision": "flag",
+    "decisionChanged": false,
+    "actualReasonChips": [
+     "no source on file"
+    ],
+    "actualReasonWords": "",
+    "writtenExplanationRequired": true,
+    "writtenExplanation": {
+     "decisiveEvidence": "Line 4: The June invoice from the lab is on file.",
+     "periodRelevance": "It dates the charge to June, the month the memo covers.",
+     "actionOrRequest": "Ask for the June case log to confirm the volume."
+    },
+    "basisKey": [
+     "no source on file"
+    ],
+    "reasonResult": "agrees with key",
+    "reasonScoringNote": "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
+    "evidenceSupplied": [
+     {
+      "fact": "The two associate dentists started in May.",
+      "doc": "Associate employment agreements, two",
+      "date": "1 May 2026",
+      "quote": "Dr. N. Adeyemi and Dr. P. Calloway, associate dentists, start date 1 May 2026."
+     },
+     {
+      "fact": "No production report by provider, patient visit count or fee schedule was supplied for May or for June.",
+      "missing": "Requested from the practice on 6 July 2026. Nothing received, so nothing is on file."
+     },
+     {
+      "fact": "A line owes commentary only when it clears both $25,000 and 10 percent.",
+      "doc": "Brightwater monthly reporting policy, section 4",
+      "date": "1 January 2026",
+      "quote": "Commentary is owed on a line only where the movement clears both $25,000 and 10 percent of the prior balance."
+     }
+    ],
+    "evidenceSelected": null,
+    "evidenceNote": "evidenceSupplied is the card's whole On file list. evidenceSelected is what the player said they relied on, and this version does not ask, so it is null rather than the supplied list under another name.",
+    "evidenceReferences": [
+     {
+      "fact": "The two associate dentists started in May.",
+      "doc": "Associate employment agreements, two",
+      "date": "1 May 2026",
+      "quote": "Dr. N. Adeyemi and Dr. P. Calloway, associate dentists, start date 1 May 2026."
+     },
+     {
+      "fact": "No production report by provider, patient visit count or fee schedule was supplied for May or for June.",
+      "missing": "Requested from the practice on 6 July 2026. Nothing received, so nothing is on file."
+     },
+     {
+      "fact": "A line owes commentary only when it clears both $25,000 and 10 percent.",
+      "doc": "Brightwater monthly reporting policy, section 4",
+      "date": "1 January 2026",
+      "quote": "Commentary is owed on a line only where the movement clears both $25,000 and 10 percent of the prior balance."
+     }
+    ],
+    "confidence": null,
+    "confidenceNote": "not asked in this version",
+    "assistanceRevealed": false,
+    "elapsedSecondsOnCard": 0,
+    "activeSecondsOnCard": 0,
+    "elapsedSecondsNote": "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden taken out of it, measured on visibilitychange. Neither knows whether the player was reading the card while the tab was in front.",
+    "elapsedActiveSeconds": 0,
+    "skippedOrMissing": null,
+    "feedbackRevealedAt": "2026-09-14T04:08:06.791Z",
+    "keyDecision": "flag",
+    "decisionResult": "agrees with key",
+    "ledgerOnlyRead": null,
+    "readVersusFinal": null
+   },
+   {
+    "item": "r2-5",
+    "round": 2,
+    "caseId": "halyard",
+    "caseVersion": "brightwater-v6",
+    "mode": "assessment",
+    "account": "6610",
+    "accountName": "Marketing and patient outreach",
+    "errorType": "clean line",
+    "originalDecision": "stand",
+    "finalDecision": "stand",
+    "decisionChanged": false,
+    "actualReasonChips": [
+     "the figure and reason hold"
+    ],
+    "actualReasonWords": "",
+    "writtenExplanationRequired": true,
+    "writtenExplanation": {
+     "decisiveEvidence": "Line 5: The June invoice from the lab is on file.",
+     "periodRelevance": "It dates the charge to June, the month the memo covers.",
+     "actionOrRequest": "Ask for the June case log to confirm the volume."
+    },
+    "basisKey": [
+     "the figure and reason hold"
+    ],
+    "reasonResult": "agrees with key",
+    "reasonScoringNote": "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
+    "evidenceSupplied": [
+     {
+      "fact": "The vendor invoice for the new patient mailer is on file.",
+      "doc": "Tidewater Print and Mail invoice 20614",
+      "date": "8 June 2026",
+      "quote": "New patient mailer, 4,200 pieces, printed and delivered week of 1 June 2026. Total $5,700."
+     },
+     {
+      "fact": "The June marketing and patient outreach subledger is on file.",
+      "doc": "Marketing and patient outreach subledger, June 2026",
+      "date": "30 June 2026",
+      "quote": "Recurring outreach items June 2026 $18,400, unchanged from May 2026. Non-recurring: mailer $5,700. Total $24,100."
+     },
+     {
+      "fact": "A line owes commentary only when it clears both $25,000 and 10 percent.",
+      "doc": "Brightwater monthly reporting policy, section 4",
+      "date": "1 January 2026",
+      "quote": "Commentary is owed on a line only where the movement clears both $25,000 and 10 percent of the prior balance."
+     }
+    ],
+    "evidenceSelected": null,
+    "evidenceNote": "evidenceSupplied is the card's whole On file list. evidenceSelected is what the player said they relied on, and this version does not ask, so it is null rather than the supplied list under another name.",
+    "evidenceReferences": [
+     {
+      "fact": "The vendor invoice for the new patient mailer is on file.",
+      "doc": "Tidewater Print and Mail invoice 20614",
+      "date": "8 June 2026",
+      "quote": "New patient mailer, 4,200 pieces, printed and delivered week of 1 June 2026. Total $5,700."
+     },
+     {
+      "fact": "The June marketing and patient outreach subledger is on file.",
+      "doc": "Marketing and patient outreach subledger, June 2026",
+      "date": "30 June 2026",
+      "quote": "Recurring outreach items June 2026 $18,400, unchanged from May 2026. Non-recurring: mailer $5,700. Total $24,100."
+     },
+     {
+      "fact": "A line owes commentary only when it clears both $25,000 and 10 percent.",
+      "doc": "Brightwater monthly reporting policy, section 4",
+      "date": "1 January 2026",
+      "quote": "Commentary is owed on a line only where the movement clears both $25,000 and 10 percent of the prior balance."
+     }
+    ],
+    "confidence": null,
+    "confidenceNote": "not asked in this version",
+    "assistanceRevealed": false,
+    "elapsedSecondsOnCard": 0,
+    "activeSecondsOnCard": 0,
+    "elapsedSecondsNote": "elapsedSecondsOnCard is wall-clock seconds from the card appearing to the call being locked. activeSecondsOnCard is the same span with the time this tab spent hidden taken out of it, measured on visibilitychange. Neither knows whether the player was reading the card while the tab was in front.",
+    "elapsedActiveSeconds": 0,
+    "skippedOrMissing": null,
+    "feedbackRevealedAt": "2026-09-14T04:08:06.791Z",
+    "keyDecision": "stand",
+    "decisionResult": "agrees with key",
+    "ledgerOnlyRead": null,
+    "readVersusFinal": null
+   }
+  ],
+  "scoring": {
+   "caseId": "halyard",
+   "keyVersions": {
+    "roundOne": "halyard-v4",
+    "roundTwo": "brightwater-v6"
+   },
+   "roundOne": {
+    "right": 13,
+    "of": 14,
+    "rightReason": 13,
+    "reasonOf": 14,
+    "caught": 8,
+    "letStandCorrectly": 5,
+    "falseFlags": 1,
+    "longestRun": 10,
+    "points": 2400,
+    "rank": "Manager"
+   },
+   "points": {
+    "total": 2400,
+    "rightCall": 100,
+    "rightReason": 50,
+    "streakStepFrom": 3,
+    "streakStep": 25,
+    "coverStory": 75,
+    "ladder": [
+     {
+      "rank": "Trainee",
+      "at": 0
+     },
+     {
+      "rank": "Staff",
+      "at": 893
+     },
+     {
+      "rank": "Senior",
+      "at": 1496
+     },
+     {
+      "rank": "Manager",
+      "at": 1995
+     },
+     {
+      "rank": "Partner",
+      "at": 2494
+     }
+    ],
+    "maxAttainable": 2625,
+    "blanketCallCeiling": 1450,
+    "ladderBasis": "Each rank starts at a share of the points this case can give: Staff 34, Senior 57, Manager 76 and Partner 95 percent of 2625. The Senior line is held above 1450, the most a blanket call can score on this case.",
+    "basis": "Points and rank are read off the 14 trained lines. The fresh case is scored on its own."
+   },
+   "roundTwo": {
+    "right": 5,
+    "of": 5,
+    "rightReason": 5,
+    "reasonOf": 5,
+    "caught": 3,
+    "letStandCorrectly": 2,
+    "falseFlags": 0
+   },
+   "rankBasis": "points earned on the 14 trained lines. The reason score adds points and never moves the badges.",
+   "badgesEarned": [
+    "Cold read",
+    "Hot lap",
+    "Arithmetic hawk"
+   ],
+   "changedCallsRight": 0,
+   "humanRubricScores": null,
+   "scorerId": null,
+   "outOfKeyFinding": null,
+   "adjudication": null,
+   "exclusionReason": "test attempt",
+   "finalResolution": null,
+   "rubricNote": "The three-dimension reasoning rubric is for a person to score outside this page, and this page never scores it."
+  },
+  "timing": {
+   "roundOneLapSeconds": 3,
+   "roundOneLapMinutesPosted": "1",
+   "roundTwoSeconds": 5,
+   "elapsedSecondsOnCards": 1,
+   "activeSecondsOnCards": 1,
+   "elapsedSecondsNote": "Both are summed over the nineteen cards. elapsedSecondsOnCards is wall-clock. activeSecondsOnCards takes out the time this tab spent hidden, measured on visibilitychange. Neither knows whether the player was reading while the tab was in front.",
+   "hiddenSecondsInRun": 0,
+   "elapsedActiveSeconds": 1
+  },
+  "notAsked": {
+   "questions": [
+    "expected quality",
+    "confidence before",
+    "confidence after",
+    "close experience"
+   ],
+   "note": "Not asked on screen. The form marks all four required, so a placeholder the question accepts is posted. Drop these four columns rather than averaging them.",
+   "placeholderMode": "numeric"
+  },
+  "payload": {
+   "entry.532722612": "Lock Walk",
+   "entry.1115022539": "Prepicks: 4200. Required read before the AI draft, case halyard-v4, by line, F tapped for a second look and S left untapped: FSSSSSSSSSSSSS. Final calls after the draft: FFFFSSFFSSFFSF. Against the key: 7 changed toward it, 1 changed away from it, 6 held.",
+   "entry.53437742": "3",
+   "entry.538678778": "5",
+   "entry.1421470415": "Once or twice",
+   "entry.1719784748": "Reject",
+   "entry.1007467850": "Basis: figure does not tie || Line 1, account 4200. Called: flag. Key: flag. Type: arithmetic. Correct. Reason: agrees. Key basis: figure does not tie; nothing written where owed.",
+   "entry.950376538": "Accept",
+   "entry.741189318": "Basis: wrong period || Line 2, account 6200. Called: flag. Key: flag. Type: timing. Correct. Reason: agrees. Key basis: wrong period; no source on file.",
+   "entry.1014635891": "Accept",
+   "entry.163524303": "Basis: direction wrong || Line 3, account 5100. Called: flag. Key: flag. Type: wrong direction. Correct. Reason: agrees. Key basis: direction wrong; no source on file.",
+   "entry.527367554": "Accept",
+   "entry.66342284": "Basis: no source on file || Line 4, account 4100. Called: flag. Key: stand. Type: clean line. Missed. Reason: does not agree. Key basis: the figure and reason hold.",
+   "entry.363739544": "Reject",
+   "entry.1894832252": "Basis: the figure and reason hold || Line 5, account 6500. Called: stand. Key: stand. Type: clean line. Correct. Reason: agrees. Key basis: the figure and reason hold.",
+   "entry.354296315": "Reject",
+   "entry.1877294718": "Basis: the figure and reason hold || Line 6, account 7400. Called: stand. Key: stand. Type: clean line. Correct. Reason: agrees. Key basis: the figure and reason hold.",
+   "entry.876625635": "Accept",
+   "entry.377170412": "Basis: no source on file || Line 7, account 4000. Called: flag. Key: flag. Type: unsupported driver. Correct. Reason: agrees. Key basis: no source on file.",
+   "entry.1063447631": "Accept",
+   "entry.1909355166": "Basis: figure does not tie || Line 8, account 6400. Called: flag. Key: flag. Type: arithmetic. Correct. Reason: agrees. Key basis: figure does not tie; no source on file.",
+   "entry.775417723": "Reject",
+   "entry.1698083372": "Basis: the figure and reason hold || Line 9, account 6100. Called: stand. Key: stand. Type: clean line. Correct. Reason: agrees. Key basis: the figure and reason hold.",
+   "entry.132643271": "Reject",
+   "entry.384511552": "Basis: the figure and reason hold || Line 10, account 6300. Called: stand. Key: stand. Type: clean line. Correct. Reason: agrees. Key basis: the figure and reason hold.",
+   "entry.251525850": "Accept",
+   "entry.834190193": "Basis: nothing written where owed || Line 11, account 6000. Called: flag. Key: flag. Type: no explanation. Correct. Reason: agrees. Key basis: nothing written where owed; no source on file.",
+   "entry.1926373397": "Accept",
+   "entry.1124939383": "Basis: no source on file || Line 12, account 4000. Called: flag. Key: flag. Type: unsupported attribution. Correct. Reason: agrees. Key basis: no source on file.",
+   "entry.280418964": "Reject",
+   "entry.141672655": "Basis: the figure and reason hold || Line 13, account 5000. Called: stand. Key: stand. Type: clean line. Correct. Reason: agrees. Key basis: the figure and reason hold.",
+   "entry.1426775958": "Accept",
+   "entry.629644346": "Basis: no source on file || Line 14, account 7100. Called: flag. Key: flag. Type: unsupported driver. Correct. Reason: agrees. Key basis: no source on file.",
+   "entry.439643836": "5",
+   "entry.117652481": "Organizations: Beta Alpha Psi. Product: second-pass-drill 1.6.1. Notice: notice-2026-09-13c. Mode: round one practice, round two assessment. TEST ATTEMPT, exclude from reports. Case: halyard, version halyard-v4 (practice, 14 lines) and brightwater-v6 (assessment, 5 lines), dated 2026-09-13, loaded from cases/ files.",
+   "entry.2117607519": "Attempt id: att-mu0q2qnt-x4cy, run 1 in this tab. Reason score: 13 of 14 in round one and 5 of 5 on the fresh case. A reason counts as right when every chip tapped is in the card's basis key and at least one was tapped. It is scored apart from the call, and its points count toward the rank. Lines missed: 4 4100 (clean line). Pattern: you caught every arithmetic problem, and you missed 1 of the 6 clean lines. Result: right call 13 of 14, right reason 13 of 14, 8 caught, 5 let stand correctly, 1 false flag, 2,400 points, rank Manager. Four questions on the form (expected quality, confidence before, confidence after, close experience) are not asked in this version. They carry a placeholder value the question accepts and are not participant answers. Longest run of correct calls: 10.",
+   "entry.756559246": "Round2: right call 5/5, right reason 5/5; calls FSFFS; key FSFFS; seconds 5. Round2 basis, by line: 1: Basis: no source on file | Evidence: The June invoice from the lab is on file. | Period: It dates the charge to June, the month the memo covers. | Action: Ask for the June case log to confirm the volume. | Reason: agrees | Key basis: no source on file || 2: Basis: the figure and reason hold | Evidence: Line 2: The June invoice from the lab is on file. | Period: It dates the charge to June, the month the memo covers. | Action: Ask for the June case log to confirm the volume. | Reason: agrees | Key basis: the figure and reason hold || 3: Basis: wrong period | Evidence: Line 3: The June invoice from the lab is on file. | Period: It dates the charge to June, the month the memo covers. | Action: Ask for the June case log to confirm the volume. | Reason: agrees | Key basis: wrong period; no source on file || 4: Basis: no source on file | Evidence: Line 4: The June invoice from the lab is on file. | Period: It dates the charge to June, the month the memo covers. | Action: Ask for the June case log to confirm the volume. | Reason: agrees | Key basis: no source on file || 5: Basis: the figure and reason hold | Evidence: Line 5: The June invoice from the lab is on file. | Period: It dates the charge to June, the month the memo covers. | Action: Ask for the June case log to confirm the volume. | Reason: agrees | Key basis: the figure and reason hold. Fresh case: Brightwater Dental Partners, PLLC, case version brightwater-v6, 5 lines, run as an assessment with no feedback between lines. A company the player had not seen. Not a player answer to question C.",
+   "entry.1863650976": "1",
+   "fvv": "1",
+   "pageHistory": "0,1,2",
+   "fbzx": "6504723215963942",
+   "partialResponse": "[null,null,\"6504723215963942\"]",
+   "submissionTimestamp": "-1"
+  },
+  "payloadNote": "Test mode. This is the payload the page would have sent, and it was not sent."
+ }
+}

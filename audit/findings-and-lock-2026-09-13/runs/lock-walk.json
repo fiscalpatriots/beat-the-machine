@@ -1,0 +1,1600 @@
+{
+ "ran": "Mon Sep 14 2026 00:07:57 GMT-0400 (Eastern Daylight Time)",
+ "root": ".",
+ "checks": [
+  {
+   "name": "the required read is taken and the first practice line opens",
+   "pass": true,
+   "detail": null
+  },
+  {
+   "name": "the practice round reaches the bridge",
+   "pass": true,
+   "detail": null
+  },
+  {
+   "name": "the practice lines never ask for a written explanation",
+   "pass": true,
+   "detail": null
+  },
+  {
+   "name": "fresh line 1 opens after the bridge",
+   "pass": true,
+   "detail": null
+  },
+  {
+   "name": "the three boxes carry their labels",
+   "pass": true,
+   "detail": [
+    "The decisive evidence",
+    "Why it matters for this period",
+    "The action or source request that follows"
+   ]
+  },
+  {
+   "name": "each box is required and described by a visible hint",
+   "pass": true,
+   "detail": [
+    "ex-decisiveEvidence-hint exrule",
+    "ex-periodRelevance-hint exrule",
+    "ex-actionOrRequest-hint exrule"
+   ]
+  },
+  {
+   "name": "no placeholder text is left to be cut off",
+   "pass": true,
+   "detail": null
+  },
+  {
+   "name": "the lock is marked not ready for a screen reader and points at the status line",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    "stored": [
+     null,
+     null
+    ],
+    "lockAria": "true",
+    "lockDisabled": false,
+    "lockDescribedby": "lockstat",
+    "status": "",
+    "statusRole": "status",
+    "statusLive": "polite",
+    "statusVisible": false,
+    "active": "BODY",
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "value": "",
+      "invalid": null,
+      "describedby": "ex-decisiveEvidence-hint exrule",
+      "required": "true",
+      "label": "The decisive evidence",
+      "error": null,
+      "errorVisible": false,
+      "errorColor": "rgb(163, 58, 28)"
+     },
+     {
+      "id": "ex-periodRelevance",
+      "value": "",
+      "invalid": null,
+      "describedby": "ex-periodRelevance-hint exrule",
+      "required": "true",
+      "label": "Why it matters for this period",
+      "error": null,
+      "errorVisible": false,
+      "errorColor": "rgb(163, 58, 28)"
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "value": "",
+      "invalid": null,
+      "describedby": "ex-actionOrRequest-hint exrule",
+      "required": "true",
+      "label": "The action or source request that follows",
+      "error": null,
+      "errorVisible": false,
+      "errorColor": "rgb(163, 58, 28)"
+     }
+    ]
+   }
+  },
+  {
+   "name": "no basis chip: no call locked and no step taken",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "name": "no basis chip: the status line says what is still needed",
+   "pass": true,
+   "detail": {
+    "status": "Not locked yet. Still needed: a basis chip, the decisive evidence, why it matters for this period and the action or source request."
+   }
+  },
+  {
+   "name": "no basis chip: focus moves to chip",
+   "pass": true,
+   "detail": {
+    "active": "chip"
+   }
+  },
+  {
+   "name": "empty boxes: no call locked and no step taken",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "name": "empty boxes: the status line says what is still needed",
+   "pass": true,
+   "detail": {
+    "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request."
+   }
+  },
+  {
+   "name": "empty boxes: focus moves to ex-decisiveEvidence",
+   "pass": true,
+   "detail": {
+    "active": "ex-decisiveEvidence"
+   }
+  },
+  {
+   "name": "empty boxes: each box is aria-invalid with a visible error in words, tied by aria-describedby",
+   "pass": true,
+   "detail": [
+    {
+     "id": "ex-decisiveEvidence",
+     "value": "",
+     "invalid": "true",
+     "describedby": "ex-decisiveEvidence-err ex-decisiveEvidence-hint exrule",
+     "required": "true",
+     "label": "The decisive evidence",
+     "error": "Needed: this answer is still empty.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-periodRelevance",
+     "value": "",
+     "invalid": "true",
+     "describedby": "ex-periodRelevance-err ex-periodRelevance-hint",
+     "required": "true",
+     "label": "Why it matters for this period",
+     "error": "Needed: this answer is still empty.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-actionOrRequest",
+     "value": "",
+     "invalid": "true",
+     "describedby": "ex-actionOrRequest-err ex-actionOrRequest-hint",
+     "required": "true",
+     "label": "The action or source request that follows",
+     "error": "Needed: this answer is still empty.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    }
+   ]
+  },
+  {
+   "name": "whitespace: no call locked and no step taken",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "name": "whitespace: the status line says what is still needed",
+   "pass": true,
+   "detail": {
+    "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request."
+   }
+  },
+  {
+   "name": "whitespace: focus moves to ex-decisiveEvidence",
+   "pass": true,
+   "detail": {
+    "active": "ex-decisiveEvidence"
+   }
+  },
+  {
+   "name": "punctuation, Enter on the page: no call locked and no step taken",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "name": "punctuation, Enter on the page: the status line says what is still needed",
+   "pass": true,
+   "detail": {
+    "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request."
+   }
+  },
+  {
+   "name": "punctuation, Enter on the page: focus moves to ex-decisiveEvidence",
+   "pass": true,
+   "detail": {
+    "active": "ex-decisiveEvidence"
+   }
+  },
+  {
+   "name": "punctuation: the error names punctuation",
+   "pass": true,
+   "detail": "Needed: words, not only punctuation or symbols."
+  },
+  {
+   "name": "two letters, Enter on the lock button: no call locked and no step taken",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "name": "two letters, Enter on the lock button: the status line says what is still needed",
+   "pass": true,
+   "detail": {
+    "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request."
+   }
+  },
+  {
+   "name": "two letters, Enter on the lock button: focus moves to ex-decisiveEvidence",
+   "pass": true,
+   "detail": {
+    "active": "ex-decisiveEvidence"
+   }
+  },
+  {
+   "name": "two letters, Space on the lock button: no call locked and no step taken",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "name": "two letters, Space on the lock button: the status line says what is still needed",
+   "pass": true,
+   "detail": {
+    "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request."
+   }
+  },
+  {
+   "name": "two letters, Space on the lock button: focus moves to ex-decisiveEvidence",
+   "pass": true,
+   "detail": {
+    "active": "ex-decisiveEvidence"
+   }
+  },
+  {
+   "name": "two letters: the error names the minimum",
+   "pass": true,
+   "detail": "Needed: at least two words and eight letters or digits."
+  },
+  {
+   "name": "stock non-answers, forced click: no call locked and no step taken",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "name": "stock non-answers, forced click: the status line says what is still needed",
+   "pass": true,
+   "detail": {
+    "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request."
+   }
+  },
+  {
+   "name": "stock non-answers, forced click: focus moves to ex-decisiveEvidence",
+   "pass": true,
+   "detail": {
+    "active": "ex-decisiveEvidence"
+   }
+  },
+  {
+   "name": "stock non-answers: the error says they do not count",
+   "pass": true,
+   "detail": [
+    "Needed: an answer in your own words. None, n/a and answers like them do not count.",
+    "Needed: an answer in your own words. None, n/a and answers like them do not count.",
+    "Needed: an answer in your own words. None, n/a and answers like them do not count."
+   ]
+  },
+  {
+   "name": "pasted text: no call locked and no step taken",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "name": "pasted text: the status line says what is still needed",
+   "pass": true,
+   "detail": {
+    "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request."
+   }
+  },
+  {
+   "name": "pasted text: focus moves to ex-decisiveEvidence",
+   "pass": true,
+   "detail": {
+    "active": "ex-decisiveEvidence"
+   }
+  },
+  {
+   "name": "one short part in the middle: no call locked and no step taken",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "name": "one short part in the middle: the status line says what is still needed",
+   "pass": true,
+   "detail": {
+    "status": "Not locked yet. Still needed: why it matters for this period."
+   }
+  },
+  {
+   "name": "one short part in the middle: focus moves to ex-periodRelevance",
+   "pass": true,
+   "detail": {
+    "active": "ex-periodRelevance"
+   }
+  },
+  {
+   "name": "one short part: only that box is marked",
+   "pass": true,
+   "detail": [
+    null,
+    "true",
+    null
+   ]
+  },
+  {
+   "name": "reload mid-item: the same item, with what was typed",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "values": [
+     "a b",
+     "...",
+     "none"
+    ]
+   }
+  },
+  {
+   "name": "reload mid-item: the lock is still not ready",
+   "pass": true,
+   "detail": "true"
+  },
+  {
+   "name": "reload mid-item: no call locked and no step taken",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "name": "reload mid-item: the status line says what is still needed",
+   "pass": true,
+   "detail": {
+    "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request."
+   }
+  },
+  {
+   "name": "reload mid-item: focus moves to ex-decisiveEvidence",
+   "pass": true,
+   "detail": {
+    "active": "ex-decisiveEvidence"
+   }
+  },
+  {
+   "name": "state edit through the step hook: no call locked and no step taken",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "name": "state edit through the step hook: the status line says what is still needed",
+   "pass": true,
+   "detail": {
+    "status": "This call was unlocked. A written answer on it falls short of the minimum. Still needed: the decisive evidence, why it matters for this period and the action or source request."
+   }
+  },
+  {
+   "name": "state edit: the line reopens with the call unlocked and the errors showing",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    "stored": [
+     {
+      "decisiveEvidence": "a b",
+      "periodRelevance": "...",
+      "actionOrRequest": "none"
+     },
+     null
+    ],
+    "lockAria": "true",
+    "lockDisabled": false,
+    "lockDescribedby": "lockstat",
+    "status": "This call was unlocked. A written answer on it falls short of the minimum. Still needed: the decisive evidence, why it matters for this period and the action or source request.",
+    "statusRole": "status",
+    "statusLive": "polite",
+    "statusVisible": true,
+    "active": "ex-decisiveEvidence",
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "value": "a b",
+      "invalid": "true",
+      "describedby": "ex-decisiveEvidence-err ex-decisiveEvidence-hint exrule",
+      "required": "true",
+      "label": "The decisive evidence",
+      "error": "Needed: at least two words and eight letters or digits.",
+      "errorVisible": true,
+      "errorColor": "rgb(163, 58, 28)"
+     },
+     {
+      "id": "ex-periodRelevance",
+      "value": "...",
+      "invalid": "true",
+      "describedby": "ex-periodRelevance-err ex-periodRelevance-hint",
+      "required": "true",
+      "label": "Why it matters for this period",
+      "error": "Needed: words, not only punctuation or symbols.",
+      "errorVisible": true,
+      "errorColor": "rgb(163, 58, 28)"
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "value": "none",
+      "invalid": "true",
+      "describedby": "ex-actionOrRequest-err ex-actionOrRequest-hint",
+      "required": "true",
+      "label": "The action or source request that follows",
+      "error": "Needed: an answer in your own words. None, n/a and answers like them do not count.",
+      "errorVisible": true,
+      "errorColor": "rgb(163, 58, 28)"
+     }
+    ]
+   }
+  },
+  {
+   "name": "state edit, jump to the end screen: no call locked and no step taken",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "name": "state edit, jump to the end screen: the status line says what is still needed",
+   "pass": true,
+   "detail": {
+    "status": "This call was unlocked. A written answer on it falls short of the minimum. Still needed: the decisive evidence, why it matters for this period and the action or source request."
+   }
+  },
+  {
+   "name": "state edit, jump to the end: no end screen drawn",
+   "pass": true,
+   "detail": null
+  },
+  {
+   "name": "state edit in the saved run, then reload: no call locked and no step taken",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "name": "state edit in the saved run, then reload: the status line says what is still needed",
+   "pass": true,
+   "detail": {
+    "status": "This call was unlocked. A written answer on it falls short of the minimum. Still needed: the decisive evidence, why it matters for this period and the action or source request."
+   }
+  },
+  {
+   "name": "good answers: the lock is ready, the errors clear and the status says ready",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    "stored": [
+     {
+      "decisiveEvidence": "The June invoice from the lab is on file.",
+      "periodRelevance": "It dates the charge to June, the month the memo covers.",
+      "actionOrRequest": "Ask for the June case log to confirm the volume."
+     },
+     null
+    ],
+    "lockAria": "false",
+    "lockDisabled": false,
+    "lockDescribedby": "lockstat",
+    "status": "Ready. Press Lock it in when you are sure of the call.",
+    "statusRole": "status",
+    "statusLive": "polite",
+    "statusVisible": true,
+    "active": "ex-actionOrRequest",
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "value": "The June invoice from the lab is on file.",
+      "invalid": null,
+      "describedby": "ex-decisiveEvidence-hint exrule",
+      "required": "true",
+      "label": "The decisive evidence",
+      "error": null,
+      "errorVisible": false,
+      "errorColor": "rgb(163, 58, 28)"
+     },
+     {
+      "id": "ex-periodRelevance",
+      "value": "It dates the charge to June, the month the memo covers.",
+      "invalid": null,
+      "describedby": "ex-periodRelevance-hint",
+      "required": "true",
+      "label": "Why it matters for this period",
+      "error": null,
+      "errorVisible": false,
+      "errorColor": "rgb(163, 58, 28)"
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "value": "Ask for the June case log to confirm the volume.",
+      "invalid": null,
+      "describedby": "ex-actionOrRequest-hint",
+      "required": "true",
+      "label": "The action or source request that follows",
+      "error": null,
+      "errorVisible": false,
+      "errorColor": "rgb(163, 58, 28)"
+     }
+    ]
+   }
+  },
+  {
+   "name": "good answers: the call locks and the page moves to fresh line 2",
+   "pass": true,
+   "detail": {
+    "step": 19,
+    "calls": [
+     "flag",
+     null,
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "name": "the stored answers are the cleaned text",
+   "pass": true,
+   "detail": {
+    "decisiveEvidence": "The June invoice from the lab is on file.",
+    "periodRelevance": "It dates the charge to June, the month the memo covers.",
+    "actionOrRequest": "Ask for the June case log to confirm the volume."
+   }
+  },
+  {
+   "name": "the fifth call opens the round two results",
+   "pass": true,
+   "detail": null
+  },
+  {
+   "name": "the end screen prints one false flag in the singular",
+   "pass": true,
+   "detail": "8caught5let stand correctly1false flag"
+  },
+  {
+   "name": "the send payload was built in test mode",
+   "pass": true,
+   "detail": null
+  },
+  {
+   "name": "question C carries the five explanations as written",
+   "pass": true,
+   "detail": "Round2: right call 5/5, right reason 5/5; calls FSFFS; key FSFFS; seconds 5. Round2 basis, by line: 1: Basis: no source on file | Evidence: The June invoice from the lab is on file. | Period: It dates the charge to June, the month the memo covers. | Action: Ask for the June case log to confirm the volume. | Reason: agrees | Key basis: no source on file || 2: Basis: the figure and reason hold | Evi"
+  },
+  {
+   "name": "the record names the minimum beside the prompts",
+   "pass": true,
+   "detail": {
+    "version": "explain-2026-09-13b",
+    "asked": "on every line of the fresh case, required before the call locks",
+    "decisiveEvidence": "The decisive evidence",
+    "periodRelevance": "Why it matters for this period",
+    "actionOrRequest": "The action or source request that follows",
+    "minimum": "Each answer needs at least two words and eight letters or digits, and a stock non-answer such as none, n/a or same as above does not count.",
+    "scoring": "Not scored by the page and never used for points, the rank or the badges. Kept for a person to score."
+   }
+  },
+  {
+   "name": "no page error during the walk",
+   "pass": true,
+   "detail": []
+  }
+ ],
+ "refusals": {
+  "no basis chip": {
+   "step": 18,
+   "calls": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "stored": [
+    null,
+    null
+   ],
+   "lockAria": "true",
+   "lockDisabled": false,
+   "lockDescribedby": "lockstat",
+   "status": "Not locked yet. Still needed: a basis chip, the decisive evidence, why it matters for this period and the action or source request.",
+   "statusRole": "status",
+   "statusLive": "polite",
+   "statusVisible": true,
+   "active": "chip",
+   "boxes": [
+    {
+     "id": "ex-decisiveEvidence",
+     "value": "",
+     "invalid": "true",
+     "describedby": "ex-decisiveEvidence-err ex-decisiveEvidence-hint exrule",
+     "required": "true",
+     "label": "The decisive evidence",
+     "error": "Needed: this answer is still empty.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-periodRelevance",
+     "value": "",
+     "invalid": "true",
+     "describedby": "ex-periodRelevance-err ex-periodRelevance-hint",
+     "required": "true",
+     "label": "Why it matters for this period",
+     "error": "Needed: this answer is still empty.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-actionOrRequest",
+     "value": "",
+     "invalid": "true",
+     "describedby": "ex-actionOrRequest-err ex-actionOrRequest-hint",
+     "required": "true",
+     "label": "The action or source request that follows",
+     "error": "Needed: this answer is still empty.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    }
+   ]
+  },
+  "empty boxes": {
+   "step": 18,
+   "calls": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "stored": [
+    null,
+    null
+   ],
+   "lockAria": "true",
+   "lockDisabled": false,
+   "lockDescribedby": "lockstat",
+   "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request.",
+   "statusRole": "status",
+   "statusLive": "polite",
+   "statusVisible": true,
+   "active": "ex-decisiveEvidence",
+   "boxes": [
+    {
+     "id": "ex-decisiveEvidence",
+     "value": "",
+     "invalid": "true",
+     "describedby": "ex-decisiveEvidence-err ex-decisiveEvidence-hint exrule",
+     "required": "true",
+     "label": "The decisive evidence",
+     "error": "Needed: this answer is still empty.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-periodRelevance",
+     "value": "",
+     "invalid": "true",
+     "describedby": "ex-periodRelevance-err ex-periodRelevance-hint",
+     "required": "true",
+     "label": "Why it matters for this period",
+     "error": "Needed: this answer is still empty.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-actionOrRequest",
+     "value": "",
+     "invalid": "true",
+     "describedby": "ex-actionOrRequest-err ex-actionOrRequest-hint",
+     "required": "true",
+     "label": "The action or source request that follows",
+     "error": "Needed: this answer is still empty.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    }
+   ]
+  },
+  "whitespace": {
+   "step": 18,
+   "calls": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "stored": [
+    {
+     "decisiveEvidence": "   ",
+     "periodRelevance": "\t\t",
+     "actionOrRequest": "\n\n"
+    },
+    null
+   ],
+   "lockAria": "true",
+   "lockDisabled": false,
+   "lockDescribedby": "lockstat",
+   "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request.",
+   "statusRole": "status",
+   "statusLive": "polite",
+   "statusVisible": true,
+   "active": "ex-decisiveEvidence",
+   "boxes": [
+    {
+     "id": "ex-decisiveEvidence",
+     "value": "   ",
+     "invalid": "true",
+     "describedby": "ex-decisiveEvidence-err ex-decisiveEvidence-hint exrule",
+     "required": "true",
+     "label": "The decisive evidence",
+     "error": "Needed: this answer is still empty.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-periodRelevance",
+     "value": "\t\t",
+     "invalid": "true",
+     "describedby": "ex-periodRelevance-err ex-periodRelevance-hint",
+     "required": "true",
+     "label": "Why it matters for this period",
+     "error": "Needed: this answer is still empty.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-actionOrRequest",
+     "value": "\n\n",
+     "invalid": "true",
+     "describedby": "ex-actionOrRequest-err ex-actionOrRequest-hint",
+     "required": "true",
+     "label": "The action or source request that follows",
+     "error": "Needed: this answer is still empty.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    }
+   ]
+  },
+  "punctuation, Enter on the page": {
+   "step": 18,
+   "calls": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "stored": [
+    {
+     "decisiveEvidence": "...",
+     "periodRelevance": "...",
+     "actionOrRequest": "..."
+    },
+    null
+   ],
+   "lockAria": "true",
+   "lockDisabled": false,
+   "lockDescribedby": "lockstat",
+   "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request.",
+   "statusRole": "status",
+   "statusLive": "polite",
+   "statusVisible": true,
+   "active": "ex-decisiveEvidence",
+   "boxes": [
+    {
+     "id": "ex-decisiveEvidence",
+     "value": "...",
+     "invalid": "true",
+     "describedby": "ex-decisiveEvidence-err ex-decisiveEvidence-hint exrule",
+     "required": "true",
+     "label": "The decisive evidence",
+     "error": "Needed: words, not only punctuation or symbols.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-periodRelevance",
+     "value": "...",
+     "invalid": "true",
+     "describedby": "ex-periodRelevance-err ex-periodRelevance-hint",
+     "required": "true",
+     "label": "Why it matters for this period",
+     "error": "Needed: words, not only punctuation or symbols.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-actionOrRequest",
+     "value": "...",
+     "invalid": "true",
+     "describedby": "ex-actionOrRequest-err ex-actionOrRequest-hint",
+     "required": "true",
+     "label": "The action or source request that follows",
+     "error": "Needed: words, not only punctuation or symbols.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    }
+   ]
+  },
+  "two letters, Enter on the lock button": {
+   "step": 18,
+   "calls": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "stored": [
+    {
+     "decisiveEvidence": "a b",
+     "periodRelevance": "a b",
+     "actionOrRequest": "a b"
+    },
+    null
+   ],
+   "lockAria": "true",
+   "lockDisabled": false,
+   "lockDescribedby": "lockstat",
+   "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request.",
+   "statusRole": "status",
+   "statusLive": "polite",
+   "statusVisible": true,
+   "active": "ex-decisiveEvidence",
+   "boxes": [
+    {
+     "id": "ex-decisiveEvidence",
+     "value": "a b",
+     "invalid": "true",
+     "describedby": "ex-decisiveEvidence-err ex-decisiveEvidence-hint exrule",
+     "required": "true",
+     "label": "The decisive evidence",
+     "error": "Needed: at least two words and eight letters or digits.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-periodRelevance",
+     "value": "a b",
+     "invalid": "true",
+     "describedby": "ex-periodRelevance-err ex-periodRelevance-hint",
+     "required": "true",
+     "label": "Why it matters for this period",
+     "error": "Needed: at least two words and eight letters or digits.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-actionOrRequest",
+     "value": "a b",
+     "invalid": "true",
+     "describedby": "ex-actionOrRequest-err ex-actionOrRequest-hint",
+     "required": "true",
+     "label": "The action or source request that follows",
+     "error": "Needed: at least two words and eight letters or digits.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    }
+   ]
+  },
+  "two letters, Space on the lock button": {
+   "step": 18,
+   "calls": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "stored": [
+    {
+     "decisiveEvidence": "a b",
+     "periodRelevance": "a b",
+     "actionOrRequest": "a b"
+    },
+    null
+   ],
+   "lockAria": "true",
+   "lockDisabled": false,
+   "lockDescribedby": "lockstat",
+   "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request.",
+   "statusRole": "status",
+   "statusLive": "polite",
+   "statusVisible": true,
+   "active": "ex-decisiveEvidence",
+   "boxes": [
+    {
+     "id": "ex-decisiveEvidence",
+     "value": "a b",
+     "invalid": "true",
+     "describedby": "ex-decisiveEvidence-err ex-decisiveEvidence-hint exrule",
+     "required": "true",
+     "label": "The decisive evidence",
+     "error": "Needed: at least two words and eight letters or digits.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-periodRelevance",
+     "value": "a b",
+     "invalid": "true",
+     "describedby": "ex-periodRelevance-err ex-periodRelevance-hint",
+     "required": "true",
+     "label": "Why it matters for this period",
+     "error": "Needed: at least two words and eight letters or digits.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-actionOrRequest",
+     "value": "a b",
+     "invalid": "true",
+     "describedby": "ex-actionOrRequest-err ex-actionOrRequest-hint",
+     "required": "true",
+     "label": "The action or source request that follows",
+     "error": "Needed: at least two words and eight letters or digits.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    }
+   ]
+  },
+  "stock non-answers, forced click": {
+   "step": 18,
+   "calls": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "stored": [
+    {
+     "decisiveEvidence": "none",
+     "periodRelevance": "None.",
+     "actionOrRequest": "n/a"
+    },
+    null
+   ],
+   "lockAria": "true",
+   "lockDisabled": false,
+   "lockDescribedby": "lockstat",
+   "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request.",
+   "statusRole": "status",
+   "statusLive": "polite",
+   "statusVisible": true,
+   "active": "ex-decisiveEvidence",
+   "boxes": [
+    {
+     "id": "ex-decisiveEvidence",
+     "value": "none",
+     "invalid": "true",
+     "describedby": "ex-decisiveEvidence-err ex-decisiveEvidence-hint exrule",
+     "required": "true",
+     "label": "The decisive evidence",
+     "error": "Needed: an answer in your own words. None, n/a and answers like them do not count.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-periodRelevance",
+     "value": "None.",
+     "invalid": "true",
+     "describedby": "ex-periodRelevance-err ex-periodRelevance-hint",
+     "required": "true",
+     "label": "Why it matters for this period",
+     "error": "Needed: an answer in your own words. None, n/a and answers like them do not count.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-actionOrRequest",
+     "value": "n/a",
+     "invalid": "true",
+     "describedby": "ex-actionOrRequest-err ex-actionOrRequest-hint",
+     "required": "true",
+     "label": "The action or source request that follows",
+     "error": "Needed: an answer in your own words. None, n/a and answers like them do not count.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    }
+   ]
+  },
+  "pasted text": {
+   "step": 18,
+   "calls": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "stored": [
+    {
+     "decisiveEvidence": "|||",
+     "periodRelevance": "...",
+     "actionOrRequest": "same as above"
+    },
+    null
+   ],
+   "lockAria": "true",
+   "lockDisabled": false,
+   "lockDescribedby": "lockstat",
+   "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request.",
+   "statusRole": "status",
+   "statusLive": "polite",
+   "statusVisible": true,
+   "active": "ex-decisiveEvidence",
+   "boxes": [
+    {
+     "id": "ex-decisiveEvidence",
+     "value": "|||",
+     "invalid": "true",
+     "describedby": "ex-decisiveEvidence-err ex-decisiveEvidence-hint exrule",
+     "required": "true",
+     "label": "The decisive evidence",
+     "error": "Needed: this answer is still empty.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-periodRelevance",
+     "value": "...",
+     "invalid": "true",
+     "describedby": "ex-periodRelevance-err ex-periodRelevance-hint",
+     "required": "true",
+     "label": "Why it matters for this period",
+     "error": "Needed: words, not only punctuation or symbols.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-actionOrRequest",
+     "value": "same as above",
+     "invalid": "true",
+     "describedby": "ex-actionOrRequest-err ex-actionOrRequest-hint",
+     "required": "true",
+     "label": "The action or source request that follows",
+     "error": "Needed: an answer in your own words. None, n/a and answers like them do not count.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    }
+   ]
+  },
+  "one short part in the middle": {
+   "step": 18,
+   "calls": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "stored": [
+    {
+     "decisiveEvidence": "The June invoice from the lab is on file.",
+     "periodRelevance": "June",
+     "actionOrRequest": "Ask for the June case log to confirm the volume."
+    },
+    null
+   ],
+   "lockAria": "true",
+   "lockDisabled": false,
+   "lockDescribedby": "lockstat",
+   "status": "Not locked yet. Still needed: why it matters for this period.",
+   "statusRole": "status",
+   "statusLive": "polite",
+   "statusVisible": true,
+   "active": "ex-periodRelevance",
+   "boxes": [
+    {
+     "id": "ex-decisiveEvidence",
+     "value": "The June invoice from the lab is on file.",
+     "invalid": null,
+     "describedby": "ex-decisiveEvidence-hint exrule",
+     "required": "true",
+     "label": "The decisive evidence",
+     "error": null,
+     "errorVisible": false,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-periodRelevance",
+     "value": "June",
+     "invalid": "true",
+     "describedby": "ex-periodRelevance-err ex-periodRelevance-hint",
+     "required": "true",
+     "label": "Why it matters for this period",
+     "error": "Needed: at least two words and eight letters or digits.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-actionOrRequest",
+     "value": "Ask for the June case log to confirm the volume.",
+     "invalid": null,
+     "describedby": "ex-actionOrRequest-hint",
+     "required": "true",
+     "label": "The action or source request that follows",
+     "error": null,
+     "errorVisible": false,
+     "errorColor": "rgb(163, 58, 28)"
+    }
+   ]
+  },
+  "reload mid-item": {
+   "step": 18,
+   "calls": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "stored": [
+    {
+     "decisiveEvidence": "a b",
+     "periodRelevance": "...",
+     "actionOrRequest": "none"
+    },
+    null
+   ],
+   "lockAria": "true",
+   "lockDisabled": false,
+   "lockDescribedby": "lockstat",
+   "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request.",
+   "statusRole": "status",
+   "statusLive": "polite",
+   "statusVisible": true,
+   "active": "ex-decisiveEvidence",
+   "boxes": [
+    {
+     "id": "ex-decisiveEvidence",
+     "value": "a b",
+     "invalid": "true",
+     "describedby": "ex-decisiveEvidence-err ex-decisiveEvidence-hint exrule",
+     "required": "true",
+     "label": "The decisive evidence",
+     "error": "Needed: at least two words and eight letters or digits.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-periodRelevance",
+     "value": "...",
+     "invalid": "true",
+     "describedby": "ex-periodRelevance-err ex-periodRelevance-hint",
+     "required": "true",
+     "label": "Why it matters for this period",
+     "error": "Needed: words, not only punctuation or symbols.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-actionOrRequest",
+     "value": "none",
+     "invalid": "true",
+     "describedby": "ex-actionOrRequest-err ex-actionOrRequest-hint",
+     "required": "true",
+     "label": "The action or source request that follows",
+     "error": "Needed: an answer in your own words. None, n/a and answers like them do not count.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    }
+   ]
+  },
+  "state edit through the step hook": {
+   "step": 18,
+   "calls": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "stored": [
+    {
+     "decisiveEvidence": "a b",
+     "periodRelevance": "...",
+     "actionOrRequest": "none"
+    },
+    null
+   ],
+   "lockAria": "true",
+   "lockDisabled": false,
+   "lockDescribedby": "lockstat",
+   "status": "This call was unlocked. A written answer on it falls short of the minimum. Still needed: the decisive evidence, why it matters for this period and the action or source request.",
+   "statusRole": "status",
+   "statusLive": "polite",
+   "statusVisible": true,
+   "active": "ex-decisiveEvidence",
+   "boxes": [
+    {
+     "id": "ex-decisiveEvidence",
+     "value": "a b",
+     "invalid": "true",
+     "describedby": "ex-decisiveEvidence-err ex-decisiveEvidence-hint exrule",
+     "required": "true",
+     "label": "The decisive evidence",
+     "error": "Needed: at least two words and eight letters or digits.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-periodRelevance",
+     "value": "...",
+     "invalid": "true",
+     "describedby": "ex-periodRelevance-err ex-periodRelevance-hint",
+     "required": "true",
+     "label": "Why it matters for this period",
+     "error": "Needed: words, not only punctuation or symbols.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-actionOrRequest",
+     "value": "none",
+     "invalid": "true",
+     "describedby": "ex-actionOrRequest-err ex-actionOrRequest-hint",
+     "required": "true",
+     "label": "The action or source request that follows",
+     "error": "Needed: an answer in your own words. None, n/a and answers like them do not count.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    }
+   ]
+  },
+  "state edit, jump to the end screen": {
+   "step": 18,
+   "calls": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "stored": [
+    {
+     "decisiveEvidence": "none",
+     "periodRelevance": "none",
+     "actionOrRequest": "none"
+    },
+    null
+   ],
+   "lockAria": "true",
+   "lockDisabled": false,
+   "lockDescribedby": "lockstat",
+   "status": "This call was unlocked. A written answer on it falls short of the minimum. Still needed: the decisive evidence, why it matters for this period and the action or source request.",
+   "statusRole": "status",
+   "statusLive": "polite",
+   "statusVisible": true,
+   "active": "ex-decisiveEvidence",
+   "boxes": [
+    {
+     "id": "ex-decisiveEvidence",
+     "value": "none",
+     "invalid": "true",
+     "describedby": "ex-decisiveEvidence-err ex-decisiveEvidence-hint exrule",
+     "required": "true",
+     "label": "The decisive evidence",
+     "error": "Needed: an answer in your own words. None, n/a and answers like them do not count.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-periodRelevance",
+     "value": "none",
+     "invalid": "true",
+     "describedby": "ex-periodRelevance-err ex-periodRelevance-hint",
+     "required": "true",
+     "label": "Why it matters for this period",
+     "error": "Needed: an answer in your own words. None, n/a and answers like them do not count.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-actionOrRequest",
+     "value": "none",
+     "invalid": "true",
+     "describedby": "ex-actionOrRequest-err ex-actionOrRequest-hint",
+     "required": "true",
+     "label": "The action or source request that follows",
+     "error": "Needed: an answer in your own words. None, n/a and answers like them do not count.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    }
+   ]
+  },
+  "state edit in the saved run, then reload": {
+   "step": 18,
+   "calls": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "stored": [
+    {
+     "decisiveEvidence": "ok",
+     "periodRelevance": "??",
+     "actionOrRequest": "test test"
+    },
+    null
+   ],
+   "lockAria": "true",
+   "lockDisabled": false,
+   "lockDescribedby": "lockstat",
+   "status": "This call was unlocked. A written answer on it falls short of the minimum. Still needed: the decisive evidence, why it matters for this period and the action or source request.",
+   "statusRole": "status",
+   "statusLive": "polite",
+   "statusVisible": true,
+   "active": "ex-decisiveEvidence",
+   "boxes": [
+    {
+     "id": "ex-decisiveEvidence",
+     "value": "ok",
+     "invalid": "true",
+     "describedby": "ex-decisiveEvidence-err ex-decisiveEvidence-hint exrule",
+     "required": "true",
+     "label": "The decisive evidence",
+     "error": "Needed: an answer in your own words. None, n/a and answers like them do not count.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-periodRelevance",
+     "value": "??",
+     "invalid": "true",
+     "describedby": "ex-periodRelevance-err ex-periodRelevance-hint",
+     "required": "true",
+     "label": "Why it matters for this period",
+     "error": "Needed: words, not only punctuation or symbols.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    },
+    {
+     "id": "ex-actionOrRequest",
+     "value": "test test",
+     "invalid": "true",
+     "describedby": "ex-actionOrRequest-err ex-actionOrRequest-hint",
+     "required": "true",
+     "label": "The action or source request that follows",
+     "error": "Needed: an answer in your own words. None, n/a and answers like them do not count.",
+     "errorVisible": true,
+     "errorColor": "rgb(163, 58, 28)"
+    }
+   ]
+  }
+ },
+ "errors": [],
+ "steps": {
+  "lines": 14,
+  "lines2": 5,
+  "l1last": 16,
+  "bridge": 17,
+  "l2": 18,
+  "l2last": 22,
+  "done": 24,
+  "hasR2": true
+ },
+ "acceptedState": {
+  "step": 18,
+  "calls": [
+   null,
+   null,
+   null,
+   null,
+   null
+  ],
+  "stored": [
+   {
+    "decisiveEvidence": "The June invoice from the lab is on file.",
+    "periodRelevance": "It dates the charge to June, the month the memo covers.",
+    "actionOrRequest": "Ask for the June case log to confirm the volume."
+   },
+   null
+  ],
+  "lockAria": "false",
+  "lockDisabled": false,
+  "lockDescribedby": "lockstat",
+  "status": "Ready. Press Lock it in when you are sure of the call.",
+  "statusRole": "status",
+  "statusLive": "polite",
+  "statusVisible": true,
+  "active": "ex-actionOrRequest",
+  "boxes": [
+   {
+    "id": "ex-decisiveEvidence",
+    "value": "The June invoice from the lab is on file.",
+    "invalid": null,
+    "describedby": "ex-decisiveEvidence-hint exrule",
+    "required": "true",
+    "label": "The decisive evidence",
+    "error": null,
+    "errorVisible": false,
+    "errorColor": "rgb(163, 58, 28)"
+   },
+   {
+    "id": "ex-periodRelevance",
+    "value": "It dates the charge to June, the month the memo covers.",
+    "invalid": null,
+    "describedby": "ex-periodRelevance-hint",
+    "required": "true",
+    "label": "Why it matters for this period",
+    "error": null,
+    "errorVisible": false,
+    "errorColor": "rgb(163, 58, 28)"
+   },
+   {
+    "id": "ex-actionOrRequest",
+    "value": "Ask for the June case log to confirm the volume.",
+    "invalid": null,
+    "describedby": "ex-actionOrRequest-hint",
+    "required": "true",
+    "label": "The action or source request that follows",
+    "error": null,
+    "errorVisible": false,
+    "errorColor": "rgb(163, 58, 28)"
+   }
+  ]
+ },
+ "endCounts": "8caught5let stand correctly1false flag",
+ "overflow1280": {
+  "doc": "1280/1280",
+  "clean": true,
+  "bad": []
+ },
+ "passed": 62,
+ "failed": 0
+}

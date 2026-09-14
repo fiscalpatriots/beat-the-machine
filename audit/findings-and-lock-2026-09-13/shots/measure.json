@@ -1,0 +1,1343 @@
+{
+ "ran": "Mon Sep 14 2026 00:08:11 GMT-0400 (Eastern Daylight Time)",
+ "widths": [
+  320,
+  375,
+  768,
+  1024,
+  1280,
+  1600
+ ],
+ "states": {
+  "author-grid": {
+   "320": {
+    "periodPlaceholderFits": true,
+    "placeholderPx": 189,
+    "innerPx": 266,
+    "rule": [
+     {
+      "text": "Both legs",
+      "h": 42,
+      "lines": 3
+     },
+     {
+      "text": "Either leg",
+      "h": 42,
+      "lines": 3
+     }
+    ],
+    "zero": [
+     {
+      "text": "Owes commentary",
+      "h": 42,
+      "lines": 3
+     },
+     {
+      "text": "Excluded",
+      "h": 42,
+      "lines": 3
+     }
+    ],
+    "overflow": {
+     "doc": "320/320",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "375": {
+    "periodPlaceholderFits": true,
+    "placeholderPx": 189,
+    "innerPx": 321,
+    "rule": [
+     {
+      "text": "Both legs",
+      "h": 42,
+      "lines": 3
+     },
+     {
+      "text": "Either leg",
+      "h": 42,
+      "lines": 3
+     }
+    ],
+    "zero": [
+     {
+      "text": "Owes commentary",
+      "h": 42,
+      "lines": 3
+     },
+     {
+      "text": "Excluded",
+      "h": 42,
+      "lines": 3
+     }
+    ],
+    "overflow": {
+     "doc": "375/375",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "768": {
+    "periodPlaceholderFits": true,
+    "placeholderPx": 189,
+    "innerPx": 702,
+    "rule": [
+     {
+      "text": "Both legs",
+      "h": 42,
+      "lines": 2
+     },
+     {
+      "text": "Either leg",
+      "h": 42,
+      "lines": 2
+     }
+    ],
+    "zero": [
+     {
+      "text": "Owes commentary",
+      "h": 42,
+      "lines": 2
+     },
+     {
+      "text": "Excluded",
+      "h": 42,
+      "lines": 2
+     }
+    ],
+    "overflow": {
+     "doc": "768/768",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1024": {
+    "periodPlaceholderFits": true,
+    "placeholderPx": 189,
+    "innerPx": 458,
+    "rule": [
+     {
+      "text": "Both legs",
+      "h": 42,
+      "lines": 2
+     },
+     {
+      "text": "Either leg",
+      "h": 42,
+      "lines": 2
+     }
+    ],
+    "zero": [
+     {
+      "text": "Owes commentary",
+      "h": 42,
+      "lines": 2
+     },
+     {
+      "text": "Excluded",
+      "h": 42,
+      "lines": 2
+     }
+    ],
+    "overflow": {
+     "doc": "1024/1024",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1280": {
+    "periodPlaceholderFits": true,
+    "placeholderPx": 189,
+    "innerPx": 470,
+    "rule": [
+     {
+      "text": "Both legs",
+      "h": 42,
+      "lines": 2
+     },
+     {
+      "text": "Either leg",
+      "h": 42,
+      "lines": 2
+     }
+    ],
+    "zero": [
+     {
+      "text": "Owes commentary",
+      "h": 42,
+      "lines": 2
+     },
+     {
+      "text": "Excluded",
+      "h": 42,
+      "lines": 2
+     }
+    ],
+    "overflow": {
+     "doc": "1280/1280",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1600": {
+    "periodPlaceholderFits": true,
+    "placeholderPx": 189,
+    "innerPx": 470,
+    "rule": [
+     {
+      "text": "Both legs",
+      "h": 42,
+      "lines": 2
+     },
+     {
+      "text": "Either leg",
+      "h": 42,
+      "lines": 2
+     }
+    ],
+    "zero": [
+     {
+      "text": "Owes commentary",
+      "h": 42,
+      "lines": 2
+     },
+     {
+      "text": "Excluded",
+      "h": 42,
+      "lines": 2
+     }
+    ],
+    "overflow": {
+     "doc": "1600/1600",
+     "clean": true,
+     "bad": []
+    }
+   }
+  },
+  "author-card": {
+   "320": {
+    "textareasCut": [],
+    "overflow": {
+     "doc": "320/320",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "375": {
+    "textareasCut": [],
+    "overflow": {
+     "doc": "375/375",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "768": {
+    "textareasCut": [],
+    "overflow": {
+     "doc": "768/768",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1024": {
+    "textareasCut": [],
+    "overflow": {
+     "doc": "1024/1024",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1280": {
+    "textareasCut": [],
+    "overflow": {
+     "doc": "1280/1280",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1600": {
+    "textareasCut": [],
+    "overflow": {
+     "doc": "1600/1600",
+     "clean": true,
+     "bad": []
+    }
+   }
+  },
+  "read": {
+   "320": {
+    "wordmark": 12,
+    "bandText": 14,
+    "bandEdge": 0,
+    "heading": 14,
+    "ledgerCard": 14,
+    "navRight": 308,
+    "bandRight": 320,
+    "overflow": {
+     "doc": "320/320",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "375": {
+    "wordmark": 14,
+    "bandText": 14,
+    "bandEdge": 0,
+    "heading": 14,
+    "ledgerCard": 14,
+    "navRight": 361,
+    "bandRight": 375,
+    "overflow": {
+     "doc": "375/375",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "768": {
+    "wordmark": 20,
+    "bandText": 124,
+    "bandEdge": 104,
+    "heading": 124,
+    "ledgerCard": 124,
+    "navRight": 748,
+    "bandRight": 664,
+    "overflow": {
+     "doc": "768/768",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1024": {
+    "wordmark": 20,
+    "bandText": 20,
+    "bandEdge": 0,
+    "heading": 20,
+    "ledgerCard": 20,
+    "navRight": 1004,
+    "bandRight": 1024,
+    "overflow": {
+     "doc": "1024/1024",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1280": {
+    "wordmark": 136,
+    "bandText": 136,
+    "bandEdge": 116,
+    "heading": 136,
+    "ledgerCard": 136,
+    "navRight": 1144,
+    "bandRight": 1164,
+    "overflow": {
+     "doc": "1280/1280",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1600": {
+    "wordmark": 296,
+    "bandText": 296,
+    "bandEdge": 276,
+    "heading": 296,
+    "ledgerCard": 296,
+    "navRight": 1304,
+    "bandRight": 1324,
+    "overflow": {
+     "doc": "1600/1600",
+     "clean": true,
+     "bad": []
+    }
+   }
+  },
+  "codename-chart": {
+   "320": {
+    "codetagLeft": 14,
+    "bandTextLeft": 14,
+    "chartLabels": [
+     {
+      "text": "May",
+      "px": 14,
+      "w": 30
+     },
+     {
+      "text": "June",
+      "px": 14,
+      "w": 30
+     }
+    ],
+    "overflow": {
+     "doc": "320/320",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "375": {
+    "codetagLeft": 14,
+    "bandTextLeft": 14,
+    "chartLabels": [
+     {
+      "text": "May",
+      "px": 14,
+      "w": 30
+     },
+     {
+      "text": "June",
+      "px": 14,
+      "w": 30
+     }
+    ],
+    "overflow": {
+     "doc": "375/375",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "768": {
+    "codetagLeft": 124,
+    "bandTextLeft": 124,
+    "chartLabels": [
+     {
+      "text": "May",
+      "px": 14,
+      "w": 30
+     },
+     {
+      "text": "June",
+      "px": 14,
+      "w": 30
+     }
+    ],
+    "overflow": {
+     "doc": "768/768",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1024": {
+    "codetagLeft": 252,
+    "bandTextLeft": 252,
+    "chartLabels": [
+     {
+      "text": "May",
+      "px": 14,
+      "w": 30
+     },
+     {
+      "text": "June",
+      "px": 14,
+      "w": 30
+     }
+    ],
+    "overflow": {
+     "doc": "1024/1024",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1280": {
+    "codetagLeft": 380,
+    "bandTextLeft": 380,
+    "chartLabels": [
+     {
+      "text": "May",
+      "px": 14,
+      "w": 30
+     },
+     {
+      "text": "June",
+      "px": 14,
+      "w": 30
+     }
+    ],
+    "overflow": {
+     "doc": "1280/1280",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1600": {
+    "codetagLeft": 540,
+    "bandTextLeft": 540,
+    "chartLabels": [
+     {
+      "text": "May",
+      "px": 14,
+      "w": 30
+     },
+     {
+      "text": "June",
+      "px": 14,
+      "w": 30
+     }
+    ],
+    "overflow": {
+     "doc": "1600/1600",
+     "clean": true,
+     "bad": []
+    }
+   }
+  },
+  "explain-empty": {
+   "320": {
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-periodRelevance",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     }
+    ],
+    "status": "",
+    "lockAria": "true",
+    "active": "",
+    "activeTop": 0,
+    "activeBottom": 3100,
+    "viewport": 800,
+    "bars": [
+     {
+      "el": "bar",
+      "top": 209,
+      "bottom": 261
+     }
+    ],
+    "overflow": {
+     "doc": "320/320",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "375": {
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-periodRelevance",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     }
+    ],
+    "status": "",
+    "lockAria": "true",
+    "active": "",
+    "activeTop": 0,
+    "activeBottom": 2897,
+    "viewport": 800,
+    "bars": [
+     {
+      "el": "bar",
+      "top": 209,
+      "bottom": 261
+     }
+    ],
+    "overflow": {
+     "doc": "375/375",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "768": {
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-periodRelevance",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     }
+    ],
+    "status": "",
+    "lockAria": "true",
+    "active": "",
+    "activeTop": 0,
+    "activeBottom": 2367,
+    "viewport": 900,
+    "bars": [
+     {
+      "el": "bar",
+      "top": 189,
+      "bottom": 241
+     }
+    ],
+    "overflow": {
+     "doc": "768/768",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1024": {
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-periodRelevance",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     }
+    ],
+    "status": "",
+    "lockAria": "true",
+    "active": "",
+    "activeTop": 0,
+    "activeBottom": 2367,
+    "viewport": 900,
+    "bars": [
+     {
+      "el": "bar",
+      "top": 189,
+      "bottom": 241
+     }
+    ],
+    "overflow": {
+     "doc": "1024/1024",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1280": {
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-periodRelevance",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     }
+    ],
+    "status": "",
+    "lockAria": "true",
+    "active": "",
+    "activeTop": 0,
+    "activeBottom": 2367,
+    "viewport": 900,
+    "bars": [
+     {
+      "el": "bar",
+      "top": 189,
+      "bottom": 241
+     }
+    ],
+    "overflow": {
+     "doc": "1280/1280",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1600": {
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-periodRelevance",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     }
+    ],
+    "status": "",
+    "lockAria": "true",
+    "active": "",
+    "activeTop": 0,
+    "activeBottom": 2367,
+    "viewport": 900,
+    "bars": [
+     {
+      "el": "bar",
+      "top": 189,
+      "bottom": 241
+     }
+    ],
+    "overflow": {
+     "doc": "1600/1600",
+     "clean": true,
+     "bad": []
+    }
+   }
+  },
+  "explain-refused": {
+   "320": {
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "h": 74,
+      "cut": false,
+      "invalid": "true",
+      "error": "Needed: this answer is still empty."
+     },
+     {
+      "id": "ex-periodRelevance",
+      "h": 74,
+      "cut": false,
+      "invalid": "true",
+      "error": "Needed: this answer is still empty."
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "h": 74,
+      "cut": false,
+      "invalid": "true",
+      "error": "Needed: this answer is still empty."
+     }
+    ],
+    "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request.",
+    "lockAria": "true",
+    "active": "ex-decisiveEvidence",
+    "activeTop": 363,
+    "activeBottom": 437,
+    "viewport": 800,
+    "bars": [
+     {
+      "el": "bar",
+      "top": 0,
+      "bottom": 52
+     }
+    ],
+    "overflow": {
+     "doc": "320/320",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "375": {
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "h": 74,
+      "cut": false,
+      "invalid": "true",
+      "error": "Needed: this answer is still empty."
+     },
+     {
+      "id": "ex-periodRelevance",
+      "h": 74,
+      "cut": false,
+      "invalid": "true",
+      "error": "Needed: this answer is still empty."
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "h": 74,
+      "cut": false,
+      "invalid": "true",
+      "error": "Needed: this answer is still empty."
+     }
+    ],
+    "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request.",
+    "lockAria": "true",
+    "active": "ex-decisiveEvidence",
+    "activeTop": 363,
+    "activeBottom": 437,
+    "viewport": 800,
+    "bars": [
+     {
+      "el": "bar",
+      "top": 0,
+      "bottom": 52
+     }
+    ],
+    "overflow": {
+     "doc": "375/375",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "768": {
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "h": 74,
+      "cut": false,
+      "invalid": "true",
+      "error": "Needed: this answer is still empty."
+     },
+     {
+      "id": "ex-periodRelevance",
+      "h": 74,
+      "cut": false,
+      "invalid": "true",
+      "error": "Needed: this answer is still empty."
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "h": 74,
+      "cut": false,
+      "invalid": "true",
+      "error": "Needed: this answer is still empty."
+     }
+    ],
+    "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request.",
+    "lockAria": "true",
+    "active": "ex-decisiveEvidence",
+    "activeTop": 413,
+    "activeBottom": 487,
+    "viewport": 900,
+    "bars": [
+     {
+      "el": "bar",
+      "top": 0,
+      "bottom": 52
+     }
+    ],
+    "overflow": {
+     "doc": "768/768",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1024": {
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "h": 74,
+      "cut": false,
+      "invalid": "true",
+      "error": "Needed: this answer is still empty."
+     },
+     {
+      "id": "ex-periodRelevance",
+      "h": 74,
+      "cut": false,
+      "invalid": "true",
+      "error": "Needed: this answer is still empty."
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "h": 74,
+      "cut": false,
+      "invalid": "true",
+      "error": "Needed: this answer is still empty."
+     }
+    ],
+    "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request.",
+    "lockAria": "true",
+    "active": "ex-decisiveEvidence",
+    "activeTop": 413,
+    "activeBottom": 487,
+    "viewport": 900,
+    "bars": [
+     {
+      "el": "bar",
+      "top": 0,
+      "bottom": 52
+     }
+    ],
+    "overflow": {
+     "doc": "1024/1024",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1280": {
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "h": 74,
+      "cut": false,
+      "invalid": "true",
+      "error": "Needed: this answer is still empty."
+     },
+     {
+      "id": "ex-periodRelevance",
+      "h": 74,
+      "cut": false,
+      "invalid": "true",
+      "error": "Needed: this answer is still empty."
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "h": 74,
+      "cut": false,
+      "invalid": "true",
+      "error": "Needed: this answer is still empty."
+     }
+    ],
+    "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request.",
+    "lockAria": "true",
+    "active": "ex-decisiveEvidence",
+    "activeTop": 413,
+    "activeBottom": 487,
+    "viewport": 900,
+    "bars": [
+     {
+      "el": "bar",
+      "top": 0,
+      "bottom": 52
+     }
+    ],
+    "overflow": {
+     "doc": "1280/1280",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1600": {
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "h": 74,
+      "cut": false,
+      "invalid": "true",
+      "error": "Needed: this answer is still empty."
+     },
+     {
+      "id": "ex-periodRelevance",
+      "h": 74,
+      "cut": false,
+      "invalid": "true",
+      "error": "Needed: this answer is still empty."
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "h": 74,
+      "cut": false,
+      "invalid": "true",
+      "error": "Needed: this answer is still empty."
+     }
+    ],
+    "status": "Not locked yet. Still needed: the decisive evidence, why it matters for this period and the action or source request.",
+    "lockAria": "true",
+    "active": "ex-decisiveEvidence",
+    "activeTop": 413,
+    "activeBottom": 487,
+    "viewport": 900,
+    "bars": [
+     {
+      "el": "bar",
+      "top": 0,
+      "bottom": 52
+     }
+    ],
+    "overflow": {
+     "doc": "1600/1600",
+     "clean": true,
+     "bad": []
+    }
+   }
+  },
+  "explain-ready": {
+   "320": {
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-periodRelevance",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     }
+    ],
+    "status": "Ready. Press Lock it in when you are sure of the call.",
+    "lockAria": "false",
+    "active": "ex-actionOrRequest",
+    "activeTop": 1362,
+    "activeBottom": 1436,
+    "viewport": 800,
+    "bars": [
+     {
+      "el": "bar",
+      "top": 0,
+      "bottom": 52
+     }
+    ],
+    "overflow": {
+     "doc": "320/320",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "375": {
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-periodRelevance",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     }
+    ],
+    "status": "Ready. Press Lock it in when you are sure of the call.",
+    "lockAria": "false",
+    "active": "ex-actionOrRequest",
+    "activeTop": 2157,
+    "activeBottom": 2231,
+    "viewport": 800,
+    "bars": [
+     {
+      "el": "bar",
+      "top": 0,
+      "bottom": 52
+     }
+    ],
+    "overflow": {
+     "doc": "375/375",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "768": {
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-periodRelevance",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     }
+    ],
+    "status": "Ready. Press Lock it in when you are sure of the call.",
+    "lockAria": "false",
+    "active": "ex-actionOrRequest",
+    "activeTop": 1670,
+    "activeBottom": 1744,
+    "viewport": 900,
+    "bars": [
+     {
+      "el": "bar",
+      "top": 0,
+      "bottom": 52
+     }
+    ],
+    "overflow": {
+     "doc": "768/768",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1024": {
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-periodRelevance",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     }
+    ],
+    "status": "Ready. Press Lock it in when you are sure of the call.",
+    "lockAria": "false",
+    "active": "ex-actionOrRequest",
+    "activeTop": 1670,
+    "activeBottom": 1744,
+    "viewport": 900,
+    "bars": [
+     {
+      "el": "bar",
+      "top": 0,
+      "bottom": 52
+     }
+    ],
+    "overflow": {
+     "doc": "1024/1024",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1280": {
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-periodRelevance",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     }
+    ],
+    "status": "Ready. Press Lock it in when you are sure of the call.",
+    "lockAria": "false",
+    "active": "ex-actionOrRequest",
+    "activeTop": 1670,
+    "activeBottom": 1744,
+    "viewport": 900,
+    "bars": [
+     {
+      "el": "bar",
+      "top": 0,
+      "bottom": 52
+     }
+    ],
+    "overflow": {
+     "doc": "1280/1280",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1600": {
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-periodRelevance",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "h": 74,
+      "cut": false,
+      "invalid": null,
+      "error": null
+     }
+    ],
+    "status": "Ready. Press Lock it in when you are sure of the call.",
+    "lockAria": "false",
+    "active": "ex-actionOrRequest",
+    "activeTop": 1670,
+    "activeBottom": 1744,
+    "viewport": 900,
+    "bars": [
+     {
+      "el": "bar",
+      "top": 0,
+      "bottom": 52
+     }
+    ],
+    "overflow": {
+     "doc": "1600/1600",
+     "clean": true,
+     "bad": []
+    }
+   }
+  },
+  "end-counts": {
+   "320": {
+    "counts": [
+     "8caught",
+     "5let stand correctly",
+     "1false flag"
+    ],
+    "overflow": {
+     "doc": "320/320",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "375": {
+    "counts": [
+     "8caught",
+     "5let stand correctly",
+     "1false flag"
+    ],
+    "overflow": {
+     "doc": "375/375",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "768": {
+    "counts": [
+     "8caught",
+     "5let stand correctly",
+     "1false flag"
+    ],
+    "overflow": {
+     "doc": "768/768",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1024": {
+    "counts": [
+     "8caught",
+     "5let stand correctly",
+     "1false flag"
+    ],
+    "overflow": {
+     "doc": "1024/1024",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1280": {
+    "counts": [
+     "8caught",
+     "5let stand correctly",
+     "1false flag"
+    ],
+    "overflow": {
+     "doc": "1280/1280",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "1600": {
+    "counts": [
+     "8caught",
+     "5let stand correctly",
+     "1false flag"
+    ],
+    "overflow": {
+     "doc": "1600/1600",
+     "clean": true,
+     "bad": []
+    }
+   }
+  }
+ },
+ "sampleOrigin": {
+  "afterSample": "synthetic",
+  "afterReplacingLedger": null,
+  "message": "This ledger is no longer the Kestrel sample, so where the figures come from is unset. Choose it for this case."
+ },
+ "errors": []
+}

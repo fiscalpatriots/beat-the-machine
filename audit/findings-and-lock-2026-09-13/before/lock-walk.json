@@ -1,0 +1,479 @@
+{
+ "ran": "Mon Sep 14 2026 00:07:15 GMT-0400 (Eastern Daylight Time)",
+ "root": "C:/Users/Khaled/AppData/Local/Temp/claude/C--Users-Khaled-Documents-Coach-Dashboard-HQ/deeea160-5862-48da-a2b8-96fa4107cd67/scratchpad/before",
+ "checks": [
+  {
+   "name": "the required read is taken and the first practice line opens",
+   "pass": true,
+   "detail": null
+  },
+  {
+   "name": "the practice round reaches the bridge",
+   "pass": true,
+   "detail": null
+  },
+  {
+   "name": "the practice lines never ask for a written explanation",
+   "pass": true,
+   "detail": null
+  },
+  {
+   "name": "fresh line 1 opens after the bridge",
+   "pass": true,
+   "detail": null
+  },
+  {
+   "name": "the three boxes carry their labels",
+   "pass": true,
+   "detail": [
+    "The decisive evidence",
+    "Why it matters for this period",
+    "The action or source request that follows"
+   ]
+  },
+  {
+   "name": "each box is required and described by a visible hint",
+   "pass": false,
+   "detail": [
+    null,
+    null,
+    null
+   ]
+  },
+  {
+   "name": "no placeholder text is left to be cut off",
+   "pass": false,
+   "detail": null
+  },
+  {
+   "name": "the lock is marked not ready for a screen reader and points at the status line",
+   "pass": false,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ],
+    "stored": [
+     null,
+     null
+    ],
+    "lockAria": null,
+    "lockDisabled": true,
+    "lockDescribedby": null,
+    "status": null,
+    "statusRole": null,
+    "statusLive": null,
+    "statusVisible": false,
+    "active": "BODY",
+    "boxes": [
+     {
+      "id": "ex-decisiveEvidence",
+      "value": "",
+      "invalid": null,
+      "describedby": null,
+      "required": null,
+      "label": "The decisive evidence",
+      "error": null,
+      "errorVisible": false,
+      "errorColor": null
+     },
+     {
+      "id": "ex-periodRelevance",
+      "value": "",
+      "invalid": null,
+      "describedby": null,
+      "required": null,
+      "label": "Why it matters for this period",
+      "error": null,
+      "errorVisible": false,
+      "errorColor": null
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "value": "",
+      "invalid": null,
+      "describedby": null,
+      "required": null,
+      "label": "The action or source request that follows",
+      "error": null,
+      "errorVisible": false,
+      "errorColor": null
+     }
+    ]
+   }
+  },
+  {
+   "name": "no basis chip: no call locked and no step taken",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "name": "no basis chip: the status line says what is still needed",
+   "pass": false,
+   "detail": {
+    "status": null
+   }
+  },
+  {
+   "name": "no basis chip: focus moves to chip",
+   "pass": false,
+   "detail": {
+    "active": "BODY"
+   }
+  },
+  {
+   "name": "empty boxes: no call locked and no step taken",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "name": "empty boxes: the status line says what is still needed",
+   "pass": false,
+   "detail": {
+    "status": null
+   }
+  },
+  {
+   "name": "empty boxes: focus moves to ex-decisiveEvidence",
+   "pass": false,
+   "detail": {
+    "active": "BODY"
+   }
+  },
+  {
+   "name": "empty boxes: each box is aria-invalid with a visible error in words, tied by aria-describedby",
+   "pass": false,
+   "detail": [
+    {
+     "id": "ex-decisiveEvidence",
+     "value": "",
+     "invalid": null,
+     "describedby": null,
+     "required": null,
+     "label": "The decisive evidence",
+     "error": null,
+     "errorVisible": false,
+     "errorColor": null
+    },
+    {
+     "id": "ex-periodRelevance",
+     "value": "",
+     "invalid": null,
+     "describedby": null,
+     "required": null,
+     "label": "Why it matters for this period",
+     "error": null,
+     "errorVisible": false,
+     "errorColor": null
+    },
+    {
+     "id": "ex-actionOrRequest",
+     "value": "",
+     "invalid": null,
+     "describedby": null,
+     "required": null,
+     "label": "The action or source request that follows",
+     "error": null,
+     "errorVisible": false,
+     "errorColor": null
+    }
+   ]
+  },
+  {
+   "name": "whitespace: no call locked and no step taken",
+   "pass": true,
+   "detail": {
+    "step": 18,
+    "calls": [
+     null,
+     null,
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "name": "whitespace: the status line says what is still needed",
+   "pass": false,
+   "detail": {
+    "status": null
+   }
+  },
+  {
+   "name": "whitespace: focus moves to ex-decisiveEvidence",
+   "pass": false,
+   "detail": {
+    "active": "ex-actionOrRequest"
+   }
+  },
+  {
+   "name": "punctuation, Enter on the page: no call locked and no step taken",
+   "pass": false,
+   "detail": {
+    "step": 19,
+    "calls": [
+     "flag",
+     null,
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "name": "punctuation, Enter on the page: the status line says what is still needed",
+   "pass": false,
+   "detail": {
+    "status": null
+   }
+  },
+  {
+   "name": "punctuation, Enter on the page: focus moves to ex-decisiveEvidence",
+   "pass": false,
+   "detail": {
+    "active": "BODY"
+   }
+  }
+ ],
+ "refusals": {
+  "no basis chip": {
+   "step": 18,
+   "calls": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "stored": [
+    null,
+    null
+   ],
+   "lockAria": null,
+   "lockDisabled": true,
+   "lockDescribedby": null,
+   "status": null,
+   "statusRole": null,
+   "statusLive": null,
+   "statusVisible": false,
+   "active": "BODY",
+   "boxes": [
+    {
+     "id": "ex-decisiveEvidence",
+     "value": "",
+     "invalid": null,
+     "describedby": null,
+     "required": null,
+     "label": "The decisive evidence",
+     "error": null,
+     "errorVisible": false,
+     "errorColor": null
+    },
+    {
+     "id": "ex-periodRelevance",
+     "value": "",
+     "invalid": null,
+     "describedby": null,
+     "required": null,
+     "label": "Why it matters for this period",
+     "error": null,
+     "errorVisible": false,
+     "errorColor": null
+    },
+    {
+     "id": "ex-actionOrRequest",
+     "value": "",
+     "invalid": null,
+     "describedby": null,
+     "required": null,
+     "label": "The action or source request that follows",
+     "error": null,
+     "errorVisible": false,
+     "errorColor": null
+    }
+   ]
+  },
+  "empty boxes": {
+   "step": 18,
+   "calls": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "stored": [
+    null,
+    null
+   ],
+   "lockAria": null,
+   "lockDisabled": true,
+   "lockDescribedby": null,
+   "status": null,
+   "statusRole": null,
+   "statusLive": null,
+   "statusVisible": false,
+   "active": "BODY",
+   "boxes": [
+    {
+     "id": "ex-decisiveEvidence",
+     "value": "",
+     "invalid": null,
+     "describedby": null,
+     "required": null,
+     "label": "The decisive evidence",
+     "error": null,
+     "errorVisible": false,
+     "errorColor": null
+    },
+    {
+     "id": "ex-periodRelevance",
+     "value": "",
+     "invalid": null,
+     "describedby": null,
+     "required": null,
+     "label": "Why it matters for this period",
+     "error": null,
+     "errorVisible": false,
+     "errorColor": null
+    },
+    {
+     "id": "ex-actionOrRequest",
+     "value": "",
+     "invalid": null,
+     "describedby": null,
+     "required": null,
+     "label": "The action or source request that follows",
+     "error": null,
+     "errorVisible": false,
+     "errorColor": null
+    }
+   ]
+  },
+  "whitespace": {
+   "step": 18,
+   "calls": [
+    null,
+    null,
+    null,
+    null,
+    null
+   ],
+   "stored": [
+    {
+     "decisiveEvidence": "   ",
+     "periodRelevance": "\t\t",
+     "actionOrRequest": "\n\n"
+    },
+    null
+   ],
+   "lockAria": null,
+   "lockDisabled": true,
+   "lockDescribedby": null,
+   "status": null,
+   "statusRole": null,
+   "statusLive": null,
+   "statusVisible": false,
+   "active": "ex-actionOrRequest",
+   "boxes": [
+    {
+     "id": "ex-decisiveEvidence",
+     "value": "   ",
+     "invalid": null,
+     "describedby": null,
+     "required": null,
+     "label": "The decisive evidence",
+     "error": null,
+     "errorVisible": false,
+     "errorColor": null
+    },
+    {
+     "id": "ex-periodRelevance",
+     "value": "\t\t",
+     "invalid": null,
+     "describedby": null,
+     "required": null,
+     "label": "Why it matters for this period",
+     "error": null,
+     "errorVisible": false,
+     "errorColor": null
+    },
+    {
+     "id": "ex-actionOrRequest",
+     "value": "\n\n",
+     "invalid": null,
+     "describedby": null,
+     "required": null,
+     "label": "The action or source request that follows",
+     "error": null,
+     "errorVisible": false,
+     "errorColor": null
+    }
+   ]
+  },
+  "punctuation, Enter on the page": {
+   "step": 19,
+   "calls": [
+    "flag",
+    null,
+    null,
+    null,
+    null
+   ],
+   "stored": [
+    {
+     "decisiveEvidence": "...",
+     "periodRelevance": "...",
+     "actionOrRequest": "..."
+    },
+    null
+   ],
+   "lockAria": null,
+   "lockDisabled": null,
+   "lockDescribedby": null,
+   "status": null,
+   "statusRole": null,
+   "statusLive": null,
+   "statusVisible": false,
+   "active": "BODY",
+   "boxes": []
+  }
+ },
+ "errors": [],
+ "steps": {
+  "lines": 14,
+  "lines2": 5,
+  "l1last": 16,
+  "bridge": 17,
+  "l2": 18,
+  "l2last": 22,
+  "done": 24,
+  "hasR2": true
+ },
+ "failure": "TypeError: Cannot read properties of undefined (reading 'error')\n    at C:\\Users\\Khaled\\Documents\\beat-the-machine\\audit\\findings-and-lock-2026-09-13\\lock-walk.cjs:146:66",
+ "passed": 8,
+ "failed": 13
+}
