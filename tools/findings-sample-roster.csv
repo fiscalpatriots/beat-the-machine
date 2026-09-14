@@ -1,0 +1,10 @@
+participant,codename,consent,role
+P01,REDLINE,yes,student
+P02,BLUEBOOK,yes,student
+P03,TIEOUT,yes,practitioner
+P04,FOOTNOTE,no,student
+P05,MARGINCALL,yes,educator
+P06,HARDCLOSE,yes,student
+P06,LEDGERHAWK,yes,student
+P07,DEPOTNINE,yes,
+P08,NOSHOW,yes,student
