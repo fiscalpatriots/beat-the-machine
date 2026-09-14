@@ -5,6 +5,42 @@ Live at https://fiscalpatriots.github.io/beat-the-machine/
 
 ---
 
+## 1.7.0, what changed since 1.6.1 (draft, not released)
+
+Draft written 13 September 2026. It is not released: the heading of this file stays at 1.6.1 until
+the repaired release is frozen, and nothing below is pushed until then. Every change answers a
+finding in the third independent review of 13 September 2026, which reviewed 1.6.1 at `b6ba468` and
+the command line package at `130b6b7`. Commits in the second-pass repository are marked as such.
+
+| Finding in the third review | What changed | Commits |
+| --- | --- | --- |
+| **1. The record counted attempts as players and scored a new case against the old key.** Two attempts under one codename came back as two players, and a Kestrel record was scored against Halyard | `tools/findings.py` scores every record against the case file for the version it names and refuses a version it has no file for. It reports received attempts, completed attempts, distinct codenames and facilitator-confirmed participants as four separate counts, reads only the first eligible attempt under each codename, and lists reattempts in their own table. `READOUT-TEMPLATE.md` defines each count once, and the facilitator guides never report codenames as people. The sample carries brightwater-v6 runs with written explanations | `c6f0088`, `3bdb3ff`, `a42d7af`, `19f4605`, `56b87a7` |
+| **2. The reviewer page claimed more than the build shows.** "Reads better than a person writes", "every figure against the ledger", the universal input promise, and a counted unit named two ways | `review.html` claims only what the checker and the evidence show. The drill's scope note, the 404 page, the release notes and the facilitator guides no longer promise any ledger or every figure. The two earlier design variants, `review-a.html` and `review-b.html`, still served and still carrying the old claims, are retired to a noindex pointer at `review.html` | `b956423`, `8abea9e`, `19f4605`, `49767ad` |
+| **3. The reason score and the rank.** The case guide said the reason score never moves the rank, and the executed points said it does. Chips measure agreement with accepted categories, not reasoning, and the Brightwater evidence pre-solved item 3 | The case guide, the governance note, both facilitator guides and five strings in the drill now say the reason's fifty points count toward the rank; the scoring code is unchanged. On `brightwater-v6` every assessment call needs a three-part written explanation (the decisive evidence, why it matters for the period, the action or source request) before it locks, the evidence shows document contents without saying what they establish, and `RUBRIC.md` with a blind scoring sheet puts the explanations in front of an educator | `8abea9e`, `f376b84`, `6447d97`, `1fcedbd`, `19f4605` |
+| **4. The checker contract.** "Doubled", "remained at", a fraction and Arabic-Indic digits all cleared, Prompt 1's own labels were not read as roles, and the parity claim was byte for byte on files that differed | Multipliers, fractions, digits outside 0 to 9 and scale words are unparsed spans that leave a sentence not checked; "remained at" and other no-change claims no longer clear when the line moved; `prior` and `current` in front of a figure are read as roles. `CHECKER.md` says what the grammar reads and a sentence clears only when every quantitative expression in it is accounted for. The suite holds 212 fixtures, including the forty probes and 113 mutations across six classes, and the Prompt 1 rerun is recorded in `audit/PROMPT1-RERUN-2026-09-13.md`. The Python checker mirrors the contract, and one shared file of 212 inputs agrees on every compared field in both implementations | `d081409`, `71d457b`; second-pass `acdf580`, `fe8cd49`, `b523044` |
+| **5. The author page.** An unresolved checker result became a clean suggestion, a save after an edit kept stale figures, and an unbound sentence vanished | The author page reads with the checker's own reader and holds what the checker holds, including a direction word it cannot tie to a line; save and preview are disabled until the inputs are read again; every sentence comes back as a card or an open item that must be settled; the case records whether it is synthetic or a permitted real case, and the drill's introduction follows it. A card checked within scope now names the numbers the checker read and left outside the check | `052fd1f`, `81f92dc`, `1fcedbd`, `5c6f9ab`, `742525a`, `50927f4` |
+| **6. The three-ledger evidence.** The runs were not comparable, and unsupported exclusions and forecasts were not counted | Every unsupported claim in the six retained drafts is counted by class with its exact text, the development-session run is labeled apart from the fresh-context runs, and the prediction inference is gone | `a3ada19` |
+
+**One row reserved.** The decide-first step is being reworked in its own lane, which writes its own
+row here.
+
+### What remains open
+
+- **Receipt deployment.** `RECEIPT_ENDPOINT` is still empty in `index.html`. A synthetic receipt has
+  to reach the real destination, and a retried attempt has to leave one stored record, before any
+  collection is described as a verified store.
+- **Observed practitioner sessions.** Two or three practitioners on a ledger and memo they did not
+  build, uncoached, each ending in a saved review record. None has happened.
+- **Educator review.** An independent educator's review of the keys, and blind scoring of the written
+  explanations against `RUBRIC.md`, with a second scorer on a subset. Not yet done.
+- **Clean-context evidence reruns.** The three paired drafts repeated in fresh contexts under fixed
+  instructions, with every output kept and a second reader classifying the unsupported claims. Not
+  yet run.
+- **Opening a saved case in the author page.** The author page saves a case file but cannot open
+  one. Ruled on 13 September 2026 to come after the freeze.
+
+---
+
 ## 1.6.1, what changed since 1.6.0
 
 1.6.1 closes the items the release QA of 13 September left open that did not need another person.
@@ -188,7 +224,7 @@ drill reads, so the two surfaces cannot drift apart.
 | `Second-Pass-Review-Protocol.pdf` | The same protocol, printable |
 | `PROVENANCE.md` | Where the case came from, who wrote the memo, and what was authored rather than generated |
 | `GOVERNANCE-NOTE.md` | The decisions taken during the build and who took them |
-| `INTRO-CANDIDATES.md` | The intro lines considered and the one chosen |
+| `INTRO-CANDIDATES.md` | The intro lines considered on 12 September, kept as history; none of them is the live intro |
 | `RELEASE-NOTES.md` | This file |
 
 ### Running a session

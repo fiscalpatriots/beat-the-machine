@@ -3,7 +3,11 @@
 Rewritten 12 September 2026. Constraints: under 80 words, two short paragraphs, contractions
 fine, no "why each account moved" and nothing standing in for "cover story", no colon and
 reveal, no "some of it is X and some of it is Y" pairing, no closing aphorism, no em dashes.
-Candidate B is the one live on the site.
+Candidate B was the one live on the site on 12 September.
+
+**Superseded, kept as history.** None of the three is live now. The Halyard memo carries planted
+arithmetic defects on lines 1 and 8, so "every figure it quotes" is untrue of it, and the drill's
+opening screen in `index.html` no longer makes that promise.
 
 ## A
 
