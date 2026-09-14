@@ -56,9 +56,22 @@
 .pane textarea{min-height:210px}
 .hint{margin:var(--s2) 0 0;font-size:var(--t-small);line-height:1.5;color:var(--ink-soft)}
 
-/* ---------- the case settings ---------- */
-.setgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
-  gap:var(--s4);margin:var(--s5) 0 0}
+/* ---------- the case settings ----------
+   One column on a phone, two from 600 and four from 900. The period and both two-way choices
+   take two columns on a desk, so "July close, prepared from the general ledger" and "Owes
+   commentary" read whole instead of being cut off or wrapped inside a half-width button. Every
+   row fills, so the grid never leaves a hole or reorders a field. */
+.setgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s4);margin:var(--s5) 0 0}
+@media (min-width:600px){
+  .setgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .setgrid .f.span2{grid-column:1/-1}
+}
+@media (min-width:900px){
+  .setgrid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .setgrid .f.span2{grid-column:span 2}
+}
+/* a box on a card grows to what it holds, so a prefilled line is never cut off mid-sentence */
+.kfield textarea{overflow-y:hidden}
 .setgrid .f{min-width:0}
 .setgrid label,.setgrid .lab{display:block;margin:0 0 var(--s2);font-size:var(--t-label);
   font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft)}
@@ -173,9 +186,9 @@ details.more>div{padding:0 var(--s5) var(--s5)}
         <label for="cver">Version</label>
         <input type="text" id="cver" placeholder="v1" autocomplete="off" value="v1">
       </div>
-      <div class="f">
+      <div class="f span2">
         <label for="cperiod">Period</label>
-        <input type="text" id="cperiod" placeholder="July close, prepared from the general ledger" autocomplete="off">
+        <input type="text" id="cperiod" placeholder="July close, from the ledger" autocomplete="off">
       </div>
       <div class="f">
         <label for="ccolA">Prior column heading</label>
@@ -193,14 +206,14 @@ details.more>div{padding:0 var(--s5) var(--s5)}
         <label for="pct">Percent floor</label>
         <div class="adorn"><input type="number" id="pct" value="10" min="0" step="0.5"><span class="unit">%</span></div>
       </div>
-      <div class="f">
+      <div class="f span2">
         <span class="lab" id="rulelab">Both legs, or either</span>
         <div class="seg" id="ruleseg" role="group" aria-labelledby="rulelab">
           <button type="button" data-v="both" aria-pressed="true">Both legs</button>
           <button type="button" data-v="either" aria-pressed="false">Either leg</button>
         </div>
       </div>
-      <div class="f">
+      <div class="f span2">
         <span class="lab" id="zerolab">Zero prior balance</span>
         <div class="seg" id="zeroseg" role="group" aria-labelledby="zerolab">
           <button type="button" data-v="owing" aria-pressed="true">Owes commentary</button>
@@ -984,9 +997,40 @@ function readInto(which){
   items.forEach(function(it, ix){ wireItem(it, prefix, ix + 1); });
   $(main ? "cards" : "fcards").innerHTML = cards.map(function(c){ return drawCard(c, prefix); }).join("");
   cards.forEach(function(c){ wireCard(c, prefix); });
+  fitBoxes($(main ? "items" : "fitems"));
+  fitBoxes($(main ? "cards" : "fcards"));
   DIRTY = true;
   refreshGate();
 }
+
+/* ---------- a card's boxes grow to what they hold ----------
+   The why, the tell, the facts on file and a left-out reason arrive prefilled, often longer than
+   a fixed box, which cut them off mid-sentence. Each grows to its text on a read, as it is typed
+   in, and when the window changes width. */
+function fitBox(t){
+  if(!t || !t.offsetParent) return;
+  t.style.height = "auto";
+  t.style.height = (t.scrollHeight + 2) + "px";
+}
+function fitBoxes(root){
+  if(!root) return;
+  Array.prototype.forEach.call(root.querySelectorAll(".kcard textarea"), fitBox);
+}
+document.addEventListener("input", function(e){
+  var t = e.target;
+  if(t && t.tagName === "TEXTAREA" && t.closest && t.closest(".kcard")) fitBox(t);
+});
+(function(){
+  var lastWidth = window.innerWidth, pending = 0;
+  window.addEventListener("resize", function(){
+    if(window.innerWidth === lastWidth) return;
+    lastWidth = window.innerWidth;
+    clearTimeout(pending);
+    pending = setTimeout(function(){
+      ["items", "cards", "fitems", "fcards"].forEach(function(id){ fitBoxes($(id)); });
+    }, 120);
+  });
+})();
 function readMain(){ readInto(1); }
 function readFresh(){ readInto(2); }
 
@@ -1025,7 +1069,7 @@ function refreshGate(){
   $(id).addEventListener("input", refreshGate);
   $(id).addEventListener("change", refreshGate);
 });
-$("freshblock").addEventListener("toggle", refreshGate);
+$("freshblock").addEventListener("toggle", function(){ refreshGate(); fitBoxes($("fitems")); fitBoxes($("fcards")); });
 ["cname","cver","cperiod","ccolA","ccolB","cperm","fname","fperiod"].forEach(function(id){
   $(id).addEventListener("input", markDirty);
 });
@@ -1271,13 +1315,48 @@ $("forget").addEventListener("click", function(){
   $("forget").hidden = true;
   refreshGate();
 });
+/* ---------- where the figures come from, and the sample ----------
+   Loading the Kestrel sample answers "Made up for this drill" for it, because Kestrel is
+   invented. That answer belongs to the sample and to nothing typed after it: once the ledger is
+   no longer the sample's, or the panes are cleared for a new case, the choice is taken back and
+   the author is asked again. Clear always takes it back, with the permission line, because a
+   cleared ledger has no figures for the answer to describe. */
+var SAMPLE_ORIGIN = false, SAMPLE_CLICKING = false, SAMPLE_FILLED = {};
+function unsetOrigin(){
+  Array.prototype.forEach.call($("originseg").querySelectorAll("button"), function(b){
+    b.setAttribute("aria-pressed", "false");
+  });
+  $("permf").hidden = true;
+  $("cperm").value = "";
+  SAMPLE_ORIGIN = false;
+  markDirty();
+}
+$("ledger").addEventListener("input", function(){
+  if(SAMPLE_ORIGIN && $("ledger").value.trim() !== SAMPLE_LEDGER.trim()){
+    unsetOrigin();
+    say("msg", "info", "This ledger is no longer the Kestrel sample, so where the figures come from is unset. Choose it for this case.");
+  }
+});
+$("originseg").addEventListener("click", function(e){
+  /* a choice the author makes is theirs, and no later edit takes it back */
+  if(!SAMPLE_CLICKING && e.target && e.target.closest && e.target.closest("button")) SAMPLE_ORIGIN = false;
+});
+
 $("clear").addEventListener("click", function(){
+  var hadOrigin = !!segValue("originseg");
   $("ledger").value = ""; $("memo").value = "";
   $("ledger").dispatchEvent(new Event("input")); $("memo").dispatchEvent(new Event("input"));
   SET1 = null; CARDS1 = []; ITEMS1 = [];
   $("readout").classList.add("hidden"); $("cardsec").classList.add("hidden");
   $("items").innerHTML = ""; $("cards").innerHTML = "";
-  say("msg", "info", "");
+  /* a new case starts: the origin is asked again, and a field the sample filled goes back to
+     empty unless the author has since typed over it */
+  unsetOrigin();
+  Object.keys(SAMPLE_FILLED).forEach(function(id){
+    if($(id).value === SAMPLE_FILLED[id]) $(id).value = "";
+  });
+  SAMPLE_FILLED = {};
+  say("msg", "info", hadOrigin ? "Cleared. Where the figures come from is unset too, so choose it for the next case." : "");
   $("saybox").innerHTML = "";
   refreshGate();
 });
@@ -1320,12 +1399,18 @@ $("loadsample").addEventListener("click", function(){
   $("memo").value = SAMPLE_MEMO;
   $("ledger").dispatchEvent(new Event("input"));
   $("memo").dispatchEvent(new Event("input"));
-  if(!$("cname").value) $("cname").value = "Kestrel IT Services";
-  if(!$("cperiod").value) $("cperiod").value = "July close, prepared from the general ledger";
-  if(!$("ccolA").value) $("ccolA").value = "June";
-  if(!$("ccolB").value) $("ccolB").value = "July";
-  /* Kestrel is invented, so the sample says so; a real close is never assumed */
-  if(!segValue("originseg")) $("originseg").querySelector('[data-v="synthetic"]').click();
+  [["cname", "Kestrel IT Services"], ["cperiod", "July close, prepared from the general ledger"],
+   ["ccolA", "June"], ["ccolB", "July"]].forEach(function(pair){
+    if(!$(pair[0]).value){ $(pair[0]).value = pair[1]; SAMPLE_FILLED[pair[0]] = pair[1]; }
+  });
+  /* Kestrel is invented, so the sample says so; a real close is never assumed, and the answer
+     is taken back once the ledger stops being the sample's */
+  if(!segValue("originseg")){
+    SAMPLE_CLICKING = true;
+    $("originseg").querySelector('[data-v="synthetic"]').click();
+    SAMPLE_CLICKING = false;
+    SAMPLE_ORIGIN = true;
+  }
   say("msg", "info", "The Kestrel sample is in. Press Read it.");
 });
 
