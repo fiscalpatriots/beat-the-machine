@@ -159,7 +159,8 @@ Four screens stand between the link and the first card.
 2. The data notice, read before anything is collected. See "The data notice" below.
 3. One screen for the codename and the chapters, on the same screen and both required.
 4. The ledger, read once as orientation, with a block under it saying what earns a flag and
-   what "Let it stand" means, and a plain Continue to the first card.
+   what "Let it stand" means, and one optional step of ledger-only picks. See "The ledger-only
+   picks" below.
 
 Nothing else is asked on the way in. After the round the player is offered a local record and a
 separate voluntary send, and neither is required to finish.
@@ -197,13 +198,32 @@ Under those four the screen prints the notice version and the product version. T
 rides into question A and into the local record, so a response can be tied to the wording the
 player actually read. Change the wording and the version goes up with it.
 
-## The ledger-only picks, removed
+## The ledger-only picks
 
-A short step on the orientation screen asked the player to tap up to three lines they would ask
-about first, before reading the memo. Khaled ruled on 13 September 2026 to drop it, and the drill
-no longer asks it. Rows filed while it was live carry `Prepicks:` followed by account numbers, or
-`Prepicks: skipped.`, in the round one free text question (`entry.1115022539`), and a record saved
-in that window carries a `prepicks` block. Neither was ever scored against a key.
+**Subject to Khaled's ruling.** This step was added on 13 September 2026 because the build
+handoff asks for a short ledger-only judgment before the narrative. It was removed and then
+restored the same evening, and it stays until the question of whether the drill needs one decision
+taken before the AI's text is read is settled. Removing it means deleting `prepickBlock`,
+`wirePrepicks` and `prepickLine` from `index.html` and restoring the plain Continue on the
+orientation screen.
+
+Under the statement on the orientation screen: "Before the memo: tap up to three lines you would
+ask about first, or skip." Fourteen chips, one per ledger account, capped at three, with Skip and
+Continue side by side under them. Once three are tapped the rest go grey until one is released.
+Nothing is typed and nothing is scored, so it costs a few seconds. The sticky bar on a phone and
+the rail on a desk read "Skip the picks and continue" and record a skip rather than pretending a
+player who never scrolled made a pick.
+
+The picks post into the round one free text question, `entry.1115022539`, which collected nothing
+before this. The cell reads:
+
+```
+Prepicks: 4200; 6000; 6400.
+```
+
+A skip posts `Prepicks: skipped.` rather than an empty cell, so a deliberate skip and a missing
+answer can be told apart. The picks are also in the local record under `prepicks`, with the
+question text and the entry id beside them.
 
 ## Test mode
 
@@ -225,6 +245,7 @@ their run. The fields are the ones the build handoff calls the minimum attempt r
 | Block | Fields |
 | --- | --- |
 | `attempt` | id, pseudonym and the note that a codename is not anonymity, organizations, role (null, not collected), notice version, product version, case versions and which path loaded them, form URL, mode per round, first attempt, run index, assistance source, started, completed, submission state, submission attempts, test attempt |
+| `prepicks` | picks, skipped, the entry id they post to, the question as it was asked |
 | `responses` | one per line for all nineteen: item id, round, case version, mode, account and name, error type, original decision, final decision, basis chips, the player's own words, `evidenceSupplied` (the on-file facts the card showed) and `evidenceSelected` (null, the page does not ask what the player read), confidence (null, not asked), assistance revealed, `elapsedSecondsOnCard`, skipped or missing reason, when feedback was revealed, the keyed decision, and whether the call agrees with the key |
 | `scoring` | key versions, the round one and round two counts, human rubric scores (null), scorer id (null), out-of-key finding (null), adjudication (null), exclusion reason, final resolution (null) |
 | `timing` | round one lap seconds, the whole minutes actually posted, round two seconds, `elapsedSecondsOnCards` summed over the nineteen lines |
@@ -697,7 +718,8 @@ reuses the same attempt id so it cannot double count.
 Nobody types anything after the round. The fourteen calls post as `Accept` or `Reject` so the
 existing multiple choice questions keep working, and every text question receives the player's
 basis plus generated metadata rather than player prose: the fourteen "Why" fields carry the
-basis, the call, the key and the error type for that line, question A carries the organizations and the three version stamps,
+basis, the call, the key and the error type for that line, the round one free text field carries
+the ledger-only picks, question A carries the organizations and the three version stamps,
 question B carries the attempt id, the lines missed, the pattern, the result and the longest run.
 The elapsed minutes question receives the lap time, off the clock rather than a tap.
 
@@ -753,10 +775,10 @@ the form re-rendered and "This is a required question" in the body, which is how
 apart from the outside. The hidden iframe the page uses cannot read either one, so the probe is
 the only way to check this from a script.
 
-Question C (`entry.756559246`), a former placeholder, now carries the round two string, the round
-two basis and the case version, and rows filed before 13 September 2026 carry the old placeholder
-note there. The round one free text field (`entry.1115022539`) carried the ledger-only picks only
-while that step was live.
+Two former placeholders now carry real data. The round one free text field
+(`entry.1115022539`) carries the ledger-only picks, and question C (`entry.756559246`) carries
+the round two string, the round two basis and the case version. Rows filed before 13 September
+2026 carry the old placeholder note in both.
 
 ## The basis a player gives
 
