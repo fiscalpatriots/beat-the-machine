@@ -4,22 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#005239">
-<title>Second Pass Checker: tie every figure back to the ledger</title>
-<meta name="description" content="Paste a ledger and the memo somebody drafted about it. Four checks settle every figure, every direction word and every account nobody mentioned.">
+<title>Second Pass Checker: tie the memo's figures back to the ledger</title>
+<meta name="description" content="Paste a ledger and the memo drafted about it. The checker ties each figure it can read to the ledger, tests the direction words, finds the lines nobody mentioned, and lists everything it could not read.">
 <link rel="canonical" href="https://fiscalpatriots.github.io/beat-the-machine/checker.html">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Second Pass">
 <meta property="og:url" content="https://fiscalpatriots.github.io/beat-the-machine/checker.html">
-<meta property="og:title" content="Second Pass Checker: tie every figure back to the ledger">
-<meta property="og:description" content="Paste a ledger and the memo somebody drafted about it. Four checks settle every figure, every direction word and every account nobody mentioned.">
+<meta property="og:title" content="Second Pass Checker: tie the memo's figures back to the ledger">
+<meta property="og:description" content="Paste a ledger and the memo drafted about it. The checker ties each figure it can read to the ledger, tests the direction words, finds the lines nobody mentioned, and lists everything it could not read.">
 <meta property="og:image" content="https://fiscalpatriots.github.io/beat-the-machine/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Second Pass, a second pass on AI-drafted close commentary, George Mason University, Costello College of Business.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Second Pass Checker: tie every figure back to the ledger">
-<meta name="twitter:description" content="Paste a ledger and the memo somebody drafted about it. Four checks settle every figure, every direction word and every account nobody mentioned.">
+<meta name="twitter:title" content="Second Pass Checker: tie the memo's figures back to the ledger">
+<meta name="twitter:description" content="Paste a ledger and the memo drafted about it. The checker ties each figure it can read to the ledger, tests the direction words, finds the lines nobody mentioned, and lists everything it could not read.">
 <meta name="twitter:image" content="https://fiscalpatriots.github.io/beat-the-machine/assets/og-image.png">
 
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -292,15 +292,16 @@ details.pr .btn-text{margin:0 0 var(--s5)}
 
   <div class="band">
     <h1>Second Pass Checker</h1>
-    <p class="promise">Paste a ledger and the memo somebody drafted about it, and every figure, every
-    direction word and every account nobody mentioned is settled before a reviewer spends an hour on it.</p>
+    <p class="promise">Paste a ledger and the memo drafted about it. Before a reviewer spends an hour on
+    it, the checker ties each figure it can read back to the ledger, tests the direction words, finds the
+    lines nobody mentioned, and says plainly what it could not read.</p>
     <ol class="steps3">
       <li><span class="disc">1</span><b>Paste the ledger.</b><span class="t">Account, prior balance,
-      current balance, in whatever shape your system exports.</span></li>
+      current balance, as a plain list or a QuickBooks or Xero comparison report.</span></li>
       <li><span class="disc">2</span><b>Paste the memo.</b><span class="t">The drafted commentary, however
       it is numbered.</span></li>
-      <li><span class="disc">3</span><b>Read the queue.</b><span class="t">What the checks could not settle,
-      with the two questions only a person answers.</span></li>
+      <li><span class="disc">3</span><b>Read the coverage, then the queue.</b><span class="t">How much of
+      the memo was checked at all, then what the checks could not settle.</span></li>
     </ol>
   </div>
 
@@ -308,7 +309,7 @@ details.pr .btn-text{margin:0 0 var(--s5)}
     <img src="screenshots/checker/hero-results.png" width="1280" height="600" decoding="async" fetchpriority="high"
       alt="The checker on the Halyard sample: a stacked coverage bar, four stat tiles reading four checked within scope, five needs review, none not checked and three failed, then the results table under them.">
     <figcaption class="figcap">See it on a real case. Halyard Provisioning Group, June 2026: fourteen ledger
-    lines against a twelve-sentence draft, one silent line and thirteen items left for a person. Load it from
+    lines against a twelve-sentence draft, one silent line and fourteen items left for a person. Load it from
     either pane header, or from Samples below.</figcaption>
   </figure>
 
@@ -320,8 +321,10 @@ details.pr .btn-text{margin:0 0 var(--s5)}
         <span class="cc" id="ledcc">0 characters</span>
       </div>
       <textarea id="ledger" spellcheck="false" placeholder="4000&#9;Product revenue&#9;5,240,000&#9;5,612,000&#10;Product revenue, 5240000, 5612000"></textarea>
-      <p class="hint">Tabs, commas or aligned columns, one account per line. Dollar signs, thousands commas
-      and (parentheses) for negatives are all read, and a header row is ignored.</p>
+      <p class="hint">One account per line with a prior and a current balance, separated by tabs, quoted
+      commas or aligned columns, or a QuickBooks or Xero comparison report. Dollar signs, thousands commas
+      and (parentheses) for negatives are read. A row it cannot use is listed, never guessed at, and
+      unquoted thousands in a comma separated line are refused. <a href="CHECKER.md">Accepted layouts</a></p>
     </div>
     <div class="pane">
       <div class="panehead">
@@ -330,8 +333,9 @@ details.pr .btn-text{margin:0 0 var(--s5)}
         <span class="cc" id="memcc">0 characters</span>
       </div>
       <textarea id="memo" class="prose" spellcheck="false" placeholder="1. Bad debt expense increased $42,000 following the reserve against the Coastal Grocers receivable.&#10;S2. Fleet fuel fell $5,200, which clears neither leg of the threshold."></textarea>
-      <p class="hint">Free text. A line starting <b>S1.</b>, <b>1.</b> or <b>(a)</b> is kept whole; anything
-      else is split into sentences.</p>
+      <p class="hint">A line starting <b>S1.</b>, <b>1.</b> or <b>(a)</b> is kept whole; anything else is
+      split into sentences. Dollar and percent figures and whole numbers in words are read. A multiplier,
+      a fraction or a form it does not read leaves that sentence <b>not checked</b>.</p>
     </div>
   </div>
 
@@ -470,9 +474,9 @@ details.pr .btn-text{margin:0 0 var(--s5)}
     </details>
     <details class="pr">
       <summary>Prompt 2, second pass</summary>
-      <p class="body">Hands over the ledger, the memo and only the sentences that passed the arithmetic and
-      the direction, with the two judgment questions and an instruction not to recompute what the checker
-      already computed. Run the checker first, or this one has nothing to carry.</p>
+      <p class="body">Hands over the run's coverage counts, every unresolved item, and the sentences that
+      were checked within scope with the two judgment questions, and tells the reviewer to recompute
+      anything they doubt. Run the checker first, or this one has nothing to carry.</p>
       <button class="btn-text" id="copyreview">Copy</button>
     </details>
   </div>
@@ -480,8 +484,9 @@ details.pr .btn-text{margin:0 0 var(--s5)}
   <div id="printdoc"></div>
 
   <div class="foot">
-    <p>Run it before anybody reads the memo. The mechanical checks settle what the numbers settle, and the
-    reviewer's time then goes to the queue: the driver, and the period.</p>
+    <p>Run it before anybody reads the memo, and read the coverage before the findings. The mechanical
+    checks settle only the figures they could read; the reviewer's time then goes to the queue: what was
+    not read, the driver, and the period.</p>
     <p>Everything you paste is processed by the script in your own browser. This page is served from GitHub
     Pages and loads one Google font; anything you copy into another AI service goes to that service under its
     terms.</p>
@@ -2909,7 +2914,8 @@ function printSummary(){
   tbl.appendChild(tb);d.appendChild(tbl);
 
   d.appendChild(el("p","psub","These are coverage counts, not a verdict. \"Checked within scope\" means each "+
-    "figure carried a role the words gave it and the unrounded comparison with the pasted ledger agreed; it does "+
+    "figure the checker read carried a role the words gave it and agreed with the pasted ledger unrounded, and "+
+    "every other number in the sentence was a year, a date, a label or a count named in its findings; it does "+
     "not mean the sentence is true."));
 
   d.appendChild(el("h2",null,"Unresolved items carried out of this run"));
@@ -3158,8 +3164,9 @@ function reviewerPrompt(){
          ". Failed: "+st.failed+".");
   p.push("Ledger rows read: "+st.rowsUsed+". Ledger rows skipped and never checked: "+st.rowsSkipped+".");
   p.push("Lines clearing the rule with no sentence about them: "+st.silent+".");
-  p.push("\"Checked within scope\" means only this: each figure in the sentence carried a role the words gave "+
-         "it, and the unrounded comparison with the pasted ledger agreed. It does not mean the sentence is true, "+
+  p.push("\"Checked within scope\" means only this: each figure the checker read in the sentence carried a role "+
+         "the words gave it and agreed with the pasted ledger unrounded, and every other number in it was a year, a "+
+         "date, a label or a count, named in its findings and not checked. It does not mean the sentence is true, "+
          "and it does not mean every figure in the memo was checked. Recompute anything you doubt.");
   p.push("");
   p.push("SOURCES ACTUALLY SUPPLIED TO THIS RUN. Nothing else was available to the checker, and no close "+

@@ -3,9 +3,12 @@
 `checker.html`, live at https://fiscalpatriots.github.io/beat-the-machine/checker.html
 
 The game at [index.html](index.html) trains a reviewer on fourteen lines of one case. This page is
-the tool that came out of it. Paste any ledger and any drafted commentary, press **Run Second
-Pass**, and the mechanical work is done before a person reads a word. What comes back is a table
-of findings and a short queue of questions that a person still has to answer.
+the tool that came out of it. Paste a ledger in one of the layouts below and the commentary drafted
+about it, press **Run Second Pass**, and the checks it can make are made before a person reads a
+word. What comes back is a coverage strip, a table of findings and a queue of questions that a
+person still has to answer. **Read the coverage before the findings.** A run says what it checked
+and what it could not read; a sentence it could not read is never reported as a sentence that was
+checked.
 
 One HTML file and no libraries. **Where your data goes**, printed on the page itself because a
 controller is entitled to know it before pasting a trial balance into a web page: this page is
@@ -18,7 +21,7 @@ the one network call the page makes, and it carries no ledger data.
 
 | Pane | What it takes |
 | --- | --- |
-| Ledger | Four shapes, told apart by the reader itself. **Plain:** one account per line, account number (optional), account name, prior balance, current balance, tab separated, comma separated or column aligned with two or more spaces. **QuickBooks Online Profit and Loss Comparison:** the title block, an account label of the form `4000 Recurring managed services` in the first column, the two period columns and the `$ change` and `% change` columns that the report's Calculations dropdown adds, with `Income`, `Cost of Goods Sold` and `Expenses` as section headers and `Total ...`, `Gross Profit`, `Net Operating Income` and `Net Income` as totals. **Xero Income Statement with a comparison period:** `Income`, `Less Cost of Sales`, `Gross Profit`, `Less Operating Expenses`, `Net Profit`, each section closed by its own `Total` row. **Anything in between.** Dollar signs, thousands commas and (parentheses) for negatives are read. |
+| Ledger | Three accepted layouts, told apart by the reader itself. **Plain:** one account per line, account number (optional), account name, prior balance, current balance, tab separated, comma separated with quoted fields, or column aligned with two or more spaces. **QuickBooks Online Profit and Loss Comparison:** the title block, an account label of the form `4000 Recurring managed services` in the first column, the two period columns and the `$ change` and `% change` columns that the report's Calculations dropdown adds, with `Income`, `Cost of Goods Sold` and `Expenses` as section headers and `Total ...`, `Gross Profit`, `Net Operating Income` and `Net Income` as totals. **Xero Income Statement with a comparison period:** `Income`, `Less Cost of Sales`, `Gross Profit`, `Less Operating Expenses`, `Net Profit`, each section closed by its own `Total` row. Numbers are read in whole dollars with the digits 0 to 9: dollar signs, thousands commas, decimals and (parentheses) or a minus sign for negatives. A layout outside these three is read only as far as its rows look like account lines, and every row it cannot use is listed. |
 | Memo | The drafted commentary as free text. A line beginning with a label such as `S1.`, `1.`, `(a)`, `a)` or a bullet is kept whole, so a numbered item that runs to two sentences stays one unit. Anything else is split at sentence boundaries and labelled S1, S2 and on. Word's curly quotes, en and em dashes and ellipsis are flattened first. |
 | Ratios (optional) | One per line, `Name = (4000 - 5000) / 4000`. Account numbers only, with plus, minus, times, divide and parentheses. Each ratio is computed for the prior month, the current month and the change between them, and expressed as a percent. |
 | Thresholds | A dollar floor (default $25,000) and a percent floor (default 10), each wearing its unit, and the rule as a two-way control: **both legs** or **either leg**. The dollar rule is **more than** the floor and the percent rule is **at least** the floor, both decided unrounded. |
@@ -48,6 +51,32 @@ pane keeps a monospace face and wraps a long line under itself rather than shrin
 running off the edge; the results table and the parse preview sit on percentage columns above 760
 and stack into labelled rows below it. It is verified by measuring `scrollWidth` against
 `clientWidth` on every element at every one of those widths, not just on the page.
+
+## Inputs it refuses or reads only in part
+
+These are refused or held rather than guessed at, and each one is listed on the page:
+
+| Input | What happens |
+| --- | --- |
+| A comma separated line with unquoted thousands, `6100,Rent,100,000,130,000` | The ledger is refused, with a request for tabs or quoted fields |
+| A row with fewer than two numbers, or with digits outside 0 to 9 | The row is skipped and listed by line number with the reason, and the coverage line says the ledger was not covered in full |
+| A duplicated account number | Every sentence naming it is held at **needs review** until a consolidation decision is made |
+| More numeric columns than two, with no header row | The columns not read are named as discarded and no sentence reads better than **needs review** until the two period columns are confirmed |
+| A total the reader cannot rebuild, such as Gross Profit or Net Income | Printed and left alone |
+| A spreadsheet file | Not opened. Copy the cells from Excel and paste them |
+
+## Choosing the two periods
+
+Only two columns are ever compared, the prior and the current. The reader picks them in this order,
+and the parse preview shows the pick with a dropdown for each so a person can change it:
+
+1. A header word: `prior`, `previous`, `last month`, `PY`, `PP` or `budget` for the prior column,
+   and `current`, `this month`, `actual` or `YTD` for the current one.
+2. The calendar: two month headings such as `Jul 2026` and `Jun 2026` are put in date order, so a
+   QuickBooks export that prints the current month first is still read the right way round.
+3. Left to right, with the mapping marked **unconfirmed** when no header named it.
+
+A column headed `change`, `variance`, `%` or `pct` is never picked as a period.
 
 ## The parse preview, before anything is checked
 
@@ -82,29 +111,56 @@ as the same thing. They are not.
    or a closed pair of parentheses says so, **and a minus sign in front of a bare number is part of
    the figure**; a lone opening bracket, as in `rose $30,000 (30%)`, is punctuation and the percent
    inside it is read normally.
-1b. **Unparsed spans.** Anything numeric the accepted grammar cannot read is recorded rather than
-   dropped. Four kinds: a **currency that is not the dollar** (`€30,000`, `£30,000`, `USD 90000`), a
-   **scale or multiplier word the grammar does not carry** (`$30.0 thousand`, `30 thousand`, `0.30
-   times`, `30 basis points`), a **quantity in words the grammar cannot resolve or that carries no
-   unit** (`a rise of thirty thousand`, `one third of the prior balance`, `two billion dollars`), and
-   a **run of digits standing where the words put a claim** that the figure reader did not take
-   (`increased by 800`, `increased by 1999`, `increased by 6200`). An unparsed span marks the
-   sentence **not checked** and goes to the reviewer's queue with the reason. A year or an account
-   number standing in an ordinary position, `finished on June 30`, `billed on 31 July`, `against
-   $18,000 in June 2025`, is not a claim and is left where it stands. The external review of 13
-   September 2026 asked for *needs review* here; the page says **not checked**, which is the
-   stronger of the two: nothing in the sentence was settled.
-1c. **Quantities written in words.** Units through millions are read: `thirty`, `thirty-one`,
-   `ninety`, `one hundred twenty-five thousand`, `two million`. A run is parsed to a figure and
-   compared like any other **only where both hold**: the parser resolves the run, and the words
-   beside it give it a unit (`dollars`, `percent`, `per cent`, `pct`, `%`, `percentage points`,
-   `pp`). So `rose thirty thousand dollars` is compared as $30,000 and `a change of ninety percent`
-   is compared as 90 percent and fails a ledger that moved 30 percent. A run the parser cannot
-   resolve, a fraction (`one third`), and anything above a million go to the queue wherever they
-   stand. A resolved run with **no unit word** goes to the queue where the words put a claim
-   (`a rise of thirty thousand`) and is left alone where they do not: `the thirty-one new
-   orthodontic plans` is a count, not a figure about the account, and it does not make a true
-   sentence unresolved. That is the same test a bare run of digits gets in 1b.
+1b. **What the grammar reads, and what it does not.** The figure reader reads the dollar and
+   percent forms in step 1 and the quantities in words in 1c, and nothing else. Every other piece of
+   quantitative language in a sentence is an **unparsed span**: it is recorded with its reason, it
+   goes to the reviewer's queue, and it marks the sentence **not checked** whatever else in the
+   sentence agreed. A sentence is checked within scope only when every quantitative expression in
+   it is accounted for. The unparsed kinds are:
+   - a **currency that is not the dollar**: `€30,000`, `£30,000`, `USD 90000`, `US$30,000`;
+   - a **scale or unit word the grammar does not carry**: `$30.0 thousand`, `30 thousand`, `0.30
+     times`, `30 basis points`, `90.0 per mille`, `3 points`;
+   - a **multiplier**: `doubled`, `tripled`, `halved`, `twice`, `twofold`, `two-fold`, `three
+     times`, `3x`;
+   - a **fraction**: `one and a half`, `a quarter of`, `half a percent`, `half the prior balance`,
+     `two thirds`, `cut in half`, `1/2`, `½`;
+   - a **decimal written in words**: `thirty point five percent`, `point five percent`;
+   - a **digit outside 0 to 9** or a numeric character: Arabic-Indic `٣٠٠٠٠`, fullwidth `３０`,
+     superscript `²`, `‰`;
+   - a **number glued to letters, underscores, dots or slashes** that the reader does not take:
+     `9e1 percent`, `30_000`, `.5 percent`;
+   - a **quantity in words the parser cannot resolve**, or one with no unit where the words put a
+     claim: `a rise of thirty thousand`, `two billion dollars`;
+   - **any other run of digits** the figure reader did not take, unless it is one of the forms in
+     the next paragraph: `increased by 800`, `increased by 1999`, `or 30.`
+
+   A number is accounted for without being a figure only as one of these, and the sentence's own
+   explanation names each one as **read and left outside the check**: a **year** (`in 2026`,
+   `June 2025`), a **date** (`June 30`, `31 July`, `on 6/1`), a **label or reference** (`Q2`,
+   `invoice 4471`, `Suite 200`, `line 5`), an **ordinal** (`3rd`), a **time of day**, an **account
+   number** standing as a reference, and a **count** written in front of the thing it counts (`12
+   new leases`, `the thirty-one new plans`). A count is not verified against the ledger. A year or
+   an account number spent as an amount, `increased by 1999`, `increased by 6200`, is not a
+   reference and is unparsed. The external review of 13 September 2026 asked for *needs review* on
+   unparsed spans; the page says **not checked**, which says that nothing in the sentence was
+   settled.
+1c. **Quantities written in words.** Whole numbers through millions are read: `thirty`,
+   `thirty-one`, `ninety`, `one hundred twenty-five thousand`, `two million`. A run is parsed to a
+   figure and compared like any other **only where both hold**: the parser resolves the run, and
+   the words beside it give it a unit (`dollars`, `percent`, `per cent`, `pct`, `%`, `percentage
+   points`, `pp`). So `rose thirty thousand dollars` is compared as $30,000 and `a change of ninety
+   percent` is compared as 90 percent and fails a ledger that moved 30 percent. Fractions, decimals
+   in words, multipliers and anything above a million are unparsed wherever they stand (1b). A
+   resolved run with **no unit word** is accounted for only as a count in front of a noun (`the
+   thirty-one new orthodontic plans`, `across three sites`), a label (`phase two`), or `one` as a
+   pronoun or idiom (`one of the larger moves`, `one-time`). Anywhere else, `or thirty`, `a rise of
+   thirty thousand`, it is unparsed.
+1d. **Roles Prompt 1 writes.** `prior` and `previous` standing in front of a figure give it the
+   prior balance role, and `current` gives it the current balance role, so a line drafted in the
+   Prompt 1 shape, `prior $96,000, current $138,400`, is checked on both balances. `prior year
+   $96,000` is not a prior balance: the word between them breaks the role, and the figure is held.
+   A figure followed by `or more`, `or less`, `at most`, `at least` and the like is a bound, not a
+   figure, and its role is unknown.
 2. **Account binding.** Three routes, each named on the page: **by account number**, **by account
    name**, and **by an exact figure**. The figure route is accepted only when the sentence also
    carries a word from that account's name that no named account shares. Where a figure ties to an
@@ -140,6 +196,14 @@ as the same thing. They are not.
    magnitude is compared as a magnitude and the sign is left to the direction check, which owns it.
 6. **Conclusion.** One status per sentence, below.
 
+**No-change claims.** `unchanged`, `remained at`, `remains at`, `stayed at`, `held at`, `kept at`,
+`continued at`, `maintained at`, `remained unchanged`, `stayed the same`, `remained constant`, `no
+change`, `no movement`, `level with`, and `remained` or `stayed` written straight in front of a
+figure, assert that the account did not move. They are tested against a movement of zero to the half
+cent: on a line that moved, the sentence **fails**; on a line that did not, the claim passes. A flat
+claim, `flat`, `held flat`, `steady`, `remained flat`, is looser and is tested against a movement
+inside half a percent of zero.
+
 **Negation.** `not`, `no`, `never`, `neither`, `nor`, `without`, `rather than`, `instead of`,
 `failed to` and the contracted forms **void** the direction claim and the figure claims in the
 clause they attach to, and force **needs review**. A negation is not read as the claim it would be
@@ -148,9 +212,13 @@ The threshold idioms a memo uses to say a line owes nothing, "no commentary is o
 neither leg", "carries no driver", "no change", are taken out before the test, and a clause with no
 figure and no direction word is inert.
 
-Two checks sit outside the six and are reported the same way. **Direction** tests rose, fell and
-flat against the sign of the movement, inside a clause that carries a figure tying to a bound
-account. **Threshold claims** test a sentence that asserts something about the rule itself, "fails
+Two checks sit outside the six and are reported the same way. **Direction** tests rose, fell, flat
+and the no-change words against the sign of the movement, inside a clause that carries a figure
+tying to a bound account. A direction word in a clause of its own is tested against the line that
+clause names; where it names none, stands beside a clause the figures did tie, and disagrees with
+every bound line, the sentence is held at **needs review** as **not tied to a line**. A clause
+opened by `as`, `because`, `while`, `but`, `after`, `before`, `so` or `though` describes a cause or
+a contrast, so its direction word is left alone unless it points back with `it` or names the line. **Threshold claims** test a sentence that asserts something about the rule itself, "fails
 the dollar leg", "clears neither leg", "carries no driver", against the rule as set; it is the one
 case where a sentence can be checked on its words rather than on a figure.
 
@@ -165,9 +233,9 @@ worst status any step assigned and the summary, the exports and the prompt all c
 
 | Status | What it means |
 | --- | --- |
-| **Checked within scope** | Every figure in the sentence carried a role the words gave it, and the unrounded comparison with the pasted ledger agreed. It does not mean the sentence is true. |
+| **Checked within scope** | Every quantitative expression in the sentence was accounted for: each figure carried a role the words gave it and agreed with the pasted ledger unrounded, and every other number was a year, a date, a label, an ordinal, a reference or a count, named in the sentence's explanation as left outside the check. The explanation lists the figures that were checked, says whether a direction word was tested, and names what was left outside. It does not mean the sentence is true. |
 | **Needs review** | Something is unresolved: a role the words do not give, a binding the checker will not settle by coincidence or by a clause naming two accounts, a duplicate account number, a percent it cannot compute, a clause the words negate, a column mapping nobody confirmed. A person has to answer it. |
-| **Not checked** | Nothing in the sentence could be tied to the ledger and tested. An unmatched sentence, a sentence with no figures, and a sentence carrying an unparsed span all land here. This is **not** the same as a sentence that was checked and found true, and the page never prints it as one. |
+| **Not checked** | The sentence could not be tied to the ledger and tested in full. An unmatched sentence, a sentence with no figures, and a sentence carrying an unparsed span all land here, even when every figure the reader did take agreed. This is **not** the same as a sentence that was checked and found true, and the page never prints it as one. |
 | **Failed** | At least one check on the sentence failed. |
 
 A sentence carrying no figures is **not checked** unless it makes a threshold claim, in which case
@@ -198,8 +266,10 @@ and what a reviewer ticks rides out with the run: into the human conclusion colu
 the JSON record as `reviewerAnswer`, and onto the line in the printed summary where an untouched
 question prints a blank rule for a pen. The queue is also repeated verbatim in Prompt 2. The
 table's own **Ask the controller** column carries the instruction in one imperative, and the
-question itself is asked in full in the queue, which is where it gets answered. The reviewer queue now also carries **unparsed
-figures**, **negated claims** and **binding conflicts**.
+question itself is asked in full in the queue, which is where it gets answered. The reviewer queue also carries **unparsed
+figures**, **negated claims**, **binding conflicts**, **unresolved directions**, and a **no source on file** item for
+every bound sentence that says no source is on file, owned by the controller, so a missing source stays a question
+for a person however well the figures tie.
 
 ## The boundary policy
 
@@ -222,7 +292,11 @@ node tests/run-checker-tests.cjs T02      one fixture
 node tests/run-checker-tests.cjs --dump T02
 ```
 
-`tests/checker-fixtures.json` holds **fifty-nine** fixtures and **all fifty-nine pass**.
+`tests/checker-fixtures.json` holds **212** fixtures and **all 212 pass**, and the suite adds one
+more check: every reader function `assets/second-pass-core.js` shares with `checker.html` must be the
+same function, so the author page and the checker cannot read one memo two ways. The same file sits
+in the second-pass repository, where `tests/test_parity_shared_inputs.py` runs all 212 inputs through
+this page under Node and through the Python checker and compares the outputs.
 
 - **T01 to T17**, the seventeen probes from the external audit of 13 September 2026, each carrying
   the required behavior from that audit as the assertion, plus four boundary and export companions.
@@ -245,10 +319,25 @@ node tests/run-checker-tests.cjs --dump T02
   true (cleared) and one that is false (failed), a hyphenated compound through the hundreds and
   thousands (`one hundred twenty-five thousand dollars`, read as $125,000), and a count in words
   standing where no claim stands, which must stay out of the queue.
+- **T32 and T43** were written as controls for `remained at`. The third review of 13 September 2026
+  showed that label was wrong: `remained at` asserts no movement, and the line moved, so both now
+  assert **failed**.
+- **P01 to P40**, the forty probes from the third review of 13 September 2026, entered exactly as
+  that bundle supplied them, each asserting the status the repaired contract requires.
+- **Six mutation classes, 113 fixtures**, written so each repaired class is proven closed from both
+  sides, with synonyms, word order, hyphenation, currency and percent placement and negation:
+  **MUL01 to MUL22** multipliers (18 refused, 4 accepted), **STILL01 to STILL28** no-change and flat
+  claims (21 refused, 7 accepted), **FRAC01 to FRAC26** fractions and
+  number words in percents (20 refused, 6 accepted), **DIGIT01 to DIGIT16** digits outside 0 to 9 and
+  numbers glued to letters (14 refused, 2 accepted), **COUNT01 to COUNT15** numbers that are not
+  figures (6 refused, 9 accepted), and **ROLE01 to ROLE06** the Prompt 1 line shape (3 refused, 3
+  accepted).
 
 The runner lifts the script out of `checker.html` and runs it against a document stub, so there is
-no build step and no dependency; a change to the page that breaks a probe fails the suite. The four
-sample cases produce output identical to the release the review examined.
+no build step and no dependency; a change to the page that breaks a probe fails the suite. After the
+third review's repairs the four samples keep their sentence statuses; the Halyard queue grows from
+13 items to 14, because card 13's "a shift toward lower margin produce" now comes back as a direction
+word the checker cannot tie to a line.
 
 ## What it does not do
 
@@ -264,6 +353,11 @@ sample cases produce output identical to the release the review examined.
 - **No second currency and no scale words.** `€30,000`, `USD 90000`, `$30.0 thousand`, `30 basis
   points` and `0.30 times the prior balance` are recorded as unparsed and the sentence is left
   unchecked. The page reads one currency, written in whole units with a dollar sign.
+- **No multipliers, fractions or other scripts.** `doubled`, `twice`, `one and a half percent`, `a
+  quarter of`, `½`, `thirty point five` and digits outside 0 to 9 are recorded as unparsed and the
+  sentence is left unchecked. It does not work out what they assert.
+- **No check on counts.** `12 new leases` and `the thirty-one new plans` are named as left outside
+  the check. Nothing in a ledger balance can confirm a count of leases, plans or people.
 - **No quantities in words above a million, and none without a unit.** Units through millions are
   read where a unit word stands beside them (rule 1c). `two billion dollars`, `one third of the
   prior balance` and `a rise of thirty thousand` are unparsed spans, and the sentence is left
@@ -358,7 +452,10 @@ number written out is the strongest binding route; full-dollar figures tie to th
 "current", "by" and "percent" are what give each figure its role, without which it comes back with
 the role unknown; and a direction word standing immediately beside the change figure is the only
 place the direction check reads it. A memo drafted this way runs clean: bound by account number,
-every figure checked within scope, direction PASS, and straight into the reviewer's queue.
+its figures checked within scope, direction PASS, and each "no source on file" straight into the
+reviewer's queue as a question for the controller. The three Prompt 1 drafts retained in `evidence/`
+went from 0 of 17 sentences checked within scope to 14 of 17 once `prior` and `current` were read as
+roles; the counts, inputs and revisions are in `audit/PROMPT1-RERUN-2026-09-13.md`.
 
 **Prompt 2, second pass**, is the reviewer prompt, and it needs a run first. It carries the run
 identifier and the source version, the rule as set with both boundary words spelled out, the
@@ -412,7 +509,7 @@ prior balances owing commentary.
 
 Coverage strip: **12** sentences read · **4** checked within scope · **5** needs review ·
 **0** not checked · **3** failed · **14** ledger rows used · **0** rows skipped · **1** silent line ·
-**13** in the reviewer queue.
+**14** in the reviewer queue.
 
 | Card | Bound | Figures, with the role read from the words | Direction | Threshold claim | Status |
 | --- | --- | --- | --- | --- | --- |
@@ -454,9 +551,9 @@ transfer to the checker, and a status here is never evidence that a driver is su
 
 ## Brightwater Dental Partners, June 2026, the round two case
 
-**Brightwater Dental Partners** is generated from `cases/brightwater-v4.json`, the five-account,
+**Brightwater Dental Partners** is generated from `cases/brightwater-v5.json`, the five-account,
 five-sentence dental group the game scores a player on cold. The Memo version field carries
-`brightwater-v4 memo, 13 September 2026`. A plain tab separated ledger with a two column header,
+`brightwater-v5 memo, 13 September 2026`. A plain tab separated ledger with a two column header,
 `Account / May 2026 / June 2026`, read chronologically. Thresholds $25,000 and 10 percent, both
 legs, no ratios.
 
@@ -465,8 +562,9 @@ Coverage strip: **5** sentences read, **5** checked within scope, **0** needs re
 **0** in the reviewer queue.
 
 This is the sample where the checker clears everything and settles nothing, and that is the point
-of it. Every figure in the v4 memo is right and every direction word agrees with the sign, so the
-mechanical pass has no finding to make. What each sentence then asserts is a cause, and a cause is
+of it. Every figure in the memo is right and every direction word agrees with the sign, so the
+mechanical pass has no finding to make. The counts in it, `thirty-one new orthodontic plans` and `two
+associate dentists`, and the dates, `1 June`, are named in each explanation as left outside the check. What each sentence then asserts is a cause, and a cause is
 not a figure. Four of the five name a driver the ledger cannot confirm or deny, which is why the
 game keys three of them `flag` and one `stand` on evidence a person has to weigh. A checker that
 reported a failure on this sample would be wrong, and a reader who took an empty queue as a clean
