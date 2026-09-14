@@ -2079,7 +2079,7 @@ function explainBlock(i){
   return '<div class="explain" role="group" aria-labelledby="exask">'+
     '<p class="ask" id="exask">Now say why, in three short answers.</p>'+
     '<p class="tiny basishint" id="exrule">All three are needed before this call locks. '+esc(EXPLAIN_MINIMUM_NOTE)+
-      ' The page does not score them; a person reads them.</p>'+
+      ' The page does not score them; a person will read them.</p>'+
     EXPLAIN_PROMPTS.map(function(p){
       return '<label class="basiswords" for="ex-'+p.k+'">'+esc(p.label)+'</label>'+
         '<p class="tiny exhint" id="ex-'+p.k+'-hint">'+esc(p.hint)+'</p>'+
@@ -2401,7 +2401,7 @@ function basisChips(val){
    chip in the key and no chip outside it. It is a compatibility check on the stated basis and
    not a rubric score, and it is counted separately from the call. Its fifty points go into the
    total the rank is read off, so it moves the rank, and it never moves the badges. The
-   three-dimension reasoning rubric is scored by a person outside this page. */
+   three-dimension reasoning rubric is for a person to score outside this page. */
 function basisKeyOf(c){
   if(c.basisKey && c.basisKey.length) return c.basisKey;
   return (c.key === "stand") ? [BASIS_HOLD] : [];
@@ -3096,7 +3096,7 @@ function attemptRecord(sentPayload){
       adjudication: null,
       exclusionReason: S.testAttempt ? "test attempt" : null,
       finalResolution: null,
-      rubricNote: "The three-dimension reasoning rubric is scored by a person outside this page."
+      rubricNote: "The three-dimension reasoning rubric is for a person to score outside this page, and this page never scores it."
     },
     timing: {
       roundOneLapSeconds: Math.round(lapMs()/1000),

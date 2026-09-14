@@ -1,6 +1,8 @@
 # Second Pass: Explanation Rubric
 
-Version 1, 13 September 2026. It applies to the five assessment lines of the fresh case from `brightwater-v6` onward, where every call carries a written explanation in three parts: the decisive evidence, why that evidence matters for this period, and the action or source request that follows. An independent educator scores each part 0, 1 or 2 against this page. The script never scores an explanation, and the result is reported apart from reason chip agreement, which only says whether the chips a player tapped fall inside the key's accepted categories.
+Version 1.1, 13 September 2026, with the same three criteria as version 1 and a scoring sheet that now marks short answers and keeps every cell as text. It applies to the five assessment lines of the fresh case from `brightwater-v6` onward, where every call carries a written explanation in three parts: the decisive evidence, why that evidence matters for this period, and the action or source request that follows. An independent educator will score each part 0, 1 or 2 against this page. No explanation has been scored yet. The script never scores an explanation, and the result will be reported apart from reason chip agreement, which only says whether the chips a player tapped fall inside the key's accepted categories.
+
+The page will not lock a call until each part holds at least two words and eight letters or digits and is not a stock non-answer such as none, n/a or same as above. That is a floor against empty and placeholder answers, not a judgment of quality, so an answer that clears it can still earn a 0.
 
 Score what the player wrote against what the case file puts on the page. Whether the call agreed with the key is not a criterion, and the sheet you score does not show it. An explanation that misstates the file cannot earn a 2 on any criterion it misstates.
 
@@ -43,11 +45,12 @@ On a stand line the action is the sign-off and the record it rests on. Line 5, m
 ## How to score
 
 1. Run `python tools/findings.py responses.csv --scoring-sheet scoring-sheet.csv`. It writes the sheet and, beside it, a facilitator key ending `-facilitator-key.csv`. The facilitator keeps the key; the educator receives only the sheet.
-2. The sheet carries `response_id`, `case_version`, `line`, `account`, `memo_sentence`, `participant_call`, the three written parts and `second_scorer`. It never carries the codename, the key, the call result, the chips or the chip agreement.
-3. Read the case file named in `case_version` before scoring, so the file on the page is the one you score against.
-4. Fill `score_evidence`, `score_period` and `score_action` with 0, 1 or 2, and `scorer` with your label. `key_disagreement` and `notes` are for your own words. Leave every other column as it is. A score outside 0, 1 and 2 leaves that row unscored.
-5. The sheet is ordered by line, so score every response to one line before moving to the next. Do not open the facilitator key or the findings until scoring is finished.
-6. Run `python tools/findings.py responses.csv --scores first.csv --second-scores second.csv` to put the results in the findings.
+2. The sheet carries `response_id`, `case_version`, `line`, `account`, `memo_sentence`, `participant_call`, the three written parts, `below_minimum` and `second_scorer`. It never carries the codename, the key, the call result, the chips or the chip agreement. A text cell that begins with =, +, -, @ or a tab carries a leading apostrophe, so a spreadsheet shows the answer as text instead of running it as a formula; the apostrophe is not part of what the player wrote.
+3. `below_minimum` names any part that fell short of the page's floor, for a record the page could not have locked (an older build or an edited run), such as "why it matters for this period: a stock non-answer". Score that part as written, like any other. The column is there so a short answer is seen rather than dropped, and it does not set the score.
+4. Read the case file named in `case_version` before scoring, so the file on the page is the one you score against.
+5. Fill `score_evidence`, `score_period` and `score_action` with 0, 1 or 2, and `scorer` with your label. `key_disagreement` and `notes` are for your own words. Leave every other column as it is. A score outside 0, 1 and 2 leaves that row unscored.
+6. The sheet is ordered by line, so score every response to one line before moving to the next. Do not open the facilitator key or the findings until scoring is finished.
+7. Run `python tools/findings.py responses.csv --scores first.csv --second-scores second.csv` to put the results in the findings.
 
 ## Disagreements are recorded, never resolved by changing the key
 
@@ -63,4 +66,4 @@ Give the second scorer a copy of the blank sheet filtered to the rows marked `ye
 
 ## What these scores can support
 
-They describe how well participants explained their calls on five unseen items, judged by an educator against this rubric. They are a separate result from reason chip agreement, and neither stands in for the other. With five items and no comparable baseline, they do not establish learning gain, professional competence or transfer to real review work.
+Once an educator has scored them, they will describe how well participants explained their calls on five unseen items, judged against this rubric. They will be a separate result from reason chip agreement, and neither stands in for the other. With five items and no comparable baseline, they will not establish learning gain, professional competence or transfer to real review work.

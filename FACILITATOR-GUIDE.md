@@ -1,8 +1,9 @@
 # Running Second Pass: Beat the Machine in Forty Minutes
 
-A facilitator's guide for a chapter meeting, a classroom, or a firm's staff training. Version 2.0,
-13 September 2026, written against `halyard-v4`, `brightwater-v5` and product version
-`second-pass-drill 1.6.1`.
+A facilitator's guide for a chapter meeting, a classroom, or a firm's staff training. Version 2.1,
+13 September 2026, written against `halyard-v4` and `brightwater-v6`, on the build that asks for the
+read before the draft and for three written answers on each fresh call. That build still stamps
+itself `second-pass-drill 1.6.1` until release 1.7.0 is cut.
 
 The game takes ten minutes to play and the debrief is what teaches. A room that plays and leaves
 has had a diversion. A room that plays and then answers the questions below out loud has learned a
@@ -57,12 +58,13 @@ missed it.
 player who has already seen the answers scores high for the wrong reason.
 
 **Choose a codename rule and say it in the invitation.** Each player picks two words on the way in
-and those two words are the only thing the sheet carries about them. A rule makes the leaderboard
-readable and keeps the room anonymous. An adjective and an animal works. So does two words from the
-player's own work. The rule that matters is that the same person uses the same codename every time,
-because the findings keep the first attempt under each codename and list the later ones as
-reattempts. A codename is still not a person: one person can type two and two people can type one,
-so if you need a count of people, keep the consented roster described under the readout.
+and those two words are the only thing the sheet carries about them. A rule makes the results easy
+to read back to the room and keeps it pseudonymous. An adjective and an animal works. So does two
+words from the player's own work. The rule that matters is that the same person uses the same
+codename every time, because the findings keep the first attempt under each codename and list the
+later ones as reattempts. A codename is still not a person: one person can type two and two people
+can type one, so if you need a count of people, keep the consented roster described under the
+readout.
 
 **Run one pass yourself in test mode first.** Put `?test=1` on the URL, or tap the footer line three
 times from inside the page. A band under the header reads "TEST MODE, nothing is sent", and a run
@@ -96,7 +98,7 @@ denominator.
 | --- | --- | --- |
 | 5 | Framing | You say what the memo is and what the threshold rule is, and nothing else. |
 | 12 | Play | Each person reads the Halyard ledger and taps the lines they would give a second look, then plays the fourteen lines alone, calling each one and then giving a basis for it. |
-| 3 | Fresh case | Five lines of a company nobody has seen, run as an assessment with no reveal and no score on screen. |
+| 3 | Fresh case | Five lines of a company nobody has seen, run as an assessment with no reveal and no score on screen, and three short written answers on each call. |
 | 15 | Debrief | Six questions on the call, then one pass on the reason. |
 | 5 | Close | The numbers back to the room, the send, and what this looks like in a real close. |
 
@@ -118,7 +120,9 @@ each player their own clock. The two extra minutes are for the people who read s
 need them.
 
 **Fresh case, three minutes.** The round does not end at line fourteen. Five more lines follow, from
-a four office dental group the player has never opened. Say only what the bridge screen says.
+a four office dental group the player has never opened. Say only what the bridge screen says. Each
+of the five calls asks for three short written answers before it locks, so a careful room can need
+longer than three minutes, and nobody has timed that step with a room yet.
 
 **Debrief, fifteen minutes.** The script is below. Roughly two minutes a question, then three
 minutes on the reason.
@@ -171,8 +175,9 @@ same run now scores zero on reason.
 **Say what the reason score is and is not.** It is a compatibility check on the basis the player
 stated. It does not establish that anybody reasoned, and a player who taps "no source on file" on
 every flag and the hold chip on every stand will score well on it without having reasoned at all.
-If you want a reasoning score, a person has to read the free text lines and score them, and that
-sits outside the page.
+On the fresh case, the three written answers are for an independent educator to score against
+`RUBRIC.md`, and none has been scored yet. On the practice lines a reasoning score would need a
+person to read the free text lines, outside the page.
 
 ## The debrief script
 
@@ -282,14 +287,18 @@ Between the bridge and the results the page takes away everything that could lea
 There is no reveal after a call, no running score, no streak, no mark and no race track, because a
 car that moved or changed color would answer the next question for the player. The header shows
 `3 of 5` and nothing else. The chips are still collected on every line, because the reason is the
-whole point of this round.
+whole point of this round, and each call asks for three short written answers: the decisive
+evidence, why it matters for this period, and the action or source request that follows. The lock
+refuses until each answer holds at least two words and eight letters or digits, so "none", "n/a"
+and a line of dots do not count. A player stuck at the lock is told under it what is still missing,
+and that is all you say about it.
 
 Once the fifth call is in, one results screen prints all five at once with the key, the error type,
 the reason and the player's own basis under it.
 
 **What you say, and what you must not say.** Say what the bridge screen says: new company, new
 memo, same job, no hints. Answer nothing about a specific line. Do not tell the room what the
-threshold will and will not do for them. From `cases/brightwater-v5.json`: three lines clear both
+threshold will and will not do for them. From `cases/brightwater-v6.json`: three lines clear both
 legs, and two of those three are flags while one stands; patient service revenue clears the dollar
 leg alone and is a flag; marketing clears the percentage leg alone and stands. A player who simply
 flags the three that clear both legs ends at three of five. Saying any of that in advance is
@@ -310,8 +319,12 @@ findings document with the call accuracy and the reason accuracy by error type, 
 and by organization, the false flag rate, the lap times and the fresh case figures, plus two short
 paragraphs written from the real numbers. It matches columns by the form's question titles rather
 than by position, and any title it cannot find is printed under "Columns not found" and the measure
-that needed it is skipped rather than guessed. `READOUT-TEMPLATE.md` is the one page you fill from
-its output.
+that needed it is skipped rather than guessed. It lists every written answer below the page's
+minimum as posted, and counts that attempt incomplete. An attempt identifier that arrives on two
+rows with different content is held out of every count until you read both and keep one with
+`--resolve-conflict`. `--scoring-sheet` writes the blind sheet an educator will score the written
+answers on, against `RUBRIC.md`; nothing has been scored yet. `READOUT-TEMPLATE.md` is the one page
+you fill from its output.
 
 **By hand.** Four numbers, in this order.
 
@@ -393,10 +406,12 @@ Four learning objectives, stated the way a student can repeat them.
 4. **A clean line is a decision too.** Leaving a sound line alone is review work, and a flag on a
    clean line spends somebody's time where there is no money.
 
-Assessment comes off the response sheet without any hand coding: the call score out of fourteen, the
-reason score beside it, the false flag rate on the six clean lines, and the fresh case pair on five
-lines of a company the student never saw. Report the fresh case as a second unseen set scored the
-same way. It is not a post-test, and calling the difference between the two learning would require a
+The scored part of the assessment comes off the response sheet without any hand coding: the call
+score out of fourteen, the reason score beside it, the false flag rate on the six clean lines, and
+the fresh case pair on five lines of a company the student never saw. The written answers on those
+five lines are the one part that needs a person: an educator will score them against `RUBRIC.md` on
+a sheet that hides the call result. Report the fresh case as a second unseen set scored the same
+way. It is not a post-test, and calling the difference between the two learning would require a
 planned comparison this drill does not run.
 
 No prerequisite beyond knowing what a variance schedule is. The threshold rule is stated on the

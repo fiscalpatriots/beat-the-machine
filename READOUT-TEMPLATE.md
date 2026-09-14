@@ -10,10 +10,10 @@ Session `run.generated`, file `run.source_file`, product `run.product_version`, 
 | --- | --- | --- |
 | Rows in the export | `run.rows_in_export` | Every data row in the downloaded file. |
 | Rows excluded | `run.rows_excluded` | Test codenames, rows the page marked as a test attempt, blank codenames and synthetic rows, each reason with its own `run.rows_excluded.` field. |
-| Duplicate sends | `run.duplicate_sends_set_aside` | Rows that repeat an attempt identifier already read, so one attempt sent twice counts once. |
-| Received attempts | `run.attempts_received` | The rows left after exclusions and duplicate sends, each one run of the drill. |
-| Completed attempts | `run.attempts_completed` | Received attempts with a call on every practice line and, where a fresh case is named, on every fresh line. |
-| Distinct codenames | `run.codenames_distinct` | Different codenames among received attempts. A codename is a pseudonym, so this count is never reported as a number of people. |
+| Duplicate sends and conflicts | `run.duplicate_sends_set_aside`, conflicts `run.attempt_conflicts_unresolved` | A row matching another in every cell but the timestamp counts once. Rows sharing an attempt identifier with different content stay out of every count until you keep one with `--resolve-conflict`. |
+| Received attempts | `run.attempts_received` | The rows left after exclusions, duplicate sends and unresolved conflicts, each one run of the drill. |
+| Completed attempts | `run.attempts_completed` | Received attempts with a call on every practice line and, where a fresh case is named, on every fresh line. From `brightwater-v6`, all three written answers on every fresh line must also meet the page's minimum. |
+| Distinct codenames | `run.codenames_distinct` | Different codenames among received attempts, ignoring case. A codename is a pseudonym, so this count is never reported as a number of people. |
 | Facilitator-confirmed participants | `run.participants_confirmed`, this case set `set.participants_confirmed` | Distinct participants on the consented roster with at least one received attempt. It stays blank when no roster was kept, and it is the only count on this page that may be called people. |
 | First attempts | `run.first_attempts`, this case set `set.first_attempts` | The first eligible attempt by each codename, which is the only attempt any rate on this page reads. |
 | Reattempts | `run.reattempts`, this case set `set.reattempts` | Later eligible attempts by a codename already counted. The findings list them in their own table and no rate here includes them. |
@@ -80,12 +80,13 @@ A reason agrees when at least one chip was tapped and every chip tapped sits ins
 
 ## 6. Educator-scored explanations, fields carrying the prefix `explain.`
 
-A separate result from section 5. From `brightwater-v6` every fresh case call carries a three-part written explanation, and an independent educator scores each part 0 to 2 against `RUBRIC.md` on a sheet that never shows the machine's call result. Fresh case `explain.case_version`.
+A separate result from section 5. From `brightwater-v6` every fresh case call carries a three-part written explanation, and an independent educator will score each part 0 to 2 against `RUBRIC.md` on a sheet that never shows the machine's call result. None has been scored yet. Fresh case `explain.case_version`.
 
 | Measure | Field |
 | --- | --- |
 | Fresh lines carrying a written explanation | `explain.items_with_text` |
 | Fresh calls with no explanation text | `explain.fresh_calls_without_text` |
+| First attempts with an answer below the page's minimum, counted incomplete | `explain.first_attempts_below_minimum` |
 | Scored by the first scorer | `explain.items_scored` |
 | Decisive evidence, mean of 2 | `explain.evidence_avg_of_2` |
 | Why it matters for this period, mean of 2 | `explain.period_avg_of_2` |
@@ -95,7 +96,7 @@ A separate result from section 5. From `brightwater-v6` every fresh case call ca
 | Criterion scores given identically, and within one point | `explain.second_exact_agreement_rate`, `explain.second_within_one_rate` |
 | Key disagreements the scorers recorded | `explain.key_disagreements_recorded` |
 
-With five items and no comparable baseline, these scores do not establish learning gain.
+With five items and no comparable baseline, these scores will not establish learning gain.
 
 ## 7. Lines in the player's own words, quoted where the reason chips agreed with the key
 
