@@ -1,0 +1,690 @@
+[
+ {
+  "id": "REAS01",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on a decrease in vacancy.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "REAS02",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 despite an increase in sublease income.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "REAS03",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Insurance expense rose $45,000 as discounts declined.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "REAS04",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 due to a decline in landlord credits.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "REAS05",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on flat volumes at the depot.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "REAS06",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 with lower occupancy at the second site.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "REAS07",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 amid falling demand for space.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "REAS08",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense fell $30,000 on a decrease in vacancy.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "REAS09",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the decrease in Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "REAS10",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Insurance expense rose $45,000 on the decrease in Rent expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "REAS11",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, driven by a drop in landlord credits.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "REAS12",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, reflecting a decrease in the landlord allowance.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "REAS13",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense was unchanged at $130,000 on lower incentives.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "REAS14",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 because it fell in the prior period.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "REAS15",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on a decrease in vacancy in June.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "REAS16",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on sharply lower incentives.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "REAS17",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on a decrease in vacancy; the line fell.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "REAS18",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on a decrease in vacancy, and Insurance expense fell $45,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "REAS19",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on a decrease in vacancy, and Insurance expense rose $45,000 on higher premiums.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME01",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Revenue grew in the U.S. Rent expense rose $30,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME02",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the U.S. Treasury lease.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME03",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 at the U.K. subsidiary.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME04",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the J.P. Morgan facility.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME05",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 at the St. Louis depot.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME06",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 at the Ft. Worth site.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME07",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 under the Acme Co. Ltd. lease.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME08",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 per Mr. J. Smith.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME09",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 under U.S. GAAP.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME10",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "The lease is with Acme Co. Rent expense rose $30,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME11",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the lease with Acme Co. Insurance expense rose $45,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME12",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 at the U.S. office. Insurance expense rose $45,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME13",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the U.S. Treasury lease renewed in June.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME14",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the U.S. Treasury lease, which is quarterly.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME15",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 at the depot on Oak St. The lease renewed.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME16",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 per Schedule A. Insurance expense rose $45,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME17",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on rent, taxes, insurance, etc. Insurance expense rose $45,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME18",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense fell $30,000 at the St. Louis depot.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME19",
+  "inputs": {
+   "ledger": "7100\tInterest expense\t61200\t92400",
+   "memo": "Interest expense on U.S. Treasury bills rose $31,200.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME20",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Revenue grew in the U.S. Rent expense fell $30,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME21",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the U.S. Treasury lease at quarter-end.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME22",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $45,000 at the St. Louis depot.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME23",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 under the Acme Co. Ltd. lease, so did Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME24",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the J.P. Morgan facility in Q2.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NAME25",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $45,000 per Mr. J. Smith.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR01",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 in Q2.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR02",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 in the second quarter.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR03",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 for the quarter.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR04",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 in the third qtr.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR05",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 in 2Q.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR06",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 quarter over quarter.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR07",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 at quarter-end.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR08",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on a quarterly cycle.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR09",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 over the three-month period.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR10",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in Q2.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR11",
+  "inputs": {
+   "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in Q3.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR12",
+  "inputs": {
+   "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in June.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR13",
+  "inputs": {
+   "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 month over month.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR14",
+  "inputs": {
+   "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in Q2.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR15",
+  "inputs": {
+   "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in the second quarter.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR16",
+  "inputs": {
+   "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 for the quarter.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR17",
+  "inputs": {
+   "ledger": "Account\tPrior quarter\tThis quarter\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 quarter over quarter.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR18",
+  "inputs": {
+   "ledger": "Account\tQ4 2025\tQ1 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in Q1 2026.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR19",
+  "inputs": {
+   "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 at quarter-end.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR20",
+  "inputs": {
+   "ledger": "Account\tQ2 2026\tQ1 2026\n6100\tRent expense\t130000\t100000",
+   "memo": "Rent expense rose $30,000 in Q2.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR21",
+  "inputs": {
+   "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 in Q2, and Insurance expense rose $45,000 in June.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "QTR22",
+  "inputs": {
+   "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 quarter to date.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE01",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 mostly on the new lease at the depot.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE02",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, partly on the new lease.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE03",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 largely because the lease renewed.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE04",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on rent increases that were broadly in line across the sites.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE05",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, entirely on the new lease.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE06",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the new lease, which explains most of the increase.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE07",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 in part on the new lease.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE08",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 as the new lease began and volumes were essentially flat.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE09",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, virtually all of it on the new lease.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE10",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the new lease, which covers the bulk of the increase.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE11",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the new lease, for the most part.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE12",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 wholly on the new lease.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE13",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 predominantly on the new lease.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE14",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the new lease.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE15",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the whole-floor lease at the depot.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE16",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the new lease signed by all of the partners.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE17",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on a share of the new lease costs.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE18",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on fully loaded rent at the depot.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE19",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the new lease, and Insurance expense rose $45,000 mainly on higher premiums.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "HEDGE20",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 primarily on the new lease, and Insurance expense rose $45,000 on higher premiums.",
+   "ratios": ""
+  }
+ }
+]

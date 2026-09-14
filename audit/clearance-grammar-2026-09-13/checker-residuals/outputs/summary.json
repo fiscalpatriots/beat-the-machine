@@ -1,0 +1,951 @@
+{
+ "classes": {
+  "multiplier": {
+   "probes": 15,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "nochange": {
+   "probes": 29,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "approx": {
+   "probes": 11,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "range": {
+   "probes": 6,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "scale": {
+   "probes": 13,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "sign": {
+   "probes": 19,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "units": {
+   "probes": 8,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "period": {
+   "probes": 13,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": [
+    {
+     "id": "A086",
+     "memo": "Rent expense rose $30,000 quarter over quarter.",
+     "before": "not checked",
+     "after": "needs review",
+     "meets": true
+    }
+   ]
+  },
+  "two": {
+   "probes": 9,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "negation": {
+   "probes": 10,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "currency": {
+   "probes": 19,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "digits": {
+   "probes": 6,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "typo": {
+   "probes": 13,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "long": {
+   "probes": 4,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  }
+ },
+ "totals": {
+  "probes": 175,
+  "fcBefore": 0,
+  "fcAfter": 0,
+  "missBefore": 0,
+  "missAfter": 0
+ },
+ "sets": {
+  "new-40": {
+   "inputs": 40,
+   "movedAgainstAuditHead": [
+    {
+     "id": "P39",
+     "memo": "Rent expense rose $30,000 in 2026.",
+     "auditHead": {
+      "S1": "checked within scope"
+     },
+     "after": {
+      "S1": "needs review"
+     }
+    }
+   ],
+   "movedAgainstBefore": []
+  },
+  "prior-24": {
+   "inputs": 24,
+   "movedAgainstAuditHead": [],
+   "movedAgainstBefore": []
+  }
+ },
+ "parity": {
+  "new-40": {
+   "inputs": 40,
+   "allFieldsEqual": 40,
+   "differing": []
+  },
+  "prior-24": {
+   "inputs": 24,
+   "allFieldsEqual": 24,
+   "differing": []
+  },
+  "six-drafts": {
+   "inputs": 6,
+   "allFieldsEqual": 6,
+   "differing": []
+  },
+  "a1": {
+   "inputs": 139,
+   "allFieldsEqual": 139,
+   "differing": []
+  },
+  "a1-sizing": {
+   "inputs": 36,
+   "allFieldsEqual": 36,
+   "differing": []
+  },
+  "neighbour-probes": {
+   "inputs": 178,
+   "allFieldsEqual": 178,
+   "differing": []
+  },
+  "samples": {
+   "inputs": 4,
+   "allFieldsEqual": 4,
+   "differing": []
+  },
+  "class-probes": {
+   "inputs": 86,
+   "allFieldsEqual": 86,
+   "differing": []
+  },
+  "total": {
+   "inputs": 513,
+   "allFieldsEqual": 513
+  }
+ },
+ "sixDrafts": [
+  {
+   "id": "halyard-blind",
+   "before": {
+    "sentences": 29,
+    "checked": 0,
+    "review": 15,
+    "notChecked": 12,
+    "failed": 2,
+    "queue": 59
+   },
+   "after": {
+    "sentences": 29,
+    "checked": 0,
+    "review": 15,
+    "notChecked": 12,
+    "failed": 2,
+    "queue": 59
+   },
+   "statusMoved": [],
+   "splitDiffers": {
+    "onlyBefore": [],
+    "onlyAfter": []
+   }
+  },
+  {
+   "id": "halyard-prompt1",
+   "before": {
+    "sentences": 8,
+    "checked": 7,
+    "review": 0,
+    "notChecked": 1,
+    "failed": 0,
+    "queue": 9
+   },
+   "after": {
+    "sentences": 8,
+    "checked": 7,
+    "review": 0,
+    "notChecked": 1,
+    "failed": 0,
+    "queue": 9
+   },
+   "statusMoved": [],
+   "splitDiffers": {
+    "onlyBefore": [],
+    "onlyAfter": []
+   }
+  },
+  {
+   "id": "brightwater-blind",
+   "before": {
+    "sentences": 6,
+    "checked": 0,
+    "review": 4,
+    "notChecked": 2,
+    "failed": 0,
+    "queue": 8
+   },
+   "after": {
+    "sentences": 6,
+    "checked": 0,
+    "review": 4,
+    "notChecked": 2,
+    "failed": 0,
+    "queue": 8
+   },
+   "statusMoved": [],
+   "splitDiffers": {
+    "onlyBefore": [],
+    "onlyAfter": []
+   }
+  },
+  {
+   "id": "brightwater-prompt1",
+   "before": {
+    "sentences": 4,
+    "checked": 3,
+    "review": 0,
+    "notChecked": 1,
+    "failed": 0,
+    "queue": 4
+   },
+   "after": {
+    "sentences": 4,
+    "checked": 3,
+    "review": 0,
+    "notChecked": 1,
+    "failed": 0,
+    "queue": 4
+   },
+   "statusMoved": [],
+   "splitDiffers": {
+    "onlyBefore": [],
+    "onlyAfter": []
+   }
+  },
+  {
+   "id": "kestrel-blind",
+   "before": {
+    "sentences": 9,
+    "checked": 2,
+    "review": 3,
+    "notChecked": 4,
+    "failed": 0,
+    "queue": 13
+   },
+   "after": {
+    "sentences": 9,
+    "checked": 2,
+    "review": 3,
+    "notChecked": 4,
+    "failed": 0,
+    "queue": 13
+   },
+   "statusMoved": [],
+   "splitDiffers": {
+    "onlyBefore": [],
+    "onlyAfter": []
+   }
+  },
+  {
+   "id": "kestrel-prompt1",
+   "before": {
+    "sentences": 5,
+    "checked": 4,
+    "review": 0,
+    "notChecked": 1,
+    "failed": 0,
+    "queue": 6
+   },
+   "after": {
+    "sentences": 5,
+    "checked": 4,
+    "review": 0,
+    "notChecked": 1,
+    "failed": 0,
+    "queue": 6
+   },
+   "statusMoved": [],
+   "splitDiffers": {
+    "onlyBefore": [],
+    "onlyAfter": []
+   }
+  }
+ ],
+ "prompt1": {
+  "sentences": 17,
+  "checkedBefore": 14,
+  "checkedAfter": 14
+ },
+ "samples": {
+  "halyard": {
+   "before": {
+    "sentences": 12,
+    "checked": 3,
+    "review": 6,
+    "notChecked": 0,
+    "failed": 3,
+    "queue": 17
+   },
+   "after": {
+    "sentences": 12,
+    "checked": 3,
+    "review": 6,
+    "notChecked": 0,
+    "failed": 3,
+    "queue": 17
+   },
+   "moved": []
+  },
+  "brightwater": {
+   "before": {
+    "sentences": 5,
+    "checked": 5,
+    "review": 0,
+    "notChecked": 0,
+    "failed": 0,
+    "queue": 0
+   },
+   "after": {
+    "sentences": 5,
+    "checked": 5,
+    "review": 0,
+    "notChecked": 0,
+    "failed": 0,
+    "queue": 0
+   },
+   "moved": []
+  },
+  "kestrel": {
+   "before": {
+    "sentences": 6,
+    "checked": 3,
+    "review": 0,
+    "notChecked": 1,
+    "failed": 2,
+    "queue": 6
+   },
+   "after": {
+    "sentences": 6,
+    "checked": 3,
+    "review": 0,
+    "notChecked": 1,
+    "failed": 2,
+    "queue": 6
+   },
+   "moved": []
+  },
+  "ridgeline": {
+   "before": {
+    "sentences": 3,
+    "checked": 0,
+    "review": 1,
+    "notChecked": 0,
+    "failed": 2,
+    "queue": 4
+   },
+   "after": {
+    "sentences": 3,
+    "checked": 0,
+    "review": 1,
+    "notChecked": 0,
+    "failed": 2,
+    "queue": 4
+   },
+   "moved": []
+  }
+ },
+ "neighbours": {
+  "inputs": 178,
+  "clearedBefore": 38,
+  "clearedAfter": 38,
+  "moved": [
+   {
+    "id": "NB052",
+    "label": "tiny",
+    "memo": "Rent expense rose $30,000 on a tiny decrease in vacancy.",
+    "before": {
+     "S1": "failed"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   }
+  ]
+ },
+ "classProbes": {
+  "inputs": 86,
+  "clearedBefore": 34,
+  "clearedAfter": 36,
+  "moved": [
+   {
+    "id": "REAS01",
+    "before": {
+     "S1": "failed"
+    },
+    "after": {
+     "S1": "checked within scope"
+    }
+   },
+   {
+    "id": "REAS04",
+    "before": {
+     "S1": "failed"
+    },
+    "after": {
+     "S1": "checked within scope"
+    }
+   },
+   {
+    "id": "REAS05",
+    "before": {
+     "S1": "failed"
+    },
+    "after": {
+     "S1": "checked within scope"
+    }
+   },
+   {
+    "id": "REAS06",
+    "before": {
+     "S1": "failed"
+    },
+    "after": {
+     "S1": "checked within scope"
+    }
+   },
+   {
+    "id": "REAS07",
+    "before": {
+     "S1": "failed"
+    },
+    "after": {
+     "S1": "checked within scope"
+    }
+   },
+   {
+    "id": "REAS15",
+    "before": {
+     "S1": "failed"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   },
+   {
+    "id": "REAS16",
+    "before": {
+     "S1": "failed"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   },
+   {
+    "id": "REAS17",
+    "before": {
+     "S1": "failed"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   },
+   {
+    "id": "REAS19",
+    "before": {
+     "S1": "failed"
+    },
+    "after": {
+     "S1": "checked within scope"
+    }
+   },
+   {
+    "id": "NAME02",
+    "before": {
+     "S1": "checked within scope",
+     "S2": "not checked"
+    },
+    "after": {
+     "S1": "checked within scope"
+    }
+   },
+   {
+    "id": "NAME04",
+    "before": {
+     "S1": "checked within scope",
+     "S2": "not checked"
+    },
+    "after": {
+     "S1": "checked within scope"
+    }
+   },
+   {
+    "id": "NAME07",
+    "before": {
+     "S1": "checked within scope",
+     "S2": "not checked"
+    },
+    "after": {
+     "S1": "checked within scope"
+    }
+   },
+   {
+    "id": "NAME08",
+    "before": {
+     "S1": "checked within scope",
+     "S2": "not checked"
+    },
+    "after": {
+     "S1": "checked within scope"
+    }
+   },
+   {
+    "id": "NAME13",
+    "before": {
+     "S1": "checked within scope",
+     "S2": "not checked"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   },
+   {
+    "id": "NAME14",
+    "before": {
+     "S1": "checked within scope",
+     "S2": "not checked"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   },
+   {
+    "id": "NAME19",
+    "before": {
+     "S1": "not checked",
+     "S2": "needs review"
+    },
+    "after": {
+     "S1": "checked within scope"
+    }
+   },
+   {
+    "id": "NAME21",
+    "before": {
+     "S1": "checked within scope",
+     "S2": "not checked"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   },
+   {
+    "id": "NAME23",
+    "before": {
+     "S1": "checked within scope",
+     "S2": "not checked"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   },
+   {
+    "id": "NAME24",
+    "before": {
+     "S1": "checked within scope",
+     "S2": "not checked"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   },
+   {
+    "id": "NAME25",
+    "before": {
+     "S1": "failed",
+     "S2": "not checked"
+    },
+    "after": {
+     "S1": "failed"
+    }
+   },
+   {
+    "id": "QTR04",
+    "before": {
+     "S1": "checked within scope"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   },
+   {
+    "id": "QTR05",
+    "before": {
+     "S1": "not checked"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   },
+   {
+    "id": "QTR06",
+    "before": {
+     "S1": "not checked"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   },
+   {
+    "id": "QTR09",
+    "before": {
+     "S1": "checked within scope"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   },
+   {
+    "id": "QTR14",
+    "before": {
+     "S1": "needs review"
+    },
+    "after": {
+     "S1": "checked within scope"
+    }
+   },
+   {
+    "id": "QTR15",
+    "before": {
+     "S1": "needs review"
+    },
+    "after": {
+     "S1": "checked within scope"
+    }
+   },
+   {
+    "id": "QTR16",
+    "before": {
+     "S1": "needs review"
+    },
+    "after": {
+     "S1": "checked within scope"
+    }
+   },
+   {
+    "id": "QTR17",
+    "before": {
+     "S1": "not checked"
+    },
+    "after": {
+     "S1": "checked within scope"
+    }
+   },
+   {
+    "id": "QTR18",
+    "before": {
+     "S1": "needs review"
+    },
+    "after": {
+     "S1": "checked within scope"
+    }
+   },
+   {
+    "id": "QTR19",
+    "before": {
+     "S1": "needs review"
+    },
+    "after": {
+     "S1": "checked within scope"
+    }
+   },
+   {
+    "id": "QTR20",
+    "before": {
+     "S1": "failed"
+    },
+    "after": {
+     "S1": "checked within scope"
+    }
+   },
+   {
+    "id": "QTR21",
+    "before": {
+     "S1": "not checked"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   },
+   {
+    "id": "QTR22",
+    "before": {
+     "S1": "not checked"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   },
+   {
+    "id": "HEDGE04",
+    "before": {
+     "S1": "checked within scope"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   },
+   {
+    "id": "HEDGE06",
+    "before": {
+     "S1": "checked within scope"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   },
+   {
+    "id": "HEDGE08",
+    "before": {
+     "S1": "checked within scope"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   },
+   {
+    "id": "HEDGE10",
+    "before": {
+     "S1": "checked within scope"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   },
+   {
+    "id": "HEDGE11",
+    "before": {
+     "S1": "checked within scope"
+    },
+    "after": {
+     "S1": "needs review"
+    }
+   }
+  ]
+ },
+ "fixtures": {
+  "total": 744,
+  "T": {
+   "n": 60,
+   "other": 60
+  },
+  "P": {
+   "n": 40,
+   "other": 40
+  },
+  "MUL": {
+   "n": 22,
+   "refusing": 18,
+   "accepting": 3,
+   "other": 1
+  },
+  "STILL": {
+   "n": 28,
+   "refusing": 21,
+   "accepting": 7
+  },
+  "FRAC": {
+   "n": 26,
+   "refusing": 20,
+   "other": 3,
+   "accepting": 3
+  },
+  "DIGIT": {
+   "n": 16,
+   "refusing": 14,
+   "accepting": 2
+  },
+  "COUNT": {
+   "n": 15,
+   "refusing": 6,
+   "accepting": 4,
+   "other": 5
+  },
+  "ROLE": {
+   "n": 6,
+   "accepting": 3,
+   "refusing": 3
+  },
+  "A": {
+   "n": 139,
+   "other": 139
+  },
+  "B": {
+   "n": 36,
+   "other": 36
+  },
+  "CUR": {
+   "n": 24,
+   "refusing": 20,
+   "accepting": 4
+  },
+  "SIGN": {
+   "n": 26,
+   "refusing": 21,
+   "accepting": 5
+  },
+  "SAME": {
+   "n": 28,
+   "refusing": 24,
+   "accepting": 3,
+   "other": 1
+  },
+  "PER": {
+   "n": 33,
+   "refusing": 24,
+   "other": 6,
+   "accepting": 3
+  },
+  "ANA": {
+   "n": 20,
+   "refusing": 16,
+   "accepting": 3,
+   "other": 1
+  },
+  "RESP": {
+   "n": 14,
+   "refusing": 11,
+   "accepting": 3
+  },
+  "QTY": {
+   "n": 14,
+   "refusing": 11,
+   "accepting": 3
+  },
+  "SPLIT": {
+   "n": 27,
+   "refusing": 11,
+   "mixed": 3,
+   "accepting": 13
+  },
+  "SIZE": {
+   "n": 22,
+   "refusing": 16,
+   "mixed": 1,
+   "accepting": 5
+  },
+  "PLAB": {
+   "n": 24,
+   "refusing": 14,
+   "mixed": 2,
+   "accepting": 8
+  },
+  "BIND": {
+   "n": 17,
+   "refusing": 12,
+   "accepting": 4,
+   "mixed": 1
+  },
+  "LEX": {
+   "n": 21,
+   "refusing": 16,
+   "mixed": 1,
+   "accepting": 4
+  },
+  "REAS": {
+   "n": 19,
+   "accepting": 7,
+   "refusing": 10,
+   "mixed": 2
+  },
+  "NAME": {
+   "n": 25,
+   "mixed": 2,
+   "accepting": 13,
+   "refusing": 10
+  },
+  "QTR": {
+   "n": 22,
+   "refusing": 14,
+   "accepting": 7,
+   "mixed": 1
+  },
+  "HEDGE": {
+   "n": 20,
+   "refusing": 13,
+   "accepting": 5,
+   "mixed": 2
+  }
+ }
+}

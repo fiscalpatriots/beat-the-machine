@@ -354,3 +354,173 @@ readings in `inputs/split-readings.json` and every memo, runs the author fold pa
 summary are in `residual/outputs/`; the full per-input exports stay in the scratch directory. `pages.cjs`
 drives the author page on every class input and both samples at six widths in a throwaway headless
 Chrome profile through the audit's driver, and the 18 screenshots are in `residual/screenshots/`.
+
+---
+
+# The checker residuals, 14 September 2026
+
+Lane F4, written at 1:55 AM EDT on 14 September 2026. The lane above left three classes open under
+**Still open**, and a fourth was handed to this lane by the claims pass. All four are closed below
+in both implementations: a direction word a reason governs, an abbreviation inside a name, a quarter
+the column labels never bound, and a word that says how much of the movement a sentence explains.
+Every input is synthetic and none of it is participant evidence. Nothing was posted or pushed.
+
+**Heads tested.** Code behavior was run on `git archive` snapshots, with the independent audit's own
+runners, unchanged, against the heads before this lane as the before.
+
+| Repository | Before | After |
+| --- | --- | --- |
+| beat-the-machine | `c369dc7` | `28c273b`, over `b733040` and `7735836`: the checker, the shared reader, the fixtures and the samples |
+| second-pass | `f9348ff` | `5c1d3be`, over `884ee43` and `deb7f76`: the Python checker, the fixtures, the tests and the shared case |
+
+## What each class closed
+
+- **A direction word a reason governs.** The direction check now reads a clause in two parts. The
+  **claim** runs to the first word that opens a reason, and only the claim is tested against the line
+  the figures tied. A direction or no-change word inside the **reason** belongs to what the reason
+  names, so `rose $30,000 on a decrease in vacancy`, `fell despite an increase in volume`, `rose
+  $30,000 on flat volumes` and `rose $30,000 with lower occupancy` are no longer failed on the second
+  word: a sentence that is true never fails on a word that belongs to the cause. Where the reason
+  names exactly one bound line, `on the decrease in Insurance expense`, the word is tested against
+  that line, which is the subject the words give it, and the finding names the right account. The
+  clearance grammar and the direction check now read one reason boundary, `reasonAt` over `claimEnd`,
+  and that boundary gained the contrast openers `despite`, `in spite of` and `notwithstanding` and
+  the attribution openers `offset by`, `helped by`, `aided by`, `boosted by` and `attributable to`. A
+  back-pointer that points at another line, `the decrease in Insurance expense`, no longer counts as
+  pointing back at this one. A direction word in a clause of its own that names no line is still held
+  at needs review with the word named, which is what `, driven by a drop in landlord credits` gets.
+- **An abbreviation inside a name.** After an initialism, a company suffix or a title, a capitalized
+  word is read as the rest of a name, so `U.S. Treasury`, `U.K. Subsidiary`, `J.P. Morgan`, `St.
+  Louis`, `Ft. Worth`, `Co. Ltd.` and `Mr. J. Smith` are one sentence. The stop still ends one where
+  the word after it opens a sentence rather than continuing a name (`The`, `It`, `Management`, `A`),
+  or where the text in front of it is already a sentence, carrying a figure, a direction word or a
+  finite verb, **and** what follows makes a claim of its own. That is the difference between
+  `Interest expense on U.S. Treasury bills rose $31,200.`, one sentence, and `Revenue grew in the
+  U.S. Rent expense rose $30,000.`, two. 24 sentences written to test a person's reading of a name
+  split as a person reads them, and every memo in the suite and the drafts splits the same way in
+  both implementations.
+- **Quarters bound by the column labels.** `Q2`, `2Q`, `2Q26`, `Qtr 2` and `the second quarter` bind
+  where either label names that quarter; `the quarter`, `quarterly`, `quarter-end`, `quarter over
+  quarter` and a three-month span bind where the labels show two quarters in a row. On a ledger kept
+  in months, or one whose labels name no period, none of them binds, so a quarter reference is held
+  at needs review with the period named and never clears there. The reading runs the other way too: a
+  column that covers a quarter names no single month, so `in June`, `for the month` and `month over
+  month` are held on a quarterly ledger instead, and a quarter in a label also orders the two
+  periods, so `Q2 2026` printed before `Q1 2026` is read the right way round. `QTD`, `quarter to
+  date`, halves and fiscal years stay held whatever the labels say. Two readings behind the class
+  were repaired: `$30,000 quarter over quarter` no longer has `000 quarter` taken out of it as a
+  fraction, and `in Q2, and` reads the label `Q2` rather than the number `2,`.
+- **A word that says how much of the movement a sentence explains.** The lanes above allowed a weak
+  share word inside a reason by design, and the claims pass asked for that to be decided the way the
+  size words were decided. It is: nothing a close uses documents what `mostly` or `partly` covers, so
+  the checker invents no share and tests nothing. A share word now holds the sentence at needs review
+  wherever it stands, in a reason as much as in the claim, and the queue names it: `mostly`, `mainly`,
+  `primarily`, `principally`, `chiefly`, `predominantly`, `largely`, `broadly`, `partly`, `partially`,
+  `entirely`, `wholly`, `solely`, `exclusively`, `virtually`, `essentially`, `practically`,
+  `basically`, `in part`, `in large part`, `for the most part`, `on the whole`, `to some extent`,
+  `more or less`, and `most of`, `much of`, `the bulk of`, `the majority of` and kin where what
+  follows is a movement or a figure. A share of something that is not the movement is left with the
+  reason and still clears: `all of the partners`, `a share of the new lease costs`, `fully loaded
+  rent`, `the whole-floor lease`.
+
+## The Brightwater sample
+
+The checker stamped `brightwater-v5` while the drill ran `brightwater-v6`. `build-checker-cases.cjs`
+now reads `cases/brightwater-v6.json`, and `cases/shared/brightwater.json` in second-pass carries the
+same stamp with the v6 definition beside it. v6 rewrote the evidence and the reveals on the cards and
+left the ledger and every memo sentence as v5 wrote them, so **no status, count or queue item on the
+sample moves**: 5 sentences, all checked within scope, an empty queue, before and after. `T18b`
+asserts the new case version and the same outputs, with the reason in the fixture's note.
+
+## Fixtures
+
+658 became **744**. The 86 new ones:
+
+| Class | Ids | Refused | Accepted | Mixed |
+| --- | --- | --- | --- | --- |
+| A direction word a reason governs | REAS01 to REAS19 | 10 | 7 | 2 |
+| An abbreviation inside a name | NAME01 to NAME25 | 10 | 13 | 2 |
+| A quarter against the column labels | QTR01 to QTR22 | 14 | 7 | 1 |
+| A share of the movement | HEDGE01 to HEDGE20 | 13 | 5 | 2 |
+
+Five neighbours of each class were probed and kept: in REAS, `offset by` after a comma, `given`,
+`amid`, `because it fell in the prior period` and a reason that names a bound line; in NAME, `Mr. J.
+Smith`, `Acme Co. Ltd.`, `etc.` before a capital, `Schedule A.` and `Oak St. The`; in QTR, `the
+third qtr.`, `2Q`, `on a quarterly cycle`, `the three-month period` and `quarter to date`; in HEDGE,
+`the whole-floor lease`, `all of the partners`, `a share of the new lease costs`, `fully loaded rent`
+and `the bulk of the new lease costs`, all five of which still clear because none of them apportions
+the movement.
+
+**One expectation moved**, justified in the fixture's note and in commit `b733040`:
+
+| Fixture | Sentence | Why it moved |
+| --- | --- | --- |
+| A086 | `Rent expense rose $30,000 quarter over quarter.` | not checked to **needs review**: the reader no longer takes `000 quarter` out of the figure as a fraction, which no person reads there, so the sentence is held on the quarter frame instead of left unchecked on an unparsed span. The audit's own basis for A086 is a period mismatch and it accepts needs review or not checked |
+
+`T18b` also asserts `brightwater-v6` rather than `brightwater-v5`, which is the sample's stamp and
+not a status.
+
+## Everything that had to hold
+
+| Check | Result |
+| --- | --- |
+| Browser suite, `node tests/run-checker-tests.cjs` | **746 of 746**: 744 fixtures, the shared functions check (89 functions) and the shared constants check (97 constants and the clearance block) |
+| Python suite, `python -m pytest tests/ -q` with beat-the-machine beside it | **1,569 passed**; 823 passed and 746 skipped without it |
+| Parity, `tests/test_parity_shared_inputs.py` | **746 passed**: all 744 fixtures on all 11 fields, the fixture file identity, and the lexicon test, which now also holds the quarter patterns, the splitter's name lists, what it does at eight more stops, how eight pairs of column labels read as months or as quarters, and where the claim ends and the reason begins in six sentences |
+| Parity on the audit's input sets, the samples, the neighbour probes and this lane's class probes | 40, 24, 6, 139, 36, 178, 4 and 86 inputs, **513 of 513** equal on all 11 fields |
+| The audit's 175 probes | **0 false clearances and 0 other misses**, before and after; one probe moved, A086, to a status the audit accepts |
+| The review's 40 probes and 24 prior probes | **nothing moved** against the heads before this lane. P39 still stands where lane F3 put it |
+| Prompt 1 rerun | **14 of 17** checked within scope, unchanged: Halyard 7 of 8, Brightwater 3 of 4, Kestrel 4 of 5 |
+| The four samples | **unchanged**, sentence for sentence and queue for queue: Halyard 3 checked, 6 needs review, 0 not checked, 3 failed, queue 17; Brightwater 5, 0, 0, 0, queue 0; Kestrel 3, 0, 1, 2, queue 6; Ridgeline 0, 1, 0, 2, queue 4 |
+| Lane F3's 178 neighbour probes | 38 cleared before, 38 after; **one moved**, NB052 `Rent expense rose $30,000 on a tiny decrease in vacancy.`, from failed to needs review, which is this lane's first class: the sentence is true, and `tiny` holds it as a size word |
+| The sentence splitter against a person's reading | 24 name readings and lane F3's 44, **68 of 68** as a person reads them; 770 texts in the first run and 790 in the second, every one split the same way in both implementations |
+| Author fold against the checker, `audit/author-repair-2026-09-13/parity-node.cjs` | **751 of 751** inputs match |
+| Author page in headless Chrome on every audit probe and every class mutation, this lane's four included | 531 inputs and 553 sentences; the checker holds 430 of them; **0** where the author page splits a memo differently, gives a different status or suggests a stand on a held sentence |
+| The checker at 375 and 1,024, the Halyard sample and a quarterly ledger carrying three classes in one memo | no document or element overflow at either width, closed or with every sentence open; all four screenshots opened and read: the coverage strip, the wording row naming `June` against a quarterly column, and the cleared sentence carrying `Q2`, a reason and `U.S. Treasury` all wrap inside their columns and nothing is clipped |
+
+## The six retained drafts
+
+**No draft moved.** Sentence statuses and queue sizes are the same at `c369dc7` and at `28c273b`,
+from the audit's `six-drafts-as-fixtures.json`: halyard-blind 29 sentences, 0 checked within scope,
+15 needs review, 12 not checked, 2 failed, queue 59; halyard-prompt1 8, 7, 0, 1, 0, queue 9;
+brightwater-blind 6, 0, 4, 2, 0, queue 8; brightwater-prompt1 4, 3, 0, 1, 0, queue 4; kestrel-blind
+9, 2, 3, 4, 0, queue 13; kestrel-prompt1 5, 4, 0, 1, 0, queue 6. No drafted sentence carries a
+quarter, an abbreviation inside a name, a share word the grammar had allowed, or a direction word
+inside a reason that the checker had been testing, so the counts the claims pass carries into the
+evidence note do not change.
+
+## Still open, after this lane
+
+- **A sentence that reads as one to a person but carries no figure, no direction word and no listed
+  finite verb does not end at a name's full stop.** `The lease was signed in the U.S. Rent expense
+  rose $30,000.` runs on. Running on holds a sentence rather than clearing a fragment, which is the
+  safer error, and everything in the merged sentence is still read.
+- **A direction word after a comma is held, not tested.** `, driven by a drop in landlord credits`
+  comes back as a direction word the checker cannot tie to a line. That is the reviewer's question
+  rather than a failure, and it is the behavior lane F3 recorded.
+- **Halves, fiscal years and `quarter to date` are never bound**, whatever the labels say, and a
+  ledger kept in weeks or in years binds no period at all.
+- **`three months` in the plural is held on any ledger**, a quarterly one included, because the
+  period lexicon reads it as a multi-month span; the singular `three-month` belongs to the quarter
+  class and binds on a quarterly ledger.
+- **A weak sameness word inside a reason is still allowed**, `rose $30,000 as rents stayed high`, and
+  so are the weak change, period, ranking and quantity words the lexicon lists. Only the size words
+  and now the share words were moved out of that allowance.
+- **Wording on an already held sentence is not listed**, as the lanes above describe.
+
+## Reproduction
+
+```
+bash audit/clearance-grammar-2026-09-13/checker-residuals/runners/verify.sh 28c273b 5c1d3be c369dc7 f9348ff <scratch dir>
+node audit/clearance-grammar-2026-09-13/checker-residuals/runners/pages.cjs <beat-the-machine> <out.json> <screenshot dir>
+```
+
+`verify.sh` archives both heads after and before, runs both suites and the parity test alone, runs
+the audit's `run-browser.cjs`, `run-python.py`, `compare.py` and `grade-probes.cjs` on the audit's
+five input sets, the four samples, lane F3's 178 neighbour probes and this lane's 86 class probes at
+both heads, runs `split-parity.cjs` on the 24 name readings and on lane F3's 44, runs the author fold
+parity, and writes `checker-residuals/outputs/summary.json` with every count above. The graded files,
+parity files, suite logs and summary are in `checker-residuals/outputs/`; the full per-input exports
+stay in the scratch directory. `pages.cjs` drives the author page on every class input and the
+checker at both widths in a throwaway headless Chrome profile through the audit's driver, and the
+four screenshots are in `checker-residuals/screenshots/`.
