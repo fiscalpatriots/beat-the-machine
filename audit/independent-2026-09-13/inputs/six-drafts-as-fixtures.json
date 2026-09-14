@@ -1,0 +1,116 @@
+[
+ {
+  "id": "halyard-blind",
+  "inputs": {
+   "ledger": "Line\tAccount\tPrior\tCurrent\tVariance\tPercent\r\n4000\tProduct revenue, distribution\t5,240,000\t5,612,000\t372,000\t7.1%\r\n4100\tService revenue, equipment maintenance\t812,000\t1,041,000\t229,000\t28.2%\r\n4200\tFreight billed to customers\t186,000\t121,000\t(65,000)\t-34.9%\r\n5000\tCost of product sold\t3,930,000\t4,278,000\t348,000\t8.9%\r\n5100\tInbound freight\t214,000\t287,800\t73,800\t34.5%\r\n6000\tWarehouse wages\t630,000\t702,500\t72,500\t11.5%\r\n6100\tFleet fuel\t96,400\t91,200\t(5,200)\t-5.4%\r\n6200\tRepairs and maintenance, depots\t41,000\t118,600\t77,600\t189.3%\r\n6300\tSoftware subscriptions\t28,500\t30,100\t1,600\t5.6%\r\n6400\tBad debt expense\t15,000\t62,000\t47,000\t313.3%\r\n6500\tProfessional fees\t55,000\t47,500\t(7,500)\t-13.6%\r\n7000\tDepreciation\t128,000\t128,000\t0\t0.0%\r\n7100\tInterest expense\t61,200\t92,400\t31,200\t51.0%\r\n7400\tInventory shrink adjustment\t6,400\t8,900\t2,500\t39.1%",
+   "memo": "**Halyard Provisioning Group, Inc. — Month-End Variance Commentary**\r\n**June 2026 vs. May 2026**\r\n\r\n**Revenue**\r\n\r\n- **4000 Product revenue, distribution: +$372,000 (+7.1%)** — Higher case volume across all four regional depots as seasonal summer demand from foodservice customers ramped up, partially offset by continued price competition in the produce categories.\r\n- **4100 Service revenue, equipment maintenance: +$229,000 (+28.2%)** — Growth in preventive maintenance contract renewals combined with a heavier volume of billable emergency repair calls during the warmer month, when refrigeration and ice machine service demand peaks.\r\n- **4200 Freight billed to customers: ($65,000) (-34.9%)** — Shift in customer mix toward delivered-pricing arrangements, where freight is embedded in the product price rather than billed separately, plus a small number of large accounts converting to freight-included terms at the start of the quarter.\r\n\r\n**Cost of sales**\r\n\r\n- **5000 Cost of product sold: +$348,000 (+8.9%)** — Movement tracks the increase in product revenue. Product gross margin compressed slightly, from 25.0% in May to 23.8% in June, reflecting vendor cost increases in protein and dairy that were not fully passed through to customers.\r\n- **5100 Inbound freight: +$73,800 (+34.5%)** — Carrier rate increases at the July contract renewal date, higher fuel surcharges, and several expedited inbound shipments booked to cover stock-outs ahead of the July 4 holiday build.\r\n\r\n**Operating expenses**\r\n\r\n- **6000 Warehouse wages: +$72,500 (+11.5%)** — Overtime hours required to support the higher shipping volume, plus seasonal temporary labor added at two depots. There were also three additional payroll days in the June cycle relative to May.\r\n- **6100 Fleet fuel: ($5,200) (-5.4%)** — Lower average diesel prices and improved route density. No commentary required; included for completeness.\r\n- **6200 Repairs and maintenance, depots: +$77,600 (+189.3%)** — Unplanned repair of the refrigeration compressor at the Southeast depot and scheduled annual dock-leveler and racking maintenance performed in June, both of which are non-recurring.\r\n- **6300 Software subscriptions: +$1,600 (+5.6%)** — Routine seat additions. Below threshold, no commentary required.\r\n- **6400 Bad debt expense: +$47,000 (+313.3%)** — Specific reserve established against one aged regional customer placed with a third-party collection agency, plus a routine true-up of the general allowance to reflect increased 90+ day aging.\r\n- **6500 Professional fees: ($7,500) (-13.6%)** — Timing of audit and tax advisory billings; the May figure included one-time fees related to the revolver covenant review.\r\n- **7000 Depreciation: $0 (0.0%)** — No additions or disposals in the month.\r\n- **7400 Inventory shrink adjustment: +$2,500 (+39.1%)** — Higher shrink identified in the June cycle counts, mainly in the frozen categories. Below the dollar threshold, no commentary required.\r\n\r\n**Financing**\r\n\r\n- **7100 Interest expense: +$31,200 (+51.0%)** — Higher average revolver borrowings during the month to fund the seasonal inventory build, together with the effect of the rate increase that took effect mid-quarter.\r\n\r\n**Summary**\r\n\r\nTotal revenue increased $536,000 (+8.6%) and total operating expenses increased $188,500 (+18.8%), with the expense growth concentrated in repairs, bad debt and warehouse wages. Net of the accounts shown, results declined $105,500 (-10.2%) versus May, driven primarily by the non-recurring repair activity and the bad debt reserve. Excluding those two items, net results would have been approximately flat to slightly favorable."
+  },
+  "statsInReviewV3": {
+   "sent": 30,
+   "checked": 2,
+   "review": 13,
+   "notchecked": 13,
+   "failed": 2,
+   "rowsUsed": 14,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 55,
+   "totalsFail": 0
+  }
+ },
+ {
+  "id": "halyard-prompt1",
+  "inputs": {
+   "ledger": "Line\tAccount\tPrior\tCurrent\tVariance\tPercent\r\n4000\tProduct revenue, distribution\t5,240,000\t5,612,000\t372,000\t7.1%\r\n4100\tService revenue, equipment maintenance\t812,000\t1,041,000\t229,000\t28.2%\r\n4200\tFreight billed to customers\t186,000\t121,000\t(65,000)\t-34.9%\r\n5000\tCost of product sold\t3,930,000\t4,278,000\t348,000\t8.9%\r\n5100\tInbound freight\t214,000\t287,800\t73,800\t34.5%\r\n6000\tWarehouse wages\t630,000\t702,500\t72,500\t11.5%\r\n6100\tFleet fuel\t96,400\t91,200\t(5,200)\t-5.4%\r\n6200\tRepairs and maintenance, depots\t41,000\t118,600\t77,600\t189.3%\r\n6300\tSoftware subscriptions\t28,500\t30,100\t1,600\t5.6%\r\n6400\tBad debt expense\t15,000\t62,000\t47,000\t313.3%\r\n6500\tProfessional fees\t55,000\t47,500\t(7,500)\t-13.6%\r\n7000\tDepreciation\t128,000\t128,000\t0\t0.0%\r\n7100\tInterest expense\t61,200\t92,400\t31,200\t51.0%\r\n7400\tInventory shrink adjustment\t6,400\t8,900\t2,500\t39.1%",
+   "memo": "1. 4100 Service revenue, equipment maintenance: prior $812,000, current $1,041,000, rose $229,000, 28.2 percent, because no source on file (source: no source on file).\r\n2. 4200 Freight billed to customers: prior $186,000, current $121,000, fell $65,000, 34.9 percent, because no source on file (source: no source on file).\r\n3. 5100 Inbound freight: prior $214,000, current $287,800, rose $73,800, 34.5 percent, because no source on file (source: no source on file).\r\n4. 6000 Warehouse wages: prior $630,000, current $702,500, rose $72,500, 11.5 percent, because no source on file (source: no source on file).\r\n5. 6200 Repairs and maintenance, depots: prior $41,000, current $118,600, rose $77,600, 189.3 percent, because no source on file (source: no source on file).\r\n6. 6400 Bad debt expense: prior $15,000, current $62,000, rose $47,000, 313.3 percent, because no source on file (source: no source on file).\r\n7. 7100 Interest expense: prior $61,200, current $92,400, rose $31,200, 51.0 percent, because no source on file (source: no source on file).\r\n\r\nSeven lines fell below the rule and carry no commentary."
+  },
+  "statsInReviewV3": {
+   "sent": 8,
+   "checked": 0,
+   "review": 7,
+   "notchecked": 1,
+   "failed": 0,
+   "rowsUsed": 14,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 16,
+   "totalsFail": 0
+  }
+ },
+ {
+  "id": "brightwater-blind",
+  "inputs": {
+   "ledger": "4010\tPatient service revenue, net\t742000\t803500\n4220\tOrthodontic plan revenue\t96000\t138400\n5210\tDental supplies and lab fees\t138500\t191200\n6110\tHygienist wages\t214000\t268900\n6610\tMarketing and patient outreach\t18400\t24100",
+   "memo": "4220 Orthodontic plan revenue rose $42,400, or 44.2 percent, over May. Reason pending: the schedule shows no plan starts, contract values or fee changes, so the driver has to come from the orthodontic contract detail before this line can be explained.\r\n\r\n5210 Dental supplies and lab fees rose $52,700, or 38.1 percent, over May. Reason pending: the increase runs far ahead of the 8.3 percent growth in net patient service revenue, so patient volume alone does not account for it, and the vendor and outside lab invoice detail is needed to identify the cause.\r\n\r\n6110 Hygienist wages rose $54,900, or 25.7 percent, over May. Reason pending: the schedule carries no headcount, hours or pay rate information, so the May and June payroll registers are needed before a cause can be stated."
+  },
+  "statsInReviewV3": {
+   "sent": 6,
+   "checked": 3,
+   "review": 1,
+   "notchecked": 2,
+   "failed": 0,
+   "rowsUsed": 5,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 4,
+   "totalsFail": 0
+  }
+ },
+ {
+  "id": "brightwater-prompt1",
+  "inputs": {
+   "ledger": "4010\tPatient service revenue, net\t742000\t803500\n4220\tOrthodontic plan revenue\t96000\t138400\n5210\tDental supplies and lab fees\t138500\t191200\n6110\tHygienist wages\t214000\t268900\n6610\tMarketing and patient outreach\t18400\t24100",
+   "memo": "1. 4220 Orthodontic plan revenue: prior $96,000, current $138,400, rose by $42,400, 44.2 percent, because no source on file (source: no source on file).\r\n2. 5210 Dental supplies and lab fees: prior $138,500, current $191,200, rose by $52,700, 38.1 percent, because no source on file (source: no source on file).\r\n3. 6110 Hygienist wages: prior $214,000, current $268,900, rose by $54,900, 25.7 percent, because no source on file (source: no source on file).\r\n\r\nTwo lines fell below the rule and carry no commentary."
+  },
+  "statsInReviewV3": {
+   "sent": 4,
+   "checked": 0,
+   "review": 3,
+   "notchecked": 1,
+   "failed": 0,
+   "rowsUsed": 5,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 7,
+   "totalsFail": 0
+  }
+ },
+ {
+  "id": "kestrel-blind",
+  "inputs": {
+   "ledger": "Kestrel IT Services, LLC\nProfit and Loss Comparison\nJuly 2026 compared with June 2026\n\n\tJul 2026\tJun 2026\t$ Change\t% Change\nIncome\n   4000 Recurring managed services\t198,400.00\t161,500.00\t36,900.00\t22.85 %\n   4100 Project and implementation revenue\t96,400.00\t38,900.00\t57,500.00\t147.81 %\nTotal Income\t294,800.00\t200,400.00\t94,400.00\t47.11 %\nCost of Goods Sold\n   5000 Subcontracted engineering\t88,300.00\t41,800.00\t46,500.00\t111.24 %\nTotal Cost of Goods Sold\t88,300.00\t41,800.00\t46,500.00\t111.24 %\nGross Profit\t206,500.00\t158,600.00\t47,900.00\t30.20 %\nExpenses\n   6000 Salaries and wages\t88,500.00\t88,500.00\t0.00\t0.00 %\n   6200 Software licenses and hosting\t57,900.00\t22,600.00\t35,300.00\t156.19 %\n   6400 Client acquisition costs\t14,200.00\t4,900.00\t9,300.00\t189.80 %\nTotal Expenses\t160,600.00\t116,000.00\t44,600.00\t38.45 %\nNet Operating Income\t45,900.00\t42,600.00\t3,300.00\t7.75 %\nNet Income\t45,900.00\t42,600.00\t3,300.00\t7.75 %",
+   "memo": "4000 Recurring managed services rose $36,900, or 22.85 percent, to $198,400. The statement does not carry the cause, so the driver has to come from the July billing register: confirm how much is new agreements that began in July, how much is contracted rate increases on existing clients, and whether any of it is June service billed late.\r\n\r\n4100 Project and implementation revenue rose $57,500, or 147.81 percent, to $96,400, the largest movement on the statement. Confirm from the project billing detail which engagements hit the milestones invoiced in July, and flag how much of the increase is non-recurring, because only the managed services base carries into August.\r\n\r\n5000 Subcontracted engineering rose $46,500, or 111.24 percent, to $88,300, moving with project revenue in the same month. Gross margin fell from 79.14 percent in June to 70.05 percent in July, so confirm from the subcontractor invoices how much of the July cost sits against the projects billed in July and whether any July cost belongs to work still unbilled at month end.\r\n\r\n6200 Software licences and hosting rose $35,300, or 156.19 percent, to $57,900. Confirm whether an annual or multi-month renewal was paid inside July. If it was, the charge covers a term rather than the month, and it belongs in prepaid expense amortised across that term, which would change both this month and the months it covers."
+  },
+  "statsInReviewV3": {
+   "sent": 7,
+   "checked": 3,
+   "review": 2,
+   "notchecked": 2,
+   "failed": 0,
+   "rowsUsed": 6,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 10,
+   "totalsFail": 0
+  }
+ },
+ {
+  "id": "kestrel-prompt1",
+  "inputs": {
+   "ledger": "Kestrel IT Services, LLC\nProfit and Loss Comparison\nJuly 2026 compared with June 2026\n\n\tJul 2026\tJun 2026\t$ Change\t% Change\nIncome\n   4000 Recurring managed services\t198,400.00\t161,500.00\t36,900.00\t22.85 %\n   4100 Project and implementation revenue\t96,400.00\t38,900.00\t57,500.00\t147.81 %\nTotal Income\t294,800.00\t200,400.00\t94,400.00\t47.11 %\nCost of Goods Sold\n   5000 Subcontracted engineering\t88,300.00\t41,800.00\t46,500.00\t111.24 %\nTotal Cost of Goods Sold\t88,300.00\t41,800.00\t46,500.00\t111.24 %\nGross Profit\t206,500.00\t158,600.00\t47,900.00\t30.20 %\nExpenses\n   6000 Salaries and wages\t88,500.00\t88,500.00\t0.00\t0.00 %\n   6200 Software licenses and hosting\t57,900.00\t22,600.00\t35,300.00\t156.19 %\n   6400 Client acquisition costs\t14,200.00\t4,900.00\t9,300.00\t189.80 %\nTotal Expenses\t160,600.00\t116,000.00\t44,600.00\t38.45 %\nNet Operating Income\t45,900.00\t42,600.00\t3,300.00\t7.75 %\nNet Income\t45,900.00\t42,600.00\t3,300.00\t7.75 %",
+   "memo": "1. 4000 Recurring managed services: prior $161,500.00, current $198,400.00, rose by $36,900.00, 22.85 percent, because no source on file (source: no source on file).\r\n2. 4100 Project and implementation revenue: prior $38,900.00, current $96,400.00, rose by $57,500.00, 147.81 percent, because no source on file (source: no source on file).\r\n3. 5000 Subcontracted engineering: prior $41,800.00, current $88,300.00, rose by $46,500.00, 111.24 percent, because no source on file (source: no source on file).\r\n4. 6200 Software licences and hosting: prior $22,600.00, current $57,900.00, rose by $35,300.00, 156.19 percent, because no source on file (source: no source on file).\r\n\r\nTwo lines fell below the rule and carry no commentary."
+  },
+  "statsInReviewV3": {
+   "sent": 5,
+   "checked": 0,
+   "review": 4,
+   "notchecked": 1,
+   "failed": 0,
+   "rowsUsed": 6,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 10,
+   "totalsFail": 0
+  }
+ }
+]

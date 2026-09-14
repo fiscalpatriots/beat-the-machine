@@ -1,0 +1,508 @@
+[
+ {
+  "id": "B001",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 30,000 euros.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b a currency that is not the dollar"
+ },
+ {
+  "id": "B002",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 30,000 pounds.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b"
+ },
+ {
+  "id": "B003",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 30,000 yen.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b"
+ },
+ {
+  "id": "B004",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 30,000 rupees.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b"
+ },
+ {
+  "id": "B005",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 30,000 Canadian dollars.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b a currency that is not the dollar, named with the word dollars"
+ },
+ {
+  "id": "B006",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 30,000 Australian dollars.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b"
+ },
+ {
+  "id": "B007",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose HK$30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b (US$30,000 listed)"
+ },
+ {
+  "id": "B008",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose R$30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b"
+ },
+ {
+  "id": "B009",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 30,000 francs.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b"
+ },
+ {
+  "id": "B010",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in Canadian currency.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b"
+ },
+ {
+  "id": "B011",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by $-30,000, or -30 percent.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "1 minus sign; 5 sign clash"
+ },
+ {
+  "id": "B012",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by +$30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "failed"
+  ],
+  "basis": "a plus sign that agrees"
+ },
+ {
+  "id": "B013",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Consulting revenue changed by +$60,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "5 a figure written with its own sign is compared as written"
+ },
+ {
+  "id": "B014",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Consulting revenue changed by $+60,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "5"
+ },
+ {
+  "id": "B015",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Consulting revenue changed by +25 percent.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "5"
+ },
+ {
+  "id": "B016",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by minus $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "silent: the word minus is a sign the words gave"
+ },
+ {
+  "id": "B017",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by negative $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "silent: the word negative is a sign"
+ },
+ {
+  "id": "B018",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by 30,000 Cr.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "silent: Cr indicator"
+ },
+ {
+  "id": "B019",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by $30,000 credit.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "silent: credit indicator"
+ },
+ {
+  "id": "B020",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was stable at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "silent: stable"
+ },
+ {
+  "id": "B021",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was steady at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "steady listed"
+ },
+ {
+  "id": "B022",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was constant at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "silent: 'remained constant' listed, 'was constant' not"
+ },
+ {
+  "id": "B023",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was the same as May at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "silent: 'stayed the same' listed"
+ },
+ {
+  "id": "B024",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense did not move and closed at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed"
+  ],
+  "basis": "negation"
+ },
+ {
+  "id": "B025",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was static at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "silent: static"
+ },
+ {
+  "id": "B026",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was unmoved at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "silent: unmoved"
+ },
+ {
+  "id": "B027",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was on par with May at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "silent: on par"
+ },
+ {
+  "id": "B028",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was equal to May at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "silent: equal to May"
+ },
+ {
+  "id": "B029",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense matched May at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "silent: matched May"
+ },
+ {
+  "id": "B030",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was unchanged month over month at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "unchanged listed"
+ },
+ {
+  "id": "B031",
+  "cls": "period",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 versus the prior year.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "silent: the prior year is not the prior column"
+ },
+ {
+  "id": "B032",
+  "cls": "period",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on a trailing twelve month basis.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "silent"
+ },
+ {
+  "id": "B033",
+  "cls": "period",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 since December.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "silent: a month other than the prior column"
+ },
+ {
+  "id": "B034",
+  "cls": "period",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 compared with last June.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "silent: T48 class without a figure"
+ },
+ {
+  "id": "B035",
+  "cls": "period",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 30 percent, over two years.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "silent: count accounted for, period mismatch"
+ },
+ {
+  "id": "B036",
+  "cls": "period",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in the first half.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "silent"
+ }
+]

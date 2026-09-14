@@ -1,0 +1,1938 @@
+[
+ {
+  "id": "A001",
+  "cls": "multiplier",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 1.3x the prior balance.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b multiplier (3x listed)"
+ },
+ {
+  "id": "A002",
+  "cls": "multiplier",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 and grew 1.3-fold.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b multiplier (two-fold listed)"
+ },
+ {
+  "id": "A003",
+  "cls": "multiplier",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 and grew twofold.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b multiplier (twofold listed)"
+ },
+ {
+  "id": "A004",
+  "cls": "multiplier",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 and grew by a third.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b fraction"
+ },
+ {
+  "id": "A005",
+  "cls": "multiplier",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 and was up by half.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b fraction"
+ },
+ {
+  "id": "A006",
+  "cls": "multiplier",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a 1.3 times increase.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b multiplier (three times listed)"
+ },
+ {
+  "id": "A007",
+  "cls": "multiplier",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense quadrupled to $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b multiplier"
+ },
+ {
+  "id": "A008",
+  "cls": "multiplier",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 and more than doubled.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b multiplier"
+ },
+ {
+  "id": "A009",
+  "cls": "multiplier",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or x1.3 the prior month.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b number glued to letters"
+ },
+ {
+  "id": "A010",
+  "cls": "multiplier",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, roughly three tenths of the May balance.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b fraction"
+ },
+ {
+  "id": "A011",
+  "cls": "multiplier",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a threefold jump.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b multiplier"
+ },
+ {
+  "id": "A012",
+  "cls": "multiplier",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Consulting revenue fell $60,000 and was halved.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b multiplier (halved listed)"
+ },
+ {
+  "id": "A013",
+  "cls": "multiplier",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Consulting revenue fell $60,000, down by a quarter.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b fraction (a quarter of listed)"
+ },
+ {
+  "id": "A014",
+  "cls": "multiplier",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Consulting revenue fell $60,000, or 0.75x of May.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b multiplier"
+ },
+ {
+  "id": "A015",
+  "cls": "multiplier",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 1.5 times.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b multiplier"
+ },
+ {
+  "id": "A016",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was flat at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "no-change: flat tested within half a percent"
+ },
+ {
+  "id": "A017",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense held steady at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "no-change: steady listed"
+ },
+ {
+  "id": "A018",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was essentially flat at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked"
+  ],
+  "basis": "no-change: flat listed"
+ },
+ {
+  "id": "A019",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was roughly unchanged at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked"
+  ],
+  "basis": "no-change: unchanged listed"
+ },
+ {
+  "id": "A020",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was broadly stable at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "silent: 'stable' not listed; a green result clears a false no-change claim"
+ },
+ {
+  "id": "A021",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was level at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "silent: 'level with' listed, 'level at' not"
+ },
+ {
+  "id": "A022",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was consistent with May at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "silent: no-change claim outside the list"
+ },
+ {
+  "id": "A023",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was in line with May at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "silent: no-change claim outside the list"
+ },
+ {
+  "id": "A024",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense showed no material change at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "negation, or the 'no change' idiom"
+ },
+ {
+  "id": "A025",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was virtually unchanged from May at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "no-change: unchanged listed"
+ },
+ {
+  "id": "A026",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was flat.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked"
+  ],
+  "basis": "no figure: not checked; flat against a moved line may fail"
+ },
+ {
+  "id": "A027",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense remained flat month over month.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked"
+  ],
+  "basis": "no figure; remained flat listed"
+ },
+ {
+  "id": "A028",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Travel expense was unchanged at $12,000.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope"
+  ],
+  "basis": "no-change passes on a line that did not move"
+ },
+ {
+  "id": "A029",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Travel expense rose $150.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "a dollar figure against zero movement"
+ },
+ {
+  "id": "A030",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Utilities expense was flat at $50,150.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope"
+  ],
+  "basis": "flat within half a percent (0.3 percent)"
+ },
+ {
+  "id": "A031",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Utilities expense was unchanged at $50,150.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "unchanged is tested to the half cent"
+ },
+ {
+  "id": "A032",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Utilities expense held steady, up $150.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review"
+  ],
+  "basis": "steady within half a percent and up $150 ties"
+ },
+ {
+  "id": "A033",
+  "cls": "nochange",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Consulting revenue was stable at $180,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "silent: 'stable' not listed"
+ },
+ {
+  "id": "A034",
+  "cls": "approx",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose about $32,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review",
+   "not checked"
+  ],
+  "basis": "5 unrounded comparison; approximation words are not in the grammar"
+ },
+ {
+  "id": "A035",
+  "cls": "approx",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose roughly $29,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review",
+   "not checked"
+  ],
+  "basis": "5 unrounded"
+ },
+ {
+  "id": "A036",
+  "cls": "approx",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose nearly $31,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review",
+   "not checked"
+  ],
+  "basis": "5 unrounded"
+ },
+ {
+  "id": "A037",
+  "cls": "approx",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose just over $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "1d bound ('and the like'); P18 'more than' is needs review"
+ },
+ {
+  "id": "A038",
+  "cls": "approx",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose by almost $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "1d bound ('and the like')"
+ },
+ {
+  "id": "A039",
+  "cls": "approx",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose by well over $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "1d bound"
+ },
+ {
+  "id": "A040",
+  "cls": "approx",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose by up to $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "1d bound"
+ },
+ {
+  "id": "A041",
+  "cls": "approx",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose approximately 30 percent.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope"
+  ],
+  "basis": "a true percent"
+ },
+ {
+  "id": "A042",
+  "cls": "approx",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose by about 25 percent.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review",
+   "not checked"
+  ],
+  "basis": "5 unrounded"
+ },
+ {
+  "id": "A043",
+  "cls": "approx",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Consulting revenue fell by about $55,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review",
+   "not checked"
+  ],
+  "basis": "5 unrounded"
+ },
+ {
+  "id": "A044",
+  "cls": "approx",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Consulting revenue fell by a little under $60,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "1d bound"
+ },
+ {
+  "id": "A045",
+  "cls": "range",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose between $25,000 and $35,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked",
+   "failed"
+  ],
+  "basis": "silent: a range is neither figure"
+ },
+ {
+  "id": "A046",
+  "cls": "range",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose between 25 and 35 percent.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b other run of digits"
+ },
+ {
+  "id": "A047",
+  "cls": "range",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $25,000-$35,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked",
+   "failed"
+  ],
+  "basis": "silent: a range"
+ },
+ {
+  "id": "A048",
+  "cls": "range",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 20-40%.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked",
+   "failed"
+  ],
+  "basis": "silent: a range"
+ },
+ {
+  "id": "A049",
+  "cls": "range",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose in the range of $28,000 to $32,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked",
+   "failed"
+  ],
+  "basis": "silent: a range"
+ },
+ {
+  "id": "A050",
+  "cls": "range",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 29 to 31 percent.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b other run of digits"
+ },
+ {
+  "id": "A051",
+  "cls": "scale",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $0.03 million.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "not checked"
+  ],
+  "basis": "1 the $1.2M form; 1b scale word"
+ },
+ {
+  "id": "A052",
+  "cls": "scale",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 30 thousand dollars.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b '30 thousand' listed"
+ },
+ {
+  "id": "A053",
+  "cls": "scale",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30 thousand.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b scale word ($30.0 thousand listed)"
+ },
+ {
+  "id": "A054",
+  "cls": "scale",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $0.03M.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope"
+  ],
+  "basis": "1 the $1.2M form"
+ },
+ {
+  "id": "A055",
+  "cls": "scale",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $3M.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "1 the $1.2M form, wrong value"
+ },
+ {
+  "id": "A056",
+  "cls": "scale",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30 000.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1 thousands commas only; space grouping"
+ },
+ {
+  "id": "A057",
+  "cls": "scale",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30.000.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1 decimals: $30.000 is thirty dollars"
+ },
+ {
+  "id": "A058",
+  "cls": "scale",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30 grand.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b scale word"
+ },
+ {
+  "id": "A059",
+  "cls": "scale",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000k.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked"
+  ],
+  "basis": "1 the k form: thirty million"
+ },
+ {
+  "id": "A060",
+  "cls": "scale",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 30,000 dollars.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope"
+  ],
+  "basis": "1 a bare number with its unit"
+ },
+ {
+  "id": "A061",
+  "cls": "scale",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30 thou.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b scale word"
+ },
+ {
+  "id": "A062",
+  "cls": "scale",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Consulting revenue fell $0.06MM.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed",
+   "checked within scope"
+  ],
+  "basis": "1b scale (MM)"
+ },
+ {
+  "id": "A063",
+  "cls": "scale",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Consulting revenue fell $60 K.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed",
+   "checked within scope"
+  ],
+  "basis": "1 the k form with a space"
+ },
+ {
+  "id": "A064",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by (30,000).",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "1 parentheses negative; 5 sign clash"
+ },
+ {
+  "id": "A065",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 30,000 CR.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "needs review",
+   "failed"
+  ],
+  "basis": "silent: a CR indicator is a sign the words gave"
+ },
+ {
+  "id": "A066",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense moved $30,000 DR.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: DR indicator"
+ },
+ {
+  "id": "A067",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by -$30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "1 minus sign; 5 sign clash"
+ },
+ {
+  "id": "A068",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by $-30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "1 minus sign"
+ },
+ {
+  "id": "A069",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by 30,000-.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked"
+  ],
+  "basis": "silent: a trailing minus is a sign"
+ },
+ {
+  "id": "A070",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by $(30,000).",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "1 parentheses negative"
+ },
+ {
+  "id": "A071",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Consulting revenue changed by (60,000).",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review"
+  ],
+  "basis": "1 parentheses negative agrees with -60,000"
+ },
+ {
+  "id": "A072",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Consulting revenue changed by 60,000.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review"
+  ],
+  "basis": "5 a magnitude compared as a magnitude"
+ },
+ {
+  "id": "A073",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Consulting revenue changed by +60,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "basis": "5 a figure written with its own sign is compared as written"
+ },
+ {
+  "id": "A074",
+  "cls": "units",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 30 percentage points.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "4 points against a dollar line"
+ },
+ {
+  "id": "A075",
+  "cls": "units",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 3,000 basis points.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b basis points"
+ },
+ {
+  "id": "A076",
+  "cls": "units",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 30 pts.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "needs review"
+  ],
+  "basis": "1b '3 points' listed"
+ },
+ {
+  "id": "A077",
+  "cls": "units",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a 30 pct increase.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope"
+  ],
+  "basis": "1 pct"
+ },
+ {
+  "id": "A078",
+  "cls": "units",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 30 p.p.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "needs review"
+  ],
+  "basis": "1 pp; 4 points against a dollar line"
+ },
+ {
+  "id": "A079",
+  "cls": "units",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 30 bps.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b basis points"
+ },
+ {
+  "id": "A080",
+  "cls": "units",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 0.3 percent.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "5 unrounded"
+ },
+ {
+  "id": "A081",
+  "cls": "units",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 0.30 in percentage terms.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b other run of digits"
+ },
+ {
+  "id": "A082",
+  "cls": "period",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 30 percent, year over year.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "silent: one pair of periods; a year-over-year claim is not that pair"
+ },
+ {
+  "id": "A083",
+  "cls": "period",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 compared with June 2025.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "silent: a year is accounted for, but the comparison base is not the prior column"
+ },
+ {
+  "id": "A084",
+  "cls": "period",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 over the last twelve months.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "silent: count accounted for; period mismatch"
+ },
+ {
+  "id": "A085",
+  "cls": "period",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Year to date, rent expense rose $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "silent: YTD is a current-column header word, not the pair"
+ },
+ {
+  "id": "A086",
+  "cls": "period",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 quarter over quarter.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "silent: period mismatch"
+ },
+ {
+  "id": "A087",
+  "cls": "period",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 against budget.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "silent: 'budget' names a prior column this ledger does not carry"
+ },
+ {
+  "id": "A088",
+  "cls": "period",
+  "inputs": {
+   "ledger": "4300\tConsulting revenue\t240000\t180000\n6700\tTravel expense\t12000\t12000\n6800\tUtilities expense\t50000\t50150",
+   "memo": "Consulting revenue fell 25 percent from last year.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "T48 class: a memo line quoting last year"
+ },
+ {
+  "id": "A089",
+  "cls": "two",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 and Insurance expense rose $40,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "2 clause binding; 5"
+ },
+ {
+  "id": "A090",
+  "cls": "two",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 30 percent, and ended at $140,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "5"
+ },
+ {
+  "id": "A091",
+  "cls": "two",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 to $130,000, and Insurance expense fell to $95,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "direction inside a clause"
+ },
+ {
+  "id": "A092",
+  "cls": "two",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 while Insurance expense was unchanged.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "a no-change word in a clause naming a line"
+ },
+ {
+  "id": "A093",
+  "cls": "two",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense and Insurance expense rose $30,000 and $45,000 respectively.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "2 a clause naming two accounts is a binding conflict"
+ },
+ {
+  "id": "A094",
+  "cls": "two",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000; so did Insurance expense.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "silent: 'so did' restates $30,000 for 6200, which moved $45,000"
+ },
+ {
+  "id": "A095",
+  "cls": "two",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 and Insurance expense rose too, by 30 percent.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "5 insurance moved 90 percent"
+ },
+ {
+  "id": "A096",
+  "cls": "two",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, the same increase as Insurance expense.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "silent: a comparative claim false on 6200"
+ },
+ {
+  "id": "A097",
+  "cls": "two",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, or 30 percent, while Insurance expense rose 30 percent.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "5 insurance moved 90 percent"
+ },
+ {
+  "id": "A098",
+  "cls": "negation",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense not only increased by $30,000 but also ended at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "negation voids the clause"
+ },
+ {
+  "id": "A099",
+  "cls": "negation",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense did not decline; it rose $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "negation voids its own clause only"
+ },
+ {
+  "id": "A100",
+  "cls": "negation",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $45,000, not $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "negation attaches to 'not $30,000'; $45,000 stands in its own clause"
+ },
+ {
+  "id": "A101",
+  "cls": "negation",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $45,000 without any change in occupancy.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "negation (without)"
+ },
+ {
+  "id": "A102",
+  "cls": "negation",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 and Insurance expense didn’t rise.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed"
+  ],
+  "basis": "contracted negation with a curly apostrophe (flattened first)"
+ },
+ {
+  "id": "A103",
+  "cls": "negation",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, and it is untrue that it fell.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: 'untrue' is not in the negation list"
+ },
+ {
+  "id": "A104",
+  "cls": "negation",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 and hardly moved.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "silent: 'hardly moved' asserts near no change"
+ },
+ {
+  "id": "A105",
+  "cls": "negation",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, not a decline of $30,000 as reported earlier.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "negation"
+ },
+ {
+  "id": "A106",
+  "cls": "negation",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense failed to fall, rising $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "'failed to' listed"
+ },
+ {
+  "id": "A107",
+  "cls": "negation",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000; Insurance expense rose nowhere near $45,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "silent: 'nowhere near' negates the figure"
+ },
+ {
+  "id": "A108",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose CAD 30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b a currency that is not the dollar (USD 90000 listed)"
+ },
+ {
+  "id": "A109",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose C$30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b a currency that is not the dollar (US$30,000 listed)"
+ },
+ {
+  "id": "A110",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose A$30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b a currency that is not the dollar"
+ },
+ {
+  "id": "A111",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose ¥30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b currency (yen sign)"
+ },
+ {
+  "id": "A112",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 30,000 EUR.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b currency"
+ },
+ {
+  "id": "A113",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose ₹30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b currency (rupee sign)"
+ },
+ {
+  "id": "A114",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 30,000 pesos.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b currency"
+ },
+ {
+  "id": "A115",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose Rs. 30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b currency"
+ },
+ {
+  "id": "A116",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 3,00,000 on the lakh grouping.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1 thousands commas; lakh grouping"
+ },
+ {
+  "id": "A117",
+  "cls": "digits",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose ৩০,০০০.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b digits outside 0 to 9 (Bengali)"
+ },
+ {
+  "id": "A118",
+  "cls": "digits",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose ３０,０００ dollars.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b fullwidth digits"
+ },
+ {
+  "id": "A119",
+  "cls": "digits",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 三十 percent.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b other quantitative language (CJK numerals)"
+ },
+ {
+  "id": "A120",
+  "cls": "digits",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or trente pour cent.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b other quantitative language (French number words)"
+ },
+ {
+  "id": "A121",
+  "cls": "digits",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or XXX percent.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b other quantitative language (Roman numerals)"
+ },
+ {
+  "id": "A122",
+  "cls": "digits",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or ३० percent.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b Devanagari digits"
+ },
+ {
+  "id": "A123",
+  "cls": "typo",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $ 30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "not checked"
+  ],
+  "basis": "a no-break space after the dollar sign"
+ },
+ {
+  "id": "A124",
+  "cls": "typo",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30 000.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "a no-break space as the thousands separator"
+ },
+ {
+  "id": "A125",
+  "cls": "typo",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by −$30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked"
+  ],
+  "basis": "U+2212 minus sign: a sign the words gave"
+ },
+ {
+  "id": "A126",
+  "cls": "typo",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by –$30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked"
+  ],
+  "basis": "en dash flattened, then read as a minus sign"
+ },
+ {
+  "id": "A127",
+  "cls": "typo",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by —30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked"
+  ],
+  "basis": "em dash as a minus sign"
+ },
+ {
+  "id": "A128",
+  "cls": "typo",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 90 percent.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked"
+  ],
+  "basis": "a no-break space between number and unit"
+ },
+ {
+  "id": "A129",
+  "cls": "typo",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 90 %.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked"
+  ],
+  "basis": "a thin space before the percent sign"
+ },
+ {
+  "id": "A130",
+  "cls": "typo",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,​000.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed",
+   "checked within scope"
+  ],
+  "basis": "a zero-width space inside the figure"
+ },
+ {
+  "id": "A131",
+  "cls": "typo",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 90％.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked"
+  ],
+  "basis": "fullwidth percent sign"
+ },
+ {
+  "id": "A132",
+  "cls": "typo",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose ＄30,000, or 90 percent.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked"
+  ],
+  "basis": "fullwidth dollar sign, false percent"
+ },
+ {
+  "id": "A133",
+  "cls": "typo",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 – or 90 percent.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "en dash then a false percent"
+ },
+ {
+  "id": "A134",
+  "cls": "typo",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 90 per­cent.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked"
+  ],
+  "basis": "a soft hyphen inside the unit word"
+ },
+ {
+  "id": "A135",
+  "cls": "typo",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 90 percent.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "not checked"
+  ],
+  "basis": "no-break spaces between every word"
+ },
+ {
+  "id": "A136",
+  "cls": "long",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, and the balance fell by $45,000 by the end of June.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "5 a false second figure and a false 'fell'"
+ },
+ {
+  "id": "A137",
+  "cls": "long",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, or 90 percent.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "5 a false percent 600 words later"
+ },
+ {
+  "id": "A138",
+  "cls": "long",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, and it doubled.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "failed"
+  ],
+  "basis": "1b a multiplier far from the figure"
+ },
+ {
+  "id": "A139",
+  "cls": "long",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, or 90 percent.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "5 a false percent at the end of a 60,000-character sentence"
+ }
+]

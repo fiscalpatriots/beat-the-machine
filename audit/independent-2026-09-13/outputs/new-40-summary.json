@@ -1,0 +1,486 @@
+[
+ {
+  "id": "P01",
+  "memo": "Rent expense rose $30,000 and ended at $130,000.",
+  "reviewV3": {
+   "S1": "checked within scope"
+  },
+  "head": {
+   "S1": "checked within scope"
+  },
+  "changed": false,
+  "queueKinds": ""
+ },
+ {
+  "id": "P02",
+  "memo": "Rent expense rose $30,000, down from $130,000 to $100,000.",
+  "reviewV3": {
+   "S1": "failed"
+  },
+  "head": {
+   "S1": "failed"
+  },
+  "changed": false,
+  "queueKinds": "Failure,Failure,Failure"
+ },
+ {
+  "id": "P03",
+  "memo": "Rent expense increased by $30,000 and fifty percent.",
+  "reviewV3": {
+   "S1": "failed"
+  },
+  "head": {
+   "S1": "failed"
+  },
+  "changed": false,
+  "queueKinds": "Failure"
+ },
+ {
+  "id": "P04",
+  "memo": "Rent expense increased by $30,000 and 90 per cent.",
+  "reviewV3": {
+   "S1": "failed"
+  },
+  "head": {
+   "S1": "failed"
+  },
+  "changed": false,
+  "queueKinds": "Failure"
+ },
+ {
+  "id": "P05",
+  "memo": "Rent expense increased by $30,000 and doubled.",
+  "reviewV3": {
+   "S1": "checked within scope"
+  },
+  "head": {
+   "S1": "not checked"
+  },
+  "changed": true,
+  "queueKinds": "Unparsed figure"
+ },
+ {
+  "id": "P06",
+  "memo": "Rent expense increased by $30,000 and tripled.",
+  "reviewV3": {
+   "S1": "checked within scope"
+  },
+  "head": {
+   "S1": "not checked"
+  },
+  "changed": true,
+  "queueKinds": "Unparsed figure"
+ },
+ {
+  "id": "P07",
+  "memo": "Rent expense rose $30,000, bringing it to half the prior balance.",
+  "reviewV3": {
+   "S1": "checked within scope"
+  },
+  "head": {
+   "S1": "not checked"
+  },
+  "changed": true,
+  "queueKinds": "Unparsed figure"
+ },
+ {
+  "id": "P08",
+  "memo": "Rent expense rose $30,000, bringing it to twice the prior balance.",
+  "reviewV3": {
+   "S1": "checked within scope"
+  },
+  "head": {
+   "S1": "not checked"
+  },
+  "changed": true,
+  "queueKinds": "Unparsed figure"
+ },
+ {
+  "id": "P09",
+  "memo": "Rent expense increased by $30,000, or 9e1 percent.",
+  "reviewV3": {
+   "S1": "needs review"
+  },
+  "head": {
+   "S1": "not checked"
+  },
+  "changed": true,
+  "queueKinds": "Unparsed figure"
+ },
+ {
+  "id": "P10",
+  "memo": "Rent expense increased by $30,000, or 90.0 per mille.",
+  "reviewV3": {
+   "S1": "checked within scope"
+  },
+  "head": {
+   "S1": "not checked"
+  },
+  "changed": true,
+  "queueKinds": "Unparsed figure"
+ },
+ {
+  "id": "P11",
+  "memo": "Rent expense rose $30,000; Insurance expense remained at $95,000.",
+  "reviewV3": {
+   "S1": "checked within scope"
+  },
+  "head": {
+   "S1": "failed"
+  },
+  "changed": true,
+  "queueKinds": "Failure"
+ },
+ {
+  "id": "P12",
+  "memo": "Rent expense was unchanged at $130,000.",
+  "reviewV3": {
+   "S1": "failed"
+  },
+  "head": {
+   "S1": "failed"
+  },
+  "changed": false,
+  "queueKinds": "Failure"
+ },
+ {
+  "id": "P13",
+  "memo": "Rent expense remained at $130,000.",
+  "reviewV3": {
+   "S1": "checked within scope"
+  },
+  "head": {
+   "S1": "failed"
+  },
+  "changed": true,
+  "queueKinds": "Failure"
+ },
+ {
+  "id": "P14",
+  "memo": "Rent expense rose $30,000 and stayed flat.",
+  "reviewV3": {
+   "S1": "failed"
+  },
+  "head": {
+   "S1": "failed"
+  },
+  "changed": false,
+  "queueKinds": "Failure"
+ },
+ {
+  "id": "P15",
+  "memo": "Rent expense rose $30,000, with no increase in the balance.",
+  "reviewV3": {
+   "S1": "needs review"
+  },
+  "head": {
+   "S1": "needs review"
+  },
+  "changed": false,
+  "queueKinds": "Negated claim"
+ },
+ {
+  "id": "P16",
+  "memo": "Rent expense was below $30,000.",
+  "reviewV3": {
+   "S1": "needs review"
+  },
+  "head": {
+   "S1": "needs review"
+  },
+  "changed": false,
+  "queueKinds": "Unresolved figure"
+ },
+ {
+  "id": "P17",
+  "memo": "Rent expense rose by at least $30,000.",
+  "reviewV3": {
+   "S1": "needs review"
+  },
+  "head": {
+   "S1": "needs review"
+  },
+  "changed": false,
+  "queueKinds": "Unresolved figure"
+ },
+ {
+  "id": "P18",
+  "memo": "Rent expense rose by more than $30,000.",
+  "reviewV3": {
+   "S1": "needs review"
+  },
+  "head": {
+   "S1": "needs review"
+  },
+  "changed": false,
+  "queueKinds": "Unresolved figure"
+ },
+ {
+  "id": "P19",
+  "memo": "Rent expense rose by less than $30,000.",
+  "reviewV3": {
+   "S1": "needs review"
+  },
+  "head": {
+   "S1": "needs review"
+  },
+  "changed": false,
+  "queueKinds": "Unresolved figure"
+ },
+ {
+  "id": "P20",
+  "memo": "Rent expense rose $30,000 and $30,000 = $60,000.",
+  "reviewV3": {
+   "S1": "failed"
+  },
+  "head": {
+   "S1": "failed"
+  },
+  "changed": false,
+  "queueKinds": "Failure"
+ },
+ {
+  "id": "P21",
+  "memo": "Rent expense rose $30,000, or thirty point zero percent.",
+  "reviewV3": {
+   "S1": "not checked"
+  },
+  "head": {
+   "S1": "not checked"
+  },
+  "changed": false,
+  "queueKinds": "Unparsed figure"
+ },
+ {
+  "id": "P22",
+  "memo": "Rent expense rose $30,000, or ninety point zero percent.",
+  "reviewV3": {
+   "S1": "not checked"
+  },
+  "head": {
+   "S1": "not checked"
+  },
+  "changed": false,
+  "queueKinds": "Unparsed figure"
+ },
+ {
+  "id": "P23",
+  "memo": "Rent expense rose $30,000, or one and a half percent.",
+  "reviewV3": {
+   "S1": "checked within scope"
+  },
+  "head": {
+   "S1": "not checked"
+  },
+  "changed": true,
+  "queueKinds": "Unparsed figure"
+ },
+ {
+  "id": "P24",
+  "memo": "Rent expense rose $30,000 and increased by 30_000.",
+  "reviewV3": {
+   "S1": "not checked"
+  },
+  "head": {
+   "S1": "not checked"
+  },
+  "changed": false,
+  "queueKinds": "Unparsed figure"
+ },
+ {
+  "id": "P25",
+  "memo": "Rent expense rose $30,000 and increased by ٣٠٠٠٠.",
+  "reviewV3": {
+   "S1": "checked within scope"
+  },
+  "head": {
+   "S1": "not checked"
+  },
+  "changed": true,
+  "queueKinds": "Unparsed figure"
+ },
+ {
+  "id": "P26",
+  "memo": "Rent expense rose $30,000.\nThe bank covenant ratio was 7.2%.",
+  "reviewV3": {
+   "S1": "checked within scope",
+   "S2": "needs review"
+  },
+  "head": {
+   "S1": "checked within scope",
+   "S2": "needs review"
+  },
+  "changed": false,
+  "queueKinds": "Unmatched sentence,Unresolved figure"
+ },
+ {
+  "id": "P27",
+  "memo": "Rent expense rose $30,000, versus $45,000 for Insurance expense.",
+  "reviewV3": {
+   "S1": "needs review"
+  },
+  "head": {
+   "S1": "needs review"
+  },
+  "changed": false,
+  "queueKinds": "Unresolved figure"
+ },
+ {
+  "id": "P28",
+  "memo": "Rent expense rose $45,000, versus $30,000 for Insurance expense.",
+  "reviewV3": {
+   "S1": "failed"
+  },
+  "head": {
+   "S1": "failed"
+  },
+  "changed": false,
+  "queueKinds": "Failure,Failure"
+ },
+ {
+  "id": "P29",
+  "memo": "Rent expense rose $30,000, while insurance remained unchanged at $95,000.",
+  "reviewV3": {
+   "S1": "failed"
+  },
+  "head": {
+   "S1": "failed"
+  },
+  "changed": false,
+  "queueKinds": "Failure"
+ },
+ {
+  "id": "P30",
+  "memo": "Rent expense increased by $30,000 from $100,000 to $130,000.",
+  "reviewV3": {
+   "S1": "checked within scope"
+  },
+  "head": {
+   "S1": "checked within scope"
+  },
+  "changed": false,
+  "queueKinds": ""
+ },
+ {
+  "id": "P31",
+  "memo": "Rent expense declined by $30,000 from $100,000 to $130,000.",
+  "reviewV3": {
+   "S1": "failed"
+  },
+  "head": {
+   "S1": "failed"
+  },
+  "changed": false,
+  "queueKinds": "Failure"
+ },
+ {
+  "id": "P32",
+  "memo": "Rent expense rose $30,000, or 30%, although it did not rise.",
+  "reviewV3": {
+   "S1": "needs review"
+  },
+  "head": {
+   "S1": "needs review"
+  },
+  "changed": false,
+  "queueKinds": "Negated claim"
+ },
+ {
+  "id": "P33",
+  "memo": "Rent expense rose thirty thousand dollars, or thirty percent.",
+  "reviewV3": {
+   "S1": "checked within scope"
+  },
+  "head": {
+   "S1": "checked within scope"
+  },
+  "changed": false,
+  "queueKinds": ""
+ },
+ {
+  "id": "P34",
+  "memo": "Rent expense rose $30,000 and grew by one-half.",
+  "reviewV3": {
+   "S1": "not checked"
+  },
+  "head": {
+   "S1": "not checked"
+  },
+  "changed": false,
+  "queueKinds": "Unparsed figure"
+ },
+ {
+  "id": "P35",
+  "memo": "Rent expense rose $30,000; June was $130,000 and May was $100,000.",
+  "reviewV3": {
+   "S1": "needs review"
+  },
+  "head": {
+   "S1": "needs review"
+  },
+  "changed": false,
+  "queueKinds": "Unresolved figure,Unresolved figure"
+ },
+ {
+  "id": "P36",
+  "memo": "Rent expense rose $30,000; June was $100,000 and May was $130,000.",
+  "reviewV3": {
+   "S1": "needs review"
+  },
+  "head": {
+   "S1": "needs review"
+  },
+  "changed": false,
+  "queueKinds": "Unresolved figure,Unresolved figure"
+ },
+ {
+  "id": "P37",
+  "memo": "1. Rent expense rose $30,000 because occupancy doubled.\n2. The bank covenant ratio was 7.2%.",
+  "reviewV3": {
+   "1": "checked within scope",
+   "2": "needs review"
+  },
+  "head": {
+   "1": "not checked",
+   "2": "needs review"
+  },
+  "changed": true,
+  "queueKinds": "Unparsed figure,Unmatched sentence,Unresolved figure"
+ },
+ {
+  "id": "P38",
+  "memo": "Rent expense rose $30,000, or 90 percent, because one site closed.",
+  "reviewV3": {
+   "S1": "failed"
+  },
+  "head": {
+   "S1": "failed"
+  },
+  "changed": false,
+  "queueKinds": "Failure"
+ },
+ {
+  "id": "P39",
+  "memo": "Rent expense rose $30,000 in 2026.",
+  "reviewV3": {
+   "S1": "not checked"
+  },
+  "head": {
+   "S1": "checked within scope"
+  },
+  "changed": true,
+  "queueKinds": ""
+ },
+ {
+  "id": "P40",
+  "memo": "Rent expense increased by thirty thousand dollars, then decreased by thirty thousand dollars.",
+  "reviewV3": {
+   "S1": "failed"
+  },
+  "head": {
+   "S1": "failed"
+  },
+  "changed": false,
+  "queueKinds": "Failure"
+ }
+]

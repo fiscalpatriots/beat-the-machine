@@ -1,0 +1,435 @@
+{
+ "root": "C:\\Users\\Khaled\\AppData\\Local\\Temp\\claude\\C--Users-Khaled-Documents-Coach-Dashboard-HQ\\deeea160-5862-48da-a2b8-96fa4107cd67\\scratchpad\\game",
+ "author": {
+  "read": {
+   "sentences": [
+    {
+     "label": "1",
+     "text": "Rent expense did not increase by $30,000.",
+     "status": "needs review"
+    },
+    {
+     "label": "2",
+     "text": "The bank covenant ratio was 7.2%.",
+     "status": "needs review"
+    }
+   ],
+   "facts": [
+    "2 account rows read, 2 clearing the rule.",
+    "Every section total ties to the lines under it.",
+    "2 memo sentences read: 0 checked within scope, 2 need review, 0 not checked, 0 failed.",
+    "Figures: 0 are checked within scope, 2 are held for review, 0 do not recompute.",
+    "Direction, sentence by sentence: 0 agree with the sign, 0 run against it, 1 is held for review, negated or not tied to a line, 0 state no direction, and 1 binds no line, so its direction was not tested.",
+    "The memo makes no threshold claim the checks read.",
+    "1 line clears the rule with nothing written about it: 6200 Insurance expense.",
+    "1 memo sentence binds to no ledger line. It is kept below as an open item that holds the save until it is left out with a reason or rewritten and read again."
+   ],
+   "cards": [
+    {
+     "acct": "6100",
+     "status": "needs review",
+     "key": "",
+     "type": "",
+     "basis": []
+    },
+    {
+     "acct": "6200",
+     "status": "failed",
+     "key": "flag",
+     "type": "no explanation",
+     "basis": [
+      "nothing written where owed"
+     ]
+    }
+   ],
+   "items": [
+    {
+     "label": "2",
+     "res": "open",
+     "status": "needs review"
+    }
+   ]
+  },
+  "settled": {
+   "save": false,
+   "preview": true,
+   "stale": "",
+   "savegate": "",
+   "staleFlag": {
+    "main": false,
+    "fresh": false
+   },
+   "problems": []
+  },
+  "paths": {
+   "typing": {
+    "value": "6100\tRent expense\t100000\t230000",
+    "gate": {
+     "save": true,
+     "preview": true,
+     "stale": "Changed since the last read. The cards below describe the inputs as they were. Press Read it again before saving.",
+     "savegate": "The ledger, the memo or the threshold changed after the last read, so saving and the preview are off. Press Read it again, then confirm any line that changed.",
+     "staleFlag": {
+      "main": true,
+      "fresh": false
+     },
+     "problems": [
+      "The ledger, the memo or the threshold changed after Read it. Press Read it again."
+     ]
+    },
+    "downloads": []
+   },
+   "undo": {
+    "value": "6100\tRent expense\t100000\t130000",
+    "gate": {
+     "save": false,
+     "preview": true,
+     "stale": "",
+     "savegate": "",
+     "staleFlag": {
+      "main": false,
+      "fresh": false
+     },
+     "problems": []
+    }
+   },
+   "redo": {
+    "value": "6100\tRent expense\t100000\t230000",
+    "gate": {
+     "save": true,
+     "preview": true,
+     "stale": "Changed since the last read. The cards below describe the inputs as they were. Press Read it again before saving.",
+     "savegate": "The ledger, the memo or the threshold changed after the last read, so saving and the preview are off. Press Read it again, then confirm any line that changed.",
+     "staleFlag": {
+      "main": true,
+      "fresh": false
+     },
+     "problems": [
+      "The ledger, the memo or the threshold changed after Read it. Press Read it again."
+     ]
+    },
+    "downloads": []
+   },
+   "revertedByHand": {
+    "gate": {
+     "save": false,
+     "preview": true,
+     "stale": "",
+     "savegate": "",
+     "staleFlag": {
+      "main": false,
+      "fresh": false
+     },
+     "problems": []
+    }
+   },
+   "pasteInsert": {
+    "value": "1. Rent expense did not increase by $30,000.\n2. The bank covenant ratio was 9.9%.",
+    "gate": {
+     "save": true,
+     "preview": true,
+     "stale": "Changed since the last read. The cards below describe the inputs as they were. Press Read it again before saving.",
+     "savegate": "The ledger, the memo or the threshold changed after the last read, so saving and the preview are off. Press Read it again, then confirm any line that changed.",
+     "staleFlag": {
+      "main": true,
+      "fresh": false
+     },
+     "problems": [
+      "The ledger, the memo or the threshold changed after Read it. Press Read it again."
+     ]
+    },
+    "downloads": []
+   },
+   "ruleChange": {
+    "gate": {
+     "save": true,
+     "preview": true,
+     "stale": "Changed since the last read. The cards below describe the inputs as they were. Press Read it again before saving.",
+     "savegate": "The ledger, the memo or the threshold changed after the last read, so saving and the preview are off. Press Read it again, then confirm any line that changed.",
+     "staleFlag": {
+      "main": true,
+      "fresh": false
+     },
+     "problems": [
+      "The ledger, the memo or the threshold changed after Read it. Press Read it again."
+     ]
+    },
+    "downloads": []
+   },
+   "dollarFloorTyped": {
+    "gate": {
+     "save": true,
+     "preview": true,
+     "stale": "Changed since the last read. The cards below describe the inputs as they were. Press Read it again before saving.",
+     "savegate": "The ledger, the memo or the threshold changed after the last read, so saving and the preview are off. Press Read it again, then confirm any line that changed.",
+     "staleFlag": {
+      "main": true,
+      "fresh": false
+     },
+     "problems": [
+      "The ledger, the memo or the threshold changed after Read it. Press Read it again."
+     ]
+    },
+    "downloads": []
+   },
+   "silentValueChange": {
+    "gate": {
+     "save": false,
+     "problems": [
+      "The ledger, the memo or the threshold changed after Read it. Press Read it again."
+     ]
+    },
+    "downloads": []
+   },
+   "columnMapping": "author.html carries no column-mapping control (no colprior/colcur elements); the reader's own guess is the only mapping",
+   "finalCleanSave": {
+    "gate": {
+     "save": false,
+     "preview": true,
+     "stale": "",
+     "savegate": "",
+     "staleFlag": {
+      "main": false,
+      "fresh": false
+     },
+     "problems": []
+    },
+    "downloads": [
+     "a1-audit-case-v1.json"
+    ]
+   },
+   "finalCleanSaveFile": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000"
+  },
+  "falseClearanceMemo": {
+   "sentences": [
+    {
+     "label": "1",
+     "text": "Rent expense rose 30,000 euros.",
+     "status": "checked within scope"
+    },
+    {
+     "label": "2",
+     "text": "Insurance expense changed by $-45,000.",
+     "status": "checked within scope"
+    },
+    {
+     "label": "3",
+     "text": "Rent expense was stable at $130,000.",
+     "status": "checked within scope"
+    },
+    {
+     "label": "4",
+     "text": "Insurance expense rose $45,000, or 90 percent, year over year.",
+     "status": "checked within scope"
+    }
+   ],
+   "facts": [
+    "2 account rows read, 2 clearing the rule.",
+    "Every section total ties to the lines under it.",
+    "4 memo sentences read: 4 checked within scope, 0 need review, 0 not checked, 0 failed.",
+    "Every figure recomputes.",
+    "Direction, sentence by sentence: 2 agree with the sign, 0 run against it, 0 are held for review, negated or not tied to a line, 2 state no direction.",
+    "The memo makes no threshold claim the checks read.",
+    "No line clears the rule unexplained."
+   ],
+   "cards": [
+    {
+     "acct": "6100",
+     "memo": "Rent expense rose 30,000 euros.",
+     "status": "checked within scope",
+     "key": "stand",
+     "type": "clean line",
+     "basis": [
+      "the figure and reason hold"
+     ]
+    },
+    {
+     "acct": "6200",
+     "memo": "Insurance expense changed by $-45,000.",
+     "status": "checked within scope",
+     "key": "stand",
+     "type": "clean line",
+     "basis": [
+      "the figure and reason hold"
+     ]
+    },
+    {
+     "acct": "6100",
+     "memo": "Rent expense was stable at $130,000.",
+     "status": "checked within scope",
+     "key": "stand",
+     "type": "clean line",
+     "basis": [
+      "the figure and reason hold"
+     ]
+    },
+    {
+     "acct": "6200",
+     "memo": "Insurance expense rose $45,000, or 90 percent, year over year.",
+     "status": "checked within scope",
+     "key": "stand",
+     "type": "clean line",
+     "basis": [
+      "the figure and reason hold"
+     ]
+    }
+   ]
+  },
+  "a11y": {
+   "unlabeled": [],
+   "roles": {
+    "msg": {
+     "role": "status",
+     "live": "polite"
+    },
+    "stale": {
+     "role": "status",
+     "live": "polite"
+    },
+    "savegate": {
+     "role": "status",
+     "live": "polite"
+    },
+    "saybox": {
+     "role": "status",
+     "live": "polite"
+    }
+   }
+  },
+  "overflow320LongToken": {
+   "doc": "320/320",
+   "clean": true,
+   "bad": []
+  },
+  "sampleThenReplace": {
+   "originBeforeSample": null,
+   "originAfterReplacingBothPanes": "synthetic"
+  }
+ },
+ "drill": {
+  "lock": [
+   {
+    "item": 1,
+    "empty": {
+     "disabled": true,
+     "calls": "[null,null,null,null,null]"
+    },
+    "enterOnBodyWhileEmpty": {
+     "step": 18,
+     "same": true
+    },
+    "forcedClickOnDisabledButton": {
+     "stepUnchanged": true
+    },
+    "whitespace": {
+     "disabled": true,
+     "calls": "[null,null,null,null,null]"
+    },
+    "threeCharsWithSpace": {
+     "disabled": false,
+     "calls": "[null,null,null,null,null]"
+    },
+    "dots": {
+     "disabled": false,
+     "calls": "[null,null,null,null,null]"
+    },
+    "noneWords": {
+     "disabled": false,
+     "calls": "[null,null,null,null,null]"
+    },
+    "a11y": [
+     {
+      "id": "ex-decisiveEvidence",
+      "label": "The decisive evidence",
+      "describedby": null,
+      "required": null
+     },
+     {
+      "id": "ex-periodRelevance",
+      "label": "Why it matters for this period",
+      "describedby": null,
+      "required": null
+     },
+     {
+      "id": "ex-actionOrRequest",
+      "label": "The action or source request that follows",
+      "describedby": null,
+      "required": null
+     },
+     {
+      "lockDescribedby": null,
+      "liveRegions": 0
+     }
+    ],
+    "afterReload": {
+     "step": 18,
+     "boxes": [
+      "=HYPERLINK(\"http://example.invalid\",\"x\")",
+      "+1+1",
+      "@SUM(1,1)"
+     ],
+     "stored": {
+      "decisiveEvidence": "=HYPERLINK(\"http://example.invalid\",\"x\")",
+      "periodRelevance": "+1+1",
+      "actionOrRequest": "@SUM(1,1)"
+     }
+    }
+   }
+  ],
+  "endStep": 24,
+  "qc": "Round2: right call 5/5, right reason 5/5; calls FSFFS; key FSFFS; seconds 2. Round2 basis, by line: 1: Basis: no source on file | Evidence: The invoice is on file. | Period: It is dated June. | Action: Ask for the June schedule. | Reason: agrees | Key basis: no source on file || 2: Basis: the figure and reason hold | Evidence: The invoice is on file. | Period: It is dated June. | Action: Ask for the June schedule. | Reason: agrees | Key basis: the figure and reason hold || 3: Basis: wrong period | Evidence: The invoice is on file. | Period: It is dated June. | Action: Ask for the June schedule. | Reason: agrees | Key basis: wrong period; no source on file || 4: Basis: no source on file | Evidence: The invoice is on file. | Period: It is dated June. | Action: Ask for the June schedule. | Reason: agrees | Key basis: no source on file || 5: Basis: the figure and reason hold | Evidence: The invoice is on file. | Period: It is dated June. | Action: Ask for the June schedule. | Reason: agrees | Key basis: the figure and reason hold. Fresh case: Brightwater Dental Partners, PLLC, case version brightwater-v6, 5 lines, run as an assessment with no feedback between lines. A company the player had not seen. Not a player answer to question C.",
+  "record": [
+   {
+    "item": "r2-1",
+    "v": "brightwater-v6",
+    "req": true,
+    "ex": {
+     "decisiveEvidence": "The invoice is on file.",
+     "periodRelevance": "It is dated June.",
+     "actionOrRequest": "Ask for the June schedule."
+    }
+   },
+   {
+    "item": "r2-2",
+    "v": "brightwater-v6",
+    "req": true,
+    "ex": {
+     "decisiveEvidence": "The invoice is on file.",
+     "periodRelevance": "It is dated June.",
+     "actionOrRequest": "Ask for the June schedule."
+    }
+   },
+   {
+    "item": "r2-3",
+    "v": "brightwater-v6",
+    "req": true,
+    "ex": {
+     "decisiveEvidence": "The invoice is on file.",
+     "periodRelevance": "It is dated June.",
+     "actionOrRequest": "Ask for the June schedule."
+    }
+   },
+   {
+    "item": "r2-4",
+    "v": "brightwater-v6",
+    "req": true,
+    "ex": {
+     "decisiveEvidence": "The invoice is on file.",
+     "periodRelevance": "It is dated June.",
+     "actionOrRequest": "Ask for the June schedule."
+    }
+   },
+   {
+    "item": "r2-5",
+    "v": "brightwater-v6",
+    "req": true,
+    "ex": {
+     "decisiveEvidence": "The invoice is on file.",
+     "periodRelevance": "It is dated June.",
+     "actionOrRequest": "Ask for the June schedule."
+    }
+   }
+  ]
+ },
+ "errors": []
+}

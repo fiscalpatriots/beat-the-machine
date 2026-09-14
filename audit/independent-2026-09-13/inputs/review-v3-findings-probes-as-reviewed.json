@@ -1,0 +1,74 @@
+{
+  "same-person-two-attempts": {
+    "players": 2,
+    "scores": [
+      {
+        "score": 14,
+        "answered": 14,
+        "case": {
+          "id": "halyard",
+          "one": "halyard-v4",
+          "two": null,
+          "date": "2026-09-13",
+          "source": "cases/ files",
+          "authored": false
+        }
+      },
+      {
+        "score": 14,
+        "answered": 14,
+        "case": {
+          "id": "halyard",
+          "one": "halyard-v4",
+          "two": null,
+          "date": "2026-09-13",
+          "source": "cases/ files",
+          "authored": false
+        }
+      }
+    ],
+    "repeatRuns": [],
+    "versions": {
+      "halyard-v4 and no fresh case, dated 2026-09-13": 2
+    },
+    "disagreements": []
+  },
+  "kestrel-perfect": {
+    "players": 1,
+    "scores": [
+      {
+        "score": 6,
+        "answered": 12,
+        "case": {
+          "id": "kestrel",
+          "one": "kestrel-v1",
+          "two": null,
+          "date": "2026-09-13",
+          "source": "cases/ files",
+          "authored": false
+        }
+      }
+    ],
+    "repeatRuns": [],
+    "versions": {
+      "kestrel-v1 and no fresh case, dated 2026-09-13": 1
+    },
+    "disagreements": [
+      "Synthetic Kestrel participant line 2: Why says the type is wrong direction, this script carries timing",
+      "Synthetic Kestrel participant line 3: Why says the key is stand, this script carries flag",
+      "Synthetic Kestrel participant line 3: Why says the type is clean line, this script carries wrong direction",
+      "Synthetic Kestrel participant line 4: Why says the key is flag, this script carries stand",
+      "Synthetic Kestrel participant line 4: Why says the type is unsupported driver, this script carries clean line",
+      "Synthetic Kestrel participant line 6: Why says the key is flag, this script carries stand",
+      "Synthetic Kestrel participant line 6: Why says the type is unsupported attribution, this script carries clean line",
+      "Synthetic Kestrel participant line 7: Why says the key is stand, this script carries flag",
+      "Synthetic Kestrel participant line 7: Why says the type is clean line, this script carries unsupported driver",
+      "Synthetic Kestrel participant line 8: Why says the type is timing, this script carries arithmetic",
+      "Synthetic Kestrel participant line 10: Why says the key is flag, this script carries stand",
+      "Synthetic Kestrel participant line 10: Why says the type is wrong account, this script carries clean line",
+      "Synthetic Kestrel participant line 11: Why says the key is stand, this script carries flag",
+      "Synthetic Kestrel participant line 11: Why says the type is clean line, this script carries no explanation",
+      "Synthetic Kestrel participant line 12: Why says the type is no explanation, this script carries unsupported attribution"
+    ]
+  }
+}

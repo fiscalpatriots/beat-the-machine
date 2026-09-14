@@ -1,0 +1,6 @@
+response_id,codename,attempt_id,attempt,timestamp,case_set,case_version,line,participant_call,keyed_call,call_result,reason_chips,reason_chip_agreement,second_scorer
+R60F9C49DEC,Red Kite,inj-1,first,2026/09/15 9:02:11,halyard-v4 with brightwater-v6,brightwater-v6,1,flag,flag,agrees with key,no source on file,agrees,yes
+RE504D97727,Red Kite,inj-1,first,2026/09/15 9:02:11,halyard-v4 with brightwater-v6,brightwater-v6,2,stand,stand,agrees with key,the figure and reason hold,agrees,yes
+R995CEC6CAA,Red Kite,inj-1,first,2026/09/15 9:02:11,halyard-v4 with brightwater-v6,brightwater-v6,3,flag,flag,agrees with key,wrong period,agrees,yes
+RE15FE0D5C6,Red Kite,inj-1,first,2026/09/15 9:02:11,halyard-v4 with brightwater-v6,brightwater-v6,4,flag,flag,agrees with key,no source on file,agrees,yes
+R07F92E881A,Red Kite,inj-1,first,2026/09/15 9:02:11,halyard-v4 with brightwater-v6,brightwater-v6,5,stand,stand,agrees with key,the figure and reason hold,agrees,yes

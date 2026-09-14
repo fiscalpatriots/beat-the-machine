@@ -1,0 +1,182 @@
+[
+  {
+    "file": "halyard-v4.json",
+    "policy": "keyedReasons",
+    "correctDecisions": 14,
+    "points": 2625,
+    "rank": "Partner",
+    "max": 2625,
+    "ranks": [
+      {
+        "name": "Trainee",
+        "at": 0
+      },
+      {
+        "name": "Staff",
+        "at": 893
+      },
+      {
+        "name": "Senior",
+        "at": 1496
+      },
+      {
+        "name": "Manager",
+        "at": 1995
+      },
+      {
+        "name": "Partner",
+        "at": 2494
+      }
+    ]
+  },
+  {
+    "file": "halyard-v4.json",
+    "policy": "wrongReasons",
+    "correctDecisions": 14,
+    "points": 1925,
+    "rank": "Senior",
+    "max": 2625,
+    "ranks": [
+      {
+        "name": "Trainee",
+        "at": 0
+      },
+      {
+        "name": "Staff",
+        "at": 893
+      },
+      {
+        "name": "Senior",
+        "at": 1496
+      },
+      {
+        "name": "Manager",
+        "at": 1995
+      },
+      {
+        "name": "Partner",
+        "at": 2494
+      }
+    ]
+  },
+  {
+    "file": "brightwater-v5.json",
+    "policy": "keyedReasons",
+    "correctDecisions": 5,
+    "points": 1050,
+    "rank": "Partner",
+    "max": 1050,
+    "ranks": [
+      {
+        "name": "Trainee",
+        "at": 0
+      },
+      {
+        "name": "Staff",
+        "at": 357
+      },
+      {
+        "name": "Senior",
+        "at": 676
+      },
+      {
+        "name": "Manager",
+        "at": 798
+      },
+      {
+        "name": "Partner",
+        "at": 998
+      }
+    ]
+  },
+  {
+    "file": "brightwater-v5.json",
+    "policy": "wrongReasons",
+    "correctDecisions": 5,
+    "points": 800,
+    "rank": "Manager",
+    "max": 1050,
+    "ranks": [
+      {
+        "name": "Trainee",
+        "at": 0
+      },
+      {
+        "name": "Staff",
+        "at": 357
+      },
+      {
+        "name": "Senior",
+        "at": 676
+      },
+      {
+        "name": "Manager",
+        "at": 798
+      },
+      {
+        "name": "Partner",
+        "at": 998
+      }
+    ]
+  },
+  {
+    "file": "kestrel-v1.json",
+    "policy": "keyedReasons",
+    "correctDecisions": 12,
+    "points": 2200,
+    "rank": "Partner",
+    "max": 2200,
+    "ranks": [
+      {
+        "name": "Trainee",
+        "at": 0
+      },
+      {
+        "name": "Staff",
+        "at": 748
+      },
+      {
+        "name": "Senior",
+        "at": 1254
+      },
+      {
+        "name": "Manager",
+        "at": 1672
+      },
+      {
+        "name": "Partner",
+        "at": 2090
+      }
+    ]
+  },
+  {
+    "file": "kestrel-v1.json",
+    "policy": "wrongReasons",
+    "correctDecisions": 12,
+    "points": 1650,
+    "rank": "Senior",
+    "max": 2200,
+    "ranks": [
+      {
+        "name": "Trainee",
+        "at": 0
+      },
+      {
+        "name": "Staff",
+        "at": 748
+      },
+      {
+        "name": "Senior",
+        "at": 1254
+      },
+      {
+        "name": "Manager",
+        "at": 1672
+      },
+      {
+        "name": "Partner",
+        "at": 2090
+      }
+    ]
+  }
+]

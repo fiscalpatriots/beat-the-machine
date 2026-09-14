@@ -1,0 +1,1150 @@
+{
+ "replay:same-person-two-attempts:synthetic_check=False": {
+  "review_script_fields": {
+   "players": 0,
+   "scores": [],
+   "repeatRuns": [],
+   "versions": {},
+   "disagreements": []
+  },
+  "summary": {
+   "n_rows_raw": 2,
+   "n_excluded": 2,
+   "excluded": {
+    "test_codename": [],
+    "marked_test_by_page": [],
+    "blank_codename": [],
+    "synthetic_by_rule": [
+     "Synthetic same participant (codename says synthetic)",
+     "Synthetic same participant (codename says synthetic)"
+    ]
+   },
+   "duplicate_sends": [],
+   "n_attempts_received": 0,
+   "n_attempts_completed": 0,
+   "n_codenames": 0,
+   "n_participants_confirmed": null,
+   "roster": null,
+   "refusal_counts": {},
+   "initial": [],
+   "reattempts": [],
+   "sets": [],
+   "case_versions": {},
+   "disagreements": [],
+   "n_explanation_items": 0
+  }
+ },
+ "replay:same-person-two-attempts:synthetic_check=True": {
+  "review_script_fields": {
+   "players": 1,
+   "scores": [
+    {
+     "score": 14,
+     "answered": 14,
+     "case": {
+      "id": "halyard",
+      "one": "halyard-v4",
+      "one_lines": 14,
+      "two": null,
+      "two_lines": null,
+      "date": "2026-09-13",
+      "source": "cases/ files",
+      "authored": false
+     }
+    }
+   ],
+   "repeatRuns": [
+    "Synthetic same participant (attempt 2, audit-b)"
+   ],
+   "versions": {
+    "halyard-v4 with no fresh case, dated 2026-09-13": 2
+   },
+   "disagreements": []
+  },
+  "summary": {
+   "n_rows_raw": 2,
+   "n_excluded": 0,
+   "excluded": {
+    "test_codename": [],
+    "marked_test_by_page": [],
+    "blank_codename": [],
+    "synthetic_by_rule": []
+   },
+   "duplicate_sends": [],
+   "n_attempts_received": 2,
+   "n_attempts_completed": 2,
+   "n_codenames": 1,
+   "n_participants_confirmed": null,
+   "roster": null,
+   "refusal_counts": {},
+   "initial": [
+    {
+     "code": "Synthetic same participant",
+     "attempt": "audit-a",
+     "set": "halyard-v4 with no fresh case",
+     "score": 14,
+     "answered": 14,
+     "fresh": null,
+     "completed": true,
+     "explanations": {}
+    }
+   ],
+   "reattempts": [
+    {
+     "code": "Synthetic same participant",
+     "attempt": "audit-b",
+     "n": 2
+    }
+   ],
+   "sets": [
+    {
+     "label": "halyard-v4 with no fresh case",
+     "n_attempts": 1
+    }
+   ],
+   "case_versions": {
+    "halyard-v4 with no fresh case, dated 2026-09-13": 2
+   },
+   "disagreements": [],
+   "n_explanation_items": 0
+  }
+ },
+ "replay:kestrel-perfect:synthetic_check=False": {
+  "review_script_fields": {
+   "players": 0,
+   "scores": [],
+   "repeatRuns": [],
+   "versions": {},
+   "disagreements": []
+  },
+  "summary": {
+   "n_rows_raw": 1,
+   "n_excluded": 1,
+   "excluded": {
+    "test_codename": [],
+    "marked_test_by_page": [],
+    "blank_codename": [],
+    "synthetic_by_rule": [
+     "Synthetic Kestrel participant (codename says synthetic)"
+    ]
+   },
+   "duplicate_sends": [],
+   "n_attempts_received": 0,
+   "n_attempts_completed": 0,
+   "n_codenames": 0,
+   "n_participants_confirmed": null,
+   "roster": null,
+   "refusal_counts": {},
+   "initial": [],
+   "reattempts": [],
+   "sets": [],
+   "case_versions": {},
+   "disagreements": [],
+   "n_explanation_items": 0
+  }
+ },
+ "replay:kestrel-perfect:synthetic_check=True": {
+  "review_script_fields": {
+   "players": 1,
+   "scores": [
+    {
+     "score": 12,
+     "answered": 12,
+     "case": {
+      "id": "kestrel",
+      "one": "kestrel-v1",
+      "one_lines": 12,
+      "two": null,
+      "two_lines": null,
+      "date": "2026-09-13",
+      "source": "cases/ files",
+      "authored": false
+     }
+    }
+   ],
+   "repeatRuns": [],
+   "versions": {
+    "kestrel-v1 with no fresh case, dated 2026-09-13": 1
+   },
+   "disagreements": []
+  },
+  "summary": {
+   "n_rows_raw": 1,
+   "n_excluded": 0,
+   "excluded": {
+    "test_codename": [],
+    "marked_test_by_page": [],
+    "blank_codename": [],
+    "synthetic_by_rule": []
+   },
+   "duplicate_sends": [],
+   "n_attempts_received": 1,
+   "n_attempts_completed": 1,
+   "n_codenames": 1,
+   "n_participants_confirmed": null,
+   "roster": null,
+   "refusal_counts": {},
+   "initial": [
+    {
+     "code": "Synthetic Kestrel participant",
+     "attempt": "audit-c",
+     "set": "kestrel-v1 with no fresh case",
+     "score": 12,
+     "answered": 12,
+     "fresh": null,
+     "completed": true,
+     "explanations": {}
+    }
+   ],
+   "reattempts": [],
+   "sets": [
+    {
+     "label": "kestrel-v1 with no fresh case",
+     "n_attempts": 1
+    }
+   ],
+   "case_versions": {
+    "kestrel-v1 with no fresh case, dated 2026-09-13": 1
+   },
+   "disagreements": [],
+   "n_explanation_items": 0
+  }
+ },
+ "probe:version-mixing": {
+  "n_rows_raw": 2,
+  "n_excluded": 0,
+  "excluded": {
+   "test_codename": [],
+   "marked_test_by_page": [],
+   "blank_codename": [],
+   "synthetic_by_rule": []
+  },
+  "duplicate_sends": [],
+  "n_attempts_received": 2,
+  "n_attempts_completed": 2,
+  "n_codenames": 2,
+  "n_participants_confirmed": null,
+  "roster": null,
+  "refusal_counts": {},
+  "initial": [
+   {
+    "code": "Quiet Heron",
+    "attempt": "mix-1",
+    "set": "halyard-v4 with brightwater-v5",
+    "score": 14,
+    "answered": 14,
+    "fresh": {
+     "right": 5,
+     "total": 5,
+     "seen": 5,
+     "calls": "FSFFS",
+     "seconds": 61
+    },
+    "completed": true,
+    "explanations": {}
+   },
+   {
+    "code": "Amber Fox",
+    "attempt": "mix-2",
+    "set": "halyard-v4 with brightwater-v6",
+    "score": 14,
+    "answered": 14,
+    "fresh": {
+     "right": 5,
+     "total": 5,
+     "seen": 5,
+     "calls": "FSFFS",
+     "seconds": 61
+    },
+    "completed": true,
+    "explanations": {
+     "1": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "2": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "3": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "4": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "5": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     }
+    }
+   }
+  ],
+  "reattempts": [],
+  "sets": [
+   {
+    "label": "halyard-v4 with brightwater-v5",
+    "n_attempts": 1
+   },
+   {
+    "label": "halyard-v4 with brightwater-v6",
+    "n_attempts": 1
+   }
+  ],
+  "case_versions": {
+   "halyard-v4 with brightwater-v5, dated 2026-09-13": 1,
+   "halyard-v4 with brightwater-v6, dated 2026-09-13": 1
+  },
+  "disagreements": [],
+  "n_explanation_items": 5
+ },
+ "probe:unknown-version": {
+  "n_rows_raw": 1,
+  "n_excluded": 0,
+  "excluded": {
+   "test_codename": [],
+   "marked_test_by_page": [],
+   "blank_codename": [],
+   "synthetic_by_rule": []
+  },
+  "duplicate_sends": [],
+  "n_attempts_received": 1,
+  "n_attempts_completed": 1,
+  "n_codenames": 1,
+  "n_participants_confirmed": null,
+  "roster": null,
+  "refusal_counts": {
+   "fresh case: unsupported case version brightwater-v9: there is no cases/brightwater-v9.json, so no key exists to score it against": 1
+  },
+  "initial": [],
+  "reattempts": [],
+  "sets": [],
+  "case_versions": {
+   "halyard-v4 with brightwater-v9, dated 2026-09-13": 1
+  },
+  "disagreements": [],
+  "n_explanation_items": 0
+ },
+ "probe:unknown-practice-version": {
+  "n_rows_raw": 1,
+  "n_excluded": 0,
+  "excluded": {
+   "test_codename": [],
+   "marked_test_by_page": [],
+   "blank_codename": [],
+   "synthetic_by_rule": []
+  },
+  "duplicate_sends": [],
+  "n_attempts_received": 1,
+  "n_attempts_completed": 1,
+  "n_codenames": 1,
+  "n_participants_confirmed": null,
+  "roster": null,
+  "refusal_counts": {
+   "unsupported case version halyard-v7: there is no cases/halyard-v7.json, so no key exists to score it against": 1
+  },
+  "initial": [],
+  "reattempts": [],
+  "sets": [],
+  "case_versions": {
+   "halyard-v7 with brightwater-v5, dated 2026-09-13": 1
+  },
+  "disagreements": [],
+  "n_explanation_items": 0
+ },
+ "probe:v6-missing-explanation": {
+  "n_rows_raw": 1,
+  "n_excluded": 0,
+  "excluded": {
+   "test_codename": [],
+   "marked_test_by_page": [],
+   "blank_codename": [],
+   "synthetic_by_rule": []
+  },
+  "duplicate_sends": [],
+  "n_attempts_received": 1,
+  "n_attempts_completed": 1,
+  "n_codenames": 1,
+  "n_participants_confirmed": null,
+  "roster": null,
+  "refusal_counts": {},
+  "initial": [
+   {
+    "code": "Iron Wren",
+    "attempt": "miss-1",
+    "set": "halyard-v4 with brightwater-v6",
+    "score": 14,
+    "answered": 14,
+    "fresh": {
+     "right": 5,
+     "total": 5,
+     "seen": 5,
+     "calls": "FSFFS",
+     "seconds": 61
+    },
+    "completed": true,
+    "explanations": {
+     "1": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "2": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "4": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "5": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     }
+    }
+   }
+  ],
+  "reattempts": [],
+  "sets": [
+   {
+    "label": "halyard-v4 with brightwater-v6",
+    "n_attempts": 1
+   }
+  ],
+  "case_versions": {
+   "halyard-v4 with brightwater-v6, dated 2026-09-13": 1
+  },
+  "disagreements": [],
+  "n_explanation_items": 4
+ },
+ "probe:v6-no-explanations-at-all": {
+  "n_rows_raw": 1,
+  "n_excluded": 0,
+  "excluded": {
+   "test_codename": [],
+   "marked_test_by_page": [],
+   "blank_codename": [],
+   "synthetic_by_rule": []
+  },
+  "duplicate_sends": [],
+  "n_attempts_received": 1,
+  "n_attempts_completed": 1,
+  "n_codenames": 1,
+  "n_participants_confirmed": null,
+  "roster": null,
+  "refusal_counts": {},
+  "initial": [
+   {
+    "code": "Iron Wren",
+    "attempt": "miss-2",
+    "set": "halyard-v4 with brightwater-v6",
+    "score": 14,
+    "answered": 14,
+    "fresh": {
+     "right": 5,
+     "total": 5,
+     "seen": 5,
+     "calls": "FSFFS",
+     "seconds": 61
+    },
+    "completed": true,
+    "explanations": {}
+   }
+  ],
+  "reattempts": [],
+  "sets": [
+   {
+    "label": "halyard-v4 with brightwater-v6",
+    "n_attempts": 1
+   }
+  ],
+  "case_versions": {
+   "halyard-v4 with brightwater-v6, dated 2026-09-13": 1
+  },
+  "disagreements": [],
+  "n_explanation_items": 0
+ },
+ "probe:v5-record-carrying-explanations": {
+  "n_rows_raw": 1,
+  "n_excluded": 0,
+  "excluded": {
+   "test_codename": [],
+   "marked_test_by_page": [],
+   "blank_codename": [],
+   "synthetic_by_rule": []
+  },
+  "duplicate_sends": [],
+  "n_attempts_received": 1,
+  "n_attempts_completed": 1,
+  "n_codenames": 1,
+  "n_participants_confirmed": null,
+  "roster": null,
+  "refusal_counts": {},
+  "initial": [
+   {
+    "code": "Old Crow",
+    "attempt": "v5-1",
+    "set": "halyard-v4 with brightwater-v5",
+    "score": 14,
+    "answered": 14,
+    "fresh": {
+     "right": 5,
+     "total": 5,
+     "seen": 5,
+     "calls": "FSFFS",
+     "seconds": 61
+    },
+    "completed": true,
+    "explanations": {
+     "1": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "2": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "3": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "4": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "5": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     }
+    }
+   }
+  ],
+  "reattempts": [],
+  "sets": [
+   {
+    "label": "halyard-v4 with brightwater-v5",
+    "n_attempts": 1
+   }
+  ],
+  "case_versions": {
+   "halyard-v4 with brightwater-v5, dated 2026-09-13": 1
+  },
+  "disagreements": [],
+  "n_explanation_items": 5
+ },
+ "probe:duplicate-attempt-id-different-content": {
+  "n_rows_raw": 2,
+  "n_excluded": 0,
+  "excluded": {
+   "test_codename": [],
+   "marked_test_by_page": [],
+   "blank_codename": [],
+   "synthetic_by_rule": []
+  },
+  "duplicate_sends": [
+   "Twin Lark (attempt dup-1 sent again)"
+  ],
+  "n_attempts_received": 1,
+  "n_attempts_completed": 1,
+  "n_codenames": 1,
+  "n_participants_confirmed": null,
+  "roster": null,
+  "refusal_counts": {},
+  "initial": [
+   {
+    "code": "Twin Lark",
+    "attempt": "dup-1",
+    "set": "halyard-v4 with brightwater-v6",
+    "score": 13,
+    "answered": 14,
+    "fresh": {
+     "right": 5,
+     "total": 5,
+     "seen": 5,
+     "calls": "FSFFS",
+     "seconds": 61
+    },
+    "completed": true,
+    "explanations": {
+     "1": {
+      "evidence": "A different answer entirely",
+      "period": "different",
+      "action": "different"
+     },
+     "2": {
+      "evidence": "A different answer entirely",
+      "period": "different",
+      "action": "different"
+     },
+     "3": {
+      "evidence": "A different answer entirely",
+      "period": "different",
+      "action": "different"
+     },
+     "4": {
+      "evidence": "A different answer entirely",
+      "period": "different",
+      "action": "different"
+     },
+     "5": {
+      "evidence": "A different answer entirely",
+      "period": "different",
+      "action": "different"
+     }
+    }
+   }
+  ],
+  "reattempts": [],
+  "sets": [
+   {
+    "label": "halyard-v4 with brightwater-v6",
+    "n_attempts": 1
+   }
+  ],
+  "case_versions": {
+   "halyard-v4 with brightwater-v6, dated 2026-09-13": 1
+  },
+  "disagreements": [
+   "Twin Lark: the page posted right call 14 of 14, halyard-v4 scores 13 of 14"
+  ],
+  "n_explanation_items": 5
+ },
+ "probe:csv-injection-in-explanations": {
+  "n_rows_raw": 1,
+  "n_excluded": 0,
+  "excluded": {
+   "test_codename": [],
+   "marked_test_by_page": [],
+   "blank_codename": [],
+   "synthetic_by_rule": []
+  },
+  "duplicate_sends": [],
+  "n_attempts_received": 1,
+  "n_attempts_completed": 1,
+  "n_codenames": 1,
+  "n_participants_confirmed": null,
+  "roster": null,
+  "refusal_counts": {},
+  "initial": [
+   {
+    "code": "Red Kite",
+    "attempt": "inj-1",
+    "set": "halyard-v4 with brightwater-v6",
+    "score": 14,
+    "answered": 14,
+    "fresh": {
+     "right": 5,
+     "total": 5,
+     "seen": 5,
+     "calls": "FSFFS",
+     "seconds": 61
+    },
+    "completed": true,
+    "explanations": {
+     "1": {
+      "evidence": "=HYPERLINK(\"http://example.invalid\",\"click\")",
+      "period": "+1+1",
+      "action": "-2+3"
+     },
+     "2": {
+      "evidence": "@SUM(1,1)",
+      "period": "=1+1",
+      "action": "=cmd"
+     },
+     "3": {
+      "evidence": "=1+1",
+      "period": "+cmd|' /C calc'!A0",
+      "action": "-1"
+     },
+     "4": {
+      "evidence": "ok answer",
+      "period": "@x",
+      "action": "=x"
+     },
+     "5": {
+      "evidence": "=A1",
+      "period": "+A1",
+      "action": "-A1"
+     }
+    }
+   }
+  ],
+  "reattempts": [],
+  "sets": [
+   {
+    "label": "halyard-v4 with brightwater-v6",
+    "n_attempts": 1
+   }
+  ],
+  "case_versions": {
+   "halyard-v4 with brightwater-v6, dated 2026-09-13": 1
+  },
+  "disagreements": [],
+  "n_explanation_items": 5,
+  "scoring_sheet_cells_starting_with_formula_char": [
+   "=HYPERLINK(\"http://example.invalid\",\"click\")",
+   "+1+1",
+   "-2+3",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "@SUM(1,1)",
+   "=1+1",
+   "=cmd",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "=1+1",
+   "+cmd|' /C calc'!A0",
+   "-1",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "@x",
+   "=x",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "",
+   "=A1",
+   "+A1",
+   "-A1",
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ]
+ },
+ "probe:non-ascii-codenames": {
+  "n_rows_raw": 6,
+  "n_excluded": 1,
+  "excluded": {
+   "test_codename": [
+    "Test Pilot"
+   ],
+   "marked_test_by_page": [],
+   "blank_codename": [],
+   "synthetic_by_rule": []
+  },
+  "duplicate_sends": [],
+  "n_attempts_received": 5,
+  "n_attempts_completed": 5,
+  "n_codenames": 5,
+  "n_participants_confirmed": null,
+  "roster": null,
+  "refusal_counts": {},
+  "initial": [
+   {
+    "code": "Zoë",
+    "attempt": "na-1",
+    "set": "halyard-v4 with brightwater-v6",
+    "score": 14,
+    "answered": 14,
+    "fresh": {
+     "right": 5,
+     "total": 5,
+     "seen": 5,
+     "calls": "FSFFS",
+     "seconds": 61
+    },
+    "completed": true,
+    "explanations": {
+     "1": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "2": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "3": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "4": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "5": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     }
+    }
+   },
+   {
+    "code": "Zoë",
+    "attempt": "na-2",
+    "set": "halyard-v4 with brightwater-v6",
+    "score": 14,
+    "answered": 14,
+    "fresh": {
+     "right": 5,
+     "total": 5,
+     "seen": 5,
+     "calls": "FSFFS",
+     "seconds": 61
+    },
+    "completed": true,
+    "explanations": {
+     "1": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "2": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "3": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "4": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "5": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     }
+    }
+   },
+   {
+    "code": "李明",
+    "attempt": "na-3",
+    "set": "halyard-v4 with brightwater-v6",
+    "score": 14,
+    "answered": 14,
+    "fresh": {
+     "right": 5,
+     "total": 5,
+     "seen": 5,
+     "calls": "FSFFS",
+     "seconds": 61
+    },
+    "completed": true,
+    "explanations": {
+     "1": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "2": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "3": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "4": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "5": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     }
+    }
+   },
+   {
+    "code": "Ｔｅｓｔ Pilot",
+    "attempt": "na-4",
+    "set": "halyard-v4 with brightwater-v6",
+    "score": 14,
+    "answered": 14,
+    "fresh": {
+     "right": 5,
+     "total": 5,
+     "seen": 5,
+     "calls": "FSFFS",
+     "seconds": 61
+    },
+    "completed": true,
+    "explanations": {
+     "1": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "2": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "3": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "4": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "5": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     }
+    }
+   },
+   {
+    "code": "Contest Winner",
+    "attempt": "na-5",
+    "set": "halyard-v4 with brightwater-v6",
+    "score": 14,
+    "answered": 14,
+    "fresh": {
+     "right": 5,
+     "total": 5,
+     "seen": 5,
+     "calls": "FSFFS",
+     "seconds": 61
+    },
+    "completed": true,
+    "explanations": {
+     "1": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "2": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "3": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "4": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "5": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     }
+    }
+   }
+  ],
+  "reattempts": [],
+  "sets": [
+   {
+    "label": "halyard-v4 with brightwater-v6",
+    "n_attempts": 5
+   }
+  ],
+  "case_versions": {
+   "halyard-v4 with brightwater-v6, dated 2026-09-13": 5
+  },
+  "disagreements": [],
+  "n_explanation_items": 25
+ },
+ "probe:participant-text-says-synthetic": {
+  "n_rows_raw": 1,
+  "n_excluded": 1,
+  "excluded": {
+   "test_codename": [],
+   "marked_test_by_page": [],
+   "blank_codename": [],
+   "synthetic_by_rule": [
+    "Green Heron (a cell carries the marker Synthetic test only)"
+   ]
+  },
+  "duplicate_sends": [],
+  "n_attempts_received": 0,
+  "n_attempts_completed": 0,
+  "n_codenames": 0,
+  "n_participants_confirmed": null,
+  "roster": null,
+  "refusal_counts": {},
+  "initial": [],
+  "reattempts": [],
+  "sets": [],
+  "case_versions": {},
+  "disagreements": [],
+  "n_explanation_items": 0
+ },
+ "probe:attempt-id-starting-audit": {
+  "n_rows_raw": 1,
+  "n_excluded": 1,
+  "excluded": {
+   "test_codename": [],
+   "marked_test_by_page": [],
+   "blank_codename": [],
+   "synthetic_by_rule": [
+    "Blue Jay (attempt id audit-7f3k is a review probe identifier)"
+   ]
+  },
+  "duplicate_sends": [],
+  "n_attempts_received": 0,
+  "n_attempts_completed": 0,
+  "n_codenames": 0,
+  "n_participants_confirmed": null,
+  "roster": null,
+  "refusal_counts": {},
+  "initial": [],
+  "reattempts": [],
+  "sets": [],
+  "case_versions": {},
+  "disagreements": [],
+  "n_explanation_items": 0
+ },
+ "probe:roster-with-ghost-and-case-conflict": {
+  "n_rows_raw": 2,
+  "n_excluded": 0,
+  "excluded": {
+   "test_codename": [],
+   "marked_test_by_page": [],
+   "blank_codename": [],
+   "synthetic_by_rule": []
+  },
+  "duplicate_sends": [],
+  "n_attempts_received": 2,
+  "n_attempts_completed": 2,
+  "n_codenames": 2,
+  "n_participants_confirmed": 1,
+  "roster": {
+   "rows": 4,
+   "consented_rows": 4,
+   "rows_without_consent": 0,
+   "n_confirmed": 1,
+   "code_to_participant": {
+    "amber fox": "P2",
+    "never played": "P3"
+   },
+   "roster_codenames_without_attempt": 1,
+   "attempt_codenames_not_on_roster": 0,
+   "codename_conflicts": [
+    "quiet heron"
+   ],
+   "roles": {
+    "practitioner": 1
+   },
+   "path": "roster-with-ghost.csv"
+  },
+  "refusal_counts": {},
+  "initial": [
+   {
+    "code": "Quiet Heron",
+    "attempt": "mix-1",
+    "set": "halyard-v4 with brightwater-v5",
+    "score": 14,
+    "answered": 14,
+    "fresh": {
+     "right": 5,
+     "total": 5,
+     "seen": 5,
+     "calls": "FSFFS",
+     "seconds": 61
+    },
+    "completed": true,
+    "explanations": {}
+   },
+   {
+    "code": "Amber Fox",
+    "attempt": "mix-2",
+    "set": "halyard-v4 with brightwater-v6",
+    "score": 14,
+    "answered": 14,
+    "fresh": {
+     "right": 5,
+     "total": 5,
+     "seen": 5,
+     "calls": "FSFFS",
+     "seconds": 61
+    },
+    "completed": true,
+    "explanations": {
+     "1": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "2": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "3": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "4": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     },
+     "5": {
+      "evidence": "The invoice is on file",
+      "period": "It is dated June",
+      "action": "Ask for the schedule"
+     }
+    }
+   }
+  ],
+  "reattempts": [],
+  "sets": [
+   {
+    "label": "halyard-v4 with brightwater-v5",
+    "n_attempts": 1
+   },
+   {
+    "label": "halyard-v4 with brightwater-v6",
+    "n_attempts": 1
+   }
+  ],
+  "case_versions": {
+   "halyard-v4 with brightwater-v5, dated 2026-09-13": 1,
+   "halyard-v4 with brightwater-v6, dated 2026-09-13": 1
+  },
+  "disagreements": [],
+  "n_explanation_items": 5
+ }
+}
