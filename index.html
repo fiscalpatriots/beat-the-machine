@@ -278,13 +278,6 @@
   margin:0 0 var(--s2)}
 .basis .btn{display:flex;width:100%;margin-top:var(--s4)}
 
-/* ---------- one optional step before the memo ---------- */
-.prepick{margin:var(--s6) 0 0;padding:var(--s5) 0 0;border-top:1px solid var(--rule)}
-.prepick h3{margin:0 0 var(--s1)}
-.prepick p{margin:0 0 var(--s4);font-size:var(--t-small);line-height:1.55;color:var(--ink-soft)}
-.prepick .chips{margin:0 0 var(--s4)}
-.prepick .chip{font-size:var(--t-small);text-align:left;overflow-wrap:anywhere}
-
 /* ---------- the data notice ---------- */
 .notice{margin:0 0 var(--s5);padding:var(--s5) 0;
   border-top:1.5px solid var(--ink);border-bottom:1px solid var(--rule)}
@@ -795,7 +788,7 @@ function newAttemptId(){
 }
 
 var S = {
-  step:0, codename:"", orgs:[], prepicks:[], prepickSkipped:false,
+  step:0, codename:"", orgs:[],
   /* sel is the call that is selected and not yet committed, first is the very first call the
      player selected on that line, and calls is the committed one. A line is locked when calls
      carries a value, and only a locked line is scored or revealed. */
@@ -838,7 +831,6 @@ function freshRun(){
   S.caught = 0; S.cleared = 0; S.falseFlags = 0; S.streak = 0; S.best = 0; S.points = 0;
   S.r2caught = 0; S.r2cleared = 0; S.r2false = 0; S.r2Start = 0; S.r2End = 0; S.r2Revealed = 0;
   S.confPost = null; S.qd = null;
-  S.prepicks = []; S.prepickSkipped = false;
   S.started = Date.now(); S.lapStart = 0; S.lapEnd = 0; S.itemStart = 0; S.completedAt = 0;
   S.hiddenTotal = 0; S.hiddenAt = 0; S.itemHiddenBase = 0;
   /* a second run is a second attempt, so it gets its own id rather than reusing the first one,
@@ -1704,83 +1696,21 @@ function wireFlagCards(){
   });
 }
 
-/* ---------- the ledger-only judgment ----------
-   One optional step on the orientation screen, before a single memo sentence is read: up to
-   three accounts the player would ask about first, tapped rather than typed, so it costs a
-   few seconds. Skip is a real answer and is recorded as one. The picks post into the round
-   one free text question, entry.1115022539, which collected nothing before this. */
-var PREPICK_MAX = 3;
-function prepickBlock(){
-  var chips = ROWS.map(function(r,idx){
-    return '<button type="button" class="chip sm" data-p="'+idx+'" aria-pressed="false">'+
-      esc(r[0]+" "+r[1])+'</button>';
-  }).join("");
-  return '<section class="prepick">'+
-    '<h3>Before the memo</h3>'+
-    '<p>Tap up to three lines you would ask about first, or skip. Nothing here is scored, '+
-      'and it takes a few seconds.</p>'+
-    '<div class="chips" id="prepicks" role="group" aria-label="Lines you would ask about first">'+chips+'</div>'+
-    '<div class="two"><button class="btn secondary" id="preskip">Skip</button>'+
-      '<button class="btn secondary" id="precont">Continue</button></div>'+
-  '</section>';
-}
-function wirePrepicks(){
-  var box = document.getElementById("prepicks");
-  if(!box) return;
-  var picked = S.prepicks.slice();
-  var btns = Array.prototype.slice.call(box.querySelectorAll(".chip"));
-  function paint(){
-    btns.forEach(function(b){
-      var code = ROWS[Number(b.getAttribute("data-p"))][0];
-      var on = picked.indexOf(code) > -1;
-      b.classList.toggle("on", on);
-      b.setAttribute("aria-pressed", on ? "true" : "false");
-      b.disabled = !on && picked.length >= PREPICK_MAX;
-    });
-  }
-  btns.forEach(function(b){
-    function toggle(){
-      var code = ROWS[Number(b.getAttribute("data-p"))][0];
-      var at = picked.indexOf(code);
-      if(at > -1) picked.splice(at,1);
-      else if(picked.length < PREPICK_MAX) picked.push(code);
-      else return;
-      paint();
-    }
-    b.addEventListener("click", toggle);
-    b.addEventListener("keydown", function(e){
-      if(e.key === " " || e.key === "Spacebar" || e.code === "Space" || e.key === "Enter"){ e.preventDefault(); toggle(); }
-    });
-  });
-  paint();
-  function leave(skipped){
-    S.prepicks = skipped ? [] : picked.slice();
-    S.prepickSkipped = skipped || picked.length === 0;
-    saveRun();
-    go(3);
-  }
-  document.getElementById("precont").addEventListener("click", function(){ leave(false); });
-  document.getElementById("preskip").addEventListener("click", function(){ leave(true); });
-  /* the sticky bar on a phone and the rail on a desk are the escape hatch: they leave the
-     picks behind rather than pretending a player who never scrolled made one */
-  Array.prototype.forEach.call(screen.querySelectorAll("[data-go3]"), function(b){
-    b.addEventListener("click", function(){ leave(true); });
-  });
-}
-
 function roundOne(){
   var hero = '<div class="hero"><h2>The ledger, '+esc(BOOK1.months[0])+' against '+esc(BOOK1.months[1])+'</h2>'+
     '<p>Read it before the memo. You can open it again from any card.</p></div>';
-  var go3 = '<button class="btn secondary" data-go3="1">Skip the picks and continue</button>';
+  var go3 = '<button class="btn" data-go3="1">Continue to the memo</button>';
   screen.innerHTML =
     whyLine("Read the ledger first, because every call you make compares what the memo says against what the accounts did.")+
     hero+
     '<div class="orient stmtwrap">'+
-      '<div class="orientmain">'+flagCard()+statement("", true)+prepickBlock()+'</div>'+
+      '<div class="orientmain">'+flagCard()+statement("", true)+'</div>'+
       '<aside class="orientside">'+flagCard()+go3+'</aside>'+
     '</div>'+
     '<div class="stickygo">'+go3+'</div>';
-  wirePrepicks();
+  Array.prototype.forEach.call(screen.querySelectorAll("[data-go3]"), function(b){
+    b.addEventListener("click", function(){ go(3); });
+  });
   wireFlagCards();
   /* on a desk the legend is always open */
   if(window.matchMedia && window.matchMedia("(min-width:900px)").matches){
@@ -2289,12 +2219,10 @@ function r2Results(){
 
 
 /* ---------- generated summaries. Nothing here is typed by the player. ---------- */
-/* the round one free text question, entry.1115022539, now carries the ledger-only picks.
-   A skip posts as a skip rather than as an empty cell, so the two can be told apart. */
-function prepickLine(){
-  if(!S.prepicks || !S.prepicks.length) return "Prepicks: skipped.";
-  return "Prepicks: " + S.prepicks.join("; ") + ".";
-}
+/* the round one free text question, entry.1115022539, asks nothing in this version. The ledger
+   screen is orientation only, so the question carries this fixed note, the one it carried before
+   the ledger-only picks were added and after they were removed on 13 September 2026. */
+var ROUND1_NOTE = "Not collected. The ledger screen is orientation only in this version.";
 /* the player's own basis, in the shape the response sheet reads:
    Basis: no source on file; wrong period | Words: the freight moved */
 function basisText(chips, words){
@@ -2449,8 +2377,7 @@ var PLACEHOLDERS = PLACEHOLDER_MODE === "empty"
 function payload(){
   var p = {};
   p["entry."+E.codename] = S.codename;
-  /* the ledger-only picks, taken before a memo sentence was read */
-  p["entry."+E.round1] = prepickLine();
+  p["entry."+E.round1] = ROUND1_NOTE;
   /* Four questions on the form are not asked in this version: expected quality, confidence
      before, close experience and, below, final confidence. All four are marked required and
      three of them are linear scales, so the posted value has to be one the question accepts.
@@ -2493,7 +2420,6 @@ function payload(){
 function asText(){
   var out = ["Second Pass: Beat the Machine at Mason", "Codename: "+S.codename, orgLine(),
              versionLine(), caseLine(), "Attempt id: "+S.attemptId, ""];
-  out.push("Round one: "+prepickLine());
   out.push("Four questions on the form were not asked in this version and carry a placeholder value, not an answer.");
   out.push("");
   for(var i=0;i<LINES;i++){
@@ -2650,12 +2576,6 @@ function attemptRecord(sentPayload){
           : (receiptEndpoint()
             ? "A receipt endpoint is set and it did not confirm this attempt. The state field says why."
             : "No receipt endpoint is set in this build, so nothing confirms receipt to this page."))
-    },
-    prepicks: {
-      picks: (S.prepicks || []).slice(),
-      skipped: !!S.prepickSkipped,
-      postedTo: "entry." + E.round1,
-      question: "Before the memo: tap up to three lines you would ask about first, or skip."
     },
     responses: responses,
     scoring: {
