@@ -24,11 +24,19 @@ const [ROOT, CASE, WIDTH, OUT] = [process.argv[2], process.argv[3] || "halyard",
     await ev("document.getElementById('noticego').click();true"); await sleep(100);
     await ev("var i=document.getElementById('cn');i.value='Walk Test';i.dispatchEvent(new Event('input',{bubbles:true}));document.querySelector('#orgs .chip').click();document.getElementById('next').click();true");
     await sleep(150);
-    out.orientation = await ev(`({step:__BTM.step, prepickSection:!!document.querySelector('.prepick'), chips:document.querySelectorAll('#screen .chip').length,
-      go3:Array.prototype.map.call(document.querySelectorAll('[data-go3]'),function(b){return b.textContent;}),
+    /* Since 29df0aa the read before the draft is required: no skip, at least one line tapped.
+       The walk presses the visible onward button once with nothing tapped (it must stay on the
+       read), taps the first card's account, and goes on. */
+    const visibleGo = "Array.prototype.filter.call(document.querySelectorAll('[data-precont]'),function(b){var r=b.getBoundingClientRect();return r.width>0&&r.height>0;})";
+    out.orientation = await ev(`({step:__BTM.step, prepickSection:!!document.querySelector('.prepick'), chips:document.querySelectorAll('#prepicks .chip').length,
+      onward:${visibleGo}.map(function(b){return b.textContent;}),
+      skipControls:Array.prototype.filter.call(document.querySelectorAll('#screen button'),function(b){return /skip/i.test(b.textContent);}).length,
       text:document.getElementById('screen').textContent.replace(/\\s+/g,' ').slice(0,300)})`);
     await audit("orientation");
-    await ev("document.querySelector('[data-go3]').click();true"); await sleep(150);
+    await ev(`(function(){var b=${visibleGo}[0];if(b) b.click();return true;})()`); await sleep(150);
+    out.stepAfterEmptyPress = await ev("__BTM.step");
+    await ev(`(function(){var a=String(__BTM_CARDS[0].acct);var c=Array.prototype.filter.call(document.querySelectorAll('#prepicks .chip'),function(b){return b.textContent.split(' ')[0]===a;})[0];if(c) c.click();
+      var b=${visibleGo}[0];if(b) b.click();return true;})()`); await sleep(150);
     out.afterOrientationStep = await ev("__BTM.step");
     const st = await ev("__BTM_STEPS()");
     let guard = 0, explainSeen = [];

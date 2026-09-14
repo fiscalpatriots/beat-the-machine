@@ -1,5 +1,7 @@
 /* The required read before the draft, walked end to end in headless Chrome on one case.
    node walk-prepicks.cjs <root> <case> <outdir>
+   <case> is halyard, kestrel, or own. "own" seeds this browser's saved case the way author.html
+   saves one, from a copy of kestrel-v1 renamed walk-own-1 with no fresh set, and walks that.
 
    Test mode the whole way, so nothing is posted. It proves, by running the page:
    1. the read cannot be skipped by a click, a key, the step hook, an edited saved run or the address;
@@ -69,7 +71,7 @@ function expected(cards, picks, calls, version) {
   const step = () => ev("__BTM.step");
   const VISIBLE_GO = `(function(){return Array.prototype.filter.call(document.querySelectorAll('[data-precont]'),function(b){
       var r=b.getBoundingClientRect(),cs=getComputedStyle(b);return r.width>0&&r.height>0&&cs.visibility!=='hidden';
-    }).map(function(b){return {where:b.closest('.stickygo')?'sticky bar':(b.closest('.orientside')?'rail':'other'),text:b.textContent.trim(),
+    }).map(function(b){return {where:b.closest('.stickygo')?'sticky bar':(b.closest('.prepickgo')?'under the lines':(b.closest('.orientside')?'rail':'other')),text:b.textContent.trim(),
       tag:b.tagName,type:b.getAttribute('type'),disabled:b.disabled};});})()`;
   const MEMO_SHOWN = `(function(){var t=document.getElementById('screen').innerText;
       return !!document.querySelector('#screen .quote') || __BTM_CARDS.some(function(c){return c.memo && t.indexOf(c.memo.slice(0,48))>-1;});})()`;
@@ -81,6 +83,7 @@ function expected(cards, picks, calls, version) {
     if (fresh) {
       await B.nav(url, READY);
       await ev("sessionStorage.clear();localStorage.removeItem('btm.owncase.v1');true");
+      if (CASE === "own") await seedOwn();
       await B.nav(url, READY);
     }
     await ev("document.getElementById('go').click();true"); await sleep(120);
@@ -117,11 +120,24 @@ function expected(cards, picks, calls, version) {
     }
   }
 
+  /* an authored case, saved where author.html saves one: kestrel-v1's lines under another name, no fresh set */
+  async function seedOwn() {
+    await ev(`(async function(){var c=await (await fetch('cases/kestrel-v1.json',{cache:'no-store'})).json();
+      c.version='walk-own-1'; c.company='Walk Own Case LLC'; c.origin={kind:'synthetic'};
+      localStorage.setItem('btm.owncase.v1', JSON.stringify({id:'own:WalkOwn:1', name:'WalkOwn', caseVersion:'1', 'case':c, fresh:null}));
+      return true;})()`);
+  }
+
   try {
     await B.width(375);
-    const cases = await (async () => { await B.nav(url, READY); return ev("({one:__BTM_CASES.one,two:__BTM_CASES.two,lines:__BTM_CASES.lines,source:__BTM_CASES.source})"); })();
+    const cases = await (async () => {
+      await B.nav(url, READY);
+      if (CASE === "own") { await seedOwn(); await B.nav(url, READY); }
+      return ev("({one:__BTM_CASES.one,two:__BTM_CASES.two,lines:__BTM_CASES.lines,source:__BTM_CASES.source,id:__BTM_CASES.id})");
+    })();
     out.cases = cases;
-    check("case files loaded from cases/, not the inline fallback", cases.source === "cases/ files", cases);
+    if (CASE === "own") check("the authored case loaded from this browser, with no fresh set", cases.source === "this browser, written by author.html" && cases.one === "walk-own-1" && cases.two === null, cases);
+    else check("case files loaded from cases/, not the inline fallback", cases.source === "cases/ files", cases);
 
     /* ---------- 1. no way past an empty read ---------- */
     await toReadScreen(true);
@@ -294,12 +310,21 @@ function expected(cards, picks, calls, version) {
     await ev("__BTM_GO(3);true"); await sleep(150);
     check("the second run cannot skip the read either", (await step()) === 2 && !(await ev(MEMO_SHOWN)));
 
-    for (const w of [320, 375, 768, 1280]) {
+    for (const w of [320, 375, 768, 1024, 1280, 1600]) {
       await B.width(w); await sleep(300);
       const o = await audit("read screen, " + w);
+      /* at a desk width the button sits under the lines; scrolled there, the legend rail must be
+         wholly in view or wholly scrolled away, never half under the progress bar */
+      let rail = null;
+      if (w >= 900) {
+        await ev("window.scrollTo(0,document.documentElement.scrollHeight);true"); await sleep(150);
+        await ev("document.getElementById('prepickstat').scrollIntoView({block:'center'});true"); await sleep(150);
+        rail = await ev("(function(){var s=document.querySelector('.orientside'),b=document.getElementById('bar');var r=s.getBoundingClientRect(),bb=b.getBoundingClientRect().bottom;return {railTop:Math.round(r.top),railBottom:Math.round(r.bottom),barBottom:Math.round(bb),straddles:r.top<bb&&r.bottom>bb,position:getComputedStyle(s).position};})()");
+      }
       const vis = await ev(VISIBLE_GO);
-      check("at " + w + " exactly one onward button is visible" + (w >= 900 ? " in the rail" : " in the sticky bar"),
-        vis.length === 1 && vis[0].where === (w >= 900 ? "rail" : "sticky bar"), vis);
+      check("at " + w + " exactly one onward button is visible" + (w >= 900 ? " under the lines" : " in the sticky bar"),
+        vis.length === 1 && vis[0].where === (w >= 900 ? "under the lines" : "sticky bar"), vis);
+      if (w >= 900) check("at " + w + " the legend rail scrolls with the page and is never half under the progress bar at the lines", rail && rail.position !== "sticky" && !rail.straddles, rail);
       if (w === 375 || w === 1280) await B.shot(path.join(OUTDIR, CASE + "-read-" + w + ".png"));
     }
     await B.width(1280); await sleep(200);

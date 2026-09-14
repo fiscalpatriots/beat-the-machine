@@ -236,15 +236,21 @@
 .stickygo{position:fixed;left:0;right:0;bottom:0;z-index:8;padding:var(--s3) var(--gut);
   background:var(--paper);border-top:1px solid var(--rule)}
 .stickygo .btn{margin:0 auto;max-width:484px;display:flex;width:100%}
+.prepickgo{display:none;margin-top:var(--s4)}
+.prepickgo .btn{max-width:484px}
 @media (max-width:899px){#app.hasbar{padding-bottom:98px}}
 @media (min-width:900px){
   #app.wide{max-width:1076px}
   .hero h2{font-size:var(--t-h1)}
   .orient{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:var(--s6);align-items:start;
     max-width:1040px;margin:0 auto}
-  .orientside{display:block;position:sticky;top:96px}
+  /* The legend rail scrolls with the page. It used to stick under the progress bar, and at the
+     foot of the read screen a sticky rail is pushed up behind the bar and reads as cut off; the
+     onward button now sits under the lines, so nothing in the rail has to stay in view. */
+  .orientside{display:block}
   .orientmain .flagcard{display:none}
   .stickygo{display:none}
+  .prepickgo{display:block}
   .flaghead{pointer-events:none}
   .flaghead .chev{display:none}
   .stmt-wide{--pad:var(--s6)}
@@ -1783,6 +1789,8 @@ function prepickBlock(){
       'will see where your calls moved once you had read the draft.</p>'+
     '<div class="chips" id="prepicks" role="group" aria-labelledby="prepickhead">'+chips+'</div>'+
     '<p class="prepickstat" id="prepickstat" aria-live="polite"></p>'+
+    /* on a desk the onward button sits under the lines it depends on; on a phone it is the bar */
+    '<div class="prepickgo"><button type="button" class="btn" data-precont="1">Tap at least one line</button></div>'+
   '</section>';
 }
 function wirePrepicks(){
@@ -1831,7 +1839,12 @@ function wirePrepicks(){
     if(!list.length){
       /* there is no way past an empty read: the button takes the player to the lines instead */
       var sec = document.getElementById("prepicksection");
-      if(sec && sec.scrollIntoView) sec.scrollIntoView({block:"center"});
+      /* the section's heading lands just under the sticky progress bar rather than behind it */
+      if(sec){
+        var bar = document.getElementById("bar");
+        var under = bar ? bar.offsetHeight : 0;
+        window.scrollTo(0, Math.max(0, sec.getBoundingClientRect().top + window.pageYOffset - under - 12));
+      }
       if(btns[0]){ try{ btns[0].focus({preventScroll:true}); }catch(e){ btns[0].focus(); } }
       return;
     }
@@ -1853,7 +1866,7 @@ function roundOne(){
     hero+
     '<div class="orient stmtwrap">'+
       '<div class="orientmain">'+flagCard()+statement("", true)+prepickBlock()+'</div>'+
-      '<aside class="orientside">'+flagCard()+cont+'</aside>'+
+      '<aside class="orientside">'+flagCard()+'</aside>'+
     '</div>'+
     '<div class="stickygo">'+cont+'</div>';
   wirePrepicks();
