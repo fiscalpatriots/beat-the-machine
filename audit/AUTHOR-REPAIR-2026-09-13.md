@@ -96,7 +96,7 @@ ledger line and gets no card." The save went through with two cards anyway.
 
 - The covenant sentence comes back as an open item under Key each line, with the checker's status (**needs review**) and its reasons.
 - The item offers **Still open** or **Leave it out of the drill**. While it is open the save lists: "Main set, sentence 2 ... binds to no ledger line and is still open."
-- Choosing to leave it out without a reason is also refused.
+- Leaving it out with no reason written is refused by `itemProblems()`. That one path was read in the code but not driven by the scripts.
 - With a reason written, the save goes through, and `source.sentences[1].excluded` carries that reason.
 - The memo hint no longer promises one card per sentence. It says every sentence comes back as a card, or as an open item that is left out with a reason or rewritten and read again.
 
