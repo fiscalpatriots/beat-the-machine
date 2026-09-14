@@ -67,7 +67,8 @@ RUBRIC.md, blind to the machine: no codename, key, call result or chips, which r
 separate facilitator key joined on response_id, with the second scorer's rows drawn by hash.
 --scores and --second-scores read the filled sheets back, and the findings report the
 educator's scores and the two scorers' agreement apart from reason chip agreement. The
-payload field names are placeholders kept in one block, EXPLANATION_PARTS and its neighbours.
+explanation is read from the Evidence, Period and Action segments question C carries on each
+line, named in one block, EXPLANATION_PARTS.
 
 Roster file (optional, --roster)
 --------------------------------
@@ -159,27 +160,23 @@ NOT_ASKED = "not asked"
 PLACEHOLDER_VALUES = {"3", "5", "once or twice"}
 
 # ---------------------------------------------------------------- written explanations
-# PLACEHOLDER MAPPING, the only place the explanation payload is named. From brightwater-v6
-# every fresh case call carries a required three-part written explanation, scored by an
-# independent educator against RUBRIC.md and never by this script. The page's field names
-# had not landed when this was written, so every name in this block is a placeholder. When
-# they land, change the strings here, set EXPLANATION_NAMES_ARE_PLACEHOLDERS to False, and
-# nothing else in the script moves.
-#
-# Two shapes are read, whichever the export carries:
-#   a column per fresh line and part, titled EXPLANATION_COLUMN.format(n=line, label=label)
-#   or a segment inside question C, after the Round2 basis, shaped
-#     Explanation 3: Evidence: ... | Period: ... | Action: ... || Explanation 4: ...
-EXPLANATION_NAMES_ARE_PLACEHOLDERS = True
+# The one place the explanation payload is named. From brightwater-v6 every fresh case call on
+# an assessment run carries a required three-part written explanation (index.html at commit
+# 6447d97, EXPLAIN_VERSION explain-2026-09-13). The form posts it in question C, on each line of
+# the Round2 basis, between the basis and the reason verdict:
+#   3: Basis: wrong period | Evidence: ... | Period: ... | Action: ... | Reason: agrees | Key basis: ...
+# The attempt record and the receipt carry the same answers as writtenExplanation
+# {decisiveEvidence, periodRelevance, actionOrRequest} on each round two item. The page strips
+# "|" from the answers and writes "none" for an empty one. If the page renames a label, change it
+# here and nothing else in the script moves. The script never scores an explanation.
 EXPLANATION_PARTS = [
-    # part key, label in the column title and the inline segment, rubric criterion
-    ("evidence", "Evidence", "Decisive evidence"),
-    ("period", "Period", "Why it matters for this period"),
-    ("action", "Action", "Action or source request"),
+    # part key, label posted in question C, key in the attempt record, rubric criterion
+    ("evidence", "Evidence", "decisiveEvidence", "Decisive evidence"),
+    ("period", "Period", "periodRelevance", "Why it matters for this period"),
+    ("action", "Action", "actionOrRequest", "Action or source request"),
 ]
-EXPLANATION_COLUMN = "Fresh line {n}. Explanation, {label}"
-EXPLANATION_INLINE_LABEL = "Explanation"
-EXPLANATION_MAX_LINES = 10
+EXPLANATION_EMPTY = "none"
+EXPLANATION_LABELS = "|".join(re.escape(part[1]) for part in EXPLANATION_PARTS)
 
 # ---------------------------------------------------------------- exclusion rules
 TEST_CODENAMES = {
@@ -464,11 +461,10 @@ KEYBASIS_RE = re.compile(r"key\s+basis\s*:\s*(.*?)\s*\.?\s*$", re.I | re.S)
 NO_CHIPS = "none recorded"
 
 R2_BASIS_RE = re.compile(
-    r"round2\s+basis,\s*by\s+line\s*:\s*(.*?)(?:\s*fresh case\s*:|\s*%s\s+\d+\s*:|\s*$)"
-    % re.escape(EXPLANATION_INLINE_LABEL), re.I | re.S)
-EXPLANATION_INLINE_RE = re.compile(
-    r"%s\s+(\d+)\s*:\s*(.*?)(?=\|\|\s*%s\s+\d+\s*:|\s*fresh case\s*:|$)"
-    % (re.escape(EXPLANATION_INLINE_LABEL), re.escape(EXPLANATION_INLINE_LABEL)), re.I | re.S)
+    r"round2\s+basis,\s*by\s+line\s*:\s*(.*?)(?:\s*fresh case\s*:|\s*$)", re.I | re.S)
+EXPLANATION_SEGMENT_RE = re.compile(
+    r"\|\s*(%s)\s*:\s*(.*?)(?=\s*\|\s*(?:%s|reason|key\s+basis)\s*:|$)"
+    % (EXPLANATION_LABELS, EXPLANATION_LABELS), re.I | re.S)
 # The case line from caseLine() in question A:
 #   Case: halyard, version halyard-v4 (practice, 14 lines) and brightwater-v5
 #   (assessment, 5 lines), dated 2026-09-13, loaded from cases/ files.
@@ -577,7 +573,9 @@ def parse_r2_basis(text, case2):
         n = int(num.group(1)) if num else len(out) + 1
         body = num.group(2) if num else piece
         said = REASON_RE.search(body)
-        head = re.split(r"\s*\|\s*reason\s*:", body, 1, flags=re.I)[0]
+        # the basis half stops at the first explanation label or " | Reason:" after it
+        head = re.split(r"\s*\|\s*(?:%s|reason)\s*:" % EXPLANATION_LABELS, body, 1,
+                        flags=re.I)[0]
         chips, words = parse_basis(head)
         reason = (norm(said.group(1)) == "agrees") if said else None
         if reason is None and case2 and 1 <= n <= len(case2["cards"]):
@@ -587,32 +585,25 @@ def parse_r2_basis(text, case2):
     return out
 
 
-def parse_explanations(row, explain_cols, qc_text, lines):
-    """{line: {part: text}} for the fresh lines, from columns first and question C second."""
+def parse_explanations(qc_text, lines):
+    """{line: {part: text}} from the Round2 basis in question C. "none" counts as no answer."""
+    match = R2_BASIS_RE.search(qc_text or "")
+    if not match:
+        return {}
     out = {}
-    for n in range(1, lines + 1):
-        parts = {}
-        for key, _label, _criterion in EXPLANATION_PARTS:
-            text = cell(row, explain_cols.get((n, key))).strip()
-            if text:
-                parts[key] = text
-        if parts:
-            out[n] = parts
-    for match in EXPLANATION_INLINE_RE.finditer(qc_text or ""):
-        n = int(match.group(1))
-        if n in out or not 1 <= n <= lines:
+    for piece in match.group(1).split("||"):
+        num = re.match(r"^\s*(\d+)\s*:\s*(.*)$", piece.strip(), re.S)
+        if not num or not 1 <= int(num.group(1)) <= lines:
             continue
         parts = {}
-        labels = "|".join(re.escape(label) for _k, label, _c in EXPLANATION_PARTS)
-        for piece in re.finditer(r"(%s)\s*:\s*(.*?)(?=\|\s*(?:%s)\s*:|$)" % (labels, labels),
-                                 match.group(2).strip().rstrip("|").strip(), re.I | re.S):
-            key = next(k for k, label, _c in EXPLANATION_PARTS
-                       if norm(label) == norm(piece.group(1)))
-            text = piece.group(2).strip().strip("|").strip()
-            if text:
+        body = re.split(r"\s*\|\s*reason\s*:", num.group(2), 1, flags=re.I)[0]
+        for seg in EXPLANATION_SEGMENT_RE.finditer(body):
+            key = next(p[0] for p in EXPLANATION_PARTS if norm(p[1]) == norm(seg.group(1)))
+            text = seg.group(2).strip().rstrip(".").strip()
+            if text and norm(text) != EXPLANATION_EMPTY:
                 parts[key] = text
         if parts:
-            out[n] = parts
+            out[int(num.group(1))] = parts
     return out
 
 
@@ -1011,8 +1002,7 @@ def read_attempt(index, row, cols, library):
         if a["case2"]:
             others = [cell(row, c) for c in cols["why"] if c] + [qb, qa]
             score_fresh(a, qc, others, a["case2"])
-            a["explanations"] = parse_explanations(row, cols["explain"], qc,
-                                                   len(a["case2"]["cards"]))
+            a["explanations"] = parse_explanations(qc, len(a["case2"]["cards"]))
     a["completed"] = completion_of(a, row, cols)
     return a
 
@@ -1040,15 +1030,6 @@ def match_columns(headers):
                                        contains=["c%d." % (i + 1), "account"]))
         found["why"].append(cols.find(WHY_TITLES[i], "Why C%d" % (i + 1),
                                       contains=["c%d." % (i + 1), "why?"]))
-    # Explanation columns are optional, since only a run on a case that asks for them posts
-    # them, so a missing one is never listed under Columns not found.
-    by_norm = {norm(h): h for h in headers}
-    found["explain"] = {}
-    for n in range(1, EXPLANATION_MAX_LINES + 1):
-        for key, label, _criterion in EXPLANATION_PARTS:
-            head = by_norm.get(norm(EXPLANATION_COLUMN.format(n=n, label=label)))
-            if head:
-                found["explain"][(n, key)] = head
     return cols, found
 
 
@@ -1061,8 +1042,7 @@ def analyze(path, roster_path=None, cases_dir=None, synthetic_check=False,
 
     report = {"missing": cols.missing, "matched": cols.matched, "n_rows_raw": len(rows),
               "source": os.path.abspath(path), "cases_dir": resolved_dir,
-              "synthetic_check": bool(synthetic_check),
-              "explanation_columns": len(found["explain"])}
+              "synthetic_check": bool(synthetic_check)}
 
     # --- exclusions, then duplicate sends -------------------------------------
     excluded = {key: [] for key, _ in EXCLUSION_LABELS}
@@ -1546,13 +1526,13 @@ def explanation_results(case2, first, report):
            "fresh_calls": fresh_calls, "without_text": max(0, fresh_calls - len(items)),
            "second_drawn": sum(1 for i in items if i["second"]),
            "scored": len(scored), "sheet_supplied": bool(report["scores"]["first_path"])}
-    for key, _label, _criterion in EXPLANATION_PARTS:
+    for key, _label, _record, _criterion in EXPLANATION_PARTS:
         res[key + "_avg"] = _mean([float(i["first_scores"]["scores"][key]) for i in scored])
     res["total_avg"] = _mean([float(sum(i["first_scores"]["scores"].values())) for i in scored])
     res["distribution"] = {key: {v: sum(1 for i in scored
                                          if i["first_scores"]["scores"][key] == v)
                                  for v in (0, 1, 2)}
-                           for key, _l, _c in EXPLANATION_PARTS}
+                           for key, _l, _r, _c in EXPLANATION_PARTS}
     per_line = []
     for n, card in enumerate(case2["cards"], start=1):
         line_items = [i for i in scored if i["line"] == n]
@@ -1563,7 +1543,7 @@ def explanation_results(case2, first, report):
     double = [i for i in scored if i["second_scores"] and i["second_scores"]["scores"]]
     res["double_scored"] = len(double)
     pairs = [(i["first_scores"]["scores"][k], i["second_scores"]["scores"][k])
-             for i in double for k, _l, _c in EXPLANATION_PARTS]
+             for i in double for k, _l, _r, _c in EXPLANATION_PARTS]
     res["exact_rate"] = pct(sum(1 for x, y in pairs if x == y), len(pairs))
     res["within_one_rate"] = pct(sum(1 for x, y in pairs if abs(x - y) <= 1), len(pairs))
     res["key_disagreements"] = [d for d in report["scores"]["key_disagreements"]
@@ -1677,12 +1657,10 @@ def set_fields(s):
     e = s.get("explain")
     if e:
         add("explain.case_version", e["version"])
-        add("explain.field_names", "placeholder" if EXPLANATION_NAMES_ARE_PLACEHOLDERS
-            else "from the page payload")
         add("explain.items_with_text", e["items"])
         add("explain.fresh_calls_without_text", e["without_text"])
         add("explain.items_scored", e["scored"])
-        for key, _label, _criterion in EXPLANATION_PARTS:
+        for key, _label, _record, _criterion in EXPLANATION_PARTS:
             add("explain.%s_avg_of_2" % key, e[key + "_avg"])
         add("explain.total_avg_of_6", e["total_avg"])
         add("explain.second_scorer_drawn", e["second_drawn"])
@@ -1888,16 +1866,12 @@ def build_explanation_markdown(e, s, report, out):
     out.append("")
     if not e["items"]:
         out.append("No written explanation was found on the %s fresh calls of these first "
-                   "attempts on %s. Fresh cases before brightwater-v6 did not ask for one%s."
-                   % (e["fresh_calls"], e["version"],
-                      "; on brightwater-v6 or later, first check the placeholder field names "
-                      "in findings.py" if EXPLANATION_NAMES_ARE_PLACEHOLDERS else ""))
+                   "attempts on %s. Fresh cases before brightwater-v6 did not ask for one, "
+                   "and on brightwater-v6 or later an empty result means the export lacks the "
+                   "Evidence, Period and Action segments in question C."
+                   % (e["fresh_calls"], e["version"]))
         out.append("")
         return
-    if EXPLANATION_NAMES_ARE_PLACEHOLDERS:
-        out.append("The explanation field names in findings.py are still placeholders, so "
-                   "confirm them against the page's payload before these counts leave this page.")
-        out.append("")
     out.append("| Measure | Value |")
     out.append("| --- | --- |")
     out.append("| Fresh lines carrying a written explanation | %d |" % e["items"])
@@ -1910,7 +1884,7 @@ def build_explanation_markdown(e, s, report, out):
         out.append("")
         return
     out.append("| Scored by the first scorer | %d |" % e["scored"])
-    for key, _label, criterion in EXPLANATION_PARTS:
+    for key, _label, _record, criterion in EXPLANATION_PARTS:
         avg = e[key + "_avg"]
         dist = e["distribution"][key]
         out.append("| %s, mean of 2 | %s (0: %d, 1: %d, 2: %d) |"

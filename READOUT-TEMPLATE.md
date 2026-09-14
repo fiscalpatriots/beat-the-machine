@@ -80,7 +80,7 @@ A reason agrees when at least one chip was tapped and every chip tapped sits ins
 
 ## 6. Educator-scored explanations, fields carrying the prefix `explain.`
 
-A separate result from section 5. From `brightwater-v6` every fresh case call carries a three-part written explanation, and an independent educator scores each part 0 to 2 against `RUBRIC.md` on a sheet that never shows the machine's call result. Fresh case `explain.case_version`, field names `explain.field_names`.
+A separate result from section 5. From `brightwater-v6` every fresh case call carries a three-part written explanation, and an independent educator scores each part 0 to 2 against `RUBRIC.md` on a sheet that never shows the machine's call result. Fresh case `explain.case_version`.
 
 | Measure | Field |
 | --- | --- |

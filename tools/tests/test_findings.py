@@ -432,24 +432,25 @@ def fixture_cases(folder):
     return target
 
 
-def explained(code, attempt, fresh="brightwater-v6", inline=False, ts="2026-09-20 10:00:00",
-              texts=None):
+def explained(code, attempt, fresh="brightwater-v6", ts="2026-09-20 10:00:00", texts=None,
+              words=False):
+    """A brightwater-v6 run with question C written the way r2Line() writes it in 6447d97."""
     r = response(code, attempt, "halyard-v4", fresh, ts=ts)
+    case2 = load(fresh)
     texts = texts or {}
-    segments = []
-    for n in range(1, 6):
+    lines = []
+    for n, card in enumerate(case2["cards"], start=1):
         parts = texts.get(n, {"evidence": "the document on line %d" % n,
                               "period": "the month it covers on line %d" % n,
                               "action": "the request that follows on line %d" % n})
-        if inline:
-            segments.append("Explanation %d: Evidence: %s | Period: %s | Action: %s"
-                            % (n, parts["evidence"], parts["period"], parts["action"]))
-        else:
-            for key, label, _criterion in f.EXPLANATION_PARTS:
-                r[f.EXPLANATION_COLUMN.format(n=n, label=label)] = parts[key]
-    if inline:
-        r[f.QC_TITLE] += (" Round2 basis, by line: 1: Basis: no source on file || " +
-                          " || ".join(segments))
+        chips = card["basis_key"][:1]
+        lines.append("%d: Basis: %s%s | Evidence: %s | Period: %s | Action: %s | Reason: agrees "
+                     "| Key basis: %s"
+                     % (n, "; ".join(chips), " | Words: short note" if words else "",
+                        parts.get("evidence") or "none", parts.get("period") or "none",
+                        parts.get("action") or "none", "; ".join(card["basis_key"])))
+    r[f.QC_TITLE] += (" Round2 basis, by line: " + " || ".join(lines) + ". Fresh case: "
+                      "Brightwater Dental Partners, PLLC, case version %s, 5 lines." % fresh)
     return r
 
 
@@ -512,13 +513,21 @@ class ExplanationTest(unittest.TestCase):
         self.assertEqual(hidden_line1["call_result"], "does not agree with key")
         self.assertEqual(hidden_line1["attempt"], "first")
 
-    def test_inline_explanations_in_question_c_are_read(self):
-        report = self.run_rows([explained("Inline Writer", "att-i", inline=True)])
+    def test_explanations_and_chips_are_both_read_from_question_c(self):
+        texts = {2: {"evidence": "the June register", "period": "", "action": "sign it"}}
+        report = self.run_rows([explained("Question C", "att-q", texts=texts, words=True)])
         a = report["initial"][0]
         self.assertEqual(sorted(a["explanations"]), [1, 2, 3, 4, 5])
         self.assertEqual(a["explanations"][3]["period"], "the month it covers on line 3")
         self.assertEqual(a["explanations"][5]["action"], "the request that follows on line 5")
-        self.assertEqual(len(a["r2_basis"]), 1)
+        self.assertEqual(a["explanations"][2], {"evidence": "the June register",
+                                                "action": "sign it"})
+        self.assertEqual([r[1] for r in a["r2_basis"]],
+                         [["no source on file"], ["the figure and reason hold"],
+                          ["wrong period"], ["no source on file"],
+                          ["the figure and reason hold"]])
+        self.assertEqual([r[2] for r in a["r2_basis"]], ["short note"] * 5)
+        self.assertTrue(all(r[3] for r in a["r2_basis"]))
 
     def test_second_scorer_draw_is_stable_and_reaches_every_line(self):
         rows = [explained("Writer %02d" % k, "att-w%02d" % k) for k in range(12)]

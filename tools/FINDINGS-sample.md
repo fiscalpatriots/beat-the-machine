@@ -271,7 +271,7 @@ The fresh lines are a second unseen item set scored the same way, not a post-tes
 
 A separate result from reason chip agreement. Each written explanation on a fresh line is scored by an independent educator against RUBRIC.md, three criteria at 0 to 2 each, and never by this script. The machine's call result and the chips are kept off the sheet the educator scores.
 
-No written explanation was found on the 40 fresh calls of these first attempts on brightwater-v5. Fresh cases before brightwater-v6 did not ask for one; on brightwater-v6 or later, first check the placeholder field names in findings.py.
+No written explanation was found on the 40 fresh calls of these first attempts on brightwater-v5. Fresh cases before brightwater-v6 did not ask for one, and on brightwater-v6 or later an empty result means the export lacks the Evidence, Period and Action segments in question C.
 
 ### The Professor chip
 
@@ -451,7 +451,7 @@ The fresh lines are a second unseen item set scored the same way, not a post-tes
 
 A separate result from reason chip agreement. Each written explanation on a fresh line is scored by an independent educator against RUBRIC.md, three criteria at 0 to 2 each, and never by this script. The machine's call result and the chips are kept off the sheet the educator scores.
 
-No written explanation was found on the 10 fresh calls of these first attempts on brightwater-v5. Fresh cases before brightwater-v6 did not ask for one; on brightwater-v6 or later, first check the placeholder field names in findings.py.
+No written explanation was found on the 10 fresh calls of these first attempts on brightwater-v5. Fresh cases before brightwater-v6 did not ask for one, and on brightwater-v6 or later an empty result means the export lacks the Evidence, Period and Action segments in question C.
 
 ### Where the record disagrees with itself
 
@@ -574,7 +574,7 @@ No Round2 string in question C on these first attempts.
 
 A separate result from reason chip agreement. Each written explanation on a fresh line is scored by an independent educator against RUBRIC.md, three criteria at 0 to 2 each, and never by this script. The machine's call result and the chips are kept off the sheet the educator scores.
 
-No written explanation was found on the 0 fresh calls of these first attempts on brightwater-v2. Fresh cases before brightwater-v6 did not ask for one; on brightwater-v6 or later, first check the placeholder field names in findings.py.
+No written explanation was found on the 0 fresh calls of these first attempts on brightwater-v2. Fresh cases before brightwater-v6 did not ask for one, and on brightwater-v6 or later an empty result means the export lacks the Evidence, Period and Action segments in question C.
 
 ### Where the record disagrees with itself
 
@@ -762,7 +762,6 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 | `r1.prepicks_given` | 7 |
 | `reason.limitation` | On halyard-v4, seven of the eight flag lines accept "no source on file" and six of the six stand lines accept only "the figure and reason hold". A player who taps those two chips after correct calls agrees on thirteen of fourteen lines without stating why the evidence fails or holds, and the stand chip largely restates the decision. Read this result as agreement with accepted reason categories, not as reasoning quality. On brightwater-v5, three of the three flag lines accept "no source on file" and two of the two stand lines accept only "the figure and reason hold". A player who taps those two chips after correct calls agrees on five of five lines without stating why the evidence fails or holds, and the stand chip largely restates the decision. Read this result as agreement with accepted reason categories, not as reasoning quality. |
 | `explain.case_version` | brightwater-v5 |
-| `explain.field_names` | placeholder |
 | `explain.items_with_text` | 0 |
 | `explain.fresh_calls_without_text` | 40 |
 | `explain.items_scored` | 0 |
@@ -925,7 +924,6 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 | `r1.prepicks_given` | 2 |
 | `reason.limitation` | On kestrel-v1, six of the seven flag lines accept "no source on file" and five of the five stand lines accept only "the figure and reason hold". A player who taps those two chips after correct calls agrees on eleven of twelve lines without stating why the evidence fails or holds, and the stand chip largely restates the decision. Read this result as agreement with accepted reason categories, not as reasoning quality. On brightwater-v5, three of the three flag lines accept "no source on file" and two of the two stand lines accept only "the figure and reason hold". A player who taps those two chips after correct calls agrees on five of five lines without stating why the evidence fails or holds, and the stand chip largely restates the decision. Read this result as agreement with accepted reason categories, not as reasoning quality. |
 | `explain.case_version` | brightwater-v5 |
-| `explain.field_names` | placeholder |
 | `explain.items_with_text` | 0 |
 | `explain.fresh_calls_without_text` | 10 |
 | `explain.items_scored` | 0 |
@@ -1077,7 +1075,6 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 | `r1.prepicks_given` | 0 |
 | `reason.limitation` | not available |
 | `explain.case_version` | brightwater-v2 |
-| `explain.field_names` | placeholder |
 | `explain.items_with_text` | 0 |
 | `explain.fresh_calls_without_text` | 0 |
 | `explain.items_scored` | 0 |
