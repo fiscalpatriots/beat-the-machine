@@ -48,6 +48,14 @@ def summary(rep):
         "sets": [{"label": s["label"], "n_attempts": s["n_attempts"]} for s in rep["sets"]],
         "case_versions": rep["case_versions"], "disagreements": rep["disagreements"],
         "n_explanation_items": len(rep["explanation_items"]),
+        # added 13 September 2026 (lane F2), read only where the tree's findings.py reports them
+        "conflicts": [{"attempt_id": c["attempt_id"],
+                       "sheet_rows": [r["sheet_row"] for r in c["records"]],
+                       "differs_in": [d["column"] for d in c["differences"]]}
+                      for c in rep.get("conflicts", [])],
+        "explanation_gaps": {a["codename"]: [(g["line"], g["part"], g["problem"])
+                                             for g in a.get("explanation_gaps", [])]
+                             for a in rep["attempts"] if a.get("explanation_gaps")},
     }
 
 

@@ -105,7 +105,9 @@ window.__gate=function(){return {save:document.getElementById('save').disabled, 
     const before = await ev("document.querySelector('#originseg [aria-pressed=\"true\"]')?document.querySelector('#originseg [aria-pressed=\"true\"]').getAttribute('data-v'):null");
     await ev("document.getElementById('loadsample').click();true"); await sleep(100);
     await ev(`__set('ledger',${JSON.stringify(TWO)});__set('memo',"1. Rent expense rose $30,000.\\n2. Insurance expense rose $45,000.");true`);
-    A.sampleThenReplace = { originBeforeSample: before, originAfterReplacingBothPanes: await ev("document.querySelector('#originseg [aria-pressed=\"true\"]').getAttribute('data-v')") };
+    /* updated 13 September 2026 (lane F2): the origin reads null when no choice is pressed, which is
+       what the repaired page shows once the sample's ledger is replaced; the old expression threw */
+    A.sampleThenReplace = { originBeforeSample: before, originAfterReplacingBothPanes: await ev("(function(){var b=document.querySelector('#originseg [aria-pressed=\"true\"]');return b?b.getAttribute('data-v'):null;})()") };
 
     // ================= the drill
     const D = out.drill;
@@ -117,7 +119,11 @@ window.__gate=function(){return {save:document.getElementById('save').disabled, 
     await ev("document.getElementById('noticego').click();true"); await sleep(100);
     await ev("var i=document.getElementById('cn');i.value='A1 Audit Walk';i.dispatchEvent(new Event('input',{bubbles:true}));document.querySelector('#orgs .chip').click();document.getElementById('next').click();true");
     await sleep(150);
-    await ev("(function(){var b=document.querySelector('[data-go3]');if(b)b.click();return true;})()"); await sleep(150);
+    /* updated 13 September 2026 (lane F2): the removed Skip button ([data-go3]) is gone and the
+       read before the draft is required (29df0aa). Tap the first card's account and press the
+       visible onward button, as audit/author-repair-2026-09-13/walk-drill.cjs does. */
+    await ev(`(function(){var a=String(__BTM_CARDS[0].acct);var c=Array.prototype.filter.call(document.querySelectorAll('#prepicks .chip'),function(b){return b.textContent.split(' ')[0]===a;})[0];if(c) c.click();
+      var go=Array.prototype.filter.call(document.querySelectorAll('[data-precont]'),function(b){var r=b.getBoundingClientRect();return r.width>0&&r.height>0;})[0];if(go) go.click();return true;})()`); await sleep(150);
     const st = await ev("__BTM_STEPS()");
     let guard = 0, probed = false;
     D.lock = [];
@@ -133,7 +139,9 @@ window.__gate=function(){return {save:document.getElementById('save').disabled, 
       await sleep(60);
       await ev(`(function(){var chips=[].slice.call(document.querySelectorAll('#commit .chip'));var h=chips.filter(function(x){return x.textContent.trim()===${JSON.stringify(r.basis)};})[0]||chips[0];if(h)h.click();return true;})()`);
       const boxes = await ev("document.querySelectorAll('#screen textarea.explain').length");
-      const lockState = () => ev("(function(){var l=document.getElementById('lockin');return {disabled:l?l.disabled:null, calls:JSON.stringify(__BTM.r2calls||null)};})()");
+      /* updated 13 September 2026 (lane F2): on an assessment line the lock is aria-disabled rather than
+         disabled, so a press can say what is missing; disabled still means the lock is not available */
+      const lockState = () => ev("(function(){var l=document.getElementById('lockin');return {disabled:l?(l.disabled||l.getAttribute('aria-disabled')==='true'):null, calls:JSON.stringify(__BTM.r2calls||null)};})()");
       const fill = (vals) => ev(`(function(){var v=${JSON.stringify(vals)};[].forEach.call(document.querySelectorAll('#screen textarea.explain'),function(t,k){t.value=v[k];t.dispatchEvent(new Event('input',{bubbles:true}));});return true;})()`);
       if (boxes && !probed) {
         probed = true;
