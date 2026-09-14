@@ -1,0 +1,1604 @@
+[
+ {
+  "id": "NB001",
+  "label": "approx rate",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 at an approx. 30 percent rate.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB002",
+  "label": "est plan",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, est. 30 percent above plan.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB003",
+  "label": "J Smith",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 per J. Smith, who expects a quarterly run rate.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB004",
+  "label": "St Louis",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 at the St. Louis office, sharply above May.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB005",
+  "label": "Accum Depr",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 30 percent, on Accum. Depr. Schedule changes that doubled.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB006",
+  "label": "no. against",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on invoice no. 4471 against budget.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB007",
+  "label": "avg year",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 at an avg. 3 percent escalator a year.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB008",
+  "label": "7. 5",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 7. 5 percent.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB009",
+  "label": "US approx",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on the U.S. lease, approx. 1.3x the prior level.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB010",
+  "label": "Rs to Rs",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose by Rs. 30,000 to Rs. 130,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB011",
+  "label": "vs May R",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 vs. May.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB012",
+  "label": "vs May RL",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 vs. May.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB013",
+  "label": "annual renewal",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 to $130,000. An annual renewal was paid.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB014",
+  "label": "two sent",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000. Insurance expense rose $45,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB015",
+  "label": "Inc break",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 at the Acme Inc. Insurance expense rose $45,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB016",
+  "label": "vs May twice",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 vs. May. Insurance expense rose $45,000 vs. May.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB017",
+  "label": "US office",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 at the U.S. office. Insurance expense rose $45,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB018",
+  "label": "J Smith ok",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 per J. Smith.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB019",
+  "label": "No 4471 ok",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on lease No. 4471.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB020",
+  "label": "paren break",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 (30 percent). Insurance expense rose $45,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB021",
+  "label": "quote break",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense \"rose $30,000.\" Insurance expense rose $45,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB022",
+  "label": "mixed split",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 to $130,000. Insurance expense rose sharply, approx. 90 percent.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB023",
+  "label": "dollar start",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000. $45,000 was the rise in Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB024",
+  "label": "etc cap",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on rates, fees, etc. Insurance expense rose $45,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB025",
+  "label": "Schedule A",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 per Schedule A. Insurance expense rose $45,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB026",
+  "label": "Dr debit",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense was 30,000 Dr. Insurance expense rose $45,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB027",
+  "label": "because sharply",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 because volumes rose sharply.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB028",
+  "label": "sharply higher",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on sharply higher rates.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB029",
+  "label": "surged",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense surged $30,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB030",
+  "label": "significant increase",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a significant increase.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB031",
+  "label": "pred material",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 as the increase in rates was material.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB032",
+  "label": "modestly",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 30 percent, as occupancy costs climbed modestly.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB033",
+  "label": "dramatic jump",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 after a dramatic jump in square footage.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB034",
+  "label": "edged up",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense edged up $30,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB035",
+  "label": "slightly larger",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 due to a slightly larger footprint.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB036",
+  "label": "much higher",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, much higher than the prior month.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB037",
+  "label": "substantially above",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 because the landlord's increase was substantially above inflation.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB038",
+  "label": "heavily",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, and Insurance expense rose $45,000 on heavily discounted premiums.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB039",
+  "label": "jumped by",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense jumped by $30,000 to $130,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB040",
+  "label": "marginally",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 with marginally higher common area charges.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB041",
+  "label": "change small",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000; the change was small.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB042",
+  "label": "large new office",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on the large new office.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB043",
+  "label": "higher rates",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on higher rates at the new site.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB044",
+  "label": "Major Street",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 because the lease on the Major Street building renewed.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB045",
+  "label": "Small tools",
+  "inputs": {
+   "ledger": "6150\tSmall tools expense\t100000\t130000",
+   "memo": "Small tools expense rose $30,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB046",
+  "label": "strong demand",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on strong demand for space.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB047",
+  "label": "sharpest rise",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, the sharpest rise on the statement.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB048",
+  "label": "soared",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 as rates soared.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB049",
+  "label": "a big jump",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on a big jump in rates.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB050",
+  "label": "rapidly",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 as rates rose rapidly.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB051",
+  "label": "steep",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on a steep rate hike.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB052",
+  "label": "tiny",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on a tiny decrease in vacancy.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB053",
+  "label": "sizable",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a sizable change.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB054",
+  "label": "plunged vacancy",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 because vacancy plunged.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB055",
+  "label": "meaningfully",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 as occupancy improved meaningfully.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB056",
+  "label": "far above",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, far above the floor.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB057",
+  "label": "a lot more",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 as the lease cost a lot more.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB058",
+  "label": "outsized",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on an outsized escalation.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB059",
+  "label": "increase was not significant",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, but the increase was not significant.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB060",
+  "label": "in June R",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in June.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB061",
+  "label": "for the month",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 for the month.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB062",
+  "label": "Q2",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in Q2.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB063",
+  "label": "mom R",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 month over month.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB064",
+  "label": "month-end",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 at month-end.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB065",
+  "label": "reason June",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 because the lease renewed in June.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB066",
+  "label": "2026",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in 2026.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB067",
+  "label": "6/1",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on the lease signed on 6/1.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB068",
+  "label": "June 30",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 to $130,000 at June 30.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB069",
+  "label": "prior/current",
+  "inputs": {
+   "ledger": "Account\tPrior\tCurrent\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in June.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB070",
+  "label": "August RL",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 because the lease renewed in August.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB071",
+  "label": "over June RL",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 over June.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB072",
+  "label": "yoy labels",
+  "inputs": {
+   "ledger": "Account\tJune 2025\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 month over month.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB073",
+  "label": "2025 RL",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 in 2025.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB074",
+  "label": "mixed june",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, and Insurance expense rose $45,000 in June.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB075",
+  "label": "this month R",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 this month.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB076",
+  "label": "last month R",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 from last month.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB077",
+  "label": "monthly R",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on the monthly charge.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB078",
+  "label": "mid-month R",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 as the lease began mid-month.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB079",
+  "label": "June RL",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 in June.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB080",
+  "label": "mom RL",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 month over month.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB081",
+  "label": "1 June 2026 RL",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 because the lease renewed on 1 June 2026.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB082",
+  "label": "prior month labels",
+  "inputs": {
+   "ledger": "Account\tPrior month\tThis month\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 for the month.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB083",
+  "label": "Jul Jun order",
+  "inputs": {
+   "ledger": "Account\tJul 2026\tJun 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 from June to July.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB084",
+  "label": "6/1 RL",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the lease signed on 6/1.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB085",
+  "label": "one-month lease",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on a one-month lease extension.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB086",
+  "label": "2026-06-30 R",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 to $130,000 as of 2026-06-30.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB087",
+  "label": "fiscal year RL",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 in the fiscal year.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB088",
+  "label": "Suite 2000 RL",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the Suite 2000 lease.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB089",
+  "label": "the period R",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in the period.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB090",
+  "label": "June's R",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on June's new lease.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB091",
+  "label": "Dec Jan",
+  "inputs": {
+   "ledger": "Account\tDec 2025\tJan 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 month over month in January.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB092",
+  "label": "also covers",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the lease that also covers Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB093",
+  "label": "same increase as",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, the same increase as Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB094",
+  "label": "shared with",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on space shared with Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB095",
+  "label": "offset in part",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, offset in part by Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB096",
+  "label": "reclassified",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 and was reclassified from Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB097",
+  "label": "net of",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, net of Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB098",
+  "label": "depreciation",
+  "inputs": {
+   "ledger": "7000\tDepreciation\t128000\t128000\n7100\tInterest expense\t61200\t92400",
+   "memo": "Interest expense rose $31,200 on the equipment additions that also sit in depreciation.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB099",
+  "label": "bang",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 because of a lease moved out of Insurance expense!",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB100",
+  "label": "question",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on a policy billed through Insurance expense?",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB101",
+  "label": "comma",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the floor with Insurance expense, too.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB102",
+  "label": "colon label",
+  "inputs": {
+   "ledger": "4000\tProduct revenue, distribution\t5240000\t5612000\n5000\tCost of product sold\t3930000\t4278000",
+   "memo": "5000 Cost of product sold: +$348,000 (+8.9%) - Movement tracks the increase in product revenue.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB103",
+  "label": "quoted",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the lease booked to \"Insurance expense\".",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB104",
+  "label": "booked to",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on a lease booked to Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB105",
+  "label": "two ok",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, and Insurance expense rose $45,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB106",
+  "label": "while ok",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Insurance expense rose $45,000 while Rent expense rose $30,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB107",
+  "label": "landed in",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, and $45,000 of growth landed in Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB108",
+  "label": "dep held",
+  "inputs": {
+   "ledger": "7000\tDepreciation\t128000\t128000\n7100\tInterest expense\t61200\t92400",
+   "memo": "Interest expense rose $31,200, and depreciation held at $128,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB109",
+  "label": "by number end",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on a lease coded to 6200.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB110",
+  "label": "RM",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose RM 30,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB111",
+  "label": "kr",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 30,000 kr.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB112",
+  "label": "Fr.",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose Fr. 30,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB113",
+  "label": "Rp",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose Rp 30,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB114",
+  "label": "zl",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 30,000 zł.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB115",
+  "label": "dollars CAD",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 CAD.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB116",
+  "label": "C$",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose C$30,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB117",
+  "label": "favourable",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 (favourable).",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB118",
+  "label": "as did",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, as did Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB119",
+  "label": "outstripping",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, outstripping Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB120",
+  "label": "against reforecast",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 against the reforecast.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB121",
+  "label": "past quarter",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 over the past quarter.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB122",
+  "label": "then reversed",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 and then reversed.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB123",
+  "label": "mostly",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, mostly on the new lease.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB124",
+  "label": "yoy mixed",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000; Insurance expense rose $45,000 year over year.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB125",
+  "label": "june july mixed",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 in June, and Insurance expense rose $45,000 in July.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB126",
+  "label": "pct",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 30 percent.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB127",
+  "label": "over May lease",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 over May on the new lease.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB128",
+  "label": "plus sign ok",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by +$30,000 on the Suite 200 lease.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB129",
+  "label": "hardly",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 but hardly moved on a per-foot basis.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB130",
+  "label": "identical",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, identical to the prior move.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB131",
+  "label": "trending",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, trending toward $150,000.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB132",
+  "label": "doubling",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on a doubling of space.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB133",
+  "label": "sequential",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 sequentially.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB134",
+  "label": "QoQ",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 QoQ.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB135",
+  "label": "ahead",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, ahead of the plan.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB136",
+  "label": "run-rate",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 to a $130,000 run-rate.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB137",
+  "label": "negative",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a negative for margin.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB138",
+  "label": "respectively",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent and Insurance expense rose $30,000 and $45,000, respectively.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB139",
+  "label": "like",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, like Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB140",
+  "label": "both lines",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, as both lines did.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB141",
+  "label": "the other line",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 and the other line rose too.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB142",
+  "label": "same pace",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 at the same pace as Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB143",
+  "label": "three times",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, three times the May change.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB144",
+  "label": "percent of revenue",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 to 12 percent of revenue.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB145",
+  "label": "budgeted",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 over the budgeted amount.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB146",
+  "label": "second half",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in the second half.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB147",
+  "label": "weekly",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on weekly cleaning.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB148",
+  "label": "ytd lower",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000; ytd it is lower.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB149",
+  "label": "as of today",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 as of today.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB150",
+  "label": "yesterday",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 yesterday.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB151",
+  "label": "overnight",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 overnight.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB152",
+  "label": "ever",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, more than ever.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB153",
+  "label": "twelve-month",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on a twelve-month basis.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB154",
+  "label": "decade",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, the most in a decade.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB155",
+  "label": "peers",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, in line with peers.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB156",
+  "label": "industry",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, below the industry average.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB157",
+  "label": "average",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 above average.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB158",
+  "label": "normal",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 more than normal.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB159",
+  "label": "expected",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, more than expected.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB160",
+  "label": "higher than",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, higher than Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB161",
+  "label": "exceeding",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, exceeding Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB162",
+  "label": "surpassing",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, surpassing Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB163",
+  "label": "eclipsing",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, eclipsing the insurance line.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB164",
+  "label": "dwarfing",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, dwarfing the insurance line.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB165",
+  "label": "unlike",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, unlike Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB166",
+  "label": "mirror",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, a mirror image of Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB167",
+  "label": "parallel",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 in parallel with Insurance expense.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB168",
+  "label": "lockstep",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 in lockstep with the insurance line.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB169",
+  "label": "prior year",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 over the prior year.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB170",
+  "label": "last year's",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 above last year's level.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB171",
+  "label": "long-term",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 above its long-term trend.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB172",
+  "label": "historical",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 above the historical norm.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB173",
+  "label": "pre-pandemic",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 above pre-pandemic levels.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB174",
+  "label": "peak",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 to a new high.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB175",
+  "label": "low",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 from a low base.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB176",
+  "label": "tenfold",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a tenfold rise.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB177",
+  "label": "percent pts",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 30 pct pts.",
+   "ratios": ""
+  }
+ },
+ {
+  "id": "NB178",
+  "label": "bps",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 3,000 bps.",
+   "ratios": ""
+  }
+ }
+]

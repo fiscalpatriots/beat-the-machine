@@ -1,0 +1,747 @@
+{
+ "classes": {
+  "multiplier": {
+   "probes": 15,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "nochange": {
+   "probes": 29,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "approx": {
+   "probes": 11,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "range": {
+   "probes": 6,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "scale": {
+   "probes": 13,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "sign": {
+   "probes": 19,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "units": {
+   "probes": 8,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "period": {
+   "probes": 13,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "two": {
+   "probes": 9,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "negation": {
+   "probes": 10,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "currency": {
+   "probes": 19,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "digits": {
+   "probes": 6,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "typo": {
+   "probes": 13,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  },
+  "long": {
+   "probes": 4,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0,
+   "moved": []
+  }
+ },
+ "totals": {
+  "probes": 175,
+  "fcBefore": 0,
+  "fcAfter": 0,
+  "missBefore": 0,
+  "missAfter": 0
+ },
+ "sets": {
+  "new-40": {
+   "inputs": 40,
+   "movedAgainstAuditHead": [
+    {
+     "id": "P39",
+     "memo": "Rent expense rose $30,000 in 2026.",
+     "auditHead": {
+      "S1": "checked within scope"
+     },
+     "after": {
+      "S1": "needs review"
+     }
+    }
+   ],
+   "movedAgainstBefore": [
+    {
+     "id": "P39",
+     "memo": "Rent expense rose $30,000 in 2026.",
+     "before": {
+      "S1": "checked within scope"
+     },
+     "after": {
+      "S1": "needs review"
+     }
+    }
+   ]
+  },
+  "prior-24": {
+   "inputs": 24,
+   "movedAgainstAuditHead": [],
+   "movedAgainstBefore": []
+  }
+ },
+ "parity": {
+  "new-40": {
+   "inputs": 40,
+   "allFieldsEqual": 40,
+   "differing": []
+  },
+  "prior-24": {
+   "inputs": 24,
+   "allFieldsEqual": 24,
+   "differing": []
+  },
+  "six-drafts": {
+   "inputs": 6,
+   "allFieldsEqual": 6,
+   "differing": []
+  },
+  "a1": {
+   "inputs": 139,
+   "allFieldsEqual": 139,
+   "differing": []
+  },
+  "a1-sizing": {
+   "inputs": 36,
+   "allFieldsEqual": 36,
+   "differing": []
+  },
+  "neighbour-probes": {
+   "inputs": 178,
+   "allFieldsEqual": 178,
+   "differing": []
+  },
+  "samples": {
+   "inputs": 4,
+   "allFieldsEqual": 4,
+   "differing": []
+  }
+ },
+ "sixDrafts": [
+  {
+   "id": "halyard-blind",
+   "before": {
+    "sentences": 30,
+    "checked": 1,
+    "review": 14,
+    "notChecked": 13,
+    "failed": 2,
+    "queue": 55
+   },
+   "after": {
+    "sentences": 29,
+    "checked": 0,
+    "review": 15,
+    "notChecked": 12,
+    "failed": 2,
+    "queue": 59
+   },
+   "statusMoved": [
+    {
+     "label": "S5",
+     "text": "**4100 Service revenue, equipment maintenance: +$229,000 (+28.2%)** - Growth in preventive maintenance contract renewals combined with a heavier volume of billable emergency repair calls during the warmer month, when refrigeration and ice machine service demand peaks.",
+     "before": "checked within scope",
+     "after": "needs review"
+    }
+   ],
+   "splitDiffers": {
+    "onlyBefore": [
+     {
+      "label": "S2",
+      "status": "not checked",
+      "text": "**June 2026 vs."
+     },
+     {
+      "label": "S3",
+      "status": "not checked",
+      "text": "May 2026**"
+     }
+    ],
+    "onlyAfter": [
+     {
+      "label": "S2",
+      "status": "not checked",
+      "text": "**June 2026 vs. May 2026**"
+     }
+    ]
+   }
+  },
+  {
+   "id": "halyard-prompt1",
+   "before": {
+    "sentences": 8,
+    "checked": 7,
+    "review": 0,
+    "notChecked": 1,
+    "failed": 0,
+    "queue": 9
+   },
+   "after": {
+    "sentences": 8,
+    "checked": 7,
+    "review": 0,
+    "notChecked": 1,
+    "failed": 0,
+    "queue": 9
+   },
+   "statusMoved": [],
+   "splitDiffers": {
+    "onlyBefore": [],
+    "onlyAfter": []
+   }
+  },
+  {
+   "id": "brightwater-blind",
+   "before": {
+    "sentences": 6,
+    "checked": 3,
+    "review": 1,
+    "notChecked": 2,
+    "failed": 0,
+    "queue": 5
+   },
+   "after": {
+    "sentences": 6,
+    "checked": 0,
+    "review": 4,
+    "notChecked": 2,
+    "failed": 0,
+    "queue": 8
+   },
+   "statusMoved": [
+    {
+     "label": "S1",
+     "text": "4220 Orthodontic plan revenue rose $42,400, or 44.2 percent, over May.",
+     "before": "checked within scope",
+     "after": "needs review"
+    },
+    {
+     "label": "S3",
+     "text": "5210 Dental supplies and lab fees rose $52,700, or 38.1 percent, over May.",
+     "before": "checked within scope",
+     "after": "needs review"
+    },
+    {
+     "label": "S5",
+     "text": "6110 Hygienist wages rose $54,900, or 25.7 percent, over May.",
+     "before": "checked within scope",
+     "after": "needs review"
+    }
+   ],
+   "splitDiffers": {
+    "onlyBefore": [],
+    "onlyAfter": []
+   }
+  },
+  {
+   "id": "brightwater-prompt1",
+   "before": {
+    "sentences": 4,
+    "checked": 3,
+    "review": 0,
+    "notChecked": 1,
+    "failed": 0,
+    "queue": 4
+   },
+   "after": {
+    "sentences": 4,
+    "checked": 3,
+    "review": 0,
+    "notChecked": 1,
+    "failed": 0,
+    "queue": 4
+   },
+   "statusMoved": [],
+   "splitDiffers": {
+    "onlyBefore": [],
+    "onlyAfter": []
+   }
+  },
+  {
+   "id": "kestrel-blind",
+   "before": {
+    "sentences": 7,
+    "checked": 0,
+    "review": 5,
+    "notChecked": 2,
+    "failed": 0,
+    "queue": 14
+   },
+   "after": {
+    "sentences": 9,
+    "checked": 2,
+    "review": 3,
+    "notChecked": 4,
+    "failed": 0,
+    "queue": 13
+   },
+   "statusMoved": [],
+   "splitDiffers": {
+    "onlyBefore": [
+     {
+      "label": "S1",
+      "status": "needs review",
+      "text": "4000 Recurring managed services rose $36,900, or 22.85 percent, to $198,400. The statement does not carry the cause, so the driver has to come from the July billing register: confirm how much is new agreements that began in July, how much is contracted rate increases on existing clients, and whether any of it is June service billed late."
+     },
+     {
+      "label": "S6",
+      "status": "needs review",
+      "text": "6200 Software licences and hosting rose $35,300, or 156.19 percent, to $57,900. Confirm whether an annual or multi-month renewal was paid inside July."
+     }
+    ],
+    "onlyAfter": [
+     {
+      "label": "S1",
+      "status": "checked within scope",
+      "text": "4000 Recurring managed services rose $36,900, or 22.85 percent, to $198,400."
+     },
+     {
+      "label": "S2",
+      "status": "not checked",
+      "text": "The statement does not carry the cause, so the driver has to come from the July billing register: confirm how much is new agreements that began in July, how much is contracted rate increases on existing clients, and whether any of it is June service billed late."
+     },
+     {
+      "label": "S7",
+      "status": "checked within scope",
+      "text": "6200 Software licences and hosting rose $35,300, or 156.19 percent, to $57,900."
+     },
+     {
+      "label": "S8",
+      "status": "not checked",
+      "text": "Confirm whether an annual or multi-month renewal was paid inside July."
+     }
+    ]
+   }
+  },
+  {
+   "id": "kestrel-prompt1",
+   "before": {
+    "sentences": 5,
+    "checked": 4,
+    "review": 0,
+    "notChecked": 1,
+    "failed": 0,
+    "queue": 6
+   },
+   "after": {
+    "sentences": 5,
+    "checked": 4,
+    "review": 0,
+    "notChecked": 1,
+    "failed": 0,
+    "queue": 6
+   },
+   "statusMoved": [],
+   "splitDiffers": {
+    "onlyBefore": [],
+    "onlyAfter": []
+   }
+  }
+ ],
+ "prompt1": {
+  "sentences": 17,
+  "checkedBefore": 14,
+  "checkedAfter": 14
+ },
+ "samples": {
+  "halyard": {
+   "before": {
+    "sentences": 12,
+    "checked": 4,
+    "review": 5,
+    "notChecked": 0,
+    "failed": 3,
+    "queue": 14
+   },
+   "after": {
+    "sentences": 12,
+    "checked": 3,
+    "review": 6,
+    "notChecked": 0,
+    "failed": 3,
+    "queue": 17
+   },
+   "moved": [
+    {
+     "label": "14",
+     "text": "Interest expense rose $31,200 on the depot equipment additions that also sit in depreciation.",
+     "after": "needs review"
+    }
+   ]
+  },
+  "brightwater": {
+   "before": {
+    "sentences": 5,
+    "checked": 5,
+    "review": 0,
+    "notChecked": 0,
+    "failed": 0,
+    "queue": 0
+   },
+   "after": {
+    "sentences": 5,
+    "checked": 5,
+    "review": 0,
+    "notChecked": 0,
+    "failed": 0,
+    "queue": 0
+   },
+   "moved": []
+  },
+  "kestrel": {
+   "before": {
+    "sentences": 6,
+    "checked": 3,
+    "review": 0,
+    "notChecked": 1,
+    "failed": 2,
+    "queue": 6
+   },
+   "after": {
+    "sentences": 6,
+    "checked": 3,
+    "review": 0,
+    "notChecked": 1,
+    "failed": 2,
+    "queue": 6
+   },
+   "moved": []
+  },
+  "ridgeline": {
+   "before": {
+    "sentences": 3,
+    "checked": 1,
+    "review": 0,
+    "notChecked": 0,
+    "failed": 2,
+    "queue": 3
+   },
+   "after": {
+    "sentences": 3,
+    "checked": 0,
+    "review": 1,
+    "notChecked": 0,
+    "failed": 2,
+    "queue": 4
+   },
+   "moved": [
+    {
+     "label": "T1",
+     "text": "Consulting revenue rose $61,000 on two new retainers that began in July.",
+     "after": "needs review"
+    }
+   ]
+  }
+ },
+ "neighbours": {
+  "inputs": 178,
+  "clearedBefore": 100,
+  "clearedAfter": 38,
+  "heldNowClearedBefore": [
+   "approx rate",
+   "est plan",
+   "J Smith",
+   "St Louis",
+   "Accum Depr",
+   "avg year",
+   "US approx",
+   "because sharply",
+   "sharply higher",
+   "surged",
+   "modestly",
+   "dramatic jump",
+   "slightly larger",
+   "substantially above",
+   "heavily",
+   "jumped by",
+   "marginally",
+   "sharpest rise",
+   "soared",
+   "a big jump",
+   "rapidly",
+   "steep",
+   "plunged vacancy",
+   "meaningfully",
+   "far above",
+   "a lot more",
+   "outsized",
+   "in June R",
+   "for the month",
+   "mom R",
+   "month-end",
+   "reason June",
+   "2026",
+   "6/1",
+   "June 30",
+   "prior/current",
+   "August RL",
+   "over June RL",
+   "yoy labels",
+   "mixed june",
+   "this month R",
+   "last month R",
+   "mid-month R",
+   "2026-06-30 R",
+   "June's R",
+   "also covers",
+   "shared with",
+   "reclassified",
+   "depreciation",
+   "comma",
+   "booked to",
+   "kr",
+   "zl",
+   "like",
+   "both lines",
+   "as of today",
+   "yesterday",
+   "overnight",
+   "industry",
+   "average",
+   "eclipsing",
+   "dwarfing",
+   "unlike",
+   "parallel",
+   "lockstep",
+   "historical",
+   "pre-pandemic",
+   "peak",
+   "low",
+   "percent pts"
+  ],
+  "stillClearing": [
+   "vs May RL: Rent expense rose $30,000 vs. May.",
+   "annual renewal: Rent expense rose $30,000 to $130,000. An annual renewal was paid.",
+   "two sent: Rent expense rose $30,000. Insurance expense rose $45,000.",
+   "Inc break: Rent expense rose $30,000 at the Acme Inc. Insurance expense rose $45,000.",
+   "vs May twice: Rent expense rose $30,000 vs. May. Insurance expense rose $45,000 vs. May.",
+   "US office: Rent expense rose $30,000 at the U.S. office. Insurance expense rose $45,000.",
+   "J Smith ok: Rent expense rose $30,000 per J. Smith.",
+   "No 4471 ok: Rent expense rose $30,000 on lease No. 4471.",
+   "paren break: Rent expense rose $30,000 (30 percent). Insurance expense rose $45,000.",
+   "quote break: Rent expense \"rose $30,000.\" Insurance expense rose $45,000.",
+   "mixed split: Rent expense rose $30,000 to $130,000. Insurance expense rose sharply, approx. 90 percent.",
+   "dollar start: Rent expense rose $30,000. $45,000 was the rise in Insurance expense.",
+   "etc cap: Rent expense rose $30,000 on rates, fees, etc. Insurance expense rose $45,000.",
+   "Schedule A: Rent expense rose $30,000 per Schedule A. Insurance expense rose $45,000.",
+   "Dr debit: Rent expense was 30,000 Dr. Insurance expense rose $45,000.",
+   "large new office: Rent expense rose $30,000 on the large new office.",
+   "higher rates: Rent expense rose $30,000 on higher rates at the new site.",
+   "Major Street: Rent expense rose $30,000 because the lease on the Major Street building renewed.",
+   "Small tools: Small tools expense rose $30,000.",
+   "strong demand: Rent expense rose $30,000 on strong demand for space.",
+   "monthly R: Rent expense rose $30,000 on the monthly charge.",
+   "June RL: Rent expense rose $30,000 in June.",
+   "mom RL: Rent expense rose $30,000 month over month.",
+   "1 June 2026 RL: Rent expense rose $30,000 because the lease renewed on 1 June 2026.",
+   "prior month labels: Rent expense rose $30,000 for the month.",
+   "6/1 RL: Rent expense rose $30,000 on the lease signed on 6/1.",
+   "one-month lease: Rent expense rose $30,000 on a one-month lease extension.",
+   "Suite 2000 RL: Rent expense rose $30,000 on the Suite 2000 lease.",
+   "the period R: Rent expense rose $30,000 in the period.",
+   "Dec Jan: Rent expense rose $30,000 month over month in January.",
+   "two ok: Rent expense rose $30,000, and Insurance expense rose $45,000.",
+   "while ok: Insurance expense rose $45,000 while Rent expense rose $30,000.",
+   "landed in: Rent expense rose $30,000, and $45,000 of growth landed in Insurance expense.",
+   "dep held: Interest expense rose $31,200, and depreciation held at $128,000.",
+   "pct: Rent expense rose $30,000, or 30 percent.",
+   "over May lease: Rent expense rose $30,000 over May on the new lease.",
+   "plus sign ok: Rent expense changed by +$30,000 on the Suite 200 lease.",
+   "weekly: Rent expense rose $30,000 on weekly cleaning."
+  ]
+ },
+ "fixtures": {
+  "total": 658,
+  "T": {
+   "n": 60,
+   "other": 60
+  },
+  "P": {
+   "n": 40,
+   "other": 40
+  },
+  "MUL": {
+   "n": 22,
+   "refusing": 18,
+   "accepting": 3,
+   "other": 1
+  },
+  "STILL": {
+   "n": 28,
+   "refusing": 21,
+   "accepting": 7
+  },
+  "FRAC": {
+   "n": 26,
+   "refusing": 20,
+   "other": 3,
+   "accepting": 3
+  },
+  "DIGIT": {
+   "n": 16,
+   "refusing": 14,
+   "accepting": 2
+  },
+  "COUNT": {
+   "n": 15,
+   "refusing": 6,
+   "accepting": 4,
+   "other": 5
+  },
+  "ROLE": {
+   "n": 6,
+   "accepting": 3,
+   "refusing": 3
+  },
+  "A": {
+   "n": 139,
+   "other": 139
+  },
+  "B": {
+   "n": 36,
+   "other": 36
+  },
+  "CUR": {
+   "n": 24,
+   "refusing": 20,
+   "accepting": 4
+  },
+  "SIGN": {
+   "n": 26,
+   "refusing": 21,
+   "accepting": 5
+  },
+  "SAME": {
+   "n": 28,
+   "refusing": 24,
+   "accepting": 3,
+   "other": 1
+  },
+  "PER": {
+   "n": 33,
+   "refusing": 24,
+   "other": 6,
+   "accepting": 3
+  },
+  "ANA": {
+   "n": 20,
+   "refusing": 16,
+   "accepting": 3,
+   "other": 1
+  },
+  "RESP": {
+   "n": 14,
+   "refusing": 11,
+   "accepting": 3
+  },
+  "QTY": {
+   "n": 14,
+   "refusing": 11,
+   "accepting": 3
+  },
+  "SPLIT": {
+   "n": 27,
+   "refusing": 11,
+   "mixed": 3,
+   "accepting": 13
+  },
+  "SIZE": {
+   "n": 22,
+   "refusing": 16,
+   "mixed": 1,
+   "accepting": 5
+  },
+  "PLAB": {
+   "n": 24,
+   "refusing": 14,
+   "mixed": 2,
+   "accepting": 8
+  },
+  "BIND": {
+   "n": 17,
+   "refusing": 12,
+   "accepting": 4,
+   "mixed": 1
+  },
+  "LEX": {
+   "n": 21,
+   "refusing": 16,
+   "mixed": 1,
+   "accepting": 4
+  }
+ }
+}

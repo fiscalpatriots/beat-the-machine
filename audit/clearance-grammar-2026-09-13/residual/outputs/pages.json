@@ -1,0 +1,6522 @@
+{
+ "root": "C:/Users/Khaled/Documents/beat-the-machine",
+ "author": [
+  {
+   "id": "A001",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 1.3x the prior balance.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A002",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 and grew 1.3-fold.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A003",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 and grew twofold.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A004",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 and grew by a third.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A005",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 and was up by half.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A006",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, a 1.3 times increase.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A007",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense quadrupled to $130,000.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A008",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 and more than doubled.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A009",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or x1.3 the prior month.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A010",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, roughly three tenths of the May balance.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A011",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, a threefold jump.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A012",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue fell $60,000 and was halved.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A013",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue fell $60,000, down by a quarter.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A014",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue fell $60,000, or 0.75x of May.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A015",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 1.5 times.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A016",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was flat at $130,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A017",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense held steady at $130,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A018",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was essentially flat at $130,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A019",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was roughly unchanged at $130,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A020",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was broadly stable at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A021",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was level at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A022",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was consistent with May at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A023",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was in line with May at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A024",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense showed no material change at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A025",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was virtually unchanged from May at $130,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A026",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was flat.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A027",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense remained flat month over month.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A028",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Travel expense was unchanged at $12,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A029",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Travel expense rose $150.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A030",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Utilities expense was flat at $50,150.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A031",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Utilities expense was unchanged at $50,150.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A032",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Utilities expense held steady, up $150.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A033",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue was stable at $180,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A034",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose about $32,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A035",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose roughly $29,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A036",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose nearly $31,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A037",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose just over $30,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A038",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose by almost $30,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A039",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose by well over $30,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A040",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose by up to $30,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A041",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose approximately 30 percent.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A042",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose by about 25 percent.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A043",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue fell by about $55,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A044",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue fell by a little under $60,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A045",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose between $25,000 and $35,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A046",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose between 25 and 35 percent.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A047",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $25,000-$35,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A048",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 20-40%.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A049",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose in the range of $28,000 to $32,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A050",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 29 to 31 percent.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A051",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $0.03 million.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A052",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30 thousand dollars.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A053",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30 thousand.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A054",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $0.03M.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A055",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $3M.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A056",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30 000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A057",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30.000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A058",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30 grand.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A059",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000k.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A060",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 dollars.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A061",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30 thou.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A062",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue fell $0.06MM.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A063",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue fell $60 K.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A064",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by (30,000).",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A065",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 CR.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A066",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense moved $30,000 DR.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A067",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by -$30,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A068",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by $-30,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A069",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by 30,000-.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A070",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by $(30,000).",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A071",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue changed by (60,000).",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A072",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue changed by 60,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A073",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue changed by +60,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A074",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 30 percentage points.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A075",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 3,000 basis points.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A076",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 30 pts.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A077",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, a 30 pct increase.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A078",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 30 p.p.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A079",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 30 bps.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A080",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 0.3 percent.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A081",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 0.30 in percentage terms.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A082",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 30 percent, year over year.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A083",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 compared with June 2025.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A084",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 over the last twelve months.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A085",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Year to date, rent expense rose $30,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A086",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 quarter over quarter.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A087",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 against budget.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A088",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue fell 25 percent from last year.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A089",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 and Insurance expense rose $40,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A090",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 30 percent, and ended at $140,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A091",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 to $130,000, and Insurance expense fell to $95,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A092",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 while Insurance expense was unchanged.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A093",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense and Insurance expense rose $30,000 and $45,000 respectively.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A094",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000; so did Insurance expense.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A095",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 and Insurance expense rose too, by 30 percent.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A096",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, the same increase as Insurance expense.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A097",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 30 percent, while Insurance expense rose 30 percent.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A098",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense not only increased by $30,000 but also ended at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A099",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense did not decline; it rose $30,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A100",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $45,000, not $30,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A101",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $45,000 without any change in occupancy.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A102",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 and Insurance expense didn't rise.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A103",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, and it is untrue that it fell.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A104",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 and hardly moved.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A105",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, not a decline of $30,000 as reported earlier.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A106",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense failed to fall, rising $30,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A107",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000; Insurance expense rose nowhere near $45,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A108",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose CAD 30,000.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A109",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose C$30,000.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A110",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose A$30,000.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A111",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose ¥30,000.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A112",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 EUR.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A113",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose ₹30,000.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A114",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 pesos.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A115",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose Rs. 30,000.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A116",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 3,00,000 on the lakh grouping.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A117",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose ৩০,০০০.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A118",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose ３０,０００ dollars.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A119",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 三十 percent.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A120",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or trente pour cent.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A121",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or XXX percent.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A122",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or ३० percent.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A123",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $ 30,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A124",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30 000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A125",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by -$30,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A126",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by -$30,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A127",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by -30,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A128",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 90 percent.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A129",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 90 %.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A130",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,​000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A131",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 90％.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A132",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose ＄30,000, or 90 percent.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A133",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 - or 90 percent.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A134",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 90 per­cent.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A135",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 90 percent.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A136",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, and the balance fell by $45,000 by the end of June.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A137",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, or 90 percent.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A138",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, and it doubled.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "A139",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewedthe landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlord's schedule item was noted, the landlord's schedule item was reviewed, or 90 percent.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B001",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 euros.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B002",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 pounds.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B003",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 yen.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B004",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 rupees.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B005",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 Canadian dollars.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B006",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 Australian dollars.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B007",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose HK$30,000.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B008",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose R$30,000.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B009",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 francs.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B010",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 in Canadian currency.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B011",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by $-30,000, or -30 percent.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B012",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by +$30,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B013",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue changed by +$60,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B014",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue changed by $+60,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B015",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue changed by +25 percent.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B016",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by minus $30,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B017",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by negative $30,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B018",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by 30,000 Cr.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B019",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by $30,000 credit.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B020",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was stable at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B021",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was steady at $130,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B022",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was constant at $130,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B023",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was the same as May at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B024",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense did not move and closed at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B025",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was static at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B026",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was unmoved at $130,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B027",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was on par with May at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B028",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was equal to May at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B029",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense matched May at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B030",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was unchanged month over month at $130,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B031",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 versus the prior year.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B032",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on a trailing twelve month basis.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B033",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 since December.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B034",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 compared with last June.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B035",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 30 percent, over two years.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "B036",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 in the first half.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR01",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 Euros.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR02",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 pounds sterling.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR03",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 Swiss francs.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR04",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 Mexican pesos.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR05",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 in Australian dollar terms.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR06",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 US dollars.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR07",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 at the current exchange rate.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR08",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, converted from euros.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR09",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 (EUR).",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR10",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 in local currency.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR11",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 yuan renminbi.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR12",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose thirty thousand euros.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR13",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, reported in GBP.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR14",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose €30,000.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR15",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose £30,000.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR16",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on FX translation.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR17",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 (about €27,000).",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR18",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR19",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 dollars.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR20",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose thirty thousand dollars.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR21",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on the new lease.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN01",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by $-30,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN02",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by - $30,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN03",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by -30,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN04",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by 30,000-.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN05",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by $30,000-.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN06",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by -30,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN07",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by -$30,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN08",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by 30,000 DR.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN09",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by 30,000 (Cr).",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN10",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by $30,000 debit.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN11",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense closed at a $130,000 credit balance.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN12",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by -30 percent.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN13",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by minus 30,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN14",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue changed by +$60,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN15",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue changed by + $60,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN16",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue changed by +60000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN17",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue changed by $+60,000, or +25%.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN18",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue changed by 60,000 CR.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN19",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by +$30,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN20",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue changed by -$60,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN21",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue changed by $-60,000, or -25 percent.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN22",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Consulting revenue changed by 60,000-.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN23",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose +$30,000 on the new lease.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN24",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by $30,000 unfavorable.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN25",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by $30,000 (U).",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME01",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was stable at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME02",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was steady at $130,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME03",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was consistent at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME04",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was in line with May at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME05",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was level at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME06",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was the same as May at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME07",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was comparable to May at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME08",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense matched May at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME09",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was little changed at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME10",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense stayed around $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME11",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense stabilized at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME12",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was essentially unchanged at $130,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME13",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense plateaued at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME14",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was similar to May at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME15",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense held broadly steady at $130,000.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME16",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was identical to the prior month at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME17",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense tracked May at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME18",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense at $130,000 was equal to May.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME19",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was unchanged at $130,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME20",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense held flat at $130,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME21",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense stayed the same at $130,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME22",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense remained at $130,000 month over month.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER01",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 year on year.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER02",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 YoY.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER03",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 against plan.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER04",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 versus forecast.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER05",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Quarter to date, rent expense rose $30,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER06",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 from May to August.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER07",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on an annualized basis.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER08",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, a $360,000 run rate.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER09",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 from the prior year.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER10",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 over the past three months.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER11",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 for the third consecutive month.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER12",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 since the start of the year.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER13",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 in fiscal 2026.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER14",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 in H1.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER15",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 through June.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER16",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 compared with June 2025.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER17",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 compared with the same month last year.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER18",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 30 percent, over budget.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER19",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 a month.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER20",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 from December.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER21",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 in 2025.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER22",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 cumulatively.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER23",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on a like-for-like basis.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER24",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 month over month.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER25",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 from the prior month.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER26",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 from May to June.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER27",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 over May.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER28",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 in June 2026.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER29",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on the lease signed in the first half of June.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER30",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 as the one-year lease began.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA01",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000; so did Insurance expense.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA02",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, as did Insurance expense.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA03",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, and Insurance expense likewise.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA04",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000; the same was true of Insurance expense.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA05",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000; Insurance expense did too.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA06",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, and similarly Insurance expense.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA07",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, matching Insurance expense.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA08",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, in line with Insurance expense.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA09",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, the same as Insurance expense.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA10",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, outpacing Insurance expense.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA11",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, more than Insurance expense.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA12",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, as did the other lines.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA13",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000; so did every other account.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA14",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, the largest movement on the statement.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA15",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 and Insurance expense rose $45,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA16",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 while Insurance expense rose $45,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA17",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, and Insurance expense followed.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA18",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on the lease that also covers Insurance expense.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA19",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 as the new lease began.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "RESP01",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense and Insurance expense rose $30,000 and $45,000 respectively.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "RESP02",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense and Insurance expense rose $30,000 and $45,000, respectively.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "RESP03",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent and Insurance expense rose $30,000 and $45,000 respectively.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "RESP04",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense and Insurance expense rose 30 percent and 90 percent respectively.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "RESP05",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense and Insurance expense rose by $30,000 and $45,000 respectively, on new leases.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "RESP06",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense and Insurance expense ended at $130,000 and $95,000 respectively.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "RESP07",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Insurance expense and Rent expense rose $45,000 and $30,000 respectively.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "RESP08",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense and Insurance expense each rose, by $30,000 and $45,000 respectively.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "RESP09",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense and Insurance expense rose $31,000 and $45,000 respectively.",
+     "author": "failed",
+     "checker": "failed",
+     "key": "flag"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "RESP10",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense and Insurance expense rose $45,000 and $30,000 respectively.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "RESP11",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Respectively, Rent expense and Insurance expense rose $30,000 and $45,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "RESP12",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 and Insurance expense rose $45,000, on their respective renewals.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "RESP13",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Insurance expense rose $45,000 and Rent expense rose $30,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "RESP14",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on the new lease.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "QTY01",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose sharply, by $30,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "QTY02",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose a significant $30,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "QTY03",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, mostly on the new lease.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "QTY04",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Most of the $30,000 rise in rent expense came from the new lease.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "QTY05",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose several thousand dollars to $130,000.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "QTY06",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, a record for the line.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "QTY07",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, more than any other line.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "QTY08",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 and soared.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "QTY09",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on sharply higher rates at the new site.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "QTY10",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 and continued to climb.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "QTY11",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 because it grew sharply.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME23",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, which was stable.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME24",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 because the balance was stable.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "QTY12",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on higher rates at the new site.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "QTY13",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose approximately 30 percent.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "QTY14",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose about $30,000 as three new leases began.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR22",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 quid.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR23",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30 grand.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "CUR24",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 3,000,000 cents.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIGN26",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by (-)$30,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME25",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was on a par with May at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME26",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was no different from May at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME27",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was even with May at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SAME28",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense, ditto May, ended at $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER31",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 vs PY.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER32",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 over the prior 12 months.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PER33",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 in June versus May.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "ANA20",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, as Insurance expense did.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT01",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 at an approx. 30 percent rate.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT02",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, est. 30 percent above plan.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT03",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 per J. Smith, who expects a quarterly run rate.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT04",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 at the St. Louis office, sharply above May.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT05",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 30 percent, on Accum. Depr. Schedule changes that doubled.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT06",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on invoice no. 4471 against budget.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT07",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 at an avg. 3 percent escalator a year.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT08",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on the U.S. lease, approx. 1.3x the prior level.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT09",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose by Rs. 30,000 to Rs. 130,000.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT10",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 30. 0 percent.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT11",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 vs. May.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT12",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 to $130,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    },
+    {
+     "label": "S2",
+     "text": "Insurance expense rose sharply, approx. 90 percent.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT13",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 to $130,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    },
+    {
+     "label": "S2",
+     "text": "An annual renewal was paid.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": null
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT14",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    },
+    {
+     "label": "S2",
+     "text": "Insurance expense rose $45,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT15",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 at the Acme Inc.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    },
+    {
+     "label": "S2",
+     "text": "Insurance expense rose $45,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT16",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 vs. May.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    },
+    {
+     "label": "S2",
+     "text": "Insurance expense rose $45,000 vs. May.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT17",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 at the U.S. office.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    },
+    {
+     "label": "S2",
+     "text": "Insurance expense rose $45,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT18",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 per J. Smith.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT19",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on lease No. 4471.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT20",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 (30 percent).",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    },
+    {
+     "label": "S2",
+     "text": "Insurance expense rose $45,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT21",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense \"rose $30,000.\"",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    },
+    {
+     "label": "S2",
+     "text": "Insurance expense rose $45,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT22",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 per Schedule A.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    },
+    {
+     "label": "S2",
+     "text": "Insurance expense rose $45,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT23",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on rates, fees, etc.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    },
+    {
+     "label": "S2",
+     "text": "Insurance expense rose $45,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT24",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense was 30,000 Dr.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    },
+    {
+     "label": "S2",
+     "text": "Insurance expense rose $45,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT25",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 in the U.S.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    },
+    {
+     "label": "S2",
+     "text": "Insurance expense rose $45,000 vs. budget.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT26",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 per U.S. GAAP.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    },
+    {
+     "label": "S2",
+     "text": "Insurance expense rose $45,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SPLIT27",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on Sept. 1.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    },
+    {
+     "label": "S2",
+     "text": "Insurance expense rose $45,000 on Sept. 30.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE01",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 because volumes rose sharply.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE02",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on sharply higher rates.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE03",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense surged $30,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE04",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, a significant increase.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE05",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 as the increase in rates was material.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE06",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 30 percent, as occupancy costs climbed modestly.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE07",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 after a dramatic jump in square footage.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE08",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense edged up $30,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE09",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 due to a slightly larger footprint.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE10",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, much higher than the prior month.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE11",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000; the change was small.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE12",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense jumped by $30,000 to $130,000.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE13",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, the sharpest rise on the statement.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE14",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 because vacancy plunged.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE15",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on an outsized escalation.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE16",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, and Insurance expense rose $45,000 on heavily discounted premiums.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE17",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 as common area fees eased.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE18",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on the large new office.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE19",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on higher rates at the new site.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE20",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Small tools expense rose $30,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE21",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on strong demand for space.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "SIZE22",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 because the lease on the Major Street building renewed.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB01",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 in June.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB02",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 for the month.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB03",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 at month-end.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB04",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 because the lease renewed in June.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB05",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 to $130,000 at June 30.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB06",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 this month.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB07",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 to $130,000 as of 2026-06-30.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB08",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 in June.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB09",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 because the lease renewed in August.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB10",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 over June.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB11",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 month over month.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB12",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on the lease signed in 2025.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB13",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 as the lease began mid-month.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB14",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 yesterday.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB15",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, and Insurance expense rose $45,000 in June.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB16",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 in June, and Insurance expense rose $45,000 in July.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB17",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 in June.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB18",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 month over month.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB19",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 because the lease renewed on 1 June 2026.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB20",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 for the month.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB21",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on the lease signed on 6/1.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB22",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 month over month in January.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB23",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on a one-month lease extension.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "PLAB24",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on the Suite 2000 lease.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "BIND01",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on the lease that also covers Insurance expense.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "BIND02",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on space shared with Insurance expense.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "BIND03",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, net of Insurance expense.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "BIND04",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 and was reclassified from Insurance expense.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "BIND05",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Interest expense rose $31,200 on the equipment additions that also sit in depreciation.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "BIND06",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 because of a lease moved out of Insurance expense!",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "BIND07",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on a policy billed through Insurance expense?",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "BIND08",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on the floor with Insurance expense, too.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "BIND09",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "5000 Cost of product sold: +$348,000 (+8.9%) - Movement tracks the increase in product revenue.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "BIND10",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on the lease booked to \"Insurance expense\".",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "BIND11",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 on a lease booked to Insurance expense.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "BIND12",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, with the same landlord as Insurance expense.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "BIND13",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, and Insurance expense rose $45,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "BIND14",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Insurance expense rose $45,000 while Rent expense rose $30,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "BIND15",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, and $45,000 of growth landed in Insurance expense.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "BIND16",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Interest expense rose $31,200, and depreciation held at $128,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "BIND17",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Insurance expense rose $45,000, and Rent expense rose $30,000 on space it shares with Insurance expense.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX01",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 kr.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX02",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose Fr. 30,000.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX03",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose 30,000 zł.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX04",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose RM 30,000.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX05",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, as both lines did.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX06",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, eclipsing the insurance line.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX07",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 in lockstep with the insurance line.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX08",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, below the industry average.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX09",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 above the historical norm.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX10",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 to a new high.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX11",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 from a low base.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX12",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 as of today.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX13",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 overnight.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX14",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 30 pct pts.",
+     "author": "not checked",
+     "checker": "not checked",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX15",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000; Insurance expense rose $45,000 year over year.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX16",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 (favourable).",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX17",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 against the reforecast.",
+     "author": "needs review",
+     "checker": "needs review",
+     "key": ""
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX18",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000, or 30 percent.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX19",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 over May on the new lease.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX20",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense changed by +$30,000 on the Suite 200 lease.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  },
+  {
+   "id": "LEX21",
+   "rows": [
+    {
+     "label": "S1",
+     "text": "Rent expense rose $30,000 and Insurance expense rose $45,000.",
+     "author": "checked within scope",
+     "checker": "checked within scope",
+     "key": "stand"
+    }
+   ],
+   "sameSplit": true,
+   "ok": true
+  }
+ ],
+ "widths": [
+  {
+   "width": 320,
+   "checkerOverflow": {
+    "doc": "320/320",
+    "clean": true,
+    "bad": []
+   },
+   "checkerCoverage": "checker-halyard-coverage-320.png",
+   "checkerCard14": "checker-halyard-card14-320.png",
+   "card14Summary": "14NEEDS REVIEWInterest expense rose $31,200 on the depot equipment additions that also sit in depreciation.3 checks · 1 open (Figure $31,200) · 2 passed",
+   "checkerOverflowOpen": {
+    "doc": "320/320",
+    "clean": true,
+    "bad": []
+   },
+   "authorOverflow": {
+    "doc": "320/320",
+    "clean": true,
+    "bad": []
+   },
+   "authorCards": 7,
+   "authorSentences": [
+    "1 checked within scope",
+    "2 not checked",
+    "3 failed",
+    "4 checked within scope",
+    "5 failed",
+    "6 checked within scope"
+   ],
+   "authorShot": "author-kestrel-320.png"
+  },
+  {
+   "width": 375,
+   "checkerOverflow": {
+    "doc": "375/375",
+    "clean": true,
+    "bad": []
+   },
+   "checkerCoverage": "checker-halyard-coverage-375.png",
+   "checkerCard14": "checker-halyard-card14-375.png",
+   "card14Summary": "14NEEDS REVIEWInterest expense rose $31,200 on the depot equipment additions that also sit in depreciation.3 checks · 1 open (Figure $31,200) · 2 passed",
+   "checkerOverflowOpen": {
+    "doc": "375/375",
+    "clean": true,
+    "bad": []
+   },
+   "authorOverflow": {
+    "doc": "375/375",
+    "clean": true,
+    "bad": []
+   },
+   "authorCards": 7,
+   "authorSentences": [
+    "1 checked within scope",
+    "2 not checked",
+    "3 failed",
+    "4 checked within scope",
+    "5 failed",
+    "6 checked within scope"
+   ],
+   "authorShot": "author-kestrel-375.png"
+  },
+  {
+   "width": 768,
+   "checkerOverflow": {
+    "doc": "768/768",
+    "clean": true,
+    "bad": []
+   },
+   "checkerCoverage": "checker-halyard-coverage-768.png",
+   "checkerCard14": "checker-halyard-card14-768.png",
+   "card14Summary": "14NEEDS REVIEWInterest expense rose $31,200 on the depot equipment additions that also sit in depreciation.3 checks · 1 open (Figure $31,200) · 2 passed",
+   "checkerOverflowOpen": {
+    "doc": "768/768",
+    "clean": true,
+    "bad": []
+   },
+   "authorOverflow": {
+    "doc": "768/768",
+    "clean": true,
+    "bad": []
+   },
+   "authorCards": 7,
+   "authorSentences": [
+    "1 checked within scope",
+    "2 not checked",
+    "3 failed",
+    "4 checked within scope",
+    "5 failed",
+    "6 checked within scope"
+   ],
+   "authorShot": "author-kestrel-768.png"
+  },
+  {
+   "width": 1024,
+   "checkerOverflow": {
+    "doc": "1024/1024",
+    "clean": true,
+    "bad": []
+   },
+   "checkerCoverage": "checker-halyard-coverage-1024.png",
+   "checkerCard14": "checker-halyard-card14-1024.png",
+   "card14Summary": "14NEEDS REVIEWInterest expense rose $31,200 on the depot equipment additions that also sit in depreciation.3 checks · 1 open (Figure $31,200) · 2 passed",
+   "checkerOverflowOpen": {
+    "doc": "1024/1024",
+    "clean": true,
+    "bad": []
+   },
+   "authorOverflow": {
+    "doc": "1024/1024",
+    "clean": true,
+    "bad": []
+   },
+   "authorCards": 7,
+   "authorSentences": [
+    "1 checked within scope",
+    "2 not checked",
+    "3 failed",
+    "4 checked within scope",
+    "5 failed",
+    "6 checked within scope"
+   ],
+   "authorShot": "author-kestrel-1024.png"
+  },
+  {
+   "width": 1280,
+   "checkerOverflow": {
+    "doc": "1280/1280",
+    "clean": true,
+    "bad": []
+   },
+   "checkerCoverage": "checker-halyard-coverage-1280.png",
+   "checkerCard14": "checker-halyard-card14-1280.png",
+   "card14Summary": "14NEEDS REVIEWInterest expense rose $31,200 on the depot equipment additions that also sit in depreciation.3 checks · 1 open (Figure $31,200) · 2 passed",
+   "checkerOverflowOpen": {
+    "doc": "1280/1280",
+    "clean": true,
+    "bad": []
+   },
+   "authorOverflow": {
+    "doc": "1280/1280",
+    "clean": true,
+    "bad": []
+   },
+   "authorCards": 7,
+   "authorSentences": [
+    "1 checked within scope",
+    "2 not checked",
+    "3 failed",
+    "4 checked within scope",
+    "5 failed",
+    "6 checked within scope"
+   ],
+   "authorShot": "author-kestrel-1280.png"
+  },
+  {
+   "width": 1600,
+   "checkerOverflow": {
+    "doc": "1600/1600",
+    "clean": true,
+    "bad": []
+   },
+   "checkerCoverage": "checker-halyard-coverage-1600.png",
+   "checkerCard14": "checker-halyard-card14-1600.png",
+   "card14Summary": "14NEEDS REVIEWInterest expense rose $31,200 on the depot equipment additions that also sit in depreciation.3 checks · 1 open (Figure $31,200) · 2 passed",
+   "checkerOverflowOpen": {
+    "doc": "1600/1600",
+    "clean": true,
+    "bad": []
+   },
+   "authorOverflow": {
+    "doc": "1600/1600",
+    "clean": true,
+    "bad": []
+   },
+   "authorCards": 7,
+   "authorSentences": [
+    "1 checked within scope",
+    "2 not checked",
+    "3 failed",
+    "4 checked within scope",
+    "5 failed",
+    "6 checked within scope"
+   ],
+   "authorShot": "author-kestrel-1600.png"
+  }
+ ],
+ "errors": []
+}

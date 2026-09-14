@@ -1,0 +1,300 @@
+[
+ {
+  "text": "The balance is $1.2M. Rent rose.",
+  "sentences": [
+   "The balance is $1.2M.",
+   "Rent rose."
+  ]
+ },
+ {
+  "text": "See p. 4 of the lease. Rent rose.",
+  "sentences": [
+   "See p. 4 of the lease.",
+   "Rent rose."
+  ]
+ },
+ {
+  "text": "Rent rose (see Note 4). Insurance fell.",
+  "sentences": [
+   "Rent rose (see Note 4).",
+   "Insurance fell."
+  ]
+ },
+ {
+  "text": "Rent rose 30%. Insurance fell 10%.",
+  "sentences": [
+   "Rent rose 30%.",
+   "Insurance fell 10%."
+  ]
+ },
+ {
+  "text": "Rent rose to $130,000.00. Insurance fell.",
+  "sentences": [
+   "Rent rose to $130,000.00.",
+   "Insurance fell."
+  ]
+ },
+ {
+  "text": "Rent rose in Q2. 2026 was a lease year.",
+  "sentences": [
+   "Rent rose in Q2.",
+   "2026 was a lease year."
+  ]
+ },
+ {
+  "text": "Rent expense rose $30,000, i.e. 30 percent.",
+  "sentences": [
+   "Rent expense rose $30,000, i.e. 30 percent."
+  ]
+ },
+ {
+  "text": "Mr. Smith approved it. Rent rose.",
+  "sentences": [
+   "Mr. Smith approved it.",
+   "Rent rose."
+  ]
+ },
+ {
+  "text": "Rent rose... Insurance fell.",
+  "sentences": [
+   "Rent rose...",
+   "Insurance fell."
+  ]
+ },
+ {
+  "text": "Did rent rise? Yes. It rose $30,000.",
+  "sentences": [
+   "Did rent rise?",
+   "Yes.",
+   "It rose $30,000."
+  ]
+ },
+ {
+  "text": "Rent: $130,000. Prior: $100,000.",
+  "sentences": [
+   "Rent: $130,000.",
+   "Prior: $100,000."
+  ]
+ },
+ {
+  "text": "Accts. Payable rose $30,000.",
+  "sentences": [
+   "Accts. Payable rose $30,000."
+  ]
+ },
+ {
+  "text": "Rent expense rose $30,000 per the Jan. 15 invoice.",
+  "sentences": [
+   "Rent expense rose $30,000 per the Jan. 15 invoice."
+  ]
+ },
+ {
+  "text": "Rent rose in Jan. Insurance fell in Feb.",
+  "sentences": [
+   "Rent rose in Jan.",
+   "Insurance fell in Feb."
+  ]
+ },
+ {
+  "text": "Rent rose per U.S. GAAP. Insurance fell.",
+  "sentences": [
+   "Rent rose per U.S. GAAP.",
+   "Insurance fell."
+  ]
+ },
+ {
+  "text": "Revenue fell in the U.S. Rent expense rose $30,000.",
+  "sentences": [
+   "Revenue fell in the U.S.",
+   "Rent expense rose $30,000."
+  ]
+ },
+ {
+  "text": "Fees rose at Acme Co. Rent expense rose.",
+  "sentences": [
+   "Fees rose at Acme Co.",
+   "Rent expense rose."
+  ]
+ },
+ {
+  "text": "Fees rose at Acme Co. $12,000 of it was legal.",
+  "sentences": [
+   "Fees rose at Acme Co. $12,000 of it was legal."
+  ]
+ },
+ {
+  "text": "Gen. Liab. Insurance rose $30,000.",
+  "sentences": [
+   "Gen. Liab. Insurance rose $30,000."
+  ]
+ },
+ {
+  "text": "Depr. Exp. rose $3,000.",
+  "sentences": [
+   "Depr. Exp. rose $3,000."
+  ]
+ },
+ {
+  "text": "Rent rose at 9 a.m. The lease began.",
+  "sentences": [
+   "Rent rose at 9 a.m.",
+   "The lease began."
+  ]
+ },
+ {
+  "text": "Rent rose, e.g. The new floor.",
+  "sentences": [
+   "Rent rose, e.g. The new floor."
+  ]
+ },
+ {
+  "text": "Rent rose vs. Insurance.",
+  "sentences": [
+   "Rent rose vs. Insurance."
+  ]
+ },
+ {
+  "text": "Rent rose approx. $30,000.",
+  "sentences": [
+   "Rent rose approx. $30,000."
+  ]
+ },
+ {
+  "text": "Rent rose to 12.5. The rate held.",
+  "sentences": [
+   "Rent rose to 12.5.",
+   "The rate held."
+  ]
+ },
+ {
+  "text": "Rent rose 3 pts. Insurance fell.",
+  "sentences": [
+   "Rent rose 3 pts.",
+   "Insurance fell."
+  ]
+ },
+ {
+  "text": "Rent rose at St. Louis. Insurance fell.",
+  "sentences": [
+   "Rent rose at St. Louis.",
+   "Insurance fell."
+  ]
+ },
+ {
+  "text": "Rent rose on Main St. The lease renewed.",
+  "sentences": [
+   "Rent rose on Main St.",
+   "The lease renewed."
+  ]
+ },
+ {
+  "text": "Dr. Patel signed the lease. Rent rose.",
+  "sentences": [
+   "Dr. Patel signed the lease.",
+   "Rent rose."
+  ]
+ },
+ {
+  "text": "Rent rose per J. R. Smith. Insurance fell.",
+  "sentences": [
+   "Rent rose per J. R. Smith.",
+   "Insurance fell."
+  ]
+ },
+ {
+  "text": "Rent rose on Plan B. Insurance fell.",
+  "sentences": [
+   "Rent rose on Plan B.",
+   "Insurance fell."
+  ]
+ },
+ {
+  "text": "Rent rose, etc. Insurance fell.",
+  "sentences": [
+   "Rent rose, etc.",
+   "Insurance fell."
+  ]
+ },
+ {
+  "text": "Rent rose $30,000. \"Insurance\" fell.",
+  "sentences": [
+   "Rent rose $30,000.",
+   "\"Insurance\" fell."
+  ]
+ },
+ {
+  "text": "Rent rose $30,000.) Insurance fell.",
+  "sentences": [
+   "Rent rose $30,000.)",
+   "Insurance fell."
+  ]
+ },
+ {
+  "text": "Invoice No. 12 covers rent. Insurance fell.",
+  "sentences": [
+   "Invoice No. 12 covers rent.",
+   "Insurance fell."
+  ]
+ },
+ {
+  "text": "Rent rose 5.5 pct. Insurance fell.",
+  "sentences": [
+   "Rent rose 5.5 pct.",
+   "Insurance fell."
+  ]
+ },
+ {
+  "text": "Rent rose by Rs. 30,000. Insurance fell.",
+  "sentences": [
+   "Rent rose by Rs. 30,000.",
+   "Insurance fell."
+  ]
+ },
+ {
+  "text": "Rent expense rose $30,000 to $130,000. 12 new leases began.",
+  "sentences": [
+   "Rent expense rose $30,000 to $130,000.",
+   "12 new leases began."
+  ]
+ },
+ {
+  "text": "Rent expense rose 7. 5 percent.",
+  "sentences": [
+   "Rent expense rose 7. 5 percent."
+  ]
+ },
+ {
+  "text": "Rent rose, cf. Note 4. Insurance fell.",
+  "sentences": [
+   "Rent rose, cf. Note 4.",
+   "Insurance fell."
+  ]
+ },
+ {
+  "text": "Rent rose in the U.K. Insurance fell.",
+  "sentences": [
+   "Rent rose in the U.K.",
+   "Insurance fell."
+  ]
+ },
+ {
+  "text": "Rent rose at Acme Ltd. and Beta LLC. Insurance fell.",
+  "sentences": [
+   "Rent rose at Acme Ltd. and Beta LLC.",
+   "Insurance fell."
+  ]
+ },
+ {
+  "text": "Rent rose on Sept. 1. Insurance fell on Sept. 30.",
+  "sentences": [
+   "Rent rose on Sept. 1.",
+   "Insurance fell on Sept. 30."
+  ]
+ },
+ {
+  "text": "Rent rose (est.) $30,000.",
+  "sentences": [
+   "Rent rose (est.) $30,000."
+  ]
+ }
+]

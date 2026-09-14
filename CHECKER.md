@@ -22,7 +22,7 @@ the one network call the page makes, and it carries no ledger data.
 | Pane | What it takes |
 | --- | --- |
 | Ledger | Three accepted layouts, told apart by the reader itself. **Plain:** one account per line, account number (optional), account name, prior balance, current balance, tab separated, comma separated with quoted fields, or column aligned with two or more spaces. **QuickBooks Online Profit and Loss Comparison:** the title block, an account label of the form `4000 Recurring managed services` in the first column, the two period columns and the `$ change` and `% change` columns that the report's Calculations dropdown adds, with `Income`, `Cost of Goods Sold` and `Expenses` as section headers and `Total ...`, `Gross Profit`, `Net Operating Income` and `Net Income` as totals. **Xero Income Statement with a comparison period:** `Income`, `Less Cost of Sales`, `Gross Profit`, `Less Operating Expenses`, `Net Profit`, each section closed by its own `Total` row. Numbers are read in whole dollars with the digits 0 to 9: dollar signs, thousands commas, decimals and (parentheses) or a minus sign for negatives. A layout outside these three is read only as far as its rows look like account lines, and every row it cannot use is listed. |
-| Memo | The drafted commentary as free text. A line beginning with a label such as `S1.`, `1.`, `(a)`, `a)` or a bullet is kept whole, so a numbered item that runs to two sentences stays one unit. Anything else is split at sentence boundaries and labelled S1, S2 and on. Word's curly quotes, en and em dashes and ellipsis are flattened first. |
+| Memo | The drafted commentary as free text. A line beginning with a label such as `S1.`, `1.`, `(a)`, `a)` or a bullet is kept whole, so a numbered item that runs to two sentences stays one unit. Anything else is split where a person reads a sentence ending, as set out under **Sentence boundaries** below, and labelled S1, S2 and on. Word's curly quotes, en and em dashes and ellipsis are flattened first. |
 | Ratios (optional) | One per line, `Name = (4000 - 5000) / 4000`. Account numbers only, with plus, minus, times, divide and parentheses. Each ratio is computed for the prior month, the current month and the change between them, and expressed as a percent. |
 | Thresholds | A dollar floor (default $25,000) and a percent floor (default 10), each wearing its unit, and the rule as a two-way control: **both legs** or **either leg**. The dollar rule is **more than** the floor and the percent rule is **at least** the floor, both decided unrounded. |
 | Zero prior balance | An explicit policy on a two-way control, because a percent of nothing does not exist: **owes commentary** on any movement (the default) or **excluded** from the rule. |
@@ -64,6 +64,39 @@ These are refused or held rather than guessed at, and each one is listed on the 
 | More numeric columns than two, with no header row | The columns not read are named as discarded and no sentence reads better than **needs review** until the two period columns are confirmed |
 | A total the reader cannot rebuild, such as Gross Profit or Net Income | Printed and left alone |
 | A spreadsheet file | Not opened. Copy the cells from Excel and paste them |
+
+## Sentence boundaries
+
+A split a person would not make does real harm. A fragment such as `Rent expense rose $30,000 at
+an approx.` can clear on its own while the claim that should have held it, `30 percent rate`,
+lands in a sentence that binds nothing; two sentences run into one can bind two lines and fail
+or hold on words that belong to the other. So an unlabelled line is split the way a person
+reads it:
+
+- A question mark or an exclamation mark ends a sentence before a capital, a digit or a dollar
+  sign.
+- A full stop, with any closing quote or bracket after it, ends a sentence before a capital, a
+  digit, a dollar sign or a number sign, except where the word in front of it says otherwise:
+  - after an abbreviation that always runs on, `vs.`, `cf.`, `viz.`, `e.g.`, `i.e.`, `approx.`,
+    `incl.`, `excl.`, `resp.`, `avg.`, `Mr.`, `Ms.`, `Prof.`, `Rs.`, and the account-name
+    shorthands `Accum.`, `Depr.`, `Amort.`, `Misc.`, `Equip.`, `Maint.`, `Gen.`, `Liab.`,
+    `Ins.`, `Exp.`, `Acct.` and kin, it never does;
+  - after `No.`, `Ref.`, `p.`, `Fig.`, `Sec.`, `Inv.`, `est.`, `Fr.`, `kr.` and similar, a company
+    suffix (`Inc.`, `Co.`, `Corp.`, `Ltd.`, `LLC.`, `etc.`) or an initialism (`U.S.`, `U.K.`,
+    `a.m.`), it does not before a figure and does before a capital, except that an initialism
+    runs on into a word in capitals, `U.S. GAAP`;
+  - after a month or a day, `Sept.`, `Jan.`, `Mon.`, it does not before a digit;
+  - after a title, `Dr.`, `St.`, `Mt.`, or a single capital initial, `J.`, it does not before a
+    capitalized name, unless the word in front is itself capitalized, as in `Oak St.` or
+    `Schedule A.`;
+  - after a figure, `$57,900.`, it does, and before a digit too, unless the figure is one to
+    three bare digits, `rose 7. 5 percent`, which is a decimal broken by a space: the sentence
+    runs on and the broken number is an unparsed span.
+
+Two readings stay ambiguous and are split the common way: an initialism before a capitalized
+word, `in the U.S. Rent expense rose`, ends a sentence, so `U.S. Treasury` does too; and an
+initial after a capitalized first name, `John J. Smith`, is read as the end of one. The page and
+the command line split every memo the same way.
 
 ## Choosing the two periods
 
@@ -123,12 +156,17 @@ as the same thing. They are not.
    it is accounted for. The unparsed kinds are:
    - a **currency that is not the dollar**: `€30,000`, `£30,000`, `USD 90000`, `US$30,000`, and a
      currency named in words or a dollar that is someone else's standing beside the figure:
-     `30,000 euros`, `30,000 pesos`, `30,000 Canadian dollars`, `$30,000 in Canadian currency`;
+     `30,000 euros`, `30,000 pesos`, `30,000 Canadian dollars`, `$30,000 in Canadian currency`,
+     or written as a short mark: `Rs. 30,000`, `Rp 30,000`, `RM 30,000`, `Fr. 30,000`,
+     `30,000 kr`, `30,000 zł`, `30,000 Kč`;
    - a **debit or credit marker** beside a figure: `30,000 CR`, `30,000 Cr.`, `$30,000 DR`,
      `$30,000 credit`, because which way it points depends on the account's normal balance, which a
      two column ledger does not say;
    - a **scale or unit word the grammar does not carry**: `$30.0 thousand`, `30 thousand`, `0.30
-     times`, `30 basis points`, `90.0 per mille`, `3 points`;
+     times`, `30 basis points`, `90.0 per mille`, `3 points`, and points written after a percent,
+     `30 pct pts`;
+   - a **decimal broken by a space**, `rose 7. 5 percent`, which the sentence splitter keeps in
+     one sentence;
    - a **multiplier**: `doubled`, `tripled`, `halved`, `twice`, `twofold`, `two-fold`, `three
      times`, `3x`;
    - a **fraction**: `one and a half`, `a quarter of`, `half a percent`, `half the prior balance`,
@@ -152,8 +190,8 @@ as the same thing. They are not.
    standing as a reference, and a **count** written in front of the thing it counts (`12 new
    leases`, `the thirty-one new plans`). A count is not verified against the ledger. Being
    accounted for is not the same as clearing: a label that names a period, `Q2`, `H1`, `FY26`, and a
-   year or a month the ledger's column labels contradict, are then held by the clearance grammar
-   below. A year or
+   year, a month or a date the ledger's column labels do not bind, are then held by the clearance
+   grammar below. A year or
    an account number spent as an amount, `increased by 1999`, `increased by 6200`, is not a
    reference and is unparsed. The external review of 13 September 2026 asked for *needs review* on
    unparsed spans; the page says **not checked**, which says that nothing in the sentence was
@@ -176,14 +214,20 @@ as the same thing. They are not.
    A figure followed by `or more`, `or less`, `at most`, `at least` and the like is a bound, not a
    figure, and its role is unknown.
 2. **Account binding.** Three routes, each named on the page: **by account number**, **by account
-   name**, and **by an exact figure**. The figure route is accepted only when the sentence also
+   name**, and **by an exact figure**. A name binds wherever it stands in the sentence: a full stop,
+   a comma, a question mark, an exclamation mark or a quote after it is punctuation, so
+   `on the lease that also covers Insurance expense.` binds Insurance expense as surely as a name at
+   the start does. The figure route is accepted only when the sentence also
    carries a word from that account's name that no named account shares. Where a figure ties to an
    account the sentence does not name in any other way, that is a **numeric coincidence**, and it is
    printed as an unresolved conflict rather than being bound. A duplicated account number binds
    nothing on its own: the sentence is held at needs review until a consolidation decision is made.
    A sentence that names **more than one account** binds each figure inside the **clause it was
    written in**, split on commas, semicolons and the joining words (`and`, `or`, `but`, `while`,
-   `against`, `compared with`, `rather than`, `instead of`). A figure whose clause names exactly one
+   `against`, `compared with`, `rather than`, `instead of`). A colon does not split a clause here,
+   because what follows it belongs to the label in front of it: in `5000 Cost of product sold:
+   +$348,000 - Movement tracks the increase in product revenue.` the figure's clause names both
+   lines and is held, never failed against product revenue. A figure whose clause names exactly one
    of the bound accounts is tested against that one; a figure whose clause names none of them, or
    more than one, is a **binding conflict** and is held at needs review however well it agrees with
    the sentence read as a whole. A percent settled against a ratio supplied in the ratio pane is
@@ -229,8 +273,9 @@ below holds the sentence at needs review and names the word.
 clause they attach to, and force **needs review**. A negation is not read as the claim it would be
 without it and not as its opposite: the checker says it cannot settle the clause and a person does.
 The threshold idioms a memo uses to say a line owes nothing, "no commentary is owed", "clears
-neither leg", "carries no driver", "no change", are taken out before the test, and a clause with no
-figure and no direction word is inert.
+neither leg", "carries no driver", "no change", are taken out before the test, and so is a number
+label, `No. 4471` or `no. 12`, which negates nothing. A clause with no figure and no direction word
+is inert.
 
 Two checks sit outside the six and are reported the same way. **Direction** tests rose, fell, flat
 and the no-change words against the sign of the movement, inside a clause that carries a figure
@@ -257,43 +302,69 @@ financial assertions under a defined grammar, and ambiguous quantitative languag
 
 **What is read and taken out first.** The account names and numbers the sentence is bound by; every
 figure the reader took; every unparsed span and every number left outside the check; the direction
-words and the no-change and flat words the direction check tests; the movement nouns (`increase`,
-`change`, `movement`, `variance`); `changed by` and `moved by` standing in front of a figure; and the
-period frame of the ledger's own two columns, `month over month`, `from the prior month`, or a month
-the column labels name (`over May` on a ledger headed `May 2026 / June 2026`).
+words and the no-change and flat words the direction check tests, except the ones that also give the
+movement a size (`surged`, `jumped`, `eased`, `slipped`), which the size entries read; the movement
+nouns (`increase`, `change`, `movement`, `variance`); `changed by` and `moved by` standing in front of
+a figure; and the period frame of the ledger's own two columns, `month over month` or `from the prior
+month`, where the column labels show two months in a row, or a month the prior column's label names
+(`over May` on a ledger headed `May 2026 / June 2026`).
 
-**What is left is read against the risk lexicon.** Twenty-two entries, about 930 alternatives when
-every spelling and ending a pattern allows is counted, in the classes below. A **strong** entry holds the sentence wherever it stands. A
-**weak** entry holds it only inside the claim, which runs from the start of the sentence to the first
-word that opens a reason after its last figure (`because`, `as`, `since`, `on`, `due to`, `driven
-by`, `after`, `with`, `while` and kin, or an opening bracket), unless the reason points straight back
-at the line (`because it`, `as the balance`). A reason is already a question for a person, so a word
-that only describes the cause stays with that question: `rose $30,000 on sharply higher rates`
-clears, `rose sharply, by $30,000` does not.
+**What is left is read against the risk lexicon.** Twenty-six entries, about 1,530 alternatives when
+the alternatives each pattern allows are counted; the size entries repeat the adjective and
+movement-noun lists they attach to one another, so their share of that count is larger than their
+vocabulary. A **strong** entry holds the sentence wherever it stands. A **weak** entry holds it only
+inside the claim, which runs from the start of the sentence to the first word that opens a reason
+after its last figure (`because`, `as`, `since`, `on`, `due to`, `driven by`, `after`, `with`,
+`while` and kin, or an opening bracket), unless the reason points straight back at the line
+(`because it`, `as the balance`). A reason is already a question for a person, so a word that only
+describes the cause stays with that question: `rose $30,000 on strong demand` clears. A word that
+sizes a movement does not get that pass, because the size is a claim of its own: `rose $30,000 on
+sharply higher rates` and `rose $30,000 because volumes rose sharply` are held.
 
 | Class | Strength | What it catches, with examples |
 | --- | --- | --- |
-| Currency | strong | 40 currency names (`euros`, `pounds sterling`, `yen`, `rupees`, `pesos`, `francs`, `quid`, `cents`), a dollar someone else issues (`Canadian dollars`, `US dollars`, `in Australian dollar terms`, 62 qualifiers), `currency`, `exchange rate`, `foreign exchange`, `FX`, 64 ISO codes written in capitals, and every currency symbol but `$` |
+| Currency | strong | 40 currency names (`euros`, `pounds sterling`, `yen`, `rupees`, `pesos`, `francs`, `quid`, `cents`), a dollar someone else issues (`Canadian dollars`, `US dollars`, `in Australian dollar terms`, 62 qualifiers), `currency`, `exchange rate`, `foreign exchange`, `FX`, 64 ISO codes written in capitals and the marks `Rs`, `Rp`, `RM`, `SFr` and `kr`, every currency symbol but `$`, and `zł` and `Kč` |
 | Sign | strong | `CR`, `DR`, `Cr.`, `Dr.` (not a title before a name), `credit balance`, `in credit`, `net debit`, `credited`, `favourable`, `unfavorable`, `adverse`, `(F)`, `(U)`, a sign standing apart from its figure (`- $30,000`, `(-)`, `+/-`, `±`) |
 | Sign | weak | `plus`, `minus`, `negative`, `positive` |
-| Another account | strong | `so did`, `as did`, `as was`, `neither did`, `likewise`, `similarly`, `the same was true of`, `respectively`, `followed suit`, `in tandem`, `in step`, `the rest`, `the other lines`, `every other account` |
+| Another account | strong | `so did`, `as did`, `as was`, `neither did`, `likewise`, `similarly`, `the same was true of`, `respectively`, `followed suit`, `in tandem`, `in step`, `in lockstep`, `the rest`, `the other lines`, `every other account`, `both lines`, `each account` |
 | Another account | weak | `also`, `too`, `as well`, `together`, `alongside`, `equally` |
 | Sameness | strong | `same`, `identical`, `equal`, `equivalent`, `matched`, `comparable`, `similar`, `consistent`, `in line with`, `on par with`, `no different`, `even with`, `in keeping with`, `ditto`, `stable`, `stabilized`, `steady`, `static`, `constant`, `flattish`, `flatlined`, `stagnant`, `stalled`, `plateaued`, `sideways`, `little changed`, `level`, `barely`, `hardly`, `scarcely` (a tested no-change phrase such as `held steady` or `remained constant` is read first and never reaches this list) |
 | Sameness | weak | `virtually`, `essentially`, `broadly`, `largely`, `maintained`, `sustained`, `remained`, `stayed`, `held`, `kept`, `continued`, `still`, `mirrored`, `tracked` |
-| Comparison | strong | `compared with`, `versus`, `vs`, `against`, `relative to`, `than`, `outpaced`, `outperformed`, `exceeded`, `ahead of`, `behind`, `short of`, `lagged`, except where they introduce the ledger's own prior column |
-| Ranking | weak | `largest`, `biggest`, `smallest`, `highest`, `lowest`, `greatest`, `most`, `least`, `record`, `top`, `ranked`, `leading`, `all-time` |
-| Basis | strong | `budget`, `forecast`, `reforecast`, `outlook`, `guidance`, `projection`, `pro forma`, `run rate`, `annualized`, `like-for-like`, `constant currency`, `normalized`, `seasonally adjusted`, `basis`, `cumulative`, `to date`, `so far`, `as expected`, `as planned`, and `plan`, `target`, `estimate`, `expectations`, `consensus` or `goal` after `versus`, `against`, `over`, `under`, `above`, `below`, `ahead of`, `behind`, `missed` or `beat` |
-| Period | strong | `year`, `years`, `yr`, `year over year`, `year to date`, `YoY`, `YTD`, `QTD`, `MTD`, `PY`, `LY`, `annual`, `fiscal`, `FY26`, `quarter`, `quarterly`, `quarter-end`, `Q2`, `H1`, `half-year`, `semiannual`, `trailing`, `TTM`, `LTM`, `rolling`, `twelve months`, `months`, `weeks`, `three months`, `30 days`, `consecutive months`, `in a row`, `week over week`, `sequentially`, `prior period`, `same period`, `since December`, `since the start`, `last June`, `over the summer`, `first half` (not `first half of June`), `ago`, `per month`, a year the column labels do not carry. A period word that only gives the length of a lease, a contract, a fee or a renewal (`a one-year lease`, `a half-year term`) is left alone |
-| Period | weak | `week`, `day`, `spring`, `summer`, `seasonal`, `holiday`, `through`, `until`, `during`, `first half of June`, `third month`, `mid-month`, `early`, `late`, `recently`, `previously`, `typically`, `usually`, `again`, `yet`, a month the column labels do not carry |
-| Change | weak | a change verb the direction check does not test: `soared`, `spiked`, `leapt`, `plunged`, `tumbled`, `slumped`, `dipped`, `contracted`, `rebounded`, `recovered`, `reversed`, `swung`, `moved`, `shifted`, `fluctuated`, `varied`, `widened`, `narrowed`, `improved`, `worsened`, `peaked`, `ramped`, `slowed`, `ticked up`, `edged down`, `trended`, `changed`, `followed` |
-| Size | weak | `sharply`, `significantly`, `substantially`, `materially`, `markedly`, `dramatically`, `modestly`, `slightly`, `marginally`, `steeply`, `strongly`, `huge`, `large`, `small`, `major`, `minor`, `massive`, `negligible`, `heavy`, `unusual`, `robust` and kin |
+| Comparison | strong | `compared with`, `versus`, `vs`, `against`, `relative to`, `than`, `outpaced`, `outperformed`, `exceeded`, `ahead of`, `behind`, `short of`, `lagged`, `eclipsed`, `dwarfed`, `overtook`, `outgrew`, `trailed`, `unlike`, `vis-à-vis`, except where they introduce the ledger's own prior column |
+| Ranking | weak | `largest`, `biggest`, `smallest`, `highest`, `lowest`, `greatest`, `most`, `least`, `record`, `top`, `ranked`, `leading`, `all-time`, `a new high`, `multi-year lows`, `a low base`, `its peak`, `the trough` |
+| Basis | strong | `budget`, `forecast`, `reforecast`, `outlook`, `guidance`, `projection`, `pro forma`, `run rate`, `annualized`, `like-for-like`, `constant currency`, `normalized`, `seasonally adjusted`, `basis`, `cumulative`, `to date`, `so far`, `as expected`, `as planned`, and `plan`, `target`, `estimate`, `expectations`, `consensus` or `goal` after `versus`, `against`, `over`, `under`, `above`, `below`, `ahead of`, `behind`, `missed` or `beat`, and an `average`, `median`, `norm`, `benchmark`, `peers`, `industry`, `market`, `levels`, `baseline` or `trend` after `above`, `below`, `over`, `under`, `than`, `versus`, `against`, `beat`, `missed`, `exceeded`, `trailed` or `lagged` (`below the industry average`, `above pre-pandemic levels`) |
+| Period | strong | `year`, `years`, `yr`, `year over year`, `year to date`, `YoY`, `YTD`, `QTD`, `MTD`, `PY`, `LY`, `annual`, `fiscal`, `FY26`, `quarter`, `quarterly`, `quarter-end`, `Q2`, `H1`, `half-year`, `semiannual`, `trailing`, `TTM`, `LTM`, `rolling`, `twelve months`, `months`, `weeks`, `three months`, `30 days`, `consecutive months`, `in a row`, `week over week`, `sequentially`, `prior period`, `same period`, `since December`, `since the start`, `last June`, `over the summer`, `first half` (not `first half of June`), `ago`, `per month`, `today`, `yesterday`, `overnight`, `intra-month`, `this week`. A period word that only gives the length of a lease, a contract, a fee or a renewal (`a one-year lease`, `a half-year term`) is left alone |
+| Period | weak | `week`, `day`, `weekly`, `daily`, `spring`, `summer`, `seasonal`, `holiday`, `through`, `until`, `during`, `first half of June`, `third month`, `mid-month`, `early`, `late`, `recently`, `previously`, `typically`, `usually`, `again`, `yet` |
+| Change | weak | a change verb the direction check does not test and that gives no size: `sank`, `contracted`, `shrank`, `dwindled`, `rebounded`, `recovered`, `reversed`, `swung`, `moved`, `shifted`, `fluctuated`, `varied`, `widened`, `narrowed`, `improved`, `worsened`, `peaked`, `ramped`, `slowed`, `trended`, `changed`, `followed` |
+| Size | strong | an adverb of degree: `sharply`, `significantly`, `substantially`, `materially`, `markedly`, `dramatically`, `considerably`, `modestly`, `slightly`, `marginally`, `moderately`, `steeply`, `strongly`, `heavily`, `greatly`, `rapidly`, `gradually`, `somewhat` and kin; a degree word on a comparative: `much higher`, `far lower`, `well above`, `a bit more`; a movement verb or noun that carries its own size: `soared`, `skyrocketed`, `spiked`, `surged`, `jumped`, `leapt`, `ballooned`, `plunged`, `plummeted`, `tumbled`, `slumped`, `collapsed`, `dipped`, `eased`, `softened`, `slipped`, `ticked up`, `edged down`, `inched up`, `crept`, `a jump`, `a spike`, `an uptick`; and a size adjective standing on a movement, in front of the movement noun with at most two words between (`a significant increase`, `a sharp year-end rise`, `the sharpest rise`, `an outsized escalation`) or after it with `is`, `was`, `remained` or the like between (`the change was small`, `the increase in rates was material`) |
+| Size | weak | the same adjectives where they size something that is not a movement: `a large new office`, `strong demand`, `a major client` |
 | Share and quantity | weak | `mostly`, `mainly`, `primarily`, `partly`, `entirely`, `wholly`, `fully`, `solely`, `in part`, `bulk`, `majority`, `portion`, `share`, `offset`, `net of`, `several`, `many`, `much`, `numerous`, `multiple`, `few`, `more`, `less`, `dozens`, `hundreds`, `thousands`, `various`, `additional`, `incremental`, `excess`, `shortfall`, `gap`, `difference`, `delta`, `spread`, `margin`, `ratio`, `rate`, `proportion` |
 
-**Two rules that are structural rather than lexical.** Where a sentence binds more than one
-account, every account it names needs a figure or a tested direction word in its own clause, so
-`Rent expense rose $30,000, and Insurance expense followed` is held even though no listed word
-carries the second account. And where the ledger's column labels name no month, two months in the
-claim that are not neighbours are held: `from May to June` clears, `from May to August` does not.
+**Why a size word is held rather than tested.** The contract could define a threshold for
+"sharply" and test it; it does not, because nothing a close uses documents one. The commentary rule
+on this page decides whether a line owes an explanation, not whether a movement is sharp, and a
+threshold invented here would be a claim about the ledger that no controller made. So the word is
+named and a person reads it.
+
+**Two rules that are structural rather than lexical.**
+
+- **Every account a sentence binds needs a claim of its own.** Where a sentence binds more than one
+  account, every account it names needs a figure or a tested direction word in its own clause, so
+  `Rent expense rose $30,000, and Insurance expense followed` is held even though no listed word
+  carries the second account, and so is `on the lease that also covers Insurance expense.`, now
+  that a name at the end of a sentence binds.
+- **A period is bound only by the column labels.** A month, a date, a year, and the words `month`,
+  `monthly`, `month-end`, `this month` and `month over month`, are read against the two column
+  labels wherever they stand in the sentence, in a reason as much as in the claim. A month or a
+  date binds where either column names that month, a year where either column names that year, and
+  the month words where the two columns are two months in a row (`May 2026` then `June 2026`, `Dec
+  2025` then `Jan 2026`) or read as months (`Prior month`, `This month`). A ledger whose labels name
+  no period, a plain paste with no header row or one headed `Prior / Current`, binds none of them,
+  so `in June`, `for the month`, `month over month`, `on 6/1` and `in 2026` hold a sentence on such a
+  ledger with the word named. Labels that name other months, another year, or two months that are
+  not in a row contradict them, and `over June` on a ledger whose current column is June measures
+  from the wrong column; each of those holds too. Paste a header row that names the months and the
+  same sentence clears.
 
 **What holding means.** A word left from the lexicon holds a sentence that would otherwise clear at
 **needs review**. The row reads `Wording <the word>`, **OUTSIDE THE GRAMMAR**, with a plain
@@ -306,7 +377,8 @@ rows even when its direction word then fails. The
 author page reads the same grammar through `assets/second-pass-core.js` and puts the same sentence
 under **What the checks found**.
 
-**Refused and still clearing, on a ledger where Rent expense rose from $100,000 to $130,000.**
+**Refused and still clearing, on a ledger where Rent expense rose from $100,000 to $130,000, pasted
+as one line with no header row unless the row says otherwise.**
 
 | Sentence | Status |
 | --- | --- |
@@ -315,22 +387,33 @@ under **What the checks found**.
 | `Rent expense changed by $-30,000.` | failed, the sign is read and clashes |
 | `Rent expense changed by 30,000 CR.` | not checked, a credit marker beside the figure |
 | `Rent expense was stable at $130,000.` | needs review, `stable` |
-| `Rent expense was in line with May at $130,000.` | needs review, `in line with` |
+| `Rent expense was in line with May at $130,000.` | needs review, `in line with` and `May` |
 | `Rent expense rose $30,000, or 30 percent, year over year.` | needs review, `year over year` |
 | `Rent expense rose $30,000 against budget.` | needs review, `against` and `budget` |
 | `Quarter to date, rent expense rose $30,000.` | needs review, `Quarter to date` |
 | `Rent expense rose $30,000; so did Insurance expense.` | needs review, `so did` |
 | `Rent expense and Insurance expense rose $30,000 and $45,000 respectively.` | needs review, a binding conflict on each figure, never failed |
 | `Rent expense rose $30,000, the largest movement on the statement.` | needs review, `largest` |
+| `Rent expense rose $30,000 because volumes rose sharply.` | needs review, `sharply`, inside the reason |
+| `Rent expense surged $30,000.` | needs review, `surged`; its direction still passes |
+| `Rent expense rose $30,000; the change was small.` | needs review, `small` |
+| `Rent expense rose $30,000 month over month.` | needs review, `month`: the columns are not labelled as months |
+| `Rent expense rose $30,000 because the lease renewed in June.` | needs review, `June`, inside the reason |
+| `Rent expense rose $30,000 on the lease that also covers Insurance expense.` | needs review, Insurance expense is bound, so the clause with $30,000 names two lines |
+| `Rent expense rose $30,000 at an approx. 30 percent rate.` | needs review, read as one sentence, never split after `approx.` |
 | `Rent expense rose $30,000, or 30 percent, on the Suite 200 lease.` | checked within scope |
 | `Rent expense changed by +$30,000.` | checked within scope, the sign agrees |
-| `Rent expense rose $30,000 month over month.` | checked within scope |
+| `Rent expense rose $30,000 month over month.`, on a ledger headed `Account / May 2026 / June 2026` | checked within scope |
+| `Rent expense rose $30,000 because the lease renewed on 1 June 2026.`, on the same ledger | checked within scope |
+| `Rent expense rose $30,000 on strong demand for space.` | checked within scope, `strong` sizes the demand, not the movement |
 | `Rent expense rose $30,000 as the one-year lease began.` | checked within scope |
+| `Rent expense rose $30,000 per J. Smith.` | checked within scope, one sentence |
 
 The lexicon is a fence, not a proof. A sentence that clears under it has had every word the grammar
-knows to be risky taken out or read; it has not been understood. The regression suite holds 159
-mutations of these classes, each refusing and accepting, and a new way of writing a quantity is
-compared only once it is added there.
+knows to be risky taken out or read; it has not been understood. The regression suite holds 270
+mutations of these classes and of the sentence boundaries, each class with inputs it must refuse
+and inputs it must accept, and a new way of writing a quantity is compared only once it is added
+there.
 
 ## The four statuses
 
@@ -340,7 +423,7 @@ worst status any step assigned and the summary, the exports and the prompt all c
 | Status | What it means |
 | --- | --- |
 | **Checked within scope** | Every quantitative expression in the sentence was accounted for: each figure carried a role the words gave it and agreed with the pasted ledger unrounded, every other number was a year, a date, a label, an ordinal, a reference or a count, named in the sentence's explanation as left outside the check, and once those claims were read nothing from the clearance grammar's risk lexicon was left. The explanation lists the figures that were checked, says whether a direction word was tested, and names what was left outside. It does not mean the sentence is true. |
-| **Needs review** | Something is unresolved: a role the words do not give, a binding the checker will not settle by coincidence or by a clause naming two accounts, a duplicate account number, a percent it cannot compute, a clause the words negate, a column mapping nobody confirmed, or a word the clearance grammar leaves: a currency, a sign or debit or credit marker, a sameness, comparison, period or basis word, or a claim carried to another account. A person has to answer it. |
+| **Needs review** | Something is unresolved: a role the words do not give, a binding the checker will not settle by coincidence or by a clause naming two accounts, a duplicate account number, a percent it cannot compute, a clause the words negate, a column mapping nobody confirmed, or a word the clearance grammar leaves: a currency, a sign or debit or credit marker, a sameness, comparison, period or basis word, a word that sizes a movement, a month, date or year the column labels do not bind, or a claim carried to another account. A person has to answer it. |
 | **Not checked** | The sentence could not be tied to the ledger and tested in full. An unmatched sentence, a sentence with no figures, and a sentence carrying an unparsed span all land here, even when every figure the reader did take agreed. This is **not** the same as a sentence that was checked and found true, and the page never prints it as one. |
 | **Failed** | At least one check on the sentence failed. |
 
@@ -414,18 +497,21 @@ node tests/run-checker-tests.cjs T02      one fixture
 node tests/run-checker-tests.cjs --dump T02
 ```
 
-`tests/checker-fixtures.json` holds **546** fixtures and **all 546 pass**, and the suite adds two
+`tests/checker-fixtures.json` holds **658** fixtures and **all 658 pass**, and the suite adds two
 more checks: every reader function `assets/second-pass-core.js` shares with `checker.html` must be the
 same function, and every one-line constant they share and the clearance grammar's block must be the
 same text, so the author page and the checker cannot read one memo two ways. The same file sits in
-the second-pass repository, where `tests/test_parity_shared_inputs.py` runs all 546 inputs through
+the second-pass repository, where `tests/test_parity_shared_inputs.py` runs all 658 inputs through
 this page under Node and through the Python checker and compares the outputs, and a further test
-holds the risk lexicon identical in both, entry for entry.
+holds the risk lexicon identical in both, entry for entry, together with the period binding's
+patterns, the size lists, the sentence splitter's abbreviation lists, what the splitter does at a
+set of stops, and how a pair of column labels is read.
 
 - **T01 to T17**, the seventeen probes from the external audit of 13 September 2026, each carrying
   the required behavior from that audit as the assertion, plus four boundary and export companions.
-- **T18, T18b, T19**, the end-to-end sample runs, Halyard, Brightwater and Kestrel, which assert the
-  expected outputs printed further down this file.
+- **T18, T18b, T19, T19b**, the end-to-end sample runs, Halyard, Brightwater, Kestrel and Ridgeline,
+  which assert the expected outputs printed further down this file. T18 also asserts Halyard card
+  14 held and a queue of 17, and T19b Ridgeline's T1 held, each with a note in the fixture.
 - **T20 to T43**, the twenty-four probes from the live release review of 13 September 2026, N01 to
   N24, entered exactly as that bundle supplied them. Seven of them are the review's own positive and
   negative controls and still clear or still fail; the rest are the clearances the review found. The
@@ -447,7 +533,11 @@ holds the risk lexicon identical in both, entry for entry.
   showed that label was wrong: `remained at` asserts no movement, and the line moved, so both now
   assert **failed**.
 - **P01 to P40**, the forty probes from the third review of 13 September 2026, entered exactly as
-  that bundle supplied them, each asserting the status the repaired contract requires.
+  that bundle supplied them, each asserting the status the repaired contract requires. P39, `Rent
+  expense rose $30,000 in 2026.` on a ledger with no header row, asserts **needs review** since 14
+  September 2026: the year is still read as a year and not as a figure, and a year the column labels
+  do not name can be neither confirmed nor contradicted. The review observed not checked on it and
+  required nothing more specific.
 - **Six mutation classes, 113 fixtures**, written so each repaired class is proven closed from both
   sides, with synonyms, word order, hyphenation, currency and percent placement and negation:
   **MUL01 to MUL22** multipliers (18 refused, 4 accepted), **STILL01 to STILL28** no-change and flat
@@ -460,7 +550,10 @@ holds the risk lexicon identical in both, entry for entry.
   quarter-end` put the movement inside or across a period the two month-end columns do not show,
   COUNT10 `in Q2` frames it on a quarter, and COUNT13 `one of the larger moves` ranks the line
   against the others. Each still carries no fraction and no unparsed number, which is what it was
-  written to show.
+  written to show. Five more moved to needs review on 14 September 2026 when periods were bound to
+  the column labels, each on a ledger with no header row and each with a note: COUNT08 `June 30`,
+  COUNT09 `30 June 2026`, COUNT14 `in 2026`, FRAC26 `on 6/1` and MUL20 `in May`. Each still reads
+  its date, year or `double count` the way it was written to show.
 - **A001 to A139 and B001 to B036**, the 175 probes of the independent adversarial audit of 13
   September 2026 (`audit/INDEPENDENT-AUDIT-2026-09-13.md`), entered as the audit supplied them. 48 of
   them came back checked within scope at the audited heads; every one now returns a status the audit
@@ -471,15 +564,34 @@ holds the risk lexicon identical in both, entry for entry.
   refused, 4 accepted), **PER01 to PER33** periods and bases (24 refused, 9 accepted), **ANA01 to
   ANA20** claims carried to another account (16 refused, 4 accepted), **RESP01 to RESP14**
   `respectively` (11 refused, 3 accepted), and **QTY01 to QTY14** words that size, rank or share a
-  movement (10 refused, 4 accepted).
+  movement (10 refused, 4 accepted). Nine moved to needs review on 14 September 2026, each with a
+  note: SAME22, PER19, PER24, PER25, PER26, PER29 and PER33 name a month or a month frame on a
+  ledger with no header row, which the labels cannot bind; ANA18 ends on the account name the binder
+  never read; and QTY09 carries `sharply` in a reason, where a size word is now held.
+- **Five residual classes, 111 fixtures**, written on 14 September 2026 for what the clearance
+  grammar left open, each with inputs it must refuse, inputs it must accept, and sentences where one
+  clause clears and another does not: **SPLIT01 to SPLIT27** sentence boundaries, asserting the
+  sentences as a person reads them and the status of each (11 refused, 13 accepted, 3 mixed),
+  **SIZE01 to SIZE22** words that size a movement, in the claim and in a reason (16 refused, 5
+  accepted, 1 mixed), **PLAB01 to PLAB24** periods the column labels do or do not bind (14 refused,
+  8 accepted, 2 mixed), **BIND01 to BIND17** account names at the end or edge of a sentence (12
+  refused, 4 accepted, 1 mixed), and **LEX01 to LEX21** every class of the lexicon one step past the
+  words it lists (16 refused, 4 accepted, 1 mixed).
 
 The runner lifts the script out of `checker.html` and runs it against a document stub, so there is
 no build step and no dependency; a change to the page that breaks a probe fails the suite. After the
 third review's repairs the four samples keep their sentence statuses; the Halyard queue grows from
 13 items to 14, because card 13's "a shift toward lower margin produce" now comes back as a direction
-word the checker cannot tie to a line. The clearance grammar moves no sample's sentence statuses and
-no coverage strip: every word it would hold in the samples stands in a sentence that already failed,
-needs review or carries no figure.
+word the checker cannot tie to a line. The clearance grammar moved no sample's sentence statuses and
+no coverage strip: every word it would hold in the samples stood in a sentence that already failed,
+needed review or carried no figure. The residual classes of 14 September 2026 move two samples, and
+each move is the right answer. Halyard card 14 ends on `depreciation`, which the binder now reads,
+so $31,200 stands in a clause naming two lines and is held; the case keys that card as an unsupported
+driver because depreciation did not move. Halyard's queue grows from 14 to 17: the binding conflict
+and the unresolved figure on card 14, and `eased` on card 3, a size verb in its reason, on a card
+that already failed. Ridgeline's T1, `on two new retainers that began in July`, is held because its
+ledger has no header row to bind July, and its queue grows from 3 to 4. Brightwater and Kestrel do not
+move, and neither does the Prompt 1 rerun, 14 of 17 checked within scope.
 
 ## What it does not do
 
@@ -501,6 +613,20 @@ needs review or carries no figure.
   with May`, `year over year`, `against budget`, `quarter to date`, `run rate`, `so did Insurance
   expense` and `30,000 CR` are not worked out. The clearance grammar holds the sentence and names the
   word, and a person reads it.
+- **No threshold for a size word.** `sharply`, `slightly`, `surged`, `a significant increase` and
+  `the change was small` are not tested against anything, because nothing documents what they mean.
+  They hold the sentence wherever they stand, in a reason too.
+- **No period the column labels do not name.** A month, a date, a year or `month over month` is
+  never assumed to match the ledger. Where the labels do not bind it, the sentence is held; paste the
+  header row that names the months and the same sentence can clear. Quarters, halves and fiscal years
+  are held whatever the labels say.
+- **Sentence boundaries follow listed abbreviations.** An abbreviation outside the lists under
+  **Sentence boundaries**, an initialism before a capitalized word (`U.S. Treasury`) and an initial
+  after a capitalized first name are read as the end of a sentence.
+- **Direction words inside a reason that no clause word opens are tested.** `Rent expense rose
+  $30,000 on a decrease in vacancy` fails on `decrease`, because `on` does not open a clause for the
+  direction check. After a comma the same word is held for review, and after `as`, `because` or
+  `while` it is left to the reason.
 - **No multipliers, fractions or other scripts.** `doubled`, `twice`, `one and a half percent`, `a
   quarter of`, `½`, `thirty point five` and digits outside 0 to 9 are recorded as unparsed and the
   sentence is left unchecked. It does not work out what they assert.
@@ -641,8 +767,10 @@ Prompt 2, so a filed log says which version of the case it came from. Kestrel an
 checker's own cases and are written into the page by hand.
 
 Every expected result below was confirmed row by row against the page on 13 September 2026, with no
-console error on any run, and Halyard, Brightwater and Kestrel are asserted end to end by fixtures
-T18, T18b and T19 in `tests/checker-fixtures.json`, so a change that moves them fails the suite.
+console error on any run, and Halyard, Brightwater, Kestrel and Ridgeline are asserted end to end by
+fixtures T18, T18b, T19 and T19b in `tests/checker-fixtures.json`, so a change that moves them fails
+the suite. The Halyard and Ridgeline results were confirmed again on 14 September 2026, after the
+residual classes moved Halyard card 14 and Ridgeline T1.
 
 ## The Halyard sample, expected against actual
 
@@ -655,15 +783,15 @@ twelve sentences numbered by card. The ratio pane is prefilled with
 `Product gross margin = (4000 - 5000) / 4000`. Thresholds $25,000 and 10 percent, both legs, zero
 prior balances owing commentary.
 
-Coverage strip: **12** sentences read · **4** checked within scope · **5** needs review ·
+Coverage strip: **12** sentences read · **3** checked within scope · **6** needs review ·
 **0** not checked · **3** failed · **14** ledger rows used · **0** rows skipped · **1** silent line ·
-**14** in the reviewer queue.
+**17** in the reviewer queue.
 
 | Card | Bound | Figures, with the role read from the words | Direction | Threshold claim | Status |
 | --- | --- | --- | --- | --- | --- |
 | 1, freight | 4200, by account name | $186,000 **prior balance** ✓; $121,000 **current balance** ✓; $6,500 **absolute movement** **FAIL**, the movement is -$65,000; 3.5 percent **relative movement** **FAIL**, it is -34.9 percent | PASS, "fell" agrees | "neither leg is met" **FAIL**: 4200 clears both legs | **failed** |
 | 2, depot repairs | 6200, by account name | $118,600 **role unknown**, "of" says nothing; it equals the current balance and the dropdown asks a person to confirm that | not stated | none | **needs review** |
-| 3, inbound freight | 5100, by account name | $287,800 **current balance** ✓ | **FAIL**, the memo says "declined" and 5100 rose $73,800 | none | **failed** |
+| 3, inbound freight | 5100, by account name | $287,800 **current balance** ✓ | **FAIL**, the memo says "declined" and 5100 rose $73,800; "eased", a size verb in the reason, is named in the queue | none | **failed** |
 | 4, service revenue | 4100, by account name | $229,000 **absolute movement** ✓ | PASS, "rose" agrees | none | **checked within scope** |
 | 5, professional fees | 6500, by account name | $7,500 **absolute movement** ✓; the second $7,500, the outside counsel invoice, **role unknown**, and it happens to equal the change | PASS, "fell" agrees | "fails the dollar leg" **PASS** | **needs review** |
 | 7, product revenue | 4000, by account name | $5,612,000 **role unknown**, "revenue of" says nothing | PASS, "grew" agrees | none | **needs review** |
@@ -671,8 +799,8 @@ Coverage strip: **12** sentences read · **4** checked within scope · **5** nee
 | 9, fleet fuel | 6100, by account name | $5,200 **absolute movement** ✓ | PASS, "fell" agrees | "fails both legs" **PASS** | **checked within scope** |
 | 10, software | 6300, by account name | $1,600 **absolute movement** ✓ | PASS, "rose" agrees | "clears neither leg, carries no driver" **PASS** | **checked within scope** |
 | 12, distribution revenue | 4000, by an exact figure with "distribution" beside it | 7.1 percent **relative movement** ✓; $5,612,000 **role unknown** | PASS, "grew" agrees | none | **needs review** |
-| 13, cost of product sold | 5000 by name, 4000 by an exact figure with "revenue" beside it | $348,000 and $372,000 **absolute movement** ✓ on 5000 and 4000; $1,310,000 and $1,334,000 **computed across two lines**, the current and prior balance on 4000 less the same on 5000, reported and left open; 25.0 percent **ratio, prior** ✓ and 23.8 percent **ratio, current** ✓ | PASS, "rose", "rise" and "fell" agree | none | **needs review** |
-| 14, interest | 7100, by account name | $31,200 **absolute movement** ✓ | PASS, "rose" agrees | none | **checked within scope** |
+| 13, cost of product sold | 5000 and 4000, by account name, "product revenue." now binding where it ends the first sentence | $348,000 and $372,000 **absolute movement** ✓ on 5000 and 4000; $1,310,000 and $1,334,000 **computed across two lines**, the current and prior balance on 4000 less the same on 5000, reported and left open; 25.0 percent **ratio, prior** ✓ and 23.8 percent **ratio, current** ✓ | PASS, "rose", "rise" and "fell" agree | none | **needs review** |
+| 14, interest | 7100 and 7000, by account name, "depreciation." binding where it ends the sentence | $31,200 **absolute movement**, tied to 7100, but its clause names both lines, so it is a **binding conflict** | PASS, "rose" agrees | none | **needs review** |
 | 6000 Warehouse wages | no sentence | | | $72,500 and 11.5 percent | **SILENT** |
 | 7400 Inventory shrink | no sentence | | | $2,500 and 39.1 percent, below the dollar leg | nothing owed |
 
@@ -693,6 +821,11 @@ Four results are worth naming because they are wider than the case that prompted
   confirming one restamps the run and keeps the earlier one under Previous runs.
 - **Read together fires on 4000**, which carries cards 7, 12 and 13. The checker does not test them
   against each other and says so rather than guessing.
+- **Card 14 names a second line, and the checker holds it.** "on the depot equipment additions that
+  also sit in depreciation" claims something about 7000 Depreciation, which did not move. Until 14
+  September 2026 a name that ended a sentence was never bound and the card cleared; it is bound now,
+  the figure's clause names two lines, and the card goes to a person, which is the case's own key:
+  an unsupported driver.
 
 The checker supplies none of the case's **On file** facts. A clean verdict in the game does not
 transfer to the checker, and a status here is never evidence that a driver is supported.
@@ -792,13 +925,13 @@ dollar figures.
 **Ridgeline Partners, July 2026** is the checker's own case too: five made-up accounts and three
 sentences against June, in a plain comma separated ledger with no header row at all.
 
-Coverage strip: **3** sentences read · **1** checked within scope · **0** needs review ·
+Coverage strip: **3** sentences read · **0** checked within scope · **1** needs review ·
 **0** not checked · **2** failed · **5** ledger rows used · **0** rows skipped · **1** silent line ·
-**3** in the reviewer queue.
+**4** in the reviewer queue.
 
 | Line | Result |
 | --- | --- |
-| T1, consulting revenue rose $61,000 | bound 4300 by name, **absolute movement** ✓, direction PASS. **Checked within scope** |
+| T1, consulting revenue rose $61,000 on retainers that began in July | bound 4300 by name, **absolute movement** ✓, direction PASS; "July" names a month and the ledger has no header row to bind it, so the queue names it. **Needs review** |
 | T2, subcontractor costs "increased" $32,000 | bound 5200 by name, the figure ✓ as a magnitude, direction **FAIL**: the account fell $32,000. **Failed** |
 | T3, travel and entertainment rose $9,400 | bound 6600 by name, **absolute movement** **FAIL**: the movement is $7,400. **Failed** |
 | 6700 Insurance, $52,000 and 118.2 percent | **SILENT**, no sentence anywhere in the memo |

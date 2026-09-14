@@ -175,3 +175,182 @@ files, the suite logs and `summary.json` are in `outputs/`; the full per-input e
 about 13 MB, are left out of the repository and come back on a rerun. `author-and-widths.cjs` drives
 the author page and both pages' widths in a throwaway headless Chrome profile through the audit's own
 driver, and the eight screenshots it wrote are in `screenshots/`.
+
+---
+
+# The residual classes, 14 September 2026
+
+Lane F3, written at 12:45 AM EDT on 14 September 2026. The lane above left four classes open under
+**Still open**, and they are closed below in both implementations: size words inside a reason, the
+account name that ends a sentence, a ledger with no month in its labels, and the sentence splitter.
+A weak sameness or share word inside a reason is still left to the reason, as that list says. Every
+input is synthetic and none of it is participant evidence. Nothing was posted or pushed.
+
+**Heads tested.** Code behavior was run on `git archive` snapshots, with the independent audit's own
+runners, unchanged, against the heads before this lane as the before.
+
+| Repository | Before | After |
+| --- | --- | --- |
+| beat-the-machine | `e7b5994` | `09cec33`, over `1f9acb7`: the checker, the shared reader and the fixtures |
+| second-pass | `ced24e5` | `bb6fd2d`, over `dbf0342`: the Python checker, the fixtures and the tests |
+
+## What each class closed
+
+- **Sentence boundaries.** The splitter reads abbreviations. A full stop no longer ends a sentence
+  after `vs.`, `approx.`, `e.g.`, `Accum.` and the other listed shorthands, after `No.`, `Rs.`,
+  `Inc.` or `U.S.` before a figure, or after a title or an initial before a name, and it does end one
+  after a figure a capital follows, `$57,900. An annual renewal`, and after a closing bracket or quote.
+  A decimal broken by a space, `rose 7. 5 percent`, stays in one sentence and is an unparsed span, so
+  it can neither clear nor fail on the half it would otherwise read. The lists and the two readings
+  that stay ambiguous are in `CHECKER.md` under **Sentence boundaries**. 44 sentences written to test a
+  person's reading split as a person reads them, and 704 memos split the same way in both
+  implementations.
+- **Size words.** The contract documents no threshold for "sharply", so none is invented: a word that
+  sizes a movement holds the sentence at needs review wherever it stands, reasons included, and names
+  the word. That covers adverbs of degree, a degree word on a comparative (`much higher`), movement
+  verbs and nouns that carry their own size (`surged`, `edged up`, `eased`, `a jump`), which are still
+  tested for direction, and a size adjective standing on a movement, in front of the noun or after it
+  with a copula between (`a significant increase`, `the change was small`). An adjective that sizes
+  something else, `a large new office`, stays with the reason.
+- **Periods the labels cannot bind.** A month, a date, a year and the words `month`, `this month`,
+  `month over month` and `month-end` are bound only by the column labels, anywhere in the sentence. A
+  ledger whose labels name no period, a plain paste or one headed `Prior / Current`, binds none of
+  them, so each is held with the word named; labels that name other months, another year or two
+  months not in a row contradict them. `over June` on a ledger whose current column is June is held as
+  measuring from the wrong column. The same sentences clear on a ledger that names the months.
+- **An account name that ends a sentence.** The binder treats a full stop, a comma, a question mark,
+  an exclamation mark or a quote after a name as punctuation, so position no longer matters. A colon
+  no longer splits a binding clause, which keeps a name that trails a label's figures from failing
+  them: `5000 Cost of product sold: +$348,000 - Movement tracks the increase in product revenue.` is
+  held as a binding conflict, never failed against product revenue.
+- **The lexicon, one step past its words.** Probing every class the way the next review will found
+  and closed `30,000 kr`, `Fr. 30,000`, `30,000 zł` and `RM 30,000` (currencies now unparsed beside a
+  figure), `as both lines did`, `eclipsing` and `in lockstep with`, `below the industry average` and
+  `above pre-pandemic levels`, `to a new high` and `from a low base`, `as of today`, `yesterday` and
+  `overnight`, `30 pct pts` (points after a percent, unparsed), and `No. 4471` read as a negation. Of
+  178 neighbour probes, 100 had a sentence checked within scope before and 38 after, and each of the 38
+  was read by hand: what clears in it is what a person would let clear.
+
+## Fixtures
+
+546 became **658**. The 111 new ones, with T19b, the Ridgeline sample end to end:
+
+| Class | Ids | Refused | Accepted | Mixed |
+| --- | --- | --- | --- | --- |
+| Sentence boundaries | SPLIT01 to SPLIT27 | 11 | 13 | 3 |
+| Size words | SIZE01 to SIZE22 | 16 | 5 | 1 |
+| Periods and the column labels | PLAB01 to PLAB24 | 14 | 8 | 2 |
+| Account names at the edge of a sentence | BIND01 to BIND17 | 12 | 4 | 1 |
+| The lexicon, one step past its words | LEX01 to LEX21 | 16 | 4 | 1 |
+
+A SPLIT fixture asserts the number of sentences and each one's status; a mixed fixture carries a clause
+that clears beside one that does not. **Fifteen expectations moved** from checked within scope to needs
+review, each justified in the fixture's note and in commit `1f9acb7`:
+
+| Fixture | Sentence | Why it is held now |
+| --- | --- | --- |
+| P39, COUNT14 | `Rent expense rose $30,000 in 2026.` | the year is still read as a year, not a figure; the ledger has no header row, so no label names a year |
+| COUNT08, COUNT09 | `on the lease signed on June 30.`, `on 30 June 2026.` | the day and year are still read as a date; no label names June |
+| FRAC26 | `on the lease that started on 6/1.` | still a date, not a fraction; no label names a month |
+| MUL20 | `after the double count in May was reversed.` | `double count` is still not a multiplier; no label names May |
+| SAME22 | `remained at $130,000 month over month.` | `remained at` still agrees with a line that did not move; the columns are not labelled as months |
+| PER19, PER24, PER25 | `a month`, `month over month`, `from the prior month` | the month frame is bound only where the labels show two months in a row (PLAB18, PLAB20, PLAB22 clear) |
+| PER26, PER33 | `from May to June`, `in June versus May` | neither month is named by the labels (PLAB17 clears) |
+| PER29 | `on the lease signed in the first half of June.` | `first half of June` still stands in a reason; `June` is bound wherever it stands |
+| ANA18 | `on the lease that also covers Insurance expense.` | the name at the end now binds, and the figure's clause names two lines |
+| QTY09 | `on sharply higher rates at the new site.` | a size word in a reason is held |
+
+P39 is one of the review's forty probes. The review observed not checked on it and required nothing more
+specific; the repair lane had asserted checked within scope. It is the only one of the review's 40 and
+24 probes that moves. T18 gains three assertions, card 14 held and a queue of 17, and A115 one, a single
+sentence; neither had asserted those before.
+
+## Everything that had to hold
+
+| Check | Result |
+| --- | --- |
+| Browser suite, `node tests/run-checker-tests.cjs` | **660 of 660**: 658 fixtures, the shared functions check (82 functions) and the shared constants check (89 constants and the clearance block) |
+| Python suite, `python -m pytest tests/ -q` with beat-the-machine beside it | **1,397 passed**; 737 passed and 660 skipped without it |
+| Parity, `tests/test_parity_shared_inputs.py` | **660 passed**: all 658 fixtures on all 11 fields, the fixture file identity, and the lexicon test, which now also holds the size lists, the period binding's patterns, the splitter's abbreviation lists, what the splitter does at every stop in ten sentences, and how eight pairs of column labels are read |
+| Parity on the audit's input sets, the samples and the neighbour probes | 40, 24, 6, 139, 36, 4 and 178 inputs, **427 of 427** equal on all 11 fields |
+| The audit's 175 probes | **0 false clearances and 0 other misses**, before and after; no probe's status moved, and A115 now reads as one sentence |
+| The review's 40 probes and 24 prior probes | **P39 moved**, as above; nothing else |
+| Prompt 1 rerun | **14 of 17** checked within scope, unchanged: Halyard 7 of 8, Brightwater 3 of 4, Kestrel 4 of 5 |
+| The four samples | Brightwater and Kestrel unchanged. Halyard 3 checked, 6 needs review, 3 failed, queue 17, from 4, 5, 3 and 14: card 14 binds 7000 Depreciation, which its sentence ends on, and the case keys that card as an unsupported driver; the queue adds its binding conflict and unresolved figure, and `eased` on card 3, which had already failed. Ridgeline 0 checked, 1 needs review, 2 failed, queue 4, from 1, 0, 2 and 3: T1's `began in July` on a ledger with no header row |
+| Author fold against the checker, `audit/author-repair-2026-09-13/parity-node.cjs` | **665 of 665** inputs match |
+| Author page in headless Chrome on every audit probe and every class mutation | 445 inputs and 459 sentences; the checker holds 376 of them; **0** where the author page splits a memo differently, gives a different status or suggests a stand on a held sentence |
+| Checker Halyard sample and author Kestrel sample at 320, 375, 768, 1,024, 1,280 and 1,600 | no document or element overflow at any width, with card 14's checks opened; all 18 screenshots opened and read: the counts, card 14's binding conflict and card 3's `eased` row wrap inside their columns and nothing is clipped |
+
+## The six retained drafts
+
+Sentence statuses per draft, before at `e7b5994` and after at `09cec33`, from the audit's
+`six-drafts-as-fixtures.json`, for the claims pass to carry into the evidence note:
+
+| Draft | Sentences | Checked within scope | Needs review | Not checked | Failed | Queue |
+| --- | --- | --- | --- | --- | --- | --- |
+| halyard-blind, before | 30 | 1 | 14 | 13 | 2 | 55 |
+| halyard-blind, after | **29** | **0** | **15** | **12** | 2 | **59** |
+| halyard-prompt1, before and after | 8 | 7 | 0 | 1 | 0 | 9 |
+| brightwater-blind, before | 6 | 3 | 1 | 2 | 0 | 5 |
+| brightwater-blind, after | 6 | **0** | **4** | 2 | 0 | **8** |
+| brightwater-prompt1, before and after | 4 | 3 | 0 | 1 | 0 | 4 |
+| kestrel-blind, before | 7 | 0 | 5 | 2 | 0 | 14 |
+| kestrel-blind, after | **9** | **2** | **3** | **4** | 0 | **13** |
+| kestrel-prompt1, before and after | 5 | 4 | 0 | 1 | 0 | 6 |
+
+The blind drafts are not fixtures. Every change is one of the classes above:
+
+- **halyard-blind.** `**June 2026 vs.` and `May 2026**` are now one sentence, `**June 2026 vs. May
+  2026**`, still not checked. S5, `4100 Service revenue ... during the warmer month ...`, moves from
+  checked within scope to needs review on `month`: the ledger is headed `Prior / Current`, which names no
+  month. S8, `5000 Cost of product sold ... Movement tracks the increase in product revenue.`, stays at
+  needs review, now as a binding conflict because `product revenue.` binds. S27's totals sentence stays
+  failed and now also binds `warehouse wages.`. The queue grows by those items.
+- **brightwater-blind.** S1, S3 and S5, `... rose $42,400, or 44.2 percent, over May.` and its two
+  kin, move from checked within scope to needs review on `May`: the ledger is four plain columns with no
+  header row. S4 stays at needs review and names `far ahead`, a size, rather than `ahead of`.
+- **kestrel-blind.** S1 and S6 each ran two sentences together across a figure's full stop. They split:
+  `4000 Recurring managed services rose $36,900, or 22.85 percent, to $198,400.` and `6200 Software
+  licences and hosting rose $35,300, or 156.19 percent, to $57,900.` are checked within scope, and the
+  sentences after them, `The statement does not carry the cause ...` and `Confirm whether an annual or
+  multi-month renewal was paid inside July.`, are unmatched and not checked. The lane above recorded S6
+  as needs review because of that splitter defect.
+- **The Prompt 1 drafts** do not move, sentence for sentence.
+
+## Still open, after this lane
+
+- **Direction words in a reason that no clause word opens are tested.** `Rent expense rose $30,000 on a
+  decrease in vacancy` fails on `decrease`: `on` opens a reason for the lexicon but not a clause for the
+  direction check. After a comma the word is held, and after `as`, `because` or `while` it is left to
+  the reason. This is older than the grammar, and it fails rather than clears.
+- **Two splits stay ambiguous.** An initialism before a capitalized word, `U.S. Treasury`, and an initial
+  after a capitalized first name, `John J. Smith`, are read as sentence ends, and an abbreviation outside
+  the lists is read as an ordinary word.
+- **A name that is bound but claims nothing takes that line off the silent list.** `Rent expense rose
+  $30,000; so did Insurance expense.` now binds Insurance expense, so the sentence is held and the line
+  is not listed as silent. The held sentence carries it to a person; before, the line was silent and the
+  sentence was held on `so did`. A mid-sentence mention always behaved this way.
+- **Quarters, halves and fiscal years are never bound**, even on a ledger whose labels name them.
+- **Prompt 1 on a ledger with no header row.** A drafted reason that names a month, `because the lease
+  renewed on 1 June`, is held unless the pasted ledger carries its header. Prompt 1's text was not
+  changed in this lane.
+- **A weak sameness or share word inside a reason is still allowed**, `rose $30,000 as rents stayed
+  high` or `on leases that were mostly renewals`, by the design the lane above describes. Only size words
+  moved out of that allowance.
+- **Wording on an already held sentence is not listed**, as above.
+
+## Reproduction
+
+```
+bash audit/clearance-grammar-2026-09-13/residual/runners/verify.sh 09cec33 bb6fd2d e7b5994 ced24e5 <scratch dir>
+node audit/clearance-grammar-2026-09-13/residual/runners/pages.cjs <beat-the-machine> <out.json> <screenshot dir>
+```
+
+`verify.sh` archives both heads after and before, runs both suites and the parity test alone, runs the
+audit's `run-browser.cjs`, `run-python.py`, `compare.py` and `grade-probes.cjs` on the audit's five input
+sets, the four samples and the 178 neighbour probes at both heads, runs `split-parity.cjs` on the 44
+readings in `inputs/split-readings.json` and every memo, runs the author fold parity, and writes
+`residual/outputs/summary.json` with every count above. The graded files, parity files, suite logs and
+summary are in `residual/outputs/`; the full per-input exports stay in the scratch directory. `pages.cjs`
+drives the author page on every class input and both samples at six widths in a throwaway headless
+Chrome profile through the audit's driver, and the 18 screenshots are in `residual/screenshots/`.
