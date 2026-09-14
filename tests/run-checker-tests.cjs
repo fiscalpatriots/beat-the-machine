@@ -211,6 +211,30 @@ if (!only.length) {
     pass++;
     console.log("pass CORE " + shared.length + " shared reader functions identical in checker.html and assets/second-pass-core.js");
   }
+  /* The constants the functions read are held to the same rule: every one-line
+     constant the two files share, and the clearance grammar's lexicon block whole. */
+  const decl = (src) => {
+    const o = {};
+    for (const m of src.matchAll(/^\s*var ([A-Z_][A-Z0-9_]+)=([^\n]*)$/gm)) o[m[1]] = m[2].trim();
+    return o;
+  };
+  const block = (src) => {
+    const i = src.indexOf("6. CLEARANCE: WHAT IS LEFT ONCE THE CLAIMS ARE READ");
+    const j = src.indexOf("end of the clearance grammar");
+    return i < 0 || j < 0 ? null : src.slice(i, j).replace(/\s+/g, " ");
+  };
+  const hd = decl(HTML), cd = decl(CORE);
+  const sharedK = Object.keys(cd).filter((k) => k in hd);
+  const driftK = sharedK.filter((k) => hd[k] !== cd[k]);
+  if (block(HTML) === null || block(HTML) !== block(CORE)) driftK.push("the clearance grammar block");
+  if (driftK.length) {
+    fail++;
+    failed.push("CORE constant drift: assets/second-pass-core.js differs from checker.html in " + driftK.join(", "));
+    console.log("FAIL CORE constants, " + driftK.length + " differ");
+  } else {
+    pass++;
+    console.log("pass CORE " + sharedK.length + " shared constants and the clearance grammar block identical in both files");
+  }
 }
 
 console.log("\n" + pass + " passed, " + fail + " failed, " + (pass + fail) + " run");

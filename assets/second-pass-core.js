@@ -9,11 +9,13 @@
 
    checker.html still carries its own copy inline, because its regression suite
    lifts the script out of the page. The two copies are held identical: the suite,
-   node tests/run-checker-tests.cjs, compares every function this file shares with
-   checker.html and fails on any difference. The reader was brought back into line
-   with the page on 13 September 2026, after the third review, when the page's
-   no-change, multiplier, fraction and digit rules were added. A fix made in one
-   copy has to be made in the other before the suite passes.
+   node tests/run-checker-tests.cjs, compares every function and every one-line
+   constant this file shares with checker.html, and the clearance grammar's block
+   whole, and fails on any difference. The reader was brought back into line with
+   the page on 13 September 2026, after the third review, when the page's no-change,
+   multiplier, fraction and digit rules were added, and again the same night when
+   the clearance grammar (section 6) was added to both. A fix made in one copy has
+   to be made in the other before the suite passes.
 
    Nothing in this file touches the DOM, reads a global or stores anything.
    ============================================================================= */
@@ -278,7 +280,10 @@
     labels.forEach(function(l){if(!/^column \d+$/.test(l))named++;});
     var colsUnconfirmed=(T>2&&named<T&&!(choice&&typeof choice.p==="number"));
 
-    return {accounts:accounts,skipped:skipped,totals:totals,sections:sections,
+    /* every line carries the labels of the two columns it was read from, so a
+     sentence can be held when it names a month or a year neither of them names */
+  accounts.forEach(function(a){a.cols=[labels[pick.p],labels[pick.c]];});
+  return {accounts:accounts,skipped:skipped,totals:totals,sections:sections,
             labels:labels,T:T,pick:pick,guess:guess,header:!!headerCells,dups:dups,
             ambig:ambig,discarded:discarded,colsUnconfirmed:colsUnconfirmed};
   }
@@ -401,8 +406,23 @@
      it is listed in the reviewer's queue. Three kinds: a currency that is not the
      dollar, a scale or multiplier word the grammar does not carry, and a number
      standing where a claim stands that the figure reader did not take. */
-  var FOREIGN_BEFORE=/(?:[\u20AC\u00A3\u00A5\u20B9\u20BD\u20A9\u20AA\u20BA\u0E3F\u00A2]|\b(?:EUR|GBP|JPY|CHF|CAD|AUD|NZD|CNY|RMB|INR|MXN|BRL|ZAR|SEK|NOK|DKK|SGD|HKD|USD)\s)\s*$/i;
-  var FOREIGN_AFTER=/^\s*(?:[\u20AC\u00A3\u00A5\u20B9\u20BD\u20A9\u20AA\u20BA\u0E3F\u00A2]|\b(?:EUR|GBP|JPY|CHF|CAD|AUD|NZD|CNY|RMB|INR|MXN|BRL|ZAR|SEK|NOK|DKK|SGD|HKD|USD)\b)/i;
+  /* the currencies the page does not read: names, the qualifiers that make a
+     dollar someone else's dollar, ISO codes and symbols. A figure standing beside
+     one is an unparsed span; one standing anywhere else in a sentence holds it at
+     needs review (section 6). */
+  var CUR_NAMES="euros?|pounds?(?:\\s+sterling)?|sterling|yen|yuan|renminbi|rupees?|rupiahs?|francs?|pesos?|reais|rand|lira|lire|liras|kronor|kronur|krona|krone|kroner|zlotys?|roubles?|rubles?|shekels?|dirhams?|riyals?|rials?|dinars?|baht|ringgits?|naira|cedis?|shillings?|forints?|koruna|hryvnias?|pence|cents?|quid|bitcoins?";
+  var CUR_NAT="canadian|australian|new\\s+zealand|hong\\s+kong|singapore(?:an)?|taiwan(?:ese)?|jamaican|bahamian|barbadian|bermudian|belize|fijian|namibian|liberian|zimbabwean|guyanese|trinidad(?:ian)?|east\\s+caribbean|brunei|mexican|chilean|colombian|argentine|argentinian|philippine|cuban|dominican|uruguayan|brazilian|swiss|japanese|chinese|indian|british|european|russian|korean|turkish|israeli|swedish|norwegian|danish|polish|czech|hungarian|south\\s+african|egyptian|nigerian|kenyan|thai|indonesian|malaysian|vietnamese|pakistani|saudi|emirati|qatari|kuwaiti|u\\.?\\s?s\\.?|american|foreign|local";
+  var CUR_CODES="EUR|GBP|JPY|CHF|CAD|AUD|NZD|CNY|CNH|RMB|INR|MXN|BRL|ZAR|SEK|NOK|DKK|SGD|HKD|USD|KRW|RUB|ILS|PLN|CZK|HUF|THB|IDR|MYR|VND|PKR|SAR|AED|QAR|KWD|EGP|NGN|KES|TWD|ARS|CLP|COP|UAH|RON|BGN|ISK|LKR|BDT|JOD|BHD|OMR|XAF|XOF|XCD|JMD|TTD|BBD|BSD|BZD|BMD|FJD|GHS|BTC|ETH";
+  var CUR_SYM="\\u00A2-\\u00A5\\u058F\\u060B\\u09F2\\u09F3\\u0AF1\\u0BF9\\u0E3F\\u17DB\\u20A0-\\u20CF\\uFDFC\\uFE69\\uFFE0\\uFFE1\\uFFE5\\uFFE6";
+  var FOREIGN_BEFORE=new RegExp("(?:["+CUR_SYM+"]|\\b(?:"+CUR_CODES+")\\s)\\s*$","i");
+  var FOREIGN_AFTER=new RegExp("^\\s*(?:["+CUR_SYM+"]|\\b(?:"+CUR_CODES+")\\b|\\(\\s*(?:"+CUR_CODES+")\\s*\\)|(?:in\\s+)?(?:(?:"+CUR_NAT+")\\s+)?(?:"+CUR_NAMES+")\\b|(?:in\\s+)?(?:"+CUR_NAT+")\\s+(?:dollars?|currenc(?:y|ies)|terms)\\b|in\\s+(?:a\\s+)?(?:another|other)\\s+currenc(?:y|ies)\\b)","i");
+  /* a debit or credit marker written after a figure. Which way it points depends on
+     the account's normal balance, which a two column ledger does not say. */
+  var DRCR_AFTER=/^\s*\(?(?:CR|DR|Cr|Dr|cr|dr)\)?(?![A-Za-z])\.?|^\s*(?:credit|debit)s?\b/;
+  /* a unit word with no figure in front of it that the reader took: "trente pour
+     cent", "XXX percent", "thousands of dollars" */
+  var ORPHAN_UNIT=/\b(?:percent|per\s?cent|pct|pour\s+cent|por\s+ciento|prozent|percentage\s+points?|basis\s+points?|bps|dollars)\b|%/gi;
+  var ORPHAN_NOT=/^\s*(?:legs?|tests?|thresholds?|floors?|rules?|changes?|columns?|figures?|terms?)\b/i;
   var SCALE_AFTER=/^[\s-]*(?:thousands?|millions?|billions?|trillions?|mn|bn|basis\s+points?|bps|bp|times|multiples?|per\s?mille|permille|per\s+thousand|points?|pts)\b/i;
   var NUMWORD_RE=/\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion)(?:[\s-]+(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion))*\b/gi;
   var UNIT_AFTER=/^[\s,-]*(?:percent|per\s?cent|pct|%|percentage\s+points?|basis\s+points?|points?|dollars?)\b/i;
@@ -506,6 +526,8 @@
   var ODD_NUM_RE=/(?:[0-9][0-9.,]*)?[٠-٩۰-۹०-९০-৯๐-๙０-９²³¹⁰⁴-⁹₀-₉¼-¾⅐-⅞①-⑳‰‱％]+(?:[0-9.,٫٬]*[0-9٠-٩۰-۹०-९০-৯๐-๙０-９²³¹⁰⁴-⁹₀-₉¼-¾⅐-⅞①-⑳‰‱％])*/g;
   var MULT_RE=/\b(?:doubl(?:e|ed|es|ing)|tripl(?:e|ed|es|ing)|quadrupl(?:e|ed|es|ing)|quintupl(?:e|ed|es|ing)|halv(?:e|ed|es|ing)|twice|thrice|(?:two|three|four|five|six|seven|eight|nine|ten|twenty|hundred|[0-9]+(?:\.[0-9]+)?)[\s-]?fold|(?:one|two|three|four|five|six|seven|eight|nine|ten)\s+times|[0-9]+(?:\.[0-9]+)?\s?[x×])(?![A-Za-z0-9])/gi;
   var MULT_NOT=/^[\s-]+(?:entry|entries|count|counted|counting|check|checked|checking)\b/i;
+  /* numerals from a writing system the reader does not parse: "三十" */
+  var CJK_NUM_RE=/[〇零一二三四五六七八九十百千万萬億亿兆]+/g;
   var FRACW="half|halves|third|thirds|quarter|quarters|fifth|fifths|sixth|sixths|seventh|sevenths|eighth|eighths|ninth|ninths|tenth|tenths|twelfth|twelfths|hundredth|hundredths|thousandth|thousandths";
   var FRAC_RE=new RegExp("\\b(?:(a|an|one|two|three|four|five|six|seven|eight|nine|ten|[0-9]+)[\\s-]+(?:and[\\s-]+(?:a|one)[\\s-]+)?)?("+FRACW+")\\b","gi");
   var FRAC_KEEP=/^[\s-]*(?:of|percent|per|pct|point|points|again|more|less|higher|lower|the|a|an|and|or)\b|^[\s-]*(?:[^A-Za-z\s-]|$)/i;
@@ -529,7 +551,10 @@
      "millions billion billions trillion trillions mn bn times fold mille percentage to from by at of in on and or "+
      "but nor than over under above below versus vs against compared since for with as because while after before "+
      "the a an this that these those which who is was were are be been being it its so then when into through each "+
-     "more less higher lower plus minus now again same").split(" ").forEach(function(w){COUNT_STOP[w]=1;});
+     "more less higher lower plus minus now again same euro euros pound pounds sterling yen yuan renminbi rupee "+
+   "rupees franc francs peso pesos rand lira lire kronor krona krone kroner zloty zlotys rouble roubles ruble rubles "+
+   "shekel shekels dirham dirhams riyal riyals dinar dinars baht ringgit naira shilling shillings forint forints "+
+   "koruna pence cent cents quid grand thou bucks bitcoin bitcoins currency").split(" ").forEach(function(w){COUNT_STOP[w]=1;});
     UP.concat(DOWN).forEach(function(w){COUNT_STOP[w]=1;});
     Object.keys(MOVE_NOUN).forEach(function(w){COUNT_STOP[w]=1;});
     return COUNT_STOP;
@@ -544,7 +569,11 @@
     while((m=ODD_NUM_RE.exec(text))!==null){
       out.push({raw:m[0],at:m.index,end:m.index+m[0].length,why:"a digit or numeric character the checker does not read"});
     }
-    MULT_RE.lastIndex=0;
+    CJK_NUM_RE.lastIndex=0;
+  while((m=CJK_NUM_RE.exec(text))!==null){
+    out.push({raw:m[0],at:m.index,end:m.index+m[0].length,why:"a numeral the checker does not read"});
+  }
+  MULT_RE.lastIndex=0;
     while((m=MULT_RE.exec(text))!==null){
       if(/^doubl/i.test(m[0])&&MULT_NOT.test(text.slice(m.index+m[0].length)))continue;
       out.push({raw:m[0],at:m.index,end:m.index+m[0].length,why:"a multiplier the checker does not read"});
@@ -645,7 +674,19 @@
     function overlaps(i,j){var t;for(t=0;t<taken.length;t++){if(i<taken[t][1]&&j>taken[t][0])return true;}return false;}
     /* parentheses only make a figure negative when they close around it. A lone
        opening bracket, as in "increased by $30,000 (30%)", is punctuation. */
-    function hasSign(raw){return /^\s*-/.test(raw)||(/^\s*\(/.test(raw)&&/\)\s*$/.test(raw));}
+    function hasSign(raw){return /^\s*[-+]/.test(raw)||/^\s*\$\s?[-+]/.test(raw)||/-\s*$/.test(raw)||(/^\s*\(/.test(raw)&&/\)\s*$/.test(raw));}
+  /* a plus or a minus is the figure's sign only where it stands in front of the
+     figure, as in "by -30,000", "by +$60,000" or "$-30,000". Glued to a digit or a
+     letter before it, as in "25,000-35,000", it is a range or a hyphen. */
+  function signLead(m){
+    var t=m[0],at=m.index;
+    if(/^[-+]/.test(t)&&at>0&&/[A-Za-z0-9_.,\/%]/.test(text.charAt(at-1))){t=t.slice(1);at++;}
+    return {0:t,index:at};
+  }
+  /* a minus written after the figure, as in "changed by 30,000-" */
+  function trailMinus(end){
+    return text.charAt(end)==="-"&&!/[0-9$A-Za-z(]/.test(text.charAt(end+1)||"");
+  }
     /* a figure glued to the letters, digits, dots or slashes in front of it, as in
        "9e1 percent" or "US$30,000", is not the figure it would be on its own */
     var glued=[];
@@ -665,36 +706,41 @@
     odd.spans.forEach(function(o){taken.push([o.at,o.end]);});
     odd.outside.forEach(function(o){taken.push([o.at,o.end]);});
 
-    var rp=/([-(]?\s?\$?\s?\d[\d,]*(?:\.\d+)?\s?\)?)\s*(percentage points?|percent|per cent|pct|pp|%)/gi;
+    var rp=/([-+(]?\s?\$?\s?\d[\d,]*(?:\.\d+)?\s?\)?)\s*(percentage points?|percent|per cent|pct|pp|%)/gi;
     while((m=rp.exec(text))!==null){
       if(overlaps(m.index,m.index+m[0].length))continue;
       if(gluedAt(m))continue;
-      var ptxt=m[1],neg=hasSign(ptxt);
+      var ptxt=m[1],pat=m.index,praw=m[0];
+  if(signLead(m).index>m.index){ptxt=ptxt.slice(1);praw=praw.slice(1);pat++;}
+  var neg=hasSign(ptxt);
       if(/^\s*\(/.test(ptxt)&&!/\)\s*$/.test(ptxt))ptxt=ptxt.replace(/^\s*\(/,"");
       var pv=parseNum(ptxt);
       if(!isNaN(pv)){
-        out.push({raw:m[0].replace(/^\s*\(/,"").replace(/^\s+|\s+$/g,""),v:pv,at:m.index,end:m.index+m[0].length,
+        out.push({raw:praw.replace(/^\s*\(/,"").replace(/^\s+|\s+$/g,""),v:pv,at:pat,end:m.index+m[0].length,
                   unit:/point/i.test(m[2])||/^pp$/i.test(m[2])?"percentage points":"percent",
                   signed:neg});
       }
       taken.push([m.index,m.index+m[0].length]);
     }
-    var rd=/\(\s?\$?\s?\d(?:[\d,]*\d)?(?:\.\d+)?\s?[kKmMbB]?\s?\)|-?\$\s?\d(?:[\d,]*\d)?(?:\.\d+)?(?:\s?[kKmMbB]\b)?|\b\d{1,3}(?:,\d{3})+(?:\.\d+)?\b|\b\d+(?:\.\d+)?[kKmMbB]\b/g;
+    var rd=/\(\s?\$?\s?\d(?:[\d,]*\d)?(?:\.\d+)?\s?[kKmMbB]?\s?\)|[-+]?\$\s?[-+]?\s?\d(?:[\d,]*\d)?(?:\.\d+)?(?:\s?[kKmMbB]\b)?|[-+]?\b\d{1,3}(?:,\d{3})+(?:\.\d+)?\b|\b\d+(?:\.\d+)?[kKmMbB]\b/g;
     while((m=rd.exec(text))!==null){
       if(overlaps(m.index,m.index+m[0].length))continue;
       if(gluedAt(m))continue;
-      var dv=parseFig(m[0]);
+      var dm=signLead(m),draw=dm[0],dend=m.index+m[0].length;
+  var dv=parseFig(draw);
       if(isNaN(dv))continue;
-      out.push({raw:m[0].replace(/^\s+|\s+$/g,""),v:dv,at:m.index,end:m.index+m[0].length,
-                unit:"dollars",signed:hasSign(m[0])});
-      taken.push([m.index,m.index+m[0].length]);
+      var dsg=hasSign(draw);
+  if(!dsg&&trailMinus(dend)){dsg=true;dv=-Math.abs(dv);dend++;draw+="-";}
+  out.push({raw:draw.replace(/^\s+|\s+$/g,""),v:dv,at:dm.index,end:dend,
+                unit:"dollars",signed:dsg});
+      taken.push([m.index,dend]);
     }
     /* ordinary numeric text: four digits or more, no currency punctuation at all.
        A minus sign in front of it is part of the figure and is carried through.
        A bare four digit number that reads as a year is left where it stands, and
        an account number written out is a reference; either one, standing where the
        words put a claim, is picked up as an unparsed span further down. */
-    var rn=/(?:-\s?)?\b\d{4,}(?:\.\d+)?\b/g;
+    var rn=/(?:[-+]\s?)?\b\d{4,}(?:\.\d+)?\b/g;
     while((m=rn.exec(text))!==null){
       if(overlaps(m.index,m.index+m[0].length))continue;
       var bare=m[0].replace(/[^0-9.]/g,"");
@@ -702,10 +748,12 @@
       if(LABEL_BEFORE.test(text.slice(Math.max(0,m.index-40),m.index)))continue;
       if(skipNums&&skipNums[bare])continue;
       if(gluedAt(m))continue;
-      out.push({raw:m[0].replace(/\s+/g,""),v:parseFloat(bare)*(/^-/.test(m[0])?-1:1),
-                at:m.index,end:m.index+m[0].length,
-                unit:"dollars",signed:/^-/.test(m[0]),plain:true});
-      taken.push([m.index,m.index+m[0].length]);
+      var bm=signLead(m),bend=m.index+m[0].length,bneg=/^-/.test(bm[0]),bsg=/^[-+]/.test(bm[0]);
+  if(!bsg&&trailMinus(bend)){bsg=true;bneg=true;bend++;}
+  out.push({raw:bm[0].replace(/\s+/g,"")+(bend>m.index+m[0].length?"-":""),v:parseFloat(bare)*(bneg?-1:1),
+                at:bm.index,end:bend,
+                unit:"dollars",signed:bsg,plain:true});
+      taken.push([m.index,bend]);
     }
     /* a quantity in words that the parser resolved and the words gave a unit is
        an ordinary figure from here on. */
@@ -730,7 +778,11 @@
         rejected.push({raw:f.raw+mm[0],at:f.at,end:f.end+mm[0].length,
           why:"a currency the checker does not read"});return;
       }
-      if(f.unit==="dollars"&&(mm=after.match(SCALE_AFTER))){
+      if(f.unit==="dollars"&&(mm=after.match(DRCR_AFTER))){
+    rejected.push({raw:f.raw+mm[0],at:f.at,end:f.end+mm[0].length,
+      why:"a debit or credit marker the checker does not read"});return;
+  }
+  if(f.unit==="dollars"&&(mm=after.match(SCALE_AFTER))){
         rejected.push({raw:f.raw+mm[0],at:f.at,end:f.end+mm[0].length,
           why:"a scale word the checker does not carry"});return;
       }
@@ -760,6 +812,17 @@
     var stray=strayNumbers(text,spans,keep,skipNums);
     stray.forEach(function(n){rejected.push(n);});
     stray.outside.forEach(function(o){outside.push(o);});
+    var told=spans.slice();
+    stray.forEach(function(n){told.push([n.at,n.end]);});
+    stray.outside.forEach(function(o){told.push([o.at,o.end]);});
+    ORPHAN_UNIT.lastIndex=0;
+    while((m=ORPHAN_UNIT.exec(text))!==null){
+      var oa=m.index,ob=oa+m[0].length,hit=false;
+      for(k=0;k<told.length;k++)if(oa<told[k][1]&&ob>told[k][0]){hit=true;break;}
+      for(k=0;k<keep.length;k++)if(keep[k].unit==="dollars"&&m[0].toLowerCase()==="dollars"&&keep[k].end<=oa&&!/S/.test(text.slice(keep[k].end,oa)))hit=true;
+    if(hit||ORPHAN_NOT.test(text.slice(ob)))continue;
+      rejected.push({raw:m[0],at:oa,end:ob,why:"a unit with no figure the checker reads in front of it"});
+    }
     rejected.sort(function(a,b){return a.at-b.at;});
     outside.sort(function(a,b){return a.at-b.at;});
     keep.rejected=rejected;
@@ -926,7 +989,9 @@
         });
       }
       f.clause=cl?cl.text:s.text;
-      f.bind=hits.length===1?hits:null;
+      /* "respectively" pairs figures with accounts by position, which the clauses do
+     not show, so no figure in such a sentence is bound by its clause */
+  f.bind=(hits.length===1&&!/\brespectively\b/i.test(s.text))?hits:null;
     });
   }
 
@@ -1280,6 +1345,235 @@
     return !!(figures(t).length||dirWords(t).length||flatWord(t));
   }
 
+  /* ---------- 6. CLEARANCE: WHAT IS LEFT ONCE THE CLAIMS ARE READ -----------
+     A sentence is checked within scope only when nothing risky is left after every
+     claim in it is read. The reader takes out, character by character, the account
+     names and numbers the sentence is bound by, every figure it read, every span it
+     recorded as unparsed or as outside the check, the direction and no-change words
+     it tests, the movement nouns, "changed by" and "moved by" in front of a figure,
+     and the period frame of the ledger's own two columns: "month over month", "the
+     prior month", or a month the column labels name. Whatever is left is read
+     against the risk lexicon below.
+
+     A strong entry holds the sentence wherever it stands: currencies, signs and
+     debit or credit markers, sameness and comparison words, another account carried
+     by "so did" or "respectively", budgets, plans and bases, and periods other than
+     the ledger's pair. A weak entry holds it only inside the claim, which runs from
+     the start of the sentence to the first word that opens a reason after its last
+     figure ("because", "as", "on", "with", "after" and kin), unless that reason
+     points straight back at the line ("because it", "as the balance"). A reason is
+     already a question for a person, so words that only describe the cause stay
+     with that question.
+
+     Two rules are structural rather than lexical. Where a sentence binds more than
+     one account, every account it names needs a figure or a tested direction word
+     in its own clause, or the sentence is held. Where the column labels name no
+     month, two months in the claim that are not neighbours are held.
+
+     Anything left holds a sentence that would otherwise be checked at needs review,
+     and the reviewer's queue names the word. */
+  var MONTHS_CAP="Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|June?|July?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?";
+  var ACCEPT_FRAME=/\b(?:chang(?:ed|es)|mov(?:ed|es)|shift(?:ed|s)|swung|var(?:ied|ies))\s+by(?=\s*[-+($0-9])|\bmonth[\s-]+(?:over|on)[\s-]+month\b|\b(?:mom|m\/m)\b|\b(?:over|from|versus|vs\.?|against|compared\s+(?:with|to)|relative\s+to|than)\s+(?:(?:in|at)\s+)?(?:the\s+)?(?:(?:prior|previous|preceding|last)\s+month|month\s+(?:before|earlier))\b|\brather\s+than\b|\binstead\s+of\b/gi;
+  var FRAME_MONTH=new RegExp("\\b(?:over|from|versus|vs\\.?|against|compared\\s+(?:with|to)|relative\\s+to|than(?:\\s+(?:in|at))?)\\s+(?:the\\s+)?("+MONTHS_CAP+")\\.?(?:,?\\s+((?:19|20)[0-9]{2}))?\\b","gi");
+  var MONTH_TOKEN=new RegExp("\\b(?:"+MONTHS_CAP+")\\b","g");
+  var REASON_AT=/\b(?:because|as|since|on|upon|due\s+to|owing\s+to|thanks\s+to|driven\s+by|caused\s+by|led\s+by|reflecting|reflects|following|after|with|amid|whereas|while)\b|\(/gi;
+  var REASON_BACK=/^\s*(?:it|its|this|these|that|the\s+(?:line|account|balance|movement|increase|decrease|rise|fall|change|variance|figure|amount|total))\b/i;
+  var CONTRACT_NOUN=/^[\s-]+(?:terms?|leases?|contracts?|renewals?|subscriptions?|agreements?|plans?|polic(?:y|ies)|licen[cs]es?|commitments?|prepayments?|retainers?|warrant(?:y|ies)|deals?|bonus(?:es)?|fees?|dues|audits?|reviews?|minimums?|maintenance|rent|charges?|invoices?|billing)\b/i;
+  var NUMW_RISK="two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|[0-9]+|several|few|past|last|prior|previous|recent|coming|next|many";
+  /* The lexicon. cat names the class, strong says it holds wherever it stands, cs
+     makes the match case sensitive, not skips a match the words after it explain,
+     and contract skips a period word that only gives the length of a lease, a
+     contract, a fee or a renewal ("a one-year lease"). */
+  var RISK_LEX=[
+    {cat:"currency",strong:1,re:"\\b(?:"+CUR_NAMES+")\\b",
+     why:"names a currency, and the checker reads dollars only"},
+    {cat:"currency",strong:1,re:"\\b(?:(?:"+CUR_NAT+")\\s+(?:dollars?|currenc(?:y|ies)|terms)|currenc(?:y|ies)|exchange\\s+rates?|foreign\\s+exchange|forex|fx)\\b",
+     why:"names a currency or an exchange rate, and the checker reads dollars only"},
+    {cat:"currency",strong:1,cs:1,re:"\\b(?:"+CUR_CODES+"|Rs)\\b",
+     why:"is a currency code, and the checker reads dollars only"},
+    {cat:"currency",strong:1,re:"["+CUR_SYM+"]",
+     why:"is a currency symbol other than the dollar sign"},
+    {cat:"sign",strong:1,cs:1,re:"\\b(?:CR|DR|Cr|Dr)\\b\\.?",not:"^\\.?\\s+[A-Z][a-z]",
+     why:"marks a debit or a credit, and which way that points depends on the account"},
+    {cat:"sign",strong:1,re:"\\b(?:credit|debit)\\s+balances?\\b|\\bin\\s+(?:credit|debit)\\b|\\bnet\\s+(?:credit|debit)\\b|\\b(?:credited|debited)\\b|\\b(?:un)?favou?rabl[ey]\\b|\\badverse(?:ly)?\\b|\\b(?:un)?fav\\b",
+     why:"marks a debit, a credit or a favourable or adverse variance, and which way that points depends on the account"},
+    {cat:"sign",strong:1,cs:1,re:"\\((?:F|U|A|Fav|Unfav|Adv)\\)",
+     why:"marks a favourable or adverse variance, and which way that points depends on the account"},
+    {cat:"sign",strong:1,re:"\\B[-+](?=\\s*\\(|\\s+\\$?[0-9])|\\(\\s*[-+]\\s*\\)|\\+\\/-|\\u00B1",
+     why:"is a sign standing apart from the figure, which the checker does not read as the figure's sign"},
+    {cat:"sign",strong:0,re:"\\b(?:plus|minus|negative|positive)\\b",
+     why:"gives a sign in words the checker does not read"},
+    {cat:"other account",strong:1,re:"\\b(?:so|as|neither|nor)\\s+(?:did|was|were|has|have|had|does|do|is|are)\\b|\\blikewise\\b|\\bsimilarly\\b|\\bthe\\s+same\\s+(?:was|is|holds?|goes|applies)\\b|\\brespectively\\b|\\bthe\\s+rest\\b|\\bfollow(?:ed|s)\\s+suit\\b|\\bin\\s+(?:tandem|step|kind)\\b|\\b(?:other|another|every|all)\\s+(?:other\\s+)?(?:lines?|accounts?)\\b",
+     why:"carries the claim over to another line without a figure the checker can tie"},
+    {cat:"other account",strong:0,re:"\\b(?:also|too|as\\s+well|together|alongside|equally)\\b",
+     why:"points at another line the claim does not name"},
+    {cat:"sameness",strong:1,re:"\\b(?:same|identical(?:ly)?|equal(?:s|led|ed)?|equivalent|match(?:ed|es|ing)?|comparabl[ey]|similar|consistent(?:ly)?|in[\\s-]?line\\s+with|on\\s+(?:a\\s+)?par|par\\s+with|parity|unaltered|(?:no|not)\\s+different|even\\s+with|in\\s+keeping\\s+with|ditto|stable|stability|stabili[sz](?:ed|es|ing)|steady|steadily|static|constant|flattish|flat[\\s-]?lined?|stagna(?:nt|ted|tion)|stall(?:ed|s|ing)|plateau(?:ed|s|ing)?|sideways|little[\\s-]+changed?|level|barely|hardly|scarcely)\\b",
+     why:"claims no change or sameness in a word the checker does not test"},
+    {cat:"sameness",strong:0,re:"\\b(?:virtually|essentially|practically|basically|broadly|largely|roughly\\s+(?:flat|unchanged)|maintain(?:ed|s|ing)?|sustain(?:ed|s|ing)?|persist(?:ed|s|ing)?|remain(?:ed|s|ing)?|stay(?:ed|s|ing)?|held|hold(?:s|ing)?|kept|keep(?:s|ing)?|continu(?:ed|es|ing)|still|mirror(?:ed|s|ing)?|track(?:ed|s|ing)?)\\b",
+     why:"claims no change or sameness in a word the checker does not test"},
+    {cat:"comparison",strong:1,re:"\\b(?:compared\\s+(?:with|to)|in\\s+comparison|comparison|versus|vs\\.?|against|relative\\s+to|than|outpac(?:ed|es|ing)|outperform(?:ed|s|ing)?|underperform(?:ed|s|ing)?|outstrip(?:ped|s|ping)?|exceed(?:ed|s|ing)?|ahead\\s+of|behind|short\\s+of|shy\\s+of|lag(?:ged|s|ging)?)\\b",
+     why:"compares with something other than the ledger's two columns"},
+    {cat:"comparison",strong:0,re:"\\b(?:largest|biggest|smallest|highest|lowest|greatest|most|least|record|top|rank(?:ed|s|ing)?|leading|all[\\s-]time)\\b",
+     why:"ranks this line against others, which the checker does not test"},
+    {cat:"basis",strong:1,re:"\\b(?:budget(?:s|ed|ary)?|forecast(?:s|ed|ing)?|re-?forecast(?:s|ed)?|outlook|guidance|projection(?:s)?|projected|pro[\\s-]?forma|run[\\s-]rate|annuali[sz](?:ed|es|ing|ation)|like[\\s-]for[\\s-]like|constant\\s+currency|normali[sz](?:ed|ation)|seasonally[\\s-]adjusted|basis|cumulative(?:ly)?|to[\\s-]date|so\\s+far|since\\s+inception|as\\s+(?:expected|planned|anticipated))\\b|\\b(?:versus|vs\\.?|against|to|over|under|above|below|ahead\\s+of|behind|compared\\s+(?:with|to)|relative\\s+to|than|of|from|missed|beat|met)\\s+(?:the\\s+)?(?:plan|target|estimates?|expectations?|consensus|goal)\\b",
+     why:"measures against a budget, a plan, a forecast or a basis the ledger does not hold"},
+    {cat:"period",strong:1,cs:1,re:"\\b(?:PY|LY|CY|PYTD|CYTD|YTD|QTD|MTD|TTM|LTM|YoY|QoQ)\\b",
+     why:"frames the claim on a period other than the ledger's two columns"},
+    {cat:"period",strong:1,contract:1,re:"\\b(?:yrs?|years?(?:[\\s-]+(?:over|on|to)[\\s-]+(?:year|date))?|yearly|annual(?:ly)?|per\\s+annum|yoy|y\\/y|ytd|qtd|mtd|(?:month|quarter)[\\s-]to[\\s-]date|fiscal|fy\\s?[0-9]{0,4}|quarter(?:s|ly)?(?:[\\s-]end)?|q[1-4]|[1-4]q|h[12]|[12]h|half[\\s-]year(?:ly)?|semi[\\s-]?annual(?:ly)?|biannual(?:ly)?|trailing|ttm|ltm|ntm|rolling|twelve[\\s-]months?|12[\\s-]months?|months|weeks|quarters|(?:"+NUMW_RISK+")[\\s-]+(?:days|months|weeks|quarters|years)|(?:consecutive|straight|successive|running)\\s+(?:months?|quarters?|years?|periods?)|in\\s+a\\s+row|week[\\s-]over[\\s-]week|wow|qoq|q\\/q|sequential(?:ly)?|(?:prior|previous|comparable|same)\\s+periods?|period[\\s-]over[\\s-]period|since\\s+(?:the\\s+)?(?:start|beginning|end|last|jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?|(?:19|20)[0-9]{2}|q[1-4]|year|quarter)|(?:last|next|this|previous|prior)\\s+(?:jan(?:uary)?|feb(?:ruary)?|march|apr(?:il)?|may|june|july|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?|spring|summer|autumn|fall|winter)|(?:over|during|through(?:out)?|across|since)\\s+(?:the\\s+)?(?:spring|summer|autumn|fall|winter|holidays?|season)|(?:first|second|1st|2nd)\\s+half(?!\\s+of\\s+(?:the\\s+)?(?:month|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec))|ago|per\\s+(?:month|week|day|quarter))\\b",
+     why:"frames the claim on a period other than the ledger's two columns"},
+    {cat:"period",strong:0,re:"\\b(?:weeks?|days?|week[\\s-]?end|spring|summer|autumn|winter|seasonal(?:ly)?|holidays?|through|thru|until|till|during|(?:first|second|third|fourth|last|final|early|late|mid)[\\s-]+(?:half|week|weeks|days?|part|month)|mid[\\s-]?month|early|late|recent(?:ly)?|previously|historically|typically|usually|normally|again|yet)\\b",
+     why:"places the claim inside or across a period the ledger's two columns do not show"},
+    {cat:"change",strong:0,re:"\\b(?:soar(?:ed|s|ing)?|spik(?:ed|es|ing)|spike|leap(?:t|ed|s|ing)?|rocket(?:ed|s|ing)?|balloon(?:ed|s|ing)?|swell(?:ed|s|ing)?|swollen|plung(?:ed|es|ing)|plunge|plummet(?:ed|s|ing)?|tumbl(?:ed|es|ing)|tumble|slump(?:ed|s|ing)?|sank|sink(?:s|ing)?|sunk|dip(?:ped|s|ping)?|contract(?:ed|ing)|shrunk|shrink(?:s|ing)?|dwindl(?:ed|es|ing)|collaps(?:ed|es|ing)|crater(?:ed|s|ing)|retreat(?:ed|s|ing)|rebound(?:ed|s|ing)?|recover(?:ed|s|ing)|bounc(?:ed|es|ing)|revers(?:ed|es|ing)|swung|swing(?:s|ing)|flipp(?:ed|ing)|mov(?:ed|es|ing)|move|shift(?:ed|s|ing)?|fluctuat(?:ed|es|ing|ions?)|var(?:ied|ies|ying)|widen(?:ed|s|ing)|narrow(?:ed|s|ing)|deepen(?:ed|s|ing)|improv(?:ed|es|ing|ements?)|worsen(?:ed|s|ing)|deteriorat(?:ed|es|ing|ion)|strengthen(?:ed|s|ing)|weaken(?:ed|s|ing)|peak(?:ed|s|ing)|bottom(?:ed|s|ing)|surpass(?:ed|es|ing)|escalat(?:ed|es|ing)|inflat(?:ed|es|ing)|deflat(?:ed|es|ing)|compress(?:ed|es|ing)|erod(?:ed|es|ing)|ramp(?:ed|s|ing)|decelerat(?:ed|es|ing)|slow(?:ed|s|ing)|tick(?:ed|s)\\s+(?:up|down)|edg(?:ed|es|ing)\\s+(?:up|down|higher|lower)|inch(?:ed|es|ing)\\s+(?:up|down|higher|lower)|crept|trend(?:ed|s|ing)?|went\\s+(?:up|down)|came\\s+(?:in|down)|pick(?:ed|s)\\s+up|chang(?:ed|es|ing)|climbing|follow(?:ed|s))\\b",
+     why:"describes a change in a word the checker does not test against the ledger"},
+    {cat:"change",strong:0,re:"\\b(?:sharp(?:ly)?|significant(?:ly)?|substantial(?:ly)?|material(?:ly)?|marked(?:ly)?|dramatic(?:ally)?|considerabl[ey]|notabl[ey]|modest(?:ly)?|slight(?:ly)?|marginal(?:ly)?|moderate(?:ly)?|steep(?:ly)?|strong(?:ly)?|weak(?:ly)?|huge(?:ly)?|big(?:ger)?|large(?:r)?|small(?:er)?|sizeabl[ey]|sizabl[ey]|major|minor|massive(?:ly)?|meaningful(?:ly)?|negligibl[ey]|immaterial(?:ly)?|tiny|great(?:ly|er)?|appreciabl[ey]|noticeabl[ey]|drastic(?:ally)?|radical(?:ly)?|severe(?:ly)?|heav(?:y|ily|ier)|mild(?:ly)?|somewhat|outsized|disproportionate(?:ly)?|unusual(?:ly)?|abnormal(?:ly)?|brisk(?:ly)?|robust(?:ly)?|solid(?:ly)?|healthy)\\b",
+     why:"sizes the movement in a word the checker does not test"},
+    {cat:"quantity",strong:0,re:"\\b(?:most(?:ly)?|main(?:ly)?|primar(?:y|ily)|partly|partial(?:ly)?|entire(?:ly)?|whol(?:e|ly)|full(?:y)?|sole(?:ly)?|chief(?:ly)?|predominant(?:ly)?|exclusive(?:ly)?|principal(?:ly)?|in\\s+part|in\\s+full|bulk|majority|minority|portion|share|offset(?:s|ting)?|net\\s+of|several|many|much|numerous|multiple|few|fewer|more|less|lesser|dozens?|hundreds|thousands|millions|billions|lots?|plenty|handful|countless|various|extra|additional|incremental|excess|surplus|shortfall|deficit|gap|difference|delta|spread|margin|ratio|rate|proportion|fraction)\\b",
+     why:"is a quantity or a share in words the checker does not test"}
+  ];
+  var RISK_RX=null;
+  function riskRx(){
+    if(RISK_RX)return RISK_RX;
+    RISK_RX=RISK_LEX.map(function(e){
+      return {cat:e.cat,strong:!!e.strong,contract:!!e.contract,why:e.why,
+              rx:new RegExp(e.re,e.cs?"g":"gi"),not:e.not?new RegExp(e.not):null};
+    });
+    return RISK_RX;
+  }
+  /* the month and the year a ledger column label names, or null */
+  function labelMonth(l){
+    var m=String(l==null?"":l).toLowerCase().match(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b/);
+    return m?MONTHNUM[m[1]]:null;
+  }
+  function labelYear(l){
+    var m=String(l==null?"":l).match(/\b(?:19|20)[0-9]{2}\b/);
+    return m?parseInt(m[0],10):null;
+  }
+  function riskTokens(s){
+    var text=String(s.text),n=text.length,used=[],out=[],i,m,k;
+    for(i=0;i<n;i++)used.push(0);
+    function eat(a,b){for(k=Math.max(0,a);k<Math.min(n,b);k++)used[k]=1;}
+    function eatRe(re){
+      re.lastIndex=0;
+      while((m=re.exec(text))!==null){
+        eat(m.index,m.index+m[0].length);
+        if(!m[0].length)re.lastIndex++;
+      }
+    }
+    function add(raw,at,why,cat){out.push({raw:raw,at:at,end:at+raw.length,cat:cat,why:why});}
+    var figs=s.figs||[],bound=s.bound||[],lastFig=-1,held=[];
+    figs.forEach(function(f){eat(f.at,f.end);held.push([f.at,f.end]);if(f.end>lastFig)lastFig=f.end;});
+    (figs.rejected||[]).forEach(function(r){eat(r.at,r.end);held.push([r.at,r.end]);});
+    /* a label that names a period, "Q2", "H1" or "FY26", is read as a period here */
+    (figs.outside||[]).forEach(function(o){if(!/^(?:q[1-4]|[1-4]q|h[12]|[12]h|fy[0-9]*)$/i.test(o.raw))eat(o.at,o.end);});
+    bound.forEach(function(a){
+      if(a.num)eatRe(new RegExp("\\b"+a.num+"\\b","g"));
+      var ws=String(a.flat||"").split(" ").filter(function(w){return w;});
+      if(ws.length)eatRe(new RegExp("\\b"+ws.join("[^A-Za-z0-9]+")+"\\b","gi"));
+      (a.words||[]).forEach(function(w){eatRe(new RegExp("\\b"+w+"\\b","gi"));});
+    });
+    eatRe(new RegExp("\\b(?:"+UP.concat(DOWN).concat(Object.keys(MOVE_NOUN)).join("|")+")\\b","gi"));
+    FLATW.forEach(function(w){eatRe(new RegExp("\\b"+w.replace(/ /g,"\\s+")+"\\b","gi"));});
+    eatRe(new RegExp(STILL_FIG.source,"gi"));
+    eatRe(ACCEPT_FRAME);
+    var cols=(bound.length&&bound[0].cols)||[];
+    var mp=labelMonth(cols[0]),mc=labelMonth(cols[1]),yp=labelYear(cols[0]),yc=labelYear(cols[1]);
+    FRAME_MONTH.lastIndex=0;
+    while((m=FRAME_MONTH.exec(text))!==null){
+      if(!/^[A-Z]/.test(m[1]))continue;
+      var fm=MONTHNUM[m[1].slice(0,3).toLowerCase()],fy=m[2]?parseInt(m[2],10):null;
+      var ok=mp!==null?(fm===mp&&(fy===null||fy===yp)):fy===null;
+      if(ok)eat(m.index,m.index+m[0].length);
+    }
+    /* the claim runs to the first word that opens a reason after the last figure,
+       passing over a reason that points straight back at the line */
+    var anchor=lastFig;
+    if(anchor<0){
+      var dm=new RegExp("\\b(?:"+UP.concat(DOWN).join("|")+")\\b","i").exec(text);
+      anchor=dm?dm.index+dm[0].length:0;
+    }
+    var reasonAt=n;
+    REASON_AT.lastIndex=anchor;
+    while((m=REASON_AT.exec(text))!==null){
+      if(REASON_BACK.test(text.slice(m.index+m[0].length)))continue;
+      reasonAt=m.index;break;
+    }
+    function inHeld(a,b){
+      for(k=0;k<held.length;k++)if(a<held[k][1]&&b>held[k][0])return true;
+      return false;
+    }
+    riskRx().forEach(function(e){
+      e.rx.lastIndex=0;
+      while((m=e.rx.exec(text))!==null){
+        var a=m.index,b=a+m[0].length,all=true;
+        if(!m[0].length){e.rx.lastIndex++;continue;}
+        for(k=a;k<b;k++)if(!used[k]&&/\S/.test(text.charAt(k))){all=false;break;}
+        if(all)continue;
+        if(!e.strong&&a>=reasonAt)continue;
+        if(e.not&&e.not.test(text.slice(b)))continue;
+        if(e.contract&&CONTRACT_NOUN.test(text.slice(b)))continue;
+        add(m[0],a,e.why,e.cat);
+      }
+    });
+    /* a month or a year the ledger's column labels contradict, and, where the labels
+       name no month, two months in the claim that are not neighbours */
+    var seen=[];
+    MONTH_TOKEN.lastIndex=0;
+    while((m=MONTH_TOKEN.exec(text))!==null){
+      if(m.index>=reasonAt)continue;
+      var tm=MONTHNUM[m[0].slice(0,3).toLowerCase()];
+      if(mp!==null&&mc!==null){
+        if(tm!==mp&&tm!==mc&&!used[m.index])add(m[0],m.index,"is neither of the two months the ledger compares","period");
+        continue;
+      }
+      if(seen.length&&seen.indexOf(tm)<0&&!used[m.index]){
+        var d=Math.abs(tm-seen[0]);
+        if(seen.length>1||(d!==1&&d!==11))add(m[0],m.index,"with the other month named, spans more than the one month to month change the ledger holds","period");
+      }
+      if(seen.indexOf(tm)<0)seen.push(tm);
+    }
+    var yr=/\b(?:19|20)[0-9]{2}\b/g;
+    while((m=yr.exec(text))!==null){
+      if(yp===null&&yc===null)break;
+      var y=parseInt(m[0],10);
+      if(y===yp||y===yc||inHeld(m.index,m.index+m[0].length))continue;
+      add(m[0],m.index,"is not the year of either column the ledger compares","period");
+    }
+    /* every account a sentence binds needs a claim of its own */
+    if(bound.length>1){
+      var fine=spansOf(text,RE_FINE);
+      bound.forEach(function(a){
+        var hits=[];
+        fine.forEach(function(c){
+          var ct=" "+c.text.toLowerCase().replace(/[^a-z0-9\s]/g," ").replace(/\s+/g," ")+" ";
+          if((a.num&&new RegExp("(^|[^0-9])"+a.num+"([^0-9]|$)").test(c.text))||
+             (a.flat&&ct.indexOf(" "+a.flat+" ")>-1)||(a.two&&a.two.indexOf(" ")>-1&&ct.indexOf(" "+a.two+" ")>-1))hits.push(c);
+        });
+        if(!hits.length)return;
+        var claimed=hits.some(function(c){
+          var any=false;
+          figs.forEach(function(f){if(f.at>=c.at&&f.at<c.end)any=true;});
+          return any||dirWords(c.text).length>0||!!flatWord(c.text);
+        });
+        if(claimed)return;
+        var ws=String(a.flat||"").split(" ").filter(function(w){return w;}),nm=null;
+        if(ws.length)nm=new RegExp("\\b"+ws.join("[^A-Za-z0-9]+")+"\\b","i").exec(hits[0].text);
+        if(!nm&&a.num)nm=new RegExp("\\b"+a.num+"\\b").exec(hits[0].text);
+        var raw=nm?nm[0]:hits[0].text.replace(/^\s+|\s+$/g,""),at=hits[0].at+(nm?nm.index:hits[0].text.search(/\S/));
+        add(raw,at,"is named with no figure and no direction word of its own, so what the sentence claims about it is not tied to the ledger","other account");
+      });
+    }
+    out.sort(function(x,y){return x.at-y.at||y.end-x.end;});
+    var kept=[];
+    out.forEach(function(o){
+      var last=kept[kept.length-1];
+      if(last&&o.at<last.end)return;
+      o.txt="“"+o.raw+"” "+o.why+", so this sentence is held for a person to read";
+      kept.push(o);
+    });
+    return kept;
+  }
+  /* end of the clearance grammar */
+
   /* ============================================================ the parse preview */
   var USERCOLS=null,PVTIMER=null,PVSIG="";
 
@@ -1306,7 +1600,21 @@
 
 
     /* ---- from checker.html 2092-2159: the direction check ---- */
+  /* the direction check, and then what the clearance grammar leaves. The words it
+     leaves hold the sentence, and join the loose list, only where they are what would
+     stop it clearing: a sentence carrying an unparsed span is already not checked, a
+     sentence with no figure and no threshold claim has nothing to clear, and one
+     already failed or held stays as it is. */
   function directionOn(s){
+    var d=directionRead(s);
+    if(!d)return null;
+    d.risk=riskTokens(s);
+    d.held=!(s.residue&&s.residue.length)&&!!((s.figs&&s.figs.length)||policyClaims(s.text).length)&&
+    (s.st===undefined||s.st==="checked within scope"||s.st==="not checked");
+    if(d.held)d.risk.forEach(function(r){d.loose.push(r.txt);});
+    return d;
+  }
+  function directionRead(s){
     if(!s.bound.length)return null;
     var bad=[],good=[],anchored=[],voided=[],loose=[],open=[],prevEnd=0;
     spansOf(s.text,RE_COARSE).forEach(function(sp){
@@ -1506,6 +1814,27 @@
     NEG_RE: NEG_RE,
     RANK: RANK,
     BADGE: BADGE,
-    ROLE_OPTIONS: ROLE_OPTIONS
+    ROLE_OPTIONS: ROLE_OPTIONS,
+    /* the clearance grammar, added 13 September 2026 */
+    riskTokens: riskTokens,
+    riskRx: riskRx,
+    directionRead: directionRead,
+    labelMonth: labelMonth,
+    labelYear: labelYear,
+    RISK_LEX: RISK_LEX,
+    ACCEPT_FRAME: ACCEPT_FRAME,
+    FRAME_MONTH: FRAME_MONTH,
+    MONTH_TOKEN: MONTH_TOKEN,
+    REASON_AT: REASON_AT,
+    REASON_BACK: REASON_BACK,
+    CONTRACT_NOUN: CONTRACT_NOUN,
+    CUR_NAMES: CUR_NAMES,
+    CUR_NAT: CUR_NAT,
+    CUR_CODES: CUR_CODES,
+    CUR_SYM: CUR_SYM,
+    DRCR_AFTER: DRCR_AFTER,
+    ORPHAN_UNIT: ORPHAN_UNIT,
+    ORPHAN_NOT: ORPHAN_NOT,
+    CJK_NUM_RE: CJK_NUM_RE
   };
 })(typeof window !== "undefined" ? window : this);
