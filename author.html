@@ -641,6 +641,12 @@ function suggestFor(s, silentAcct, rule){
     if(s.goodDir.length) found.push("Its direction agrees with the sign of the movement.");
     else if(s.okFigs) found.push("It states no direction, so no direction was tested.");
     if(s.goodPolicy.length) found.push("Its threshold claim is right under the rule as set.");
+    /* the numbers the checker read and left outside the check (a count, a date, a year, a label),
+       named the way the checker's own explanation names them, so a count is never read as tied */
+    var outs = ((s.figs && s.figs.outside) || []).map(function(o){
+      return "“" + o.raw + "” (" + ((core().OUTSIDE_WHY || {})[o.kind] || "a number the ledger does not hold") + ")";
+    });
+    if(outs.length) found.push("Read and left outside the check: " + outs.join("; ") + ".");
     found.push("Whether the cause it names is supported is not something these checks test.");
     why = [s.okFigs
       ? (s.goodDir.length ? "The figures tie and the direction is right, so the arithmetic is not what fails here."
