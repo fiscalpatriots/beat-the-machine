@@ -78,7 +78,26 @@ Fresh case `fresh.call_agreement_mean` and `fresh.reason_agreement_mean`, practi
 
 A reason agrees when at least one chip was tapped and every chip tapped sits inside the line's basis key. This is agreement with the accepted reason categories, and it is never reported as reasoning quality or as learning gain. The limit on this case set, as the script states it: `reason.limitation`.
 
-## 6. Lines in the player's own words, quoted where the reason chips agreed with the key
+## 6. Educator-scored explanations, fields carrying the prefix `explain.`
+
+A separate result from section 5. From `brightwater-v6` every fresh case call carries a three-part written explanation, and an independent educator scores each part 0 to 2 against `RUBRIC.md` on a sheet that never shows the machine's call result. Fresh case `explain.case_version`, field names `explain.field_names`.
+
+| Measure | Field |
+| --- | --- |
+| Fresh lines carrying a written explanation | `explain.items_with_text` |
+| Fresh calls with no explanation text | `explain.fresh_calls_without_text` |
+| Scored by the first scorer | `explain.items_scored` |
+| Decisive evidence, mean of 2 | `explain.evidence_avg_of_2` |
+| Why it matters for this period, mean of 2 | `explain.period_avg_of_2` |
+| Action or source request, mean of 2 | `explain.action_avg_of_2` |
+| Total, mean of 6 | `explain.total_avg_of_6` |
+| Drawn for the second scorer, and scored by both | `explain.second_scorer_drawn`, `explain.double_scored` |
+| Criterion scores given identically, and within one point | `explain.second_exact_agreement_rate`, `explain.second_within_one_rate` |
+| Key disagreements the scorers recorded | `explain.key_disagreements_recorded` |
+
+With five items and no comparable baseline, these scores do not establish learning gain.
+
+## 7. Lines in the player's own words, quoted where the reason chips agreed with the key
 
 | Codename `words.codename` | Line, type `words.line`, `words.type` | Quote `words.text` |
 | --- | --- | --- |
@@ -90,4 +109,4 @@ A roster confirms people without adding accounts to the product. Write it after 
 
 ## Reading these honestly
 
-Every figure here is descriptive agreement with a key on one sitting, so report it as what this group called on these written lines and nothing more. The fresh lines are a second unseen item set scored the same way rather than a post-test, and with five items and no comparable baseline the gap between the two pairs separates two item sets rather than measuring learning, transfer or time saved. The findings print the page's rank beside each attempt, and a rank that leaves this page is a game rank, never a credential. A findings file stamped as a synthetic verification run never feeds this page. Write the case version and key date beside any number leaving this page, because a row scored against another version is not comparable.
+Every call and chip figure here is descriptive agreement with a key on one sitting, so report it as what this group called on these written lines and nothing more. Reason chip agreement and the educator-scored explanations are two separate results, and neither is reported in place of the other. The fresh lines are a second unseen item set scored the same way rather than a post-test, and with five items and no comparable baseline the gap between the two pairs separates two item sets rather than measuring learning, transfer or time saved. The findings print the page's rank beside each attempt, and a rank that leaves this page is a game rank, never a credential. A findings file stamped as a synthetic verification run never feeds this page. Write the case version and key date beside any number leaving this page, because a row scored against another version is not comparable.

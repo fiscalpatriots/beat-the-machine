@@ -520,6 +520,12 @@ function foldSentence(s, L, floorD, floorP, zp){
     s.st = worse(s.st, "needs review");
     s.voidDir.forEach(function(t){ s.held.push(dot(t)); });
   }
+  /* a direction word in a clause that ties to no bound line is held, as the checker holds it */
+  s.looseDir = (dir && dir.loose) ? dir.loose : [];
+  if(s.looseDir.length){
+    s.st = worse(s.st, "needs review");
+    s.looseDir.forEach(function(t){ s.held.push(dot(t)); });
+  }
 
   var pc = C.policyClaims(s.text);
   s.badPolicy = []; s.goodPolicy = []; s.claims = pc.length;
@@ -890,7 +896,7 @@ function factsList(R){
     if(!s.figs.length) noFig++;
     if(!s.bound.length){ unbound++; return; }
     if(s.badDir.length) dirBad++;
-    else if(s.voidDir.length) dirNeg++;
+    else if(s.voidDir.length || s.looseDir.length) dirNeg++;
     else if(s.goodDir.length) dirOk++;
     else dirNone++;
     polBad += s.badPolicy.length; polOk += s.goodPolicy.length;
@@ -909,7 +915,7 @@ function factsList(R){
     (noFig ? ". " + v(noFig, "sentence carries", "sentences carry") + " no figure the reader took" : "") + ".");
   if(allChecked && dirOk === S.length) out.push("Every direction word agrees with the sign.");
   else out.push("Direction, sentence by sentence: " + v(dirOk, "agrees", "agree") + " with the sign, " +
-    v(dirBad, "runs", "run") + " against it, " + v(dirNeg, "is", "are") + " negated and held for review, " +
+    v(dirBad, "runs", "run") + " against it, " + v(dirNeg, "is", "are") + " held for review, negated or not tied to a line, " +
     v(dirNone, "states", "state") + " no direction" +
     (unbound ? ", and " + v(unbound, "binds", "bind") + " no line, so its direction was not tested" : "") + ".");
   out.push(polBad ? plural(polBad, "threshold claim") + " in the memo " + (polBad === 1 ? "is" : "are") + " wrong."

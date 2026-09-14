@@ -414,5 +414,175 @@ class FindingsTest(unittest.TestCase):
         self.assertEqual(checked["initial"][0]["score"], 14)
 
 
+def fixture_cases(folder):
+    """cases/ plus a brightwater-v6.json built from v5 with the same key and a marked memo,
+    so a test can see which file a row was routed to. Lane R3 ships the real v6; once it is in
+    cases/ the copy from cases/ is used and only the marked memo check is skipped."""
+    target = os.path.join(folder, "cases")
+    shutil.copytree(CASES, target)
+    v6 = os.path.join(target, "brightwater-v6.json")
+    if not os.path.exists(v6):
+        with open(os.path.join(CASES, "brightwater-v5.json"), encoding="utf-8") as handle:
+            data = json.load(handle)
+        data["version"] = "brightwater-v6"
+        for card in data["cards"]:
+            card["memo"] = "V6 FIXTURE. " + card["memo"]
+        with open(v6, "w", encoding="utf-8") as handle:
+            json.dump(data, handle)
+    return target
+
+
+def explained(code, attempt, fresh="brightwater-v6", inline=False, ts="2026-09-20 10:00:00",
+              texts=None):
+    r = response(code, attempt, "halyard-v4", fresh, ts=ts)
+    texts = texts or {}
+    segments = []
+    for n in range(1, 6):
+        parts = texts.get(n, {"evidence": "the document on line %d" % n,
+                              "period": "the month it covers on line %d" % n,
+                              "action": "the request that follows on line %d" % n})
+        if inline:
+            segments.append("Explanation %d: Evidence: %s | Period: %s | Action: %s"
+                            % (n, parts["evidence"], parts["period"], parts["action"]))
+        else:
+            for key, label, _criterion in f.EXPLANATION_PARTS:
+                r[f.EXPLANATION_COLUMN.format(n=n, label=label)] = parts[key]
+    if inline:
+        r[f.QC_TITLE] += (" Round2 basis, by line: 1: Basis: no source on file || " +
+                          " || ".join(segments))
+    return r
+
+
+class ExplanationTest(unittest.TestCase):
+    def setUp(self):
+        self.tmp = Folder()
+        self.cases = fixture_cases(self.tmp.path)
+
+    def tearDown(self):
+        self.tmp.close()
+
+    def run_rows(self, rows, **kw):
+        path = self.tmp.csv("responses.csv", rows)
+        return f.analyze(path, cases_dir=self.cases, **kw)
+
+    def read_csv(self, path):
+        with open(path, encoding="utf-8", newline="") as handle:
+            return list(csv.DictReader(handle))
+
+    def test_brightwater_v6_routes_to_its_own_file_and_v5_stays_on_v5(self):
+        rows = [response("On Five", "att-5", "halyard-v4", "brightwater-v5"),
+                explained("On Six", "att-6")]
+        report = self.run_rows(rows)
+        fresh = {s["case2"]["version"]: s for s in report["sets"]}
+        self.assertEqual(sorted(fresh), ["brightwater-v5", "brightwater-v6"])
+        self.assertEqual(fresh["brightwater-v6"]["case2"]["path"], "cases/brightwater-v6.json")
+        self.assertEqual(fresh["brightwater-v5"]["case2"]["path"], "cases/brightwater-v5.json")
+        self.assertEqual(fresh["brightwater-v5"]["fresh"]["right"], 5)
+        self.assertEqual(fresh["brightwater-v6"]["fresh"]["right"], 5)
+        self.assertEqual(fresh["brightwater-v5"]["explain"]["items"], 0)
+        self.assertEqual(fresh["brightwater-v6"]["explain"]["items"], 5)
+        v6_memo = fresh["brightwater-v6"]["case2"]["cards"][0]["memo"]
+        v5_memo = fresh["brightwater-v5"]["case2"]["cards"][0]["memo"]
+        if v6_memo.startswith("V6 FIXTURE."):
+            self.assertFalse(v5_memo.startswith("V6 FIXTURE."))
+
+    def test_scoring_sheet_is_blind_and_the_key_joins_on_response_id(self):
+        rows = [explained("Hidden Name", "att-a"), explained("Other Name", "att-b"),
+                response("On Five", "att-5", "halyard-v4", "brightwater-v5")]
+        rows[0][f.QC_TITLE] = rows[0][f.QC_TITLE].replace("calls FSFFS", "calls SSFFS")
+        report = self.run_rows(rows)
+        sheet = os.path.join(self.tmp.path, "sheet.csv")
+        key = os.path.join(self.tmp.path, "key.csv")
+        self.assertEqual(f.write_scoring_sheet(report, sheet, key), 10)
+        with open(sheet, encoding="utf-8") as handle:
+            raw = handle.read()
+        for leak in ("Hidden Name", "att-a", "agrees", "keyed", "no source on file", "codename"):
+            self.assertNotIn(leak, raw)
+        rows_sheet = self.read_csv(sheet)
+        self.assertEqual(list(rows_sheet[0].keys()), f.SHEET_COLUMNS)
+        self.assertEqual([r["line"] for r in rows_sheet], sorted(r["line"] for r in rows_sheet))
+        self.assertTrue(all(r["case_version"] == "brightwater-v6" for r in rows_sheet))
+        self.assertTrue(all(r["memo_sentence"] for r in rows_sheet))
+        rows_key = {r["response_id"]: r for r in self.read_csv(key)}
+        self.assertEqual(set(rows_key), {r["response_id"] for r in rows_sheet})
+        hidden_line1 = [r for r in rows_key.values()
+                        if r["codename"] == "Hidden Name" and r["line"] == "1"][0]
+        self.assertEqual(hidden_line1["participant_call"], "stand")
+        self.assertEqual(hidden_line1["keyed_call"], "flag")
+        self.assertEqual(hidden_line1["call_result"], "does not agree with key")
+        self.assertEqual(hidden_line1["attempt"], "first")
+
+    def test_inline_explanations_in_question_c_are_read(self):
+        report = self.run_rows([explained("Inline Writer", "att-i", inline=True)])
+        a = report["initial"][0]
+        self.assertEqual(sorted(a["explanations"]), [1, 2, 3, 4, 5])
+        self.assertEqual(a["explanations"][3]["period"], "the month it covers on line 3")
+        self.assertEqual(a["explanations"][5]["action"], "the request that follows on line 5")
+        self.assertEqual(len(a["r2_basis"]), 1)
+
+    def test_second_scorer_draw_is_stable_and_reaches_every_line(self):
+        rows = [explained("Writer %02d" % k, "att-w%02d" % k) for k in range(12)]
+        first = self.run_rows(rows)["explanation_items"]
+        for n in range(1, 6):
+            self.assertGreaterEqual(sum(1 for i in first if i["line"] == n and i["second"]), 2)
+        by_hash = {i["response_id"] for i in first
+                   if i["draw"] % f.SECOND_SCORER_MODULUS == 0}
+        more = rows + [explained("Writer %02d" % k, "att-w%02d" % k) for k in range(12, 30)]
+        again = {i["response_id"]: i for i in self.run_rows(more)["explanation_items"]}
+        self.assertTrue(all(again[rid]["second"] for rid in by_hash))
+        self.assertEqual(len(again), 150)
+
+    def test_scores_merge_into_a_separate_result_with_second_scorer_agreement(self):
+        rows = [explained("Writer %02d" % k, "att-w%02d" % k) for k in range(4)]
+        report = self.run_rows(rows)
+        sheet = os.path.join(self.tmp.path, "sheet.csv")
+        f.write_scoring_sheet(report, sheet, os.path.join(self.tmp.path, "key.csv"))
+        blank = self.read_csv(sheet)
+        filled, second = [], []
+        for k, r in enumerate(blank):
+            one = dict(r, score_evidence="2", score_period="1", score_action="2", scorer="E1")
+            if k == 0:
+                one["key_disagreement"] = "The 31 May schedule could support a stand."
+            if k == 1:
+                one["score_action"] = "3"
+            filled.append(one)
+            if r["second_scorer"] == "yes":
+                second.append(dict(r, score_evidence="2", score_period="2", score_action="2",
+                                   scorer="E2"))
+        first_path = self.tmp.csv("first.csv", filled)
+        second_path = self.tmp.csv("second.csv", second)
+        report = self.run_rows(rows, scores_path=first_path, second_scores_path=second_path)
+        e = report["sets"][0]["explain"]
+        self.assertEqual(e["items"], 20)
+        self.assertEqual(e["scored"], 19)
+        self.assertAlmostEqual(e["evidence_avg"], 2.0)
+        self.assertAlmostEqual(e["period_avg"], 1.0)
+        self.assertAlmostEqual(e["total_avg"], 5.0)
+        drawn_scored = sum(1 for i in report["explanation_items"]
+                           if i["second"] and i["first_scores"]["scores"])
+        self.assertEqual(e["double_scored"], drawn_scored)
+        self.assertAlmostEqual(e["exact_rate"], 100.0 * 2 / 3)
+        self.assertAlmostEqual(e["within_one_rate"], 100.0)
+        self.assertEqual(len(e["key_disagreements"]), 1)
+        self.assertEqual(report["scores"]["invalid_rows"], 1)
+        fields = dict(f.readout_fields(report, "responses.csv")["sets"][0][1])
+        self.assertAlmostEqual(fields["explain.total_avg_of_6"], 5.0)
+        self.assertEqual(f.fmt_field(fields["explain.total_avg_of_6"],
+                                     "explain.total_avg_of_6"), "5")
+        self.assertIn("explain.second_exact_agreement_rate", fields)
+        self.assertIn("reason.limitation", fields)
+        text = f.build_markdown(report, "responses.csv")
+        self.assertIn("### Educator-scored explanations", text)
+        self.assertIn("A separate result from reason chip agreement", text)
+        self.assertIn("do not establish learning gain", text)
+        self.assertIn("The 31 May schedule could support a stand.", text)
+
+    def test_scored_sheet_without_score_columns_is_rejected(self):
+        rows = [explained("Writer", "att-w")]
+        bad = self.tmp.csv("bad.csv", [{"response_id": "R1", "total": "5"}])
+        with self.assertRaises(f.InputError):
+            self.run_rows(rows, scores_path=bad)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

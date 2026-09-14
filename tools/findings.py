@@ -10,6 +10,8 @@ Usage, from the repository root:
     python tools/findings.py responses.csv --out FINDINGS-session.md --fields fields.json
     python tools/findings.py responses.csv --roster roster.csv
     python tools/findings.py responses.csv --cases path/to/beat-the-machine/cases
+    python tools/findings.py responses.csv --scoring-sheet scoring-sheet.csv
+    python tools/findings.py responses.csv --scores first.csv --second-scores second.csv
     python tools/findings.py probe.csv --synthetic-check
 
 Columns are matched by the form's question titles, never by position. Any title the
@@ -56,6 +58,16 @@ basis key. That is agreement with the accepted reason categories and is reported
 own result, never as reasoning quality or learning gain. Where a case's flag lines accept
 "no source on file" and its stand lines accept only "the figure and reason hold", those two
 chips earn agreement without stating why, and the limitation prints beside the result.
+
+Written explanations (from brightwater-v6)
+-----------------------------------------
+Every fresh case call on brightwater-v6 carries a three-part written explanation. The script
+never scores one. --scoring-sheet writes a sheet an independent educator fills against
+RUBRIC.md, blind to the machine: no codename, key, call result or chips, which ride in a
+separate facilitator key joined on response_id, with the second scorer's rows drawn by hash.
+--scores and --second-scores read the filled sheets back, and the findings report the
+educator's scores and the two scorers' agreement apart from reason chip agreement. The
+payload field names are placeholders kept in one block, EXPLANATION_PARTS and its neighbours.
 
 Roster file (optional, --roster)
 --------------------------------
@@ -145,6 +157,29 @@ INTAKE_TITLES = [
 ]
 NOT_ASKED = "not asked"
 PLACEHOLDER_VALUES = {"3", "5", "once or twice"}
+
+# ---------------------------------------------------------------- written explanations
+# PLACEHOLDER MAPPING, the only place the explanation payload is named. From brightwater-v6
+# every fresh case call carries a required three-part written explanation, scored by an
+# independent educator against RUBRIC.md and never by this script. The page's field names
+# had not landed when this was written, so every name in this block is a placeholder. When
+# they land, change the strings here, set EXPLANATION_NAMES_ARE_PLACEHOLDERS to False, and
+# nothing else in the script moves.
+#
+# Two shapes are read, whichever the export carries:
+#   a column per fresh line and part, titled EXPLANATION_COLUMN.format(n=line, label=label)
+#   or a segment inside question C, after the Round2 basis, shaped
+#     Explanation 3: Evidence: ... | Period: ... | Action: ... || Explanation 4: ...
+EXPLANATION_NAMES_ARE_PLACEHOLDERS = True
+EXPLANATION_PARTS = [
+    # part key, label in the column title and the inline segment, rubric criterion
+    ("evidence", "Evidence", "Decisive evidence"),
+    ("period", "Period", "Why it matters for this period"),
+    ("action", "Action", "Action or source request"),
+]
+EXPLANATION_COLUMN = "Fresh line {n}. Explanation, {label}"
+EXPLANATION_INLINE_LABEL = "Explanation"
+EXPLANATION_MAX_LINES = 10
 
 # ---------------------------------------------------------------- exclusion rules
 TEST_CODENAMES = {
@@ -357,6 +392,7 @@ class CaseLibrary(object):
             basis = c.get("basisKey")
             cards.append({
                 "n": i + 1, "acct": str(c.get("acct", "")), "name": c.get("name", ""),
+                "memo": c.get("memo") or "",
                 "key": key, "type": c.get("type"),
                 "post_flag": post["flag"], "post_stand": post["stand"],
                 "basis_key": list(basis) if isinstance(basis, list) and basis else None,
@@ -428,7 +464,11 @@ KEYBASIS_RE = re.compile(r"key\s+basis\s*:\s*(.*?)\s*\.?\s*$", re.I | re.S)
 NO_CHIPS = "none recorded"
 
 R2_BASIS_RE = re.compile(
-    r"round2\s+basis,\s*by\s+line\s*:\s*(.*?)(?:\s*fresh case\s*:|\s*$)", re.I | re.S)
+    r"round2\s+basis,\s*by\s+line\s*:\s*(.*?)(?:\s*fresh case\s*:|\s*%s\s+\d+\s*:|\s*$)"
+    % re.escape(EXPLANATION_INLINE_LABEL), re.I | re.S)
+EXPLANATION_INLINE_RE = re.compile(
+    r"%s\s+(\d+)\s*:\s*(.*?)(?=\|\|\s*%s\s+\d+\s*:|\s*fresh case\s*:|$)"
+    % (re.escape(EXPLANATION_INLINE_LABEL), re.escape(EXPLANATION_INLINE_LABEL)), re.I | re.S)
 # The case line from caseLine() in question A:
 #   Case: halyard, version halyard-v4 (practice, 14 lines) and brightwater-v5
 #   (assessment, 5 lines), dated 2026-09-13, loaded from cases/ files.
@@ -547,6 +587,35 @@ def parse_r2_basis(text, case2):
     return out
 
 
+def parse_explanations(row, explain_cols, qc_text, lines):
+    """{line: {part: text}} for the fresh lines, from columns first and question C second."""
+    out = {}
+    for n in range(1, lines + 1):
+        parts = {}
+        for key, _label, _criterion in EXPLANATION_PARTS:
+            text = cell(row, explain_cols.get((n, key))).strip()
+            if text:
+                parts[key] = text
+        if parts:
+            out[n] = parts
+    for match in EXPLANATION_INLINE_RE.finditer(qc_text or ""):
+        n = int(match.group(1))
+        if n in out or not 1 <= n <= lines:
+            continue
+        parts = {}
+        labels = "|".join(re.escape(label) for _k, label, _c in EXPLANATION_PARTS)
+        for piece in re.finditer(r"(%s)\s*:\s*(.*?)(?=\|\s*(?:%s)\s*:|$)" % (labels, labels),
+                                 match.group(2).strip().rstrip("|").strip(), re.I | re.S):
+            key = next(k for k, label, _c in EXPLANATION_PARTS
+                       if norm(label) == norm(piece.group(1)))
+            text = piece.group(2).strip().strip("|").strip()
+            if text:
+                parts[key] = text
+        if parts:
+            out[n] = parts
+    return out
+
+
 def parse_cases(text):
     """The case line out of question A, in either shape, or None."""
     match = CASES_RE.search(text or "")
@@ -659,8 +728,11 @@ def parse_timestamp(text):
 
 
 # ---------------------------------------------------------------- the roster
-class RosterError(Exception):
-    pass
+class InputError(Exception):
+    """A roster or a scored sheet this script cannot read, reported instead of guessed."""
+
+
+RosterError = InputError
 
 
 CONSENT_YES = {"yes", "y", "true", "1", "consented"}
@@ -909,7 +981,7 @@ def read_attempt(index, row, cols, library):
         "case1": None, "case2": None, "set": None,
         "calls": [], "posted": [], "whys": [], "reasons": [], "answered": [], "score": 0,
         "reason_right": 0, "reason_scored": 0, "flags": 0, "coverage": 0,
-        "fresh": None, "r2_basis": [],
+        "fresh": None, "r2_basis": [], "explanations": {},
     }
     if not cases:
         a["refusal"] = "no case version recorded in question A"
@@ -939,6 +1011,8 @@ def read_attempt(index, row, cols, library):
         if a["case2"]:
             others = [cell(row, c) for c in cols["why"] if c] + [qb, qa]
             score_fresh(a, qc, others, a["case2"])
+            a["explanations"] = parse_explanations(row, cols["explain"], qc,
+                                                   len(a["case2"]["cards"]))
     a["completed"] = completion_of(a, row, cols)
     return a
 
@@ -966,10 +1040,20 @@ def match_columns(headers):
                                        contains=["c%d." % (i + 1), "account"]))
         found["why"].append(cols.find(WHY_TITLES[i], "Why C%d" % (i + 1),
                                       contains=["c%d." % (i + 1), "why?"]))
+    # Explanation columns are optional, since only a run on a case that asks for them posts
+    # them, so a missing one is never listed under Columns not found.
+    by_norm = {norm(h): h for h in headers}
+    found["explain"] = {}
+    for n in range(1, EXPLANATION_MAX_LINES + 1):
+        for key, label, _criterion in EXPLANATION_PARTS:
+            head = by_norm.get(norm(EXPLANATION_COLUMN.format(n=n, label=label)))
+            if head:
+                found["explain"][(n, key)] = head
     return cols, found
 
 
-def analyze(path, roster_path=None, cases_dir=None, synthetic_check=False):
+def analyze(path, roster_path=None, cases_dir=None, synthetic_check=False,
+            scores_path=None, second_scores_path=None):
     rows, headers = read_rows(path)
     cols, found = match_columns(headers)
     resolved_dir = find_cases_dir(cases_dir)
@@ -977,7 +1061,8 @@ def analyze(path, roster_path=None, cases_dir=None, synthetic_check=False):
 
     report = {"missing": cols.missing, "matched": cols.matched, "n_rows_raw": len(rows),
               "source": os.path.abspath(path), "cases_dir": resolved_dir,
-              "synthetic_check": bool(synthetic_check)}
+              "synthetic_check": bool(synthetic_check),
+              "explanation_columns": len(found["explain"])}
 
     # --- exclusions, then duplicate sends -------------------------------------
     excluded = {key: [] for key, _ in EXCLUSION_LABELS}
@@ -1040,6 +1125,10 @@ def analyze(path, roster_path=None, cases_dir=None, synthetic_check=False):
     else:
         report["roster"] = None
         report["n_participants_confirmed"] = None
+
+    # --- written explanations and the educator's scores ------------------------
+    report["explanation_items"] = explanation_items(initial + later)
+    report["scores"] = merge_scores(report["explanation_items"], scores_path, second_scores_path)
 
     # --- case sets -------------------------------------------------------------
     labels = []
@@ -1286,8 +1375,200 @@ def analyze_set(label, case1, case2, first, again, report):
                            "catch_rate": pct(p_caught, p_seen)}
     else:
         s["professors"] = None
+    s["explain"] = explanation_results(case2, first, report) if case2 else None
     s["disagreements"] = [d for a in first + again for d in a["disagreements"]]
     return s
+
+
+# ------------------------------------------------- the explanation scoring sheet
+# The sheet an educator fills is blind to the machine: it carries the memo sentence, the
+# participant's own call and the three written parts, and never the key, the call result, the
+# chips, the chip agreement or the codename. Those ride in a separate facilitator key joined on
+# response_id. Rows are ordered by fresh line, so one item is scored across every response
+# before the next, and by a hash of response_id inside a line, so one attempt's answers are
+# not read in a row. RUBRIC.md is the scoring guide and describes the second scorer's draw.
+SHEET_COLUMNS = ["response_id", "case_version", "line", "account", "memo_sentence",
+                 "participant_call", "decisive_evidence", "why_it_matters_for_this_period",
+                 "action_or_source_request", "second_scorer", "score_evidence", "score_period",
+                 "score_action", "scorer", "key_disagreement", "notes"]
+SHEET_TEXT = {"evidence": "decisive_evidence", "period": "why_it_matters_for_this_period",
+              "action": "action_or_source_request"}
+SHEET_SCORE = {"evidence": "score_evidence", "period": "score_period",
+               "action": "score_action"}
+KEY_COLUMNS = ["response_id", "codename", "attempt_id", "attempt", "timestamp", "case_set",
+               "case_version", "line", "participant_call", "keyed_call", "call_result",
+               "reason_chips", "reason_chip_agreement", "second_scorer"]
+SECOND_SCORER_SEED = "second-pass-rubric-v1"
+SECOND_SCORER_MODULUS = 5          # one response in five, by hash
+SECOND_SCORER_MIN_PER_LINE = 2     # topped up by lowest hash on every fresh line
+
+
+def _hash(text):
+    import hashlib
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def explanation_items(attempts):
+    """One item per fresh line of every eligible attempt that carries written text."""
+    items = []
+    for a in attempts:
+        if not a["case2"] or not a["explanations"]:
+            continue
+        case2 = a["case2"]
+        identity = a["attempt_id"] or "%s|%s|row %d" % (a["codename"], a["timestamp"],
+                                                        a["row_index"])
+        for n, parts in sorted(a["explanations"].items()):
+            card = case2["cards"][n - 1]
+            call = a["fresh"]["calls"][n - 1] if (a["fresh"] and len(a["fresh"]["calls"]) >= n) \
+                else None
+            call = {"F": "flag", "S": "stand"}.get(call)
+            basis = [r for r in a["r2_basis"] if r[0] == n]
+            rid = "R" + _hash("%s|%s|%d" % (identity, case2["version"], n))[:10].upper()
+            items.append({
+                "response_id": rid, "attempt": a, "line": n, "card": card,
+                "case_version": case2["version"], "parts": parts, "call": call,
+                "call_result": (None if call is None else
+                                "agrees with key" if call == card["key"] else
+                                "does not agree with key"),
+                "chips": basis[0][1] if basis else [],
+                "chip_agreement": basis[0][3] if basis else None,
+                "draw": int(_hash(SECOND_SCORER_SEED + "|" + rid), 16),
+                "second": False, "first_scores": None, "second_scores": None,
+            })
+    by_line = {}
+    for item in items:
+        item["second"] = item["draw"] % SECOND_SCORER_MODULUS == 0
+        by_line.setdefault((item["case_version"], item["line"]), []).append(item)
+    for group in by_line.values():
+        chosen = sum(1 for i in group if i["second"])
+        for item in sorted(group, key=lambda i: i["draw"]):
+            if chosen >= min(SECOND_SCORER_MIN_PER_LINE, len(group)):
+                break
+            if not item["second"]:
+                item["second"] = True
+                chosen += 1
+    items.sort(key=lambda i: (i["case_version"], i["line"], i["draw"]))
+    return items
+
+
+def write_scoring_sheet(report, sheet_path, key_path):
+    import csv
+    items = report["explanation_items"]
+    with open(sheet_path, "w", encoding="utf-8", newline="") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(SHEET_COLUMNS)
+        for i in items:
+            card = i["card"]
+            row = {"response_id": i["response_id"], "case_version": i["case_version"],
+                   "line": i["line"], "account": "%s %s" % (card["acct"], card["name"]),
+                   "memo_sentence": card.get("memo", ""),
+                   "participant_call": {"flag": "flag", "stand": "let it stand"}.get(i["call"],
+                                                                                    "not recorded"),
+                   "second_scorer": "yes" if i["second"] else ""}
+            for key, column in SHEET_TEXT.items():
+                row[column] = i["parts"].get(key, "")
+            writer.writerow([row.get(c, "") for c in SHEET_COLUMNS])
+    with open(key_path, "w", encoding="utf-8", newline="") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(KEY_COLUMNS)
+        for i in items:
+            a = i["attempt"]
+            writer.writerow([i["response_id"], a["codename"], a["attempt_id"] or "",
+                             "first" if a["initial"] else "reattempt %d" % a["attempt_number"],
+                             a["timestamp"], a["set"], i["case_version"], i["line"],
+                             i["call"] or "not recorded", i["card"]["key"],
+                             i["call_result"] or "not recorded", "; ".join(i["chips"]),
+                             {True: "agrees", False: "does not agree"}.get(i["chip_agreement"],
+                                                                           "not scored"),
+                             "yes" if i["second"] else ""])
+    return len(items)
+
+
+def read_score_sheet(path):
+    """{response_id: {"scores": {part: 0|1|2} or None, "scorer", "key_disagreement", ...}}."""
+    rows, headers = read_rows(path)
+    lookup = {norm(h): h for h in headers}
+    needed = ["response_id"] + list(SHEET_SCORE.values())
+    absent = [c for c in needed if c not in lookup]
+    if absent:
+        raise InputError("The scored sheet at %s lacks %s" % (path, ", ".join(absent)))
+    out = {}
+    for r in rows:
+        rid = cell(r, lookup["response_id"]).strip()
+        if not rid:
+            continue
+        scores, invalid = {}, False
+        for key, column in SHEET_SCORE.items():
+            raw = cell(r, lookup[column]).strip()
+            if raw in ("0", "1", "2"):
+                scores[key] = int(raw)
+            elif raw:
+                invalid = True
+        out[rid] = {"scores": scores if (len(scores) == len(SHEET_SCORE) and not invalid) else None,
+                    "invalid": invalid,
+                    "scorer": cell(r, lookup.get("scorer")).strip(),
+                    "key_disagreement": cell(r, lookup.get("key_disagreement")).strip(),
+                    "notes": cell(r, lookup.get("notes")).strip()}
+    return out
+
+
+def merge_scores(items, first_path, second_path):
+    """Attach the first and second scorer's rows to the exported items by response_id."""
+    status = {"first_path": os.path.basename(first_path) if first_path else None,
+              "second_path": os.path.basename(second_path) if second_path else None,
+              "unknown_ids": 0, "invalid_rows": 0, "key_disagreements": []}
+    by_id = {i["response_id"]: i for i in items}
+    for which, path in (("first_scores", first_path), ("second_scores", second_path)):
+        if not path:
+            continue
+        for rid, got in read_score_sheet(path).items():
+            item = by_id.get(rid)
+            if not item:
+                status["unknown_ids"] += 1
+                continue
+            if got["invalid"]:
+                status["invalid_rows"] += 1
+            item[which] = got
+            if got["key_disagreement"]:
+                status["key_disagreements"].append(
+                    {"item": item, "scorer": got["scorer"] or which.split("_")[0] + " scorer",
+                     "text": got["key_disagreement"]})
+    return status
+
+
+def explanation_results(case2, first, report):
+    """Educator-scored explanation results for one case set's first attempts."""
+    ids = {id(a) for a in first}
+    items = [i for i in report["explanation_items"] if id(i["attempt"]) in ids]
+    fresh_calls = sum(len(a["fresh"]["calls"]) for a in first if a["fresh"])
+    scored = [i for i in items if i["first_scores"] and i["first_scores"]["scores"]]
+    res = {"version": case2["version"], "items": len(items),
+           "fresh_calls": fresh_calls, "without_text": max(0, fresh_calls - len(items)),
+           "second_drawn": sum(1 for i in items if i["second"]),
+           "scored": len(scored), "sheet_supplied": bool(report["scores"]["first_path"])}
+    for key, _label, _criterion in EXPLANATION_PARTS:
+        res[key + "_avg"] = _mean([float(i["first_scores"]["scores"][key]) for i in scored])
+    res["total_avg"] = _mean([float(sum(i["first_scores"]["scores"].values())) for i in scored])
+    res["distribution"] = {key: {v: sum(1 for i in scored
+                                         if i["first_scores"]["scores"][key] == v)
+                                 for v in (0, 1, 2)}
+                           for key, _l, _c in EXPLANATION_PARTS}
+    per_line = []
+    for n, card in enumerate(case2["cards"], start=1):
+        line_items = [i for i in scored if i["line"] == n]
+        per_line.append({"n": n, "name": card["name"], "scored": len(line_items),
+                         "total_avg": _mean([float(sum(i["first_scores"]["scores"].values()))
+                                             for i in line_items])})
+    res["per_line"] = per_line
+    double = [i for i in scored if i["second_scores"] and i["second_scores"]["scores"]]
+    res["double_scored"] = len(double)
+    pairs = [(i["first_scores"]["scores"][k], i["second_scores"]["scores"][k])
+             for i in double for k, _l, _c in EXPLANATION_PARTS]
+    res["exact_rate"] = pct(sum(1 for x, y in pairs if x == y), len(pairs))
+    res["within_one_rate"] = pct(sum(1 for x, y in pairs if abs(x - y) <= 1), len(pairs))
+    res["key_disagreements"] = [d for d in report["scores"]["key_disagreements"]
+                                if id(d["item"]["attempt"]) in ids]
+    return res
 
 
 # ------------------------------------------------- the readout's field contract
@@ -1392,6 +1673,23 @@ def set_fields(s):
     add("r1.lap_median", _median([a["minutes"] for a in first]))
     add("r1.prepicks_given", sum(1 for a in first if a["prepicks"]))
     add("reason.limitation", " ".join(x["text"] for x in s["limitations"]) or None)
+
+    e = s.get("explain")
+    if e:
+        add("explain.case_version", e["version"])
+        add("explain.field_names", "placeholder" if EXPLANATION_NAMES_ARE_PLACEHOLDERS
+            else "from the page payload")
+        add("explain.items_with_text", e["items"])
+        add("explain.fresh_calls_without_text", e["without_text"])
+        add("explain.items_scored", e["scored"])
+        for key, _label, _criterion in EXPLANATION_PARTS:
+            add("explain.%s_avg_of_2" % key, e[key + "_avg"])
+        add("explain.total_avg_of_6", e["total_avg"])
+        add("explain.second_scorer_drawn", e["second_drawn"])
+        add("explain.double_scored", e["double_scored"])
+        add("explain.second_exact_agreement_rate", e["exact_rate"])
+        add("explain.second_within_one_rate", e["within_one_rate"])
+        add("explain.key_disagreements_recorded", len(e["key_disagreements"]))
 
     quotes = []
     for a in first:
@@ -1578,6 +1876,80 @@ def count_rows(report):
         ("Attempts refused from scoring", str(len(report["refused"])),
          "Received attempts on a case version this script cannot score, itemized below."),
     ]
+
+
+def build_explanation_markdown(e, s, report, out):
+    out.append("### Educator-scored explanations")
+    out.append("")
+    out.append("A separate result from reason chip agreement. Each written explanation on a "
+               "fresh line is scored by an independent educator against RUBRIC.md, three "
+               "criteria at 0 to 2 each, and never by this script. The machine's call result "
+               "and the chips are kept off the sheet the educator scores.")
+    out.append("")
+    if not e["items"]:
+        out.append("No written explanation was found on the %s fresh calls of these first "
+                   "attempts on %s. Fresh cases before brightwater-v6 did not ask for one%s."
+                   % (e["fresh_calls"], e["version"],
+                      "; on brightwater-v6 or later, first check the placeholder field names "
+                      "in findings.py" if EXPLANATION_NAMES_ARE_PLACEHOLDERS else ""))
+        out.append("")
+        return
+    if EXPLANATION_NAMES_ARE_PLACEHOLDERS:
+        out.append("The explanation field names in findings.py are still placeholders, so "
+                   "confirm them against the page's payload before these counts leave this page.")
+        out.append("")
+    out.append("| Measure | Value |")
+    out.append("| --- | --- |")
+    out.append("| Fresh lines carrying a written explanation | %d |" % e["items"])
+    out.append("| Fresh calls with no explanation text | %d |" % e["without_text"])
+    out.append("| Drawn for the second scorer | %d |" % e["second_drawn"])
+    if not e["sheet_supplied"]:
+        out.append("")
+        out.append("Not scored yet. Write the sheet with --scoring-sheet, have the educator fill "
+                   "it, and run again with --scores.")
+        out.append("")
+        return
+    out.append("| Scored by the first scorer | %d |" % e["scored"])
+    for key, _label, criterion in EXPLANATION_PARTS:
+        avg = e[key + "_avg"]
+        dist = e["distribution"][key]
+        out.append("| %s, mean of 2 | %s (0: %d, 1: %d, 2: %d) |"
+                   % (criterion, "%.2f" % avg if avg is not None else "n/a",
+                      dist[0], dist[1], dist[2]))
+    out.append("| Total, mean of 6 | %s |"
+               % ("%.2f" % e["total_avg"] if e["total_avg"] is not None else "n/a"))
+    out.append("| Scored by both scorers | %d |" % e["double_scored"])
+    out.append("| Criterion scores the two scorers gave identically | %s |"
+               % fmt_pct(e["exact_rate"], 1))
+    out.append("| Criterion scores within one point | %s |" % fmt_pct(e["within_one_rate"], 1))
+    out.append("| Key disagreements the scorers recorded | %d |" % len(e["key_disagreements"]))
+    out.append("")
+    out.append("| Fresh line | Scored | Total, mean of 6 |")
+    out.append("| --- | --- | --- |")
+    for line in e["per_line"]:
+        out.append("| %d %s | %d | %s |" % (line["n"], line["name"], line["scored"],
+                                          "%.2f" % line["total_avg"]
+                                          if line["total_avg"] is not None else "n/a"))
+    out.append("")
+    if e["key_disagreements"]:
+        out.append("Recorded key disagreements, kept as written. The key was not changed to fit "
+                   "them; RUBRIC.md says how they are reviewed.")
+        out.append("")
+        for d in e["key_disagreements"]:
+            out.append("- Line %d, %s, %s: %s" % (d["item"]["line"], d["item"]["response_id"],
+                                                  d["scorer"], d["text"]))
+        out.append("")
+    status = report["scores"]
+    if status["unknown_ids"] or status["invalid_rows"]:
+        out.append("The scored sheets carried %d response id%s this export does not hold and %d "
+                   "row%s with a score outside 0, 1 or 2, which are left unscored."
+                   % (status["unknown_ids"], "" if status["unknown_ids"] == 1 else "s",
+                      status["invalid_rows"], "" if status["invalid_rows"] == 1 else "s"))
+        out.append("")
+    out.append("With %s items and no comparable baseline, these scores describe the "
+               "explanations written on one unseen set and do not establish learning gain."
+               % say(len(s["case2"]["cards"])))
+    out.append("")
 
 
 def build_set_markdown(s, report, out):
@@ -1814,6 +2186,10 @@ def build_set_markdown(s, report, out):
                                                              for c, n in chips.items())))
             out.append("")
 
+    e = s.get("explain")
+    if e:
+        build_explanation_markdown(e, s, report, out)
+
     if s["professors"]:
         p = s["professors"]
         out.append("### The Professor chip")
@@ -2023,6 +2399,12 @@ def print_summary(report, out_path):
             print("  Fresh case            call agreement %s (%d of %d), n=%d, %s"
                   % (fmt_pct(f["call_mean"], 1), f["right"], f["total"], f["n"],
                      s["case2"]["version"]))
+        if s.get("explain") and s["explain"]["items"]:
+            e = s["explain"]
+            print("  Explanations          %d written, %d scored, total mean of 6 %s, %d double scored"
+                  % (e["items"], e["scored"],
+                     "%.2f" % e["total_avg"] if e["total_avg"] is not None else "n/a",
+                     e["double_scored"]))
         if s["disagreements"]:
             print("  RECORD DISAGREEMENTS  %d, listed in the markdown" % len(s["disagreements"]))
     print(line)
@@ -2047,6 +2429,13 @@ def main(argv=None):
                                      "(participant, codename, consent, role)")
     ap.add_argument("--cases", help="the cases directory (default ../cases beside this script, "
                                     "then ./cases)")
+    ap.add_argument("--scoring-sheet",
+                    help="write the blind explanation scoring sheet (CSV) for the educator here")
+    ap.add_argument("--scoring-key",
+                    help="write the facilitator key for that sheet here (default: beside the "
+                         "sheet, ending -facilitator-key.csv)")
+    ap.add_argument("--scores", help="the scoring sheet as the first scorer filled it")
+    ap.add_argument("--second-scores", help="the scoring sheet as the second scorer filled it")
     ap.add_argument("--synthetic-check", action="store_true",
                     help="score rows the synthetic rule excludes, to reproduce a review probe; "
                          "every output is stamped as not participant evidence")
@@ -2060,8 +2449,9 @@ def main(argv=None):
         return 2
     try:
         report = analyze(args.csv, roster_path=args.roster, cases_dir=args.cases,
-                         synthetic_check=args.synthetic_check)
-    except RosterError as exc:
+                         synthetic_check=args.synthetic_check, scores_path=args.scores,
+                         second_scores_path=args.second_scores)
+    except InputError as exc:
         print(str(exc))
         return 2
     out_path = args.out or os.path.join(os.path.dirname(os.path.abspath(__file__)),
@@ -2078,6 +2468,12 @@ def main(argv=None):
             with open(args.fields, "w", encoding="utf-8") as handle:
                 handle.write(blob + "\n")
             print("Readout fields written to %s" % args.fields)
+    if args.scoring_sheet:
+        key_path = args.scoring_key or (os.path.splitext(args.scoring_sheet)[0] +
+                                        "-facilitator-key.csv")
+        count = write_scoring_sheet(report, args.scoring_sheet, key_path)
+        print("Scoring sheet with %d explanation%s written to %s, facilitator key to %s"
+              % (count, "" if count == 1 else "s", args.scoring_sheet, key_path))
     print_summary(report, out_path)
     return 0
 

@@ -267,6 +267,12 @@ The fresh lines are a second unseen item set scored the same way, not a post-tes
 | unsupported driver | no source on file 22; the figure and reason hold 2 |
 | clean line | the figure and reason hold 12; no source on file 4 |
 
+### Educator-scored explanations
+
+A separate result from reason chip agreement. Each written explanation on a fresh line is scored by an independent educator against RUBRIC.md, three criteria at 0 to 2 each, and never by this script. The machine's call result and the chips are kept off the sheet the educator scores.
+
+No written explanation was found on the 40 fresh calls of these first attempts on brightwater-v5. Fresh cases before brightwater-v6 did not ask for one; on brightwater-v6 or later, first check the placeholder field names in findings.py.
+
 ### The Professor chip
 
 First attempts carrying the Professor chip, a self-selected chip rather than a confirmed role: 1 (MARGINCALL). Mean call agreement 13.0 of 14, catch rate 100.0% on the 8 problem lines.
@@ -441,6 +447,12 @@ The fresh lines are a second unseen item set scored the same way, not a post-tes
 | unsupported driver | no source on file 5; the figure and reason hold 1 |
 | clean line | the figure and reason hold 4 |
 
+### Educator-scored explanations
+
+A separate result from reason chip agreement. Each written explanation on a fresh line is scored by an independent educator against RUBRIC.md, three criteria at 0 to 2 each, and never by this script. The machine's call result and the chips are kept off the sheet the educator scores.
+
+No written explanation was found on the 10 fresh calls of these first attempts on brightwater-v5. Fresh cases before brightwater-v6 did not ask for one; on brightwater-v6 or later, first check the placeholder field names in findings.py.
+
 ### Where the record disagrees with itself
 
 The Why fields, the Accept or Reject columns and the case files agree on every call on this case set.
@@ -557,6 +569,12 @@ The game rank is the page's own label for its points, which include a bonus for 
 ### The fresh case
 
 No Round2 string in question C on these first attempts.
+
+### Educator-scored explanations
+
+A separate result from reason chip agreement. Each written explanation on a fresh line is scored by an independent educator against RUBRIC.md, three criteria at 0 to 2 each, and never by this script. The machine's call result and the chips are kept off the sheet the educator scores.
+
+No written explanation was found on the 0 fresh calls of these first attempts on brightwater-v2. Fresh cases before brightwater-v6 did not ask for one; on brightwater-v6 or later, first check the placeholder field names in findings.py.
 
 ### Where the record disagrees with itself
 
@@ -743,6 +761,20 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 | `r1.lap_median` | 9.5 |
 | `r1.prepicks_given` | 7 |
 | `reason.limitation` | On halyard-v4, seven of the eight flag lines accept "no source on file" and six of the six stand lines accept only "the figure and reason hold". A player who taps those two chips after correct calls agrees on thirteen of fourteen lines without stating why the evidence fails or holds, and the stand chip largely restates the decision. Read this result as agreement with accepted reason categories, not as reasoning quality. On brightwater-v5, three of the three flag lines accept "no source on file" and two of the two stand lines accept only "the figure and reason hold". A player who taps those two chips after correct calls agrees on five of five lines without stating why the evidence fails or holds, and the stand chip largely restates the decision. Read this result as agreement with accepted reason categories, not as reasoning quality. |
+| `explain.case_version` | brightwater-v5 |
+| `explain.field_names` | placeholder |
+| `explain.items_with_text` | 0 |
+| `explain.fresh_calls_without_text` | 40 |
+| `explain.items_scored` | 0 |
+| `explain.evidence_avg_of_2` | not available |
+| `explain.period_avg_of_2` | not available |
+| `explain.action_avg_of_2` | not available |
+| `explain.total_avg_of_6` | not available |
+| `explain.second_scorer_drawn` | 0 |
+| `explain.double_scored` | 0 |
+| `explain.second_exact_agreement_rate` | not available |
+| `explain.second_within_one_rate` | not available |
+| `explain.key_disagreements_recorded` | 0 |
 
 `words.` rows for halyard-v4 with brightwater-v5, lines in the player's own words where the reason chips agreed with the key
 
@@ -892,6 +924,20 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 | `r1.lap_median` | 10 |
 | `r1.prepicks_given` | 2 |
 | `reason.limitation` | On kestrel-v1, six of the seven flag lines accept "no source on file" and five of the five stand lines accept only "the figure and reason hold". A player who taps those two chips after correct calls agrees on eleven of twelve lines without stating why the evidence fails or holds, and the stand chip largely restates the decision. Read this result as agreement with accepted reason categories, not as reasoning quality. On brightwater-v5, three of the three flag lines accept "no source on file" and two of the two stand lines accept only "the figure and reason hold". A player who taps those two chips after correct calls agrees on five of five lines without stating why the evidence fails or holds, and the stand chip largely restates the decision. Read this result as agreement with accepted reason categories, not as reasoning quality. |
+| `explain.case_version` | brightwater-v5 |
+| `explain.field_names` | placeholder |
+| `explain.items_with_text` | 0 |
+| `explain.fresh_calls_without_text` | 10 |
+| `explain.items_scored` | 0 |
+| `explain.evidence_avg_of_2` | not available |
+| `explain.period_avg_of_2` | not available |
+| `explain.action_avg_of_2` | not available |
+| `explain.total_avg_of_6` | not available |
+| `explain.second_scorer_drawn` | 0 |
+| `explain.double_scored` | 0 |
+| `explain.second_exact_agreement_rate` | not available |
+| `explain.second_within_one_rate` | not available |
+| `explain.key_disagreements_recorded` | 0 |
 
 `words.` rows for kestrel-v1 with brightwater-v5, lines in the player's own words where the reason chips agreed with the key
 
@@ -1030,6 +1076,20 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 | `r1.lap_median` | 15 |
 | `r1.prepicks_given` | 0 |
 | `reason.limitation` | not available |
+| `explain.case_version` | brightwater-v2 |
+| `explain.field_names` | placeholder |
+| `explain.items_with_text` | 0 |
+| `explain.fresh_calls_without_text` | 0 |
+| `explain.items_scored` | 0 |
+| `explain.evidence_avg_of_2` | not available |
+| `explain.period_avg_of_2` | not available |
+| `explain.action_avg_of_2` | not available |
+| `explain.total_avg_of_6` | not available |
+| `explain.second_scorer_drawn` | 0 |
+| `explain.double_scored` | 0 |
+| `explain.second_exact_agreement_rate` | not available |
+| `explain.second_within_one_rate` | not available |
+| `explain.key_disagreements_recorded` | 0 |
 
 `words.` rows for halyard-v3 with brightwater-v2, lines in the player's own words where the reason chips agreed with the key
 
