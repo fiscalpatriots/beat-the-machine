@@ -253,13 +253,14 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
 .counts2{margin:14px 0 0;font-size:15px;line-height:1.5;color:var(--ink-soft);
   font-variant-numeric:tabular-nums}
 
-/* outcomes, four tiles waiting on the export */
-.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 14px}
-@media (max-width:560px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.tile{border:1px solid var(--rule);border-radius:var(--radius);background:var(--card);padding:16px 14px;min-height:104px;
-  display:flex;flex-direction:column;justify-content:space-between}
-.tile .v{font-size:22px;font-weight:600;color:var(--ink-soft);font-variant-numeric:tabular-nums;line-height:1}
-.tile .k{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);line-height:1.35}
+/* outcomes: the four measures named once on one line, over the sentence that says when they
+   fill. Four tiles reading "pending" said the same word four times and read as unfinished. */
+.measures{margin:0 0 6px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;
+  font-weight:700;color:var(--ink-soft);line-height:1.6}
+.measures span{white-space:nowrap}
+/* the separator rides with the label in front of it, so a wrap never starts a line on a dot */
+.measures i{font-style:normal;padding-left:6px;color:var(--rule-strong)}
+p.measures-note{margin:0 0 16px;font-size:16.5px;color:var(--ink-soft);line-height:1.5}
 
 /* scope, three ruled lines */
 .rows{margin:0;border-top:1px solid var(--rule)}
@@ -381,18 +382,18 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
       </figure>
 
       <figure class="shot">
-        <div class="viz" role="img" aria-label="Drawn from the checker's run on the Halyard sample. A coverage bar in green, black and red over four counts: 4 checked within scope, 5 need review, 0 not checked and 3 failed. Under them one failed finding: sentence 1 gives $6,500 as the movement on 4200 Freight billed to customers, and the ledger's movement is minus $65,000.">
+        <div class="viz" role="img" aria-label="Drawn from the checker's run on the Halyard sample. A coverage bar in green, black and red over four counts: 3 checked within scope, 6 need review, 0 not checked and 3 failed. Under them one failed finding: sentence 1 says $6,500 as the absolute movement on 4200 Freight billed to customers, and the movement on that line is minus $65,000.">
           <p class="m-cov">Coverage</p>
-          <div class="m-bar"><i class="m-g" style="flex:4"></i><i class="m-k" style="flex:5"></i><i class="m-r" style="flex:3"></i></div>
+          <div class="m-bar"><i class="m-g" style="flex:3"></i><i class="m-k" style="flex:6"></i><i class="m-r" style="flex:3"></i></div>
           <div class="m-counts">
-            <div class="m-count"><b class="m-pass">&#10003; 4</b><span>Checked within scope</span></div>
-            <div class="m-count"><b>&#9632; 5</b><span>Needs review</span></div>
+            <div class="m-count"><b class="m-pass">&#10003; 3</b><span>Checked within scope</span></div>
+            <div class="m-count"><b>&#9632; 6</b><span>Needs review</span></div>
             <div class="m-count"><b class="m-soft">&#9675; 0</b><span>Not checked</span></div>
             <div class="m-count"><b class="m-fail">&times; 3</b><span>Failed</span></div>
           </div>
           <div class="m-box m-find">
             <span class="m-st m-fail">Failed</span>
-            Sentence 1 gives $6,500 as the movement on 4200 Freight billed to customers, and the ledger&rsquo;s movement is -$65,000.
+            Sentence 1 says $6,500 as the absolute movement on 4200 Freight billed to customers, and the movement on that line is -$65,000.
           </div>
         </div>
         <figcaption class="body"><span class="n">02</span>
@@ -453,16 +454,17 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
           <li><span class="n">01</span><a href="#problem">The problem</a></li>
           <li><span class="n">02</span><a href="#governance">Governance</a></li>
           <li><span class="n">03</span><a href="#evidence">The evidence run</a></li>
-          <li><span class="n">04</span><a href="#outcomes">Outcomes</a></li>
-          <li><span class="n">05</span><a href="#scope">Scope</a></li>
-          <li><span class="n">06</span><a href="#replicability">Replicability</a></li>
+          <li><span class="n">04</span><a href="#tested">How it was tested</a></li>
+          <li><span class="n">05</span><a href="#outcomes">Outcomes</a></li>
+          <li><span class="n">06</span><a href="#scope">Scope</a></li>
+          <li><span class="n">07</span><a href="#replicability">Replicability</a></li>
         </ol>
       </nav>
       <div class="railblock">
         <dl>
           <dt>Product</dt><dd id="v-product">second-pass-drill 1.6.1</dd>
           <dt>Practice case</dt><dd id="v-practice">halyard-v4, 13 September 2026</dd>
-          <dt>Assessment case</dt><dd id="v-assessment">brightwater-v5, 13 September 2026</dd>
+          <dt>Assessment case</dt><dd id="v-assessment">brightwater-v6, 13 September 2026</dd>
           <dt>Data notice</dt><dd id="v-notice">notice-2026-09-13c</dd>
         </dl>
       </div>
@@ -531,6 +533,7 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
           <figcaption class="cap">This checker settles neither of the last two. It puts the driver and the period to a named reviewer instead, and prints the question rather than a verdict.</figcaption>
         </figure>
         <p>An assistant drafts the close commentary now, and the draft reads fluently whether or not its reasons hold. Every figure can tie while the reason rests on nothing.</p>
+        <p>The AI Native Accounting Foundation asked the question underneath this in its newsletter of 20 August 2026, &ldquo;where does that new grad ever get the context to know whether the agent got it right?&rdquo; The drill is one answer to it, and the answer is to make the reviewer commit before the machine does. A player reads the ledger and marks the lines worth a second look before a single drafted sentence is on the screen, then calls each line and names the basis the call rests on. On five lines of a company nobody has seen, each call also asks in writing for the decisive evidence, why it matters for this period, and the action or source request that follows.</p>
       </section>
 
       <section id="governance">
@@ -561,9 +564,10 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
                 <p class="ev-s">7 lines, 0 unsupported claims</p>
                 <div class="ev-bar ev-none"></div>
               </div>
-              <p class="counts2">On Halyard the 13 September checker read 30 sentences in the blind draft and
-              failed 2, both in the summary paragraph, where it tied correct subtotals to a single
-              account. Under Prompt 1 it read 8 and failed none.</p>
+              <p class="counts2">On Halyard the checker in this release reads 29 sentences in the blind
+              draft and fails 2, both in the summary paragraph, where it ties correct subtotals to a
+              single account. Under Prompt 1 it reads 8 and fails none. The counts move with the
+              checker, so the evidence note dates every one of them to a revision.</p>
             </div>
             <div>
               <div class="quote bad">
@@ -584,19 +588,43 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
         </figure>
       </section>
 
+      <section id="tested">
+        <h3><span class="n">04</span>How it was tested</h3>
+        <p>Three independent reviews by ChatGPT read this build on 13 September 2026, each one against
+        the live pages and the code rather than against a description of them. Every probe they wrote
+        is kept as a regression fixture, seventeen from the first, twenty-four from the second and
+        forty from the third. A separate adversarial audit that built none of this graded the third
+        review into 41 findings, and then wrote 175 new probes against the repaired checker. Forty-eight of
+        them cleared a sentence that should have been held: a figure written in euros, a plus sign on
+        a line that fell, a claim about last year on a ledger holding two months. That is the failure
+        this whole product is about, and it was in my own build.</p>
+        <p>The audit&rsquo;s record sits in this repository with every one of those findings and where it
+        stood on the night. Thirty-two of the 41 are closed at the head this release was cut from and
+        one was deferred by a ruling, and the rest wait on a deployment or on other people: the
+        receipt endpoint, an educator&rsquo;s scoring, a rerun of the drafting evidence in clean contexts,
+        and a practitioner working a ledger they did not build.</p>
+        <p>The repair was the rule rather than another list of words. A sentence now clears only when
+        nothing risky is left once every claim in it has been read, so the same 175 probes come back
+        with none of them cleared wrongly, and the suite is 658 fixtures that the browser checker and
+        a separate command-line checker both run, agreeing on every compared field. What has not happened is as short to say: no participant has played this
+        release, no practitioner has been watched using it, and no educator has scored a written
+        explanation.</p>
+        <p>The refining started before any of this shipped. The command-line trainer this grew out of
+        ran twice on 5 September 2026 with language-model reviewers rather than people, eighteen
+        sessions in each pass, and the ten findings the first pass returned were all acted on before
+        the second ran. Those runs are recorded in the command-line repository, and not one number in
+        them is a human result.</p>
+      </section>
+
       <section id="outcomes">
-        <h3><span class="n">04</span>Outcomes</h3>
-        <div class="tiles">
-          <div class="tile"><span class="v">pending</span><span class="k">Attempts</span></div>
-          <div class="tile"><span class="v">pending</span><span class="k">Right call</span></div>
-          <div class="tile"><span class="v">pending</span><span class="k">Reason category</span></div>
-          <div class="tile"><span class="v">pending</span><span class="k">False flags</span></div>
-        </div>
-        <p>The response export fills these, one row per attempt, and an attempt is not a person. The call and the reason are scored separately, so a run can agree with the answer key and give a basis that does not. Every player first marks, from the ledger alone, the lines they would give a second look, and the export reports where the final calls moved off that read and whether toward the key or away from it. The reason chips measure agreement with accepted reason categories, and on the five fresh-case items a short written explanation is scored blind by an independent educator against a rubric. These are answer-key agreement on a keyed exercise and nothing more, and five items with no baseline cannot show a learning gain. Every run can be saved to a file on the player&rsquo;s own machine, sending it is a separate step the player chooses, and a codename is a pseudonym rather than anonymity.</p>
+        <h3><span class="n">05</span>Outcomes</h3>
+        <p class="measures"><span>Attempts <i>&middot;</i></span> <span>Right call <i>&middot;</i></span> <span>Reason category <i>&middot;</i></span> <span>False flags</span></p>
+        <p class="measures-note">Four counts, and they fill from the response export once people have played the frozen release. An attempt is not a person.</p>
+        <p>The call and the reason are scored separately, so a run can agree with the answer key and give a basis that does not. Every player first marks, from the ledger alone, the lines they would give a second look, and the export reports where the final calls moved off that read and whether toward the key or away from it. The reason chips measure agreement with accepted reason categories, and on the five fresh-case items the drill collects a short written explanation for an independent educator to score blind against a rubric, which has not been done yet. These are answer-key agreement on a keyed exercise and nothing more, and five items with no baseline cannot show a learning gain. Every run can be saved to a file on the player&rsquo;s own machine, sending it is a separate step the player chooses, and a codename is a pseudonym rather than anonymity.</p>
       </section>
 
       <section id="scope">
-        <h3><span class="n">05</span>Scope</h3>
+        <h3><span class="n">06</span>Scope</h3>
         <div class="rows">
           <div><b>Does</b><p>Checks on the financial claims the checker recognizes, the two questions for a reviewer, the evidence log, a separate Excel workbook, and a drill that asks for the player's own read of the ledger before the draft, then scores the call against a key and the reason chips as category agreement.</p></div>
           <div><b>Does not yet</b><p>No driver or timing verdict, no loose account match, and no opening of a workbook file in the browser, where the cells are pasted instead.</p></div>
@@ -605,7 +633,7 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
       </section>
 
       <section id="replicability">
-        <h3><span class="n">06</span>Replicability</h3>
+        <h3><span class="n">07</span>Replicability</h3>
         <figure class="fig">
           <svg class="wide" viewBox="0 0 600 120" role="img" aria-label="Three columns, account, prior balance and current balance, are the minimum a plain ledger needs. The accepted layouts, units and number formats are set out in CHECKER.md.">
             <g fill="none" stroke="var(--rule-strong)" stroke-width="1">
@@ -678,7 +706,7 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
       .catch(function () { /* the printed fallback stands */ });
   }
   stamp('v-practice', 'cases/halyard-v4.json');
-  stamp('v-assessment', 'cases/brightwater-v5.json');
+  stamp('v-assessment', 'cases/brightwater-v6.json');
 })();
 </script>
 </body>

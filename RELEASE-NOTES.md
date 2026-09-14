@@ -111,12 +111,15 @@ outcomes plan, the scope and the replicability, and links everything else.
 ## Governance
 
 The checker's headline behavior is abstention. A sentence is cleared only when every figure in it
-carries a role the words gave it, a unit, and an unrounded comparison with the ledger that agreed.
-A figure whose role the words do not give stops a clearance before any value is compared. A
-sentence naming two accounts is held unless each figure binds inside its own clause. A negation, a
-spelled-out percentage, a foreign currency, a bare number the grammar cannot place: each leaves
-the sentence unresolved rather than passing it. No unresolved status is promoted to checked by a
-later step, and the reviewer prompt the page generates opens by naming the mechanical work that
+carries a role the words gave it, a unit, and an unrounded comparison with the ledger that agreed,
+every other number in it is a year, a date, a label, an ordinal, a reference or a count, and
+nothing the clearance grammar calls risky is left once those claims have been read. A figure whose
+role the words do not give stops a clearance before any value is compared. A sentence naming two
+accounts is held unless each figure binds inside its own clause. A negation, a foreign currency, a
+multiplier, a fraction and a bare number the grammar cannot place each leave the sentence
+unresolved rather than passing it, and a currency, a period, a sameness word or a word that sizes
+a movement holds it for review with the word named. No unresolved status is promoted to checked by
+a later step, and the reviewer prompt the page generates opens by naming the mechanical work that
 was **not** done.
 
 The written protocol, `PROTOCOL.md` at version 1.1, states the control: no commentary drafted with
@@ -146,7 +149,8 @@ What a pilot can support is descriptive agreement with an author's key, on compl
 attempts, at a frozen case version. The measures are: right call and right reason by error type;
 false flags on the six clean control lines; the fresh five against the trained fourteen, reported
 as two item sets rather than as a pre-test and a post-test; and the reasons participants actually
-wrote, scored by a person against a three-point rubric the page does not attempt itself.
+wrote, scored by a person against the three-part rubric in `RUBRIC.md`, which the page does not
+attempt itself.
 
 `tools/findings.py` computes exactly those, reads the responses export, drops test rows and
 repeats on the attempt identifier, counts each organization separately, and writes every field
@@ -168,9 +172,10 @@ A facilitator runs a session from the guide alone. A student authors a case from
 balance in the browser and the drill runs it. An accounting department pastes its own memo into
 the checker and gets a review log with evidence identifiers, a proposed conclusion, a human
 conclusion, an unresolved issue, an owner and a review time. The answer keys are JSON files with
-change logs that name who asked for each change and why. The checker's contract has 53 regression
-tests, and the two shared cases the checker demonstrates are generated from the same files the
-drill reads, so the two surfaces cannot drift apart.
+change logs that name who asked for each change and why. The checker's contract is held by a
+regression suite that runs against the page itself with no build step, and the two shared cases the
+checker demonstrates are generated from the same files the drill reads, so the two surfaces cannot
+drift apart.
 
 ## Honest scope
 
@@ -178,12 +183,14 @@ drill reads, so the two surfaces cannot drift apart.
 - **No practitioner has been observed** running a real memo through it without coaching.
 - **No educator has independently reviewed the answer keys.** The keys are defensible under the
   supplied case facts and have survived one external review, which is not the same thing.
-- **The checker checks figures, not causes.** Four of the five sentences in the assessment case
-  come back checked within scope and still need a person, and the page says so.
-- **The fresh case gives author-summarized facts,** not source excerpts. Judging evidence from a
-  summary of the evidence is a weaker test than judging it from the document.
-- **A spelled-out quantity with no unit word can still clear the checker.** Named in
-  `audit/RELEASE-QA-2026-09-13.md` with its reproduction.
+- **The checker checks figures, not causes.** All five sentences of the assessment case come back
+  checked within scope, four of them name a cause the ledger cannot settle, and the page says so.
+- **The fresh case shows one line out of each document,** not the document. Judging evidence from
+  an excerpt is a weaker test than judging it from the file it came out of.
+- **A sentence that clears has been read, not understood.** The clearance grammar takes out the
+  claims and then holds the sentence on any word it knows to be risky, and a word it does not
+  carry, or a weak word standing inside a reason, can still clear. The classes left open are listed
+  under **Still open** in `audit/CLEARANCE-GRAMMAR-2026-09-13.md`.
 - **The case company does not exist.** No client data, no engagement, no real ledger.
 
 ---
@@ -218,7 +225,8 @@ drill reads, so the two surfaces cannot drift apart.
 | --- | --- |
 | `cases/README.md` | How a case file is shaped, how to pick one, how to author one, and what changed in each version |
 | `cases/halyard-v4.json` | Halyard Provisioning Group, fourteen accounts, eight problem lines and six clean ones. The practice case |
-| `cases/brightwater-v5.json` | Brightwater Dental Partners, five accounts, three problem lines and two clean ones. The assessment case. Every on-file fact carries a dated document excerpt |
+| `cases/brightwater-v6.json` | Brightwater Dental Partners, five accounts, three problem lines and two clean ones. The assessment case. Every on-file fact carries a dated document excerpt, and every call asks for a three-part written explanation |
+| `cases/brightwater-v5.json` | The version before it, kept because responses were scored against it. Same calls, same figures, evidence that read the documents for the player |
 | `cases/kestrel-v1.json` | Kestrel IT Services, twelve accounts, seven problem lines and five clean ones. The second practice case |
 | `cases/halyard-v3.json`, `cases/brightwater-v4.json`, `cases/brightwater-v3.json`, `cases/brightwater-v2.json` | Superseded versions, kept because a response scored against one of them is not comparable to a response scored against the current pair |
 | `build-cases.cjs` | Validates a case file and refuses one whose reveal text is missing |
@@ -246,13 +254,15 @@ drill reads, so the two surfaces cannot drift apart.
 | `EVIDENCE-LOG-TEMPLATE.csv` | The review log a practitioner fills, with two worked rows |
 | `EXCEL-TEMPLATE.md`, `Second-Pass-Excel-Template.xlsx`, `build_excel_template.py` | The same log as a workbook, and the script that builds it |
 | `READOUT-TEMPLATE.md`, `Second-Pass-Results-Readout.docx` | The readout a facilitator fills after a session, three pages: the counts, each defined once, then one block for each case set, naming the field for every cell |
+| `RUBRIC.md` | The three criteria an independent educator scores the written explanations against, the scoring sheet that hides the key, and how the second scorer's rows are drawn |
 | `build-facilitator-pdf.py` | Builds the guide's docx and pdf from the markdown |
 
 ### Evidence
 
 | File | What it is |
 | --- | --- |
-| `evidence/EVIDENCE-NOTE.md` | What two real AI drafting runs got wrong, bounded to those runs and this case |
+| `evidence/EVIDENCE-NOTE.md` | What six real AI drafting runs claimed, bounded to those runs and those three ledgers |
+| `evidence/UNSUPPORTED-CLAIMS.md` | Every unsupported claim in the six drafts, by class, with the exact text behind each count |
 | `evidence/ai-draft-*-raw.md` | Six raw model drafts, three ledgers, blind and under Prompt 1, unedited |
 | `evidence/*-run.csv`, `*-recheck.csv` | Each draft put through the checker, exported |
 | `evidence/ledger-paste.txt` | The exact input the drafts were given |
@@ -271,6 +281,9 @@ drill reads, so the two surfaces cannot drift apart.
 | File | What it is |
 | --- | --- |
 | `audit/RELEASE-QA-2026-09-13.md` | This release's QA: 38 screens at six widths, both independent reviews item by item, and the consistency sweep |
+| `audit/INDEPENDENT-AUDIT-2026-09-13.md` | The independent adversarial audit: the third review's findings at the tested head, and 19 new defects with their inputs |
+| `audit/CLEARANCE-GRAMMAR-2026-09-13.md` | What the clearance grammar changed, the audit's 175 probes before and after, and the classes it left open |
+| `audit/AUTHOR-REPAIR-2026-09-13.md`, `audit/PREPICKS-2026-09-13.md`, `audit/FINDINGS-AND-LOCK-2026-09-13.md`, `audit/USABILITY-BY-EYE-2026-09-13.md` | The repairs to the author page, the read before the draft, the findings and the written-answer lock, and what looking at every page at six widths found |
 | `audit/accessibility-2026-09-13.md` | The accessibility pass |
 | `audit/performance-2026-09-13.md` | The performance pass |
 | `screenshots/release/` | 76 screens at 375 and 1280, one per state walked |

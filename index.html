@@ -1516,7 +1516,7 @@ function howScreen(){
       '<p><b>Machine-checkable.</b> Arithmetic, wrong direction, threshold, silence. A script ties each sentence to an account and tests the figures it can match against the ledger, then lists every line that clears both legs of the threshold with no sentence written about it.</p>'+
       '<p><b>Reviewer judgment.</b> Unsupported driver, timing, and a movement sitting in the wrong account. All three need the facts on file and a person who knows the business.</p>'+
       '<p class="howlead">Scope</p>'+
-      '<p>This build is a static case: fourteen lines, one month, answers keyed by hand. Halyard is a made-up company, and its memo was written for this build the way an AI assistant writes close commentary, with every failure planted so it can be taught and scored. It does not run on a live ledger. The checker on this site runs the four mechanical checks on a ledger pasted in a layout it accepts and the memo drafted about it, holds for review whatever it cannot read, and leaves driver and timing with the reviewer. Next, the deterministic checks run first on every AI memo, and the reviewer\'s time goes only to the two judgment types.</p>'+
+      '<p>This build is a static case: fourteen lines, one month, answers keyed by hand. Halyard is a made-up company, and its memo was written for this build the way an AI assistant writes close commentary, with every failure planted so it can be taught and scored. It does not run on a live ledger. The checker on this site runs the four mechanical checks on a ledger pasted in a layout it accepts and the memo drafted about it, says what it could not read instead of clearing it, and leaves driver and timing with the reviewer. Next, the deterministic checks run first on every AI memo, and the reviewer\'s time goes only to the two judgment types.</p>'+
       '<div class="howrun"><a class="btn" href="checker.html">Run the checker on your own ledger and memo</a></div>'+
       '<div class="linkrow"><a class="howlink" href="PROTOCOL.md">The review protocol, one page</a>'+
         '<a class="howlink" href="Second-Pass-Review-Protocol.pdf">The same page as a PDF</a>'+
@@ -2319,7 +2319,7 @@ function callCard(i, round){
     var chips = basisOf(round)[i] || [];
     if(!val) return;
     if(explainAsked(round)){
-      /* the one gate: a button press, the Enter key and a forced click all come through here */
+      /* one door: a button press, the Enter key and a forced click all come through here */
       if(!chips.length || !explainDone(i)) return refuse(false);
       EXPLAIN_PROMPTS.forEach(function(p){ S.r2explain[i][p.k] = explainClean(S.r2explain[i][p.k]); });
     } else if(!chips.length) return;

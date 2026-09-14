@@ -1,6 +1,6 @@
 # What an AI assistant produced from three ledgers
 
-Six drafting runs, 13 September 2026, Claude Opus through Claude Code. Every company was drafted twice. The blind draft saw the company header, the threshold rule and the account lines and nothing else, under one plain request: write the month-end variance commentary for the accounts that need explaining, one line per account, with the amount, the percent and the reason. The second used Prompt 1, copied from checker.html. No draft was edited. All six were then run through checker.html as it stood when this note was first committed, at 8db3106; the exports and the raw drafts sit beside this note.
+Six drafting runs, 13 September 2026, Claude Opus through Claude Code. Every company was drafted twice. The blind draft saw the company header, the threshold rule and the account lines and nothing else, under one plain request: write the month-end variance commentary for the accounts that need explaining, one line per account, with the amount, the percent and the reason. The second used Prompt 1, copied from checker.html. No draft was edited. All six were then run through checker.html, and every count in this note is stated with the revision of the checker that produced it, because the checker has been repaired twice since these drafts were written. The exports and the raw drafts sit beside this note.
 
 Every unsupported claim in the six drafts is classified in [UNSUPPORTED-CLAIMS.md](UNSUPPORTED-CLAIMS.md), with the exact text behind every count.
 
@@ -16,9 +16,9 @@ Claims are counted in four classes: a cause asserted with nothing on file behind
 
 | Run | Setup | Lines explained | Causes asserted | Causes ruled out | Forecasts | Requests naming a source | Figure fails | Direction fails | Review | Not checked | Rows |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Halyard | development session | 14 | 26 | 1 | 1 | 0 | 6 | 1 | 98 | 34 | 199 |
-| Brightwater | fresh context | 3 | 0 | 1 | 0 | 3 | 0 | 0 | 9 | 4 | 39 |
-| Kestrel | fresh context | 4 | 0 | 0 | 1 | 4 | 0 | 0 | 17 | 7 | 60 |
+| Halyard | development session | 14 | 26 | 1 | 1 | 0 | 6 | 1 | 110 | 32 | 202 |
+| Brightwater | fresh context | 3 | 0 | 1 | 0 | 3 | 0 | 0 | 19 | 4 | 43 |
+| Kestrel | fresh context | 4 | 0 | 0 | 1 | 4 | 0 | 0 | 23 | 11 | 69 |
 
 In the Halyard blind draft that is 26 causes, 1 cause ruled out, 1 forecast, and none of them has a source on file. The first version of this table counted 2 "fabricated facts" in that draft, the Southeast depot and three additional payroll days. Neither is a document, both sit inside causes counted above, and the column did not describe a defined unit, so the four classes replace it here and on the review page.
 
@@ -26,9 +26,9 @@ In the Halyard blind draft that is 26 causes, 1 cause ruled out, 1 forecast, and
 
 | Run | Setup | Lines explained | Causes asserted | Causes ruled out | Forecasts | Requests naming a source | "No source on file" | Figure fails | Direction fails | Review | Not checked | Rows |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Halyard | development session | 7 | 0 | 0 | 0 | 0 | 7 | 0 | 0 | 37 | 2 | 81 |
-| Brightwater | fresh context | 3 | 0 | 0 | 0 | 0 | 3 | 0 | 0 | 17 | 2 | 36 |
-| Kestrel | fresh context | 4 | 0 | 0 | 0 | 0 | 4 | 0 | 0 | 22 | 5 | 52 |
+| Halyard | development session | 7 | 0 | 0 | 0 | 0 | 7 | 0 | 0 | 9 | 2 | 81 |
+| Brightwater | fresh context | 3 | 0 | 0 | 0 | 0 | 3 | 0 | 0 | 4 | 2 | 35 |
+| Kestrel | fresh context | 4 | 0 | 0 | 0 | 0 | 4 | 0 | 0 | 6 | 5 | 52 |
 
 ## What changed under Prompt 1
 
@@ -36,7 +36,7 @@ Halyard changed most, and it is also the run whose setup differs. Its blind draf
 
 Brightwater and Kestrel moved differently. Their blind drafts had no summary paragraph and already declined to assert a cause: each stated the movement and then named the document that would settle the driver, seven requests between them. They still carried one unsupported claim each. The Brightwater draft says "patient volume alone does not account for it", which rules out a cause the ledger cannot rule out, because the ledger carries revenue and not visits, procedure mix or realized prices. The Kestrel draft says "only the managed services base carries into August", a forecast nothing supplied supports. Under Prompt 1 both claims were gone, and so were the named documents, because every reason became "no source on file" with no record named.
 
-Prompt 1 raised their review counts rather than lowering them. The checker at 8db3106 did not read "prior $96,000" or "current $138,400" as roles, so each of those figures came back unresolved and went to the queue. That is the prompt and the checker disagreeing, not the memo being wrong.
+Prompt 1 raised their review counts at first. The checker at 8db3106 did not read "prior $96,000" or "current $138,400" as roles, so each of those figures came back unresolved and went to the queue, which was the prompt and the checker disagreeing rather than the memo being wrong. The roles are read now, and 14 of the 17 Prompt 1 sentences are checked within scope.
 
 ## Across the three
 
@@ -46,14 +46,14 @@ The arithmetic in the drafts held in all six runs. No draft stated a change or a
 
 | Run | Sentences | Checked | Review | Not checked | Failed | Rows used | Queue |
 |---|---|---|---|---|---|---|---|
-| Halyard blind | 30 | 2 | 13 | 13 | 2 | 14 | 54 |
-| Halyard Prompt 1 | 8 | 0 | 7 | 1 | 0 | 14 | 16 |
-| Brightwater blind | 6 | 3 | 1 | 2 | 0 | 5 | 5 |
-| Brightwater Prompt 1 | 4 | 0 | 3 | 1 | 0 | 5 | 8 |
-| Kestrel blind | 7 | 3 | 2 | 2 | 0 | 6 | 10 |
-| Kestrel Prompt 1 | 5 | 0 | 4 | 1 | 0 | 6 | 10 |
+| Halyard blind | 29 | 0 | 15 | 12 | 2 | 14 | 59 |
+| Halyard Prompt 1 | 8 | 7 | 0 | 1 | 0 | 14 | 9 |
+| Brightwater blind | 6 | 0 | 4 | 2 | 0 | 5 | 8 |
+| Brightwater Prompt 1 | 4 | 3 | 0 | 1 | 0 | 5 | 4 |
+| Kestrel blind | 9 | 2 | 3 | 4 | 0 | 6 | 13 |
+| Kestrel Prompt 1 | 5 | 4 | 0 | 1 | 0 | 6 | 6 |
 
-Every count above comes from checker.html at 8db3106, with the ledger text in `ledger-paste.txt` and the exports beside this note. The Halyard figures come from re-checking its two original drafts on that build, so all three sit on one scale; the earlier exports are kept and use the older columns. The third independent review reran all six drafts at b6ba468 and reproduced every sentence-status count here. Some queue counts changed with how the ledger was represented, so a queue count is comparable only with the same input text on the same revision. No run skipped a ledger row or left a qualifying line silent.
+**Every count above comes from checker.html at `09cec33`, the clearance grammar with its residual classes closed**, run on the inputs the independent audit filed as `audit/independent-2026-09-13/inputs/six-drafts-as-fixtures.json`, whose ledger text is `ledger-paste.txt`. A count only means anything beside its revision, and these have moved twice. At `8db3106`, where this note was first written, the blind drafts read 30, 6 and 7 sentences with 2, 3 and 3 of them checked within scope; the third independent review reran all six at `b6ba468` and reproduced those sentence statuses; the clearance grammar then held blind sentences it had been clearing on a month, a size word or a claim carried to another line, and read two run-together Kestrel sentences apart, which is what moved Halyard to 29 sentences with none checked within scope, Brightwater to 4 held, and Kestrel to 9 sentences. `audit/CLEARANCE-GRAMMAR-2026-09-13.md` names every one of those moves and why. The Prompt 1 drafts moved the other way when `prior` and `current` were read as roles, from 0 of 17 sentences checked within scope to 14 of 17, which is where they still stand. The exports beside this note are the earlier ones and use the older columns. No run skipped a ledger row or left a qualifying line silent.
 
 ## What these runs do not establish
 

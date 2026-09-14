@@ -150,7 +150,7 @@ which never blocks anything.
 The memo, the figures and the On file facts stay on screen while the chips are up, so nothing has
 to be remembered to answer. What the lock does is make the player commit to a reason before the
 page tells them whether the call was right. A room told this in advance plays it properly. A room
-that discovers it on line one treats the chips as a gate to get past.
+that discovers it on line one treats the chips as one more click on the way to the reveal.
 
 Say it in one sentence in the framing: **you will call the line, then say why, and only then will
 the page tell you anything.**
@@ -339,7 +339,7 @@ you fill from its output.
    the card's basis key after the call verdict. Count the agreeing ones over the lines seen, and
    read it beside the call accuracy rather than in place of it.
 4. **The fresh case.** The column for question C opens with
-   `Round2: right call 4/5, right reason 3/5; calls FSFSF; key FSFSF; seconds 61.` Average each
+   `Round2: right call 5/5, right reason 3/5; calls FSFFS; key FSFFS; seconds 61.` Average each
    fraction over the responses and set both beside the trained pair.
 
 Every Why cell splits on ` || `, which separates what the player said from what the page computed.

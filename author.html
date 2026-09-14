@@ -1034,7 +1034,7 @@ document.addEventListener("input", function(e){
 function readMain(){ readInto(1); }
 function readFresh(){ readInto(2); }
 
-/* ---------- the save gate ---------- */
+/* ---------- what holds the save ---------- */
 function storedCase(){
   var raw = null;
   try{ raw = window.localStorage.getItem(OWN_KEY); }catch(e){ return null; }

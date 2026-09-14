@@ -11,7 +11,7 @@ Live at https://fiscalpatriots.github.io/beat-the-machine/ from `main`.
 | --- | --- | --- |
 | Product | `second-pass-drill 1.6.1` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
 | Round one case | `halyard-v4`, 13 September 2026 | `cases/halyard-v4.json`, question A, the local record |
-| Round two case | `brightwater-v5`, 13 September 2026 | `cases/brightwater-v5.json`, questions A and C, the local record |
+| Round two case | `brightwater-v6`, 13 September 2026 | `cases/brightwater-v6.json`, questions A and C, the local record |
 | Data notice | `notice-2026-09-13c` | the notice screen, question A, the local record |
 
 One constant carries the product version. Change `PRODUCT_VERSION` and every surface follows,
@@ -52,8 +52,8 @@ checks on a pasted ledger and memo in the layouts `CHECKER.md` lists under "What
 or flags the inputs that page describes, and leaves driver and timing with the reviewer. Next, the deterministic checks
 run first on every AI memo, and the reviewer's time goes only to the two judgment types.
 
-The code and the pilot records are at https://github.com/fiscalpatriots/second-pass, which is
-public: `curl -s -o /dev/null -w "%{http_code}"` returned **200** signed out on 12 September 2026,
+The code and the command-line checker are at https://github.com/fiscalpatriots/second-pass, which
+is public: `curl -s -o /dev/null -w "%{http_code}"` returned **200** signed out on 12 September 2026,
 as did the game itself at https://fiscalpatriots.github.io/beat-the-machine/.
 
 The sibling page https://fiscalpatriots.github.io/beat-the-machine/checker.html runs the four
@@ -81,7 +81,7 @@ come straight out of the responses sheet without any hand coding.
 | False-flag rate | The six lines whose key is `stand` are the denominator. A `flag` call on any of them is a false flag, and question B carries the round's false flag count as well. |
 | The read before the draft | The round one free text question (`entry.1115022539`) carries the accounts the player tapped from the ledger alone before any memo sentence was shown, the case version, that read and the final call on every line as letter strings, and the counts that changed toward the key, changed away from it and held. `findings.py` rebuilds the read from the accounts against the recorded version and reports the counts for first attempts only, as descriptive agreement on a keyed exercise. See "The read before the draft" below. |
 | Elapsed time | The clock runs from the first card to the last call and posts as whole minutes in the elapsed time question. It is elapsed time on the page rather than measured active work, and it is reported under that name. |
-| Fresh case accuracy | Question C (`entry.756559246`) opens with `Round2: right call 4/5, right reason 3/5; calls FSFFS; key FSFFS; seconds 61.` The two fractions are the call and reason scores on the five lines of a company the player had never seen, the letter strings are the five calls and the five keyed answers in card order with `F` for flag and `S` for let it stand, and the seconds are the round two clock. |
+| Fresh case accuracy | Question C (`entry.756559246`) opens with `Round2: right call 5/5, right reason 3/5; calls FSFFS; key FSFFS; seconds 61.` The two fractions are the call and reason scores on the five lines of a company the player had never seen, the letter strings are the five calls and the five keyed answers in card order with `F` for flag and `S` for let it stand, and the seconds are the round two clock. |
 
 Read together these say which error types a reviewer agrees with the key on unaided, whether the
 basis they gave agrees with the key as well, and how a second unseen memo of five lines was
@@ -105,7 +105,7 @@ never changed.
 **Fresh case accuracy.** Split question C on the semicolons. The fields after `Round2:` are the
 call score and the reason score out of five, and `=AVERAGE()` over each column is the pilot's
 fresh-case accuracy. Splitting the calls string character by character against the key string
-gives a per line figure, and all three flagged lines in `brightwater-v5` are `unsupported
+gives a per line figure, and all three flagged lines in `brightwater-v6` are `unsupported
 driver`, so the fresh case reads as a causal-evidence set rather than an arithmetic one. Report
 it beside the fourteen as two separate descriptive numbers. Calling the difference between them
 transfer, learning or improvement would require a planned comparison this pilot does not run.
@@ -757,7 +757,7 @@ The elapsed minutes question receives the lap time, off the clock rather than a 
 
 Round two posts without a new question. The whole fresh case rides in question C
 (`entry.756559246`), which asks the player nothing and carried only a placeholder note before 13
-September 2026. The cell now opens with `Round2: right call 4/5, right reason 3/5; calls FSFFS; key FSFFS; seconds 61.`, then
+September 2026. The cell now opens with `Round2: right call 5/5, right reason 3/5; calls FSFFS; key FSFFS; seconds 61.`, then
 the five bases, then the company and the case version, so the sheet can be read without opening
 the game. The fourteen "Why" fields were left exactly as they were, because the catch rate by
 error type is grouped on them.
@@ -864,12 +864,13 @@ and 5 of 5. The same run now scores zero on reason.
 The reason score is a compatibility check on the stated basis, reported as agreement with the
 accepted reason categories. It is not a rubric score, it does not establish that a player reasoned,
 and a player who taps `no source on file` on every flag and the hold chip on every stand would
-score well on it without having reasoned. The measurement adopted on 13 September 2026 for the
-next assessment version, `brightwater-v6`, adds a short written explanation on each of the five
-fresh-case items, naming the decisive evidence, why it matters for this period, and the action or
-source request that follows. Those explanations are scored blind by an independent educator
-against a rubric, the chips are still reported separately, and disagreements with the key are
-retained rather than settled by it.
+score well on it without having reasoned. The measurement adopted on 13 September 2026, and
+shipping in `brightwater-v6`, adds a short written explanation on each of the five fresh-case
+items, naming the decisive evidence, why it matters for this period, and the action or source
+request that follows. The page collects those answers and never scores them. `RUBRIC.md` is what an
+independent educator will score them against, blind, on a sheet that hides the call result, and
+none has been scored yet. The chips stay a separate result, and a scorer's disagreement with the
+key is recorded rather than settled by changing the key.
 
 ## Counting the organizations
 
@@ -921,7 +922,7 @@ saved run. Changing the select reloads the case and starts the run clean, becaus
 a line and the two sets are different lines.
 
 The chosen case's id rides into question A beside the version, as
-`Case: kestrel, version kestrel-v1 (practice, 12 lines) and brightwater-v5 (assessment, 5 lines)`,
+`Case: kestrel, version kestrel-v1 (practice, 12 lines) and brightwater-v6 (assessment, 5 lines)`,
 and into the local record at `scoring.caseId`, `attempt.caseId` and on every item. An own case
 posts its id as `own:<name>:<version>`. **Whoever writes the findings script has to group on
 that id and never pool rows from different cases**, the same rule that already applies to
@@ -936,7 +937,7 @@ that posts its first fourteen lines into those fields and the whole run into the
 
 **The two month names.** A case file names its own columns in `columns`, as
 `"columns": ["June", "July"]`, and the ledger headings, the figure strip on each card, the chart
-and the orientation statement all read them. `halyard-v4` and `brightwater-v5` predate the field
+and the orientation statement all read them. `halyard-v4` and `brightwater-v6` predate the field
 and fall back to May against June, which is what they have always been.
 
 Two badges stopped naming their lines by number at the same time, because line 12 does not exist
@@ -986,10 +987,11 @@ would have edited a file the checker lane owns, against whose code the fixtures 
 rather than left to be discovered. `author.html` loads the module; `checker.html` still carries
 its own copy.
 
-**The task to unify:** point `checker.html` at `assets/second-pass-core.js`, delete its own copy
-of those functions, run `node tests/run-checker-tests.cjs` and confirm every fixture still passes. Until
-that lands a fix made in one copy has to be made in the other, and the comment at the top of the
-module says so.
+**The copies cannot drift without the suite saying so.** `node tests/run-checker-tests.cjs` ends by
+comparing the two files function by function and constant by constant, and it fails the run when
+any of them differ, so a fix made in one copy has to be made in the other and the suite is what
+catches it. **The task to unify:** point `checker.html` at `assets/second-pass-core.js`, delete its
+own copy of those functions, and run the suite again.
 
 ### What was verified, 13 September 2026
 
@@ -1015,21 +1017,23 @@ nothing on that page to apply to.
 
 Screenshots are in `screenshots/game/` and `screenshots/author/`, each at 375 and 1280.
 
-One thing found and not fixed, because it is not this lane's file: at 320 pixels `checker.html`
-has a 14 pixel internal overflow on `#out` after a run. The page itself does not scroll sideways.
+The 14 pixel internal overflow on `#out` at 320 pixels, found by this lane and left to the checker
+lane, is gone: the clearance grammar lane measured every element on `checker.html` and
+`author.html` at 320, 375, 768, 1,024, 1,280 and 1,600 and found no document or element overflow,
+which `audit/CLEARANCE-GRAMMAR-2026-09-13.md` records with its screenshots.
 
 <!-- GAME LANE SECTION END -->
 
 ## The answer key and the case files
 
 Since 13 September 2026 both cases live outside the page, in `cases/halyard-v4.json` and
-`cases/brightwater-v5.json`. Each file carries the company, the threshold policy, the ledger
+`cases/brightwater-v6.json`. Each file carries the company, the threshold policy, the ledger
 rows, the memo sentences, the On file facts as verified case assumptions, the key, the error
 type, the basis key, the reveal reason, the tell, its own version and date, and a `changeLog`
 recording what moved from the version before it. An assessment case also carries
 `"mode": "assessment"` and the assessment note the bridge prints. The superseded `halyard-v3`,
-`brightwater-v4`, `brightwater-v3` and `brightwater-v2` files stay in the folder because responses were scored
-against them. `cases/README.md` explains the format, the basis-key contract, the evidence on each
+`brightwater-v5`, `brightwater-v4`, `brightwater-v3` and `brightwater-v2` files stay in the folder because
+responses were scored against them. `cases/README.md` explains the format, the basis-key contract, the evidence on each
 assessment line, what a shortcut scores on the assessment case, the differences from the
 checker's Halyard sample, and what changed in this revision.
 
@@ -1050,7 +1054,7 @@ the key, in the JSON as easily as in the page. That is the trade for instant fee
 the reason to send the link and not the file.
 
 The error types are wrong direction, unsupported driver, unsupported attribution, timing,
-arithmetic, no explanation and clean line. `halyard-v4` uses all seven. `brightwater-v5` uses two
+arithmetic, no explanation and clean line. `halyard-v4` uses all seven. `brightwater-v6` uses two
 of them, unsupported driver three times and clean line twice, because every line in an assessment
 case has to test a named cause. "No explanation" covers a line where the memo says nothing about
 an account that owes commentary, which is why it belongs in the practice case and not in the
@@ -1071,7 +1075,7 @@ case versions.
 
 ## Deploying
 
-`index.html`, `cases/halyard-v4.json` and `cases/brightwater-v5.json`. No libraries. The only
+`index.html`, `cases/halyard-v4.json` and `cases/brightwater-v6.json`. No libraries. The only
 build step is `node build-cases.cjs`, which refreshes the inline fallback inside `index.html` and
 has to be run after any edit to either case file. The only outbound request is the Figtree
 stylesheet from Google Fonts. Commit to `main` and push;

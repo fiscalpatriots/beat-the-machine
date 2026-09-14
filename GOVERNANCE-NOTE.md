@@ -34,8 +34,11 @@ stay in the export. `human conclusion` and `review time` are exported empty on p
 does not write them and does not time anybody.
 
 `status` is the column that matters most, and it is never promoted on the way into the log.
-`checked within scope` means every figure in the sentence carried a role the words gave it and
-the comparison with the ledger agreed. It does not mean the sentence is true. `not checked`
+`checked within scope` means every quantitative expression in the sentence was accounted for:
+each figure carried a role the words gave it and agreed with the ledger unrounded, every other
+number was a year, a date, a label, an ordinal, a reference or a count, and once those claims
+were read nothing from the clearance grammar's risk lexicon was left in the sentence. It does not
+mean the sentence is true, and `CHECKER.md` holds the grammar it is decided by. `not checked`
 means nothing in the sentence could be tied to the ledger and tested, which is not a pass.
 
 ## The eight columns the machine never fills

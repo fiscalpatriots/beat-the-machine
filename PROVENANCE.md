@@ -53,6 +53,7 @@ The checker those runs went through reads only the inputs `CHECKER.md` lists und
 | 12 September 2026 | The audit. A ChatGPT critique of a flat copy of the case was reconciled against the live build: five points confirmed the key, two were already fixed and seven were real wording defects. Cards 2, 4, 7, 9, 11, 12 and 14 were corrected. |
 | 13 September 2026 | Round two added, five fresh lines of Brightwater Dental Partners, a four office dental group, carrying three of the same error types on a different industry. |
 | 13 September 2026 | `halyard-v4` and `brightwater-v5` issued: every card gained a basis key, and every Brightwater fact on file quotes a named, dated document. Six drafting runs recorded in `evidence/`. |
+| 13 September 2026 | `brightwater-v6` issued and loaded by the drill: the same calls, types, basis keys and memo sentences as v5, with the evidence showing what each document says and no longer what it establishes, and a three-part written explanation required on all five assessment lines. |
 
 The live call key dates from 12 September 2026 and the basis key from 13 September 2026. Rows
 scored against different case versions are never pooled, and rows filed before the live versions

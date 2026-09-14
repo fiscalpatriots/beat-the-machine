@@ -44,7 +44,8 @@ second time.
 
 In the Halyard blind draft that is 26 causes, 1 cause ruled out, 1 forecast, and none of them has a
 source on file. The review page's evidence graphic and its accessible description carry the same
-count in the same words.
+count in the same words. Counting is by claim and not by sentence, so these totals do not move when
+the checker's own counts do.
 
 The last column is not one of the four classes. Every Prompt 1 line reads "because no source on
 file (source: no source on file)". That asserts nothing, and it also names no document, so it is
@@ -131,6 +132,12 @@ such as the July 4 holiday build and the revolver covenant review, so the column
 defined unit. The four classes replace it, and the review page now carries the class counts.
 
 ## The seven Halyard checker failures are not numerical mistakes
+
+Read at checker.html `09cec33`, where the Halyard blind draft comes back as 29 sentences, none
+checked within scope, 15 needing review, 12 not checked and 2 failed, with 59 items in the
+reviewer's queue. The two failed sentences are the two sentences of the summary paragraph, and the
+class counts in this file do not move with the checker because they are a reading of the drafts
+rather than an output of the page. `evidence/EVIDENCE-NOTE.md` carries every count by revision.
 
 The Halyard blind export shows six figure fails and one direction fail. All seven sit in the two
 sentences of the summary paragraph, and every figure in them recomputes from the ledger: total

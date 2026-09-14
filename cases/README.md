@@ -5,16 +5,19 @@ Two files hold the cases the public drill runs on.
 | File | Version | Company | Lines | Mode |
 | --- | --- | --- | --- | --- |
 | `halyard-v4.json` | halyard-v4, 13 September 2026 | Halyard Provisioning Group, Inc. | 14 | practice |
-| `brightwater-v5.json` | brightwater-v5, 13 September 2026 | Brightwater Dental Partners, PLLC | 5 | assessment |
+| `brightwater-v6.json` | brightwater-v6, 13 September 2026 | Brightwater Dental Partners, PLLC | 5 | assessment |
+| `kestrel-v1.json` | kestrel-v1, 13 September 2026 | Kestrel IT Services, LLC | 12 | practice, offered in the case control |
+| `brightwater-v5.json` | brightwater-v5, 13 September 2026 | Brightwater Dental Partners, PLLC | 5 | assessment, retired |
 | `brightwater-v4.json` | brightwater-v4, 13 September 2026 | Brightwater Dental Partners, PLLC | 5 | assessment, retired |
 | `halyard-v3.json` | halyard-v3, 13 September 2026 | Halyard Provisioning Group, Inc. | 14 | practice, retired |
 | `brightwater-v3.json` | brightwater-v3, 13 September 2026 | Brightwater Dental Partners, PLLC | 5 | assessment, retired |
 | `brightwater-v2.json` | brightwater-v2, 13 September 2026 | Brightwater Dental Partners, PLLC | 5 | practice, retired |
 
 The retired files are kept because responses were scored against them and a superseded key has to
-stay readable. The page loads `halyard-v4` and `brightwater-v5` only, and rows scored against one version are never
-pooled with rows scored against another. Each v4 file carries a `changeLog` array recording what
-moved from v3 and why.
+stay readable. The drill loads `halyard-v4` with `brightwater-v6`, and `kestrel-v1` with the same
+fresh case where the case control offers it. Rows scored against one version are never pooled with
+rows scored against another. Every file carries a `changeLog` array recording what moved from the
+version before it and why.
 
 ## The basis key
 
@@ -28,8 +31,8 @@ naming a defect contradicts a line that has none. `build-cases.cjs` refuses to w
 carries anything else, if a flag carries the hold chip, or if a key names a chip the page does
 not offer.
 
-No card in either case has an amount booked in an account it does not belong in, so
-`wrong account` is in no key in this release. Tapping it on all nineteen lines scores zero on
+No card in the Halyard and Brightwater pair has an amount booked in an account it does not belong
+in, so `wrong account` is in neither of their keys. Tapping it on all nineteen lines scores zero on
 reason. That is the point of counting the reason separately: the same run scored 14 of 14 and 5
 of 5 on the call in the 13 September review.
 
@@ -50,14 +53,16 @@ the memo sentence, the on-file facts, the key, the error type, the reveal reason
 the over-flag note where there is one. A file with `"mode": "assessment"` also carries
 `assessmentNote`, the sentence the bridge screen prints to say what is already settled.
 
-## The assessment case, brightwater-v5
+## The assessment case, brightwater-v6
 
 Round two is an independent assessment rather than more practice, so the page suppresses every
 signal that would leak correctness: no reveal between lines, no running score, no streak, and no
 track. All five verdicts arrive together on a results screen once the fifth call is in.
 
 Every entry under **On file** carries one line quoted out of a named, dated document, or says in the
-same place that the document was asked for and never arrived. Line 3 is the one to read twice: the
+same place that the document was asked for and never arrived. From v6 the card shows what each
+document says and stops short of saying what it establishes, and the reading of it waits in that
+line's reveal. Line 3 is the one to read twice: the
 orthodontic plan schedule is a real document, it is quoted, it ties to the ledger's May balance of
 $96,000, and it is dated 31 May, so it cannot carry a cause that starts in June. A document on the
 card is not the same as a document covering the period the sentence is about.
@@ -114,11 +119,11 @@ unseen set, scored the same way as round one, and never as proof of transfer or 
 gain. The reason chips are a second reading, of agreement with accepted reason categories, and a
 chip shortcut reaches that too: `no source on file` on the three flags and the hold chip on the
 two stands scores 5 of 5 on reason without saying why the 31 May schedule cannot carry June plan
-starts. That is why the measurement adopted on 13 September 2026 for the next assessment version,
-`brightwater-v6`, asks for a short written explanation on each of the five items, naming the
-decisive evidence, why it matters for this period, and the action or source request that follows,
-scored blind by an independent educator against a rubric, with the chips still reported
-separately. Until that version is in this folder, `brightwater-v5` above is the assessment case.
+starts. That is why `brightwater-v6`, the assessment case the drill now loads, asks for a short written
+explanation on each of the five items, naming the decisive evidence, why it matters for this
+period, and the action or source request that follows. The page collects those answers and never
+scores them; `RUBRIC.md` is what an independent educator will score them against, blind, and none
+has been scored yet. The chips stay a separate result.
 
 `build-cases.cjs` enforces the assessment contract. It refuses to write if a memo states a dollar
 figure the account does not produce, states a percent that is not the movement, uses a direction
@@ -128,9 +133,10 @@ and not in the scored one.
 
 ## How the page reads them
 
-`index.html` fetches both files at load. When the fetch fails, which is what happens when the
-file is opened from a folder rather than served, the page falls back to a copy of the same JSON
-written into the file between the `BUILD:CASES-START` and `BUILD:CASES-END` markers.
+`index.html` fetches the practice case it was asked for and the fresh case at load. When a fetch
+fails, which is what happens when the file is opened from a folder rather than served, the page
+falls back to a copy of `halyard-v4` and `brightwater-v6` written into the file between the
+`BUILD:CASES-START` and `BUILD:CASES-END` markers.
 
 The JSON files are the source of truth. After editing either one, run:
 
@@ -175,7 +181,7 @@ with no card, such as Halyard's depreciation, can be tapped and compares with no
 exactly as the ledger spells them, or a tap will not reach its card.
 
 `columns` was added on 13 September 2026 for `kestrel-v1`, which runs June against July.
-`halyard-v4` and `brightwater-v5` do not carry it and are read as May against June, which is what
+`halyard-v4` and `brightwater-v6` do not carry it and are read as May against June, which is what
 they have always printed.
 
 ## Cases authored from `author.html`
@@ -206,31 +212,41 @@ it is treated as a published case rather than as one facilitator's own.
 
 ## For the checker lane
 
-`checker.html` ships a Halyard sample. It must be regenerated from `halyard-v4.json` by the
-checker lane; nothing in this folder changes the checker, and the game lane does not edit
-`checker.html` or `CHECKER.md`.
+`checker.html` generates its Halyard and Brightwater samples from `halyard-v4.json` and
+`brightwater-v5.json` through `node build-checker-cases.cjs`, so the two surfaces read one ledger
+and one memo version rather than two drifting copies. The generated block sits between
+`BUILD:CHECKER-CASES-START` and `BUILD:CHECKER-CASES-END` and is never hand-edited, and the
+generator refuses to write when a card points at an account the ledger does not carry or a card's
+figures do not tie. `CHECKER.md` prints the expected output for every sample and the suite asserts
+all four end to end.
 
-The checker's ledger already matches all fourteen game accounts. Its sample memo does not. The
-differences known on 13 September 2026:
+The Brightwater sample still names `brightwater-v5` as its memo version while the drill runs
+`brightwater-v6`. The two files carry the same five memo sentences and the same figures, so the
+sample's output does not move, and the version label is the checker lane's to bring forward.
 
-1. **The sample is thirteen lines, the game is fourteen.** The two are different memo versions,
-   not the same text at different lengths.
-2. **"Both revenue lines."** The sample restores a sentence tying the two revenue lines together.
-   The game's card 12 turns on the memo never making that connection, so the sample resolves the
-   line the game asks the player to catch.
-3. **Pump-price assertions.** The sample asserts lower pump prices as the fleet fuel driver. The
-   game's card 9 stands on a narrow statement with no driver asserted, and on case facts that
-   state June consumption and June invoices are the same population.
-4. **Billing assertions placed inside the draft.** The sample has the draft assert its own
-   support. A draft's assertion about its own support is not independent evidence, and cards 4,
-   8, 12 and 14 in halyard-v4 now turn on exactly that distinction.
-5. **No separate case-fact summary.** The game supplies On file facts per line as verified case
-   assumptions. The checker supplies none, so a clean verdict in the game does not transfer to
-   the checker sample without the matching evidence.
+Two things the game supplies that the checker does not, whatever the sample says:
 
-Until the sample is regenerated, label it in `CHECKER.md` as a different memo version with
-unresolved issues rather than as the same case. Do not port a clean verdict from the game to the
-checker sample without the evidence the game card rests on.
+1. **The On file facts.** The game gives each line its verified case assumptions; the checker is
+   given a ledger and a memo and nothing else.
+2. **A verdict.** A clean coverage strip in the checker is not the game's `stand`, and a clean
+   verdict in the game does not transfer to the checker without the evidence the card rests on.
+
+## What changed in brightwater-v6
+
+Written on 13 September 2026, after the third independent review asked that the evidence stop
+pre-solving the line.
+
+| Line | Call | Change |
+| --- | --- | --- |
+| All five | unchanged | The evidence shows what each document says and what is missing, and no longer what it establishes. Each reading moved into that line's reveal. |
+| 1, dental supplies | flag, unchanged | Drops the fact restating that nothing supports the case count. |
+| 2, hygienist wages | stand, unchanged | Names the June and May payroll documents without adding the two salaries or calling them the whole movement. |
+| 3, orthodontic plan revenue | flag, unchanged | Keeps the 31 May schedule excerpt and the missing June documents, and drops the reading that the schedule lists no June plan. |
+| 4 and 5 | unchanged | Drop the conclusions drawn from their documents and the coaching line about the threshold leg, which the policy excerpt still carries. |
+
+The call, the error type, the basis key and every memo sentence are unchanged from v5, and the
+script that wrote the file stops if any of them moved. Every call on this case also asks for a
+three-part written explanation before it locks.
 
 ## What changed in brightwater-v5
 
@@ -284,21 +300,21 @@ corrects the reasoning separately.
 
 | File | Version | Company | Lines | Mode |
 | --- | --- | --- | --- | --- |
-| `kestrel-v1.json` | kestrel-v1, 13 September 2026 | Kestrel IT Services, LLC | 12 | practice, not yet loaded |
+| `kestrel-v1.json` | kestrel-v1, 13 September 2026 | Kestrel IT Services, LLC | 12 | practice |
 
-**`index.html` does not load this file.** The page fetches the v4 pair and nothing else, and the
-inline fallback `build-cases.cjs` writes carries the v4 pair and nothing else. Wiring case selection
-is a later lane's work, and until it lands, `kestrel-v1.json` is read by people rather than by the
-page. It is written to the same schema as `halyard-v4.json` and passes every rule in
-`build-cases.cjs`, including the basis key rules, so the wiring lane has nothing to fix in the data.
+**The drill offers this file.** `index.html` lists it in the case control and loads it from
+`cases/kestrel-v1.json`, with `brightwater-v6` as its fresh case, and `?case=kestrel` in the address
+picks it before the intro screen is drawn. The control only appears when the file answers. It is
+written to the same schema as `halyard-v4.json` and passes every rule in `build-cases.cjs`,
+including the basis key rules.
 
-Two things that lane has to handle:
+Two things about the file that are worth knowing:
 
-1. **The comparison months are June and July, not May and June.** `statement()` in `index.html`
-   prints the column headers `May` and `June` as literals. `kestrel-v1.json` carries a `columns`
-   field, `["June","July"]`, and the headers have to read from it once a third case is selectable.
-   The months are June and July because the Kestrel sample already shipping in `checker.html` is
-   titled "July 2026 compared with June 2026", and the two have to stay the same memo.
+1. **The comparison months are June and July, not May and June.** The case carries a `columns`
+   field, `["June","July"]`, and the ledger headings, the figure strip, the chart and the
+   orientation statement read it. The months are June and July because the Kestrel sample in
+   `checker.html` is titled "July 2026 compared with June 2026", and the two have to stay the same
+   memo.
 2. **The fifth element on each ledger row.** In this file it is 1 when the movement clears both legs
    of the threshold and 0 when it does not, which the file states in `ledgerNote`. Nothing in
    `index.html` reads it.
