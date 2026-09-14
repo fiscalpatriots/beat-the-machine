@@ -1,0 +1,706 @@
+{
+  "case": "kestrel",
+  "ran": "Sun Sep 13 2026 22:45:06 GMT-0400 (Eastern Daylight Time)",
+  "checks": [
+    {
+      "name": "case files loaded from cases/, not the inline fallback",
+      "pass": true,
+      "detail": {
+        "one": "kestrel-v1",
+        "two": "brightwater-v6",
+        "lines": 12,
+        "source": "cases/ files",
+        "id": "kestrel"
+      }
+    },
+    {
+      "name": "the drill arrives on the read screen after the codename",
+      "pass": true,
+      "detail": {
+        "step": 2,
+        "section": true,
+        "chips": 12,
+        "rows": 12,
+        "ledgerRows": 12,
+        "skipText": [],
+        "pageSkipLinks": [
+          "Skip to the main content -> #app"
+        ],
+        "focus": "orienthead",
+        "head": "Your read, before any AI draft",
+        "whyline": "Your own read of the ledger comes first, before any sentence of the AI draft is on the screen.",
+        "stat": "Tap at least one line before you go on."
+      }
+    },
+    {
+      "name": "one chip per ledger account",
+      "pass": true,
+      "detail": {
+        "chips": 12,
+        "ledgerRows": 12
+      }
+    },
+    {
+      "name": "no control on the drill screen offers a skip or a later (the header's skip-to-content link is the only skip on the page)",
+      "pass": true,
+      "detail": {
+        "screen": [],
+        "page": [
+          "Skip to the main content -> #app"
+        ]
+      }
+    },
+    {
+      "name": "focus lands on the screen heading",
+      "pass": true,
+      "detail": "orienthead"
+    },
+    {
+      "name": "no memo sentence is on the read screen",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "exactly one onward button is visible at 375, in the sticky bar, and it is a labeled button",
+      "pass": true,
+      "detail": [
+        {
+          "where": "sticky bar",
+          "text": "Tap at least one line",
+          "tag": "BUTTON",
+          "type": "button",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "name": "clicking on with nothing tapped stays on the read and moves focus to the first line",
+      "pass": true,
+      "detail": {
+        "step": 2,
+        "focus": "0",
+        "stat": "Tap at least one line before you go on.",
+        "memo": false
+      }
+    },
+    {
+      "name": "Enter and Space on the onward button with nothing tapped stay on the read",
+      "pass": true,
+      "detail": {
+        "kEnter": 2,
+        "kSpace": 2
+      }
+    },
+    {
+      "name": "the step hook cannot open line one, the fresh results or the end screen without a read",
+      "pass": true,
+      "detail": {
+        "hook3": {
+          "step": 2,
+          "memo": false
+        },
+        "hookDone": {
+          "step": 2,
+          "memo": false,
+          "trophy": false
+        },
+        "hook92": {
+          "step": 2,
+          "memo": false
+        }
+      }
+    },
+    {
+      "name": "an edited saved run that jumps to the end comes back on the read screen",
+      "pass": true,
+      "detail": {
+        "step": 2,
+        "memo": false,
+        "trophy": false
+      }
+    },
+    {
+      "name": "a saved read naming an account not on the ledger is not a read",
+      "pass": true,
+      "detail": {
+        "step": 2,
+        "memo": false
+      }
+    },
+    {
+      "name": "a step in the address is ignored and the drill starts at the intro",
+      "pass": true,
+      "detail": {
+        "step": 0,
+        "memo": false
+      }
+    },
+    {
+      "name": "Tab reaches every line chip and then the onward button at 375",
+      "pass": true,
+      "detail": {
+        "reached": 12,
+        "of": 12,
+        "last": "onward",
+        "presses": 14
+      }
+    },
+    {
+      "name": "Space and Enter toggle a line chip on and off, and aria-pressed follows",
+      "pass": true,
+      "detail": {
+        "sp": "true",
+        "en1": "true",
+        "en2": "false",
+        "sp2": "false"
+      }
+    },
+    {
+      "name": "tapping saves the read in ledger order without locking it",
+      "pass": true,
+      "detail": {
+        "picks": [
+          "6200",
+          "6400",
+          "7000"
+        ],
+        "at": 0,
+        "stat": "You have tapped 3 lines. The rest count as lines you would let stand.",
+        "go": [
+          {
+            "where": "sticky bar",
+            "text": "Lock in my read and continue",
+            "tag": "BUTTON",
+            "type": "button",
+            "disabled": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "the onward label and the status change once a line is tapped",
+      "pass": true,
+      "detail": {
+        "picks": [
+          "6200",
+          "6400",
+          "7000"
+        ],
+        "at": 0,
+        "stat": "You have tapped 3 lines. The rest count as lines you would let stand.",
+        "go": [
+          {
+            "where": "sticky bar",
+            "text": "Lock in my read and continue",
+            "tag": "BUTTON",
+            "type": "button",
+            "disabled": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "a reload on the read screen keeps what was tapped",
+      "pass": true,
+      "detail": {
+        "step": 2,
+        "pressed": [
+          "6200",
+          "6400",
+          "7000"
+        ]
+      }
+    },
+    {
+      "name": "going on locks the read and opens line one",
+      "pass": true,
+      "detail": {
+        "step": 3,
+        "picks": [
+          "6200",
+          "6400",
+          "7000"
+        ],
+        "at": 1789353912505,
+        "before": 0,
+        "memo": true
+      }
+    },
+    {
+      "name": "a locked read cannot be changed, even with a chip re-enabled by hand",
+      "pass": true,
+      "detail": {
+        "relook": {
+          "disabled": true,
+          "go": [
+            {
+              "where": "sticky bar",
+              "text": "Continue to the memo",
+              "tag": "BUTTON",
+              "type": "button",
+              "disabled": false
+            }
+          ],
+          "stat": "Your read is locked in, and nothing after the memo can change it."
+        },
+        "afterForcedTap": [
+          "6200",
+          "6400",
+          "7000"
+        ]
+      }
+    },
+    {
+      "name": "the changed lines sit behind one disclosure that names how many moved",
+      "pass": true,
+      "detail": {
+        "closed": true,
+        "summary": "See the seven lines that moved"
+      }
+    },
+    {
+      "name": "the end screen states where the final calls moved off the read, with the right counts",
+      "pass": true,
+      "detail": {
+        "want": "Before the memo you tapped three accounts on the ledger for a second look. After reading the AI draft, your final call moved off that read on seven of the twelve lines. Six of those changes moved toward the answer key and one moved away from it. On the other five lines, your final call matched your first read.",
+        "got": "Your read before the draft, and your final calls\n\nBefore the memo you tapped three accounts on the ledger for a second look. After reading the AI draft, your final call moved off that read on seven of the twelve lines. Six of those changes moved toward the answer key and one moved away from it. On the other five lines, your final call matched your first read.\n\nSee the seven lines that moved\nLine 1, Software licenses and hosting\nTapped before the draft, let stand after it. That change moved away from the key.\nLine 2, Subcontracted engineering\nLeft untapped before the draft, flagged after it. That change moved toward the key.\nLine 3, Client acquisition costs\nTapped before the draft, let stand after it. That change moved toward the key.\nLine 6, Hardware and license resale\nLeft untapped before the draft, flagged after it. That change moved toward the key.\nLine 8, Project and implementation revenue\nLeft untapped before the draft, flagged after it. That change moved toward the key.\nLine 10, Computer equipment\nLeft untapped before the draft, flagged after it. That change moved toward the key.\nLine 12, Recurring managed services\nLeft untapped before the draft, flagged after it. That change moved toward the key.\n\nA tapped account counts as a flag on its lines and an untapped one as let it stand. This sets two of your own calls against the key on this exercise, and it adds no points.",
+        "items": 7,
+        "expected": {
+          "toward": 6,
+          "away": 1,
+          "held": 5
+        }
+      }
+    },
+    {
+      "name": "the form payload's round one question carries the read per line with the case version",
+      "pass": true,
+      "detail": {
+        "want": "Prepicks: 6200; 6400; 7000. Required read before the AI draft, case kestrel-v1, by line, F tapped for a second look and S left untapped: FSFSSSSSSSSS. Final calls after the draft: SFSSSFSFSFSF. Against the key: 6 changed toward it, 1 changed away from it, 5 held.",
+        "got": "Prepicks: 6200; 6400; 7000. Required read before the AI draft, case kestrel-v1, by line, F tapped for a second look and S left untapped: FSFSSSSSSSSS. Final calls after the draft: SFSSSFSFSFSF. Against the key: 6 changed toward it, 1 changed away from it, 5 held."
+      }
+    },
+    {
+      "name": "the record carries the read on every round one response with its case version, and none on round two",
+      "pass": true,
+      "detail": [
+        [
+          "r1-1",
+          "kestrel-v1",
+          "flag",
+          "changed away from the key"
+        ],
+        [
+          "r1-2",
+          "kestrel-v1",
+          "stand",
+          "changed toward the key"
+        ],
+        [
+          "r1-3",
+          "kestrel-v1",
+          "flag",
+          "changed toward the key"
+        ],
+        [
+          "r1-4",
+          "kestrel-v1",
+          "stand",
+          "held"
+        ],
+        [
+          "r1-5",
+          "kestrel-v1",
+          "stand",
+          "held"
+        ],
+        [
+          "r1-6",
+          "kestrel-v1",
+          "stand",
+          "changed toward the key"
+        ],
+        [
+          "r1-7",
+          "kestrel-v1",
+          "stand",
+          "held"
+        ],
+        [
+          "r1-8",
+          "kestrel-v1",
+          "stand",
+          "changed toward the key"
+        ],
+        [
+          "r1-9",
+          "kestrel-v1",
+          "stand",
+          "held"
+        ],
+        [
+          "r1-10",
+          "kestrel-v1",
+          "stand",
+          "changed toward the key"
+        ],
+        [
+          "r1-11",
+          "kestrel-v1",
+          "stand",
+          "held"
+        ],
+        [
+          "r1-12",
+          "kestrel-v1",
+          "stand",
+          "changed toward the key"
+        ]
+      ]
+    },
+    {
+      "name": "the record's prepicks block carries the version, both letter strings and the counts",
+      "pass": true,
+      "detail": {
+        "required": true,
+        "taken": true,
+        "picks": [
+          "6200",
+          "6400",
+          "7000"
+        ],
+        "takenAt": "2026-09-14T02:45:12.505Z",
+        "beforeAnyCall": true,
+        "caseId": "kestrel",
+        "caseVersion": "kestrel-v1",
+        "readByLine": "FSFSSSSSSSSS",
+        "finalByLine": "SFSSSFSFSFSF",
+        "afterDraft": {
+          "changedTowardKey": 6,
+          "changedAwayFromKey": 1,
+          "held": 5,
+          "linesCompared": 12
+        },
+        "postedTo": "entry.1115022539",
+        "question": "Before any AI draft is shown: tap every line you would give a second look, judging from the ledger alone. A line you leave untapped counts as one you would let stand.",
+        "note": "Taken from the ledger alone, before any sentence of the AI draft is shown, and required: the page offers no way past it without at least one tapped line. A tapped account counts as a flag on each of its round one lines and an untapped one as let it stand. readByLine and finalByLine run in card order, F a flag and S let it stand. afterDraft compares the read with the final call on each line, which was made after reading the draft and the file on the card and, in practice mode, the reveals of the lines before it. It describes agreement with the key on a keyed exercise. It is not scored, adds no points, and is not a measure of learning."
+      }
+    },
+    {
+      "name": "the send stayed local in test mode",
+      "pass": true,
+      "detail": "not sent, test mode"
+    },
+    {
+      "name": "Play again clears the read",
+      "pass": true,
+      "detail": {
+        "step": 1,
+        "picks": [],
+        "at": 0,
+        "before": 0,
+        "run": 2
+      }
+    },
+    {
+      "name": "the second run opens on an empty, unlocked read and posts no stale one",
+      "pass": true,
+      "detail": {
+        "step": 2,
+        "pressed": 0,
+        "disabled": 0,
+        "go": [
+          {
+            "where": "sticky bar",
+            "text": "Tap at least one line",
+            "tag": "BUTTON",
+            "type": "button",
+            "disabled": false
+          }
+        ],
+        "cell": "Prepicks: not recorded. | taken false"
+      }
+    },
+    {
+      "name": "the second run cannot skip the read either",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "at 320 exactly one onward button is visible in the sticky bar",
+      "pass": true,
+      "detail": [
+        {
+          "where": "sticky bar",
+          "text": "Tap at least one line",
+          "tag": "BUTTON",
+          "type": "button",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "name": "at 375 exactly one onward button is visible in the sticky bar",
+      "pass": true,
+      "detail": [
+        {
+          "where": "sticky bar",
+          "text": "Tap at least one line",
+          "tag": "BUTTON",
+          "type": "button",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "name": "at 768 exactly one onward button is visible in the sticky bar",
+      "pass": true,
+      "detail": [
+        {
+          "where": "sticky bar",
+          "text": "Tap at least one line",
+          "tag": "BUTTON",
+          "type": "button",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "name": "at 1024 exactly one onward button is visible under the lines",
+      "pass": true,
+      "detail": [
+        {
+          "where": "under the lines",
+          "text": "Tap at least one line",
+          "tag": "BUTTON",
+          "type": "button",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "name": "at 1024 the legend rail scrolls with the page and is never half under the progress bar at the lines",
+      "pass": true,
+      "detail": {
+        "railTop": -1798,
+        "railBottom": -1534,
+        "barBottom": 164,
+        "straddles": false,
+        "position": "static"
+      }
+    },
+    {
+      "name": "at 1280 exactly one onward button is visible under the lines",
+      "pass": true,
+      "detail": [
+        {
+          "where": "under the lines",
+          "text": "Tap at least one line",
+          "tag": "BUTTON",
+          "type": "button",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "name": "at 1280 the legend rail scrolls with the page and is never half under the progress bar at the lines",
+      "pass": true,
+      "detail": {
+        "railTop": -896,
+        "railBottom": -632,
+        "barBottom": 193,
+        "straddles": false,
+        "position": "static"
+      }
+    },
+    {
+      "name": "at 1600 exactly one onward button is visible under the lines",
+      "pass": true,
+      "detail": [
+        {
+          "where": "under the lines",
+          "text": "Tap at least one line",
+          "tag": "BUTTON",
+          "type": "button",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "name": "at 1600 the legend rail scrolls with the page and is never half under the progress bar at the lines",
+      "pass": true,
+      "detail": {
+        "railTop": -848,
+        "railBottom": -584,
+        "barBottom": 197,
+        "straddles": false,
+        "position": "static"
+      }
+    },
+    {
+      "name": "Tab reaches every line chip and then the onward button at 1280",
+      "pass": true,
+      "detail": {
+        "presses": 13,
+        "last": "onward"
+      }
+    },
+    {
+      "name": "every chip and onward button has a visible name, the chips sit in a labeled group, and the status is announced",
+      "pass": true,
+      "detail": {
+        "unnamed": 0,
+        "group": "group",
+        "labelledby": "prepickhead",
+        "live": "polite"
+      }
+    },
+    {
+      "name": "the second run's end screen reports the second read, not the first",
+      "pass": true,
+      "detail": {
+        "want": "Before the memo you tapped one account on the ledger for a second look. After reading the AI draft, your final call moved off that read on one of the twelve lines. That change moved away from the answer key. On the other eleven lines, your final call matched your first read.",
+        "got": "Your read before the draft, and your final calls\n\nBefore the memo you tapped one account on the ledger for a second look. After reading the AI draft, your final call moved off that read on one of the twelve lines. That change moved away from the answer key. On the other eleven lines, your final call matched your first read.\n\nSee the line that moved\n\nA tapped account counts as a flag on its lines and an untapped one as let it stand. This sets two of your own calls against the key on this exercise, and it adds no points."
+      }
+    },
+    {
+      "name": "the second run's payload and record carry the second read",
+      "pass": true,
+      "detail": {
+        "want": "Prepicks: 4000. Required read before the AI draft, case kestrel-v1, by line, F tapped for a second look and S left untapped: SSSSSSSSSSSF. Final calls after the draft: SSSSSSSSSSSS. Against the key: 0 changed toward it, 1 changed away from it, 11 held.",
+        "got": "Prepicks: 4000. Required read before the AI draft, case kestrel-v1, by line, F tapped for a second look and S left untapped: SSSSSSSSSSSF. Final calls after the draft: SSSSSSSSSSSS. Against the key: 0 changed toward it, 1 changed away from it, 11 held.",
+        "picks": [
+          "4000"
+        ]
+      }
+    },
+    {
+      "name": "no console errors or uncaught exceptions",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "no horizontal overflow on any audited screen and width",
+      "pass": true,
+      "detail": []
+    }
+  ],
+  "widths": [
+    {
+      "tag": "end screen, run one, 320",
+      "doc": "320/320",
+      "clean": true,
+      "bad": []
+    },
+    {
+      "tag": "end screen, run one, 375",
+      "doc": "375/375",
+      "clean": true,
+      "bad": []
+    },
+    {
+      "tag": "end screen, run one, 768",
+      "doc": "768/768",
+      "clean": true,
+      "bad": []
+    },
+    {
+      "tag": "end screen, run one, 1280",
+      "doc": "1280/1280",
+      "clean": true,
+      "bad": []
+    },
+    {
+      "tag": "read screen, 320",
+      "doc": "320/320",
+      "clean": true,
+      "bad": []
+    },
+    {
+      "tag": "read screen, 375",
+      "doc": "375/375",
+      "clean": true,
+      "bad": []
+    },
+    {
+      "tag": "read screen, 768",
+      "doc": "768/768",
+      "clean": true,
+      "bad": []
+    },
+    {
+      "tag": "read screen, 1024",
+      "doc": "1024/1024",
+      "clean": true,
+      "bad": []
+    },
+    {
+      "tag": "read screen, 1280",
+      "doc": "1280/1280",
+      "clean": true,
+      "bad": []
+    },
+    {
+      "tag": "read screen, 1600",
+      "doc": "1600/1600",
+      "clean": true,
+      "bad": []
+    },
+    {
+      "tag": "end screen, run two, 320",
+      "doc": "320/320",
+      "clean": true,
+      "bad": []
+    },
+    {
+      "tag": "end screen, run two, 768",
+      "doc": "768/768",
+      "clean": true,
+      "bad": []
+    },
+    {
+      "tag": "end screen, run two, 1280",
+      "doc": "1280/1280",
+      "clean": true,
+      "bad": []
+    }
+  ],
+  "errors": [],
+  "cases": {
+    "one": "kestrel-v1",
+    "two": "brightwater-v6",
+    "lines": 12,
+    "source": "cases/ files",
+    "id": "kestrel"
+  },
+  "readScreen": {
+    "step": 2,
+    "section": true,
+    "chips": 12,
+    "rows": 12,
+    "ledgerRows": 12,
+    "skipText": [],
+    "pageSkipLinks": [
+      "Skip to the main content -> #app"
+    ],
+    "focus": "orienthead",
+    "head": "Your read, before any AI draft",
+    "whyline": "Your own read of the ledger comes first, before any sentence of the AI draft is on the screen.",
+    "stat": "Tap at least one line before you go on."
+  },
+  "endScreenRun1": {
+    "step": 22,
+    "has": true,
+    "closed": true,
+    "summary": "See the seven lines that moved",
+    "text": "Your read before the draft, and your final calls\n\nBefore the memo you tapped three accounts on the ledger for a second look. After reading the AI draft, your final call moved off that read on seven of the twelve lines. Six of those changes moved toward the answer key and one moved away from it. On the other five lines, your final call matched your first read.\n\nSee the seven lines that moved\nLine 1, Software licenses and hosting\nTapped before the draft, let stand after it. That change moved away from the key.\nLine 2, Subcontracted engineering\nLeft untapped before the draft, flagged after it. That change moved toward the key.\nLine 3, Client acquisition costs\nTapped before the draft, let stand after it. That change moved toward the key.\nLine 6, Hardware and license resale\nLeft untapped before the draft, flagged after it. That change moved toward the key.\nLine 8, Project and implementation revenue\nLeft untapped before the draft, flagged after it. That change moved toward the key.\nLine 10, Computer equipment\nLeft untapped before the draft, flagged after it. That change moved toward the key.\nLine 12, Recurring managed services\nLeft untapped before the draft, flagged after it. That change moved toward the key.\n\nA tapped account counts as a flag on its lines and an untapped one as let it stand. This sets two of your own calls against the key on this exercise, and it adds no points.",
+    "items": 7,
+    "points": 1725,
+    "rank": "Manager"
+  },
+  "endScreenRun2": {
+    "step": 22,
+    "text": "Your read before the draft, and your final calls\n\nBefore the memo you tapped one account on the ledger for a second look. After reading the AI draft, your final call moved off that read on one of the twelve lines. That change moved away from the answer key. On the other eleven lines, your final call matched your first read.\n\nSee the line that moved\n\nA tapped account counts as a flag on its lines and an untapped one as let it stand. This sets two of your own calls against the key on this exercise, and it adds no points.",
+    "items": 1
+  }
+}

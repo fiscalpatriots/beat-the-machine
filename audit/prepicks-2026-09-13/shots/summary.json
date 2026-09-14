@@ -1,0 +1,102 @@
+{
+ "failure": null,
+ "errors": [],
+ "summary": {
+  "320": {
+   "overflowTop": true,
+   "overflowChips": true,
+   "overflowEnd": true,
+   "chipsPastEdge": 0,
+   "chipFont": 14,
+   "chipMinHeight": 44,
+   "goes": [
+    "Lock in my read and continue 14-306"
+   ],
+   "headingAfterEmptyPress": {
+    "headingTop": 118,
+    "barBottom": 85,
+    "clear": true
+   }
+  },
+  "375": {
+   "overflowTop": true,
+   "overflowChips": true,
+   "overflowEnd": true,
+   "chipsPastEdge": 0,
+   "chipFont": 14,
+   "chipMinHeight": 44,
+   "goes": [
+    "Lock in my read and continue 14-361"
+   ],
+   "headingAfterEmptyPress": {
+    "headingTop": 124,
+    "barBottom": 91,
+    "clear": true
+   }
+  },
+  "768": {
+   "overflowTop": true,
+   "overflowChips": true,
+   "overflowEnd": true,
+   "chipsPastEdge": 0,
+   "chipFont": 14,
+   "chipMinHeight": 44,
+   "goes": [
+    "Lock in my read and continue 142-626"
+   ],
+   "headingAfterEmptyPress": {
+    "headingTop": 144,
+    "barBottom": 111,
+    "clear": true
+   }
+  },
+  "1024": {
+   "overflowTop": true,
+   "overflowChips": true,
+   "overflowEnd": true,
+   "chipsPastEdge": 0,
+   "chipFont": 14,
+   "chipMinHeight": 44,
+   "goes": [
+    "Lock in my read and continue 20-504"
+   ],
+   "headingAfterEmptyPress": {
+    "headingTop": 197,
+    "barBottom": 164,
+    "clear": true
+   }
+  },
+  "1280": {
+   "overflowTop": true,
+   "overflowChips": true,
+   "overflowEnd": true,
+   "chipsPastEdge": 0,
+   "chipFont": 14,
+   "chipMinHeight": 44,
+   "goes": [
+    "Lock in my read and continue 20-504"
+   ],
+   "headingAfterEmptyPress": {
+    "headingTop": 316,
+    "barBottom": 193,
+    "clear": true
+   }
+  },
+  "1600": {
+   "overflowTop": true,
+   "overflowChips": true,
+   "overflowEnd": true,
+   "chipsPastEdge": 0,
+   "chipFont": 14,
+   "chipMinHeight": 44,
+   "goes": [
+    "Lock in my read and continue 160-644"
+   ],
+   "headingAfterEmptyPress": {
+    "headingTop": 317,
+    "barBottom": 197,
+    "clear": true
+   }
+  }
+ }
+}

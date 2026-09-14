@@ -10,7 +10,8 @@
    4. the form payload and the record carry the read per line with the case version;
    5. Play again starts with no read, and the second run reports its own read, never the first;
    6. no horizontal overflow on the read screen or the end screen at 320, 375, 768 and 1280.
-   Writes <outdir>/<case>-walk.json, <outdir>/<case>-payload-run1.json, -run2.json, and screenshots. */
+   Writes <outdir>/<case>-walk.json, <outdir>/<case>-payload-run1.json and -run2.json. The screenshots to
+   look at are the viewport captures shots-prepicks.cjs writes. */
 const fs = require("fs");
 const path = require("path");
 const { serve, launch, sleep, OVERFLOW } = require("../author-repair-2026-09-13/cdp.cjs");
@@ -297,8 +298,6 @@ function expected(cards, picks, calls, version) {
       await audit("end screen, run one, " + w);
     }
     await B.width(375); await sleep(200);
-    await ev("document.querySelector('.readshift').scrollIntoView({block:'start'});window.scrollBy(0,-140);true"); await sleep(150);
-    await B.shot(path.join(OUTDIR, CASE + "-end-375.png"));
 
     /* ---------- 5. Play again carries nothing of the first read ---------- */
     await ev("window.scrollTo(0,0);document.getElementById('playagain').click();true"); await sleep(200);
@@ -325,7 +324,6 @@ function expected(cards, picks, calls, version) {
       check("at " + w + " exactly one onward button is visible" + (w >= 900 ? " under the lines" : " in the sticky bar"),
         vis.length === 1 && vis[0].where === (w >= 900 ? "under the lines" : "sticky bar"), vis);
       if (w >= 900) check("at " + w + " the legend rail scrolls with the page and is never half under the progress bar at the lines", rail && rail.position !== "sticky" && !rail.straddles, rail);
-      if (w === 375 || w === 1280) await B.shot(path.join(OUTDIR, CASE + "-read-" + w + ".png"));
     }
     await B.width(1280); await sleep(200);
     await ev("document.getElementById('orienthead').focus();true");

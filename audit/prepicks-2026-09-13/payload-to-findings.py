@@ -60,6 +60,13 @@ def main(outdir):
     for a in report["attempts"]:
         page = posted[a["codename"]]
         got = a["read"]
+        # an authored case keeps its key in one browser, so findings.py refuses it by design
+        if a["cases"] and a["cases"]["authored"]:
+            refused_ok = not a["supported"] and got is None
+            ok = ok and refused_ok
+            print("%s: authored case %s refused from scoring as designed, read not counted; %s"
+                  % (a["codename"], a["cases"]["one"], "AS EXPECTED" if refused_ok else "UNEXPECTED"))
+            continue
         same = bool(got) and not got["late"] and (got["toward"], got["away"], got["held"]) == (
             page["changedTowardKey"], page["changedAwayFromKey"], page["held"])
         ok = ok and same and not a["disagreements"]

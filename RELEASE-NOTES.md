@@ -21,8 +21,18 @@ the command line package at `130b6b7`. Commits in the second-pass repository are
 | **5. The author page.** An unresolved checker result became a clean suggestion, a save after an edit kept stale figures, and an unbound sentence vanished | The author page reads with the checker's own reader and holds what the checker holds, including a direction word it cannot tie to a line; save and preview are disabled until the inputs are read again; every sentence comes back as a card or an open item that must be settled; the case records whether it is synthetic or a permitted real case, and the drill's introduction follows it. A card checked within scope now names the numbers the checker read and left outside the check | `052fd1f`, `81f92dc`, `1fcedbd`, `5c6f9ab`, `742525a`, `50927f4` |
 | **6. The three-ledger evidence.** The runs were not comparable, and unsupported exclusions and forecasts were not counted | Every unsupported claim in the six retained drafts is counted by class with its exact text, the development-session run is labeled apart from the fresh-context runs, and the prediction inference is gone | `a3ada19` |
 
-**One row reserved.** The decide-first step is being reworked in its own lane, which writes its own
-row here.
+**The read before the draft.** Not a review finding: Khaled ruled at about 9:40 PM on 13 September
+2026 to keep the ledger-only step and make it count, because it is the one point where a player
+decides before seeing anything the AI drafted. It is now required with no skip and no cap, locked
+once the player goes on, and no later screen draws without it, whether reached by a button, a key,
+the step hook or an edited saved run. The end screen says on how many round one lines the final
+call moved off that read, and whether each change moved toward the key or away from it, with no
+effect on points or rank. The round one question and the record carry the read per line with the
+case version, the data notice names it (`notice-2026-09-13c`), and `findings.py` reports the
+comparison for first attempts in each case set as descriptive agreement on a keyed exercise, with
+six new tests. Walked in headless Chrome on Halyard, Kestrel and an authored case, 44 of 44
+checks each, with viewport screenshots at six widths looked at by eye, in
+`audit/PREPICKS-2026-09-13.md`. Commits `29df0aa`, `bce4a15`, `a4b1538`.
 
 ### What remains open
 

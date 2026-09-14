@@ -1,0 +1,5 @@
+Synthetic prepick walk halyard on halyard-v4: page posted 7 toward, 1 away, 6 held; findings rebuilt 7, 1, 6; call agreement 12 of 14; disagreements 0; MATCH
+Synthetic prepick walk kestrel on kestrel-v1: page posted 6 toward, 1 away, 5 held; findings rebuilt 6, 1, 5; call agreement 10 of 12; disagreements 0; MATCH
+Synthetic prepick walk own: authored case walk-own-1 refused from scoring as designed, read not counted; AS EXPECTED
+set halyard-v4 with brightwater-v6: first attempts with the read 1, lines compared 14, changed 8, toward 7, away 1, held 6
+set kestrel-v1 with brightwater-v6: first attempts with the read 1, lines compared 12, changed 7, toward 6, away 1, held 5

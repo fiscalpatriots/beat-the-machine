@@ -216,9 +216,9 @@ removed in `cc29007` and restored in `ea639f1` before this ruling replaced it.
 draft": "Tap every line you would give a second look, judging from these figures alone. A line
 you leave untapped counts as one you would let stand. Nothing here is scored, and at the end you
 will see where your calls moved once you had read the draft." One chip per ledger account, with
-no cap. The onward button, fixed to the bottom on a phone and in the rail on a desk, reads "Tap
-at least one line" until one is tapped, and pressing it then scrolls to the chips and puts focus
-on the first one. Once a line is tapped it reads "Lock in my read and continue". Taps are saved as
+no cap. The onward button, fixed to the bottom on a phone and under the status line on a desk,
+reads "Tap at least one line" until one is tapped, and pressing it then brings the section's
+heading to rest just under the progress bar and puts focus on the first chip. Once a line is tapped it reads "Lock in my read and continue". Taps are saved as
 they happen, so a reload keeps them. Focus starts on the screen's heading.
 
 **It cannot be skipped.** There is no skip control. `render()` refuses to draw any screen after
@@ -509,11 +509,13 @@ Section headers are
 small caps in green over a hairline, subtotals carry a rule above them and the net line a
 heavier one, and alternate rows take a three percent green fill.
 
-The orientation page is two columns from 900px up: the ledger on the left and a sticky legend on
-the right holding "What earns a flag" with the six defect types as a list and the onward button
-under it, and the read before the draft under the ledger. On a phone the legend comes first,
-collapsed to its title and the six chips until it is tapped, the ledger follows, then the read,
-and the onward button is fixed to the bottom of the viewport.
+The orientation page is two columns from 900px up: the ledger on the left, with the read before
+the draft and its onward button under it, and a legend on the right holding "What earns a flag"
+with the six defect types as a list. The legend scrolls with the page; it was sticky until the
+evening of 13 September, when screenshots showed it pushed up behind the progress bar at the foot
+of the screen. On a phone the legend comes first, collapsed to its title and the six chips until it
+is tapped, the ledger follows, then the read, and the onward button is fixed to the bottom of the
+viewport.
 
 ## The round
 

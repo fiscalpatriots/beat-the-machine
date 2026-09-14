@@ -1,0 +1,594 @@
+{
+  "ran": "Sun Sep 13 2026 22:43:14 GMT-0400 (Eastern Daylight Time)",
+  "widths": {
+    "320": {
+      "overflow": {
+        "doc": "320/320",
+        "clean": true,
+        "bad": []
+      },
+      "top": {
+        "vw": 320,
+        "section": {
+          "l": 14,
+          "r": 306,
+          "w": 292,
+          "h": 959
+        },
+        "stat": {
+          "l": 14,
+          "r": 306,
+          "w": 292,
+          "h": 22
+        },
+        "readshift": null,
+        "chipsPastEdge": 0,
+        "chipMinHeight": 44,
+        "chipFont": 14,
+        "goes": [
+          {
+            "l": 14,
+            "r": 306,
+            "t": 701,
+            "b": 748,
+            "w": 292,
+            "text": "Tap at least one line"
+          }
+        ]
+      },
+      "headingAfterEmptyPress": {
+        "headingTop": 118,
+        "barBottom": 85,
+        "clear": true
+      },
+      "chips": {
+        "vw": 320,
+        "section": {
+          "l": 14,
+          "r": 306,
+          "w": 292,
+          "h": 980
+        },
+        "stat": {
+          "l": 14,
+          "r": 306,
+          "w": 292,
+          "h": 43
+        },
+        "readshift": null,
+        "chipsPastEdge": 0,
+        "chipMinHeight": 44,
+        "chipFont": 14,
+        "goes": [
+          {
+            "l": 14,
+            "r": 306,
+            "t": 701,
+            "b": 748,
+            "w": 292,
+            "text": "Lock in my read and continue"
+          }
+        ]
+      },
+      "chipsOverflow": {
+        "doc": "320/320",
+        "clean": true,
+        "bad": []
+      },
+      "end": {
+        "overflow": {
+          "doc": "320/320",
+          "clean": true,
+          "bad": []
+        },
+        "boxes": {
+          "vw": 320,
+          "section": null,
+          "stat": null,
+          "readshift": {
+            "l": 14,
+            "r": 306,
+            "w": 292,
+            "h": 1095
+          },
+          "chipsPastEdge": 0,
+          "chipMinHeight": 999,
+          "chipFont": null,
+          "goes": []
+        },
+        "text": "Your read before the draft, and your final calls\n\nBefore the memo you tapped two accounts on the ledger for a second look. After reading the AI draft, your final call moved off that read on seven of the fourteen lines. Every one of those changes moved toward the answer key. On the other seven lines, your final call matched your first read.\n\nSee the seven lines that moved\nLine 2, Repairs and mainte"
+      }
+    },
+    "375": {
+      "overflow": {
+        "doc": "375/375",
+        "clean": true,
+        "bad": []
+      },
+      "top": {
+        "vw": 375,
+        "section": {
+          "l": 14,
+          "r": 361,
+          "w": 347,
+          "h": 823
+        },
+        "stat": {
+          "l": 14,
+          "r": 361,
+          "w": 347,
+          "h": 22
+        },
+        "readshift": null,
+        "chipsPastEdge": 0,
+        "chipMinHeight": 44,
+        "chipFont": 14,
+        "goes": [
+          {
+            "l": 14,
+            "r": 361,
+            "t": 701,
+            "b": 748,
+            "w": 347,
+            "text": "Tap at least one line"
+          }
+        ]
+      },
+      "headingAfterEmptyPress": {
+        "headingTop": 124,
+        "barBottom": 91,
+        "clear": true
+      },
+      "chips": {
+        "vw": 375,
+        "section": {
+          "l": 14,
+          "r": 361,
+          "w": 347,
+          "h": 844
+        },
+        "stat": {
+          "l": 14,
+          "r": 361,
+          "w": 347,
+          "h": 43
+        },
+        "readshift": null,
+        "chipsPastEdge": 0,
+        "chipMinHeight": 44,
+        "chipFont": 14,
+        "goes": [
+          {
+            "l": 14,
+            "r": 361,
+            "t": 701,
+            "b": 748,
+            "w": 347,
+            "text": "Lock in my read and continue"
+          }
+        ]
+      },
+      "chipsOverflow": {
+        "doc": "375/375",
+        "clean": true,
+        "bad": []
+      },
+      "end": {
+        "overflow": {
+          "doc": "375/375",
+          "clean": true,
+          "bad": []
+        },
+        "boxes": {
+          "vw": 375,
+          "section": null,
+          "stat": null,
+          "readshift": {
+            "l": 14,
+            "r": 361,
+            "w": 347,
+            "h": 1045
+          },
+          "chipsPastEdge": 0,
+          "chipMinHeight": 999,
+          "chipFont": null,
+          "goes": []
+        },
+        "text": "Your read before the draft, and your final calls\n\nBefore the memo you tapped two accounts on the ledger for a second look. After reading the AI draft, your final call moved off that read on seven of the fourteen lines. Every one of those changes moved toward the answer key. On the other seven lines, your final call matched your first read.\n\nSee the seven lines that moved\nLine 2, Repairs and mainte"
+      }
+    },
+    "768": {
+      "overflow": {
+        "doc": "768/768",
+        "clean": true,
+        "bad": []
+      },
+      "top": {
+        "vw": 768,
+        "section": {
+          "l": 124,
+          "r": 644,
+          "w": 520,
+          "h": 519
+        },
+        "stat": {
+          "l": 124,
+          "r": 644,
+          "w": 520,
+          "h": 22
+        },
+        "readshift": null,
+        "chipsPastEdge": 0,
+        "chipMinHeight": 44,
+        "chipFont": 14,
+        "goes": [
+          {
+            "l": 142,
+            "r": 626,
+            "t": 761,
+            "b": 808,
+            "w": 484,
+            "text": "Tap at least one line"
+          }
+        ]
+      },
+      "headingAfterEmptyPress": {
+        "headingTop": 144,
+        "barBottom": 111,
+        "clear": true
+      },
+      "chips": {
+        "vw": 768,
+        "section": {
+          "l": 124,
+          "r": 644,
+          "w": 520,
+          "h": 519
+        },
+        "stat": {
+          "l": 124,
+          "r": 644,
+          "w": 520,
+          "h": 22
+        },
+        "readshift": null,
+        "chipsPastEdge": 0,
+        "chipMinHeight": 44,
+        "chipFont": 14,
+        "goes": [
+          {
+            "l": 142,
+            "r": 626,
+            "t": 761,
+            "b": 808,
+            "w": 484,
+            "text": "Lock in my read and continue"
+          }
+        ]
+      },
+      "chipsOverflow": {
+        "doc": "768/768",
+        "clean": true,
+        "bad": []
+      },
+      "end": {
+        "overflow": {
+          "doc": "768/768",
+          "clean": true,
+          "bad": []
+        },
+        "boxes": {
+          "vw": 768,
+          "section": null,
+          "stat": null,
+          "readshift": {
+            "l": 124,
+            "r": 644,
+            "w": 520,
+            "h": 929
+          },
+          "chipsPastEdge": 0,
+          "chipMinHeight": 999,
+          "chipFont": null,
+          "goes": []
+        },
+        "text": "Your read before the draft, and your final calls\n\nBefore the memo you tapped two accounts on the ledger for a second look. After reading the AI draft, your final call moved off that read on seven of the fourteen lines. Every one of those changes moved toward the answer key. On the other seven lines, your final call matched your first read.\n\nSee the seven lines that moved\nLine 2, Repairs and mainte"
+      }
+    },
+    "1024": {
+      "overflow": {
+        "doc": "1024/1024",
+        "clean": true,
+        "bad": []
+      },
+      "top": {
+        "vw": 1024,
+        "section": {
+          "l": 20,
+          "r": 660,
+          "w": 640,
+          "h": 478
+        },
+        "stat": {
+          "l": 20,
+          "r": 660,
+          "w": 640,
+          "h": 22
+        },
+        "readshift": null,
+        "chipsPastEdge": 0,
+        "chipMinHeight": 44,
+        "chipFont": 14,
+        "goes": [
+          {
+            "l": 20,
+            "r": 504,
+            "t": 3190,
+            "b": 3237,
+            "w": 484,
+            "text": "Tap at least one line"
+          }
+        ]
+      },
+      "headingAfterEmptyPress": {
+        "headingTop": 197,
+        "barBottom": 164,
+        "clear": true
+      },
+      "chips": {
+        "vw": 1024,
+        "section": {
+          "l": 20,
+          "r": 660,
+          "w": 640,
+          "h": 478
+        },
+        "stat": {
+          "l": 20,
+          "r": 660,
+          "w": 640,
+          "h": 22
+        },
+        "readshift": null,
+        "chipsPastEdge": 0,
+        "chipMinHeight": 44,
+        "chipFont": 14,
+        "goes": [
+          {
+            "l": 20,
+            "r": 504,
+            "t": 607,
+            "b": 654,
+            "w": 484,
+            "text": "Lock in my read and continue"
+          }
+        ]
+      },
+      "chipsOverflow": {
+        "doc": "1024/1024",
+        "clean": true,
+        "bad": []
+      },
+      "end": {
+        "overflow": {
+          "doc": "1024/1024",
+          "clean": true,
+          "bad": []
+        },
+        "boxes": {
+          "vw": 1024,
+          "section": null,
+          "stat": null,
+          "readshift": {
+            "l": 252,
+            "r": 772,
+            "w": 520,
+            "h": 929
+          },
+          "chipsPastEdge": 0,
+          "chipMinHeight": 999,
+          "chipFont": null,
+          "goes": []
+        },
+        "text": "Your read before the draft, and your final calls\n\nBefore the memo you tapped two accounts on the ledger for a second look. After reading the AI draft, your final call moved off that read on seven of the fourteen lines. Every one of those changes moved toward the answer key. On the other seven lines, your final call matched your first read.\n\nSee the seven lines that moved\nLine 2, Repairs and mainte"
+      }
+    },
+    "1280": {
+      "overflow": {
+        "doc": "1280/1280",
+        "clean": true,
+        "bad": []
+      },
+      "top": {
+        "vw": 1280,
+        "section": {
+          "l": 20,
+          "r": 916,
+          "w": 896,
+          "h": 404
+        },
+        "stat": {
+          "l": 20,
+          "r": 916,
+          "w": 896,
+          "h": 22
+        },
+        "readshift": null,
+        "chipsPastEdge": 0,
+        "chipMinHeight": 44,
+        "chipFont": 14,
+        "goes": [
+          {
+            "l": 20,
+            "r": 504,
+            "t": 2187,
+            "b": 2234,
+            "w": 484,
+            "text": "Tap at least one line"
+          }
+        ]
+      },
+      "headingAfterEmptyPress": {
+        "headingTop": 316,
+        "barBottom": 193,
+        "clear": true
+      },
+      "chips": {
+        "vw": 1280,
+        "section": {
+          "l": 20,
+          "r": 916,
+          "w": 896,
+          "h": 404
+        },
+        "stat": {
+          "l": 20,
+          "r": 916,
+          "w": 896,
+          "h": 22
+        },
+        "readshift": null,
+        "chipsPastEdge": 0,
+        "chipMinHeight": 44,
+        "chipFont": 14,
+        "goes": [
+          {
+            "l": 20,
+            "r": 504,
+            "t": 652,
+            "b": 699,
+            "w": 484,
+            "text": "Lock in my read and continue"
+          }
+        ]
+      },
+      "chipsOverflow": {
+        "doc": "1280/1280",
+        "clean": true,
+        "bad": []
+      },
+      "end": {
+        "overflow": {
+          "doc": "1280/1280",
+          "clean": true,
+          "bad": []
+        },
+        "boxes": {
+          "vw": 1280,
+          "section": null,
+          "stat": null,
+          "readshift": {
+            "l": 380,
+            "r": 900,
+            "w": 520,
+            "h": 929
+          },
+          "chipsPastEdge": 0,
+          "chipMinHeight": 999,
+          "chipFont": null,
+          "goes": []
+        },
+        "text": "Your read before the draft, and your final calls\n\nBefore the memo you tapped two accounts on the ledger for a second look. After reading the AI draft, your final call moved off that read on seven of the fourteen lines. Every one of those changes moved toward the answer key. On the other seven lines, your final call matched your first read.\n\nSee the seven lines that moved\nLine 2, Repairs and mainte"
+      }
+    },
+    "1600": {
+      "overflow": {
+        "doc": "1600/1600",
+        "clean": true,
+        "bad": []
+      },
+      "top": {
+        "vw": 1600,
+        "section": {
+          "l": 160,
+          "r": 1096,
+          "w": 936,
+          "h": 404
+        },
+        "stat": {
+          "l": 160,
+          "r": 1096,
+          "w": 936,
+          "h": 22
+        },
+        "readshift": null,
+        "chipsPastEdge": 0,
+        "chipMinHeight": 44,
+        "chipFont": 14,
+        "goes": [
+          {
+            "l": 160,
+            "r": 644,
+            "t": 2168,
+            "b": 2215,
+            "w": 484,
+            "text": "Tap at least one line"
+          }
+        ]
+      },
+      "headingAfterEmptyPress": {
+        "headingTop": 317,
+        "barBottom": 197,
+        "clear": true
+      },
+      "chips": {
+        "vw": 1600,
+        "section": {
+          "l": 160,
+          "r": 1096,
+          "w": 936,
+          "h": 404
+        },
+        "stat": {
+          "l": 160,
+          "r": 1096,
+          "w": 936,
+          "h": 22
+        },
+        "readshift": null,
+        "chipsPastEdge": 0,
+        "chipMinHeight": 44,
+        "chipFont": 14,
+        "goes": [
+          {
+            "l": 160,
+            "r": 644,
+            "t": 653,
+            "b": 700,
+            "w": 484,
+            "text": "Lock in my read and continue"
+          }
+        ]
+      },
+      "chipsOverflow": {
+        "doc": "1600/1600",
+        "clean": true,
+        "bad": []
+      },
+      "end": {
+        "overflow": {
+          "doc": "1600/1600",
+          "clean": true,
+          "bad": []
+        },
+        "boxes": {
+          "vw": 1600,
+          "section": null,
+          "stat": null,
+          "readshift": {
+            "l": 540,
+            "r": 1060,
+            "w": 520,
+            "h": 929
+          },
+          "chipsPastEdge": 0,
+          "chipMinHeight": 999,
+          "chipFont": null,
+          "goes": []
+        },
+        "text": "Your read before the draft, and your final calls\n\nBefore the memo you tapped two accounts on the ledger for a second look. After reading the AI draft, your final call moved off that read on seven of the fourteen lines. Every one of those changes moved toward the answer key. On the other seven lines, your final call matched your first read.\n\nSee the seven lines that moved\nLine 2, Repairs and mainte"
+      }
+    }
+  },
+  "errors": []
+}
