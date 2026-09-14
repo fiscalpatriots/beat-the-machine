@@ -383,3 +383,28 @@ td.mono{font-family:var(--mono);font-size:13px;white-space:nowrap;color:var(--in
   .fillbar,#progress{animation:none}
   .btn:active{transform:none}
 }
+
+/* =============================================================================
+   USABILITY BY EYE — 13 September 2026
+   Fixes found by opening screenshots of every page at 320 to 1,600 pixels. Each
+   one is CSS alone, so no page's markup or script changes. ADDITIVE ONLY, like
+   the block above.
+   ============================================================================= */
+
+/* The shared header's wordmark is .mark, and the drill page has its own .mark
+   rule with a 12px top margin, which dropped "Second Pass" 6px below the links
+   on every drill screen. The header keeps its own box. */
+#sp-nav .mark{margin:0}
+
+/* A keyboard hint at 11px was the one piece of type under the 12px floor. */
+.kbd{font-size:12px}
+
+/* The codename rides the bottom of the band, and the band had no room for it, so
+   the name sat on the college line and touched the gold rule. The band grows a
+   lane under the college line once a codename is shown. */
+#mason:has(> #codetag:not([hidden])){padding-bottom:calc(var(--s4) + 18px)}
+
+/* Under 900px the drill's onward button is a fixed bar at the foot of the screen.
+   The drill pads its own column for it, but the site footer comes after that
+   column, so at the end of the read screen the bar covered the footer links. */
+@media (max-width:899px){body:has(.stickygo){padding-bottom:84px}}

@@ -1,0 +1,982 @@
+{
+ "review-320": {
+  "dims": {
+   "w": 320,
+   "h": 9488
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [
+    "svg text 12.0px \"THE CHECKER TESTS FOUR\"",
+    "svg text 12.0px \"A REVIEWER SIGNS TWO\""
+   ],
+   "images": [],
+   "doc": "320/320"
+  }
+ },
+ "landing-320": {
+  "dims": {
+   "w": 320,
+   "h": 1792
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "320/320"
+  }
+ },
+ "read-320": {
+  "dims": {
+   "w": 320,
+   "h": 5255
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "320/320"
+  }
+ },
+ "halyard-320": {
+  "dims": {
+   "w": 320,
+   "h": 1603
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [
+    "svg text 10.8px \"May\"",
+    "svg text 10.8px \"June\""
+   ],
+   "images": [],
+   "doc": "320/320"
+  }
+ },
+ "kestrel-320": {
+  "dims": {
+   "w": 320,
+   "h": 1672
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [
+    "svg text 10.8px \"June\"",
+    "svg text 10.8px \"July\""
+   ],
+   "images": [],
+   "doc": "320/320"
+  }
+ },
+ "explain-320": {
+  "dims": {
+   "w": 320,
+   "h": 2898
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [
+    "svg text 10.8px \"May\"",
+    "svg text 10.8px \"June\""
+   ],
+   "images": [],
+   "doc": "320/320"
+  }
+ },
+ "end-320": {
+  "dims": {
+   "w": 320,
+   "h": 2892
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "320/320"
+  }
+ },
+ "checker-empty-320": {
+  "dims": {
+   "w": 320,
+   "h": 3612
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [
+    "img screenshots/checker/hero-results.png ok 258x122 scale 0.20"
+   ],
+   "doc": "320/320"
+  }
+ },
+ "checker-run-320": {
+  "dims": {
+   "w": 320,
+   "h": 49595,
+   "parts": 17
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [
+    "img screenshots/checker/hero-results.png ok 258x122 scale 0.20"
+   ],
+   "doc": "320/320"
+  }
+ },
+ "author-empty-320": {
+  "dims": {
+   "w": 320,
+   "h": 3981
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "320/320"
+  }
+ },
+ "author-read-320": {
+  "dims": {
+   "w": 320,
+   "h": 15556,
+   "parts": 6
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "320/320"
+  }
+ },
+ "404-320": {
+  "dims": {
+   "w": 320,
+   "h": 1098
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "320/320"
+  }
+ },
+ "review-375": {
+  "dims": {
+   "w": 375,
+   "h": 9093
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "375/375"
+  }
+ },
+ "landing-375": {
+  "dims": {
+   "w": 375,
+   "h": 1746
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "375/375"
+  }
+ },
+ "read-375": {
+  "dims": {
+   "w": 375,
+   "h": 4958
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "375/375"
+  }
+ },
+ "halyard-375": {
+  "dims": {
+   "w": 375,
+   "h": 1477
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "375/375"
+  }
+ },
+ "kestrel-375": {
+  "dims": {
+   "w": 375,
+   "h": 1527
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "375/375"
+  }
+ },
+ "explain-375": {
+  "dims": {
+   "w": 375,
+   "h": 2708
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "375/375"
+  }
+ },
+ "end-375": {
+  "dims": {
+   "w": 375,
+   "h": 2615
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "375/375"
+  }
+ },
+ "checker-empty-375": {
+  "dims": {
+   "w": 375,
+   "h": 3275
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [
+    "img screenshots/checker/hero-results.png ok 313x148 scale 0.24"
+   ],
+   "doc": "375/375"
+  }
+ },
+ "checker-run-375": {
+  "dims": {
+   "w": 375,
+   "h": 45830,
+   "parts": 16
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [
+    "img screenshots/checker/hero-results.png ok 313x148 scale 0.24"
+   ],
+   "doc": "375/375"
+  }
+ },
+ "author-empty-375": {
+  "dims": {
+   "w": 375,
+   "h": 3705
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "375/375"
+  }
+ },
+ "author-read-375": {
+  "dims": {
+   "w": 375,
+   "h": 13972,
+   "parts": 5
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "375/375"
+  }
+ },
+ "404-375": {
+  "dims": {
+   "w": 375,
+   "h": 1042
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "375/375"
+  }
+ },
+ "review-768": {
+  "dims": {
+   "w": 768,
+   "h": 6168
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "768/768"
+  }
+ },
+ "landing-768": {
+  "dims": {
+   "w": 768,
+   "h": 1548
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "768/768"
+  }
+ },
+ "read-768": {
+  "dims": {
+   "w": 768,
+   "h": 3881
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "768/768"
+  }
+ },
+ "halyard-768": {
+  "dims": {
+   "w": 768,
+   "h": 1422
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "768/768"
+  }
+ },
+ "kestrel-768": {
+  "dims": {
+   "w": 768,
+   "h": 1499
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "768/768"
+  }
+ },
+ "explain-768": {
+  "dims": {
+   "w": 768,
+   "h": 2326
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "768/768"
+  }
+ },
+ "end-768": {
+  "dims": {
+   "w": 768,
+   "h": 2378
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "768/768"
+  }
+ },
+ "checker-empty-768": {
+  "dims": {
+   "w": 768,
+   "h": 2816
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [
+    "img screenshots/checker/hero-results.png ok 694x326 scale 0.54"
+   ],
+   "doc": "768/768"
+  }
+ },
+ "checker-run-768": {
+  "dims": {
+   "w": 768,
+   "h": 29155,
+   "parts": 10
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [
+    "img screenshots/checker/hero-results.png ok 694x326 scale 0.54"
+   ],
+   "doc": "768/768"
+  }
+ },
+ "author-empty-768": {
+  "dims": {
+   "w": 768,
+   "h": 2431
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "768/768"
+  }
+ },
+ "author-read-768": {
+  "dims": {
+   "w": 768,
+   "h": 8588
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "768/768"
+  }
+ },
+ "404-768": {
+  "dims": {
+   "w": 768,
+   "h": 1000
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "768/768"
+  }
+ },
+ "review-1024": {
+  "dims": {
+   "w": 1024,
+   "h": 5267
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1024/1024"
+  }
+ },
+ "landing-1024": {
+  "dims": {
+   "w": 1024,
+   "h": 1548
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1024/1024"
+  }
+ },
+ "read-1024": {
+  "dims": {
+   "w": 1024,
+   "h": 3555
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1024/1024"
+  }
+ },
+ "halyard-1024": {
+  "dims": {
+   "w": 1024,
+   "h": 1422
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1024/1024"
+  }
+ },
+ "kestrel-1024": {
+  "dims": {
+   "w": 1024,
+   "h": 1499
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1024/1024"
+  }
+ },
+ "explain-1024": {
+  "dims": {
+   "w": 1024,
+   "h": 2326
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1024/1024"
+  }
+ },
+ "end-1024": {
+  "dims": {
+   "w": 1024,
+   "h": 2378
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1024/1024"
+  }
+ },
+ "checker-empty-1024": {
+  "dims": {
+   "w": 1024,
+   "h": 2428
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [
+    "img screenshots/checker/hero-results.png ok 950x446 scale 0.74"
+   ],
+   "doc": "1024/1024"
+  }
+ },
+ "checker-run-1024": {
+  "dims": {
+   "w": 1024,
+   "h": 23759,
+   "parts": 8
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [
+    "img screenshots/checker/hero-results.png ok 950x446 scale 0.74"
+   ],
+   "doc": "1024/1024"
+  }
+ },
+ "author-empty-1024": {
+  "dims": {
+   "w": 1024,
+   "h": 2064
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1024/1024"
+  }
+ },
+ "author-read-1024": {
+  "dims": {
+   "w": 1024,
+   "h": 8128
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1024/1024"
+  }
+ },
+ "404-1024": {
+  "dims": {
+   "w": 1024,
+   "h": 1000
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1024/1024"
+  }
+ },
+ "review-1280": {
+  "dims": {
+   "w": 1280,
+   "h": 5236
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1280/1280"
+  }
+ },
+ "landing-1280": {
+  "dims": {
+   "w": 1280,
+   "h": 1548
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1280/1280"
+  }
+ },
+ "read-1280": {
+  "dims": {
+   "w": 1280,
+   "h": 2553
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1280/1280"
+  }
+ },
+ "halyard-1280": {
+  "dims": {
+   "w": 1280,
+   "h": 1422
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1280/1280"
+  }
+ },
+ "kestrel-1280": {
+  "dims": {
+   "w": 1280,
+   "h": 1499
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1280/1280"
+  }
+ },
+ "explain-1280": {
+  "dims": {
+   "w": 1280,
+   "h": 2326
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1280/1280"
+  }
+ },
+ "end-1280": {
+  "dims": {
+   "w": 1280,
+   "h": 2378
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1280/1280"
+  }
+ },
+ "checker-empty-1280": {
+  "dims": {
+   "w": 1280,
+   "h": 2454
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [
+    "img screenshots/checker/hero-results.png ok 1006x473 scale 0.79"
+   ],
+   "doc": "1280/1280"
+  }
+ },
+ "checker-run-1280": {
+  "dims": {
+   "w": 1280,
+   "h": 22777,
+   "parts": 8
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [
+    "img screenshots/checker/hero-results.png ok 1006x473 scale 0.79"
+   ],
+   "doc": "1280/1280"
+  }
+ },
+ "author-empty-1280": {
+  "dims": {
+   "w": 1280,
+   "h": 2064
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1280/1280"
+  }
+ },
+ "author-read-1280": {
+  "dims": {
+   "w": 1280,
+   "h": 8104
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1280/1280"
+  }
+ },
+ "404-1280": {
+  "dims": {
+   "w": 1280,
+   "h": 1000
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1280/1280"
+  }
+ },
+ "review-1600": {
+  "dims": {
+   "w": 1600,
+   "h": 5236
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1600/1600"
+  }
+ },
+ "landing-1600": {
+  "dims": {
+   "w": 1600,
+   "h": 1548
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1600/1600"
+  }
+ },
+ "read-1600": {
+  "dims": {
+   "w": 1600,
+   "h": 2533
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1600/1600"
+  }
+ },
+ "halyard-1600": {
+  "dims": {
+   "w": 1600,
+   "h": 1422
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1600/1600"
+  }
+ },
+ "kestrel-1600": {
+  "dims": {
+   "w": 1600,
+   "h": 1499
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1600/1600"
+  }
+ },
+ "explain-1600": {
+  "dims": {
+   "w": 1600,
+   "h": 2326
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1600/1600"
+  }
+ },
+ "end-1600": {
+  "dims": {
+   "w": 1600,
+   "h": 2378
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1600/1600"
+  }
+ },
+ "checker-empty-1600": {
+  "dims": {
+   "w": 1600,
+   "h": 2454
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [
+    "img screenshots/checker/hero-results.png ok 1006x473 scale 0.79"
+   ],
+   "doc": "1600/1600"
+  }
+ },
+ "checker-run-1600": {
+  "dims": {
+   "w": 1600,
+   "h": 22777,
+   "parts": 8
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [
+    "img screenshots/checker/hero-results.png ok 1006x473 scale 0.79"
+   ],
+   "doc": "1600/1600"
+  }
+ },
+ "author-empty-1600": {
+  "dims": {
+   "w": 1600,
+   "h": 2064
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1600/1600"
+  }
+ },
+ "author-read-1600": {
+  "dims": {
+   "w": 1600,
+   "h": 8104
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1600/1600"
+  }
+ },
+ "404-1600": {
+  "dims": {
+   "w": 1600,
+   "h": 1000
+  },
+  "checks": {
+   "overflow": [],
+   "clipped": [],
+   "small": [],
+   "images": [],
+   "doc": "1600/1600"
+  }
+ }
+}

@@ -1,0 +1,436 @@
+[
+ {
+  "width": 292,
+  "file": "steps-320-after.png",
+  "top": 1517,
+  "height": 2088,
+  "cards": [
+   {
+    "x": 14,
+    "y": 74,
+    "w": 292,
+    "h": 474,
+    "visual": [
+     290,
+     368
+    ],
+    "capTop": 443,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 14,
+    "y": 565,
+    "w": 292,
+    "h": 516,
+    "visual": [
+     290,
+     359
+    ],
+    "capTop": 924,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 14,
+    "y": 1097,
+    "w": 292,
+    "h": 446,
+    "visual": [
+     290,
+     263
+    ],
+    "capTop": 1360,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 14,
+    "y": 1559,
+    "w": 292,
+    "h": 530,
+    "visual": [
+     290,
+     372
+    ],
+    "capTop": 1931,
+    "capFont": "17.5px"
+   }
+  ],
+  "minFont": 12,
+  "minTxt": "1. Ledger",
+  "innerOverflow": [],
+  "doc": "320/320",
+  "clean": true,
+  "bad": []
+ },
+ {
+  "width": 335,
+  "file": "steps-375-after.png",
+  "top": 1561,
+  "height": 2029,
+  "cards": [
+   {
+    "x": 20,
+    "y": 74,
+    "w": 335,
+    "h": 461,
+    "visual": [
+     333,
+     355
+    ],
+    "capTop": 430,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 20,
+    "y": 552,
+    "w": 335,
+    "h": 524,
+    "visual": [
+     333,
+     367
+    ],
+    "capTop": 919,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 20,
+    "y": 1092,
+    "w": 335,
+    "h": 428,
+    "visual": [
+     333,
+     271
+    ],
+    "capTop": 1363,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 20,
+    "y": 1536,
+    "w": 335,
+    "h": 493,
+    "visual": [
+     333,
+     360
+    ],
+    "capTop": 1897,
+    "capFont": "17.5px"
+   }
+  ],
+  "minFont": 12,
+  "minTxt": "1. Ledger",
+  "innerOverflow": [],
+  "doc": "375/375",
+  "clean": true,
+  "bad": []
+ },
+ {
+  "width": 720,
+  "file": "steps-768-after.png",
+  "top": 975,
+  "height": 1108,
+  "cards": [
+   {
+    "x": 24,
+    "y": 74,
+    "w": 350,
+    "h": 512,
+    "visual": [
+     348,
+     355
+    ],
+    "capTop": 430,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 394,
+    "y": 74,
+    "w": 350,
+    "h": 512,
+    "visual": [
+     348,
+     355
+    ],
+    "capTop": 430,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 24,
+    "y": 607,
+    "w": 350,
+    "h": 502,
+    "visual": [
+     348,
+     344
+    ],
+    "capTop": 952,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 394,
+    "y": 607,
+    "w": 350,
+    "h": 502,
+    "visual": [
+     348,
+     344
+    ],
+    "capTop": 952,
+    "capFont": "17.5px"
+   }
+  ],
+  "minFont": 12,
+  "minTxt": "1. Ledger",
+  "innerOverflow": [],
+  "doc": "768/768",
+  "clean": true,
+  "bad": []
+ },
+ {
+  "width": 961,
+  "file": "steps-1009-after.png",
+  "top": 1005,
+  "height": 937,
+  "cards": [
+   {
+    "x": 24,
+    "y": 74,
+    "w": 471,
+    "h": 441,
+    "visual": [
+     469,
+     309
+    ],
+    "capTop": 384,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 515,
+    "y": 74,
+    "w": 471,
+    "h": 441,
+    "visual": [
+     469,
+     309
+    ],
+    "capTop": 384,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 24,
+    "y": 536,
+    "w": 471,
+    "h": 401,
+    "visual": [
+     469,
+     269
+    ],
+    "capTop": 806,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 515,
+    "y": 536,
+    "w": 471,
+    "h": 401,
+    "visual": [
+     469,
+     269
+    ],
+    "capTop": 806,
+    "capFont": "17.5px"
+   }
+  ],
+  "minFont": 12,
+  "minTxt": "1. Ledger",
+  "innerOverflow": [],
+  "doc": "1009/1009",
+  "clean": true,
+  "bad": []
+ },
+ {
+  "width": 976,
+  "file": "steps-1024-after.png",
+  "top": 1008,
+  "height": 937,
+  "cards": [
+   {
+    "x": 24,
+    "y": 74,
+    "w": 478,
+    "h": 441,
+    "visual": [
+     476,
+     309
+    ],
+    "capTop": 384,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 522,
+    "y": 74,
+    "w": 478,
+    "h": 441,
+    "visual": [
+     476,
+     309
+    ],
+    "capTop": 384,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 24,
+    "y": 536,
+    "w": 478,
+    "h": 401,
+    "visual": [
+     476,
+     269
+    ],
+    "capTop": 806,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 522,
+    "y": 536,
+    "w": 478,
+    "h": 401,
+    "visual": [
+     476,
+     269
+    ],
+    "capTop": 806,
+    "capFont": "17.5px"
+   }
+  ],
+  "minFont": 12,
+  "minTxt": "1. Ledger",
+  "innerOverflow": [],
+  "doc": "1024/1024",
+  "clean": true,
+  "bad": []
+ },
+ {
+  "width": 1000,
+  "file": "steps-1280-after.png",
+  "top": 1014,
+  "height": 912,
+  "cards": [
+   {
+    "x": 140,
+    "y": 74,
+    "w": 490,
+    "h": 416,
+    "visual": [
+     488,
+     309
+    ],
+    "capTop": 384,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 650,
+    "y": 74,
+    "w": 490,
+    "h": 416,
+    "visual": [
+     488,
+     309
+    ],
+    "capTop": 384,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 140,
+    "y": 510,
+    "w": 490,
+    "h": 401,
+    "visual": [
+     488,
+     269
+    ],
+    "capTop": 780,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 650,
+    "y": 510,
+    "w": 490,
+    "h": 401,
+    "visual": [
+     488,
+     269
+    ],
+    "capTop": 780,
+    "capFont": "17.5px"
+   }
+  ],
+  "minFont": 12,
+  "minTxt": "1. Ledger",
+  "innerOverflow": [],
+  "doc": "1280/1280",
+  "clean": true,
+  "bad": []
+ },
+ {
+  "width": 1000,
+  "file": "steps-1600-after.png",
+  "top": 1014,
+  "height": 912,
+  "cards": [
+   {
+    "x": 300,
+    "y": 74,
+    "w": 490,
+    "h": 416,
+    "visual": [
+     488,
+     309
+    ],
+    "capTop": 384,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 810,
+    "y": 74,
+    "w": 490,
+    "h": 416,
+    "visual": [
+     488,
+     309
+    ],
+    "capTop": 384,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 300,
+    "y": 510,
+    "w": 490,
+    "h": 401,
+    "visual": [
+     488,
+     269
+    ],
+    "capTop": 780,
+    "capFont": "17.5px"
+   },
+   {
+    "x": 810,
+    "y": 510,
+    "w": 490,
+    "h": 401,
+    "visual": [
+     488,
+     269
+    ],
+    "capTop": 780,
+    "capFont": "17.5px"
+   }
+  ],
+  "minFont": 12,
+  "minTxt": "1. Ledger",
+  "innerOverflow": [],
+  "doc": "1600/1600",
+  "clean": true,
+  "bad": []
+ }
+]

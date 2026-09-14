@@ -1,0 +1,374 @@
+[
+ {
+  "width": 292,
+  "file": "steps-320-before.png",
+  "top": 1515,
+  "height": 4365,
+  "cards": [
+   {
+    "x": 54,
+    "y": 92,
+    "w": 212,
+    "h": 1060,
+    "visual": [
+     210,
+     960
+    ],
+    "capTop": 1053,
+    "capFont": "15px"
+   },
+   {
+    "x": 54,
+    "y": 1202,
+    "w": 212,
+    "h": 1081,
+    "visual": [
+     210,
+     960
+    ],
+    "capTop": 2163,
+    "capFont": "15px"
+   },
+   {
+    "x": 54,
+    "y": 2333,
+    "w": 212,
+    "h": 1024,
+    "visual": [
+     210,
+     840
+    ],
+    "capTop": 3174,
+    "capFont": "15px"
+   },
+   {
+    "x": 54,
+    "y": 3407,
+    "w": 212,
+    "h": 940,
+    "visual": [
+     210,
+     840
+    ],
+    "capTop": 4248,
+    "capFont": "15px"
+   }
+  ],
+  "minFont": 12,
+  "minTxt": "01",
+  "innerOverflow": [],
+  "doc": "320/320",
+  "clean": true,
+  "bad": []
+ },
+ {
+  "width": 335,
+  "file": "steps-375-before.png",
+  "top": 1558,
+  "height": 4344,
+  "cards": [
+   {
+    "x": 60,
+    "y": 92,
+    "w": 255,
+    "h": 1060,
+    "visual": [
+     253,
+     960
+    ],
+    "capTop": 1053,
+    "capFont": "15px"
+   },
+   {
+    "x": 60,
+    "y": 1202,
+    "w": 255,
+    "h": 1081,
+    "visual": [
+     253,
+     960
+    ],
+    "capTop": 2163,
+    "capFont": "15px"
+   },
+   {
+    "x": 60,
+    "y": 2333,
+    "w": 255,
+    "h": 1003,
+    "visual": [
+     253,
+     840
+    ],
+    "capTop": 3174,
+    "capFont": "15px"
+   },
+   {
+    "x": 60,
+    "y": 3386,
+    "w": 255,
+    "h": 940,
+    "visual": [
+     253,
+     840
+    ],
+    "capTop": 4227,
+    "capFont": "15px"
+   }
+  ],
+  "minFont": 12,
+  "minTxt": "01",
+  "innerOverflow": [],
+  "doc": "375/375",
+  "clean": true,
+  "bad": []
+ },
+ {
+  "width": 720,
+  "file": "steps-768-before.png",
+  "top": 975,
+  "height": 2225,
+  "cards": [
+   {
+    "x": 64,
+    "y": 92,
+    "w": 272,
+    "h": 1081,
+    "visual": [
+     270,
+     960
+    ],
+    "capTop": 1053,
+    "capFont": "15px"
+   },
+   {
+    "x": 432,
+    "y": 92,
+    "w": 272,
+    "h": 1081,
+    "visual": [
+     270,
+     960
+    ],
+    "capTop": 1053,
+    "capFont": "15px"
+   },
+   {
+    "x": 64,
+    "y": 1225,
+    "w": 272,
+    "h": 982,
+    "visual": [
+     270,
+     840
+    ],
+    "capTop": 2066,
+    "capFont": "15px"
+   },
+   {
+    "x": 432,
+    "y": 1225,
+    "w": 272,
+    "h": 982,
+    "visual": [
+     270,
+     840
+    ],
+    "capTop": 2066,
+    "capFont": "15px"
+   }
+  ],
+  "minFont": 12,
+  "minTxt": "01",
+  "innerOverflow": [],
+  "doc": "768/768",
+  "clean": true,
+  "bad": []
+ },
+ {
+  "width": 976,
+  "file": "steps-1024-before.png",
+  "top": 1008,
+  "height": 1233,
+  "cards": [
+   {
+    "x": 64,
+    "y": 92,
+    "w": 152,
+    "h": 1123,
+    "visual": [
+     150,
+     960
+    ],
+    "capTop": 1053,
+    "capFont": "15px"
+   },
+   {
+    "x": 312,
+    "y": 92,
+    "w": 152,
+    "h": 1123,
+    "visual": [
+     150,
+     960
+    ],
+    "capTop": 1053,
+    "capFont": "15px"
+   },
+   {
+    "x": 560,
+    "y": 92,
+    "w": 152,
+    "h": 1123,
+    "visual": [
+     150,
+     840
+    ],
+    "capTop": 933,
+    "capFont": "15px"
+   },
+   {
+    "x": 808,
+    "y": 92,
+    "w": 152,
+    "h": 1123,
+    "visual": [
+     150,
+     840
+    ],
+    "capTop": 933,
+    "capFont": "15px"
+   }
+  ],
+  "minFont": 12,
+  "minTxt": "01",
+  "innerOverflow": [],
+  "doc": "1024/1024",
+  "clean": true,
+  "bad": []
+ },
+ {
+  "width": 1000,
+  "file": "steps-1280-before.png",
+  "top": 1014,
+  "height": 1212,
+  "cards": [
+   {
+    "x": 180,
+    "y": 92,
+    "w": 158,
+    "h": 1102,
+    "visual": [
+     156,
+     960
+    ],
+    "capTop": 1053,
+    "capFont": "15px"
+   },
+   {
+    "x": 434,
+    "y": 92,
+    "w": 158,
+    "h": 1102,
+    "visual": [
+     156,
+     960
+    ],
+    "capTop": 1053,
+    "capFont": "15px"
+   },
+   {
+    "x": 688,
+    "y": 92,
+    "w": 158,
+    "h": 1102,
+    "visual": [
+     156,
+     840
+    ],
+    "capTop": 933,
+    "capFont": "15px"
+   },
+   {
+    "x": 942,
+    "y": 92,
+    "w": 158,
+    "h": 1102,
+    "visual": [
+     156,
+     840
+    ],
+    "capTop": 933,
+    "capFont": "15px"
+   }
+  ],
+  "minFont": 12,
+  "minTxt": "01",
+  "innerOverflow": [],
+  "doc": "1280/1280",
+  "clean": true,
+  "bad": []
+ },
+ {
+  "width": 1000,
+  "file": "steps-1600-before.png",
+  "top": 1014,
+  "height": 1212,
+  "cards": [
+   {
+    "x": 340,
+    "y": 92,
+    "w": 158,
+    "h": 1102,
+    "visual": [
+     156,
+     960
+    ],
+    "capTop": 1053,
+    "capFont": "15px"
+   },
+   {
+    "x": 594,
+    "y": 92,
+    "w": 158,
+    "h": 1102,
+    "visual": [
+     156,
+     960
+    ],
+    "capTop": 1053,
+    "capFont": "15px"
+   },
+   {
+    "x": 848,
+    "y": 92,
+    "w": 158,
+    "h": 1102,
+    "visual": [
+     156,
+     840
+    ],
+    "capTop": 933,
+    "capFont": "15px"
+   },
+   {
+    "x": 1102,
+    "y": 92,
+    "w": 158,
+    "h": 1102,
+    "visual": [
+     156,
+     840
+    ],
+    "capTop": 933,
+    "capFont": "15px"
+   }
+  ],
+  "minFont": 12,
+  "minTxt": "01",
+  "innerOverflow": [],
+  "doc": "1600/1600",
+  "clean": true,
+  "bad": []
+ }
+]
