@@ -6,6 +6,19 @@ const fs = require("fs");
 const { serve, launch, sleep, OVERFLOW } = require("./cdp.cjs");
 const [ROOT, CASE, WIDTH, OUT] = [process.argv[2], process.argv[3] || "halyard", Number(process.argv[4] || 1280), process.argv[5]];
 
+/* The lock's readiness, as the page states it to a screen reader, plus the status line it points
+   at. The button is never disabled in the DOM, so `disabled` is not the attribute to read. */
+const LOCK = `(function(){var l=document.getElementById('lockin');if(!l) return null;
+  var s=document.getElementById('lockstat');
+  return {ready: l.getAttribute('aria-disabled')!=='true' && !l.disabled,
+          ariaDisabled: l.getAttribute('aria-disabled'), domDisabled: !!l.disabled,
+          status: s?String(s.textContent||'').replace(/\\s+/g,' ').trim():null};})()`;
+const CLICKLOCK = "(function(){var l=document.getElementById('lockin');if(l) l.click();return true;})()";
+/* the step and the call the run holds, so a refusal is read from the run and not from the button */
+const STATE = "({step:__BTM.step, calls:(__BTM.r2calls||[]).filter(function(c){return c;}).length})";
+const FILL = (answers) => `Array.prototype.forEach.call(document.querySelectorAll('#screen textarea.explain'),
+  function(t,k){ t.value=${JSON.stringify(answers)}[k]||'x'; t.dispatchEvent(new Event('input',{bubbles:true})); });true`;
+
 (async () => {
   const { srv, port } = await serve(ROOT);
   const B = await launch("walk");
@@ -63,17 +76,32 @@ const [ROOT, CASE, WIDTH, OUT] = [process.argv[2], process.argv[3] || "halyard",
         var hit=chips.filter(function(x){return x.textContent.trim().toLowerCase()===String(want).toLowerCase();})[0]||chips[0];
         if(hit) hit.click();
         var box=document.querySelectorAll('#screen textarea.explain');
-        var lock=document.getElementById('lockin');
-        return {chips:chips.length, explainBoxes:box.length, lockDisabledBefore: lock?!!lock.disabled:null};
+        return {chips:chips.length, explainBoxes:box.length, lock:${LOCK}};
       })()`);
       if (e.explainBoxes) {
         await audit("assessment item " + (i + 1) + " explanation open");
-        const blocked = await ev("(function(){var l=document.getElementById('lockin');return l?!!l.disabled:null;})()");
-        await ev(`Array.prototype.forEach.call(document.querySelectorAll('#screen textarea.explain'),function(t,k){
-          t.value=['The dated schedule lists no plan starting in June.','A June driver needs a June document.','Ask for the June enrollment report.'][k]||'x';
-          t.dispatchEvent(new Event('input',{bubbles:true}));});true`);
-        const after = await ev("(function(){var l=document.getElementById('lockin');return l?!!l.disabled:null;})()");
-        explainSeen.push({ item: i + 1, boxes: e.explainBoxes, lockBlockedEmpty: blocked, lockOpenFilled: after === false });
+        /* Since 5a61807 the lock stays pressable and carries aria-disabled, so reading
+           button.disabled reports an empty answer as unblocked. Readiness is read from
+           aria-disabled, and every refusal is confirmed by pressing the lock and finding the step
+           and the stored call unmoved. */
+        const empty = await ev(LOCK);
+        await ev(CLICKLOCK); await sleep(80);
+        const afterEmpty = await ev(STATE);
+        await ev(FILL(["a b", "...", "none"]));
+        const stock = await ev(LOCK);
+        await ev(CLICKLOCK); await sleep(80);
+        const afterStock = await ev(STATE);
+        await ev(FILL(["The dated schedule lists no plan starting in June.",
+                       "A June driver needs a June document.",
+                       "Ask for the June enrollment report."]));
+        const answered = await ev(LOCK);
+        explainSeen.push({ item: i + 1, boxes: e.explainBoxes,
+          lockReadsAriaNotDisabled: empty.ariaDisabled === "true" && empty.domDisabled === false,
+          emptyRefused: empty.ready === false && afterEmpty.step === s && afterEmpty.calls === i,
+          emptyStatus: empty.status,
+          stockRefused: stock.ready === false && afterStock.step === s && afterStock.calls === i,
+          stockStatus: stock.status,
+          readyWhenAnswered: answered.ready === true });
       }
       await ev("(function(){var l=document.getElementById('lockin');if(l) l.click();return true;})()");
       await sleep(80);
