@@ -6,26 +6,44 @@ Built 2026-09-13 from `findings-sample.csv`.
 
 | Count | Value | What it counts |
 | --- | --- | --- |
-| Rows in the export | 23 | Every data row in the file. |
+| Rows in the export | 26 | Every data row in the file. |
 | Rows excluded from participant evidence | 6 | Test codenames, rows the page marked as a test attempt, blank codenames and synthetic rows, itemized below. |
-| Duplicate sends set aside | 1 | A row repeating an attempt identifier already read. One attempt sent twice counts once. |
-| Received attempts | 16 | Rows left after those two steps. Each is one run of the drill. |
-| Completed attempts | 15 | Received attempts with a call on every practice line and, where a fresh case is named, on every fresh line. |
-| Distinct codenames | 15 | Different codenames among received attempts. A codename is a pseudonym, so this is not a count of people: one person can type two, and two people can type one. |
+| Duplicate sends set aside | 1 | A row repeating another row's attempt identifier and every cell but the timestamp. One attempt sent twice counts once, at its earliest timestamp. |
+| Attempt conflicts held out | 1 (2 rows) | Attempt identifiers carried by rows that differ in content. Every record is listed below, and none enters a count or a rate until the facilitator keeps one with --resolve-conflict. |
+| Received attempts | 17 | Rows left after those steps. Each is one run of the drill. |
+| Completed attempts | 15 | Received attempts with a call on every practice line and, where a fresh case is named, on every fresh line. On a fresh case that asks for written explanations (brightwater-v6 on), all three parts on every fresh line must also meet the minimum: at least two words and eight letters or digits, and not a stock non-answer such as none, n/a or same as above. |
+| Distinct codenames | 16 | Different codenames among received attempts. A codename is a pseudonym, so this is not a count of people: one person can type two, and two people can type one. |
 | Facilitator-confirmed participants | 8 | Distinct participants on the consented roster the facilitator supplied, each with at least one received attempt. |
-| First attempts scored | 13 | The first eligible attempt per codename, by timestamp. Every rate in a case set block reads these. |
+| First attempts scored | 14 | The first eligible attempt per codename, by timestamp. Every rate in a case set block reads these. |
 | Reattempts | 1 | Later eligible attempts by a codename already counted. Listed in the reattempt table and in no rate. |
 | Attempts refused from scoring | 2 | Received attempts on a case version this script cannot score, itemized below. |
 
 ## Rows excluded from participant evidence
 
-- Test codename: 4, TEST-AGENT-DELETE; Test Play; Test Harness; PLACEHOLDER-CHECK-DELETE
-- Marked TEST ATTEMPT by the page: 1, FIELDCHECK
+- Test codename: 4, TEST-AGENT-DELETE (sheet row 5, rule: a known test codename); Test Play (sheet row 9, rule: a known test codename); Test Harness (sheet row 15, rule: a known test codename); PLACEHOLDER-CHECK-DELETE (sheet row 16, rule: a known test codename)
+- Marked TEST ATTEMPT by the page: 1, FIELDCHECK (sheet row 21, rule: the page marked it TEST ATTEMPT)
 - Blank codename: 0
-- Synthetic row, excluded by rule: 1, Synthetic same participant (codename says synthetic)
-- Duplicate sends set aside: 1, TIEOUT (attempt att-tieout-01 sent again)
+- Synthetic row, excluded by rule: 1, Synthetic same participant (sheet row 27, rule: the codename begins with Synthetic)
+- Duplicate sends set aside: 1, TIEOUT (attempt att-tieout-01 sent again: sheet row 10 repeats sheet row 4)
 
-The synthetic rule matches the word synthetic in a codename, the marker "Synthetic test only" in any cell, and an attempt identifier beginning "audit-". The third independent review's synthetic records match it, so they cannot enter participant evidence from this script.
+Every exclusion names the rule that made it. A test codename is one on the list of known test codenames, or one made only of test words with test or delete among them ("Test Play", "walk test 2"), so a real codename that merely contains test ("Test Pilot", "Contest Winner") stays in. A synthetic row is one whose codename begins with Synthetic, or one with a cell or a basis Words line that reads exactly "Synthetic test only". The third independent review's synthetic records match it, so they cannot enter participant evidence from this script. Codenames are read after NFKC normalization and case folding, so a full-width spelling is treated as the plain one.
+
+## Attempt conflicts
+
+One attempt identifier on rows whose content differs is not a resend, and the script does not guess which row is the attempt. An unresolved conflict holds every one of its rows out of every count and rate, and a later attempt under the same codename counts it as the earlier attempt rather than becoming a first attempt. To resolve one, read the rows in the export and run again with `--resolve-conflict <attempt id>=<sheet row to keep>`. Sheet rows count the header as row 1.
+
+**Unresolved: attempt att-twinlark-01**
+
+| Sheet row | Codename | Timestamp | Case set | Call agreement | Fresh calls | Completed |
+| --- | --- | --- | --- | --- | --- | --- |
+| 24 | TWINLARK | 2026/09/15 13:05:00 | halyard-v4 with brightwater-v5 | 13 of 14 | FSFFS | yes |
+| 25 | TWINLARK | 2026/09/15 13:09:00 | halyard-v4 with brightwater-v5 | 12 of 14 | FSFFS | yes |
+
+Where the records differ, by column, each value in sheet row order:
+
+- Call C3: "Accept" / "Reject"
+- Why C3: "Basis: direction wrong // Line 3, account 5100. Called: flag. Key: flag. Type: wrong direc..." / "Basis: the figure and reason hold // Line 3, account 5100. Called: stand. Key: flag. Type:..."
+- Question B (attempt id and result): "...1 in this tab. Reason score: 12 of 14 in round one and 5 of 5 on the fresh case. A reason ..." / "...1 in this tab. Reason score: 11 of 14 in round one and 5 of 5 on the fresh case. A reason ..."
 
 ## Case versions
 
@@ -33,7 +51,7 @@ Every received attempt as its record names its cases. Each case set below is sco
 
 | Cases as recorded | Received attempts |
 | --- | --- |
-| halyard-v4 with brightwater-v5, dated 2026-09-13 | 9 |
+| halyard-v4 with brightwater-v5, dated 2026-09-13 | 10 |
 | kestrel-v1 with brightwater-v5, dated 2026-09-13 | 2 |
 | halyard-v4 with brightwater-v6, dated 2026-09-13 | 2 |
 | halyard-v3 with brightwater-v2, dated 2026-09-12 | 1 |
@@ -61,7 +79,7 @@ Read from `findings-sample-roster.csv`, the consented roster the facilitator sup
 | Rows without consent, not read | 1 |
 | Facilitator-confirmed participants with a received attempt | 8 |
 | Roster codenames with no received attempt | 1 |
-| Received codenames not on the roster | 6 |
+| Received codenames not on the roster | 7 |
 | Codenames claimed by two participants, not confirmed | 0 |
 
 | Role, as the facilitator recorded it | Confirmed participants |
@@ -77,42 +95,42 @@ Scored against `cases/halyard-v4.json` and `cases/brightwater-v5.json` and no ot
 
 ### Paste into the write-up
 
-Across eight first attempts on halyard-v4, reviewers caught 88 percent of the eight planted problems.
-The wrong direction line was caught 100 percent, the no explanation line only 75 percent.
-False flags on the six clean lines ran 25 percent.
-On a company nobody had seen, calls agreed with the key 85 percent of the time (n=8).
+Across nine first attempts on halyard-v4, reviewers caught 88 percent of the eight planted problems.
+The wrong direction line was caught 100 percent, the no explanation line only 78 percent.
+False flags on the six clean lines ran 22 percent.
+On a company nobody had seen, calls agreed with the key 87 percent of the time (n=9).
 
 (57 words)
 
 One more sentence, on the reason chips, if the write-up has room for it:
 
-A basis chip was tapped on 100 percent of the calls, and the chips agreed with the key's accepted reason categories on 76 percent of the lines scored, which is agreement with those categories rather than a measure of reasoning.
+A basis chip was tapped on 100 percent of the calls, and the chips agreed with the key's accepted reason categories on 77 percent of the lines scored, which is agreement with those categories rather than a measure of reasoning.
 
 ### Paste into the video script
 
-Across eight first attempts on halyard-v4, six by confirmed participants, reviewers caught 88 percent of the planted problems, and on a company they had never seen their calls agreed with the key 85 percent of the time.
+Across nine first attempts on halyard-v4, six by confirmed participants, reviewers caught 88 percent of the planted problems, and on a company they had never seen their calls agreed with the key 87 percent of the time.
 
 ### First attempts
 
 | Measure | Value |
 | --- | --- |
-| First attempts on this case set | 8 |
-| Completed | 8 |
+| First attempts on this case set | 9 |
+| Completed | 9 |
 | Facilitator-confirmed participants | 6 |
 | Reattempts on this case set, not in any rate | 1 |
-| Mean call agreement, lines of 14 | 11.5 |
-| Median call agreement, lines of 14 | 11.5 |
-| Catch rate, 8 problem lines | 87.5% (56 of 64) |
-| Correct let stand rate, 6 clean lines | 75.0% (36 of 48) |
-| False flag rate | 25.0% (12 of 48) |
-| Reason chip agreement, practice lines | 75.9% (85 of 112 scored) |
-| Elapsed minutes on the page, median | 9.5 |
-| Elapsed minutes on the page, mean | 9.0 |
+| Mean call agreement, lines of 14 | 11.7 |
+| Median call agreement, lines of 14 | 12 |
+| Catch rate, 8 problem lines | 87.5% (63 of 72) |
+| Correct let stand rate, 6 clean lines | 77.8% (42 of 54) |
+| False flag rate | 22.2% (12 of 54) |
+| Reason chip agreement, practice lines | 77.0% (97 of 126 scored) |
+| Elapsed minutes on the page, median | 10 |
+| Elapsed minutes on the page, mean | 9.3 |
 | Best streak posted | 14 |
 | First attempts that flagged every line | 1 |
-| Calls carrying a basis chip | 100.0% (112 of 112) |
-| Flags carrying a line of the player's own words | 23.5% (16 of 68) |
-| First attempts with a basis chip on every line | 8 |
+| Calls carrying a basis chip | 100.0% (126 of 126) |
+| Flags carrying a line of the player's own words | 21.3% (16 of 75) |
+| First attempts with a basis chip on every line | 9 |
 
 ### By organization
 
@@ -127,6 +145,7 @@ The chapter chips a player tapped. One attempt can carry two, so these sum above
 | AAA | 1 |
 | Professor | 1 |
 | ASM | 1 |
+| Outside Mason | 1 |
 
 ### Call agreement and reason chip agreement by error type
 
@@ -134,13 +153,13 @@ Two separate results. Call agreement is the flag or stand decision against the k
 
 | Error type | Lines | Calls seen | Call agreement | Reasons scored | Reason chip agreement |
 | --- | --- | --- | --- | --- | --- |
-| arithmetic | 1, 8 | 16 | 93.8% (15) | 16 | 81.2% (13) |
-| wrong direction | 3 | 8 | 100.0% (8) | 8 | 100.0% (8) |
-| timing | 2 | 8 | 87.5% (7) | 8 | 87.5% (7) |
-| unsupported driver | 7, 14 | 16 | 87.5% (14) | 16 | 87.5% (14) |
-| unsupported attribution | 12 | 8 | 75.0% (6) | 8 | 12.5% (1) |
-| no explanation | 11 | 8 | 75.0% (6) | 8 | 75.0% (6) |
-| clean line | 4, 5, 6, 9, 10, 13 | 48 | 75.0% (36) | 48 | 75.0% (36) |
+| arithmetic | 1, 8 | 18 | 88.9% (16) | 18 | 77.8% (14) |
+| wrong direction | 3 | 9 | 100.0% (9) | 9 | 100.0% (9) |
+| timing | 2 | 9 | 88.9% (8) | 9 | 88.9% (8) |
+| unsupported driver | 7, 14 | 18 | 88.9% (16) | 18 | 88.9% (16) |
+| unsupported attribution | 12 | 9 | 77.8% (7) | 9 | 11.1% (1) |
+| no explanation | 11 | 9 | 77.8% (7) | 9 | 77.8% (7) |
+| clean line | 4, 5, 6, 9, 10, 13 | 54 | 77.8% (42) | 54 | 77.8% (42) |
 
 ### What reason chip agreement measures
 
@@ -156,13 +175,13 @@ The share is of the calls on those lines that carried a chip at all, and a playe
 
 | Error type | Calls with a basis | Chips tapped |
 | --- | --- | --- |
-| arithmetic | 16 of 16 | figure does not tie 13 (81%); no source on file 4 (25%); the figure and reason hold 1 (6%) |
-| no explanation | 8 of 8 | nothing written where owed 5 (62%); no source on file 2 (25%); the figure and reason hold 2 (25%) |
-| timing | 8 of 8 | wrong period 6 (75%); no source on file 2 (25%); the figure and reason hold 1 (12%) |
-| unsupported attribution | 8 of 8 | no source on file 6 (75%); wrong account 5 (62%); the figure and reason hold 2 (25%) |
-| unsupported driver | 16 of 16 | no source on file 14 (88%); the figure and reason hold 2 (12%) |
-| wrong direction | 8 of 8 | direction wrong 7 (88%); no source on file 2 (25%) |
-| clean line | 48 of 48 | the figure and reason hold 36 (75%); no source on file 12 (25%) |
+| arithmetic | 18 of 18 | figure does not tie 14 (78%); no source on file 4 (22%); the figure and reason hold 2 (11%) |
+| no explanation | 9 of 9 | nothing written where owed 6 (67%); no source on file 2 (22%); the figure and reason hold 2 (22%) |
+| timing | 9 of 9 | wrong period 7 (78%); no source on file 2 (22%); the figure and reason hold 1 (11%) |
+| unsupported attribution | 9 of 9 | no source on file 7 (78%); wrong account 6 (67%); the figure and reason hold 2 (22%) |
+| unsupported driver | 18 of 18 | no source on file 16 (89%); the figure and reason hold 2 (11%) |
+| wrong direction | 9 of 9 | direction wrong 8 (89%); no source on file 2 (22%) |
+| clean line | 54 of 54 | the figure and reason hold 42 (78%); no source on file 12 (22%) |
 
 ### In their own words
 
@@ -208,26 +227,26 @@ Verbatim, up to three per error type.
 
 | Line | Account | Key | Error type | Seen | Call agreement | Flagged | Reason chip agreement |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 4200 Freight billed to customers | flag | arithmetic | 8 | 100.0% (8) | 8 | 75.0% |
-| 2 | 6200 Repairs and maintenance, depots | flag | timing | 8 | 87.5% (7) | 7 | 87.5% |
-| 3 | 5100 Inbound freight | flag | wrong direction | 8 | 100.0% (8) | 8 | 100.0% |
-| 4 | 4100 Service revenue, equipment maintenance | stand | clean line | 8 | 62.5% (5) | 3 | 62.5% |
-| 5 | 6500 Professional fees | stand | clean line | 8 | 75.0% (6) | 2 | 75.0% |
-| 6 | 7400 Inventory shrink adjustment | stand | clean line | 8 | 75.0% (6) | 2 | 75.0% |
-| 7 | 4000 Product revenue, distribution | flag | unsupported driver | 8 | 100.0% (8) | 8 | 100.0% |
-| 8 | 6400 Bad debt expense | flag | arithmetic | 8 | 87.5% (7) | 7 | 87.5% |
-| 9 | 6100 Fleet fuel | stand | clean line | 8 | 75.0% (6) | 2 | 75.0% |
-| 10 | 6300 Software subscriptions | stand | clean line | 8 | 87.5% (7) | 1 | 87.5% |
-| 11 | 6000 Warehouse wages | flag | no explanation | 8 | 75.0% (6) | 6 | 75.0% |
-| 12 | 4000 Product revenue, distribution | flag | unsupported attribution | 8 | 75.0% (6) | 6 | 12.5% |
-| 13 | 5000 Cost of product sold | stand | clean line | 8 | 75.0% (6) | 2 | 75.0% |
-| 14 | 7100 Interest expense | flag | unsupported driver | 8 | 75.0% (6) | 6 | 75.0% |
+| 1 | 4200 Freight billed to customers | flag | arithmetic | 9 | 100.0% (9) | 9 | 77.8% |
+| 2 | 6200 Repairs and maintenance, depots | flag | timing | 9 | 88.9% (8) | 8 | 88.9% |
+| 3 | 5100 Inbound freight | flag | wrong direction | 9 | 100.0% (9) | 9 | 100.0% |
+| 4 | 4100 Service revenue, equipment maintenance | stand | clean line | 9 | 66.7% (6) | 3 | 66.7% |
+| 5 | 6500 Professional fees | stand | clean line | 9 | 77.8% (7) | 2 | 77.8% |
+| 6 | 7400 Inventory shrink adjustment | stand | clean line | 9 | 77.8% (7) | 2 | 77.8% |
+| 7 | 4000 Product revenue, distribution | flag | unsupported driver | 9 | 100.0% (9) | 9 | 100.0% |
+| 8 | 6400 Bad debt expense | flag | arithmetic | 9 | 77.8% (7) | 7 | 77.8% |
+| 9 | 6100 Fleet fuel | stand | clean line | 9 | 77.8% (7) | 2 | 77.8% |
+| 10 | 6300 Software subscriptions | stand | clean line | 9 | 88.9% (8) | 1 | 88.9% |
+| 11 | 6000 Warehouse wages | flag | no explanation | 9 | 77.8% (7) | 7 | 77.8% |
+| 12 | 4000 Product revenue, distribution | flag | unsupported attribution | 9 | 77.8% (7) | 7 | 11.1% |
+| 13 | 5000 Cost of product sold | stand | clean line | 9 | 77.8% (7) | 2 | 77.8% |
+| 14 | 7100 Interest expense | flag | unsupported driver | 9 | 77.8% (7) | 7 | 77.8% |
 
 ### The read before the draft, against the final calls
 
 Descriptive agreement on a keyed exercise, first attempts only. The read is taken from the ledger alone before the AI draft is shown, and a tapped account reads as a flag on its lines. Each final call came after reading the draft, the file on the card and, in practice mode, the reveals of the lines before it, so a change toward the key is not credited to the draft alone. It is not a pre-test and post-test, and it is not a learning gain.
 
-No first attempt on this case set carries the required read, so nothing is compared. First attempts left out: eight posted before the read was required.
+No first attempt on this case set carries the required read, so nothing is compared. First attempts left out: nine posted before the read was required.
 
 ### By first attempt
 
@@ -237,6 +256,7 @@ The game rank is the page's own label for its points, which include a bonus for 
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | REDLINE | 14 | 13 of 14 | Partner | 7 | 14 | 8 | 14 of 14 | ACFE |
 | MARGINCALL | 13 | 12 of 14 | Manager | 6 | 11 | 9 | 14 of 14 | Professor, ACFE |
+| Test Pilot | 13 | 12 of 14 | Manager | 12 | 6 | 7 | 14 of 14 | Outside Mason |
 | BLUEBOOK | 12 | 11 of 14 | Manager | 11 | 8 | 6 | 14 of 14 | Beta Alpha Psi, ACFE |
 | HARDCLOSE | 12 | 11 of 14 | Manager | 10 | 9 | 8 | 14 of 14 | ACFE, Beta Alpha Psi |
 | TIEOUT | 11 | 10 of 14 | Senior | 13 | 6 | 7 | 14 of 14 | NABA |
@@ -252,33 +272,33 @@ Scored against `cases/brightwater-v5.json`, read out of question C.
 
 | Measure | Value |
 | --- | --- |
-| First attempts with a fresh case result | 8 of 8 |
-| Fresh case call agreement | 85.0% (34 of 40 calls) |
-| Fresh case reason chip agreement, mean | 85.0% |
-| Practice case call agreement, same attempts | 82.1% |
-| Difference between the two item sets | +2.9 points |
-| Fresh case clock, median seconds | 72.5 |
+| First attempts with a fresh case result | 9 of 9 |
+| Fresh case call agreement | 86.7% (39 of 45 calls) |
+| Fresh case reason chip agreement, mean | 86.7% |
+| Practice case call agreement, same attempts | 83.3% |
+| Difference between the two item sets | +3.3 points |
+| Fresh case clock, median seconds | 75 |
 
 | Fresh line | Keyed call | Seen | Call agreement | Reason chip agreement |
 | --- | --- | --- | --- | --- |
-| 1 Dental supplies and lab fees | flag | 8 | 100.0% | 100.0% |
-| 2 Hygienist wages | stand | 8 | 87.5% | 87.5% |
-| 3 Orthodontic plan revenue | flag | 8 | 87.5% | 87.5% |
-| 4 Patient service revenue, net | flag | 8 | 87.5% | 87.5% |
-| 5 Marketing and patient outreach | stand | 8 | 62.5% | 62.5% |
+| 1 Dental supplies and lab fees | flag | 9 | 100.0% | 100.0% |
+| 2 Hygienist wages | stand | 9 | 88.9% | 88.9% |
+| 3 Orthodontic plan revenue | flag | 9 | 88.9% | 88.9% |
+| 4 Patient service revenue, net | flag | 9 | 88.9% | 88.9% |
+| 5 Marketing and patient outreach | stand | 9 | 66.7% | 66.7% |
 
 The fresh lines are a second unseen item set scored the same way, not a post-test. With five items and no comparable baseline, the difference above separates two item sets and does not establish learning gain, transfer or time saved.
 
 | Fresh line error type | Chips tapped |
 | --- | --- |
-| unsupported driver | no source on file 22; the figure and reason hold 2 |
-| clean line | the figure and reason hold 12; no source on file 4 |
+| unsupported driver | no source on file 25; the figure and reason hold 2 |
+| clean line | the figure and reason hold 14; no source on file 4 |
 
 ### Educator-scored explanations
 
-A separate result from reason chip agreement. Each written explanation on a fresh line is scored by an independent educator against RUBRIC.md, three criteria at 0 to 2 each, and never by this script. The machine's call result and the chips are kept off the sheet the educator scores.
+A separate result from reason chip agreement. Each written explanation on a fresh line is for an independent educator to score against RUBRIC.md, three criteria at 0 to 2 each, and never this script. No score appears below until a filled sheet is read back with --scores. The machine's call result and the chips are kept off the sheet the educator scores.
 
-No written explanation was found on the 40 fresh calls of these first attempts on brightwater-v5. Fresh cases before brightwater-v6 did not ask for one, and on brightwater-v6 or later an empty result means the export lacks the Evidence, Period and Action segments in question C.
+No written explanation was found on the 45 fresh calls of these first attempts on brightwater-v5. Fresh cases before brightwater-v6 did not ask for one.
 
 ### The Professor chip
 
@@ -316,7 +336,7 @@ Across two first attempts on halyard-v4, two by confirmed participants, reviewer
 | Measure | Value |
 | --- | --- |
 | First attempts on this case set | 2 |
-| Completed | 2 |
+| Completed | 1 |
 | Facilitator-confirmed participants | 2 |
 | Reattempts on this case set, not in any rate | 0 |
 | Mean call agreement, lines of 14 | 12.5 |
@@ -482,15 +502,25 @@ The fresh lines are a second unseen item set scored the same way, not a post-tes
 
 ### Educator-scored explanations
 
-A separate result from reason chip agreement. Each written explanation on a fresh line is scored by an independent educator against RUBRIC.md, three criteria at 0 to 2 each, and never by this script. The machine's call result and the chips are kept off the sheet the educator scores.
+A separate result from reason chip agreement. Each written explanation on a fresh line is for an independent educator to score against RUBRIC.md, three criteria at 0 to 2 each, and never this script. No score appears below until a filled sheet is read back with --scores. The machine's call result and the chips are kept off the sheet the educator scores.
 
 | Measure | Value |
 | --- | --- |
 | Fresh lines carrying a written explanation | 10 |
 | Fresh calls with no explanation text | 0 |
+| Lines on the sheet with a part below the minimum | 2 |
+| First attempts with a part below the minimum, counted incomplete | 1 |
 | Drawn for the second scorer | 10 |
 
 Not scored yet. Write the sheet with --scoring-sheet, have the educator fill it, and run again with --scores.
+
+**Written answers below the minimum.** One first attempt on brightwater-v6 carries three written parts that fall short of the minimum the page applies before a call locks: at least two words and eight letters or digits, and not a stock non-answer such as none, n/a or same as above. That attempt counts as incomplete. A line with any text stays on the scoring sheet with the part named in `below_minimum`, and every part is listed here as posted.
+
+| Codename | Attempt | Fresh line | Part | As posted | What falls short |
+| --- | --- | --- | --- | --- | --- |
+| SIGNOFF | att-signoff | 3 | Why it matters for this period | "June" | under two words and eight letters or digits |
+| SIGNOFF | att-signoff | 3 | Action or source request | "none" | a stock non-answer |
+| SIGNOFF | att-signoff | 5 | Action or source request | "stand" | under two words and eight letters or digits |
 
 ### Where the record disagrees with itself
 
@@ -668,9 +698,9 @@ The fresh lines are a second unseen item set scored the same way, not a post-tes
 
 ### Educator-scored explanations
 
-A separate result from reason chip agreement. Each written explanation on a fresh line is scored by an independent educator against RUBRIC.md, three criteria at 0 to 2 each, and never by this script. The machine's call result and the chips are kept off the sheet the educator scores.
+A separate result from reason chip agreement. Each written explanation on a fresh line is for an independent educator to score against RUBRIC.md, three criteria at 0 to 2 each, and never this script. No score appears below until a filled sheet is read back with --scores. The machine's call result and the chips are kept off the sheet the educator scores.
 
-No written explanation was found on the 10 fresh calls of these first attempts on brightwater-v5. Fresh cases before brightwater-v6 did not ask for one, and on brightwater-v6 or later an empty result means the export lacks the Evidence, Period and Action segments in question C.
+No written explanation was found on the 10 fresh calls of these first attempts on brightwater-v5. Fresh cases before brightwater-v6 did not ask for one.
 
 ### Where the record disagrees with itself
 
@@ -797,9 +827,9 @@ No Round2 string in question C on these first attempts.
 
 ### Educator-scored explanations
 
-A separate result from reason chip agreement. Each written explanation on a fresh line is scored by an independent educator against RUBRIC.md, three criteria at 0 to 2 each, and never by this script. The machine's call result and the chips are kept off the sheet the educator scores.
+A separate result from reason chip agreement. Each written explanation on a fresh line is for an independent educator to score against RUBRIC.md, three criteria at 0 to 2 each, and never this script. No score appears below until a filled sheet is read back with --scores. The machine's call result and the chips are kept off the sheet the educator scores.
 
-No written explanation was found on the 0 fresh calls of these first attempts on brightwater-v2. Fresh cases before brightwater-v6 did not ask for one, and on brightwater-v6 or later an empty result means the export lacks the Evidence, Period and Action segments in question C.
+No written explanation was found on the 0 fresh calls of these first attempts on brightwater-v2. Fresh cases before brightwater-v6 did not ask for one.
 
 ### Where the record disagrees with itself
 
@@ -819,10 +849,10 @@ Expected quality, confidence before the round, month end close experience and co
 
 | Question | Sent as `not asked` | Fixed placeholder value | Something else | Blank |
 | --- | --- | --- | --- | --- |
-| Expected quality of the commentary | 15 | 1 | 0 | 0 |
-| Confidence before the round | 15 | 1 | 0 | 0 |
-| Month end close experience | 15 | 1 | 0 | 0 |
-| Confidence after the round | 15 | 1 | 0 | 0 |
+| Expected quality of the commentary | 16 | 1 | 0 | 0 |
+| Confidence before the round | 16 | 1 | 0 | 0 |
+| Month end close experience | 16 | 1 | 0 | 0 |
+| Confidence after the round | 16 | 1 | 0 | 0 |
 
 ## Columns
 
@@ -841,21 +871,24 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 | `run.source_file` | findings-sample.csv |
 | `run.evidence_status` | participant export |
 | `run.product_version` | second-pass-drill 1.6.1 |
-| `run.rows_in_export` | 23 |
+| `run.rows_in_export` | 26 |
 | `run.rows_excluded` | 6 |
 | `run.rows_excluded.test_codename` | 4 |
 | `run.rows_excluded.marked_test_by_page` | 1 |
 | `run.rows_excluded.blank_codename` | 0 |
 | `run.rows_excluded.synthetic_by_rule` | 1 |
 | `run.duplicate_sends_set_aside` | 1 |
-| `run.attempts_received` | 16 |
+| `run.attempt_conflicts_unresolved` | 1 |
+| `run.attempt_conflict_rows_held_out` | 2 |
+| `run.attempt_conflicts_resolved` | 0 |
+| `run.attempts_received` | 17 |
 | `run.attempts_completed` | 15 |
 | `run.attempts_refused` | 2 |
-| `run.codenames_distinct` | 15 |
+| `run.codenames_distinct` | 16 |
 | `run.participants_confirmed` | 8 |
-| `run.first_attempts` | 13 |
+| `run.first_attempts` | 14 |
 | `run.reattempts` | 1 |
-| `run.case_sets` | halyard-v4 with brightwater-v5 (8 first, 1 later); halyard-v4 with brightwater-v6 (2 first, 0 later); kestrel-v1 with brightwater-v5 (2 first, 0 later); halyard-v3 with brightwater-v2 (1 first, 0 later) |
+| `run.case_sets` | halyard-v4 with brightwater-v5 (9 first, 1 later); halyard-v4 with brightwater-v6 (2 first, 0 later); kestrel-v1 with brightwater-v5 (2 first, 0 later); halyard-v3 with brightwater-v2 (1 first, 0 later) |
 
 ### Case set halyard-v4 with brightwater-v5
 
@@ -864,9 +897,9 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 | `set.case_round1` | halyard-v4 |
 | `set.case_round2` | brightwater-v5 |
 | `set.key_date` | 2026-09-13 |
-| `set.first_attempts` | 8 |
-| `set.first_attempts_completed` | 8 |
-| `set.codenames` | 8 |
+| `set.first_attempts` | 9 |
+| `set.first_attempts_completed` | 9 |
+| `set.codenames` | 9 |
 | `set.participants_confirmed` | 6 |
 | `set.reattempts` | 1 |
 | `org.beta-alpha-psi.name` | Beta Alpha Psi |
@@ -898,92 +931,92 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 | `org.professor.call_agreement_mean` | 92.9% |
 | `org.professor.reason_agreement_mean` | 85.7% |
 | `org.outside-mason.name` | Outside Mason |
-| `org.outside-mason.first_attempts` | 0 |
-| `org.outside-mason.call_agreement_mean` | not available |
-| `org.outside-mason.reason_agreement_mean` | not available |
+| `org.outside-mason.first_attempts` | 1 |
+| `org.outside-mason.call_agreement_mean` | 92.9% |
+| `org.outside-mason.reason_agreement_mean` | 85.7% |
 | `type.arithmetic.name` | Arithmetic |
 | `type.arithmetic.lines` | 1, 8 |
-| `type.arithmetic.calls_seen` | 16 |
-| `type.arithmetic.call_agreement_rate` | 93.8% |
-| `type.arithmetic.reason_agreement_rate` | 81.2% |
+| `type.arithmetic.calls_seen` | 18 |
+| `type.arithmetic.call_agreement_rate` | 88.9% |
+| `type.arithmetic.reason_agreement_rate` | 77.8% |
 | `type.wrong-direction.name` | Wrong direction |
 | `type.wrong-direction.lines` | 3 |
-| `type.wrong-direction.calls_seen` | 8 |
+| `type.wrong-direction.calls_seen` | 9 |
 | `type.wrong-direction.call_agreement_rate` | 100.0% |
 | `type.wrong-direction.reason_agreement_rate` | 100.0% |
 | `type.timing.name` | Timing |
 | `type.timing.lines` | 2 |
-| `type.timing.calls_seen` | 8 |
-| `type.timing.call_agreement_rate` | 87.5% |
-| `type.timing.reason_agreement_rate` | 87.5% |
+| `type.timing.calls_seen` | 9 |
+| `type.timing.call_agreement_rate` | 88.9% |
+| `type.timing.reason_agreement_rate` | 88.9% |
 | `type.unsupported-driver.name` | Unsupported driver |
 | `type.unsupported-driver.lines` | 7, 14 |
-| `type.unsupported-driver.calls_seen` | 16 |
-| `type.unsupported-driver.call_agreement_rate` | 87.5% |
-| `type.unsupported-driver.reason_agreement_rate` | 87.5% |
+| `type.unsupported-driver.calls_seen` | 18 |
+| `type.unsupported-driver.call_agreement_rate` | 88.9% |
+| `type.unsupported-driver.reason_agreement_rate` | 88.9% |
 | `type.unsupported-attribution.name` | Unsupported attribution |
 | `type.unsupported-attribution.lines` | 12 |
-| `type.unsupported-attribution.calls_seen` | 8 |
-| `type.unsupported-attribution.call_agreement_rate` | 75.0% |
-| `type.unsupported-attribution.reason_agreement_rate` | 12.5% |
+| `type.unsupported-attribution.calls_seen` | 9 |
+| `type.unsupported-attribution.call_agreement_rate` | 77.8% |
+| `type.unsupported-attribution.reason_agreement_rate` | 11.1% |
 | `type.no-explanation.name` | No explanation |
 | `type.no-explanation.lines` | 11 |
-| `type.no-explanation.calls_seen` | 8 |
-| `type.no-explanation.call_agreement_rate` | 75.0% |
-| `type.no-explanation.reason_agreement_rate` | 75.0% |
+| `type.no-explanation.calls_seen` | 9 |
+| `type.no-explanation.call_agreement_rate` | 77.8% |
+| `type.no-explanation.reason_agreement_rate` | 77.8% |
 | `type.clean-line.name` | Clean line, the control |
 | `type.clean-line.lines` | 4, 5, 6, 9, 10, 13 |
-| `type.clean-line.calls_seen` | 48 |
-| `type.clean-line.call_agreement_rate` | 75.0% |
-| `type.clean-line.reason_agreement_rate` | 75.0% |
+| `type.clean-line.calls_seen` | 54 |
+| `type.clean-line.call_agreement_rate` | 77.8% |
+| `type.clean-line.reason_agreement_rate` | 77.8% |
 | `falseflag.lines` | 4, 5, 6, 9, 10, 13 |
 | `falseflag.line4.flags` | 3 |
-| `falseflag.line4.rate` | 37.5% |
+| `falseflag.line4.rate` | 33.3% |
 | `falseflag.line5.flags` | 2 |
-| `falseflag.line5.rate` | 25.0% |
+| `falseflag.line5.rate` | 22.2% |
 | `falseflag.line6.flags` | 2 |
-| `falseflag.line6.rate` | 25.0% |
+| `falseflag.line6.rate` | 22.2% |
 | `falseflag.line9.flags` | 2 |
-| `falseflag.line9.rate` | 25.0% |
+| `falseflag.line9.rate` | 22.2% |
 | `falseflag.line10.flags` | 1 |
-| `falseflag.line10.rate` | 12.5% |
+| `falseflag.line10.rate` | 11.1% |
 | `falseflag.line13.flags` | 2 |
-| `falseflag.line13.rate` | 25.0% |
+| `falseflag.line13.rate` | 22.2% |
 | `falseflag.flags` | 12 |
-| `falseflag.overall_rate` | 25.0% |
-| `falseflag.first_attempts_with_none` | 2 |
+| `falseflag.overall_rate` | 22.2% |
+| `falseflag.first_attempts_with_none` | 3 |
 | `fresh.line1.name` | Dental supplies and lab fees |
 | `fresh.line1.key` | Flag |
-| `fresh.line1.calls_seen` | 8 |
+| `fresh.line1.calls_seen` | 9 |
 | `fresh.line1.call_agreement_rate` | 100.0% |
 | `fresh.line1.reason_agreement_rate` | 100.0% |
 | `fresh.line2.name` | Hygienist wages |
 | `fresh.line2.key` | Stand |
-| `fresh.line2.calls_seen` | 8 |
-| `fresh.line2.call_agreement_rate` | 87.5% |
-| `fresh.line2.reason_agreement_rate` | 87.5% |
+| `fresh.line2.calls_seen` | 9 |
+| `fresh.line2.call_agreement_rate` | 88.9% |
+| `fresh.line2.reason_agreement_rate` | 88.9% |
 | `fresh.line3.name` | Orthodontic plan revenue |
 | `fresh.line3.key` | Flag |
-| `fresh.line3.calls_seen` | 8 |
-| `fresh.line3.call_agreement_rate` | 87.5% |
-| `fresh.line3.reason_agreement_rate` | 87.5% |
+| `fresh.line3.calls_seen` | 9 |
+| `fresh.line3.call_agreement_rate` | 88.9% |
+| `fresh.line3.reason_agreement_rate` | 88.9% |
 | `fresh.line4.name` | Patient service revenue, net |
 | `fresh.line4.key` | Flag |
-| `fresh.line4.calls_seen` | 8 |
-| `fresh.line4.call_agreement_rate` | 87.5% |
-| `fresh.line4.reason_agreement_rate` | 87.5% |
+| `fresh.line4.calls_seen` | 9 |
+| `fresh.line4.call_agreement_rate` | 88.9% |
+| `fresh.line4.reason_agreement_rate` | 88.9% |
 | `fresh.line5.name` | Marketing and patient outreach |
 | `fresh.line5.key` | Stand |
-| `fresh.line5.calls_seen` | 8 |
-| `fresh.line5.call_agreement_rate` | 62.5% |
-| `fresh.line5.reason_agreement_rate` | 62.5% |
-| `fresh.first_attempts` | 8 |
-| `fresh.call_agreement_mean` | 85.0% |
-| `fresh.reason_agreement_mean` | 85.0% |
-| `fresh.seconds_median` | 72.5 |
-| `r1.call_agreement_mean` | 82.1% |
-| `r1.reason_agreement_mean` | 75.9% |
-| `r1.lap_median` | 9.5 |
+| `fresh.line5.calls_seen` | 9 |
+| `fresh.line5.call_agreement_rate` | 66.7% |
+| `fresh.line5.reason_agreement_rate` | 66.7% |
+| `fresh.first_attempts` | 9 |
+| `fresh.call_agreement_mean` | 86.7% |
+| `fresh.reason_agreement_mean` | 86.7% |
+| `fresh.seconds_median` | 75 |
+| `r1.call_agreement_mean` | 83.3% |
+| `r1.reason_agreement_mean` | 77.0% |
+| `r1.lap_median` | 10 |
 | `reason.limitation` | On halyard-v4, seven of the eight flag lines accept "no source on file" and six of the six stand lines accept only "the figure and reason hold". A player who taps those two chips after correct calls agrees on thirteen of fourteen lines without stating why the evidence fails or holds, and the stand chip largely restates the decision. Read this result as agreement with accepted reason categories, not as reasoning quality. On brightwater-v5, three of the three flag lines accept "no source on file" and two of the two stand lines accept only "the figure and reason hold". A player who taps those two chips after correct calls agrees on five of five lines without stating why the evidence fails or holds, and the stand chip largely restates the decision. Read this result as agreement with accepted reason categories, not as reasoning quality. |
 | `prepick.first_attempts_with_read` | 0 |
 | `prepick.first_attempts_changed_any` | not available |
@@ -996,11 +1029,14 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 | `prepick.changed_away_from_key` | not available |
 | `prepick.changed_away_from_key_rate` | not available |
 | `prepick.lines_held` | not available |
-| `prepick.first_attempts_before_required` | 8 |
+| `prepick.first_attempts_before_required` | 9 |
 | `prepick.first_attempts_read_after_a_call` | 0 |
 | `explain.case_version` | brightwater-v5 |
 | `explain.items_with_text` | 0 |
-| `explain.fresh_calls_without_text` | 40 |
+| `explain.fresh_calls_without_text` | 45 |
+| `explain.items_below_minimum` | 0 |
+| `explain.first_attempts_below_minimum` | 0 |
+| `explain.parts_below_minimum` | 0 |
 | `explain.items_scored` | 0 |
 | `explain.evidence_avg_of_2` | not available |
 | `explain.period_avg_of_2` | not available |
@@ -1036,7 +1072,7 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 | `set.case_round2` | brightwater-v6 |
 | `set.key_date` | 2026-09-13 |
 | `set.first_attempts` | 2 |
-| `set.first_attempts_completed` | 2 |
+| `set.first_attempts_completed` | 1 |
 | `set.codenames` | 2 |
 | `set.participants_confirmed` | 2 |
 | `set.reattempts` | 0 |
@@ -1172,6 +1208,9 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 | `explain.case_version` | brightwater-v6 |
 | `explain.items_with_text` | 10 |
 | `explain.fresh_calls_without_text` | 0 |
+| `explain.items_below_minimum` | 2 |
+| `explain.first_attempts_below_minimum` | 1 |
+| `explain.parts_below_minimum` | 3 |
 | `explain.items_scored` | 0 |
 | `explain.evidence_avg_of_2` | not available |
 | `explain.period_avg_of_2` | not available |
@@ -1338,6 +1377,9 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 | `explain.case_version` | brightwater-v5 |
 | `explain.items_with_text` | 0 |
 | `explain.fresh_calls_without_text` | 10 |
+| `explain.items_below_minimum` | 0 |
+| `explain.first_attempts_below_minimum` | 0 |
+| `explain.parts_below_minimum` | 0 |
 | `explain.items_scored` | 0 |
 | `explain.evidence_avg_of_2` | not available |
 | `explain.period_avg_of_2` | not available |
@@ -1501,6 +1543,9 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 | `explain.case_version` | brightwater-v2 |
 | `explain.items_with_text` | 0 |
 | `explain.fresh_calls_without_text` | 0 |
+| `explain.items_below_minimum` | 0 |
+| `explain.first_attempts_below_minimum` | 0 |
+| `explain.parts_below_minimum` | 0 |
 | `explain.items_scored` | 0 |
 | `explain.evidence_avg_of_2` | not available |
 | `explain.period_avg_of_2` | not available |

@@ -314,6 +314,7 @@ class FindingsTest(unittest.TestCase):
     # --- exclusions ------------------------------------------------------------
     def test_synthetic_and_test_rows_are_excluded_with_counts(self):
         rows = [response("Synthetic Kestrel participant", "att-s1", "kestrel-v1"),
+                # an attempt id beginning audit- is no marker on its own since 13 September
                 response("Quiet Heron", "audit-c", "kestrel-v1"),
                 response("Marked Words", "att-s3", "kestrel-v1", marker="Synthetic test only"),
                 response("Test Play", "att-t1", "halyard-v4"),
@@ -323,14 +324,20 @@ class FindingsTest(unittest.TestCase):
         rows[4][f.QA_TITLE] += " TEST ATTEMPT, exclude from reports."
         report = self.run_rows(rows)
         counts = {k: len(v) for k, v in report["excluded"].items()}
-        self.assertEqual(counts, {"synthetic_by_rule": 3, "test_codename": 1,
+        self.assertEqual(counts, {"synthetic_by_rule": 2, "test_codename": 1,
                                   "marked_test_by_page": 1, "blank_codename": 1})
-        self.assertEqual(report["n_excluded"], 6)
-        self.assertEqual(report["n_attempts_received"], 1)
+        self.assertEqual(report["n_excluded"], 5)
+        self.assertEqual(sorted(a["codename"] for a in report["attempts"]),
+                         ["Quiet Heron", "Real Player"])
         run = dict(f.readout_fields(report, "responses.csv")["run"])
-        self.assertEqual(run["run.rows_excluded.synthetic_by_rule"], 3)
+        self.assertEqual(run["run.rows_excluded.synthetic_by_rule"], 2)
         text = f.build_markdown(report, "responses.csv")
-        self.assertIn("Synthetic row, excluded by rule: 3", text)
+        self.assertIn("Synthetic row, excluded by rule: 2", text)
+        # every exclusion names its sheet row and its rule
+        self.assertIn("Test Play (sheet row 5, rule: a known test codename)", text)
+        self.assertIn("Field Check (sheet row 6, rule: the page marked it TEST ATTEMPT)", text)
+        self.assertIn("Marked Words (sheet row 4, rule: a cell or a Words line reads Synthetic "
+                      "test only)", text)
 
     def test_codename_words_that_merely_contain_test_are_kept(self):
         report = self.run_rows([response("Contest Falcon", "att-cf", "halyard-v4"),
@@ -380,9 +387,16 @@ class FindingsTest(unittest.TestCase):
         self.assertEqual(len(report["reattempts"]), 1)
         self.assertEqual(len(report["refused"]), 2)
         self.assertGreaterEqual(len(report["sets"]), 2)
+        self.assertEqual(len(report["duplicate_sends"]), 1)
+        self.assertEqual([c["attempt_id"] for c in report["conflicts"]], ["att-twinlark-01"])
+        self.assertIn("Test Pilot", [a["codename"] for a in report["attempts"]])
+        signoff = [a for a in report["attempts"] if a["codename"] == "SIGNOFF"][0]
+        self.assertFalse(signoff["completed"])
+        self.assertEqual(len(signoff["explanation_gaps"]), 3)
         out = f.build_markdown(report, sample) + f.fields_block(
             f.readout_fields(report, sample), report["missing"])
         self.assertIn("## Case set kestrel-v1 with brightwater-v5", out)
+        self.assertIn("**Unresolved: attempt att-twinlark-01**", out)
 
     def review_file(self, name):
         path = os.path.join(REVIEW3, name)
@@ -394,7 +408,8 @@ class FindingsTest(unittest.TestCase):
         path = self.review_file("kestrel-perfect.csv")
         default = f.analyze(path, cases_dir=CASES)
         self.assertEqual(default["excluded"]["synthetic_by_rule"],
-                         ["Synthetic Kestrel participant (codename says synthetic)"])
+                         ["Synthetic Kestrel participant (sheet row 2, rule: the codename "
+                          "begins with Synthetic)"])
         self.assertEqual(default["initial"], [])
         checked = f.analyze(path, cases_dir=CASES, synthetic_check=True)
         a = checked["initial"][0]
@@ -520,8 +535,12 @@ class ExplanationTest(unittest.TestCase):
         self.assertEqual(sorted(a["explanations"]), [1, 2, 3, 4, 5])
         self.assertEqual(a["explanations"][3]["period"], "the month it covers on line 3")
         self.assertEqual(a["explanations"][5]["action"], "the request that follows on line 5")
+        # every posted part is kept as written, the page's "none" for an empty box included
         self.assertEqual(a["explanations"][2], {"evidence": "the June register",
-                                                "action": "sign it"})
+                                                "period": "none", "action": "sign it"})
+        self.assertEqual([(g["line"], g["part"], g["problem"]) for g in a["explanation_gaps"]],
+                         [(2, "period", "stock"), (2, "action", "short")])
+        self.assertFalse(a["completed"])
         self.assertEqual([r[1] for r in a["r2_basis"]],
                          [["no source on file"], ["the figure and reason hold"],
                           ["wrong period"], ["no source on file"],
@@ -760,6 +779,372 @@ class PrepickTest(unittest.TestCase):
         self.assertIsNone(fields["prepick.lines_changed_rate"])
         self.assertEqual(f.fmt_field(fields["prepick.lines_changed"], "prepick.lines_changed"),
                          "not available")
+
+
+AUDIT_INPUTS = os.path.join(REPO, "audit", "independent-2026-09-13", "inputs", "findings")
+VECTORS = os.path.join(HERE, "explanation-minimum.json")
+
+
+def audit_input(test, name):
+    """One of the independent audit's own synthetic CSVs, or a skip where the folder is absent."""
+    path = os.path.join(AUDIT_INPUTS, name)
+    if not os.path.exists(path):
+        test.skipTest("audit/independent-2026-09-13 inputs not on this machine")
+    return path
+
+
+def csv_cells(path):
+    with open(path, encoding="utf-8", newline="") as handle:
+        rows = list(csv.reader(handle))
+    return rows[0], rows[1:]
+
+
+class SheetSafetyTest(unittest.TestCase):
+    """Item 1: nothing findings.py writes to a CSV runs as a formula when a spreadsheet opens it."""
+
+    LEADS = ("=", "+", "-", "@", "\t", "\r", "\n", chr(0xff1d), chr(0xff0b), chr(0xff0d),
+             chr(0xff20))
+
+    def setUp(self):
+        self.tmp = Folder()
+
+    def tearDown(self):
+        self.tmp.close()
+
+    def assert_safe(self, path, numeric):
+        heads, rows = csv_cells(path)
+        self.assertTrue(rows)
+        for row in rows:
+            for head, value in zip(heads, row):
+                if head in numeric:
+                    self.assertRegex(value, r"^(-?\d+(\.\d+)?)?$", "%s holds %r" % (head, value))
+                else:
+                    self.assertFalse(value[:1] in self.LEADS,
+                                     "%s begins with a formula lead: %r" % (head, value))
+        return heads, rows
+
+    def test_sheet_cell_neutralizes_text_and_keeps_numbers(self):
+        for lead in self.LEADS:
+            self.assertEqual(f.sheet_cell(lead + "1+1"), "'" + lead + "1+1")
+        self.assertEqual(f.sheet_cell("ok answer"), "ok answer")
+        self.assertEqual(f.sheet_cell("'already quoted"), "'already quoted")
+        # a legitimate negative number in a numeric column is left a number
+        self.assertEqual(f.sheet_cell(-3, numeric=True), "-3")
+        self.assertEqual(f.sheet_cell("-3", numeric=True), "-3")
+        self.assertEqual(f.sheet_cell("-2.5", numeric=True), "-2.5")
+        self.assertEqual(f.sheet_cell(4, numeric=True), "4")
+        # the same text in a text column is neutralized, and a formula in a numeric column too
+        self.assertEqual(f.sheet_cell("-3"), "'-3")
+        self.assertEqual(f.sheet_cell("-2+3", numeric=True), "'-2+3")
+        self.assertEqual(f.sheet_cell("=1+1", numeric=True), "'=1+1")
+        self.assertEqual(f.sheet_cell(None), "")
+
+    def test_the_audits_injection_file_writes_a_safe_sheet_and_key(self):
+        path = audit_input(self, "csv-injection-in-explanations.csv")
+        report = f.analyze(path, cases_dir=CASES)
+        sheet = os.path.join(self.tmp.path, "sheet.csv")
+        key = os.path.join(self.tmp.path, "key.csv")
+        self.assertEqual(f.write_scoring_sheet(report, sheet, key), 5)
+        heads, rows = self.assert_safe(sheet, f.SHEET_NUMERIC)
+        self.assert_safe(key, f.KEY_NUMERIC)
+        by_line = {row[heads.index("line")]: dict(zip(heads, row)) for row in rows}
+        self.assertEqual(by_line["1"]["decisive_evidence"],
+                         "'=HYPERLINK(\"http://example.invalid\",\"click\")")
+        self.assertEqual(by_line["1"]["why_it_matters_for_this_period"], "'+1+1")
+        self.assertEqual(by_line["1"]["action_or_source_request"], "'-2+3")
+        self.assertEqual(by_line["2"]["decisive_evidence"], "'@SUM(1,1)")
+        self.assertEqual(by_line["5"]["action_or_source_request"], "'-A1")
+        # the findings keep the answer as posted; only the sheet cell carries the apostrophe
+        self.assertEqual(report["initial"][0]["explanations"][1]["evidence"],
+                         "=HYPERLINK(\"http://example.invalid\",\"click\")")
+        self.assertEqual(sorted(by_line), ["1", "2", "3", "4", "5"])
+
+    def test_a_formula_codename_and_attempt_id_are_neutralized_in_the_key(self):
+        leads = ["=cmd|' /C calc'!A0", "+Heron", "-Heron", "@Heron", "\tHeron",
+                 chr(0xff1d) + "Heron"]
+        rows = [explained(code, "att-f%d" % k) for k, code in enumerate(leads)]
+        rows.append(explained("Plain Heron", "-att-minus"))
+        report = f.analyze(self.tmp.csv("responses.csv", rows), cases_dir=fixture_cases(
+            self.tmp.path))
+        self.assertEqual(report["n_attempts_received"], 7)
+        sheet, key = (os.path.join(self.tmp.path, n) for n in ("s.csv", "k.csv"))
+        f.write_scoring_sheet(report, sheet, key)
+        self.assert_safe(sheet, f.SHEET_NUMERIC)
+        heads, rows_key = self.assert_safe(key, f.KEY_NUMERIC)
+        codes = sorted(r[heads.index("codename")] for r in rows_key)
+        self.assertIn("'=cmd|' /C calc'!A0", codes)
+        self.assertIn("'" + chr(0xff1d) + "Heron", codes)
+        self.assertIn("'-att-minus", [r[heads.index("attempt_id")] for r in rows_key])
+
+    def test_a_score_handed_back_with_a_text_apostrophe_still_reads(self):
+        rows = [explained("Writer", "att-w")]
+        report = f.analyze(self.tmp.csv("responses.csv", rows), cases_dir=fixture_cases(
+            self.tmp.path))
+        sheet = os.path.join(self.tmp.path, "sheet.csv")
+        f.write_scoring_sheet(report, sheet, os.path.join(self.tmp.path, "key.csv"))
+        with open(sheet, encoding="utf-8", newline="") as handle:
+            blank = list(csv.DictReader(handle))
+        filled = [dict(r, score_evidence="'2", score_period="1", score_action="'0") for r in blank]
+        scores = f.read_score_sheet(self.tmp.csv("filled.csv", filled))
+        self.assertEqual({v["scores"]["evidence"] for v in scores.values()}, {2})
+
+
+def page_minimum(texts):
+    """explainProblem() from index.html, run by node on each text, or None without node."""
+    node = shutil.which("node")
+    if not node:
+        return None
+    import subprocess
+    script = os.path.join(HERE, "explain-minimum.cjs")
+    blob = subprocess.run([node, script, os.path.join(REPO, "index.html")],
+                          input=json.dumps(texts).encode("utf-8"), stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE, check=True).stdout
+    return json.loads(blob.decode("utf-8"))
+
+
+class MinimumRuleTest(unittest.TestCase):
+    """Item 2: one minimum for the three written parts, the same in index.html and findings.py."""
+
+    def setUp(self):
+        self.tmp = Folder()
+        with open(VECTORS, encoding="utf-8") as handle:
+            self.vectors = json.load(handle)
+
+    def tearDown(self):
+        self.tmp.close()
+
+    def test_findings_applies_the_rule_to_every_shared_case(self):
+        self.assertGreaterEqual(len(self.vectors), 30)
+        for v in self.vectors:
+            self.assertEqual(f.explanation_problem(v["text"]), v["problem"],
+                             "%r (%s)" % (v["text"], v["why"]))
+
+    def test_the_page_applies_the_same_rule_word_for_word(self):
+        texts = [v["text"] for v in self.vectors]
+        extra = ["The 31 May schedule stops before June.", "  ", "tbd", "Ask the controller",
+                 chr(0x3000) + "none" + chr(0x3000), "Invoice #20614 on file", "x y z w",
+                 "don" + chr(0x02bc) + "t know", "ok ok ok ok", "Payroll register"]
+        got = page_minimum(texts + extra)
+        if got is None:
+            self.skipTest("node is not on this machine")
+        self.assertEqual(got[:len(texts)], [v["problem"] for v in self.vectors])
+        self.assertEqual(got[len(texts):], [f.explanation_problem(t) for t in extra])
+
+    def test_the_audits_non_answers_now_count_as_incomplete_and_stay_visible(self):
+        cases = fixture_cases(self.tmp.path)
+        texts = {1: {"evidence": "a b", "period": "...", "action": "none"},
+                 2: {"evidence": "none", "period": "None.", "action": "n/a"}}
+        report = f.analyze(self.tmp.csv("r.csv", [explained("Short Answers", "att-s",
+                                                            texts=texts)]), cases_dir=cases)
+        a = report["initial"][0]
+        self.assertFalse(a["completed"])
+        self.assertEqual(report["n_attempts_completed"], 0)
+        self.assertEqual([(g["line"], g["part"], g["text"], g["problem"])
+                          for g in a["explanation_gaps"]],
+                         [(1, "evidence", "a b", "short"), (1, "period", "...", "no words"),
+                          (1, "action", "none", "stock"), (2, "evidence", "none", "stock"),
+                          (2, "period", "None.", "stock"), (2, "action", "n/a", "stock")])
+        # both lines carry text, so both reach the sheet with the parts named
+        items = {i["line"]: i for i in report["explanation_items"]}
+        self.assertEqual(sorted(items), [1, 2, 3, 4, 5])
+        self.assertEqual(items[2]["parts"], {"evidence": "none", "period": "None.", "action": "n/a"})
+        sheet = os.path.join(self.tmp.path, "sheet.csv")
+        f.write_scoring_sheet(report, sheet, os.path.join(self.tmp.path, "key.csv"))
+        with open(sheet, encoding="utf-8", newline="") as handle:
+            rows = {r["line"]: r for r in csv.DictReader(handle)}
+        self.assertEqual(rows["1"]["below_minimum"],
+                         "decisive evidence: under two words and eight letters or digits; why it "
+                         "matters for this period: punctuation or symbols only; action or source "
+                         "request: a stock non-answer")
+        self.assertEqual(rows["2"]["why_it_matters_for_this_period"], "None.")
+        self.assertEqual(rows["3"]["below_minimum"], "")
+        e = report["sets"][0]["explain"]
+        self.assertEqual((e["first_attempts_with_gaps"], e["parts_below_minimum"],
+                          e["below_minimum_items"]), (1, 6, 2))
+        text = f.build_markdown(report, "r.csv")
+        self.assertIn("**Written answers below the minimum.**", text)
+        self.assertIn('| Short Answers | att-s | 1 | Why it matters for this period | "..." | '
+                      'punctuation or symbols only |', text)
+        fields = dict(f.readout_fields(report, "r.csv")["sets"][0][1])
+        self.assertEqual(fields["explain.first_attempts_below_minimum"], 1)
+        self.assertEqual(fields["explain.parts_below_minimum"], 6)
+
+    def test_the_audits_v6_records_missing_explanations_are_incomplete(self):
+        missing = f.analyze(audit_input(self, "v6-missing-explanation.csv"), cases_dir=CASES)
+        a = missing["initial"][0]
+        self.assertFalse(a["completed"])
+        self.assertEqual([(g["line"], g["part"]) for g in a["explanation_gaps"]],
+                         [(3, "evidence"), (3, "period"), (3, "action")])
+        none = f.analyze(audit_input(self, "v6-no-explanations-at-all.csv"), cases_dir=CASES)
+        b = none["initial"][0]
+        self.assertFalse(b["completed"])
+        self.assertEqual(len(b["explanation_gaps"]), 15)
+        self.assertEqual({g["problem"] for g in b["explanation_gaps"]}, {"not posted"})
+        self.assertIn("which asks for one on every call", f.build_markdown(none, "x.csv"))
+        # a brightwater-v5 record was never asked, so it completes without any
+        old = f.analyze(audit_input(self, "v5-record-carrying-explanations.csv"), cases_dir=CASES)
+        self.assertTrue(old["initial"][0]["completed"])
+        self.assertEqual(old["initial"][0]["explanation_gaps"], [])
+        # and a complete v6 record completes
+        good = f.analyze(audit_input(self, "version-mixing.csv"), cases_dir=CASES)
+        six = [x for x in good["initial"] if x["set"].endswith("brightwater-v6")][0]
+        self.assertTrue(six["completed"])
+
+
+class ConflictTest(unittest.TestCase):
+    """Item 3: one attempt identifier on rows that differ is a conflict, never a resend."""
+
+    def setUp(self):
+        self.tmp = Folder()
+
+    def tearDown(self):
+        self.tmp.close()
+
+    def run_rows(self, rows, **kw):
+        kw.setdefault("cases_dir", CASES)
+        return f.analyze(self.tmp.csv("responses.csv", rows), **kw)
+
+    def test_the_audits_reused_id_with_different_content_is_held_out(self):
+        path = audit_input(self, "duplicate-attempt-id-different-content.csv")
+        report = f.analyze(path, cases_dir=CASES)
+        self.assertEqual(report["duplicate_sends"], [])
+        self.assertEqual(len(report["conflicts"]), 1)
+        c = report["conflicts"][0]
+        self.assertEqual(c["attempt_id"], "dup-1")
+        self.assertEqual([r["sheet_row"] for r in c["records"]], [2, 3])
+        self.assertEqual([r["score"] for r in c["records"]], [13, 14])
+        columns = [d["column"] for d in c["differences"]]
+        self.assertIn("Call C1", columns)
+        self.assertIn("Question C (round two string)", columns)
+        self.assertNotIn("Timestamp", columns)
+        # held out of every count and rate until resolved
+        self.assertEqual((report["n_attempts_received"], len(report["initial"]), report["sets"]),
+                         (0, 0, []))
+        run = dict(f.readout_fields(report, "x.csv")["run"])
+        self.assertEqual((run["run.attempt_conflicts_unresolved"],
+                          run["run.attempt_conflict_rows_held_out"]), (1, 2))
+        text = f.build_markdown(report, "x.csv")
+        self.assertIn("**Unresolved: attempt dup-1**", text)
+        self.assertIn("| 2 | Twin Lark | 2026/09/15 9:40:00 |", text)
+        self.assertIn("| 3 | Twin Lark | 2026/09/15 9:02:11 |", text)
+        # the facilitator keeps one row, and it is scored
+        kept = f.analyze(path, cases_dir=CASES, resolutions={"dup-1": 3})
+        self.assertEqual(kept["conflicts"], [])
+        self.assertEqual(kept["conflicts_resolved"][0]["kept_row"], 3)
+        self.assertEqual(kept["initial"][0]["score"], 14)
+        self.assertIn("**Resolved by the facilitator: attempt dup-1**, sheet row 3 kept",
+                      f.build_markdown(kept, "x.csv"))
+
+    def test_identical_rows_are_one_attempt_sent_twice_at_the_earliest_time(self):
+        first = response("Retry Sender", "att-r", "halyard-v4", ts="2026-09-15 10:05:00")
+        again = dict(first, **{f.TIMESTAMP_TITLE: "2026-09-15 10:00:00"})
+        report = self.run_rows([first, again])
+        self.assertEqual(report["conflicts"], [])
+        self.assertEqual(report["n_attempts_received"], 1)
+        self.assertEqual(report["initial"][0]["timestamp"], "2026-09-15 10:00:00")
+        self.assertEqual(report["duplicate_sends"],
+                         ["Retry Sender (attempt att-r sent again: sheet row 2 repeats sheet row 3)"])
+
+    def test_three_rows_two_alike_and_one_different_is_a_conflict_of_all_three(self):
+        one = response("Triple", "att-3", "halyard-v4")
+        two = dict(one)
+        three = response("Triple", "att-3", "halyard-v4", calls=keyed_calls("halyard-v4", (0,)))
+        report = self.run_rows([one, two, three])
+        self.assertEqual(len(report["conflicts"]), 1)
+        self.assertEqual(len(report["conflicts"][0]["records"]), 3)
+        self.assertEqual(report["n_attempts_received"], 0)
+
+    def test_a_later_attempt_is_not_promoted_over_an_unresolved_conflict(self):
+        a = response("Same Name", "att-c", "halyard-v4", ts="2026-09-15 09:00:00")
+        b = response("Same Name", "att-c", "halyard-v4", ts="2026-09-15 09:01:00",
+                     calls=keyed_calls("halyard-v4", (2,)))
+        later = response("SAME NAME", "att-d", "halyard-v4", ts="2026-09-15 11:00:00")
+        report = self.run_rows([a, b, later])
+        self.assertEqual(report["initial"], [])
+        self.assertEqual(report["reattempts"][0]["attempt_number"], 2)
+        self.assertEqual(report["reattempts"][0]["after_conflict"], ["att-c"])
+        self.assertIn("after attempt att-c", f.build_markdown(report, "x.csv"))
+
+    def test_a_resolution_that_names_the_wrong_row_or_no_conflict_is_refused(self):
+        a = response("Same Name", "att-c", "halyard-v4")
+        b = response("Same Name", "att-c", "halyard-v4", calls=keyed_calls("halyard-v4", (2,)))
+        with self.assertRaises(f.InputError):
+            self.run_rows([a, b], resolutions={"att-c": 9})
+        with self.assertRaises(f.InputError):
+            self.run_rows([a, b], resolutions={"att-zz": 2})
+        self.assertEqual(f.main([self.tmp.csv("r.csv", [a, b]), "--cases", CASES,
+                                 "--out", os.path.join(self.tmp.path, "o.md"),
+                                 "--resolve-conflict", "att-c"]), 2)
+
+
+class CodenameAndExclusionTest(unittest.TestCase):
+    """Items 5 and 6: codenames folded before counting, and exclusions that only a marker earns."""
+
+    def setUp(self):
+        self.tmp = Folder()
+
+    def tearDown(self):
+        self.tmp.close()
+
+    def run_rows(self, rows, **kw):
+        kw.setdefault("cases_dir", CASES)
+        return f.analyze(self.tmp.csv("responses.csv", rows), **kw)
+
+    def test_composed_and_decomposed_zoe_are_one_codename_spelled_as_typed(self):
+        path = audit_input(self, "non-ascii-codenames.csv")
+        report = f.analyze(path, cases_dir=CASES)
+        self.assertEqual(report["n_excluded"], 0)
+        self.assertEqual(report["n_attempts_received"], 6)
+        self.assertEqual(report["n_codenames"], 5)
+        zoe = [a for a in report["attempts"] if f.codename_key(a["codename"]) == "zo" + chr(0xeb)]
+        self.assertEqual([a["codename"] for a in zoe], ["Zo" + chr(0xeb), "Zoe" + chr(0x308)])
+        self.assertEqual(sorted(a["attempt_number"] for a in zoe), [1, 2])
+        self.assertEqual(report["reattempts"][0]["codename"], "Zoe" + chr(0x308))
+
+    def test_case_folding_joins_codenames_and_the_roster(self):
+        rows = [response("Stra" + chr(0xdf) + "e", "att-1", "halyard-v4", ts="2026-09-15 09:00:00"),
+                response("STRASSE", "att-2", "halyard-v4", ts="2026-09-15 10:00:00")]
+        roster = self.tmp.csv("roster.csv", [{"participant": "P1", "codename": "strasse",
+                                              "consent": "yes"}])
+        report = self.run_rows(rows, roster_path=roster)
+        self.assertEqual(report["n_codenames"], 1)
+        self.assertEqual(report["n_participants_confirmed"], 1)
+
+    def test_real_codenames_that_contain_test_or_mention_synthetic_stay_in(self):
+        rows = [response("Test Pilot", "att-1", "halyard-v4"),
+                response("Contest Winner", "att-2", "halyard-v4"),
+                response("Taste Tester", "att-3", "halyard-v4"),
+                response("Blue Jay", "audit-7f3k", "halyard-v4"),
+                response("Green Heron", "att-5", "halyard-v4",
+                         marker="The memo reads like a synthetic test only")]
+        report = self.run_rows(rows)
+        self.assertEqual(report["n_excluded"], 0)
+        self.assertEqual(report["n_attempts_received"], 5)
+        for name in ("participant-text-says-synthetic.csv", "attempt-id-starting-audit.csv"):
+            got = f.analyze(audit_input(self, name), cases_dir=CASES)
+            self.assertEqual((got["n_excluded"], got["n_attempts_received"]), (0, 1), name)
+
+    def test_test_words_and_markers_still_exclude_and_say_which_rule(self):
+        rows = [response("Test Play", "att-1", "halyard-v4"),
+                response(chr(0xff34) + chr(0xff45) + chr(0xff53) + chr(0xff54) + " Play", "att-2",
+                         "halyard-v4"),
+                response("walk test 2", "att-3", "halyard-v4"),
+                response("rebuild-test-delete", "att-4", "halyard-v4"),
+                response("DELETE ME", "att-5", "halyard-v4"),
+                response("Synthetic Heron", "att-6", "halyard-v4"),
+                response("Words Marker", "att-7", "halyard-v4", marker="Synthetic test only")]
+        report = self.run_rows(rows)
+        self.assertEqual(report["n_attempts_received"], 0)
+        self.assertEqual(report["excluded"]["test_codename"], [
+            "Test Play (sheet row 2, rule: a known test codename)",
+            chr(0xff34) + chr(0xff45) + chr(0xff53) + chr(0xff54) +
+            " Play (sheet row 3, rule: a known test codename)",
+            "walk test 2 (sheet row 4, rule: a codename made only of test words)",
+            "rebuild-test-delete (sheet row 5, rule: a known test codename)",
+            "DELETE ME (sheet row 6, rule: a codename made only of test words)"])
+        self.assertEqual(report["excluded"]["synthetic_by_rule"], [
+            "Synthetic Heron (sheet row 7, rule: the codename begins with Synthetic)",
+            "Words Marker (sheet row 8, rule: a cell or a Words line reads Synthetic test only)"])
 
 
 if __name__ == "__main__":

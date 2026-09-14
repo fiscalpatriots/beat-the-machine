@@ -13,6 +13,7 @@ Usage, from the repository root:
     python tools/findings.py responses.csv --scoring-sheet scoring-sheet.csv
     python tools/findings.py responses.csv --scores first.csv --second-scores second.csv
     python tools/findings.py probe.csv --synthetic-check
+    python tools/findings.py responses.csv --resolve-conflict att-k3x=14
 
 Columns are matched by the form's question titles, never by position. Any title the
 script cannot find is printed under "Columns not found" and the measure that needed it
@@ -37,19 +38,33 @@ Attempts and people
 A row is one transmission. The counts are kept apart, and each is defined where it prints:
 received attempts, completed attempts, distinct codenames and facilitator-confirmed
 participants. A codename is a pseudonym a player typed, so a count of codenames is not a
-count of people; only a consented roster the facilitator supplies can confirm people. The
+count of people; only a consented roster the facilitator supplies can confirm people. Two
+codenames count as one when they match after Unicode NFC normalization and case folding, so
+"Zoë" typed composed and decomposed is one codename; the spelling as typed is what prints. The
 first eligible attempt per codename (eligible means received, not excluded, and on a case
 set this script can score) enters the first-attempt tables; every later attempt by that
 codename goes to the reattempt table and enters no first-attempt rate.
 
+A retry of one run posts the same attempt identifier with the same content, so rows that
+share an identifier and match in every cell but the timestamp are one attempt sent twice, kept
+once at the earliest timestamp. Rows that share an identifier and differ anywhere else are a
+conflict: every record is printed with the columns where they differ, none of them enters a
+count or a rate, and a later attempt under the same codename does not become a first attempt
+over it. --resolve-conflict ID=ROW keeps the named sheet row (the header is row 1) once the
+facilitator has read them.
+
 Rows excluded from participant evidence
 ---------------------------------------
 Test codenames, rows the page itself marked as a test attempt, blank codenames and
-synthetic rows are excluded by rule and counted by reason. The synthetic rule matches the
-word "synthetic" in a codename, the marker "Synthetic test only" in any cell, and an attempt
-identifier beginning "audit-" (the identifiers of the third independent review's synthetic
-records; the page writes "att-"). --synthetic-check scores those synthetic rows instead, for
-reproducing a review probe, and stamps every output as not participant evidence.
+synthetic rows are excluded by rule, counted by reason, and listed with the sheet row and the
+rule that excluded each one. A test codename is on the list of known test codenames, or is
+made only of test words with "test" or "delete" among them, so "Test Pilot" stays in. A
+synthetic row has a codename that begins with "Synthetic", or a cell or a basis Words line that
+reads exactly "Synthetic test only", which is how the third independent review marked its
+records. Participant text that merely mentions a synthetic test, and an attempt identifier on
+its own, exclude nothing. Codenames are matched after NFKC normalization and case folding.
+--synthetic-check scores those synthetic rows instead, for reproducing a review probe, and
+stamps every output as not participant evidence.
 
 Reason chip agreement
 ---------------------
@@ -62,13 +77,24 @@ chips earn agreement without stating why, and the limitation prints beside the r
 Written explanations (from brightwater-v6)
 -----------------------------------------
 Every fresh case call on brightwater-v6 carries a three-part written explanation. The script
-never scores one. --scoring-sheet writes a sheet an independent educator fills against
-RUBRIC.md, blind to the machine: no codename, key, call result or chips, which ride in a
-separate facilitator key joined on response_id, with the second scorer's rows drawn by hash.
---scores and --second-scores read the filled sheets back, and the findings report the
-educator's scores and the two scorers' agreement apart from reason chip agreement. The
-explanation is read from the Evidence, Period and Action segments question C carries on each
-line, named in one block, EXPLANATION_PARTS.
+never scores one, and no educator has scored one yet. --scoring-sheet writes a sheet for an
+independent educator to fill against RUBRIC.md, blind to the machine: no codename, key, call
+result or chips, which ride in a separate facilitator key joined on response_id, with the
+second scorer's rows drawn by hash. --scores and --second-scores read the filled sheets back,
+and the findings then report the educator's scores and the two scorers' agreement apart from
+reason chip agreement. The explanation is read from the Evidence, Period and Action segments
+question C carries on each line, named in one block, EXPLANATION_PARTS.
+
+Each part is held to the minimum the page applies before a call locks: at least two words and
+eight letters or digits, and not a stock non-answer such as none, n/a or same as above
+(explanation_problem(), the same rule as explainProblem() in index.html). A record on a fresh
+case that asks for explanations is complete only when all three parts meet it on every line.
+A part that falls short is never dropped: it stays on the scoring sheet as posted, named in
+the below_minimum column, and the findings list it with its codename, line and reason.
+
+Both CSV files are written safe to open in a spreadsheet: a text cell that begins with =, +,
+-, @, a tab or a line break, or a full-width form of those signs, is prefixed with an
+apostrophe, and the numeric columns keep their numbers.
 
 The read before the draft
 -------------------------
@@ -118,6 +144,7 @@ import os
 import re
 import statistics
 import sys
+import unicodedata
 
 # ---------------------------------------------------------------- the form
 # The full question titles as the form builds them. The CSV header is the title. The call
@@ -194,18 +221,76 @@ EXPLANATION_PARTS = [
 ]
 EXPLANATION_EMPTY = "none"
 EXPLANATION_LABELS = "|".join(re.escape(part[1]) for part in EXPLANATION_PARTS)
+# The fresh case versions filed before the page asked for a written explanation. Every other
+# fresh case run as an assessment asks, so its records need all three parts on every line.
+EXPLANATION_NOT_ASKED = frozenset(["brightwater-v2", "brightwater-v3", "brightwater-v4",
+                                   "brightwater-v5"])
+
+# ---------------------------------------------------------------- the minimum answer
+# The rule the page applies before Lock it in, explainProblem() in index.html between the
+# explain-minimum markers, written the same way here so a record the page could not have locked
+# is still caught. tools/tests/explanation-minimum.json holds the cases both are tested on, and
+# the parity test runs the page's own function on them. Change the two together.
+#
+# A part is answered when its text, cleaned the way the page posts it, holds at least two words
+# and at least eight letters or digits between them, and is not a stock non-answer. A word is a
+# run of letters or digits after NFKC normalization and lowercasing, with apostrophes dropped; a
+# character from a script written without spaces (Chinese, Japanese kana, Thai, Lao, Khmer,
+# Myanmar) counts as a word by itself. A stock non-answer is a phrase on the list below, or a text
+# whose every word is on the word list ("none", "n/a", "test test", "same as above").
+EXPLAIN_RULE = ("at least two words and eight letters or digits, and not a stock non-answer "
+                "such as none, n/a or same as above")
+EXPLAIN_MIN_WORDS = 2
+EXPLAIN_MIN_CHARS = 8
+EXPLAIN_STOCK_WORDS = frozenset("""
+    none nothing nil null na nan no nope nah yes yep ok okay idk dunno unknown unsure same ditto
+    tbd tba todo pass skip skipped test testing asdf asdfg qwerty x xx xxx blah etc whatever
+""".split())
+EXPLAIN_STOCK_PHRASES = frozenset([
+    "n a", "not applicable", "not relevant", "no answer", "no comment", "no idea", "not sure",
+    "i dont know", "i do not know", "dont know", "do not know", "im not sure", "i am not sure",
+    "same as above", "same as before", "same as previous", "see above", "as above",
+    "see previous", "see before", "nothing to add", "nothing else", "does not apply",
+    "doesnt apply", "no reason", "just because", "i guess", "to do", "to be done",
+    "to be determined", "fill in later",
+])
+# JavaScript's \s, spelled out, so the cleaning matches explainClean() character for character
+EXPLAIN_SPACE_RE = re.compile("[\t\n\v\f\r \u00a0\u1680\u2000-\u200a\u2028\u2029\u202f"
+                              "\u205f\u3000\ufeff]+")
+EXPLAIN_NO_SPACE_RANGES = ((0x0E00, 0x0EFF), (0x1000, 0x109F), (0x1780, 0x17FF),
+                           (0x3040, 0x30FF), (0x3400, 0x4DBF), (0x4E00, 0x9FFF),
+                           (0xF900, 0xFAFF), (0x20000, 0x3134F))
+EXPLAIN_APOSTROPHES = "'\u2018\u2019\u02bc"
+# what each problem is called in the findings and on the scoring sheet
+EXPLAIN_PROBLEM_LABEL = {
+    "not posted": "not posted",
+    "empty": "empty",
+    "no words": "punctuation or symbols only",
+    "stock": "a stock non-answer",
+    "short": "under two words and eight letters or digits",
+}
 
 # ---------------------------------------------------------------- exclusion rules
+# Each rule is narrow on purpose: a codename a real player might type ("Test Pilot", "Contest
+# Winner") stays in. Codenames are compared after NFKC normalization and case folding, so a
+# full-width spelling is read the same way as the plain one.
 TEST_CODENAMES = {
     "test-agent-delete", "probe-two", "audit-test-delete",
     "rebuild-test-delete", "pages-check-delete", "test play",
     "test harness", "placeholder-check-delete",
 }
-TEST_WORD_RE = re.compile(r"(?:^|[^a-z0-9])(?:test|delete)(?:$|[^a-z0-9])", re.I)
+# a codename made only of these words, with at least one marker, is a test codename
+TEST_MARKER_WORDS = frozenset(["test", "testing", "delete"])
+TEST_FILLER_WORDS = frozenset("""
+    agent attempt audit check demo dummy facilitator fake harness me only pages placeholder play
+    please probe qa rebuild row run sample temp tmp trial walk walkthrough
+""".split())
 TEST_ROW_RE = re.compile(r"test attempt,\s*exclude from reports", re.I)
-SYNTHETIC_CODENAME_RE = re.compile(r"(?:^|[^a-z0-9])synthetic(?:$|[^a-z0-9])", re.I)
-SYNTHETIC_MARK_RE = re.compile(r"synthetic\s+test\s+only", re.I)
-SYNTHETIC_ATTEMPT_RE = re.compile(r"^audit-", re.I)
+# the codename opens with the word synthetic, as the third review's records do
+SYNTHETIC_CODENAME_RE = re.compile(r"^\s*synthetic(?:$|[^\w])", re.I)
+# the marker "Synthetic test only" as the whole of a cell, or as the whole Words line of a basis
+SYNTHETIC_CELL_RE = re.compile(r"^\s*synthetic\s+test\s+only\.?\s*$", re.I)
+SYNTHETIC_WORDS_RE = re.compile(r"\|\s*words\s*:\s*synthetic\s+test\s+only\.?\s*(?:\|\||$)", re.I)
 
 EXCLUSION_LABELS = [
     ("test_codename", "Test codename"),
@@ -275,6 +360,98 @@ def norm(text):
                          (" ", " ")):
         text = text.replace(curly, plain)
     return re.sub(r"\s+", " ", text).strip().lower()
+
+
+def codename_key(code):
+    """The key two codenames are counted as one under: NFC, the norm() tidy, then case folding.
+
+    "Zoë" typed as one composed letter and as an e with a combining diaeresis is one codename,
+    and so are "Heron" and "HERON". The codename as typed is kept for display."""
+    return norm(unicodedata.normalize("NFC", code or "")).casefold()
+
+
+def exclusion_key(code):
+    """A codename as the exclusion rules read it: NFKC, so a full-width spelling reads as plain."""
+    return norm(unicodedata.normalize("NFKC", code or "")).casefold()
+
+
+# ---------------------------------------------------------------- the minimum answer
+def explain_clean(text):
+    """explainClean() in index.html: no bars or line breaks, whitespace collapsed and trimmed."""
+    text = re.sub(r"[\r\n|]+", " ", "" if text is None else str(text))
+    return EXPLAIN_SPACE_RE.sub(" ", text).strip(" ")
+
+
+def explanation_words(text):
+    """The words the minimum counts, as explainWords() in index.html finds them."""
+    s = unicodedata.normalize("NFKC", explain_clean(text)).lower()
+    for mark in EXPLAIN_APOSTROPHES:
+        s = s.replace(mark, "")
+    words, cur = [], []
+    for ch in s:
+        if unicodedata.category(ch)[0] in ("L", "N"):
+            cp = ord(ch)
+            if any(lo <= cp <= hi for lo, hi in EXPLAIN_NO_SPACE_RANGES):
+                if cur:
+                    words.append("".join(cur))
+                    cur = []
+                words.append(ch)
+            else:
+                cur.append(ch)
+        elif cur:
+            words.append("".join(cur))
+            cur = []
+    if cur:
+        words.append("".join(cur))
+    return words
+
+
+def explanation_problem(text):
+    """None when one written part meets the minimum, else "empty", "no words", "stock" or "short"."""
+    if not explain_clean(text):
+        return "empty"
+    words = explanation_words(text)
+    if not words:
+        return "no words"
+    if " ".join(words) in EXPLAIN_STOCK_PHRASES or all(w in EXPLAIN_STOCK_WORDS for w in words):
+        return "stock"
+    if len(words) < EXPLAIN_MIN_WORDS or sum(len(w) for w in words) < EXPLAIN_MIN_CHARS:
+        return "short"
+    return None
+
+
+def explanation_blank(text):
+    """True for a part with nothing written: not posted, empty, or the page's "none" for empty."""
+    clean = explain_clean(text)
+    return not clean or re.match(r"^none\.?$", clean, re.I) is not None
+
+
+# ---------------------------------------------------------------- spreadsheet safety
+# A cell a spreadsheet would read as a formula: OWASP's list (=, +, -, @, tab, carriage return),
+# the line feed, and the full-width and small-form spellings of the four signs, which some
+# spreadsheet programs fold to the plain ones.
+FORMULA_LEADS = "=+-@\t\r\n\uff1d\uff0b\uff0d\uff20\ufe66\ufe62\ufe63\ufe6b"
+NUMBER_RE = re.compile(r"^[+-]?\d+(?:\.\d+)?$")
+
+
+def sheet_cell(value, numeric=False):
+    """A value made safe to open in a spreadsheet.
+
+    A text cell that begins with a formula lead gets a leading apostrophe, which spreadsheet
+    programs read as "this is text" and do not display. A numeric column keeps a real number as
+    it is, a negative one included, and neutralizes anything else written into it."""
+    if value is None:
+        return ""
+    if isinstance(value, bool):
+        value = "yes" if value else "no"
+    if numeric and isinstance(value, (int, float)):
+        return str(value)
+    text = str(value)
+    if numeric and NUMBER_RE.match(text):
+        return text
+    if text and text[0] in FORMULA_LEADS:
+        return "'" + text
+    return text
 
 
 class Columns(object):
@@ -623,7 +800,10 @@ def parse_r2_basis(text, case2):
 
 
 def parse_explanations(qc_text, lines):
-    """{line: {part: text}} from the Round2 basis in question C. "none" counts as no answer."""
+    """{line: {part: text as posted}} from the Round2 basis in question C.
+
+    Every segment the page posted is kept as written, "none" and a non-answer included, so a part
+    that falls short stays visible. explanation_gaps() says which parts fall short and why."""
     match = R2_BASIS_RE.search(qc_text or "")
     if not match:
         return {}
@@ -636,12 +816,42 @@ def parse_explanations(qc_text, lines):
         body = re.split(r"\s*\|\s*reason\s*:", num.group(2), 1, flags=re.I)[0]
         for seg in EXPLANATION_SEGMENT_RE.finditer(body):
             key = next(p[0] for p in EXPLANATION_PARTS if norm(p[1]) == norm(seg.group(1)))
-            text = seg.group(2).strip().rstrip(".").strip()
-            if text and norm(text) != EXPLANATION_EMPTY:
-                parts[key] = text
+            parts[key] = seg.group(2).strip()
         if parts:
             out[int(num.group(1))] = parts
     return out
+
+
+def explanation_required(case2):
+    """True when the fresh case asks every call for the three written parts."""
+    return bool(case2) and case2.get("mode") == "assessment" and \
+        case2["version"] not in EXPLANATION_NOT_ASKED
+
+
+def part_problems(parts):
+    """[(part key, problem)] for one fresh line's posted parts, in EXPLANATION_PARTS order."""
+    out = []
+    for key, _label, _record, _criterion in EXPLANATION_PARTS:
+        if key not in (parts or {}):
+            out.append((key, "not posted"))
+            continue
+        problem = explanation_problem(parts[key])
+        if problem:
+            out.append((key, problem))
+    return out
+
+
+def explanation_gaps(a):
+    """Every required part, on every fresh line, that falls below the minimum, in line order."""
+    case2 = a["case2"]
+    if not explanation_required(case2):
+        return []
+    gaps = []
+    for n in range(1, len(case2["cards"]) + 1):
+        parts = a["explanations"].get(n) or {}
+        for key, problem in part_problems(parts):
+            gaps.append({"line": n, "part": key, "text": parts.get(key), "problem": problem})
+    return gaps
 
 
 def parse_cases(text):
@@ -854,11 +1064,11 @@ def confirm_roster(roster, attempts):
     consented = [r for r in roster if r["consent"] and r["codename"]]
     claims = {}
     for r in consented:
-        claims.setdefault(norm(r["codename"]), set()).add(r["participant"])
+        claims.setdefault(codename_key(r["codename"]), set()).add(r["participant"])
     conflicts = sorted(code for code, who in claims.items() if len(who) > 1)
     confirmed, roles = {}, {}
     for r in consented:
-        code = norm(r["codename"])
+        code = codename_key(r["codename"])
         if code in conflicts or code not in received_codes:
             continue
         confirmed.setdefault(r["participant"], set()).add(code)
@@ -885,24 +1095,46 @@ def confirm_roster(roster, attempts):
 
 
 # ---------------------------------------------------------------- one attempt
-def exclusion_of(code, qa, qb, row, synthetic_check):
-    """(reason key, detail) when a row is excluded from participant evidence, else None."""
+def test_codename_rule(code):
+    """The rule that makes a codename a test codename, in words, or None."""
+    key = exclusion_key(code)
+    if key in TEST_CODENAMES:
+        return "a known test codename"
+    words = [w for w in re.split(r"[^\w]+|_", key) if w]
+    if words and any(w in TEST_MARKER_WORDS for w in words) and \
+            all(w in TEST_MARKER_WORDS or w in TEST_FILLER_WORDS or w.isdigit() for w in words):
+        return "a codename made only of test words"
+    return None
+
+
+def synthetic_rule(code, row):
+    """The synthetic marker a row carries, in words, or None. The attempt id alone is no marker."""
+    if SYNTHETIC_CODENAME_RE.search(unicodedata.normalize("NFKC", code or "")):
+        return "the codename begins with Synthetic"
+    for value in row.values():
+        text = unicodedata.normalize("NFKC", value or "")
+        if SYNTHETIC_CELL_RE.search(text) or SYNTHETIC_WORDS_RE.search(text):
+            return "a cell or a Words line reads Synthetic test only"
+    return None
+
+
+def exclusion_of(code, qa, qb, row, synthetic_check, sheet_row=None):
+    """(reason key, detail) when a row is excluded from participant evidence, else None.
+
+    The detail names the codename as typed, the sheet row and the rule that excluded it."""
+    def detail(text, rule):
+        where = ("sheet row %d, " % sheet_row) if sheet_row else ""
+        return "%s (%srule: %s)" % (text, where, rule)
     if not code:
-        return "blank_codename", "(blank codename)"
-    if norm(code) in TEST_CODENAMES or TEST_WORD_RE.search(code):
-        return "test_codename", code
+        return "blank_codename", detail("(blank codename)", "no codename")
+    rule = test_codename_rule(code)
+    if rule:
+        return "test_codename", detail(code, rule)
     if TEST_ROW_RE.search(qa):
-        return "marked_test_by_page", code
-    attempt, _ = parse_attempt(qb)
-    why = None
-    if SYNTHETIC_CODENAME_RE.search(code):
-        why = "codename says synthetic"
-    elif attempt and SYNTHETIC_ATTEMPT_RE.search(attempt):
-        why = "attempt id %s is a review probe identifier" % attempt
-    elif any(SYNTHETIC_MARK_RE.search(v or "") for v in row.values()):
-        why = "a cell carries the marker Synthetic test only"
-    if why and not synthetic_check:
-        return "synthetic_by_rule", "%s (%s)" % (code, why)
+        return "marked_test_by_page", detail(code, "the page marked it TEST ATTEMPT")
+    rule = synthetic_rule(code, row)
+    if rule and not synthetic_check:
+        return "synthetic_by_rule", detail(code, rule)
     return None
 
 
@@ -1018,7 +1250,8 @@ def score_fresh(a, qc, other_text, case2):
 
 
 def completion_of(a, row, cols):
-    """True when every practice line and every named fresh line carries a call."""
+    """True when every practice line and every named fresh line carries a call, and, on a fresh
+    case that asks for written explanations, every part on every fresh line meets the minimum."""
     case1, case2 = a["case1"], a["case2"]
     if case1:
         practice_ok = len(a["answered"]) == len(case1["cards"])
@@ -1038,7 +1271,9 @@ def completion_of(a, row, cols):
     if not two:
         return True
     if case2:
-        return bool(a["fresh"]) and a["fresh"]["seen"] == len(case2["cards"])
+        if not (a["fresh"] and a["fresh"]["seen"] == len(case2["cards"])):
+            return False
+        return not a["explanation_gaps"]
     r2 = parse_round2([cell(row, cols["qc"])])
     lines = a["cases"]["two_lines"]
     return bool(r2 and lines and len(r2["calls"]) == lines)
@@ -1054,7 +1289,8 @@ def read_attempt(index, row, cols, library):
     streak_m = STREAK_RE.search(qb)
     cases = parse_cases(qa)
     a = {
-        "row_index": index, "codename": code, "code_key": norm(code),
+        "row_index": index, "sheet_row": index + 1, "codename": code,
+        "code_key": codename_key(code),
         "timestamp": cell(row, cols["ts"]), "ts_value": parse_timestamp(cell(row, cols["ts"])),
         "attempt_id": attempt_id, "run_index": run_index,
         "product": product_m.group(1).strip() if product_m else None,
@@ -1072,7 +1308,8 @@ def read_attempt(index, row, cols, library):
         "case1": None, "case2": None, "set": None,
         "calls": [], "posted": [], "whys": [], "reasons": [], "answered": [], "score": 0,
         "reason_right": 0, "reason_scored": 0, "flags": 0, "coverage": 0,
-        "fresh": None, "r2_basis": [], "explanations": {}, "read": None,
+        "fresh": None, "r2_basis": [], "explanations": {}, "explanation_gaps": [], "read": None,
+        "after_conflict": None,
     }
     if not cases:
         a["refusal"] = "no case version recorded in question A"
@@ -1104,6 +1341,7 @@ def read_attempt(index, row, cols, library):
             others = [cell(row, c) for c in cols["why"] if c] + [qb, qa]
             score_fresh(a, qc, others, a["case2"])
             a["explanations"] = parse_explanations(qc, len(a["case2"]["cards"]))
+            a["explanation_gaps"] = explanation_gaps(a)
     a["completed"] = completion_of(a, row, cols)
     return a
 
@@ -1134,8 +1372,36 @@ def match_columns(headers):
     return cols, found
 
 
+def tidy_cell(value):
+    return re.sub(r"\s+", " ", value or "").strip()
+
+
+def excerpt(text, other, width=90):
+    """The stretch of text around the first place it differs from other."""
+    i = 0
+    while i < min(len(text), len(other)) and text[i] == other[i]:
+        i += 1
+    start = max(0, i - 30)
+    piece = text[start:start + width]
+    return ("..." if start else "") + piece + ("..." if start + width < len(text) else "")
+
+
+def conflict_differences(members, labels, skip):
+    """[{column, values}] for every column the records of one attempt identifier disagree on."""
+    heads = list(dict.fromkeys(k for _i, row in members for k in row if k not in skip))
+    out = []
+    for head in heads:
+        values = [tidy_cell(row.get(head)) for _i, row in members]
+        if len(set(values)) > 1:
+            other = next(v for v in values if v != values[0])
+            out.append({"column": labels.get(head, head[:60]),
+                        "values": [excerpt(v, other if k == 0 else values[0])
+                                   for k, v in enumerate(values)]})
+    return out
+
+
 def analyze(path, roster_path=None, cases_dir=None, synthetic_check=False,
-            scores_path=None, second_scores_path=None):
+            scores_path=None, second_scores_path=None, resolutions=None):
     rows, headers = read_rows(path)
     cols, found = match_columns(headers)
     resolved_dir = find_cases_dir(cases_dir)
@@ -1145,29 +1411,95 @@ def analyze(path, roster_path=None, cases_dir=None, synthetic_check=False,
               "source": os.path.abspath(path), "cases_dir": resolved_dir,
               "synthetic_check": bool(synthetic_check)}
 
-    # --- exclusions, then duplicate sends -------------------------------------
+    # --- exclusions ------------------------------------------------------------
     excluded = {key: [] for key, _ in EXCLUSION_LABELS}
-    duplicates, attempts, seen_ids = [], [], set()
+    kept = []
     for index, row in enumerate(rows, start=1):
         code = cell(row, found["code"]).strip()
         qa, qb = cell(row, found["qa"]), cell(row, found["qb"])
-        why = exclusion_of(code, qa, qb, row, synthetic_check)
+        why = exclusion_of(code, qa, qb, row, synthetic_check, sheet_row=index + 1)
         if why:
             excluded[why[0]].append(why[1])
             continue
-        attempt_id, _ = parse_attempt(qb)
-        # A retry of one run posts the same attempt identifier, so a repeated identifier is
-        # one attempt sent twice. A row with no identifier is its own attempt.
+        kept.append((index, row, parse_attempt(qb)[0]))
+
+    # --- one attempt identifier on more than one row ----------------------------
+    # A retry of one run posts the same attempt identifier and the same content, so rows that
+    # match in every cell but the timestamp are one attempt sent twice, and the earliest is kept.
+    # Rows that share an identifier and differ anywhere else are a conflict: every record is
+    # reported, none enters a count or a rate, and the facilitator resolves it by naming the
+    # sheet row to keep with --resolve-conflict. A row with no identifier is its own attempt.
+    groups, order = {}, []
+    for index, row, attempt_id in kept:
         if attempt_id:
-            if attempt_id in seen_ids:
-                duplicates.append("%s (attempt %s sent again)" % (code, attempt_id))
-                continue
-            seen_ids.add(attempt_id)
-        attempts.append(read_attempt(index, row, found, library))
+            if attempt_id not in groups:
+                groups[attempt_id] = []
+                order.append(attempt_id)
+            groups[attempt_id].append((index, row))
+    skip = {found["ts"]} if found["ts"] else set()
+    labels = {head: label for label, head in cols.matched.items()}
+    pending = dict(resolutions or {})
+    duplicates, conflicts, resolved, chosen = [], [], [], set()
+    for attempt_id in order:
+        members = groups[attempt_id]
+        if len(members) == 1:
+            chosen.add(members[0][0])
+            continue
+        contents = []
+        for _index, row in members:
+            content = tuple((k, tidy_cell(v)) for k, v in row.items() if k not in skip)
+            if content not in contents:
+                contents.append(content)
+        if len(contents) == 1:
+            keep = min(members, key=lambda m: (parse_timestamp(cell(m[1], found["ts"])) or
+                                               datetime.datetime.max, m[0]))
+            chosen.add(keep[0])
+            for index, row in members:
+                if index != keep[0]:
+                    duplicates.append("%s (attempt %s sent again: sheet row %d repeats sheet "
+                                      "row %d)" % (cell(row, found["code"]).strip(), attempt_id,
+                                                   index + 1, keep[0] + 1))
+            continue
+        records = []
+        for index, row in members:
+            probe = read_attempt(index, row, found, library)
+            records.append({
+                "sheet_row": index + 1, "row_index": index, "codename": probe["codename"],
+                "code_key": probe["code_key"], "timestamp": probe["timestamp"],
+                "ts_value": probe["ts_value"], "supported": probe["supported"],
+                "set": probe["set"], "refusal": probe["refusal"], "score": probe["score"],
+                "lines": len(probe["case1"]["cards"]) if probe["case1"] else None,
+                "fresh_calls": probe["fresh"]["calls"] if probe["fresh"] else None,
+                "completed": probe["completed"],
+            })
+        entry = {"attempt_id": attempt_id, "records": records,
+                 "differences": conflict_differences(members, labels, skip)}
+        want = pending.pop(attempt_id, None)
+        if want is None:
+            conflicts.append(entry)
+            continue
+        rows_here = [r["sheet_row"] for r in records]
+        if want not in rows_here:
+            raise InputError("--resolve-conflict %s=%s names a sheet row that does not carry "
+                             "attempt %s; its rows are %s"
+                             % (attempt_id, want, attempt_id,
+                                ", ".join(str(r) for r in rows_here)))
+        chosen.add(want - 1)
+        entry["kept_row"] = want
+        resolved.append(entry)
+    if pending:
+        raise InputError("--resolve-conflict names %s, which %s not a conflict in this export"
+                         % (", ".join(sorted(pending)), "is" if len(pending) == 1 else "are"))
+    attempts = [read_attempt(index, row, found, library) for index, row, attempt_id in kept
+                if not attempt_id or index in chosen]
 
     report["excluded"] = excluded
     report["n_excluded"] = sum(len(v) for v in excluded.values())
     report["duplicate_sends"] = duplicates
+    report["conflicts"] = conflicts
+    report["conflicts_resolved"] = resolved
+    report["n_conflict_rows_held"] = sum(len(c["records"]) for c in conflicts)
+    report["n_conflict_rows_set_aside"] = sum(len(c["records"]) - 1 for c in resolved)
     report["attempts"] = attempts
     report["n_attempts_received"] = len(attempts)
     report["n_attempts_completed"] = sum(1 for a in attempts if a["completed"])
@@ -1187,10 +1519,27 @@ def analyze(path, roster_path=None, cases_dir=None, synthetic_check=False,
         report["order_basis"] = "timestamp"
     else:
         report["order_basis"] = "file order"
+    # A conflict held out of the counts still happened. A later attempt under the same codename is
+    # not promoted to a first attempt over it: it counts the conflict as the earlier attempt.
+    held = {}
+    for c in conflicts:
+        for rec in c["records"]:
+            if rec["supported"]:
+                held.setdefault(rec["code_key"], []).append((rec, c["attempt_id"]))
+
+    def held_before(rec, a):
+        if report["order_basis"] == "timestamp":
+            if not rec["ts_value"]:
+                return True
+            return (rec["ts_value"], rec["row_index"]) < (a["ts_value"], a["row_index"])
+        return rec["row_index"] < a["row_index"]
+
     counts = {}
     for a in eligible:
         counts[a["code_key"]] = counts.get(a["code_key"], 0) + 1
-        a["attempt_number"] = counts[a["code_key"]]
+        prior = sorted({aid for rec, aid in held.get(a["code_key"], []) if held_before(rec, a)})
+        a["after_conflict"] = prior or None
+        a["attempt_number"] = counts[a["code_key"]] + len(prior)
         a["initial"] = a["attempt_number"] == 1
     initial = [a for a in eligible if a["initial"]]
     later = [a for a in eligible if not a["initial"]]
@@ -1503,8 +1852,11 @@ def analyze_set(label, case1, case2, first, again, report):
 # not read in a row. RUBRIC.md is the scoring guide and describes the second scorer's draw.
 SHEET_COLUMNS = ["response_id", "case_version", "line", "account", "memo_sentence",
                  "participant_call", "decisive_evidence", "why_it_matters_for_this_period",
-                 "action_or_source_request", "second_scorer", "score_evidence", "score_period",
-                 "score_action", "scorer", "key_disagreement", "notes"]
+                 "action_or_source_request", "below_minimum", "second_scorer", "score_evidence",
+                 "score_period", "score_action", "scorer", "key_disagreement", "notes"]
+# the columns that hold numbers, written as numbers; every other cell is text and is neutralized
+SHEET_NUMERIC = frozenset(["line", "score_evidence", "score_period", "score_action"])
+KEY_NUMERIC = frozenset(["line"])
 SHEET_TEXT = {"evidence": "decisive_evidence", "period": "why_it_matters_for_this_period",
               "action": "action_or_source_request"}
 SHEET_SCORE = {"evidence": "score_evidence", "period": "score_period",
@@ -1523,7 +1875,12 @@ def _hash(text):
 
 
 def explanation_items(attempts):
-    """One item per fresh line of every eligible attempt that carries written text."""
+    """One item per fresh line of every eligible attempt that carries any written text.
+
+    A line whose parts are all blank (not posted, empty, or the page's "none") has nothing to
+    score and is listed with the explanation gaps instead. A line with any text goes on the sheet
+    with every part as posted, and below_minimum names each part that falls short, so an answer
+    the minimum refuses is scored and seen rather than dropped."""
     items = []
     for a in attempts:
         if not a["case2"] or not a["explanations"]:
@@ -1532,6 +1889,8 @@ def explanation_items(attempts):
         identity = a["attempt_id"] or "%s|%s|row %d" % (a["codename"], a["timestamp"],
                                                         a["row_index"])
         for n, parts in sorted(a["explanations"].items()):
+            if all(explanation_blank(parts.get(key)) for key, _l, _r, _c in EXPLANATION_PARTS):
+                continue
             card = case2["cards"][n - 1]
             call = a["fresh"]["calls"][n - 1] if (a["fresh"] and len(a["fresh"]["calls"]) >= n) \
                 else None
@@ -1541,6 +1900,7 @@ def explanation_items(attempts):
             items.append({
                 "response_id": rid, "attempt": a, "line": n, "card": card,
                 "case_version": case2["version"], "parts": parts, "call": call,
+                "below_minimum": part_problems(parts),
                 "call_result": (None if call is None else
                                 "agrees with key" if call == card["key"] else
                                 "does not agree with key"),
@@ -1565,7 +1925,20 @@ def explanation_items(attempts):
     return items
 
 
+def below_minimum_text(problems):
+    """"period: a stock non-answer; action: not posted", or "" when every part meets it."""
+    names = {key: SHEET_TEXT[key].replace("_", " ") for key in SHEET_TEXT}
+    return "; ".join("%s: %s" % (names[key], EXPLAIN_PROBLEM_LABEL[problem])
+                     for key, problem in problems)
+
+
 def write_scoring_sheet(report, sheet_path, key_path):
+    """The blind sheet and the facilitator key, as CSV that is safe to open in a spreadsheet.
+
+    Every cell passes through sheet_cell(): text that a spreadsheet would run as a formula (a
+    participant answer or a codename beginning =, +, -, @, a tab or a line break, or their
+    full-width forms) is written with a leading apostrophe, and the numeric columns keep their
+    numbers as numbers."""
     import csv
     items = report["explanation_items"]
     with open(sheet_path, "w", encoding="utf-8", newline="") as handle:
@@ -1578,23 +1951,27 @@ def write_scoring_sheet(report, sheet_path, key_path):
                    "memo_sentence": card.get("memo", ""),
                    "participant_call": {"flag": "flag", "stand": "let it stand"}.get(i["call"],
                                                                                     "not recorded"),
+                   "below_minimum": below_minimum_text(i["below_minimum"]),
                    "second_scorer": "yes" if i["second"] else ""}
             for key, column in SHEET_TEXT.items():
                 row[column] = i["parts"].get(key, "")
-            writer.writerow([row.get(c, "") for c in SHEET_COLUMNS])
+            writer.writerow([sheet_cell(row.get(c, ""), numeric=c in SHEET_NUMERIC)
+                             for c in SHEET_COLUMNS])
     with open(key_path, "w", encoding="utf-8", newline="") as handle:
         writer = csv.writer(handle)
         writer.writerow(KEY_COLUMNS)
         for i in items:
             a = i["attempt"]
-            writer.writerow([i["response_id"], a["codename"], a["attempt_id"] or "",
-                             "first" if a["initial"] else "reattempt %d" % a["attempt_number"],
-                             a["timestamp"], a["set"], i["case_version"], i["line"],
-                             i["call"] or "not recorded", i["card"]["key"],
-                             i["call_result"] or "not recorded", "; ".join(i["chips"]),
-                             {True: "agrees", False: "does not agree"}.get(i["chip_agreement"],
-                                                                           "not scored"),
-                             "yes" if i["second"] else ""])
+            values = [i["response_id"], a["codename"], a["attempt_id"] or "",
+                      "first" if a["initial"] else "reattempt %d" % a["attempt_number"],
+                      a["timestamp"], a["set"], i["case_version"], i["line"],
+                      i["call"] or "not recorded", i["card"]["key"],
+                      i["call_result"] or "not recorded", "; ".join(i["chips"]),
+                      {True: "agrees", False: "does not agree"}.get(i["chip_agreement"],
+                                                                    "not scored"),
+                      "yes" if i["second"] else ""]
+            writer.writerow([sheet_cell(v, numeric=c in KEY_NUMERIC)
+                             for c, v in zip(KEY_COLUMNS, values)])
     return len(items)
 
 
@@ -1613,7 +1990,8 @@ def read_score_sheet(path):
             continue
         scores, invalid = {}, False
         for key, column in SHEET_SCORE.items():
-            raw = cell(r, lookup[column]).strip()
+            # a spreadsheet can hand a typed score back with the apostrophe that marks it as text
+            raw = cell(r, lookup[column]).strip().lstrip("'").strip()
             if raw in ("0", "1", "2"):
                 scores[key] = int(raw)
             elif raw:
@@ -1682,6 +2060,13 @@ def explanation_results(case2, first, report):
     res["within_one_rate"] = pct(sum(1 for x, y in pairs if abs(x - y) <= 1), len(pairs))
     res["key_disagreements"] = [d for d in report["scores"]["key_disagreements"]
                                 if id(d["item"]["attempt"]) in ids]
+    # the parts that fall short of the minimum, kept visible and counted as incomplete
+    res["required"] = explanation_required(case2)
+    res["below_minimum_items"] = sum(1 for i in items if i["below_minimum"])
+    res["gaps"] = [dict(g, codename=a["codename"], attempt_id=a["attempt_id"])
+                   for a in first for g in a["explanation_gaps"]]
+    res["first_attempts_with_gaps"] = sum(1 for a in first if a["explanation_gaps"])
+    res["parts_below_minimum"] = len(res["gaps"])
     return res
 
 
@@ -1703,6 +2088,9 @@ def run_fields(report, csv_path):
     for key, _label in EXCLUSION_LABELS:
         add("run.rows_excluded.%s" % key, len(report["excluded"][key]))
     add("run.duplicate_sends_set_aside", len(report["duplicate_sends"]))
+    add("run.attempt_conflicts_unresolved", len(report["conflicts"]))
+    add("run.attempt_conflict_rows_held_out", report["n_conflict_rows_held"])
+    add("run.attempt_conflicts_resolved", len(report["conflicts_resolved"]))
     add("run.attempts_received", report["n_attempts_received"])
     add("run.attempts_completed", report["n_attempts_completed"])
     add("run.attempts_refused", len(report["refused"]))
@@ -1807,6 +2195,9 @@ def set_fields(s):
         add("explain.case_version", e["version"])
         add("explain.items_with_text", e["items"])
         add("explain.fresh_calls_without_text", e["without_text"])
+        add("explain.items_below_minimum", e["below_minimum_items"])
+        add("explain.first_attempts_below_minimum", e["first_attempts_with_gaps"])
+        add("explain.parts_below_minimum", e["parts_below_minimum"])
         add("explain.items_scored", e["scored"])
         for key, _label, _record, _criterion in EXPLANATION_PARTS:
             add("explain.%s_avg_of_2" % key, e[key + "_avg"])
@@ -1980,13 +2371,20 @@ def count_rows(report):
          "Test codenames, rows the page marked as a test attempt, blank codenames and "
          "synthetic rows, itemized below."),
         ("Duplicate sends set aside", str(len(report["duplicate_sends"])),
-         "A row repeating an attempt identifier already read. One attempt sent twice counts "
-         "once."),
+         "A row repeating another row's attempt identifier and every cell but the timestamp. "
+         "One attempt sent twice counts once, at its earliest timestamp."),
+        ("Attempt conflicts held out", "%d (%d rows)" % (len(report["conflicts"]),
+                                                         report["n_conflict_rows_held"]),
+         "Attempt identifiers carried by rows that differ in content. Every record is listed "
+         "below, and none enters a count or a rate until the facilitator keeps one with "
+         "--resolve-conflict."),
         ("Received attempts", str(report["n_attempts_received"]),
-         "Rows left after those two steps. Each is one run of the drill."),
+         "Rows left after those steps. Each is one run of the drill."),
         ("Completed attempts", str(report["n_attempts_completed"]),
          "Received attempts with a call on every practice line and, where a fresh case is "
-         "named, on every fresh line."),
+         "named, on every fresh line. On a fresh case that asks for written explanations "
+         "(brightwater-v6 on), all three parts on every fresh line must also meet the minimum: "
+         "%s." % EXPLAIN_RULE),
         ("Distinct codenames", str(report["n_codenames"]),
          "Different codenames among received attempts. A codename is a pseudonym, so this is "
          "not a count of people: one person can type two, and two people can type one."),
@@ -2004,32 +2402,78 @@ def count_rows(report):
     ]
 
 
+def build_gap_markdown(e, out):
+    """The written parts below the minimum, as posted, so none is dropped without a trace."""
+    if not e["gaps"]:
+        if e["required"] and e["items"]:
+            out.append("Every written part on these first attempts meets the minimum the page "
+                       "applies before a call locks: %s." % EXPLAIN_RULE)
+            out.append("")
+        return
+    out.append("**Written answers below the minimum.** %s first attempt%s on %s carr%s %s "
+               "written part%s that fall%s short of the minimum the page applies before a call "
+               "locks: %s. %s A line with any text stays on the scoring sheet with the part "
+               "named in `below_minimum`, and every part is listed here as posted."
+               % (say(e["first_attempts_with_gaps"]).capitalize(),
+                  "" if e["first_attempts_with_gaps"] == 1 else "s", e["version"],
+                  "ies" if e["first_attempts_with_gaps"] == 1 else "y",
+                  say(e["parts_below_minimum"]), "" if e["parts_below_minimum"] == 1 else "s",
+                  "s" if e["parts_below_minimum"] == 1 else "", EXPLAIN_RULE,
+                  "That attempt counts as incomplete." if e["first_attempts_with_gaps"] == 1
+                  else "Each of those attempts counts as incomplete."))
+    out.append("")
+    out.append("| Codename | Attempt | Fresh line | Part | As posted | What falls short |")
+    out.append("| --- | --- | --- | --- | --- | --- |")
+    names = {key: criterion for key, _l, _r, criterion in EXPLANATION_PARTS}
+    for g in e["gaps"]:
+        posted = "(not posted)" if g["text"] is None else \
+            ('"%s"' % md_cell(g["text"]) if g["text"] else '""')
+        out.append("| %s | %s | %d | %s | %s | %s |"
+                   % (md_cell(g["codename"]), g["attempt_id"] or "no attempt id", g["line"],
+                      names[g["part"]], posted, EXPLAIN_PROBLEM_LABEL[g["problem"]]))
+    out.append("")
+
+
+def md_cell(text):
+    """Text safe inside a markdown table cell."""
+    return str(text).replace("|", "/").replace("\n", " ")
+
+
 def build_explanation_markdown(e, s, report, out):
     out.append("### Educator-scored explanations")
     out.append("")
     out.append("A separate result from reason chip agreement. Each written explanation on a "
-               "fresh line is scored by an independent educator against RUBRIC.md, three "
-               "criteria at 0 to 2 each, and never by this script. The machine's call result "
-               "and the chips are kept off the sheet the educator scores.")
+               "fresh line is for an independent educator to score against RUBRIC.md, three "
+               "criteria at 0 to 2 each, and never this script. No score appears below until a "
+               "filled sheet is read back with --scores. The machine's call result and the chips "
+               "are kept off the sheet the educator scores.")
     out.append("")
     if not e["items"]:
-        out.append("No written explanation was found on the %s fresh calls of these first "
-                   "attempts on %s. Fresh cases before brightwater-v6 did not ask for one, "
-                   "and on brightwater-v6 or later an empty result means the export lacks the "
-                   "Evidence, Period and Action segments in question C."
-                   % (e["fresh_calls"], e["version"]))
+        if e["required"]:
+            out.append("No written explanation text was found on the %s fresh calls of these "
+                       "first attempts on %s, which asks for one on every call."
+                       % (e["fresh_calls"], e["version"]))
+        else:
+            out.append("No written explanation was found on the %s fresh calls of these first "
+                       "attempts on %s. Fresh cases before brightwater-v6 did not ask for one."
+                       % (e["fresh_calls"], e["version"]))
         out.append("")
+        build_gap_markdown(e, out)
         return
     out.append("| Measure | Value |")
     out.append("| --- | --- |")
     out.append("| Fresh lines carrying a written explanation | %d |" % e["items"])
     out.append("| Fresh calls with no explanation text | %d |" % e["without_text"])
+    out.append("| Lines on the sheet with a part below the minimum | %d |" % e["below_minimum_items"])
+    out.append("| First attempts with a part below the minimum, counted incomplete | %d |"
+               % e["first_attempts_with_gaps"])
     out.append("| Drawn for the second scorer | %d |" % e["second_drawn"])
     if not e["sheet_supplied"]:
         out.append("")
         out.append("Not scored yet. Write the sheet with --scoring-sheet, have the educator fill "
                    "it, and run again with --scores.")
         out.append("")
+        build_gap_markdown(e, out)
         return
     out.append("| Scored by the first scorer | %d |" % e["scored"])
     for key, _label, _record, criterion in EXPLANATION_PARTS:
@@ -2072,6 +2516,7 @@ def build_explanation_markdown(e, s, report, out):
                "explanations written on one unseen set and do not establish learning gain."
                % say(len(s["case2"]["cards"])))
     out.append("")
+    build_gap_markdown(e, out)
 
 
 def build_read_markdown(s, out):
@@ -2417,11 +2862,55 @@ def build_markdown(report, csv_path):
                % (len(report["duplicate_sends"]),
                   (", " + "; ".join(report["duplicate_sends"])) if report["duplicate_sends"] else ""))
     out.append("")
-    out.append("The synthetic rule matches the word synthetic in a codename, the marker "
-               "\"Synthetic test only\" in any cell, and an attempt identifier beginning "
-               "\"audit-\". The third independent review's synthetic records match it, so they "
-               "cannot enter participant evidence from this script.")
+    out.append("Every exclusion names the rule that made it. A test codename is one on the list of "
+               "known test codenames, or one made only of test words with test or delete among "
+               "them (\"Test Play\", \"walk test 2\"), so a real codename that merely contains "
+               "test (\"Test Pilot\", \"Contest Winner\") stays in. A synthetic row is one whose "
+               "codename begins with Synthetic, or one with a cell or a basis Words line that "
+               "reads exactly \"Synthetic test only\". The third independent review's synthetic "
+               "records match it, so they cannot enter participant evidence from this script. "
+               "Codenames are read after NFKC normalization and case folding, so a full-width "
+               "spelling is treated as the plain one.")
     out.append("")
+
+    out.append("## Attempt conflicts")
+    out.append("")
+    if report["conflicts"] or report["conflicts_resolved"]:
+        out.append("One attempt identifier on rows whose content differs is not a resend, and "
+                   "the script does not guess which row is the attempt. An unresolved conflict "
+                   "holds every one of its rows out of every count and rate, and a later attempt "
+                   "under the same codename counts it as the earlier attempt rather than becoming "
+                   "a first attempt. To resolve one, read the rows in the export and run again "
+                   "with `--resolve-conflict <attempt id>=<sheet row to keep>`. Sheet rows count "
+                   "the header as row 1.")
+        out.append("")
+    else:
+        out.append("No attempt identifier appears on rows whose content differs.")
+        out.append("")
+    for label, entries in (("Unresolved", report["conflicts"]),
+                           ("Resolved by the facilitator", report["conflicts_resolved"])):
+        for c in entries:
+            kept = c.get("kept_row")
+            out.append("**%s: attempt %s**%s" % (label, c["attempt_id"],
+                                                 (", sheet row %d kept" % kept) if kept else ""))
+            out.append("")
+            out.append("| Sheet row | Codename | Timestamp | Case set | Call agreement | Fresh "
+                       "calls | Completed |")
+            out.append("| --- | --- | --- | --- | --- | --- | --- |")
+            for r in c["records"]:
+                out.append("| %d | %s | %s | %s | %s | %s | %s |"
+                           % (r["sheet_row"], md_cell(r["codename"]), r["timestamp"] or "n/a",
+                              r["set"] or ("refused: " + md_cell(r["refusal"] or "")),
+                              ("%d of %d" % (r["score"], r["lines"])) if r["lines"] else "n/a",
+                              r["fresh_calls"] or "n/a", "yes" if r["completed"] else "no"))
+            out.append("")
+            if c["differences"]:
+                out.append("Where the records differ, by column, each value in sheet row order:")
+                out.append("")
+                for d in c["differences"]:
+                    out.append("- %s: %s" % (d["column"], " / ".join(
+                        '"%s"' % md_cell(v) for v in d["values"])))
+                out.append("")
 
     out.append("## Case versions")
     out.append("")
@@ -2501,6 +2990,14 @@ def build_markdown(report, csv_path):
                           ("%d of %d" % (a["fresh"]["right"], a["fresh"]["total"]))
                           if a["fresh"] else "n/a"))
         out.append("")
+        after = [a for a in report["reattempts"] if a.get("after_conflict")]
+        if after:
+            out.append("Counted after an unresolved attempt conflict under the same codename, "
+                       "which holds the first-attempt place until it is resolved: %s."
+                       % "; ".join("%s (after attempt %s)" % (a["codename"],
+                                                           ", ".join(a["after_conflict"]))
+                                   for a in after))
+            out.append("")
     else:
         out.append("No codename has a second eligible attempt in this export.")
         out.append("")
@@ -2549,6 +3046,9 @@ def print_summary(report, out_path):
             print("  excluded, %-29s %d" % (label.lower(), len(report["excluded"][key])))
     for reason, count in report["refusal_counts"].items():
         print("  REFUSED %d: %s" % (count, reason))
+    for c in report["conflicts"]:
+        print("  CONFLICT, held out: attempt %s on sheet rows %s"
+              % (c["attempt_id"], ", ".join(str(r["sheet_row"]) for r in c["records"])))
     for s in report["sets"]:
         print(line)
         print("Case set %s" % s["label"])
@@ -2579,6 +3079,12 @@ def print_summary(report, out_path):
                   % (e["items"], e["scored"],
                      "%.2f" % e["total_avg"] if e["total_avg"] is not None else "n/a",
                      e["double_scored"]))
+        if s.get("explain") and s["explain"]["gaps"]:
+            e = s["explain"]
+            print("  BELOW THE MINIMUM     %d written part%s on %d first attempt%s, counted "
+                  "incomplete, listed in the markdown"
+                  % (e["parts_below_minimum"], "" if e["parts_below_minimum"] == 1 else "s",
+                     e["first_attempts_with_gaps"], "" if e["first_attempts_with_gaps"] == 1 else "s"))
         if s["disagreements"]:
             print("  RECORD DISAGREEMENTS  %d, listed in the markdown" % len(s["disagreements"]))
     print(line)
@@ -2613,6 +3119,9 @@ def main(argv=None):
     ap.add_argument("--synthetic-check", action="store_true",
                     help="score rows the synthetic rule excludes, to reproduce a review probe; "
                          "every output is stamped as not participant evidence")
+    ap.add_argument("--resolve-conflict", action="append", default=[], metavar="ID=ROW",
+                    help="keep sheet row ROW (the header is row 1) for attempt identifier ID "
+                         "when rows carrying it differ; repeat for each conflict")
     args = ap.parse_args(argv)
 
     if not os.path.exists(args.csv):
@@ -2621,10 +3130,17 @@ def main(argv=None):
     if args.cases and not os.path.isdir(args.cases):
         print("No cases directory at %s" % args.cases)
         return 2
+    resolutions = {}
+    for spec in args.resolve_conflict:
+        attempt_id, _, row = spec.partition("=")
+        if not attempt_id.strip() or not row.strip().isdigit():
+            print("--resolve-conflict takes ID=ROW, for example att-k3x=14; got %r" % spec)
+            return 2
+        resolutions[attempt_id.strip()] = int(row)
     try:
         report = analyze(args.csv, roster_path=args.roster, cases_dir=args.cases,
                          synthetic_check=args.synthetic_check, scores_path=args.scores,
-                         second_scores_path=args.second_scores)
+                         second_scores_path=args.second_scores, resolutions=resolutions)
     except InputError as exc:
         print(str(exc))
         return 2

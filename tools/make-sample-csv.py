@@ -11,10 +11,12 @@ at the tail of question C. Every key comes from the case file for the version a 
 
 The rows exercise every rule findings.py applies: three case sets (halyard-v4 and kestrel-v1
 with brightwater-v5, and halyard-v4 with brightwater-v6, whose fresh lines carry the three-part
-written explanation in question C the way r2Line() posts it) plus an older halyard-v3 row, a reattempt under a codename already
-counted, one attempt sent twice, an authored case and an unknown version that must both be
-refused, test codenames, a row the page marked as a test attempt, and a synthetic row in the
-third review's shape that the synthetic rule must exclude. The roster file is a consented
+written explanation in question C the way r2Line() posts it, one run with three answers below the
+minimum) plus an older halyard-v3 row, a reattempt under a codename already counted, one attempt
+sent twice, one attempt identifier on two rows that differ (a conflict held out until resolved),
+an authored case and an unknown version that must both be refused, test codenames, a real
+codename that merely contains "test", a row the page marked as a test attempt, and a synthetic
+row in the third review's shape that the synthetic rule must exclude. The roster file is a consented
 roster in the documented format, with one participant under two codenames, one row without
 consent and one codename that never played.
 
@@ -72,7 +74,7 @@ NOTE = "Not collected. The ledger screen is orientation only in this version."
 NOT_ASKED = "not asked"
 PLACEHOLDERS = ("3", "5", "Once or twice", "5")
 PRODUCT = "second-pass-drill 1.6.1"
-NOTICE = "notice-2026-09-13"
+NOTICE = "notice-2026-09-13c"
 HOLD = "the figure and reason hold"
 
 
@@ -454,12 +456,26 @@ ROWS = [
          read=["4200", "6000", "6200"],
          line=case_line("halyard", "halyard-v4", 14, two="brightwater-v6"),
          round2=r2_cell("FSFFS", 212, fresh=FRESH6, explain=EXPLAIN_COLDREAD)),
-    # a second brightwater-v6 run: one wrong call, and one explanation that stops at the
-    # document without saying what to request
+    # a second brightwater-v6 run: one wrong call, and three written parts below the minimum the
+    # page now applies at the lock ("June", an empty action posted as "none", and "stand"), as a
+    # build before it accepted them. findings.py counts the attempt incomplete and lists all three.
     dict(ts="2026/09/21 9:40:37", codename="SIGNOFF", calls=misses(HALYARD, [2, 10]),
          orgs=["Outside Mason"], minutes=19, streak=7, words_on=(1,), read=["4000"],
          line=case_line("halyard", "halyard-v4", 14, two="brightwater-v6"),
          round2=r2_cell("FSSFS", 260, fresh=FRESH6, explain=EXPLAIN_SIGNOFF)),
+    # one attempt identifier on two rows whose content differs: the second row turns line 3 over.
+    # Neither row is a resend of the other, so both are held out of every count until the
+    # facilitator keeps one with --resolve-conflict.
+    dict(ts="2026/09/15 13:05:00", codename="TWINLARK", calls=misses(HALYARD, [5]),
+         orgs=["ACFE"], minutes=10, streak=8, attempt="att-twinlark-01",
+         round2=r2_cell("FSFFS", 70)),
+    dict(ts="2026/09/15 13:09:00", codename="TWINLARK", calls=misses(HALYARD, [5, 2]),
+         orgs=["ACFE"], minutes=10, streak=8, attempt="att-twinlark-01",
+         round2=r2_cell("FSFFS", 70)),
+    # a real codename that merely contains the word test, which stays in
+    dict(ts="2026/09/15 13:20:00", codename="Test Pilot", calls=misses(HALYARD, [7]),
+         orgs=["Outside Mason"], minutes=12, streak=6, words_on=(3,),
+         round2=r2_cell("FSFFS", 77)),
     # a row in the shape of the third review's synthetic records
     dict(ts="2026/09/15 12:55:00", codename="Synthetic same participant",
          calls=misses(HALYARD, []), orgs=["ACFE"], minutes=5, streak=14, attempt="audit-a",

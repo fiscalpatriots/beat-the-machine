@@ -1,0 +1,202 @@
+[
+ {
+  "text": "",
+  "problem": "empty",
+  "why": "nothing typed"
+ },
+ {
+  "text": "   ",
+  "problem": "empty",
+  "why": "spaces only"
+ },
+ {
+  "text": "\t\t",
+  "problem": "empty",
+  "why": "tabs only"
+ },
+ {
+  "text": "\n\n",
+  "problem": "empty",
+  "why": "line breaks only"
+ },
+ {
+  "text": "|||",
+  "problem": "empty",
+  "why": "bars, which the page strips"
+ },
+ {
+  "text": "\ufeff\u00a0",
+  "problem": "empty",
+  "why": "a byte order mark and a no-break space"
+ },
+ {
+  "text": "a b",
+  "problem": "short",
+  "why": "two letters with a space, accepted before"
+ },
+ {
+  "text": "...",
+  "problem": "no words",
+  "why": "dots, accepted before"
+ },
+ {
+  "text": "!!! ??? ---",
+  "problem": "no words",
+  "why": "punctuation only"
+ },
+ {
+  "text": "\u2014",
+  "problem": "no words",
+  "why": "an em dash alone"
+ },
+ {
+  "text": "none",
+  "problem": "stock",
+  "why": "accepted before, then dropped by the findings"
+ },
+ {
+  "text": "None.",
+  "problem": "stock",
+  "why": "accepted before"
+ },
+ {
+  "text": "n/a",
+  "problem": "stock",
+  "why": "accepted before"
+ },
+ {
+  "text": "N/A",
+  "problem": "stock",
+  "why": "upper case"
+ },
+ {
+  "text": "\uff4e\uff4f\uff4e\uff45",
+  "problem": "stock",
+  "why": "none in full-width letters"
+ },
+ {
+  "text": "I don't know",
+  "problem": "stock",
+  "why": "a stock phrase"
+ },
+ {
+  "text": "I don\u2019t know",
+  "problem": "stock",
+  "why": "the same with a curly apostrophe"
+ },
+ {
+  "text": "same as above",
+  "problem": "stock",
+  "why": "a stock phrase"
+ },
+ {
+  "text": "Not applicable.",
+  "problem": "stock",
+  "why": "a stock phrase"
+ },
+ {
+  "text": "test test",
+  "problem": "stock",
+  "why": "every word on the stock list"
+ },
+ {
+  "text": "asdf asdf",
+  "problem": "stock",
+  "why": "every word on the stock list"
+ },
+ {
+  "text": "+1+1",
+  "problem": "short",
+  "why": "a formula-shaped answer with too little in it"
+ },
+ {
+  "text": "@SUM(1,1)",
+  "problem": "short",
+  "why": "a formula-shaped answer with too little in it"
+ },
+ {
+  "text": "June",
+  "problem": "short",
+  "why": "one word"
+ },
+ {
+  "text": "stand",
+  "problem": "short",
+  "why": "one word"
+ },
+ {
+  "text": "No PO",
+  "problem": "short",
+  "why": "two words, four letters"
+ },
+ {
+  "text": "sign it",
+  "problem": "short",
+  "why": "two words, six letters"
+ },
+ {
+  "text": "a\nb",
+  "problem": "short",
+  "why": "a pasted line break between two letters"
+ },
+ {
+  "text": "\u53d1\u7968",
+  "problem": "short",
+  "why": "two Chinese characters"
+ },
+ {
+  "text": "The invoice is on file.",
+  "problem": null,
+  "why": "a plain answer"
+ },
+ {
+  "text": "It is dated June.",
+  "problem": null,
+  "why": "a plain answer"
+ },
+ {
+  "text": "Invoice 20614",
+  "problem": null,
+  "why": "a document and its number"
+ },
+ {
+  "text": "No invoice",
+  "problem": null,
+  "why": "an absence, which is an answer"
+ },
+ {
+  "text": "none needed",
+  "problem": null,
+  "why": "an answer that starts with a stock word"
+ },
+ {
+  "text": "inside June",
+  "problem": null,
+  "why": "two words, ten letters"
+ },
+ {
+  "text": "=HYPERLINK(\"http://example.invalid\",\"click\")",
+  "problem": null,
+  "why": "text the sheet must neutralize, which is still words"
+ },
+ {
+  "text": "\u516d\u6708\u7684\u53d1\u7968\u5df2\u5728\u6863\u6848\u4e2d",
+  "problem": null,
+  "why": "ten Chinese characters, a script written without spaces"
+ },
+ {
+  "text": "Zoe\u0308 signed the June register",
+  "problem": null,
+  "why": "a decomposed letter"
+ },
+ {
+  "text": "  The June   payroll register \nis on file ",
+  "problem": null,
+  "why": "extra spaces and a pasted line break"
+ },
+ {
+  "text": "aaaa bbbb",
+  "problem": null,
+  "why": "keyboard mash of the right length passes; the floor does not judge content"
+ }
+]
