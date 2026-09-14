@@ -7,8 +7,9 @@ basis, the page's own reason verdict and the card's basis key in every Why field
 identifier and the reason score in question B, and the Round2 string with its per line basis
 at the tail of question C. Every key comes from the case file for the version a row names.
 
-The rows exercise every rule findings.py applies: two case sets (halyard-v4 and kestrel-v1,
-each with brightwater-v5) plus an older halyard-v3 row, a reattempt under a codename already
+The rows exercise every rule findings.py applies: three case sets (halyard-v4 and kestrel-v1
+with brightwater-v5, and halyard-v4 with brightwater-v6, whose fresh lines carry the three-part
+written explanation in question C the way r2Line() posts it) plus an older halyard-v3 row, a reattempt under a codename already
 counted, one attempt sent twice, an authored case and an unknown version that must both be
 refused, test codenames, a row the page marked as a test attempt, and a synthetic row in the
 third review's shape that the synthetic rule must exclude. The roster file is a consented
@@ -43,6 +44,7 @@ HALYARD = case("halyard-v4")
 HALYARD_OLD = case("halyard-v3")
 KESTREL = case("kestrel-v1")
 FRESH = case("brightwater-v5")
+FRESH6 = case("brightwater-v6")
 
 HEADERS = ["Timestamp", "Codename",
            "Round one, question 1. Looking only at the numbers, which movements would "
@@ -229,18 +231,27 @@ def summary_b(cards, calls, streak, chips_by_line, attempt_id, run_index, r2_rea
                "" if false_flags == 1 else "s", "{:,}".format(points), rank, streak))
 
 
-FRESH_TAIL = ("Fresh case: Brightwater Dental Partners, PLLC, case version "
-              "brightwater-v5, 5 lines, run as an assessment with no feedback between "
-              "lines. A company the player had not seen. Not a player answer to "
-              "question C.")
+def fresh_tail(fresh):
+    return ("Fresh case: %s, case version %s, %d lines, run as an assessment with no "
+            "feedback between lines. A company the player had not seen. Not a player answer "
+            "to question C." % (fresh["company"], fresh["version"], len(fresh["cards"])))
 
 
-def r2_cell(calls, seconds, style="right"):
-    """Question C as r2Line() builds it: the round two string, then the basis by line."""
+def clean_answer(text):
+    """explainClean() in index.html: no bars or line breaks, and "none" for an empty answer."""
+    out = " ".join(str(text or "").replace("|", " ").split())
+    return out or "none"
+
+
+def r2_cell(calls, seconds, style="right", fresh=FRESH, explain=None):
+    """Question C as r2Line() builds it: the round two string, then the basis by line.
+
+    explain, when given, is one (evidence, period, action) triple per fresh line, posted
+    between the basis and the reason verdict as brightwater-v6 assessment runs post it."""
     bas, reason_right, right = [], 0, 0
-    letters = key_letters(FRESH)
+    letters = key_letters(fresh)
     for j, letter in enumerate(calls):
-        card = FRESH["cards"][j]
+        card = fresh["cards"][j]
         call = "flag" if letter == "F" else "stand"
         if letter == letters[j]:
             right += 1
@@ -248,12 +259,18 @@ def r2_cell(calls, seconds, style="right"):
         words = WORDS[card["type"]][j % 3] if (call == "flag" and j % 2 == 0) else ""
         ok = agrees(chips, card)
         reason_right += 1 if ok else 0
-        bas.append("%d: %s | Reason: %s | Key basis: %s"
-                   % (j + 1, basis_text(chips, words), "agrees" if ok else "does not agree",
-                      "; ".join(card["basis_key"])))
+        written = ""
+        if explain is not None:
+            evidence, period, action = explain[j]
+            written = " | Evidence: %s | Period: %s | Action: %s" % (
+                clean_answer(evidence), clean_answer(period), clean_answer(action))
+        bas.append("%d: %s%s | Reason: %s | Key basis: %s"
+                   % (j + 1, basis_text(chips, words), written,
+                      "agrees" if ok else "does not agree", "; ".join(card["basis_key"])))
     text = ("Round2: right call %d/5, right reason %d/5; calls %s; key %s; seconds %d. "
             "Round2 basis, by line: %s. %s"
-            % (right, reason_right, calls, letters, seconds, " || ".join(bas), FRESH_TAIL))
+            % (right, reason_right, calls, letters, seconds, " || ".join(bas),
+               fresh_tail(fresh)))
     return text, reason_right
 
 
@@ -303,6 +320,35 @@ def misses(cases, miss_indexes):
     for i in miss_indexes:
         calls[i] = "flag" if calls[i] == "stand" else "stand"
     return calls
+
+
+# Invented written explanations for the brightwater-v6 rows, one (evidence, period, action)
+# triple per fresh line in card order. They are written to be scored, not to be right.
+EXPLAIN_COLDREAD = [
+    ("nothing on file shows implant cases or a surgical suite in June",
+     "the supply spend has to belong to cases performed in June",
+     "ask for the June implant case log and the supplier invoices"),
+    ("the hiring record and the chair opening on 1 June are on file",
+     "the wages follow a chair that opened inside the month",
+     "no request, the line stands"),
+    ("the plan schedule on file is dated May and lists no June starts",
+     "June billing needs plans that started in June",
+     "ask for the June plan start list"),
+    ("nothing on file shows the associates' June patient schedules",
+     "a May start only matters if June visits actually rose",
+     "ask for the June appointment counts by dentist"),
+    ("the mailer invoice dated the first week of June",
+     "the spend and the delivery fall in the same month",
+     "no request, the line stands"),
+]
+EXPLAIN_SIGNOFF = [
+    ("no case log for the surgical suite", "June supplies", "request the case log"),
+    ("the chair opened 1 June", "inside June", "none needed"),
+    ("the plan schedule on file", "June", ""),
+    ("no schedules for the two associates", "the full schedule is claimed for June",
+     "ask for the June schedules"),
+    ("the mailer invoice", "delivered in June", "stand"),
+]
 
 
 ROWS = [
@@ -382,6 +428,18 @@ ROWS = [
     # the page marked this run as a test attempt
     dict(ts="2026/09/15 12:50:00", codename="FIELDCHECK", calls=misses(HALYARD, []),
          orgs=["ACFE"], minutes=5, streak=14, test=True),
+    # brightwater-v6: every fresh call carries the three-part written explanation, and the
+    # run is reported as its own case set rather than pooled with the brightwater-v5 runs
+    dict(ts="2026/09/21 9:05:12", codename="COLDREAD", calls=misses(HALYARD, [11]),
+         orgs=["Beta Alpha Psi"], minutes=16, streak=10, words_on=(0, 2),
+         line=case_line("halyard", "halyard-v4", 14, two="brightwater-v6"),
+         round2=r2_cell("FSFFS", 212, fresh=FRESH6, explain=EXPLAIN_COLDREAD)),
+    # a second brightwater-v6 run: one wrong call, and one explanation that stops at the
+    # document without saying what to request
+    dict(ts="2026/09/21 9:40:37", codename="SIGNOFF", calls=misses(HALYARD, [2, 10]),
+         orgs=["Outside Mason"], minutes=19, streak=7, words_on=(1,),
+         line=case_line("halyard", "halyard-v4", 14, two="brightwater-v6"),
+         round2=r2_cell("FSSFS", 260, fresh=FRESH6, explain=EXPLAIN_SIGNOFF)),
     # a row in the shape of the third review's synthetic records
     dict(ts="2026/09/15 12:55:00", codename="Synthetic same participant",
          calls=misses(HALYARD, []), orgs=["ACFE"], minutes=5, streak=14, attempt="audit-a",
@@ -389,6 +447,8 @@ ROWS = [
 ]
 
 ROSTER = [
+    ("P09", "COLDREAD", "yes", "student"),
+    ("P10", "SIGNOFF", "yes", "practitioner"),
     ("P01", "REDLINE", "yes", "student"),
     ("P02", "BLUEBOOK", "yes", "student"),
     ("P03", "TIEOUT", "yes", "practitioner"),
