@@ -2,7 +2,7 @@
 """Builds findings-sample.csv and findings-sample-roster.csv for testing findings.py.
 
 The response file carries the form's real headers and invented responses, written the way
-index.html writes its cells in product 1.6.1: the read before the draft in the round one question
+index.html writes its cells in product 1.7.0: the read before the draft in the round one question
 (the required read on the two brightwater-v6 runs, and the optional picks of up to three accounts
 it replaced on the rest, which findings.py counts apart), a
 basis, the page's own reason verdict and the card's basis key in every Why field, the attempt
@@ -73,8 +73,8 @@ HEADERS += ["After the list. Now that you have seen the challenges, how confiden
 NOTE = "Not collected. The ledger screen is orientation only in this version."
 NOT_ASKED = "not asked"
 PLACEHOLDERS = ("3", "5", "Once or twice", "5")
-PRODUCT = "second-pass-drill 1.6.1"
-NOTICE = "notice-2026-09-13c"
+PRODUCT = "second-pass-drill 1.7.0"
+NOTICE = "notice-2026-09-14"
 HOLD = "the figure and reason hold"
 
 

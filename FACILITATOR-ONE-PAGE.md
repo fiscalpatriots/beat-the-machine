@@ -1,6 +1,6 @@
 # Second Pass: Beat the Machine, a Facilitator's Guide
 
-Forty minutes for a chapter meeting, a classroom or a firm's staff training. Version 2.2, 13 September 2026, against `halyard-v4`, `brightwater-v6` and the build still stamped product 1.6.1. Long version: `FACILITATOR-GUIDE.md`.
+Forty minutes for a chapter meeting, a classroom or a firm's staff training. Version 2.3, 14 September 2026, against `halyard-v4`, `brightwater-v6` and the build stamped product 1.7.0. Long version: `FACILITATOR-GUIDE.md`.
 
 ## What you need, and what to do first
 
@@ -13,7 +13,7 @@ Forty minutes for a chapter meeting, a classroom or a firm's staff training. Ver
 | Minutes | Segment | What happens |
 | --- | --- | --- |
 | 5 | Framing | A built case carrying the mistakes an AI assistant makes. Read the threshold rule aloud: above both $25,000 and 10 percent. Name no error types. |
-| 12 | Play | The ledger alone first, tapping every line worth a second look, then the fourteen Halyard lines, alone, par ten minutes, no question about a line answered. |
+| 12 | Play | The ledger alone first, tapping every line worth a second look, then the fourteen Halyard lines, alone, on the clock, no question about a line answered. |
 | 3 | Fresh case | Five lines of a dental group nobody has seen: no reveal, score or track, and three written answers on every call. Say only what the bridge screen says. |
 | 15 | Debrief | The six questions below, two answers each, then three minutes on the reason. |
 | 5 | Close | The numbers back, the voluntary send, and the argument: four checks recompute and two stay with a person. |

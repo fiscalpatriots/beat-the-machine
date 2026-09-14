@@ -5,21 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#005239">
 <title>Second Pass: Beat the Machine at Mason</title>
-<meta name="description" content="A ten-minute drill on AI-drafted close commentary. Read fourteen lines of a June close memo and decide which explanations a reviewer can sign.">
+<meta name="description" content="A short drill on AI-drafted close commentary. Read fourteen lines of a June close memo and decide which explanations a reviewer can sign.">
 <link rel="canonical" href="https://fiscalpatriots.github.io/beat-the-machine/index.html">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Second Pass">
 <meta property="og:url" content="https://fiscalpatriots.github.io/beat-the-machine/index.html">
 <meta property="og:title" content="Second Pass: Beat the Machine at Mason">
-<meta property="og:description" content="A ten-minute drill on AI-drafted close commentary. Read fourteen lines of a June close memo and decide which explanations a reviewer can sign.">
+<meta property="og:description" content="A short drill on AI-drafted close commentary. Read fourteen lines of a June close memo and decide which explanations a reviewer can sign.">
 <meta property="og:image" content="https://fiscalpatriots.github.io/beat-the-machine/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Second Pass, a second pass on AI-drafted close commentary, George Mason University, Costello College of Business.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Second Pass: Beat the Machine at Mason">
-<meta name="twitter:description" content="A ten-minute drill on AI-drafted close commentary. Read fourteen lines of a June close memo and decide which explanations a reviewer can sign.">
+<meta name="twitter:description" content="A short drill on AI-drafted close commentary. Read fourteen lines of a June close memo and decide which explanations a reviewer can sign.">
 <meta name="twitter:image" content="https://fiscalpatriots.github.io/beat-the-machine/assets/og-image.png">
 
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -567,9 +567,9 @@ body{overflow-x:clip}
    One constant. It prints under the footer line on every screen, rides into the posted
    payload on question A, and stamps the local record. README and review.html state it too. */
 var PRODUCT_NAME = "Second Pass: Beat the Machine";
-var PRODUCT_VERSION = "1.6.1";
+var PRODUCT_VERSION = "1.7.0";
 var PRODUCT_STAMP = "second-pass-drill " + PRODUCT_VERSION;
-var NOTICE_VERSION = "notice-2026-09-13c";
+var NOTICE_VERSION = "notice-2026-09-14";
 
 /* ---------- test mode ----------
    ?test=1 in the address, or three taps on the footer line. While it is on the page never
@@ -1518,7 +1518,7 @@ function howScreen(){
       '<p class="howlead">Scope</p>'+
       '<p>This build is a static case: fourteen lines, one month, answers keyed by hand. Halyard is a made-up company, and its memo was written for this build the way an AI assistant writes close commentary, with every failure planted so it can be taught and scored. It does not run on a live ledger. The checker on this site runs the four mechanical checks on a ledger pasted in a layout it accepts and the memo drafted about it, says what it could not read instead of clearing it, and leaves driver and timing with the reviewer. Next, the deterministic checks run first on every AI memo, and the reviewer\'s time goes only to the two judgment types.</p>'+
       '<div class="howrun"><a class="btn" href="checker.html">Run the checker on your own ledger and memo</a></div>'+
-      '<div class="linkrow"><a class="howlink" href="PROTOCOL.md">The review protocol, one page</a>'+
+      '<div class="linkrow"><a class="howlink" href="PROTOCOL.md">The review protocol</a>'+
         '<a class="howlink" href="Second-Pass-Review-Protocol.pdf">The same page as a PDF</a>'+
         '<a class="howlink" href="PROVENANCE.md">Where this case came from</a>'+
         '<a class="howlink" href="evidence/EVIDENCE-NOTE.md">What a real AI draft got wrong</a></div>'+
@@ -2971,7 +2971,7 @@ function attemptRecord(sentPayload){
     recordFormat: "btm-attempt-1",
     renamedFields: {
       note: "Two fields were renamed in 1.6.1 because their old names claimed more than they held. " +
-            "The old names are written beside the new ones for this version only and come out in the next.",
+            "The old names are written beside the new ones through 1.7.0 and come out in the release after it.",
       evidenceReferences: "evidenceSupplied",
       firstAttempt: "firstRunInThisTab",
       elapsedActiveSeconds: "elapsedSecondsOnCard and activeSecondsOnCard, and the two matching " +

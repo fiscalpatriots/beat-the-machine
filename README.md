@@ -1,6 +1,6 @@
 # Second Pass: Beat the Machine
 
-A ten minute reviewer's game for the George Mason ACFE student chapter. An AI assistant wrote
+A short reviewer's game for the George Mason ACFE student chapter. An AI assistant wrote
 Halyard's June close commentary, and the player is the second pass on it.
 
 Live at https://fiscalpatriots.github.io/beat-the-machine/ from `main`.
@@ -9,10 +9,10 @@ Live at https://fiscalpatriots.github.io/beat-the-machine/ from `main`.
 
 | What | Version | Where it is stated |
 | --- | --- | --- |
-| Product | `second-pass-drill 1.6.1` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
+| Product | `second-pass-drill 1.7.0` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
 | Round one case | `halyard-v4`, 13 September 2026 | `cases/halyard-v4.json`, question A, the local record |
 | Round two case | `brightwater-v6`, 13 September 2026 | `cases/brightwater-v6.json`, questions A and C, the local record |
-| Data notice | `notice-2026-09-13c` | the notice screen, question A, the local record |
+| Data notice | `notice-2026-09-14` | the notice screen, question A, the local record |
 
 One constant carries the product version. Change `PRODUCT_VERSION` and every surface follows,
 except `review.html` and this file, which state it in prose and have to be edited by hand.
@@ -61,7 +61,7 @@ deterministic checks on a ledger and a memo the visitor pastes in, and `CHECKER.
 repository documents it. It is linked from the intro screen's link row and from the top of the
 "Use it on your own memo" block.
 
-`PROTOCOL.md` is the one page a reviewer works from, and `Second-Pass-Review-Protocol.pdf` is the
+`PROTOCOL.md` is what a reviewer works from, and `Second-Pass-Review-Protocol.pdf` is the
 same page to print or hand across a desk; both are linked from the "How this works in a real
 close" screen. `EVIDENCE-LOG-TEMPLATE.csv` is the log the protocol fills in, and it is the column
 order the checker's **Download CSV** writes, so an exported run drops straight into it with the
@@ -282,7 +282,7 @@ their run. The fields are the ones the build handoff calls the minimum attempt r
 | `notAsked` | the four form questions nobody was asked, why a placeholder is posted, and the placeholder mode |
 | `payload` | the exact payload, with a note saying whether it was posted, would have been posted, or has not been posted |
 
-**Two fields were renamed in 1.6.1, and the old names ride along for this version only.** The
+**Two fields were renamed in 1.6.1, and the old names ride along through 1.7.0.** The
 release review found that `evidenceReferences` held the card's whole supplied file list under a
 name that read as the documents the participant used. It is now `evidenceSupplied`, and
 `evidenceSelected` was added beside it and left `null`, because the page does not ask which
@@ -290,8 +290,8 @@ document the player relied on and will not imply an answer it did not collect.
 `elapsedActiveSeconds` measured wall-clock time that does not pause when the tab is in the
 background, so it is now `elapsedSecondsOnCard` per line and `elapsedSecondsOnCards` in the
 timing block, with a note on the record saying what the clock does and does not do. Both old
-names are written beside the new ones in 1.6.1 so a script reading an older export keeps
-working, and `renamedFields` on the record names the pairs. They come out in the next version.
+names are written beside the new ones through 1.7.0 so a script reading an older export keeps
+working, and `renamedFields` on the record names the pairs. They come out in the release after it.
 
 Nothing in it is invented. The four unasked questions are reported as not asked rather than as
 answers, and confidence is `null` on every line because the page never asks for it.
@@ -428,7 +428,7 @@ the same everywhere. `review.html` shows the full block. For the other two:
 
 | Page | `<title>` | `<meta name="description">` |
 | --- | --- | --- |
-| `index.html` | Second Pass: the ten-minute drill | Fourteen ledger lines, eight carrying a planted problem, called against an answer key. A drill on AI-drafted close commentary, built at George Mason. |
+| `index.html` | Second Pass: Beat the Machine at Mason | A short drill on AI-drafted close commentary. Read fourteen lines of a June close memo and decide which explanations a reviewer can sign. |
 | `checker.html` | Second Pass Checker: test the memo against the ledger | Paste a ledger and the memo drafted about it. It checks the dollar, percent and direction claims it recognizes, names every account over the threshold that nobody mentioned, and shows what it could not read. |
 
 The Open Graph block to repeat on each page, with `og:url` pointed at that page:

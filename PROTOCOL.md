@@ -1,6 +1,6 @@
 # Second Pass Review Protocol
 
-Month-end flux commentary drafted with AI assistance. Version 1.1, effective 13 September 2026. Owner: Khaled Alkurd.
+Month-end flux commentary drafted with AI assistance. Version 1.2, effective 14 September 2026. Owner: Khaled Alkurd.
 
 ## Control objective
 
@@ -14,7 +14,7 @@ The reviewer runs it after the preparer releases the draft and before the contro
 
 ## Procedure
 
-1. Run the four mechanical checks over the ledger and the memo as drafted: arithmetic, every figure recomputed against the ledger; direction, every stated movement tested against the sign of the balance change; threshold, every account that passes both legs listed; silence, every account that passes both legs and carries no sentence. One row per sentence and one row per silent account.
+1. Run the four mechanical checks over the ledger and the memo as drafted: arithmetic, the checker recomputing the dollar, percent and direction claims it recognizes and the reviewer every figure it reports as not read; direction, every stated movement against the sign of the balance change; threshold, every account that passes both legs listed; silence, every such account carrying no sentence. One row per sentence and one row per silent account.
 2. Clear or escalate each fail. It goes back to the preparer with the recomputed figure, a corrected sentence re-enters at step 1, and a figure the preparer cannot support becomes an ask to the controller carried on the same row.
 3. Work the reviewer queue, which holds what the checks could not settle: failures, needs-review sentences, not-checked sentences, unmatched sentences, skipped source rows, silent lines and accounts carrying two or more sentences. A sentence checked within scope is not in the queue, and checked within scope means its figures tie to the ledger rather than that the sentence is true. A status is never promoted: a failed or needs-review sentence stays until the preparer answers it, and the corrected sentence re-enters at step 1.
 4. Answer the driver question and the timing question from the facts on file, naming in the row the document relied on or the ask it raises. Answer them on the sentences checked within scope, and on a needs-review sentence once it is resolved. A sentence still unresolved carries an ask to the controller instead of an answer, and a silent line carries the question of what the movement was.
@@ -42,5 +42,6 @@ Every release adds one row, approved by Khaled Alkurd. A version used on a close
 
 | Version | What changed, and why |
 | --- | --- |
+| 1.2, 14 September 2026 | Step 1 names who recomputes what, the checker or the reviewer, because version 1.1 did not say. |
 | 1.1, 13 September 2026 | Steps 3 and 4 rewritten to the checker's current contract, because version 1.0 called the reviewer queue the sentences that passed all four checks, the opposite of what it holds. |
 | 1.0, 12 September 2026 | First issue of the four mechanical checks, the two judgment questions, the evidence log and the roles, written because the drafting tools hand a reviewer commentary with nothing to check it against. |

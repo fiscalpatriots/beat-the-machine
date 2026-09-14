@@ -1,6 +1,6 @@
 # Second Pass: Beat the Machine, findings
 
-Built 2026-09-13 from `findings-sample.csv`.
+Built 2026-09-14 from `findings-sample.csv`.
 
 ## Attempts and people
 
@@ -867,10 +867,10 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 
 | Field | Value |
 | --- | --- |
-| `run.generated` | 2026-09-13 |
+| `run.generated` | 2026-09-14 |
 | `run.source_file` | findings-sample.csv |
 | `run.evidence_status` | participant export |
-| `run.product_version` | second-pass-drill 1.6.1 |
+| `run.product_version` | second-pass-drill 1.7.0 |
 | `run.rows_in_export` | 26 |
 | `run.rows_excluded` | 6 |
 | `run.rows_excluded.test_codename` | 4 |

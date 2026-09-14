@@ -1,23 +1,32 @@
-# Second Pass, release 1.6.1
+# Second Pass, release 1.7.0
 
-13 September 2026. Khaled Alkurd, George Mason University.
+14 September 2026. Khaled Alkurd, George Mason University.
 Live at https://fiscalpatriots.github.io/beat-the-machine/
 
 ---
 
-## 1.7.0, what changed since 1.6.1 (draft, not released)
+## 1.7.0, what changed since 1.6.1
 
-Draft written 13 September 2026. It is not released: the heading of this file stays at 1.6.1 until
-the repaired release is frozen, and nothing below is pushed until then. Every change answers a
-finding in the third independent review of 13 September 2026, which reviewed 1.6.1 at `b6ba468` and
-the command line package at `130b6b7`. Commits in the second-pass repository are marked as such.
+Frozen 14 September 2026. Every change answers a finding in the third independent review of 13
+September 2026, which reviewed 1.6.1 at `b6ba468` and the command line package at `130b6b7`.
+Commits in the second-pass repository are marked as such.
+
+The suites at the freeze: **744 shared fixtures**; the browser checker **746 of 746**; the
+command-line checker **1,569 passed**, of which 823 stand alone; parity **746 passed**, every
+fixture on all eleven fields; the audit's own eight input sets **513 of 513** equal on all eleven
+fields; the audit's 175 adversarial probes at **0 false clearances and 0 other misses**; the author
+page folding against the checker **751 of 751**; the findings script **54 passed**. The protocol
+moves to version 1.2, effective 14 September 2026, and the data notice is restamped
+`notice-2026-09-14` with its wording unchanged. All 41 findings of the third review are read again
+at this head in `audit/THIRD-REVIEW-STATUS-2026-09-14.md`, where they stand at 34 closed, 2
+partial, 4 open and 1 deferred by ruling.
 
 | Finding in the third review | What changed | Commits |
 | --- | --- | --- |
 | **1. The record counted attempts as players and scored a new case against the old key.** Two attempts under one codename came back as two players, and a Kestrel record was scored against Halyard | `tools/findings.py` scores every record against the case file for the version it names and refuses a version it has no file for. It reports received attempts, completed attempts, distinct codenames and facilitator-confirmed participants as four separate counts, reads only the first eligible attempt under each codename, and lists reattempts in their own table. `READOUT-TEMPLATE.md` defines each count once, and the facilitator guides never report codenames as people. The sample carries brightwater-v6 runs with written explanations | `c6f0088`, `3bdb3ff`, `a42d7af`, `19f4605`, `56b87a7` |
 | **2. The reviewer page claimed more than the build shows.** "Reads better than a person writes", "every figure against the ledger", the universal input promise, and a counted unit named two ways | `review.html` claims only what the checker and the evidence show. The drill's scope note, the 404 page, the release notes and the facilitator guides no longer promise any ledger or every figure. The two earlier design variants, `review-a.html` and `review-b.html`, still served and still carrying the old claims, are retired to a noindex pointer at `review.html` | `b956423`, `8abea9e`, `19f4605`, `49767ad` |
 | **3. The reason score and the rank.** The case guide said the reason score never moves the rank, and the executed points said it does. Chips measure agreement with accepted categories, not reasoning, and the Brightwater evidence pre-solved item 3 | The case guide, the governance note, both facilitator guides and five strings in the drill now say the reason's fifty points count toward the rank; the scoring code is unchanged. On `brightwater-v6` every assessment call needs a three-part written explanation (the decisive evidence, why it matters for the period, the action or source request) before it locks, the evidence shows document contents without saying what they establish, and `RUBRIC.md` with a blind scoring sheet puts the explanations in front of an educator | `8abea9e`, `f376b84`, `6447d97`, `1fcedbd`, `19f4605` |
-| **4. The checker contract.** "Doubled", "remained at", a fraction and Arabic-Indic digits all cleared, Prompt 1's own labels were not read as roles, and the parity claim was byte for byte on files that differed | Multipliers, fractions, digits outside 0 to 9 and scale words are unparsed spans that leave a sentence not checked; "remained at" and other no-change claims no longer clear when the line moved; `prior` and `current` in front of a figure are read as roles. `CHECKER.md` says what the grammar reads and a sentence clears only when every quantitative expression in it is accounted for. The suite holds 744 fixtures: the forty probes and 113 mutations across six classes, the independent audit's 175 probes with the clearance grammar's 159 class mutations, 111 more for the residual classes, sentence boundaries, size words, periods bound to the column labels, account names at the edge of a sentence and the lexicon one step past its words, and 86 for the checker residuals, a direction word a reason governs, an abbreviation inside a name, a quarter against the column labels and a word that says how much of the movement a sentence explains. The Prompt 1 rerun is recorded in `audit/PROMPT1-RERUN-2026-09-13.md` and still stands at 14 of 17. The Python checker mirrors the contract, and one shared file of 744 inputs agrees on every compared field in both implementations: 746 browser checks, 746 parity tests and 1,569 Python tests pass | `d081409`, `71d457b`, `4f89ee1`, `1f9acb7`, `09cec33`; second-pass `acdf580`, `fe8cd49`, `b523044`, `216bd2b`, `dbf0342`, `bb6fd2d` |
+| **4. The checker contract.** "Doubled", "remained at", a fraction and Arabic-Indic digits all cleared, Prompt 1's own labels were not read as roles, and the parity claim described the two fixture files as the same when they differed | Multipliers, fractions, digits outside 0 to 9 and scale words are unparsed spans that leave a sentence not checked; "remained at" and other no-change claims no longer clear when the line moved; `prior` and `current` in front of a figure are read as roles. `CHECKER.md` says what the grammar reads and a sentence clears only when every quantitative expression in it is accounted for. The suite holds 744 fixtures: the forty probes and 113 mutations across six classes, the independent audit's 175 probes with the clearance grammar's 159 class mutations, 111 more for the residual classes, sentence boundaries, size words, periods bound to the column labels, account names at the edge of a sentence and the lexicon one step past its words, and 86 for the checker residuals, a direction word a reason governs, an abbreviation inside a name, a quarter against the column labels and a word that says how much of the movement a sentence explains. The Prompt 1 rerun is recorded in `audit/PROMPT1-RERUN-2026-09-13.md` and still stands at 14 of 17. The Python checker mirrors the contract, and one shared file of 744 inputs agrees on every compared field in both implementations: 746 browser checks, 746 parity tests and 1,569 Python tests pass | `d081409`, `71d457b`, `4f89ee1`, `1f9acb7`, `09cec33`; second-pass `acdf580`, `fe8cd49`, `b523044`, `216bd2b`, `dbf0342`, `bb6fd2d` |
 | **5. The author page.** An unresolved checker result became a clean suggestion, a save after an edit kept stale figures, and an unbound sentence vanished | The author page reads with the checker's own reader and holds what the checker holds, including a direction word it cannot tie to a line; save and preview are disabled until the inputs are read again; every sentence comes back as a card or an open item that must be settled; the case records whether it is synthetic or a permitted real case, and the drill's introduction follows it. A card checked within scope now names the numbers the checker read and left outside the check | `052fd1f`, `81f92dc`, `1fcedbd`, `5c6f9ab`, `742525a`, `50927f4` |
 | **6. The three-ledger evidence.** The runs were not comparable, and unsupported exclusions and forecasts were not counted | Every unsupported claim in the six retained drafts is counted by class with its exact text, the development-session run is labeled apart from the fresh-context runs, and the prediction inference is gone | `a3ada19` |
 
@@ -28,7 +37,7 @@ once the player goes on, and no later screen draws without it, whether reached b
 the step hook or an edited saved run. The end screen says on how many round one lines the final
 call moved off that read, and whether each change moved toward the key or away from it, with no
 effect on points or rank. The round one question and the record carry the read per line with the
-case version, the data notice names it (`notice-2026-09-13c`), and `findings.py` reports the
+case version, the data notice names it (`notice-2026-09-14`), and `findings.py` reports the
 comparison for first attempts in each case set as descriptive agreement on a keyed exercise, with
 six new tests. Walked in headless Chrome on Halyard, Kestrel and an authored case, 44 of 44
 checks each, with viewport screenshots at six widths looked at by eye, in
@@ -122,7 +131,7 @@ a movement holds it for review with the word named. No unresolved status is prom
 a later step, and the reviewer prompt the page generates opens by naming the mechanical work that
 was **not** done.
 
-The written protocol, `PROTOCOL.md` at version 1.1, states the control: no commentary drafted with
+The written protocol, `PROTOCOL.md` at version 1.2, states the control: no commentary drafted with
 AI assistance is released until a second pass has tied every figure to the ledger and a named
 reviewer, never the preparer, has signed the two judgment questions, whether the driver is
 supported by a document on file and whether it belongs to the period.

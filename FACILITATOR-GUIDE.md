@@ -1,11 +1,11 @@
 # Running Second Pass: Beat the Machine in Forty Minutes
 
-A facilitator's guide for a chapter meeting, a classroom, or a firm's staff training. Version 2.1,
-13 September 2026, written against `halyard-v4` and `brightwater-v6`, on the build that asks for the
-read before the draft and for three written answers on each fresh call. That build still stamps
-itself `second-pass-drill 1.6.1` until release 1.7.0 is cut.
+A facilitator's guide for a chapter meeting, a classroom, or a firm's staff training. Version 2.2,
+14 September 2026, written against `halyard-v4` and `brightwater-v6`, on the build that asks for the
+read before the draft and for three written answers on each fresh call. That build stamps itself
+`second-pass-drill 1.7.0`.
 
-The game takes ten minutes to play and the debrief is what teaches. A room that plays and leaves
+The game is short and the debrief is what teaches. A room that plays and leaves
 has had a diversion. A room that plays and then answers the questions below out loud has learned a
 method it can use on the next memo that lands on its desk. Everything here assumes forty minutes
 and one facilitator.
@@ -24,7 +24,7 @@ copy.
 | A phone or a laptop for each person | Each player runs their own round at their own pace. Two people on one screen produces one set of calls and no useful data. |
 | The response sheet, if you want numbers | Every round posts to a Google Form, and the sheet behind that form is the record. You need to own that form to read the sheet. |
 | A room where people can talk | The fifteen minute debrief is the reason the session is worth forty minutes instead of ten. |
-| Second-Pass-Review-Protocol.pdf, optional | One page to hand across a desk at the close, for anyone who asks what this looks like in a real month end. |
+| Second-Pass-Review-Protocol.pdf, optional | The control to hand across a desk at the close, for anyone who asks what this looks like in a real month end. |
 | Second-Pass-Excel-Template.xlsx, optional | The same checks in a spreadsheet, for the person who asks how they would run this on Monday without a website. |
 
 If you do not own the response sheet, run the session off the public link anyway and take the
@@ -115,9 +115,9 @@ answered about a specific line while the round is running. The first screen afte
 the ledger on its own, and nobody gets past it without tapping at least one line they would give a
 second look. There is no skip, and that is the point: each player commits to a read of the numbers
 before a single sentence of the AI draft is on the screen. Say so before they start, and do not
-suggest which lines to tap. Par is ten minutes and the game shows
-each player their own clock. The two extra minutes are for the people who read slowly, and you will
-need them.
+suggest which lines to tap. Set the clock the room will run to before it starts, and the game shows
+each player their own. Leave more room than the reading looks like it needs, because some people
+read slowly and you will need it.
 
 **Fresh case, three minutes.** The round does not end at line fourteen. Five more lines follow, from
 a four office dental group the player has never opened. Say only what the bridge screen says. Each
@@ -377,9 +377,9 @@ invented, and give an AI assistant the drafting prompt: "Here is a month end var
 June. Write one sentence of commentary for each account that moved, naming a cause for each one."
 That prompt is the one most people actually use, and it produces the fluent, confident, partly
 unsupported memo the game is built around. Paste the schedule and the memo the assistant returns
-into `checker.html` on the projector and run the checks on material the room made ten minutes ago.
+into `checker.html` on the projector and run the checks on material the room made itself, minutes earlier.
 
-**Run it as a timed individual assessment.** Par is ten minutes, no talking, one run each, and the
+**Run it as a timed individual assessment.** Set the clock, no talking, one run each, and the
 result is the call score out of fourteen with the reason score, the lap time and the false flag
 count beside it. Report the call score and the reason score, not the rank: the rank is read off
 points, an agreeing reason adds to them, and each rank starts at a share of what the case can give.

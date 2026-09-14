@@ -1,7 +1,8 @@
-# Builds Second-Pass-Facilitator-Guide.pdf, the one page facilitator's guide.
+# Builds Second-Pass-Facilitator-Guide.pdf, the one page facilitator's guide, and
+# Second-Pass-Review-Protocol.pdf, the one page review control.
 #
-# Content of record: FACILITATOR-ONE-PAGE.md and READOUT-TEMPLATE.md. Nothing is typed into
-# this script. The readout ships as a docx alone, so its PDF and page render are built to
+# Content of record: FACILITATOR-ONE-PAGE.md, READOUT-TEMPLATE.md and PROTOCOL.md. Nothing is
+# typed into this script. The readout ships as a docx alone, so its PDF and page render are built to
 # prove its page allowance and then deleted. The readout was one page until the findings repair
 # of 13 September 2026 defined each count once and gave every case set its own block; it now
 # holds the counts and the case set blocks, so its allowance is three pages. The long form of the guide
@@ -34,11 +35,14 @@ from docx.oxml import OxmlElement
 HERE = os.path.dirname(os.path.abspath(__file__))
 AUTHOR = 'Khaled Alkurd'
 SUBJECT = 'Second Pass: Beat the Machine, running the session in forty minutes'
+PROTOCOL_SUBJECT = 'Review control over AI-drafted month-end flux commentary'
 
-# source markdown, output basename, maximum pages allowed, keep the PDF beside the docx
+# source markdown, output basename, maximum pages allowed, keep the PDF beside the docx, subject
 JOBS = [
-    ('FACILITATOR-ONE-PAGE.md', 'Second-Pass-Facilitator-Guide', 1, True),
-    ('READOUT-TEMPLATE.md', 'Second-Pass-Results-Readout', 3, False),
+    ('FACILITATOR-ONE-PAGE.md', 'Second-Pass-Facilitator-Guide', 1, True, SUBJECT),
+    ('READOUT-TEMPLATE.md', 'Second-Pass-Results-Readout', 3, False, SUBJECT),
+    # The protocol ran to a second page at version 1.2, when the change log took a third row.
+    ('PROTOCOL.md', 'Second-Pass-Review-Protocol', 2, True, PROTOCOL_SUBJECT),
 ]
 
 FIT = [(10.5, 1.00, 1.00), (10.5, 0.80, 1.00), (10.5, 0.60, 1.00), (10.5, 0.45, 1.00),
@@ -228,7 +232,7 @@ def mark_size(paragraph, half_points):
         rPr.append(sz)
 
 
-def build(blocks, out_path, doc_title, body, space, leading):
+def build(blocks, out_path, doc_title, body, space, leading, subject=SUBJECT):
     d = docx.Document()
     for s in d.sections:
         s.top_margin = s.bottom_margin = s.left_margin = s.right_margin = Inches(0.6)
@@ -332,7 +336,7 @@ def build(blocks, out_path, doc_title, body, space, leading):
     cp.author = AUTHOR
     cp.last_modified_by = AUTHOR
     cp.title = doc_title
-    cp.subject = SUBJECT
+    cp.subject = subject
     now = datetime.now(timezone.utc).replace(microsecond=0)
     cp.created = now
     cp.modified = now
@@ -362,12 +366,12 @@ def page_count(pdf_path):
     return k
 
 
-def stamp_and_verify(pdf_path, doc_title, png_dir):
+def stamp_and_verify(pdf_path, doc_title, png_dir, subject=SUBJECT):
     import fitz
     doc = fitz.open(pdf_path)
     meta = doc.metadata or {}
     if (meta.get('title') or '') != doc_title or (meta.get('author') or '') != AUTHOR:
-        doc.set_metadata({'title': doc_title, 'author': AUTHOR, 'subject': SUBJECT,
+        doc.set_metadata({'title': doc_title, 'author': AUTHOR, 'subject': subject,
                           'creator': 'Microsoft Word', 'producer': 'docx2pdf'})
         doc.saveIncr()
     doc.close()
@@ -412,7 +416,7 @@ def banned(blocks):
     return sorted({label for ch, label in BAD_CHARS.items() if ch in joined})
 
 
-def run(source, basename, max_pages, keep_pdf=True):
+def run(source, basename, max_pages, keep_pdf=True, subject=SUBJECT):
     path = os.path.join(HERE, source)
     blocks = parse(path)
     docx_path = os.path.join(HERE, basename + '.docx')
@@ -420,7 +424,7 @@ def run(source, basename, max_pages, keep_pdf=True):
 
     chosen = None
     for body, space, leading in FIT:
-        build(blocks, docx_path, doc_title, body, space, leading)
+        build(blocks, docx_path, doc_title, body, space, leading, subject)
         pdf_path = to_pdf(docx_path)
         pages = page_count(pdf_path)
         print('  try %.1f pt / spacing %.2f / leading %.2f -> %d page(s)'
@@ -431,7 +435,7 @@ def run(source, basename, max_pages, keep_pdf=True):
     if chosen is None:
         chosen = FIT[-1]
 
-    rep = stamp_and_verify(pdf_path, doc_title, HERE)
+    rep = stamp_and_verify(pdf_path, doc_title, HERE, subject)
     print('  source             : %s (%d blocks)' % (source, len(blocks)))
     print('  heading / pdf title: %r' % doc_title)
     print('  typography         : Calibri %.1f pt, leading %.2f, spacing scale %.2f, '
@@ -461,7 +465,7 @@ if __name__ == '__main__':
     want = sys.argv[1:]
     jobs = [j for j in JOBS if not want or any(w.lower() in j[1].lower() for w in want)]
     ok = True
-    for source, basename, max_pages, keep_pdf in jobs:
+    for source, basename, max_pages, keep_pdf, subject in jobs:
         print(basename)
-        ok = run(source, basename, max_pages, keep_pdf) and ok
+        ok = run(source, basename, max_pages, keep_pdf, subject) and ok
     print('all %d within their page allowance and nothing clipped: %s' % (len(jobs), ok))
