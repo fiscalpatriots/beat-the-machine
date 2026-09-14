@@ -77,8 +77,12 @@ h1{margin:0;font-size:42px;line-height:1.12;letter-spacing:-.02em;color:var(--ma
 .cap{margin:12px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink-soft)}
 .hero{margin:0;padding:24px 26px}
 .fig>svg.wide{display:block}.fig>svg.narrow{display:none}
-@media (max-width:720px){.fig>svg.wide{display:none}.fig>svg.narrow{display:block}
+/* the narrow drawings are drawn for a phone; past 440px they would only grow their type,
+   so they stop there. Under 760 the wide hero's small lines drop below 12px, so the
+   hero keeps its narrow drawing up to 760, centered in its box. */
+@media (max-width:720px){.fig>svg.wide{display:none}.fig>svg.narrow{display:block;max-width:440px}
   .hero{padding:20px}}
+@media (max-width:760px){.hero>svg.wide{display:none}.hero>svg.narrow{display:block;max-width:440px;margin:0 auto}}
 
 /* the hero statement and the two calls */
 .statement{max-width:44ch;margin:26px 0 0;font-size:23px;line-height:1.4;letter-spacing:-.01em}
@@ -97,21 +101,89 @@ h1{margin:0;font-size:42px;line-height:1.12;letter-spacing:-.02em;color:var(--ma
 .who b{font-weight:700}
 @media (max-width:760px){.who ul{grid-template-columns:minmax(0,1fr);gap:10px}}
 
-/* how a review runs: four small screenshots, 4:3 */
+/* how a review runs: four steps, each over a small drawing of the screen it describes.
+   The drawings are live text in the product's own words and numbers (the Halyard
+   sample run and a Brightwater results screen), so they stay the same readable
+   size at every width instead of shrinking the way a screenshot does. The page
+   column stops at 1,048 pixels, where four across would leave each card about
+   230 pixels wide, so the strip is two by two from 700 pixels up and one column
+   below that. Nothing in it is clipped or scrolls: the cards grow with their text. */
 .runs{margin:48px 0 0}
 .runs h2{margin:0 0 4px;font-size:22px;line-height:1.25;letter-spacing:-.01em;font-weight:700;color:var(--ink)}
 .runs .sub{margin:0 0 18px;font-size:16px;color:var(--ink-soft)}
-.strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:0}
-@media (max-width:880px){.strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:480px){.strip{grid-template-columns:minmax(0,1fr);gap:14px}}
-.shot{background:var(--card);border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;
+.strip{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;margin:0}
+@media (min-width:700px){.strip{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}}
+/* a figure keeps the browser's 40px side margins unless told otherwise */
+.shot{margin:0;background:var(--card);border:1px solid var(--rule);border-radius:var(--radius);
   box-shadow:var(--shadow);display:flex;flex-direction:column;min-width:0}
-.shot img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:top center;
-  background:var(--paper);border-bottom:1px solid var(--rule)}
-.shot .body{padding:12px 14px 14px}
-.shot .n{font-size:12px;font-weight:700;color:var(--mason);font-variant-numeric:tabular-nums;
-  letter-spacing:.06em}
-.shot p{margin:2px 0 0;font-size:15px;line-height:1.4}
+/* two across, the drawing and the caption each share one row height with the card
+   beside them, so the two captions start on the same line */
+@supports (grid-template-rows:subgrid){
+  @media (min-width:700px){.shot{display:grid;grid-row:span 2;grid-template-rows:subgrid;row-gap:0}}
+}
+.shot .viz{flex:1 1 auto;min-width:0;padding:18px;background:var(--paper);
+  border-bottom:1px solid var(--rule);border-radius:var(--radius) var(--radius) 0 0;
+  container-type:inline-size;font-size:14.5px;line-height:1.45;color:var(--ink)}
+@media (max-width:360px){.shot .viz{padding:14px}}
+.shot .body{margin:0;padding:14px 18px 18px}
+.shot .n{display:block;font-size:13px;font-weight:700;color:var(--mason);font-variant-numeric:tabular-nums;
+  letter-spacing:.06em;line-height:1.4}
+.shot .body p{margin:4px 0 0;font-size:17.5px;line-height:1.45}
+
+/* the drawings: product surfaces at a smaller scale, never under 12px */
+.viz p{margin:0}
+.m-lbl{display:block;margin:0 0 6px;font-size:12px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-soft);line-height:1.35}
+.m-box{background:var(--card);border:1px solid var(--rule-strong);border-radius:10px;padding:10px 12px}
+.m-panes{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.m-led{font-variant-numeric:tabular-nums}
+.m-led>div{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:8px;padding:6px 0;border-top:1px solid var(--rule)}
+.m-led>div:first-child{border-top:0;padding-top:0}
+.m-led>div:last-child{padding-bottom:0}
+.m-a{font-family:var(--mono);font-size:13px;color:var(--ink-soft)}
+.m-led .nm{flex:1 1 9.5em;min-width:0}
+.m-led .v{margin-left:auto;display:flex;gap:12px}
+.m-led .v span{min-width:4.9em;text-align:right}
+.viz .m-cov{margin:0 0 8px;font-size:15px;font-weight:700;line-height:1.3}
+.m-bar{display:flex;height:12px;border:1px solid var(--rule-strong);border-radius:6px;background:var(--card)}
+.m-bar i{display:block}
+.m-bar i:first-child{border-radius:5px 0 0 5px}
+.m-bar i:last-child{border-radius:0 5px 5px 0}
+.m-g{background:var(--mason)}.m-k{background:var(--ink)}.m-r{background:var(--red)}
+.m-counts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0 0}
+.m-count{min-width:0;background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:8px 10px}
+.m-count b{display:block;font-size:20px;line-height:1.15;font-weight:700;font-variant-numeric:tabular-nums}
+.m-count span{display:block;margin-top:2px;font-size:12px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-soft);line-height:1.3}
+.m-pass{color:var(--mason)}.m-fail{color:var(--red)}.m-soft{color:var(--ink-soft)}
+.m-find{margin:12px 0 0}
+.m-st{display:block;margin:0 0 3px;font-size:12px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;line-height:1.35}
+.m-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.m-chip{border:1px solid var(--rule-strong);border-radius:8px;background:var(--card);padding:4px 10px;
+  font-size:14px;line-height:1.35}
+.m-chip.on{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:600}
+.viz .m-acct{margin:0 0 10px;font-size:15px;font-weight:600;line-height:1.3}
+.m-acct .m-a{font-weight:400;margin-right:6px}
+.m-figs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.m-figs span{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);line-height:1.3}
+.m-figs b{display:block;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.35}
+.m-calls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0 0}
+.m-call{border:1px solid var(--rule-strong);border-radius:10px;padding:7px 6px;text-align:center;
+  font-size:14px;font-weight:600;line-height:1.3;background:var(--card)}
+.m-rec{padding:0 12px}
+.m-rec>div{padding:10px 0;border-top:1px solid var(--rule)}
+.m-rec>div:first-child{border-top:0}
+.m-rec .ln{font-weight:600;line-height:1.35}
+.m-rec .tags{display:flex;flex-wrap:wrap;column-gap:12px;margin:3px 0 2px}
+.m-rec .tags .m-st{margin:0}
+.m-rec .bs{font-size:14px;color:var(--ink-soft);line-height:1.4}
+.m-save{display:inline-block;margin:12px 0 0;border:1px solid var(--ink);border-radius:10px;padding:6px 14px;
+  font-size:14px;font-weight:600;background:var(--card)}
+@container (min-width:520px){
+  .m-panes{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .m-counts{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
 
 /* the dossier: a sticky margin column and the text column */
 .split{display:grid;grid-template-columns:300px minmax(0,640px);gap:60px;align-items:start;margin-top:56px}
@@ -154,15 +226,27 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
 @media (max-width:560px){ol.steps{padding-left:44px}ol.steps::before{left:13px}
   ol.steps .disc{left:-44px;width:27px;height:27px;font-size:13px}}
 
-/* the evidence run: the bars, and the two drafts quoted beside them */
-.evid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:22px;align-items:start}
-@media (max-width:620px){.evid{grid-template-columns:minmax(0,1fr);gap:18px}}
+/* the evidence run: the bars, and the two drafts quoted beside them. The tally is set
+   in text rather than a scaled drawing, so its small lines stay 14px at every width,
+   and the quotes sit beside it only where the box is wide enough to hold a draft line
+   whole; inside the 640px column they follow it. */
+#evidence .fig{container-type:inline-size}
+.evid{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;align-items:start}
+@container (min-width:700px){.evid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}}
+.ev-runs p{margin:0}
+.ev-t{font-size:16px;font-weight:700;line-height:1.3;color:var(--ink)}
+.ev-s{font-size:14px;line-height:1.45;color:var(--ink-soft)}
+.ev-n{margin-top:8px!important;font-size:14px;font-weight:700;line-height:1.4;color:var(--red)}
+.ev-second{margin-top:16px!important;padding-top:16px;border-top:1px solid var(--rule)}
+.ev-bar{height:22px;margin-top:8px}
+.ev-full{background:var(--red)}
+.ev-none{border:1px solid var(--rule-strong);border-left:3px solid var(--mason)}
 .quote{margin:0 0 14px}
 .quote:last-child{margin-bottom:0}
 .quote .who2{margin:0 0 5px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
   font-weight:700;color:var(--ink-soft)}
 .quote blockquote{margin:0;padding:0 0 0 12px;border-left:2px solid var(--rule-strong);
-  font-family:var(--mono);font-size:11.5px;line-height:1.55;color:var(--ink);
+  font-family:var(--mono);font-size:13px;line-height:1.55;color:var(--ink);
   overflow-wrap:break-word}
 .quote.bad blockquote{border-left-color:var(--red)}
 .quote.good blockquote{border-left-color:var(--mason)}
@@ -210,7 +294,7 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
         <rect x="882.5" y="16.5" width="237" height="220" rx="14"/>
       </g>
       <rect x="588.5" y="16.5" width="237" height="220" rx="14" fill="none" stroke="var(--mason)" stroke-width="2"/>
-      <g fill="var(--mason)" font-size="36" font-weight="700">
+      <g fill="var(--mason)" font-size="32" font-weight="700">
         <text x="28" y="100">Ledger</text><text x="322" y="100">AI draft</text>
         <text x="616" y="100">Second Pass</text><text x="910" y="100">Sign-off</text>
       </g>
@@ -226,7 +310,7 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
         <line x1="838" y1="128" x2="865" y2="128"/><polygon points="876,128 864,122 864,134" stroke="none"/>
       </g>
     </svg>
-    <svg class="narrow" viewBox="0 0 340 560" role="img" aria-label="Flow: the ledger goes to an AI draft, the draft goes through the Second Pass, and the Second Pass goes to sign-off.">
+    <svg class="narrow" viewBox="0 0 340 563" role="img" aria-label="Flow: the ledger goes to an AI draft, the draft goes through the Second Pass, and the Second Pass goes to sign-off.">
       <g fill="none" stroke="var(--rule-strong)" stroke-width="1">
         <rect x="0.5" y="0.5" width="339" height="116" rx="12"/>
         <rect x="0.5" y="148.5" width="339" height="116" rx="12"/>
@@ -275,30 +359,85 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
     <div class="strip">
 
       <figure class="shot">
-        <img src="screenshots/review/strip-01-checker-empty.png" width="1280" height="960" loading="lazy" decoding="async" alt="The checker before a run: a pane for the ledger, a pane for the memo, the two threshold floors, and an empty result area.">
+        <div class="viz" role="img" aria-label="Drawn from the checker with the Halyard sample loaded. The ledger pane lists accounts 4200 Freight billed to customers, 186,000 in May and 121,000 in June, 5100 Inbound freight, 214,000 and 287,800, and 6100 Fleet fuel, 96,400 and 91,200. The memo pane holds the drafted sentence: Freight billed to customers fell from $186,000 to $121,000, a decrease of $6,500 and 3.5 percent.">
+          <div class="m-panes">
+            <div>
+              <span class="m-lbl">1. Ledger</span>
+              <div class="m-box m-led">
+                <div><span class="m-a">4200</span><span class="nm">Freight billed to customers</span><span class="v"><span>186,000</span><span>121,000</span></span></div>
+                <div><span class="m-a">5100</span><span class="nm">Inbound freight</span><span class="v"><span>214,000</span><span>287,800</span></span></div>
+                <div><span class="m-a">6100</span><span class="nm">Fleet fuel</span><span class="v"><span>96,400</span><span>91,200</span></span></div>
+              </div>
+            </div>
+            <div>
+              <span class="m-lbl">2. Memo, the drafted commentary</span>
+              <div class="m-box">1. Freight billed to customers fell from $186,000 to $121,000, a decrease of $6,500 and 3.5 percent&hellip;</div>
+            </div>
+          </div>
+        </div>
         <figcaption class="body"><span class="n">01</span>
           <p>Paste the ledger and the memo beside it.</p>
         </figcaption>
       </figure>
 
       <figure class="shot">
-        <img src="screenshots/review/strip-02-checker-results.png" width="1280" height="960" loading="lazy" decoding="async" alt="The checker results: a coverage bar, counts for checked within scope, needs review, not checked and failed, and the results table under them.">
+        <div class="viz" role="img" aria-label="Drawn from the checker's run on the Halyard sample. A coverage bar in green, black and red over four counts: 4 checked within scope, 5 need review, 0 not checked and 3 failed. Under them one failed finding: sentence 1 gives $6,500 as the movement on 4200 Freight billed to customers, and the ledger's movement is minus $65,000.">
+          <p class="m-cov">Coverage</p>
+          <div class="m-bar"><i class="m-g" style="flex:4"></i><i class="m-k" style="flex:5"></i><i class="m-r" style="flex:3"></i></div>
+          <div class="m-counts">
+            <div class="m-count"><b class="m-pass">&#10003; 4</b><span>Checked within scope</span></div>
+            <div class="m-count"><b>&#9632; 5</b><span>Needs review</span></div>
+            <div class="m-count"><b class="m-soft">&#9675; 0</b><span>Not checked</span></div>
+            <div class="m-count"><b class="m-fail">&times; 3</b><span>Failed</span></div>
+          </div>
+          <div class="m-box m-find">
+            <span class="m-st m-fail">Failed</span>
+            Sentence 1 gives $6,500 as the movement on 4200 Freight billed to customers, and the ledger&rsquo;s movement is -$65,000.
+          </div>
+        </div>
         <figcaption class="body"><span class="n">02</span>
-          <p>Four checks run and print a status for every sentence and every account.</p>
+          <p>Four checks run, and the checker prints a status for every sentence it recognizes and says what it could not read.</p>
         </figcaption>
       </figure>
 
       <figure class="shot">
-        <img src="screenshots/review/strip-03-drill-card.png" width="1120" height="840" loading="lazy" decoding="async" alt="A drill card: account 4200, the May and June balances, the change in red, and a link to the full ledger.">
+        <div class="viz" role="img" aria-label="Drawn from the drill. Under Your read, before any AI draft, the chip for 4200 Freight billed to customers is tapped and 5100 Inbound freight is not. Below it the card for account 4200 Freight billed to customers: May $186,000, June $121,000, and the change of ($65,000) in red, over the two calls, Let it stand and Flag it.">
+          <span class="m-lbl">Your read, before any AI draft</span>
+          <div class="m-chips"><span class="m-chip on">4200 Freight billed to customers</span><span class="m-chip">5100 Inbound freight</span></div>
+          <div class="m-box">
+            <p class="m-acct"><span class="m-a">4200</span>Freight billed to customers</p>
+            <div class="m-figs">
+              <div><span>May</span><b>$186,000</b></div>
+              <div><span>June</span><b>$121,000</b></div>
+              <div><span>Change</span><b class="m-fail">($65,000)</b></div>
+            </div>
+            <div class="m-calls"><span class="m-call">Let it stand</span><span class="m-call">Flag it</span></div>
+          </div>
+        </div>
         <figcaption class="body"><span class="n">03</span>
           <p>You read the ledger and mark what needs a second look before any AI draft appears. Then the drill puts one account in front of you.</p>
         </figcaption>
       </figure>
 
       <figure class="shot">
-        <img src="screenshots/review/strip-04-drill-end.png" width="1120" height="840" loading="lazy" decoding="async" alt="The end screen: the rank, the codename, right call twelve of fourteen and right reason two of fourteen.">
+        <div class="viz" role="img" aria-label="Drawn from the drill's round two results. Line 1, Dental supplies and lab fees, account 5210: agrees with the key, reason does not agree, you flagged it, basis figure does not tie and no source on file. Line 2, Hygienist wages, account 6110: agrees with the key, reason agrees, you let it stand, basis the figure and reason hold. Under them the Save my record button.">
+          <span class="m-lbl">Round two, all five</span>
+          <div class="m-box m-rec">
+            <div>
+              <p class="ln">Line 1, Dental supplies and lab fees, account 5210</p>
+              <p class="tags"><span class="m-st m-pass">Agrees with the key</span><span class="m-st m-fail">Reason does not agree</span></p>
+              <p class="bs">You flagged it. Basis: figure does not tie; no source on file.</p>
+            </div>
+            <div>
+              <p class="ln">Line 2, Hygienist wages, account 6110</p>
+              <p class="tags"><span class="m-st m-pass">Agrees with the key</span><span class="m-st m-pass">Reason agrees</span></p>
+              <p class="bs">You let it stand. Basis: the figure and reason hold.</p>
+            </div>
+          </div>
+          <span class="m-save">Save my record</span>
+        </div>
         <figcaption class="body"><span class="n">04</span>
-          <p>The record keeps every call and its basis.</p>
+          <p>The drill scores each call and its basis separately, and the record you keep holds every call with its basis.</p>
         </figcaption>
       </figure>
 
@@ -371,7 +510,7 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
             </g>
           </svg>
           <svg class="narrow" viewBox="0 0 340 376" role="img" aria-label="Six error types. The checker tests four where it recognizes the claim: arithmetic, wrong direction, silence over the threshold, and a figure that does not tie to the line it names. Two are left to a reviewer to sign: unsupported driver and timing.">
-            <text x="0" y="14" fill="var(--ink-soft)" font-size="13" font-weight="700" letter-spacing="1.4">THE CHECKER TESTS FOUR</text>
+            <text x="0" y="16" fill="var(--ink-soft)" font-size="16" font-weight="700" letter-spacing="1.2">THE CHECKER TESTS FOUR</text>
             <g fill="var(--ink)" font-size="20">
               <text x="26" y="62">Arithmetic</text><text x="26" y="102">Wrong direction</text>
               <text x="26" y="142">Silence over the threshold</text><text x="26" y="182">A figure off its line</text>
@@ -381,7 +520,7 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
               <rect x="0" y="134" width="14" height="2"/><rect x="0" y="174" width="14" height="2"/>
             </g>
             <line x1="0" y1="216" x2="340" y2="216" stroke="var(--rule)" stroke-width="1"/>
-            <text x="0" y="254" fill="var(--ink-soft)" font-size="13" font-weight="700" letter-spacing="1.4">A REVIEWER SIGNS TWO</text>
+            <text x="0" y="256" fill="var(--ink-soft)" font-size="16" font-weight="700" letter-spacing="1.2">A REVIEWER SIGNS TWO</text>
             <g fill="var(--ink)" font-size="20">
               <text x="26" y="302">Unsupported driver</text><text x="26" y="342">Timing</text>
             </g>
@@ -412,24 +551,16 @@ ol.steps span.t{display:block;font-size:16.5px;color:var(--ink-soft);line-height
         <figure class="fig">
           <div class="evid">
             <div>
-              <svg viewBox="0 0 330 214" role="img" aria-label="Two runs against the same Halyard ledger, both drafted in the session that built the exercise. The blind draft gave a reason for all fourteen accounts and none has a source on file: 26 causes, 1 cause ruled out, 1 forecast. The Prompt 1 draft wrote seven lines with 0 unsupported claims, and every reason reads no source on file.">
-                <text x="0" y="13" fill="var(--ink)" font-size="15" font-weight="700">Blind run</text>
-                <text x="0" y="34" fill="var(--ink-soft)" font-size="13">14 accounts, a reason for every one</text>
-                <g>
-                  <rect x="0" y="44" width="330" height="22" fill="var(--red)"/>
-                </g>
-                <text x="0" y="84" fill="var(--red)" font-size="13" font-weight="700">14 with no source on file</text>
-                <text x="0" y="102" fill="var(--ink-soft)" font-size="13">26 causes, 1 cause ruled out, 1 forecast</text>
-
-                <line x1="0" y1="124" x2="330" y2="124" stroke="var(--rule)" stroke-width="1"/>
-
-                <text x="0" y="152" fill="var(--ink)" font-size="15" font-weight="700">Prompt 1 run</text>
-                <text x="0" y="173" fill="var(--ink-soft)" font-size="13">7 lines, 0 unsupported claims</text>
-                <g>
-                  <rect x="0.5" y="183.5" width="329" height="21" fill="none" stroke="var(--rule-strong)"/>
-                  <rect x="0" y="183" width="3" height="22" fill="var(--mason)"/>
-                </g>
-              </svg>
+              <div class="ev-runs" role="img" aria-label="Two runs against the same Halyard ledger, both drafted in the session that built the exercise. The blind draft gave a reason for all fourteen accounts and none has a source on file: 26 causes, 1 cause ruled out, 1 forecast. The Prompt 1 draft wrote seven lines with 0 unsupported claims, and every reason reads no source on file.">
+                <p class="ev-t">Blind run</p>
+                <p class="ev-s">14 accounts, a reason for every one</p>
+                <div class="ev-bar ev-full"></div>
+                <p class="ev-n">14 with no source on file</p>
+                <p class="ev-s">26 causes, 1 cause ruled out, 1 forecast</p>
+                <p class="ev-t ev-second">Prompt 1 run</p>
+                <p class="ev-s">7 lines, 0 unsupported claims</p>
+                <div class="ev-bar ev-none"></div>
+              </div>
               <p class="counts2">On Halyard the 13 September checker read 30 sentences in the blind draft and
               failed 2, both in the summary paragraph, where it tied correct subtotals to a single
               account. Under Prompt 1 it read 8 and failed none.</p>
