@@ -4,242 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#005239">
-<title>Second Pass: the entry in one page</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Second Pass: this page has moved</title>
+<meta name="description" content="An earlier draft of the Second Pass entry page, retired. The current page is review.html.">
+<link rel="canonical" href="https://fiscalpatriots.github.io/beat-the-machine/review.html">
+<meta name="robots" content="noindex, follow">
+<meta http-equiv="refresh" content="0; url=review.html">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/second-pass.css">
 <style>
-/* George Mason Green and George Mason Gold, from brand.gmu.edu/brand-guide/brand-colors.
-   Contrast on the #f6f3ec ground, WCAG 2.1:
-     #1a1a1a body text     15.4:1
-     #005239 Mason green    8.4:1   headings, links, pull quote
-     #5f6368 soft ink       5.3:1   captions, table head, footer
-   Gold #ffc733 carries no text except the section numerals, which repeat
-   the order the headings already give; the numerals are set in the deeper
-   #e0ac00 so they stay visible on paper. */
-:root{
-  --mason:#005239;
-  --mason-deep:#003527;
-  --gold:#ffc733;
-  --gold-ink:#e0ac00;
-  --ink:#1a1a1a;
-  --ink-soft:#5f6368;
-  --paper:#f6f3ec;
-  --card:#ffffff;
-  --line:#d7cfbe;
-  --gut:24px;
-}
-@media (max-width:520px){:root{--gut:20px}}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;overflow-x:hidden}
-body{
-  background:var(--paper);
-  color:var(--ink);
-  font:18px/1.55 Figtree,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  -webkit-font-smoothing:antialiased;
-}
-img{max-width:100%}
-a{color:var(--mason);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.16em}
-a:hover{color:var(--mason-deep);text-decoration-thickness:2px}
-
-#page{max-width:928px;margin:0 auto;padding:0 var(--gut) 72px}
-
-/* masthead */
-.masthead{padding:34px 0 0}
-.masthead .inst{font-size:13px;letter-spacing:.11em;text-transform:uppercase;font-weight:600;color:var(--mason)}
-.masthead .coll{font-size:13px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-soft);margin-top:3px}
-.masthead hr{border:0;border-top:3px solid var(--gold);margin:16px 0 0}
-
-.titleblock{padding:30px 0 34px;max-width:680px}
-.byline{margin:0 0 10px;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
-h1{margin:0;font-size:42px;line-height:1.12;letter-spacing:-.02em;color:var(--mason);font-weight:700}
-.standfirst{margin:14px 0 0;font-size:20px;line-height:1.5;color:var(--ink)}
-@media (max-width:640px){h1{font-size:32px}.standfirst{font-size:18px}}
-
-/* the four artefacts along the top */
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:0 0 64px}
-@media (max-width:620px){.grid{grid-template-columns:minmax(0,1fr)}}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;
-  box-shadow:0 10px 28px rgba(0,53,39,.10);display:flex;flex-direction:column}
-.card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:top center;
-  background:var(--paper);border-bottom:1px solid var(--line)}
-.card .body{padding:20px 22px 22px;display:flex;flex-direction:column;flex:1}
-.card h2{margin:0 0 8px;font-size:20px;line-height:1.25;color:var(--mason);font-weight:700}
-.card p{margin:0 0 18px;font-size:16px;line-height:1.5;flex:1}
-.btn{display:block;text-align:center;text-decoration:none;background:var(--mason);color:#fff;
-  border-radius:10px;padding:12px 14px;font-size:16px;font-weight:600}
-.btn:hover{background:var(--mason-deep);color:#fff;text-decoration:none}
-
-/* the report: one measure, sections divided by space */
-.doc{max-width:680px}
-.doc section{margin:0 0 48px}
-.doc section:last-of-type{margin-bottom:0}
-h3{margin:0 0 16px;font-size:28px;line-height:1.2;letter-spacing:-.015em;color:var(--ink);font-weight:600}
-h3 .n{color:var(--gold-ink);font-size:19px;font-weight:700;font-variant-numeric:tabular-nums;
-  letter-spacing:.02em;margin-right:16px;vertical-align:2px}
-@media (max-width:640px){h3{font-size:24px}h3 .n{margin-right:12px;font-size:17px}}
-.doc p{margin:0 0 18px}
-.doc p:last-child{margin-bottom:0}
-.muted{color:var(--ink-soft)}
-.note{font-size:15.5px;line-height:1.55;color:var(--ink-soft)}
-
-/* the pull quote, used once */
-.pull{margin:40px 0;padding:26px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.pull p{margin:0;font-size:25px;line-height:1.35;color:var(--mason);font-weight:600;letter-spacing:-.01em}
-.pull .src{display:block;margin-top:14px;font-size:14.5px;line-height:1.5;color:var(--ink-soft);font-weight:400;letter-spacing:0}
-@media (max-width:640px){.pull p{font-size:21px}}
-
-/* governance, a table with a top and a bottom rule */
-table.gov{width:100%;border-collapse:collapse;margin:6px 0 18px;
-  font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
-table.gov thead th{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);
-  font-weight:600;text-align:left;padding:0 16px 12px 0;border-top:1.5px solid var(--ink);padding-top:12px}
-table.gov tbody td{padding:14px 16px 14px 0;font-size:17px;line-height:1.5;vertical-align:top}
-table.gov tbody tr:last-child td{border-bottom:1.5px solid var(--ink);padding-bottom:16px}
-table.gov td:first-child,table.gov th:first-child{width:150px;font-weight:600;padding-right:24px}
-@media (max-width:560px){
-  table.gov td:first-child,table.gov th:first-child{width:104px;padding-right:14px}
-  table.gov tbody td{font-size:16px}
-}
-
-/* scope, a definition list with the term on its own line */
-dl.scope{margin:0}
-dl.scope dt{font-weight:700;margin:0 0 4px}
-dl.scope dd{margin:0 0 20px}
-dl.scope dd:last-child{margin-bottom:0}
-
-footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);
-  font-size:14.5px;line-height:1.6;color:var(--ink-soft);max-width:680px}
+/* An earlier design variant of the entry page lived at this address. It carried claims the
+   third independent review of 13 September 2026 found the build does not support, so the file
+   now only points at the current page. The file stays so an old link does not end on a 404. */
+#page{max-width:640px;margin:0 auto;padding:var(--s8) var(--gut) var(--s9)}
+#page p{color:var(--ink-soft)}
 </style>
 </head>
 <body>
-<div id="page">
-
-  <div class="masthead">
-    <div class="inst">George Mason University</div>
-    <div class="coll">Costello College of Business</div>
-    <hr>
-  </div>
-
-  <div class="titleblock">
-    <p class="byline">Khaled Alkurd</p>
-    <h1>Second Pass: the entry in one page</h1>
-    <p class="standfirst">A checker, a protocol, an evidence log and a ten-minute drill for the review that comes after an AI assistant drafts the memo.</p>
-  </div>
-
-  <div class="grid">
-
-    <div class="card">
-      <img src="screenshots/review/01-checker-halyard.png" alt="The Second Pass Checker with the Halyard sample run: fourteen lines checked, two arithmetic fails, one direction fail, one silent line.">
-      <div class="body">
-        <h2>The checker</h2>
-        <p>Paste in the ledger and the memo, and four checks run in the browser: every figure recomputed, every direction word tested against the sign, and every account over the threshold that no sentence mentions.</p>
-        <a class="btn" href="checker.html">Run the checker</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="screenshots/review/02-game-card.png" alt="A game card: account 7400, inventory shrink adjustment, up $2,500, with nothing said about it in the commentary.">
-      <div class="body">
-        <h2>The drill</h2>
-        <p>Fourteen ledger lines from a made-up company, eight of them carrying a planted problem and six of them clean, where flagging all fourteen scores eight because a false flag costs what a miss costs.</p>
-        <a class="btn" href="index.html">Play the ten-minute drill</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="screenshots/review/04-protocol-page-1.png" alt="The first page of the Second Pass Review Protocol, showing the control objective, the scope and the threshold.">
-      <div class="body">
-        <h2>The protocol</h2>
-        <p>One page that fixes the scope and the threshold, puts the four mechanical checks ahead of the two questions only a person can answer, and names who may sign.</p>
-        <a class="btn" href="Second-Pass-Review-Protocol.pdf">Read the protocol</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="screenshots/review/03-game-end-screen.png" alt="The end screen of the drill: rank, caught, let stand correctly, false flags, lap time and the fresh case score.">
-      <div class="body">
-        <h2>The record</h2>
-        <p>Every run records the call, the basis behind it, the error type and the time, and the participant downloads that record as a file before deciding whether to send it anywhere.</p>
-        <a class="btn" href="https://github.com/fiscalpatriots/beat-the-machine" target="_blank" rel="noopener">Code and pilot records</a>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="doc">
-
-    <section>
-      <h3><span class="n">01</span>The problem</h3>
-      <p>In diligence rooms this summer I read management's explanations of the variances and tested them against the ledger, and the ones that read best were not always the ones that tied. In the home services company my family runs I have watched the close memo get signed at the end of a long day. An AI assistant drafts those explanations now, and they read better than what a person writes on deadline.</p>
-      <p>The case in the drill is built rather than captured. Halyard is a made-up company, and its June memo reads the way an AI assistant writes close commentary, with the mistakes they make planted line by line so they can be taught and scored.</p>
-
-      <blockquote class="pull">
-        <p>It gave a cause for all fourteen accounts and the ledger supports none of them. The machine does not get the arithmetic wrong, it gets the causes wrong, fluently.
-        <span class="src">From the live drafting run against the same ledger, 13 September 2026, recorded in the evidence note.</span></p>
-      </blockquote>
-
-      <p>That run is why the control sits where it does. A reviewer who spends the hour recomputing variances is checking the part that was already right, and the reasons are where the work is.</p>
-    </section>
-
-    <section>
-      <h3><span class="n">02</span>Governance</h3>
-      <p>The objective is one sentence. No commentary drafted with AI assistance is released until a second pass ties every figure to the ledger and a named reviewer signs the two judgment questions.</p>
-      <table class="gov">
-        <thead>
-          <tr><th scope="col">Step</th><th scope="col">What is checked</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Recompute</td><td>Every figure in the memo is recomputed from the prior and the current balance.</td></tr>
-          <tr><td>Direction</td><td>Every direction word is tested against the sign of the movement it describes.</td></tr>
-          <tr><td>Coverage</td><td>Every account clearing both legs of the threshold is listed, and the ones no sentence mentions are named.</td></tr>
-          <tr><td>Sign-off</td><td>A named reviewer signs the two questions a machine cannot answer, whether a document on file supports the driver in the sentence and whether that driver belongs to the period.</td></tr>
-        </tbody>
-      </table>
-      <p>Two people may not sign the second pass. The preparer may not, and neither may anyone who prompted the assistant for this memo.</p>
-    </section>
-
-    <section>
-      <h3><span class="n">03</span>Outcomes</h3>
-      <p><span class="muted">[Findings, updated when the response export is run: players by organization, catch rate by error type, false-flag rate, median lap time, fresh-case transfer rate.]</span> The figures are computed from the response sheet by the script in the repository, one row per run, and the four columns the form still marks required are dropped rather than averaged.</p>
-    </section>
-
-    <section>
-      <h3><span class="n">04</span>Scope</h3>
-      <dl class="scope">
-        <dt>Does</dt>
-        <dd>Today it runs the four mechanical checks, holds the evidence log, trains the two judgment calls, and records the basis a player gives for every one of the nineteen calls.</dd>
-        <dt>Does not yet</dt>
-        <dd>It does not yet judge a driver or a timing claim, match an account loosely, or read Excel. Four questions the form still marks required are not asked, and the drill posts a placeholder value each question accepts rather than anything that should be read as an answer.</dd>
-        <dt>Next</dt>
-        <dd>Next is the Excel template, and the checks running on every AI memo before a reviewer reads it.</dd>
-      </dl>
-    </section>
-
-    <section>
-      <h3><span class="n">05</span>Replicability</h3>
-      <p>The checker reads an account, a prior balance and a current balance, which is what every general ledger exports, so the ledger it runs on can come from any system.</p>
-      <p>The protocol governs the memo rather than the model that drafted it, so the tool can change without the control changing.</p>
-      <p>The threshold is a setting rather than a rule of the page, and the drill runs inside a chapter meeting in ten minutes, which is what makes it something a small firm can adopt without standing up a project.</p>
-    </section>
-
-    <section>
-      <h3><span class="n">06</span>Versions and record</h3>
-      <p>The product is second-pass-drill 1.3.0. The two cases are versioned outside the page, as halyard-v3 for the fourteen practice lines and brightwater-v3 for the five assessment lines, both dated 13 September 2026, and the data notice is notice-2026-09-13. All four stamps travel with every response and with every local record, responses scored against different case versions are never pooled, and responses scored against the retired brightwater-v2 measured a different thing and are excluded.</p>
-      <p>Round one is practice with a reveal after every call. Round two is scored at the end, with no reveal between lines, no running score, no streak and no progress track, only a count of five, and every verdict arrives together once the fifth call is in. Every figure in that memo ties and every direction word is right, so the five lines test causal evidence and nothing else.</p>
-      <p>A data notice is read before anything is collected, and it says plainly that a codename is a pseudonym and not anonymity. Completion never depends on sharing, because the run ends with a local record the participant downloads and a separate voluntary send. A sent run is labelled sent but unconfirmed, since the receiver returns no receipt this page can read, and a retry reuses the same attempt identifier so it cannot double count.</p>
-      <p>Every sentence a card shows under On file is a verified case assumption. A document that is not listed was not supplied, which is not a claim that it does not exist, so an unsupported sentence is not established rather than false, and a flag can be correct while the reason behind it is wrong.</p>
-      <p class="note">How the case and its memo were made is written down in <a href="PROVENANCE.md">PROVENANCE.md</a>, the case files and what changed in them are in <a href="cases/README.md">cases/README.md</a>, and the live drafting run against the same ledger is recorded in <a href="evidence/EVIDENCE-NOTE.md">what a real AI draft got wrong</a>.</p>
-    </section>
-
-  </div>
-
-  <footer>
-    Second Pass drill 1.3.0. Cases halyard-v3 and brightwater-v3, data notice notice-2026-09-13.
-    Built by Khaled Alkurd, George Mason University, Costello College of Business.
-    A drill for the AI-native accounting student.
-  </footer>
-
-</div>
+<main id="page">
+  <h1>This page has moved</h1>
+  <p>This address held an earlier draft of the Second Pass entry page, and that draft is retired.
+  The current page is <a href="review.html">the entry in one page</a>.</p>
+</main>
 </body>
 </html>
