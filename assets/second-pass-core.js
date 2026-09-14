@@ -14,8 +14,11 @@
    whole, and fails on any difference. The reader was brought back into line with
    the page on 13 September 2026, after the third review, when the page's no-change,
    multiplier, fraction and digit rules were added, and again the same night when
-   the clearance grammar (section 6) was added to both. A fix made in one copy has
-   to be made in the other before the suite passes.
+   the clearance grammar (section 6) was added to both, and again on 14 September
+   2026, when the sentence splitter learned abbreviations, size words started to hold
+   inside reasons, periods were bound to the column labels and an account name at the
+   end of a sentence started to bind. A fix made in one copy has to be made in the
+   other before the suite passes.
 
    Nothing in this file touches the DOM, reads a global or stores anything.
    ============================================================================= */
@@ -337,6 +340,46 @@
   }
 
   /* ============================================================ memo */
+  /* Where a full stop does not end a sentence, read the way a person reads it. After
+     one of SENT_ABBR it never does ("vs.", "approx.", "e.g.", "Rs.", "Accum."). After
+     one of SENT_ABBR_NUM, a company suffix or an initialism ("No.", "p.", "Inc.",
+     "U.S.") it does not before a figure, a number sign or a dollar sign, and it does
+     before a capital, except that an initialism runs on into a word in capitals
+     ("U.S. GAAP"). After a month or a day ("Sept.") it does not before a digit.
+     After a title ("Dr.", "St.") or a single capital initial ("J.") it does not
+     before a capitalized name, unless the word in front is capitalized itself ("Oak
+     St.", "Schedule A."). After a figure it does before a capital or a dollar sign
+     ("$57,900. An annual renewal"), and before a digit too unless the figure is one
+     to three bare digits ("rose 7. 5 percent"), which is a decimal broken by a space
+     and is read as an unparsed span. A question mark or an exclamation mark always
+     does. */
+  var SENT_ABBR=/^(?:vs|cf|viz|e\.g|i\.e|eg|ie|approx|appx|apprx|gen|incl|excl|esp|resp|abt|avg|mr|mrs|ms|messrs|mmes|prof|rs|accum|accr|amort|depr|equip|misc|maint|insur|ins|exp|exps|prepd|pybl|rcvbl|recv|reimb|alloc|advtg|mktg|mgmt|govt|util|utils|svc|svcs|profl|purch|sched|invt|whse|mfg|intl|natl|assn|assoc|dept|liab|oper|empl|contr|transp|acct|accts)$/i;
+  var SENT_ABBR_NUM=/^(?:no|nos|nr|num|est|ca|fr|sfr|kr|rp|ref|fig|figs|pp|para|paras|sec|secs|sch|exh|art|vol|ch|inv|invs|ste|apt|bldg|rm|fl|min|max|tot|bal|yr|yrs|mo|mos|wk|wks|qtr|qtrs|pt|pts|inc|co|cos|corp|ltd|llc|llp|lp|plc|bros|etc|jr|sr)$/i;
+  var SENT_ABBR_DATE=/^(?:jan|feb|mar|apr|jun|jul|aug|sep|sept|oct|nov|dec|mon|tue|tues|wed|thu|thur|thurs|fri|sat|sun)$/i;
+  var SENT_TITLE=/^(?:dr|st|mt|ft|capt|lt|sgt|gov|hon)$/i;
+  /* how many characters, from the stop at i, end a sentence there: the stop and any
+     closing quote or bracket after it, or 0 where the sentence runs on */
+  function sentenceBreak(line,i){
+    var ch=line.charAt(i),m=line.slice(i+1).match(/^(["')\]]*)\s+["“(\[]?([A-Z0-9$#])([A-Za-z]*)/);
+    if(!m)return 0;
+    var len=1+m[1].length;
+    if(ch!==".")return len;
+    var cap=/[A-Z]/.test(m[2]),digit=/[0-9#]/.test(m[2]),caps=cap&&/^[A-Z]+$/.test(m[3]);
+    var before=line.slice(0,i),tw=before.match(/(\S*)$/)[1],tok=tw.replace(/^["'(\[“]+/,"");
+    var pm=before.slice(0,before.length-tw.length).match(/(\S+)\s*$/);
+    var prev=pm?pm[1].replace(/^["'(\[“]+|[,;:"')\]]+$/g,""):"";
+    if(!tok)return len;
+    if(/[0-9]$/.test(tok))return digit&&/^[-+]?[0-9]{1,3}$/.test(tok)?0:len;
+    if(tok==="v")return 0;
+    if(/^[A-Z]$/.test(tok))return cap&&(!prev||/^[a-z][a-z'-]*$/.test(prev)||/^[A-Z]\.$/.test(prev))?0:len;
+    if(/^[a-z]$/.test(tok))return (tok==="p"||tok==="c")&&digit?0:len;
+    if(SENT_ABBR.test(tok))return 0;
+    if(SENT_TITLE.test(tok))return cap&&(!prev||/^[a-z][a-z'-]*$/.test(prev))?0:len;
+    if(SENT_ABBR_DATE.test(tok))return digit?0:len;
+    if(/^(?:[A-Za-z]\.)+[A-Za-z]$/.test(tok))return cap&&!caps?len:0;
+    if(SENT_ABBR_NUM.test(tok))return cap?len:0;
+    return len;
+  }
   function splitSentences(text){
     var out=[],lines=deSmart(text).split(/\r?\n/),auto=0;
     lines.forEach(function(raw){
@@ -364,14 +407,15 @@
         return;
       }
       /* no label: split the line into sentences */
-      var buf="",i,ch,nx;
+      var buf="",i,ch,k;
       for(i=0;i<line.length;i++){
         ch=line.charAt(i);buf+=ch;
         if(ch==="."||ch==="!"||ch==="?"){
-          nx=line.slice(i+1);
-          if(/^\s+["“(]?[A-Z0-9]/.test(nx)&&!/\d\.$/.test(buf)){
+          k=sentenceBreak(line,i);
+          if(k){
+            buf+=line.slice(i+1,i+k);
             out.push({label:null,text:buf.replace(/^\s+|\s+$/g,"").replace(/\s+/g," ")});
-            buf="";i++;
+            buf="";i+=k;
             while(i<line.length&&/\s/.test(line.charAt(i)))i++;
             i--;
           }
@@ -414,8 +458,8 @@
   var CUR_NAT="canadian|australian|new\\s+zealand|hong\\s+kong|singapore(?:an)?|taiwan(?:ese)?|jamaican|bahamian|barbadian|bermudian|belize|fijian|namibian|liberian|zimbabwean|guyanese|trinidad(?:ian)?|east\\s+caribbean|brunei|mexican|chilean|colombian|argentine|argentinian|philippine|cuban|dominican|uruguayan|brazilian|swiss|japanese|chinese|indian|british|european|russian|korean|turkish|israeli|swedish|norwegian|danish|polish|czech|hungarian|south\\s+african|egyptian|nigerian|kenyan|thai|indonesian|malaysian|vietnamese|pakistani|saudi|emirati|qatari|kuwaiti|u\\.?\\s?s\\.?|american|foreign|local";
   var CUR_CODES="EUR|GBP|JPY|CHF|CAD|AUD|NZD|CNY|CNH|RMB|INR|MXN|BRL|ZAR|SEK|NOK|DKK|SGD|HKD|USD|KRW|RUB|ILS|PLN|CZK|HUF|THB|IDR|MYR|VND|PKR|SAR|AED|QAR|KWD|EGP|NGN|KES|TWD|ARS|CLP|COP|UAH|RON|BGN|ISK|LKR|BDT|JOD|BHD|OMR|XAF|XOF|XCD|JMD|TTD|BBD|BSD|BZD|BMD|FJD|GHS|BTC|ETH";
   var CUR_SYM="\\u00A2-\\u00A5\\u058F\\u060B\\u09F2\\u09F3\\u0AF1\\u0BF9\\u0E3F\\u17DB\\u20A0-\\u20CF\\uFDFC\\uFE69\\uFFE0\\uFFE1\\uFFE5\\uFFE6";
-  var FOREIGN_BEFORE=new RegExp("(?:["+CUR_SYM+"]|\\b(?:"+CUR_CODES+")\\s)\\s*$","i");
-  var FOREIGN_AFTER=new RegExp("^\\s*(?:["+CUR_SYM+"]|\\b(?:"+CUR_CODES+")\\b|\\(\\s*(?:"+CUR_CODES+")\\s*\\)|(?:in\\s+)?(?:(?:"+CUR_NAT+")\\s+)?(?:"+CUR_NAMES+")\\b|(?:in\\s+)?(?:"+CUR_NAT+")\\s+(?:dollars?|currenc(?:y|ies)|terms)\\b|in\\s+(?:a\\s+)?(?:another|other)\\s+currenc(?:y|ies)\\b)","i");
+  var FOREIGN_BEFORE=new RegExp("(?:["+CUR_SYM+"]|\\b(?:"+CUR_CODES+")\\s|\\b(?:Rs|Rp|RM|S?Fr|kr)\\.?\\s?|(?:K[čČ]|Z[łŁ])\\s?)\\s*$","i");
+  var FOREIGN_AFTER=new RegExp("^\\s*(?:["+CUR_SYM+"]|K[čČ]|Z[łŁ]|\\b(?:kr|S?Fr)\\b\\.?|\\b(?:"+CUR_CODES+")\\b|\\(\\s*(?:"+CUR_CODES+")\\s*\\)|(?:in\\s+)?(?:(?:"+CUR_NAT+")\\s+)?(?:"+CUR_NAMES+")\\b|(?:in\\s+)?(?:"+CUR_NAT+")\\s+(?:dollars?|currenc(?:y|ies)|terms)\\b|in\\s+(?:a\\s+)?(?:another|other)\\s+currenc(?:y|ies)\\b)","i");
   /* a debit or credit marker written after a figure. Which way it points depends on
      the account's normal balance, which a two column ledger does not say. */
   var DRCR_AFTER=/^\s*\(?(?:CR|DR|Cr|Dr|cr|dr)\)?(?![A-Za-z])\.?|^\s*(?:credit|debit)s?\b/;
@@ -423,6 +467,7 @@
      cent", "XXX percent", "thousands of dollars" */
   var ORPHAN_UNIT=/\b(?:percent|per\s?cent|pct|pour\s+cent|por\s+ciento|prozent|percentage\s+points?|basis\s+points?|bps|dollars)\b|%/gi;
   var ORPHAN_NOT=/^\s*(?:legs?|tests?|thresholds?|floors?|rules?|changes?|columns?|figures?|terms?)\b/i;
+  var PCT_POINTS_AFTER=/^[\s-]*(?:pts?|points?)\b/i;
   var SCALE_AFTER=/^[\s-]*(?:thousands?|millions?|billions?|trillions?|mn|bn|basis\s+points?|bps|bp|times|multiples?|per\s?mille|permille|per\s+thousand|points?|pts)\b/i;
   var NUMWORD_RE=/\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion)(?:[\s-]+(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion))*\b/gi;
   var UNIT_AFTER=/^[\s,-]*(?:percent|per\s?cent|pct|%|percentage\s+points?|basis\s+points?|points?|dollars?)\b/i;
@@ -525,6 +570,7 @@
      letters or underscores ("9e1", "30_000"). */
   var ODD_NUM_RE=/(?:[0-9][0-9.,]*)?[٠-٩۰-۹०-९০-৯๐-๙０-９²³¹⁰⁴-⁹₀-₉¼-¾⅐-⅞①-⑳‰‱％]+(?:[0-9.,٫٬]*[0-9٠-٩۰-۹०-९০-৯๐-๙０-９²³¹⁰⁴-⁹₀-₉¼-¾⅐-⅞①-⑳‰‱％])*/g;
   var MULT_RE=/\b(?:doubl(?:e|ed|es|ing)|tripl(?:e|ed|es|ing)|quadrupl(?:e|ed|es|ing)|quintupl(?:e|ed|es|ing)|halv(?:e|ed|es|ing)|twice|thrice|(?:two|three|four|five|six|seven|eight|nine|ten|twenty|hundred|[0-9]+(?:\.[0-9]+)?)[\s-]?fold|(?:one|two|three|four|five|six|seven|eight|nine|ten)\s+times|[0-9]+(?:\.[0-9]+)?\s?[x×])(?![A-Za-z0-9])/gi;
+  var BROKEN_DEC=/(^|[^0-9,.$])([-+]?[0-9]{1,3}\.\s+[0-9]+(?:\.[0-9]+)?)/g;
   var MULT_NOT=/^[\s-]+(?:entry|entries|count|counted|counting|check|checked|checking)\b/i;
   /* numerals from a writing system the reader does not parse: "三十" */
   var CJK_NUM_RE=/[〇零一二三四五六七八九十百千万萬億亿兆]+/g;
@@ -573,6 +619,12 @@
   while((m=CJK_NUM_RE.exec(text))!==null){
     out.push({raw:m[0],at:m.index,end:m.index+m[0].length,why:"a numeral the checker does not read"});
   }
+    /* a decimal broken by a space, "rose 7. 5 percent": the splitter keeps it in one
+       sentence, and what it says is not read either way */
+    BROKEN_DEC.lastIndex=0;
+    while((m=BROKEN_DEC.exec(text))!==null){
+      out.push({raw:m[2],at:m.index+m[1].length,end:m.index+m[0].length,why:"a number broken by a space at its decimal point"});
+    }
   MULT_RE.lastIndex=0;
     while((m=MULT_RE.exec(text))!==null){
       if(/^doubl/i.test(m[0])&&MULT_NOT.test(text.slice(m.index+m[0].length)))continue;
@@ -647,7 +699,7 @@
       }
       var r=roleOf(text,{at:i,end:j,unit:"dollars"},0,[]);
       var digits=m[0].replace(/[^0-9]/g,""),whole=/^[0-9]+$/.test(m[0]),n=parseInt(digits,10),cw;
-      if(/^(19|20)[0-9]{2}$/.test(m[0])&&(r.role==="unknown"||YEAR_BEFORE.test(before))){
+      if(/^(19|20)[0-9]{2}$/.test(m[0])&&(r.role==="unknown"||YEAR_BEFORE.test(before))&&!LABEL_BEFORE.test(before)){
         outside.push({raw:m[0],at:i,end:j,kind:"year"});continue;
       }
       if(skipNums&&skipNums[m[0]]&&r.role==="unknown")continue;
@@ -786,6 +838,11 @@
         rejected.push({raw:f.raw+mm[0],at:f.at,end:f.end+mm[0].length,
           why:"a scale word the checker does not carry"});return;
       }
+      /* "30 pct pts" is a change in points, written with a percent word in front */
+      if(f.unit==="percent"&&(mm=after.match(PCT_POINTS_AFTER))){
+        rejected.push({raw:f.raw+mm[0],at:f.at,end:f.end+mm[0].length,
+          why:"a unit the checker does not read"});return;
+      }
       keep.push(f);
     });
     keep.forEach(function(f,i){
@@ -820,7 +877,7 @@
       var oa=m.index,ob=oa+m[0].length,hit=false;
       for(k=0;k<told.length;k++)if(oa<told[k][1]&&ob>told[k][0]){hit=true;break;}
       for(k=0;k<keep.length;k++)if(keep[k].unit==="dollars"&&m[0].toLowerCase()==="dollars"&&keep[k].end<=oa&&!/S/.test(text.slice(keep[k].end,oa)))hit=true;
-    if(hit||ORPHAN_NOT.test(text.slice(ob)))continue;
+      if(hit||ORPHAN_NOT.test(text.slice(ob)))continue;
       rejected.push({raw:m[0],at:oa,end:ob,why:"a unit with no figure the checker reads in front of it"});
     }
     rejected.sort(function(a,b){return a.at-b.at;});
@@ -916,7 +973,9 @@
   function acctId(a){return (a.num?a.num+" ":"")+a.name;}
 
   function bindSentence(s,accounts,figs,spent){
-    var text=" "+s.text.toLowerCase().replace(/[^a-z0-9$.,%\s-]/g," ").replace(/\s+/g," ")+" ";
+    /* a stop or a comma that is not inside a figure is punctuation, so an account
+       name binds wherever it stands, at the end of a sentence or before a comma */
+    var text=" "+s.text.toLowerCase().replace(/[^a-z0-9$.,%\s-]/g," ").replace(/[.,](?![0-9])/g," ").replace(/\s+/g," ")+" ";
     var tokens={};
     s.text.toLowerCase().replace(/[a-z]+/g,function(w){tokens[w]=1;return w;});
     var byNum=[],byName=[],byWord=[],byFig=[],conflicts=[],i;
@@ -1308,7 +1367,7 @@
      written in. A comma inside a figure is part of the figure, never a break, and
      the guard character is one character wide so every offset still lines up. */
   var RE_COARSE=/[,;:]|\bso\b|\bbecause\b|\bwhile\b|\bbut\b|\bas\b|\bafter\b|\bbefore\b|\bwhich\b|\bthough\b/gi;
-  var RE_FINE=/[,;:]|\bso\b|\bbecause\b|\bwhile\b|\bwhereas\b|\bbut\b|\bas\b|\bafter\b|\bbefore\b|\bwhich\b|\bthough\b|\band\b|\bor\b|\bagainst\b|\bversus\b|\bcompared\s+(?:with|to)\b|\brelative\s+to\b|\boffset\s+by\b|\balongside\b|\brather\s+than\b|\binstead\s+of\b/gi;
+  var RE_FINE=/[,;]|\bso\b|\bbecause\b|\bwhile\b|\bwhereas\b|\bbut\b|\bas\b|\bafter\b|\bbefore\b|\bwhich\b|\bthough\b|\band\b|\bor\b|\bagainst\b|\bversus\b|\bcompared\s+(?:with|to)\b|\brelative\s+to\b|\boffset\s+by\b|\balongside\b|\brather\s+than\b|\binstead\s+of\b/gi;
   function spansOf(txt,re){
     var t=String(txt).replace(/(\d),(\d)/g,"$1\u0001$2"),out=[],last=0,m;
     re.lastIndex=0;
@@ -1334,6 +1393,8 @@
   var NEG_RE=/\b(?:did|do|does|was|were|is|are|has|have|had|could|would|will|can|shall|should|may|might|must)\s+not\b|\bnot\b|\bnever\b|\bnor\b|\bneither\b|\bwithout\b|\brather\s+than\b|\binstead\s+of\b|\bfailed\s+to\b|\bno\b|n['\u2019]t\b/i;
   function negationIn(t){
     var x=" "+String(t).replace(/\s+/g," ")+" ";
+    /* "No. 4471" and "no. 12" number a lease or an invoice; they negate nothing */
+    x=x.replace(/\bno\.\s*#?\s*(?=[0-9])|\bno\s*#\s*(?=[0-9])/gi," ");
     x=x.replace(/\bno\s+(?:commentary|drivers?|explanations?|reasons?|comments?|such)\b/gi," ")
        .replace(/\bno\s+(?:change|movement)\b/gi," ")
        .replace(/\bneither\s+leg\b/gi," ")
@@ -1373,13 +1434,28 @@
      Anything left holds a sentence that would otherwise be checked at needs review,
      and the reviewer's queue names the word. */
   var MONTHS_CAP="Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|June?|July?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?";
-  var ACCEPT_FRAME=/\b(?:chang(?:ed|es)|mov(?:ed|es)|shift(?:ed|s)|swung|var(?:ied|ies))\s+by(?=\s*[-+($0-9])|\bmonth[\s-]+(?:over|on)[\s-]+month\b|\b(?:mom|m\/m)\b|\b(?:over|from|versus|vs\.?|against|compared\s+(?:with|to)|relative\s+to|than)\s+(?:(?:in|at)\s+)?(?:the\s+)?(?:(?:prior|previous|preceding|last)\s+month|month\s+(?:before|earlier))\b|\brather\s+than\b|\binstead\s+of\b/gi;
+  var ACCEPT_FRAME=/\b(?:chang(?:ed|es)|mov(?:ed|es)|shift(?:ed|s)|swung|var(?:ied|ies))\s+by(?=\s*[-+($0-9])|\brather\s+than\b|\binstead\s+of\b/gi;
+  /* the month-over-month frame, read and taken out only where the column labels show
+     two months in a row; anywhere else the month in it holds the sentence */
+  var MONTH_FRAME=/\bmonth[\s-]+(?:over|on)[\s-]+month\b|\b(?:mom|m\/m)\b|\b(?:over|from|versus|vs\.?|against|compared\s+(?:with|to)|relative\s+to|than)\s+(?:(?:in|at)\s+)?(?:the\s+)?(?:(?:prior|previous|preceding|last)\s+month|month\s+(?:before|earlier))\b/gi;
+  var MONTH_WORD=/\bmonth(?:ly|[\s-]?end|[\s-]to[\s-]month)?\b|\b(?:mom|m\/m)\b/gi;
   var FRAME_MONTH=new RegExp("\\b(?:over|from|versus|vs\\.?|against|compared\\s+(?:with|to)|relative\\s+to|than(?:\\s+(?:in|at))?)\\s+(?:the\\s+)?("+MONTHS_CAP+")\\.?(?:,?\\s+((?:19|20)[0-9]{2}))?\\b","gi");
   var MONTH_TOKEN=new RegExp("\\b(?:"+MONTHS_CAP+")\\b","g");
   var REASON_AT=/\b(?:because|as|since|on|upon|due\s+to|owing\s+to|thanks\s+to|driven\s+by|caused\s+by|led\s+by|reflecting|reflects|following|after|with|amid|whereas|while)\b|\(/gi;
   var REASON_BACK=/^\s*(?:it|its|this|these|that|the\s+(?:line|account|balance|movement|increase|decrease|rise|fall|change|variance|figure|amount|total))\b/i;
   var CONTRACT_NOUN=/^[\s-]+(?:terms?|leases?|contracts?|renewals?|subscriptions?|agreements?|plans?|polic(?:y|ies)|licen[cs]es?|commitments?|prepayments?|retainers?|warrant(?:y|ies)|deals?|bonus(?:es)?|fees?|dues|audits?|reviews?|minimums?|maintenance|rent|charges?|invoices?|billing)\b/i;
   var NUMW_RISK="two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|[0-9]+|several|few|past|last|prior|previous|recent|coming|next|many";
+  /* Size. The ledger holds no documented threshold for "sharply", "slightly" or
+     "surged", and the commentary rule decides whether a line owes an explanation,
+     not whether a movement is sharp, so a size word attached to a movement is never
+     tested: it holds the sentence wherever it stands, inside a reason too. An adverb
+     of degree or a movement verb that carries its own size always counts as
+     attached; an adjective counts where it stands in front of a movement noun, or
+     after one with "is", "was" or the like between. */
+  var SIZE_ADV="sharply|significantly|substantially|materially|markedly|dramatically|considerably|notably|modestly|slightly|marginally|moderately|steeply|strongly|weakly|hugely|massively|meaningfully|negligibly|immaterially|greatly|appreciably|noticeably|drastically|radically|severely|heavily|mildly|somewhat|disproportionately|unusually|abnormally|briskly|robustly|solidly|sizeably|sizably|rapidly|swiftly|quickly|suddenly|abruptly|gradually|slowly|sluggishly|exceptionally|extraordinarily|explosively|tremendously|enormously|vastly|remarkably";
+  var SIZE_VERBS="soar(?:ed|s|ing)?|sky-?rocket(?:ed|s|ing)?|rocket(?:ed|ing)|spik(?:ed|ing)|spikes?|surg(?:ed|ing)|surges?|jump(?:ed|s|ing)?|leap(?:t|ed|s|ing)?|balloon(?:ed|ing)|explod(?:ed|es|ing)|mushroom(?:ed|ing)|swell(?:ed|ing)|swollen|plung(?:ed|ing)|plunges?|plummet(?:ed|s|ing)?|tumbl(?:ed|ing)|tumbles?|slump(?:ed|s|ing)?|crash(?:ed|ing)|collaps(?:ed|ing)|collapses?|crater(?:ed|ing)|nose-?div(?:ed|es|ing)|dip(?:ped|s|ping)?|eas(?:ed|ing)|soften(?:ed|s|ing)?|slipp(?:ed|ing)|nudg(?:ed|es|ing)|tick(?:ed|s|ing)?\\s+(?:up|down|higher|lower)|upticks?|downticks?|edg(?:ed|es|ing)\\s+(?:up|down|higher|lower)|inch(?:ed|es|ing)\\s+(?:up|down|higher|lower)|crept|bump(?:ed|s)?\\s+up";
+  var SIZE_ADJ="sharp(?:er|est)?|significant|substantial|material|marked|dramatic|considerable|notable|modest|slight(?:er|est)?|marginal|moderate|steep(?:er|est)?|strong(?:er|est)?|weak(?:er|est)?|huge|big(?:ger|gest)?|large(?:r|st)?|small(?:er|est)?|sizeable|sizable|major|minor|massive|meaningful|negligible|immaterial|tiny|great(?:er|est)?|appreciable|noticeable|drastic|radical|severe|heav(?:y|ier|iest)|mild(?:er|est)?|outsized?|disproportionate|unusual|abnormal|brisk|robust|solid|health(?:y|ier)|rapid|swift|quick(?:er|est)?|sudden|abrupt|gradual|slow(?:er|est)?|fast(?:er|est)?|sluggish|heft(?:y|ier)|exceptional|extraordinary|unprecedented|explosive|tremendous|enormous|vast|remarkable|pronounced|impressive|stellar|dismal|tepid|meag(?:re|er)|slim|thin";
+  var MOVE_NOUNS="increases?|decreases?|rises?|falls?|drops?|gains?|growth|declines?|movements?|moves?|changes?|variances?|swings?|reductions?|upticks?|downticks?|jumps?|spikes?|surges?|climbs?|dips?|slides?|slumps?|loss(?:es)?|improvements?|deterioration|shifts?|expansion|contraction|rebounds?|recover(?:y|ies)|erosion|pick-?ups?|ramp-?ups?|ramps?|step-?ups?|overruns?|shortfalls?|differences?|gaps?|deltas?|turnarounds?|upturns?|downturns?|accelerations?|decelerations?|uplifts?|boosts?|bumps?|hikes?|cuts?|mark-?downs?|write-?downs?|write-?offs?|additions?|savings?|compression|widening|narrowing|run-?ups?|outflows?|inflows?|escalations?|increments?|slowdowns?|pullbacks?|upswings?|downswings?|drop-?offs?|fall-?offs?|inflation|deflation|rall(?:y|ies)";
   /* The lexicon. cat names the class, strong says it holds wherever it stands, cs
      makes the match case sensitive, not skips a match the words after it explain,
      and contract skips a period word that only gives the length of a lease, a
@@ -1389,9 +1465,9 @@
      why:"names a currency, and the checker reads dollars only"},
     {cat:"currency",strong:1,re:"\\b(?:(?:"+CUR_NAT+")\\s+(?:dollars?|currenc(?:y|ies)|terms)|currenc(?:y|ies)|exchange\\s+rates?|foreign\\s+exchange|forex|fx)\\b",
      why:"names a currency or an exchange rate, and the checker reads dollars only"},
-    {cat:"currency",strong:1,cs:1,re:"\\b(?:"+CUR_CODES+"|Rs)\\b",
+    {cat:"currency",strong:1,cs:1,re:"\\b(?:"+CUR_CODES+"|Rs|Rp|RM|SFr|kr)\\b",
      why:"is a currency code, and the checker reads dollars only"},
-    {cat:"currency",strong:1,re:"["+CUR_SYM+"]",
+    {cat:"currency",strong:1,re:"["+CUR_SYM+"]|K[čČ]|Z[łŁ]",
      why:"is a currency symbol other than the dollar sign"},
     {cat:"sign",strong:1,cs:1,re:"\\b(?:CR|DR|Cr|Dr)\\b\\.?",not:"^\\.?\\s+[A-Z][a-z]",
      why:"marks a debit or a credit, and which way that points depends on the account"},
@@ -1403,7 +1479,7 @@
      why:"is a sign standing apart from the figure, which the checker does not read as the figure's sign"},
     {cat:"sign",strong:0,re:"\\b(?:plus|minus|negative|positive)\\b",
      why:"gives a sign in words the checker does not read"},
-    {cat:"other account",strong:1,re:"\\b(?:so|as|neither|nor)\\s+(?:did|was|were|has|have|had|does|do|is|are)\\b|\\blikewise\\b|\\bsimilarly\\b|\\bthe\\s+same\\s+(?:was|is|holds?|goes|applies)\\b|\\brespectively\\b|\\bthe\\s+rest\\b|\\bfollow(?:ed|s)\\s+suit\\b|\\bin\\s+(?:tandem|step|kind)\\b|\\b(?:other|another|every|all)\\s+(?:other\\s+)?(?:lines?|accounts?)\\b",
+    {cat:"other account",strong:1,re:"\\b(?:so|as|neither|nor)\\s+(?:did|was|were|has|have|had|does|do|is|are)\\b|\\blikewise\\b|\\bsimilarly\\b|\\bthe\\s+same\\s+(?:was|is|holds?|goes|applies)\\b|\\brespectively\\b|\\bthe\\s+rest\\b|\\bfollow(?:ed|s)\\s+suit\\b|\\bin\\s+(?:tandem|step|kind)\\b|\\block-?step\\b|\\b(?:other|another|every|all)\\s+(?:other\\s+)?(?:lines?|accounts?)\\b|\\b(?:both|each|all)\\s+(?:of\\s+the\\s+)?(?:lines?|accounts?)\\b",
      why:"carries the claim over to another line without a figure the checker can tie"},
     {cat:"other account",strong:0,re:"\\b(?:also|too|as\\s+well|together|alongside|equally)\\b",
      why:"points at another line the claim does not name"},
@@ -1411,22 +1487,30 @@
      why:"claims no change or sameness in a word the checker does not test"},
     {cat:"sameness",strong:0,re:"\\b(?:virtually|essentially|practically|basically|broadly|largely|roughly\\s+(?:flat|unchanged)|maintain(?:ed|s|ing)?|sustain(?:ed|s|ing)?|persist(?:ed|s|ing)?|remain(?:ed|s|ing)?|stay(?:ed|s|ing)?|held|hold(?:s|ing)?|kept|keep(?:s|ing)?|continu(?:ed|es|ing)|still|mirror(?:ed|s|ing)?|track(?:ed|s|ing)?)\\b",
      why:"claims no change or sameness in a word the checker does not test"},
-    {cat:"comparison",strong:1,re:"\\b(?:compared\\s+(?:with|to)|in\\s+comparison|comparison|versus|vs\\.?|against|relative\\s+to|than|outpac(?:ed|es|ing)|outperform(?:ed|s|ing)?|underperform(?:ed|s|ing)?|outstrip(?:ped|s|ping)?|exceed(?:ed|s|ing)?|ahead\\s+of|behind|short\\s+of|shy\\s+of|lag(?:ged|s|ging)?)\\b",
+    {cat:"comparison",strong:1,re:"\\b(?:compared\\s+(?:with|to)|in\\s+comparison|comparison|versus|vs\\.?|against|relative\\s+to|than|outpac(?:ed|es|ing)|outperform(?:ed|s|ing)?|underperform(?:ed|s|ing)?|outstrip(?:ped|s|ping)?|exceed(?:ed|s|ing)?|ahead\\s+of|behind|short\\s+of|shy\\s+of|lag(?:ged|s|ging)?|eclips(?:e|ed|es|ing)|dwarf(?:ed|s|ing)?|overt(?:ook|ake|aken|akes|aking)|outgr(?:ew|ow|own|ows|owing)|outr(?:an|un|uns|unning)|trail(?:ed|s)|unlike|vis-?[aàÀ]-?vis)\\b",
      why:"compares with something other than the ledger's two columns"},
-    {cat:"comparison",strong:0,re:"\\b(?:largest|biggest|smallest|highest|lowest|greatest|most|least|record|top|rank(?:ed|s|ing)?|leading|all[\\s-]time)\\b",
+    {cat:"comparison",strong:0,re:"\\b(?:largest|biggest|smallest|highest|lowest|greatest|most|least|record|top|rank(?:ed|s|ing)?|leading|all[\\s-]time)\\b|\\b(?:new|multi-?year)\\s+(?:highs?|lows?|peaks?)\\b|\\b(?:a|its|the)\\s+(?:high|low|peak|trough)\\b|\\btroughs?\\b",
      why:"ranks this line against others, which the checker does not test"},
-    {cat:"basis",strong:1,re:"\\b(?:budget(?:s|ed|ary)?|forecast(?:s|ed|ing)?|re-?forecast(?:s|ed)?|outlook|guidance|projection(?:s)?|projected|pro[\\s-]?forma|run[\\s-]rate|annuali[sz](?:ed|es|ing|ation)|like[\\s-]for[\\s-]like|constant\\s+currency|normali[sz](?:ed|ation)|seasonally[\\s-]adjusted|basis|cumulative(?:ly)?|to[\\s-]date|so\\s+far|since\\s+inception|as\\s+(?:expected|planned|anticipated))\\b|\\b(?:versus|vs\\.?|against|to|over|under|above|below|ahead\\s+of|behind|compared\\s+(?:with|to)|relative\\s+to|than|of|from|missed|beat|met)\\s+(?:the\\s+)?(?:plan|target|estimates?|expectations?|consensus|goal)\\b",
+    {cat:"basis",strong:1,re:"\\b(?:budget(?:s|ed|ary)?|forecast(?:s|ed|ing)?|re-?forecast(?:s|ed)?|outlook|guidance|projection(?:s)?|projected|pro[\\s-]?forma|run[\\s-]rate|annuali[sz](?:ed|es|ing|ation)|like[\\s-]for[\\s-]like|constant\\s+currency|normali[sz](?:ed|ation)|seasonally[\\s-]adjusted|basis|cumulative(?:ly)?|to[\\s-]date|so\\s+far|since\\s+inception|as\\s+(?:expected|planned|anticipated))\\b|\\b(?:versus|vs\\.?|against|to|over|under|above|below|ahead\\s+of|behind|compared\\s+(?:with|to)|relative\\s+to|than|of|from|missed|beat|met)\\s+(?:the\\s+)?(?:plan|target|estimates?|expectations?|consensus|goal)\\b|\\b(?:above|below|over|under|than|versus|vs\\.?|against|beat|missed|exceed(?:ed|s|ing)?|trail(?:ed|s|ing)|lagg(?:ed|ing))\\s+(?:the\\s+|its\\s+|their\\s+|our\\s+|an?\\s+)?(?:[A-Za-z-]+\\s+){0,2}?(?:average|mean|median|norms?|benchmarks?|peers?|peer\\s+group|index|indices|industry|market|levels?|baseline|trend(?:line)?)\\b",
      why:"measures against a budget, a plan, a forecast or a basis the ledger does not hold"},
     {cat:"period",strong:1,cs:1,re:"\\b(?:PY|LY|CY|PYTD|CYTD|YTD|QTD|MTD|TTM|LTM|YoY|QoQ)\\b",
      why:"frames the claim on a period other than the ledger's two columns"},
-    {cat:"period",strong:1,contract:1,re:"\\b(?:yrs?|years?(?:[\\s-]+(?:over|on|to)[\\s-]+(?:year|date))?|yearly|annual(?:ly)?|per\\s+annum|yoy|y\\/y|ytd|qtd|mtd|(?:month|quarter)[\\s-]to[\\s-]date|fiscal|fy\\s?[0-9]{0,4}|quarter(?:s|ly)?(?:[\\s-]end)?|q[1-4]|[1-4]q|h[12]|[12]h|half[\\s-]year(?:ly)?|semi[\\s-]?annual(?:ly)?|biannual(?:ly)?|trailing|ttm|ltm|ntm|rolling|twelve[\\s-]months?|12[\\s-]months?|months|weeks|quarters|(?:"+NUMW_RISK+")[\\s-]+(?:days|months|weeks|quarters|years)|(?:consecutive|straight|successive|running)\\s+(?:months?|quarters?|years?|periods?)|in\\s+a\\s+row|week[\\s-]over[\\s-]week|wow|qoq|q\\/q|sequential(?:ly)?|(?:prior|previous|comparable|same)\\s+periods?|period[\\s-]over[\\s-]period|since\\s+(?:the\\s+)?(?:start|beginning|end|last|jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?|(?:19|20)[0-9]{2}|q[1-4]|year|quarter)|(?:last|next|this|previous|prior)\\s+(?:jan(?:uary)?|feb(?:ruary)?|march|apr(?:il)?|may|june|july|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?|spring|summer|autumn|fall|winter)|(?:over|during|through(?:out)?|across|since)\\s+(?:the\\s+)?(?:spring|summer|autumn|fall|winter|holidays?|season)|(?:first|second|1st|2nd)\\s+half(?!\\s+of\\s+(?:the\\s+)?(?:month|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec))|ago|per\\s+(?:month|week|day|quarter))\\b",
+    {cat:"period",strong:1,contract:1,re:"\\b(?:yrs?|years?(?:[\\s-]+(?:over|on|to)[\\s-]+(?:year|date))?|yearly|annual(?:ly)?|per\\s+annum|yoy|y\\/y|ytd|qtd|mtd|(?:month|quarter)[\\s-]to[\\s-]date|fiscal|fy\\s?[0-9]{0,4}|quarter(?:s|ly)?(?:[\\s-]end)?|q[1-4]|[1-4]q|h[12]|[12]h|half[\\s-]year(?:ly)?|semi[\\s-]?annual(?:ly)?|biannual(?:ly)?|trailing|ttm|ltm|ntm|rolling|twelve[\\s-]months?|12[\\s-]months?|months|weeks|quarters|(?:"+NUMW_RISK+")[\\s-]+(?:days|months|weeks|quarters|years)|(?:consecutive|straight|successive|running)\\s+(?:months?|quarters?|years?|periods?)|in\\s+a\\s+row|week[\\s-]over[\\s-]week|wow|qoq|q\\/q|sequential(?:ly)?|(?:prior|previous|comparable|same)\\s+periods?|period[\\s-]over[\\s-]period|since\\s+(?:the\\s+)?(?:start|beginning|end|last|jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?|(?:19|20)[0-9]{2}|q[1-4]|year|quarter)|(?:last|next|this|previous|prior)\\s+(?:jan(?:uary)?|feb(?:ruary)?|march|apr(?:il)?|may|june|july|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?|spring|summer|autumn|fall|winter)|(?:over|during|through(?:out)?|across|since)\\s+(?:the\\s+)?(?:spring|summer|autumn|fall|winter|holidays?|season)|(?:first|second|1st|2nd)\\s+half(?!\\s+of\\s+(?:the\\s+)?(?:month|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec))|ago|per\\s+(?:month|week|day|quarter)|today|yesterday|tomorrow|tonight|overnight|intra-?(?:day|month|quarter|year)|(?:this|last|next)\\s+week)\\b",
      why:"frames the claim on a period other than the ledger's two columns"},
-    {cat:"period",strong:0,re:"\\b(?:weeks?|days?|week[\\s-]?end|spring|summer|autumn|winter|seasonal(?:ly)?|holidays?|through|thru|until|till|during|(?:first|second|third|fourth|last|final|early|late|mid)[\\s-]+(?:half|week|weeks|days?|part|month)|mid[\\s-]?month|early|late|recent(?:ly)?|previously|historically|typically|usually|normally|again|yet)\\b",
+    {cat:"period",strong:0,re:"\\b(?:weeks?|days?|weekly|daily|hourly|nightly|week[\\s-]?end|spring|summer|autumn|winter|seasonal(?:ly)?|holidays?|through|thru|until|till|during|(?:first|second|third|fourth|last|final|early|late|mid)[\\s-]+(?:half|week|weeks|days?|part|month)|mid[\\s-]?month|early|late|recent(?:ly)?|previously|historically|typically|usually|normally|again|yet)\\b",
      why:"places the claim inside or across a period the ledger's two columns do not show"},
-    {cat:"change",strong:0,re:"\\b(?:soar(?:ed|s|ing)?|spik(?:ed|es|ing)|spike|leap(?:t|ed|s|ing)?|rocket(?:ed|s|ing)?|balloon(?:ed|s|ing)?|swell(?:ed|s|ing)?|swollen|plung(?:ed|es|ing)|plunge|plummet(?:ed|s|ing)?|tumbl(?:ed|es|ing)|tumble|slump(?:ed|s|ing)?|sank|sink(?:s|ing)?|sunk|dip(?:ped|s|ping)?|contract(?:ed|ing)|shrunk|shrink(?:s|ing)?|dwindl(?:ed|es|ing)|collaps(?:ed|es|ing)|crater(?:ed|s|ing)|retreat(?:ed|s|ing)|rebound(?:ed|s|ing)?|recover(?:ed|s|ing)|bounc(?:ed|es|ing)|revers(?:ed|es|ing)|swung|swing(?:s|ing)|flipp(?:ed|ing)|mov(?:ed|es|ing)|move|shift(?:ed|s|ing)?|fluctuat(?:ed|es|ing|ions?)|var(?:ied|ies|ying)|widen(?:ed|s|ing)|narrow(?:ed|s|ing)|deepen(?:ed|s|ing)|improv(?:ed|es|ing|ements?)|worsen(?:ed|s|ing)|deteriorat(?:ed|es|ing|ion)|strengthen(?:ed|s|ing)|weaken(?:ed|s|ing)|peak(?:ed|s|ing)|bottom(?:ed|s|ing)|surpass(?:ed|es|ing)|escalat(?:ed|es|ing)|inflat(?:ed|es|ing)|deflat(?:ed|es|ing)|compress(?:ed|es|ing)|erod(?:ed|es|ing)|ramp(?:ed|s|ing)|decelerat(?:ed|es|ing)|slow(?:ed|s|ing)|tick(?:ed|s)\\s+(?:up|down)|edg(?:ed|es|ing)\\s+(?:up|down|higher|lower)|inch(?:ed|es|ing)\\s+(?:up|down|higher|lower)|crept|trend(?:ed|s|ing)?|went\\s+(?:up|down)|came\\s+(?:in|down)|pick(?:ed|s)\\s+up|chang(?:ed|es|ing)|climbing|follow(?:ed|s))\\b",
+    {cat:"change",strong:0,re:"\\b(?:sank|sink(?:s|ing)?|sunk|contract(?:ed|ing)|shrunk|shrink(?:s|ing)?|dwindl(?:ed|es|ing)|retreat(?:ed|s|ing)|rebound(?:ed|s|ing)?|recover(?:ed|s|ing)|bounc(?:ed|es|ing)|revers(?:ed|es|ing)|swung|swing(?:s|ing)|flipp(?:ed|ing)|mov(?:ed|es|ing)|move|shift(?:ed|s|ing)?|fluctuat(?:ed|es|ing|ions?)|var(?:ied|ies|ying)|widen(?:ed|s|ing)|narrow(?:ed|s|ing)|deepen(?:ed|s|ing)|improv(?:ed|es|ing|ements?)|worsen(?:ed|s|ing)|deteriorat(?:ed|es|ing|ion)|strengthen(?:ed|s|ing)|weaken(?:ed|s|ing)|peak(?:ed|s|ing)|bottom(?:ed|s|ing)|surpass(?:ed|es|ing)|escalat(?:ed|es|ing)|inflat(?:ed|es|ing)|deflat(?:ed|es|ing)|compress(?:ed|es|ing)|erod(?:ed|es|ing)|ramp(?:ed|s|ing)|decelerat(?:ed|es|ing)|slow(?:ed|s|ing)|trend(?:ed|s|ing)?|went\\s+(?:up|down)|came\\s+(?:in|down)|pick(?:ed|s)\\s+up|chang(?:ed|es|ing)|climbing|follow(?:ed|s))\\b",
      why:"describes a change in a word the checker does not test against the ledger"},
-    {cat:"change",strong:0,re:"\\b(?:sharp(?:ly)?|significant(?:ly)?|substantial(?:ly)?|material(?:ly)?|marked(?:ly)?|dramatic(?:ally)?|considerabl[ey]|notabl[ey]|modest(?:ly)?|slight(?:ly)?|marginal(?:ly)?|moderate(?:ly)?|steep(?:ly)?|strong(?:ly)?|weak(?:ly)?|huge(?:ly)?|big(?:ger)?|large(?:r)?|small(?:er)?|sizeabl[ey]|sizabl[ey]|major|minor|massive(?:ly)?|meaningful(?:ly)?|negligibl[ey]|immaterial(?:ly)?|tiny|great(?:ly|er)?|appreciabl[ey]|noticeabl[ey]|drastic(?:ally)?|radical(?:ly)?|severe(?:ly)?|heav(?:y|ily|ier)|mild(?:ly)?|somewhat|outsized|disproportionate(?:ly)?|unusual(?:ly)?|abnormal(?:ly)?|brisk(?:ly)?|robust(?:ly)?|solid(?:ly)?|healthy)\\b",
-     why:"sizes the movement in a word the checker does not test"},
+    {cat:"size",strong:1,re:"\\b(?:"+SIZE_ADV+")\\b|\\b(?:much|far|way|well|a\\s+lot|lots|a\\s+(?:bit|little|touch|tad|shade))\\s+(?:higher|lower|more|less|greater|smaller|larger|bigger|above|below|ahead|behind|up|down|faster|slower|stronger|weaker)\\b",
+     why:"sizes the movement, and no documented threshold says what that size is, so the checker cannot test it"},
+    {cat:"size",strong:1,re:"\\b(?:"+SIZE_VERBS+")\\b",
+     why:"gives the movement a size as well as a direction, and no documented threshold says what that size is, so the checker cannot test it"},
+    {cat:"size",strong:1,re:"\\b(?:"+SIZE_ADJ+")\\b(?=(?:[\\s-]+(?:[A-Za-z]+|\\$?[0-9][0-9,.]*%?)){0,2}[\\s-]+(?:"+MOVE_NOUNS+")\\b)",
+     why:"sizes the movement, and no documented threshold says what that size is, so the checker cannot test it"},
+    {cat:"size",strong:1,tail:1,re:"\\b(?:"+MOVE_NOUNS+")\\b(?:[\\s,-]+[A-Za-z0-9$][A-Za-z0-9$,.%'-]*){0,4}?[\\s,-]+(?:is|was|were|are|been|being|be|remains?|remained|looks?|looked|appears?|appeared|seems?|seemed|proved|proves|proven)(?:[\\s-]+(?:very|quite|fairly|relatively|rather|particularly|especially|extremely|exceptionally|unusually|not|so|too|less|more|most|least|also))?[\\s-]+("+SIZE_ADJ+")\\b",
+     why:"sizes the movement, and no documented threshold says what that size is, so the checker cannot test it"},
+    {cat:"size",strong:0,re:"\\b(?:"+SIZE_ADJ+")\\b",
+     why:"sizes something in a word the checker does not test"},
     {cat:"quantity",strong:0,re:"\\b(?:most(?:ly)?|main(?:ly)?|primar(?:y|ily)|partly|partial(?:ly)?|entire(?:ly)?|whol(?:e|ly)|full(?:y)?|sole(?:ly)?|chief(?:ly)?|predominant(?:ly)?|exclusive(?:ly)?|principal(?:ly)?|in\\s+part|in\\s+full|bulk|majority|minority|portion|share|offset(?:s|ting)?|net\\s+of|several|many|much|numerous|multiple|few|fewer|more|less|lesser|dozens?|hundreds|thousands|millions|billions|lots?|plenty|handful|countless|various|extra|additional|incremental|excess|surplus|shortfall|deficit|gap|difference|delta|spread|margin|ratio|rate|proportion|fraction)\\b",
      why:"is a quantity or a share in words the checker does not test"}
   ];
@@ -1434,7 +1518,7 @@
   function riskRx(){
     if(RISK_RX)return RISK_RX;
     RISK_RX=RISK_LEX.map(function(e){
-      return {cat:e.cat,strong:!!e.strong,contract:!!e.contract,why:e.why,
+      return {cat:e.cat,strong:!!e.strong,contract:!!e.contract,tail:!!e.tail,why:e.why,
               rx:new RegExp(e.re,e.cs?"g":"gi"),not:e.not?new RegExp(e.not):null};
     });
     return RISK_RX;
@@ -1447,6 +1531,16 @@
   function labelYear(l){
     var m=String(l==null?"":l).match(/\b(?:19|20)[0-9]{2}\b/);
     return m?parseInt(m[0],10):null;
+  }
+  /* whether the two column labels, prior then current, show two months in a row:
+     "May 2026" then "June 2026", "Dec" then "Jan", or "Prior month" then "This month" */
+  function labelsMonthly(cols){
+    var p=String(cols&&cols[0]!=null?cols[0]:""),c=String(cols&&cols[1]!=null?cols[1]:"");
+    if(/\bmonth\b/i.test(p)&&/\bmonth\b/i.test(c))return true;
+    var mp=labelMonth(p),mc=labelMonth(c),yp=labelYear(p),yc=labelYear(c);
+    if(mp===null||mc===null)return false;
+    if(yp!==null&&yc!==null)return yc*12+mc-(yp*12+mp)===1;
+    return (mc-mp+12)%12===1;
   }
   function riskTokens(s){
     var text=String(s.text),n=text.length,used=[],out=[],i,m,k;
@@ -1471,18 +1565,23 @@
       if(ws.length)eatRe(new RegExp("\\b"+ws.join("[^A-Za-z0-9]+")+"\\b","gi"));
       (a.words||[]).forEach(function(w){eatRe(new RegExp("\\b"+w+"\\b","gi"));});
     });
-    eatRe(new RegExp("\\b(?:"+UP.concat(DOWN).concat(Object.keys(MOVE_NOUN)).join("|")+")\\b","gi"));
+    /* a direction word that also gives the movement a size ("surged", "eased") is
+       tested for its direction and left for the size entry to read */
+    var sizeVerb=new RegExp("^(?:"+SIZE_VERBS+")$","i");
+    eatRe(new RegExp("\\b(?:"+UP.concat(DOWN).concat(Object.keys(MOVE_NOUN)).filter(function(w){return !sizeVerb.test(w);}).join("|")+")\\b","gi"));
     FLATW.forEach(function(w){eatRe(new RegExp("\\b"+w.replace(/ /g,"\\s+")+"\\b","gi"));});
     eatRe(new RegExp(STILL_FIG.source,"gi"));
     eatRe(ACCEPT_FRAME);
     var cols=(bound.length&&bound[0].cols)||[];
     var mp=labelMonth(cols[0]),mc=labelMonth(cols[1]),yp=labelYear(cols[0]),yc=labelYear(cols[1]);
+    var monthly=labelsMonthly(cols),nolab=mp===null&&mc===null;
+    if(monthly)eatRe(MONTH_FRAME);
     FRAME_MONTH.lastIndex=0;
     while((m=FRAME_MONTH.exec(text))!==null){
       if(!/^[A-Z]/.test(m[1]))continue;
       var fm=MONTHNUM[m[1].slice(0,3).toLowerCase()],fy=m[2]?parseInt(m[2],10):null;
-      var ok=mp!==null?(fm===mp&&(fy===null||fy===yp)):fy===null;
-      if(ok)eat(m.index,m.index+m[0].length);
+      if(mp!==null&&fm===mp&&(fy===null||fy===yp))eat(m.index,m.index+m[0].length);
+      else if(mc!==null&&fm===mc&&fm!==mp)add(m[0],m.index,"measures the change from the month the ledger's current column shows","period");
     }
     /* the claim runs to the first word that opens a reason after the last figure,
        passing over a reason that points straight back at the line */
@@ -1511,32 +1610,50 @@
         if(!e.strong&&a>=reasonAt)continue;
         if(e.not&&e.not.test(text.slice(b)))continue;
         if(e.contract&&CONTRACT_NOUN.test(text.slice(b)))continue;
-        add(m[0],a,e.why,e.cat);
+        if(e.tail&&m[1])add(m[1],b-m[1].length,e.why,e.cat);
+        else add(m[0],a,e.why,e.cat);
       }
     });
-    /* a month or a year the ledger's column labels contradict, and, where the labels
-       name no month, two months in the claim that are not neighbours */
-    var seen=[];
+    /* A period the sentence names is bound only by the ledger's column labels, and
+       wherever it stands in the sentence: a month or a date is bound by a column that
+       names that month, a year by a column that names that year, and the words
+       "month", "monthly" and "month-end" by columns that are two months in a row.
+       A ledger whose labels name no period binds none of them, and anything unbound
+       holds the sentence. */
     MONTH_TOKEN.lastIndex=0;
     while((m=MONTH_TOKEN.exec(text))!==null){
-      if(m.index>=reasonAt)continue;
+      if(used[m.index])continue;
       var tm=MONTHNUM[m[0].slice(0,3).toLowerCase()];
-      if(mp!==null&&mc!==null){
-        if(tm!==mp&&tm!==mc&&!used[m.index])add(m[0],m.index,"is neither of the two months the ledger compares","period");
-        continue;
+      if(tm===mp||tm===mc)continue;
+      add(m[0],m.index,nolab?"names a month, and the ledger's column labels name no month to tie it to":
+        "is neither of the two months the ledger compares","period");
+    }
+    (figs.outside||[]).forEach(function(o){
+      if(o.kind!=="date")return;
+      var dm=/^([0-9]{1,2})\s?\/\s?[0-9]{1,2}(?:\/[0-9]{2,4})?$/.exec(o.raw)||/^[0-9]{4}-([0-9]{2})-[0-9]{2}$/.exec(o.raw);
+      if(!dm)return;
+      var mo=parseInt(dm[1],10);
+      if(mo===mp||mo===mc)return;
+      add(o.raw,o.at,nolab?"is a date, and the ledger's column labels name no month to tie it to":
+        "is a date in neither of the two months the ledger compares","period");
+    });
+    if(!monthly){
+      MONTH_WORD.lastIndex=0;
+      while((m=MONTH_WORD.exec(text))!==null){
+        var wa=m.index,wb=wa+m[0].length,eaten=true;
+        for(k=wa;k<wb;k++)if(!used[k]){eaten=false;break;}
+        if(eaten||CONTRACT_NOUN.test(text.slice(wb)))continue;
+        add(m[0],wa,"frames the claim on a month, and the ledger's column labels do not show two months in a row","period");
       }
-      if(seen.length&&seen.indexOf(tm)<0&&!used[m.index]){
-        var d=Math.abs(tm-seen[0]);
-        if(seen.length>1||(d!==1&&d!==11))add(m[0],m.index,"with the other month named, spans more than the one month to month change the ledger holds","period");
-      }
-      if(seen.indexOf(tm)<0)seen.push(tm);
     }
     var yr=/\b(?:19|20)[0-9]{2}\b/g;
     while((m=yr.exec(text))!==null){
-      if(yp===null&&yc===null)break;
-      var y=parseInt(m[0],10);
-      if(y===yp||y===yc||inHeld(m.index,m.index+m[0].length))continue;
-      add(m[0],m.index,"is not the year of either column the ledger compares","period");
+      var y=parseInt(m[0],10),ya=m.index,yb=ya+m[0].length,asYear=false;
+      if(y===yp||y===yc||inHeld(ya,yb))continue;
+      (figs.outside||[]).forEach(function(o){if((o.kind==="year"||o.kind==="date")&&ya<o.end&&yb>o.at)asYear=true;});
+      if(!asYear&&used[ya])continue;
+      add(m[0],ya,yp===null&&yc===null?"names a year, and the ledger's column labels name no year to tie it to":
+        "is not the year of either column the ledger compares","period");
     }
     /* every account a sentence binds needs a claim of its own */
     if(bound.length>1){
@@ -1835,6 +1952,21 @@
     DRCR_AFTER: DRCR_AFTER,
     ORPHAN_UNIT: ORPHAN_UNIT,
     ORPHAN_NOT: ORPHAN_NOT,
-    CJK_NUM_RE: CJK_NUM_RE
+    CJK_NUM_RE: CJK_NUM_RE,
+    /* the splitter, the size entries and the period binding, added 14 September 2026 */
+    sentenceBreak: sentenceBreak,
+    labelsMonthly: labelsMonthly,
+    SENT_ABBR: SENT_ABBR,
+    SENT_ABBR_NUM: SENT_ABBR_NUM,
+    SENT_ABBR_DATE: SENT_ABBR_DATE,
+    SENT_TITLE: SENT_TITLE,
+    BROKEN_DEC: BROKEN_DEC,
+    PCT_POINTS_AFTER: PCT_POINTS_AFTER,
+    MONTH_FRAME: MONTH_FRAME,
+    MONTH_WORD: MONTH_WORD,
+    SIZE_ADV: SIZE_ADV,
+    SIZE_VERBS: SIZE_VERBS,
+    SIZE_ADJ: SIZE_ADJ,
+    MOVE_NOUNS: MOVE_NOUNS
   };
 })(typeof window !== "undefined" ? window : this);

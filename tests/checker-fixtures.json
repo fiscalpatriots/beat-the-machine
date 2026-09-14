@@ -839,8 +839,27 @@
         "get": "pageText",
         "op": "includes",
         "value": "Checked within scope"
+      },
+      {
+        "desc": "card 14 binds 7000 Depreciation, the account its sentence ends on, and is held",
+        "get": "status.14",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue asks which line $31,200 belongs to",
+        "get": "queue",
+        "op": "includes",
+        "value": "7000 Depreciation; 7100 Interest expense"
+      },
+      {
+        "desc": "the reviewer queue carries 17 items",
+        "get": "stats.queue",
+        "op": "eq",
+        "value": 17
       }
-    ]
+    ],
+    "note": "Card 14 moved from checked within scope to needs review on 14 September 2026 by lane F3, by the binding repair: \"that also sit in depreciation.\" ends on the name of 7000 Depreciation, which the binder now reads, so the sentence names two lines and $31,200 stands in a clause naming both. The case keys card 14 as an unsupported driver because depreciation did not move, so holding it is the right answer. The queue grows from 14 to 17: the binding conflict and the unresolved figure on card 14, and \"eased\" on card 3, a size verb in its reason. Card 3 was already failed and stays failed."
   },
   {
     "id": "T18b",
@@ -1025,6 +1044,63 @@
         "value": "$57.5k=dollars/absolute movement"
       }
     ]
+  },
+  {
+    "id": "T19b",
+    "name": "Ridgeline sample end to end",
+    "required": "The Ridgeline sample is a plain comma separated ledger with no header row. Every sentence is read against it as it stands.",
+    "sample": "ridgeline",
+    "expect": [
+      {
+        "desc": "three sentences",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 3
+      },
+      {
+        "desc": "five account rows",
+        "get": "stats.rowsUsed",
+        "op": "eq",
+        "value": 5
+      },
+      {
+        "desc": "T1 names July, which a ledger with no period labels cannot bind",
+        "get": "status.T1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the month",
+        "get": "queue",
+        "op": "includes",
+        "value": "“July”"
+      },
+      {
+        "desc": "T2 fails on direction",
+        "get": "status.T2",
+        "op": "eq",
+        "value": "failed"
+      },
+      {
+        "desc": "T3 fails on the change it claims",
+        "get": "status.T3",
+        "op": "eq",
+        "value": "failed"
+      },
+      {
+        "desc": "6700 Insurance is silent",
+        "get": "stats.silent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "four items in the reviewer queue",
+        "get": "stats.queue",
+        "op": "eq",
+        "value": 4
+      }
+    ],
+    "note": "Added on 14 September 2026 by lane F3. T1 moved from checked within scope to needs review by the period binding: \"on two new retainers that began in July\" names a month, and the ledger has no header row, so nothing ties July to either column. A month is bound wherever it stands, in a reason too. The queue grows from 3 to 4 with that item."
   },
   {
     "id": "T20",
@@ -2734,7 +2810,7 @@
   },
   {
     "id": "P39",
-    "name": "third review probe P39, a year after \"in\" is a date, checked",
+    "name": "third review probe P39, a year after \"in\" is a date, held where the column labels name no year",
     "required": "Probe P39 from the third independent review of 13 September 2026, entered exactly as that bundle supplied it.",
     "inputs": {
       "ledger": "6100\tRent expense\t100000\t130000",
@@ -2743,12 +2819,19 @@
     },
     "expect": [
       {
-        "desc": "sentence S1 is checked within scope",
+        "desc": "the sentence is needs review",
         "get": "status.S1",
         "op": "eq",
-        "value": "checked within scope"
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“2026”"
       }
-    ]
+    ],
+    "note": "Moved from checked within scope to needs review on 14 September 2026 by lane F3, by the period binding. The review supplied this input and observed not checked; the repair lane then asserted checked within scope, because a year after \"in\" is a date and not a figure, and that part still holds: 2026 is read and left outside the check, never compared. The ledger pasted with it is one line with no header row, so its column labels are \"column 1\" and \"column 2\" and name no period. A year the labels cannot bind can be neither confirmed nor contradicted, so the sentence is held and the queue names \"2026\". The same sentence on a ledger headed with 2026 clears (PER28)."
   },
   {
     "id": "P40",
@@ -3220,7 +3303,7 @@
   },
   {
     "id": "MUL20",
-    "name": "multiplier, accepting variant: Rent expense rose $30,000 after the double count in May was ",
+    "name": "multiplier, variant now held by the period binding: Rent expense rose $30,000 after the double count in May was reversed.",
     "required": "A multiplier carries a quantity the figure reader does not parse. The sentence is not checked, whatever else in it agreed; wording that is not a multiplier still clears.",
     "inputs": {
       "ledger": "6100\tRent expense\t100000\t130000",
@@ -3229,12 +3312,19 @@
     },
     "expect": [
       {
-        "desc": "the sentence is checked within scope",
+        "desc": "the sentence is needs review",
         "get": "status.S1",
         "op": "eq",
-        "value": "checked within scope"
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“May”"
       }
-    ]
+    ],
+    "note": "Moved from checked within scope to needs review on 14 September 2026 by lane F3, by the period binding. \"double count\" is still not read as a multiplier, which is what this fixture was written to show. The ledger pasted with it is one line with no header row, so its column labels are \"column 1\" and \"column 2\" and name no period. \"May\" names a month the labels cannot bind, and a month in a reason is bound the same way as a month in the claim, so the sentence is held and the queue names the month."
   },
   {
     "id": "MUL21",
@@ -4524,7 +4614,7 @@
   },
   {
     "id": "FRAC26",
-    "name": "fraction or number words in a percent, accepting variant: Rent expense rose $30,000 on the lease that started on 6/1.",
+    "name": "fraction or number words in a percent, variant now held by the period binding: Rent expense rose $30,000 on the lease that started on 6/1.",
     "required": "A fraction, a decimal in words or a fraction character carries a quantity the figure reader does not parse. It is an unparsed span and the sentence is not checked; a period word such as \"first half\" or \"quarter-end\" and an ordinal such as \"a third site\" are not fractions.",
     "inputs": {
       "ledger": "6100\tRent expense\t100000\t130000",
@@ -4533,12 +4623,19 @@
     },
     "expect": [
       {
-        "desc": "the sentence is checked within scope",
+        "desc": "the sentence is needs review",
         "get": "status.S1",
         "op": "eq",
-        "value": "checked within scope"
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“6/1”"
       }
-    ]
+    ],
+    "note": "Moved from checked within scope to needs review on 14 September 2026 by lane F3, by the period binding. \"6/1\" is still read as a date and not as a fraction, which is what this fixture was written to show. The ledger pasted with it is one line with no header row, so its column labels are \"column 1\" and \"column 2\" and name no period. A date names a month the labels cannot bind, so the sentence is held and the queue names the date. On a ledger headed May 2026 and June 2026 it clears (PLAB21)."
   },
   {
     "id": "DIGIT01",
@@ -5082,7 +5179,7 @@
   },
   {
     "id": "COUNT08",
-    "name": "a number that is not a figure, accepting variant: Rent expense rose $30,000 on the lease signed on June 30.",
+    "name": "a number that is not a figure, variant now held by the period binding: Rent expense rose $30,000 on the lease signed on June 30.",
     "required": "A number is accounted for only as a year, a date, a label, an ordinal, an account number standing as a reference, or a count written in front of the thing it counts, and the explanation names it as left outside the check. Any other number, in digits or in words, is an unparsed span.",
     "inputs": {
       "ledger": "6100\tRent expense\t100000\t130000",
@@ -5091,16 +5188,23 @@
     },
     "expect": [
       {
-        "desc": "the sentence is checked within scope",
+        "desc": "the sentence is needs review",
         "get": "status.S1",
         "op": "eq",
-        "value": "checked within scope"
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“June”"
       }
-    ]
+    ],
+    "note": "Moved from checked within scope to needs review on 14 September 2026 by lane F3, by the period binding. \"30\" is still read as the day of a date and left outside the check, not as an unparsed number. The ledger pasted with it is one line with no header row, so its column labels are \"column 1\" and \"column 2\" and name no period. \"June\" names a month the labels cannot bind, so the sentence is held and the queue names the month. On a ledger headed May 2026 and June 2026 the same kind of sentence clears (PLAB19)."
   },
   {
     "id": "COUNT09",
-    "name": "a number that is not a figure, accepting variant: Rent expense rose $30,000 on the lease signed on 30 June 202",
+    "name": "a number that is not a figure, variant now held by the period binding: Rent expense rose $30,000 on the lease signed on 30 June 2026.",
     "required": "A number is accounted for only as a year, a date, a label, an ordinal, an account number standing as a reference, or a count written in front of the thing it counts, and the explanation names it as left outside the check. Any other number, in digits or in words, is an unparsed span.",
     "inputs": {
       "ledger": "6100\tRent expense\t100000\t130000",
@@ -5109,12 +5213,19 @@
     },
     "expect": [
       {
-        "desc": "the sentence is checked within scope",
+        "desc": "the sentence is needs review",
         "get": "status.S1",
         "op": "eq",
-        "value": "checked within scope"
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“June”"
       }
-    ]
+    ],
+    "note": "Moved from checked within scope to needs review on 14 September 2026 by lane F3, by the period binding. \"30\" and \"2026\" are still read as a date and a year and left outside the check. The ledger pasted with it is one line with no header row, so its column labels are \"column 1\" and \"column 2\" and name no period. Neither the month nor the year can be bound, so the sentence is held and the queue names both. On a ledger headed May 2026 and June 2026 the same kind of sentence clears (PLAB19)."
   },
   {
     "id": "COUNT10",
@@ -5204,7 +5315,7 @@
   },
   {
     "id": "COUNT14",
-    "name": "a number that is not a figure, accepting variant: Rent expense rose $30,000 in 2026.",
+    "name": "a number that is not a figure, variant now held by the period binding: Rent expense rose $30,000 in 2026.",
     "required": "A number is accounted for only as a year, a date, a label, an ordinal, an account number standing as a reference, or a count written in front of the thing it counts, and the explanation names it as left outside the check. Any other number, in digits or in words, is an unparsed span.",
     "inputs": {
       "ledger": "6100\tRent expense\t100000\t130000",
@@ -5213,12 +5324,19 @@
     },
     "expect": [
       {
-        "desc": "the sentence is checked within scope",
+        "desc": "the sentence is needs review",
         "get": "status.S1",
         "op": "eq",
-        "value": "checked within scope"
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“2026”"
       }
-    ]
+    ],
+    "note": "Moved from checked within scope to needs review on 14 September 2026 by lane F3, by the period binding. \"2026\" is still read as a year and left outside the check, which is what this fixture was written to show, and it is still not an unparsed span. The ledger pasted with it is one line with no header row, so its column labels are \"column 1\" and \"column 2\" and name no period. A year the labels cannot bind holds the sentence, and the queue names it."
   },
   {
     "id": "COUNT15",
@@ -7791,8 +7909,15 @@
         "get": "status.S1",
         "op": "eq",
         "value": "not checked"
+      },
+      {
+        "desc": "\"Rs. 30,000\" stays one sentence, and the rupee figure is an unparsed span",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
       }
-    ]
+    ],
+    "note": "Tightened on 14 September 2026 by lane F3, with no status moved: the splitter used to break after \"Rs.\" and leave \"30,000.\" as a second sentence. It reads one sentence now, and \"Rs.\" in front of the figure is a currency the checker does not read."
   },
   {
     "id": "A116",
@@ -10604,7 +10729,7 @@
   },
   {
     "id": "SAME22",
-    "name": "no-change or sameness word, accepting variant: Rent expense remained at $130,000 month over month.",
+    "name": "no-change or sameness word, variant now held by the period binding: Rent expense remained at $130,000 month over month.",
     "required": "A no-change or sameness word outside the tested set (\"stable\", \"level\", \"in line with\", \"the same as\", \"matched\") holds the sentence at needs review; the tested words still fail on a line that moved and clear on one that did not.",
     "inputs": {
       "ledger": "6100\tRent expense\t130000\t130000",
@@ -10613,18 +10738,19 @@
     },
     "expect": [
       {
-        "desc": "the sentence is checked within scope",
+        "desc": "the sentence is needs review",
         "get": "status.S1",
         "op": "eq",
-        "value": "checked within scope"
+        "value": "needs review"
       },
       {
-        "desc": "nothing is left for the clearance grammar to hold",
-        "get": "queueKinds",
-        "op": "notIncludes",
-        "value": "Unread wording"
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“month”"
       }
-    ]
+    ],
+    "note": "Moved from checked within scope to needs review on 14 September 2026 by lane F3, by the period binding. \"remained at\" is still tested as a no-change claim and agrees with a line that did not move, which is what this fixture was written to show. The ledger pasted with it is one line with no header row, so its column labels are \"column 1\" and \"column 2\" and name no period. \"month over month\" says the two columns are consecutive months, which the labels cannot show, so the sentence is held and the queue names the month. On a ledger headed May 2026 and June 2026 the frame clears (PLAB18)."
   },
   {
     "id": "PER01",
@@ -11054,7 +11180,7 @@
   },
   {
     "id": "PER19",
-    "name": "period or basis, refusing variant: Rent expense rose $30,000 a month.",
+    "name": "period or basis, variant now held by the period binding: Rent expense rose $30,000 a month.",
     "required": "A period or basis other than the ledger's two columns (\"year over year\", \"against budget\", \"quarter to date\", \"annualized\", \"since December\", a month or year the column labels contradict) holds the sentence at needs review. The month-over-month frame, and a month the labels name, still clear.",
     "inputs": {
       "ledger": "6100\tRent expense\t100000\t130000",
@@ -11063,18 +11189,19 @@
     },
     "expect": [
       {
-        "desc": "the sentence is checked within scope",
+        "desc": "the sentence is needs review",
         "get": "status.S1",
         "op": "eq",
-        "value": "checked within scope"
+        "value": "needs review"
       },
       {
-        "desc": "nothing is left for the clearance grammar to hold",
-        "get": "queueKinds",
-        "op": "notIncludes",
-        "value": "Unread wording"
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“month”"
       }
-    ]
+    ],
+    "note": "Moved from checked within scope to needs review on 14 September 2026 by lane F3, by the period binding. The ledger pasted with it is one line with no header row, so its column labels are \"column 1\" and \"column 2\" and name no period. \"a month\" frames the movement on a month, which the labels cannot show, so the sentence is held and the queue names the word."
   },
   {
     "id": "PER20",
@@ -11174,7 +11301,7 @@
   },
   {
     "id": "PER24",
-    "name": "period or basis, accepting variant: Rent expense rose $30,000 month over month.",
+    "name": "period or basis, variant now held by the period binding: Rent expense rose $30,000 month over month.",
     "required": "A period or basis other than the ledger's two columns (\"year over year\", \"against budget\", \"quarter to date\", \"annualized\", \"since December\", a month or year the column labels contradict) holds the sentence at needs review. The month-over-month frame, and a month the labels name, still clear.",
     "inputs": {
       "ledger": "6100\tRent expense\t100000\t130000",
@@ -11183,22 +11310,23 @@
     },
     "expect": [
       {
-        "desc": "the sentence is checked within scope",
+        "desc": "the sentence is needs review",
         "get": "status.S1",
         "op": "eq",
-        "value": "checked within scope"
+        "value": "needs review"
       },
       {
-        "desc": "nothing is left for the clearance grammar to hold",
-        "get": "queueKinds",
-        "op": "notIncludes",
-        "value": "Unread wording"
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“month”"
       }
-    ]
+    ],
+    "note": "Moved from checked within scope to needs review on 14 September 2026 by lane F3, by the period binding. The ledger pasted with it is one line with no header row, so its column labels are \"column 1\" and \"column 2\" and name no period. \"month over month\" says the two columns are consecutive months, which a ledger without period labels cannot show, so the sentence is held and the queue names the word. The frame still clears where the labels show two months in a row (PLAB18, PLAB22) or read \"Prior month\" and \"This month\" (PLAB20)."
   },
   {
     "id": "PER25",
-    "name": "period or basis, accepting variant: Rent expense rose $30,000 from the prior month.",
+    "name": "period or basis, variant now held by the period binding: Rent expense rose $30,000 from the prior month.",
     "required": "A period or basis other than the ledger's two columns (\"year over year\", \"against budget\", \"quarter to date\", \"annualized\", \"since December\", a month or year the column labels contradict) holds the sentence at needs review. The month-over-month frame, and a month the labels name, still clear.",
     "inputs": {
       "ledger": "6100\tRent expense\t100000\t130000",
@@ -11207,22 +11335,23 @@
     },
     "expect": [
       {
-        "desc": "the sentence is checked within scope",
+        "desc": "the sentence is needs review",
         "get": "status.S1",
         "op": "eq",
-        "value": "checked within scope"
+        "value": "needs review"
       },
       {
-        "desc": "nothing is left for the clearance grammar to hold",
-        "get": "queueKinds",
-        "op": "notIncludes",
-        "value": "Unread wording"
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“month”"
       }
-    ]
+    ],
+    "note": "Moved from checked within scope to needs review on 14 September 2026 by lane F3, by the period binding. The ledger pasted with it is one line with no header row, so its column labels are \"column 1\" and \"column 2\" and name no period. \"from the prior month\" says the prior column is the month before, which the labels cannot show, so the sentence is held and the queue names the word. The frame still clears where the labels show two months in a row (PLAB18)."
   },
   {
     "id": "PER26",
-    "name": "period or basis, accepting variant: Rent expense rose $30,000 from May to June.",
+    "name": "period or basis, variant now held by the period binding: Rent expense rose $30,000 from May to June.",
     "required": "A period or basis other than the ledger's two columns (\"year over year\", \"against budget\", \"quarter to date\", \"annualized\", \"since December\", a month or year the column labels contradict) holds the sentence at needs review. The month-over-month frame, and a month the labels name, still clear.",
     "inputs": {
       "ledger": "6100\tRent expense\t100000\t130000",
@@ -11231,18 +11360,19 @@
     },
     "expect": [
       {
-        "desc": "the sentence is checked within scope",
+        "desc": "the sentence is needs review",
         "get": "status.S1",
         "op": "eq",
-        "value": "checked within scope"
+        "value": "needs review"
       },
       {
-        "desc": "nothing is left for the clearance grammar to hold",
-        "get": "queueKinds",
-        "op": "notIncludes",
-        "value": "Unread wording"
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“May”"
       }
-    ]
+    ],
+    "note": "Moved from checked within scope to needs review on 14 September 2026 by lane F3, by the period binding. The ledger pasted with it is one line with no header row, so its column labels are \"column 1\" and \"column 2\" and name no period. Two neighbouring months used to clear on such a ledger; a ledger whose labels name no month can neither confirm nor contradict either one, so the sentence is held and the queue names both. The same months clear on a ledger headed May 2026 and June 2026 (PLAB17)."
   },
   {
     "id": "PER27",
@@ -11294,7 +11424,7 @@
   },
   {
     "id": "PER29",
-    "name": "period or basis, accepting variant: Rent expense rose $30,000 on the lease signed in the first half of June.",
+    "name": "period or basis, variant now held by the period binding: Rent expense rose $30,000 on the lease signed in the first half of June.",
     "required": "A period or basis other than the ledger's two columns (\"year over year\", \"against budget\", \"quarter to date\", \"annualized\", \"since December\", a month or year the column labels contradict) holds the sentence at needs review. The month-over-month frame, and a month the labels name, still clear.",
     "inputs": {
       "ledger": "6100\tRent expense\t100000\t130000",
@@ -11303,18 +11433,19 @@
     },
     "expect": [
       {
-        "desc": "the sentence is checked within scope",
+        "desc": "the sentence is needs review",
         "get": "status.S1",
         "op": "eq",
-        "value": "checked within scope"
+        "value": "needs review"
       },
       {
-        "desc": "nothing is left for the clearance grammar to hold",
-        "get": "queueKinds",
-        "op": "notIncludes",
-        "value": "Unread wording"
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“June”"
       }
-    ]
+    ],
+    "note": "Moved from checked within scope to needs review on 14 September 2026 by lane F3, by the period binding. \"first half of June\" still stands in a reason, where the weak period entry leaves it alone, which is what this fixture was written to show. The ledger pasted with it is one line with no header row, so its column labels are \"column 1\" and \"column 2\" and name no period. \"June\" names a month the labels cannot bind, and a month is bound wherever it stands, so the sentence is held and the queue names the month."
   },
   {
     "id": "PER30",
@@ -11750,7 +11881,7 @@
   },
   {
     "id": "ANA18",
-    "name": "claim about another account, refusing variant: Rent expense rose $30,000 on the lease that also covers Insurance expense.",
+    "name": "claim about another account, variant now held by the binding repair: Rent expense rose $30,000 on the lease that also covers Insurance expense.",
     "required": "A claim carried to another account without a figure of its own (\"so did\", \"as did\", \"likewise\", \"the same as\", an account named with no claim in its clause) holds the sentence at needs review. Two accounts each with their own figure still clear.",
     "inputs": {
       "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
@@ -11759,18 +11890,19 @@
     },
     "expect": [
       {
-        "desc": "the sentence is checked within scope",
+        "desc": "the sentence is needs review",
         "get": "status.S1",
         "op": "eq",
-        "value": "checked within scope"
+        "value": "needs review"
       },
       {
-        "desc": "nothing is left for the clearance grammar to hold",
-        "get": "queueKinds",
-        "op": "notIncludes",
-        "value": "Unread wording"
+        "desc": "the queue names the second line the sentence binds",
+        "get": "queue",
+        "op": "includes",
+        "value": "6200 Insurance expense"
       }
-    ]
+    ],
+    "note": "Moved from checked within scope to needs review on 14 September 2026 by lane F3, by the binding repair. This fixture was written as a refusing variant and recorded the open defect: an account name that ended a sentence kept its full stop and was never bound. It is bound now, wherever it stands, so the sentence names two lines, the clause with $30,000 names both, and the figure is a binding conflict held for a person, with Insurance expense named in the queue."
   },
   {
     "id": "ANA19",
@@ -12254,7 +12386,7 @@
   },
   {
     "id": "QTY09",
-    "name": "size, rank or share word, refusing variant: Rent expense rose $30,000 on sharply higher rates at the new site.",
+    "name": "size, rank or share word, refusing variant now held: Rent expense rose $30,000 on sharply higher rates at the new site.",
     "required": "A word that sizes, ranks or shares out the movement (\"sharply\", \"a record\", \"mostly\", \"several\") holds the sentence at needs review where it stands in the claim. The same kind of word inside a reason stays with the reviewer's question about the reason.",
     "inputs": {
       "ledger": "6100\tRent expense\t100000\t130000",
@@ -12263,18 +12395,19 @@
     },
     "expect": [
       {
-        "desc": "the sentence is checked within scope",
+        "desc": "the sentence is needs review",
         "get": "status.S1",
         "op": "eq",
-        "value": "checked within scope"
+        "value": "needs review"
       },
       {
-        "desc": "nothing is left for the clearance grammar to hold",
-        "get": "queueKinds",
-        "op": "notIncludes",
-        "value": "Unread wording"
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“sharply”"
       }
-    ]
+    ],
+    "note": "Moved from checked within scope to needs review on 14 September 2026 by lane F3, by the size rule. This fixture recorded the design that let a size word inside a reason clear. A size word attached to a movement is now held wherever it stands, reasons included, because no documented threshold says what \"sharply\" means, so the sentence is held and the queue names the word."
   },
   {
     "id": "QTY10",
@@ -12680,7 +12813,7 @@
   },
   {
     "id": "PER33",
-    "name": "period or basis, accepting variant: Rent expense rose $30,000 in June versus May.",
+    "name": "period or basis, variant now held by the period binding: Rent expense rose $30,000 in June versus May.",
     "required": "A period or basis other than the ledger's two columns (\"year over year\", \"against budget\", \"quarter to date\", \"annualized\", \"since December\", a month or year the column labels contradict) holds the sentence at needs review. The month-over-month frame, and a month the labels name, still clear.",
     "inputs": {
       "ledger": "6100\tRent expense\t100000\t130000",
@@ -12689,18 +12822,19 @@
     },
     "expect": [
       {
-        "desc": "the sentence is checked within scope",
+        "desc": "the sentence is needs review",
         "get": "status.S1",
         "op": "eq",
-        "value": "checked within scope"
+        "value": "needs review"
       },
       {
-        "desc": "nothing is left for the clearance grammar to hold",
-        "get": "queueKinds",
-        "op": "notIncludes",
-        "value": "Unread wording"
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“June”"
       }
-    ]
+    ],
+    "note": "Moved from checked within scope to needs review on 14 September 2026 by lane F3, by the period binding. The ledger pasted with it is one line with no header row, so its column labels are \"column 1\" and \"column 2\" and name no period. \"in June versus May\" names both columns as months the labels cannot show, so the sentence is held and the queue names them. On a ledger headed May 2026 and June 2026 the months bind and the frame is the ledger's own (PLAB17, SPLIT16)."
   },
   {
     "id": "ANA20",
@@ -12723,6 +12857,2826 @@
         "get": "queue",
         "op": "includes",
         "value": "“Insurance expense”"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT01",
+    "name": "sentence splitting, refusing variant: Rent expense rose $30,000 at an approx. 30 percent rate.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 at an approx. 30 percent rate.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT02",
+    "name": "sentence splitting, refusing variant: Rent expense rose $30,000, est. 30 percent above plan.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000, est. 30 percent above plan.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT03",
+    "name": "sentence splitting, refusing variant: Rent expense rose $30,000 per J. Smith, who expects a quarterly run rate.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 per J. Smith, who expects a quarterly run rate.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“quarterly”"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT04",
+    "name": "sentence splitting, refusing variant: Rent expense rose $30,000 at the St. Louis office, sharply above May.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 at the St. Louis office, sharply above May.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“sharply”"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT05",
+    "name": "sentence splitting, refusing variant: Rent expense rose $30,000, or 30 percent, on Accum. Depr. Schedule changes that doubled.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000, or 30 percent, on Accum. Depr. Schedule changes that doubled.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is not checked",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "not checked"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT06",
+    "name": "sentence splitting, refusing variant: Rent expense rose $30,000 on invoice no. 4471 against budget.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 on invoice no. 4471 against budget.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“budget”"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT07",
+    "name": "sentence splitting, refusing variant: Rent expense rose $30,000 at an avg. 3 percent escalator a year.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 at an avg. 3 percent escalator a year.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT08",
+    "name": "sentence splitting, refusing variant: Rent expense rose $30,000 on the U.S. lease, approx. 1.3x the prior level.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 on the U.S. lease, approx. 1.3x the prior level.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is not checked",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "not checked"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT09",
+    "name": "sentence splitting, refusing variant: Rent expense rose by Rs. 30,000 to Rs. 130,000.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose by Rs. 30,000 to Rs. 130,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is not checked",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "not checked"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT10",
+    "name": "sentence splitting, refusing variant: Rent expense rose $30,000, or 30. 0 percent.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000, or 30. 0 percent.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is not checked",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "not checked"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT11",
+    "name": "sentence splitting, refusing variant: Rent expense rose $30,000 vs. May.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 vs. May.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT12",
+    "name": "sentence splitting, mixed variant: Rent expense rose $30,000 to $130,000. Insurance expense rose sharply, approx. 90 percent.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 to $130,000. Insurance expense rose sharply, approx. 90 percent.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "sentence S2 is needs review",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT13",
+    "name": "sentence splitting, accepting variant: Rent expense rose $30,000 to $130,000. An annual renewal was paid.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 to $130,000. An annual renewal was paid.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "sentence S2 is not checked",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "not checked"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT14",
+    "name": "sentence splitting, accepting variant: Rent expense rose $30,000. Insurance expense rose $45,000.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000. Insurance expense rose $45,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "sentence S2 is checked within scope",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT15",
+    "name": "sentence splitting, accepting variant: Rent expense rose $30,000 at the Acme Inc. Insurance expense rose $45,000.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 at the Acme Inc. Insurance expense rose $45,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "sentence S2 is checked within scope",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT16",
+    "name": "sentence splitting, accepting variant: Rent expense rose $30,000 vs. May. Insurance expense rose $45,000 vs. May.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 vs. May. Insurance expense rose $45,000 vs. May.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "sentence S2 is checked within scope",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT17",
+    "name": "sentence splitting, accepting variant: Rent expense rose $30,000 at the U.S. office. Insurance expense rose $45,000.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 at the U.S. office. Insurance expense rose $45,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "sentence S2 is checked within scope",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT18",
+    "name": "sentence splitting, accepting variant: Rent expense rose $30,000 per J. Smith.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 per J. Smith.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT19",
+    "name": "sentence splitting, accepting variant: Rent expense rose $30,000 on lease No. 4471.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 on lease No. 4471.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT20",
+    "name": "sentence splitting, accepting variant: Rent expense rose $30,000 (30 percent). Insurance expense rose $45,000.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 (30 percent). Insurance expense rose $45,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "sentence S2 is checked within scope",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT21",
+    "name": "sentence splitting, accepting variant: Rent expense \"rose $30,000.\" Insurance expense rose $45,000.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense \"rose $30,000.\" Insurance expense rose $45,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "sentence S2 is checked within scope",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT22",
+    "name": "sentence splitting, accepting variant: Rent expense rose $30,000 per Schedule A. Insurance expense rose $45,000.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 per Schedule A. Insurance expense rose $45,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "sentence S2 is checked within scope",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT23",
+    "name": "sentence splitting, accepting variant: Rent expense rose $30,000 on rates, fees, etc. Insurance expense rose $45,000.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on rates, fees, etc. Insurance expense rose $45,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "sentence S2 is checked within scope",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT24",
+    "name": "sentence splitting, mixed variant: Rent expense was 30,000 Dr. Insurance expense rose $45,000.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense was 30,000 Dr. Insurance expense rose $45,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is not checked",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "not checked"
+      },
+      {
+        "desc": "sentence S2 is checked within scope",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT25",
+    "name": "sentence splitting, mixed variant: Rent expense rose $30,000 in the U.S. Insurance expense rose $45,000 vs. budget.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 in the U.S. Insurance expense rose $45,000 vs. budget.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "sentence S2 is needs review",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S2",
+        "get": "queue",
+        "op": "includes",
+        "value": "“budget”"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT26",
+    "name": "sentence splitting, accepting variant: Rent expense rose $30,000 per U.S. GAAP. Insurance expense rose $45,000.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 per U.S. GAAP. Insurance expense rose $45,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "sentence S2 is checked within scope",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "SPLIT27",
+    "name": "sentence splitting, accepting variant: Rent expense rose $30,000 on Sept. 1. Insurance expense rose $45,000 on Sept. 30.",
+    "required": "A full stop ends a sentence where a person reads one ending. It does not after \"vs.\", \"approx.\", \"est.\", \"e.g.\" or \"Accum.\", after \"No.\", \"Rs.\", \"Inc.\" or \"U.S.\" before a figure, after a title or an initial before a name, or in a decimal broken by a space, which is an unparsed span. It does after a figure, a closing bracket, a closing quote or a company suffix that a capital follows. A split a person would not make can leave a fragment that clears on its own, or run two sentences into one that is held or fails, so each fixture asserts the sentences as a person reads them and the status each one earns.",
+    "inputs": {
+      "ledger": "Account\tAug 2026\tSep 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on Sept. 1. Insurance expense rose $45,000 on Sept. 30.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "sentence S2 is checked within scope",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "SIZE01",
+    "name": "size word on a movement, refusing variant: Rent expense rose $30,000 because volumes rose sharply.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 because volumes rose sharply.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“sharply”"
+      }
+    ]
+  },
+  {
+    "id": "SIZE02",
+    "name": "size word on a movement, refusing variant: Rent expense rose $30,000 on sharply higher rates.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 on sharply higher rates.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“sharply”"
+      }
+    ]
+  },
+  {
+    "id": "SIZE03",
+    "name": "size word on a movement, refusing variant: Rent expense surged $30,000.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense surged $30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“surged”"
+      }
+    ]
+  },
+  {
+    "id": "SIZE04",
+    "name": "size word on a movement, refusing variant: Rent expense rose $30,000, a significant increase.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000, a significant increase.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“significant”"
+      }
+    ]
+  },
+  {
+    "id": "SIZE05",
+    "name": "size word on a movement, refusing variant: Rent expense rose $30,000 as the increase in rates was material.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 as the increase in rates was material.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“material”"
+      }
+    ]
+  },
+  {
+    "id": "SIZE06",
+    "name": "size word on a movement, refusing variant: Rent expense rose $30,000, or 30 percent, as occupancy costs climbed modestly.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000, or 30 percent, as occupancy costs climbed modestly.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“modestly”"
+      }
+    ]
+  },
+  {
+    "id": "SIZE07",
+    "name": "size word on a movement, refusing variant: Rent expense rose $30,000 after a dramatic jump in square footage.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 after a dramatic jump in square footage.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“dramatic”"
+      }
+    ]
+  },
+  {
+    "id": "SIZE08",
+    "name": "size word on a movement, refusing variant: Rent expense edged up $30,000.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense edged up $30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“edged up”"
+      }
+    ]
+  },
+  {
+    "id": "SIZE09",
+    "name": "size word on a movement, refusing variant: Rent expense rose $30,000 due to a slightly larger footprint.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 due to a slightly larger footprint.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“slightly”"
+      }
+    ]
+  },
+  {
+    "id": "SIZE10",
+    "name": "size word on a movement, refusing variant: Rent expense rose $30,000, much higher than the prior month.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000, much higher than the prior month.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“much higher”"
+      }
+    ]
+  },
+  {
+    "id": "SIZE11",
+    "name": "size word on a movement, refusing variant: Rent expense rose $30,000; the change was small.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000; the change was small.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“small”"
+      }
+    ]
+  },
+  {
+    "id": "SIZE12",
+    "name": "size word on a movement, refusing variant: Rent expense jumped by $30,000 to $130,000.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense jumped by $30,000 to $130,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“jumped”"
+      }
+    ]
+  },
+  {
+    "id": "SIZE13",
+    "name": "size word on a movement, refusing variant: Rent expense rose $30,000, the sharpest rise on the statement.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000, the sharpest rise on the statement.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“sharpest”"
+      }
+    ]
+  },
+  {
+    "id": "SIZE14",
+    "name": "size word on a movement, refusing variant: Rent expense rose $30,000 because vacancy plunged.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 because vacancy plunged.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“plunged”"
+      }
+    ]
+  },
+  {
+    "id": "SIZE15",
+    "name": "size word on a movement, refusing variant: Rent expense rose $30,000 on an outsized escalation.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 on an outsized escalation.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“outsized”"
+      }
+    ]
+  },
+  {
+    "id": "SIZE16",
+    "name": "size word on a movement, mixed variant: Rent expense rose $30,000, and Insurance expense rose $45,000 on heavily discounted premiums.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000, and Insurance expense rose $45,000 on heavily discounted premiums.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“heavily”"
+      }
+    ]
+  },
+  {
+    "id": "SIZE17",
+    "name": "size word on a movement, refusing variant: Rent expense rose $30,000 as common area fees eased.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 as common area fees eased.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“eased”"
+      }
+    ]
+  },
+  {
+    "id": "SIZE18",
+    "name": "size word on a movement, accepting variant: Rent expense rose $30,000 on the large new office.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 on the large new office.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "SIZE19",
+    "name": "size word on a movement, accepting variant: Rent expense rose $30,000 on higher rates at the new site.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 on higher rates at the new site.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "SIZE20",
+    "name": "size word on a movement, accepting variant: Small tools expense rose $30,000.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6150\tSmall tools expense\t100000\t130000",
+      "memo": "Small tools expense rose $30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "SIZE21",
+    "name": "size word on a movement, accepting variant: Rent expense rose $30,000 on strong demand for space.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 on strong demand for space.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "SIZE22",
+    "name": "size word on a movement, accepting variant: Rent expense rose $30,000 because the lease on the Major Street building renewed.",
+    "required": "A word that gives a movement a size holds the sentence at needs review wherever it stands, inside a reason too, because no documented threshold says what the size is: an adverb of degree (\"sharply\", \"slightly\", \"materially\"), a movement verb that carries its own size (\"surged\", \"edged up\", \"eased\"), a degree word on a comparative (\"much higher\"), and an adjective standing on a movement (\"a significant increase\", \"the change was small\", \"the sharpest rise\"). An adjective that sizes something other than a movement (\"a large new office\", \"strong demand\") stays with the reviewer's question about the reason.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 because the lease on the Major Street building renewed.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "PLAB01",
+    "name": "period word the column labels cannot bind, refusing variant: Rent expense rose $30,000 in June.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 in June.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“June”"
+      }
+    ]
+  },
+  {
+    "id": "PLAB02",
+    "name": "period word the column labels cannot bind, refusing variant: Rent expense rose $30,000 for the month.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 for the month.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“month”"
+      }
+    ]
+  },
+  {
+    "id": "PLAB03",
+    "name": "period word the column labels cannot bind, refusing variant: Rent expense rose $30,000 at month-end.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 at month-end.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“month-end”"
+      }
+    ]
+  },
+  {
+    "id": "PLAB04",
+    "name": "period word the column labels cannot bind, refusing variant: Rent expense rose $30,000 because the lease renewed in June.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 because the lease renewed in June.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“June”"
+      }
+    ]
+  },
+  {
+    "id": "PLAB05",
+    "name": "period word the column labels cannot bind, refusing variant: Rent expense rose $30,000 to $130,000 at June 30.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 to $130,000 at June 30.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“June”"
+      }
+    ]
+  },
+  {
+    "id": "PLAB06",
+    "name": "period word the column labels cannot bind, refusing variant: Rent expense rose $30,000 this month.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 this month.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“month”"
+      }
+    ]
+  },
+  {
+    "id": "PLAB07",
+    "name": "period word the column labels cannot bind, refusing variant: Rent expense rose $30,000 to $130,000 as of 2026-06-30.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 to $130,000 as of 2026-06-30.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“2026-06-30”"
+      }
+    ]
+  },
+  {
+    "id": "PLAB08",
+    "name": "period word the column labels cannot bind, refusing variant: Rent expense rose $30,000 in June.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "Account\tPrior\tCurrent\n6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 in June.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“June”"
+      }
+    ]
+  },
+  {
+    "id": "PLAB09",
+    "name": "period word the column labels cannot bind, refusing variant: Rent expense rose $30,000 because the lease renewed in August.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 because the lease renewed in August.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“August”"
+      }
+    ]
+  },
+  {
+    "id": "PLAB10",
+    "name": "period word the column labels cannot bind, refusing variant: Rent expense rose $30,000 over June.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 over June.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“over June”"
+      }
+    ]
+  },
+  {
+    "id": "PLAB11",
+    "name": "period word the column labels cannot bind, refusing variant: Rent expense rose $30,000 month over month.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "Account\tJune 2025\tJune 2026\n6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 month over month.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“month”"
+      }
+    ]
+  },
+  {
+    "id": "PLAB12",
+    "name": "period word the column labels cannot bind, refusing variant: Rent expense rose $30,000 on the lease signed in 2025.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the lease signed in 2025.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“2025”"
+      }
+    ]
+  },
+  {
+    "id": "PLAB13",
+    "name": "period word the column labels cannot bind, refusing variant: Rent expense rose $30,000 as the lease began mid-month.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 as the lease began mid-month.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“month”"
+      }
+    ]
+  },
+  {
+    "id": "PLAB14",
+    "name": "period word the column labels cannot bind, refusing variant: Rent expense rose $30,000 yesterday.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 yesterday.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“yesterday”"
+      }
+    ]
+  },
+  {
+    "id": "PLAB15",
+    "name": "period word the column labels cannot bind, mixed variant: Rent expense rose $30,000, and Insurance expense rose $45,000 in June.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000, and Insurance expense rose $45,000 in June.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“June”"
+      }
+    ]
+  },
+  {
+    "id": "PLAB16",
+    "name": "period word the column labels cannot bind, mixed variant: Rent expense rose $30,000 in June, and Insurance expense rose $45,000 in July.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 in June, and Insurance expense rose $45,000 in July.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“July”"
+      }
+    ]
+  },
+  {
+    "id": "PLAB17",
+    "name": "period word the column labels cannot bind, accepting variant: Rent expense rose $30,000 in June.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 in June.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "PLAB18",
+    "name": "period word the column labels cannot bind, accepting variant: Rent expense rose $30,000 month over month.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 month over month.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "PLAB19",
+    "name": "period word the column labels cannot bind, accepting variant: Rent expense rose $30,000 because the lease renewed on 1 June 2026.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 because the lease renewed on 1 June 2026.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "PLAB20",
+    "name": "period word the column labels cannot bind, accepting variant: Rent expense rose $30,000 for the month.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "Account\tPrior month\tThis month\n6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 for the month.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "PLAB21",
+    "name": "period word the column labels cannot bind, accepting variant: Rent expense rose $30,000 on the lease signed on 6/1.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the lease signed on 6/1.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "PLAB22",
+    "name": "period word the column labels cannot bind, accepting variant: Rent expense rose $30,000 month over month in January.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "Account\tDec 2025\tJan 2026\n6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 month over month in January.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "PLAB23",
+    "name": "period word the column labels cannot bind, accepting variant: Rent expense rose $30,000 on a one-month lease extension.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 on a one-month lease extension.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "PLAB24",
+    "name": "period word the column labels cannot bind, accepting variant: Rent expense rose $30,000 on the Suite 2000 lease.",
+    "required": "A period the sentence names, a month, a date, a year, or the words \"month\", \"this month\", \"month over month\" and \"month-end\", is bound only by the ledger's column labels, wherever it stands in the sentence. A ledger whose labels name no period binds none of them, and labels that name other months or years, or two months that are not in a row, contradict them; either way the sentence is held at needs review with the word named. Where the labels name that month or year, or two months in a row, the same words clear.",
+    "inputs": {
+      "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the Suite 2000 lease.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "BIND01",
+    "name": "account name at the edge of a sentence, refusing variant: Rent expense rose $30,000 on the lease that also covers Insurance expense.",
+    "required": "An account name binds wherever it stands in the sentence: at the end, before a comma, a closing quote, a question mark or an exclamation mark. A second account the sentence names with no figure and no direction word of its own holds it at needs review, and a figure is never failed against a line whose name only trails it after a colon. Two accounts each with a claim of their own still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the lease that also covers Insurance expense.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "6200 Insurance expense"
+      }
+    ]
+  },
+  {
+    "id": "BIND02",
+    "name": "account name at the edge of a sentence, refusing variant: Rent expense rose $30,000 on space shared with Insurance expense.",
+    "required": "An account name binds wherever it stands in the sentence: at the end, before a comma, a closing quote, a question mark or an exclamation mark. A second account the sentence names with no figure and no direction word of its own holds it at needs review, and a figure is never failed against a line whose name only trails it after a colon. Two accounts each with a claim of their own still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on space shared with Insurance expense.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "6200 Insurance expense"
+      }
+    ]
+  },
+  {
+    "id": "BIND03",
+    "name": "account name at the edge of a sentence, refusing variant: Rent expense rose $30,000, net of Insurance expense.",
+    "required": "An account name binds wherever it stands in the sentence: at the end, before a comma, a closing quote, a question mark or an exclamation mark. A second account the sentence names with no figure and no direction word of its own holds it at needs review, and a figure is never failed against a line whose name only trails it after a colon. Two accounts each with a claim of their own still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000, net of Insurance expense.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "BIND04",
+    "name": "account name at the edge of a sentence, refusing variant: Rent expense rose $30,000 and was reclassified from Insurance expense.",
+    "required": "An account name binds wherever it stands in the sentence: at the end, before a comma, a closing quote, a question mark or an exclamation mark. A second account the sentence names with no figure and no direction word of its own holds it at needs review, and a figure is never failed against a line whose name only trails it after a colon. Two accounts each with a claim of their own still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 and was reclassified from Insurance expense.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "BIND05",
+    "name": "account name at the edge of a sentence, refusing variant: Interest expense rose $31,200 on the equipment additions that also sit in depreciation.",
+    "required": "An account name binds wherever it stands in the sentence: at the end, before a comma, a closing quote, a question mark or an exclamation mark. A second account the sentence names with no figure and no direction word of its own holds it at needs review, and a figure is never failed against a line whose name only trails it after a colon. Two accounts each with a claim of their own still clear.",
+    "inputs": {
+      "ledger": "7000\tDepreciation\t128000\t128000\n7100\tInterest expense\t61200\t92400",
+      "memo": "Interest expense rose $31,200 on the equipment additions that also sit in depreciation.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "BIND06",
+    "name": "account name at the edge of a sentence, refusing variant: Rent expense rose $30,000 because of a lease moved out of Insurance expense!",
+    "required": "An account name binds wherever it stands in the sentence: at the end, before a comma, a closing quote, a question mark or an exclamation mark. A second account the sentence names with no figure and no direction word of its own holds it at needs review, and a figure is never failed against a line whose name only trails it after a colon. Two accounts each with a claim of their own still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 because of a lease moved out of Insurance expense!",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "BIND07",
+    "name": "account name at the edge of a sentence, refusing variant: Rent expense rose $30,000 on a policy billed through Insurance expense?",
+    "required": "An account name binds wherever it stands in the sentence: at the end, before a comma, a closing quote, a question mark or an exclamation mark. A second account the sentence names with no figure and no direction word of its own holds it at needs review, and a figure is never failed against a line whose name only trails it after a colon. Two accounts each with a claim of their own still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on a policy billed through Insurance expense?",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "BIND08",
+    "name": "account name at the edge of a sentence, refusing variant: Rent expense rose $30,000 on the floor with Insurance expense, too.",
+    "required": "An account name binds wherever it stands in the sentence: at the end, before a comma, a closing quote, a question mark or an exclamation mark. A second account the sentence names with no figure and no direction word of its own holds it at needs review, and a figure is never failed against a line whose name only trails it after a colon. Two accounts each with a claim of their own still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the floor with Insurance expense, too.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "BIND09",
+    "name": "account name at the edge of a sentence, refusing variant: 5000 Cost of product sold: +$348,000 (+8.9%) - Movement tracks the increase in product revenue.",
+    "required": "An account name binds wherever it stands in the sentence: at the end, before a comma, a closing quote, a question mark or an exclamation mark. A second account the sentence names with no figure and no direction word of its own holds it at needs review, and a figure is never failed against a line whose name only trails it after a colon. Two accounts each with a claim of their own still clear.",
+    "inputs": {
+      "ledger": "4000\tProduct revenue, distribution\t5240000\t5612000\n5000\tCost of product sold\t3930000\t4278000",
+      "memo": "5000 Cost of product sold: +$348,000 (+8.9%) - Movement tracks the increase in product revenue.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "BIND10",
+    "name": "account name at the edge of a sentence, refusing variant: Rent expense rose $30,000 on the lease booked to \"Insurance expense\".",
+    "required": "An account name binds wherever it stands in the sentence: at the end, before a comma, a closing quote, a question mark or an exclamation mark. A second account the sentence names with no figure and no direction word of its own holds it at needs review, and a figure is never failed against a line whose name only trails it after a colon. Two accounts each with a claim of their own still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the lease booked to \"Insurance expense\".",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "BIND11",
+    "name": "account name at the edge of a sentence, refusing variant: Rent expense rose $30,000 on a lease booked to Insurance expense.",
+    "required": "An account name binds wherever it stands in the sentence: at the end, before a comma, a closing quote, a question mark or an exclamation mark. A second account the sentence names with no figure and no direction word of its own holds it at needs review, and a figure is never failed against a line whose name only trails it after a colon. Two accounts each with a claim of their own still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on a lease booked to Insurance expense.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "6200 Insurance expense"
+      }
+    ]
+  },
+  {
+    "id": "BIND12",
+    "name": "account name at the edge of a sentence, refusing variant: Rent expense rose $30,000, with the same landlord as Insurance expense.",
+    "required": "An account name binds wherever it stands in the sentence: at the end, before a comma, a closing quote, a question mark or an exclamation mark. A second account the sentence names with no figure and no direction word of its own holds it at needs review, and a figure is never failed against a line whose name only trails it after a colon. Two accounts each with a claim of their own still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000, with the same landlord as Insurance expense.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "BIND13",
+    "name": "account name at the edge of a sentence, accepting variant: Rent expense rose $30,000, and Insurance expense rose $45,000.",
+    "required": "An account name binds wherever it stands in the sentence: at the end, before a comma, a closing quote, a question mark or an exclamation mark. A second account the sentence names with no figure and no direction word of its own holds it at needs review, and a figure is never failed against a line whose name only trails it after a colon. Two accounts each with a claim of their own still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000, and Insurance expense rose $45,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "BIND14",
+    "name": "account name at the edge of a sentence, accepting variant: Insurance expense rose $45,000 while Rent expense rose $30,000.",
+    "required": "An account name binds wherever it stands in the sentence: at the end, before a comma, a closing quote, a question mark or an exclamation mark. A second account the sentence names with no figure and no direction word of its own holds it at needs review, and a figure is never failed against a line whose name only trails it after a colon. Two accounts each with a claim of their own still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Insurance expense rose $45,000 while Rent expense rose $30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "BIND15",
+    "name": "account name at the edge of a sentence, accepting variant: Rent expense rose $30,000, and $45,000 of growth landed in Insurance expense.",
+    "required": "An account name binds wherever it stands in the sentence: at the end, before a comma, a closing quote, a question mark or an exclamation mark. A second account the sentence names with no figure and no direction word of its own holds it at needs review, and a figure is never failed against a line whose name only trails it after a colon. Two accounts each with a claim of their own still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000, and $45,000 of growth landed in Insurance expense.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "BIND16",
+    "name": "account name at the edge of a sentence, accepting variant: Interest expense rose $31,200, and depreciation held at $128,000.",
+    "required": "An account name binds wherever it stands in the sentence: at the end, before a comma, a closing quote, a question mark or an exclamation mark. A second account the sentence names with no figure and no direction word of its own holds it at needs review, and a figure is never failed against a line whose name only trails it after a colon. Two accounts each with a claim of their own still clear.",
+    "inputs": {
+      "ledger": "7000\tDepreciation\t128000\t128000\n7100\tInterest expense\t61200\t92400",
+      "memo": "Interest expense rose $31,200, and depreciation held at $128,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "BIND17",
+    "name": "account name at the edge of a sentence, mixed variant: Insurance expense rose $45,000, and Rent expense rose $30,000 on space it shares with Insurance expense.",
+    "required": "An account name binds wherever it stands in the sentence: at the end, before a comma, a closing quote, a question mark or an exclamation mark. A second account the sentence names with no figure and no direction word of its own holds it at needs review, and a figure is never failed against a line whose name only trails it after a colon. Two accounts each with a claim of their own still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Insurance expense rose $45,000, and Rent expense rose $30,000 on space it shares with Insurance expense.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "which line it is the figure for"
+      }
+    ]
+  },
+  {
+    "id": "LEX01",
+    "name": "lexicon neighbour, refusing variant: Rent expense rose 30,000 kr.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose 30,000 kr.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is not checked",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "not checked"
+      },
+      {
+        "desc": "the span the grammar does not read is in the queue",
+        "get": "queueKinds",
+        "op": "includes",
+        "value": "Unparsed figure"
+      }
+    ]
+  },
+  {
+    "id": "LEX02",
+    "name": "lexicon neighbour, refusing variant: Rent expense rose Fr. 30,000.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose Fr. 30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is not checked",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "not checked"
+      },
+      {
+        "desc": "the span the grammar does not read is in the queue",
+        "get": "queueKinds",
+        "op": "includes",
+        "value": "Unparsed figure"
+      }
+    ]
+  },
+  {
+    "id": "LEX03",
+    "name": "lexicon neighbour, refusing variant: Rent expense rose 30,000 zł.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose 30,000 zł.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is not checked",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "not checked"
+      },
+      {
+        "desc": "the span the grammar does not read is in the queue",
+        "get": "queueKinds",
+        "op": "includes",
+        "value": "Unparsed figure"
+      }
+    ]
+  },
+  {
+    "id": "LEX04",
+    "name": "lexicon neighbour, refusing variant: Rent expense rose RM 30,000.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose RM 30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is not checked",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "not checked"
+      },
+      {
+        "desc": "the span the grammar does not read is in the queue",
+        "get": "queueKinds",
+        "op": "includes",
+        "value": "Unparsed figure"
+      }
+    ]
+  },
+  {
+    "id": "LEX05",
+    "name": "lexicon neighbour, refusing variant: Rent expense rose $30,000, as both lines did.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000, as both lines did.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“both lines”"
+      }
+    ]
+  },
+  {
+    "id": "LEX06",
+    "name": "lexicon neighbour, refusing variant: Rent expense rose $30,000, eclipsing the insurance line.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000, eclipsing the insurance line.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“eclipsing”"
+      }
+    ]
+  },
+  {
+    "id": "LEX07",
+    "name": "lexicon neighbour, refusing variant: Rent expense rose $30,000 in lockstep with the insurance line.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 in lockstep with the insurance line.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“lockstep”"
+      }
+    ]
+  },
+  {
+    "id": "LEX08",
+    "name": "lexicon neighbour, refusing variant: Rent expense rose $30,000, below the industry average.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000, below the industry average.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“below the industry”"
+      }
+    ]
+  },
+  {
+    "id": "LEX09",
+    "name": "lexicon neighbour, refusing variant: Rent expense rose $30,000 above the historical norm.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 above the historical norm.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“above the historical norm”"
+      }
+    ]
+  },
+  {
+    "id": "LEX10",
+    "name": "lexicon neighbour, refusing variant: Rent expense rose $30,000 to a new high.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 to a new high.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“new high”"
+      }
+    ]
+  },
+  {
+    "id": "LEX11",
+    "name": "lexicon neighbour, refusing variant: Rent expense rose $30,000 from a low base.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 from a low base.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“a low”"
+      }
+    ]
+  },
+  {
+    "id": "LEX12",
+    "name": "lexicon neighbour, refusing variant: Rent expense rose $30,000 as of today.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 as of today.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“today”"
+      }
+    ]
+  },
+  {
+    "id": "LEX13",
+    "name": "lexicon neighbour, refusing variant: Rent expense rose $30,000 overnight.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 overnight.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“overnight”"
+      }
+    ]
+  },
+  {
+    "id": "LEX14",
+    "name": "lexicon neighbour, refusing variant: Rent expense rose $30,000, or 30 pct pts.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000, or 30 pct pts.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is not checked",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "not checked"
+      },
+      {
+        "desc": "the span the grammar does not read is in the queue",
+        "get": "queueKinds",
+        "op": "includes",
+        "value": "Unparsed figure"
+      }
+    ]
+  },
+  {
+    "id": "LEX15",
+    "name": "lexicon neighbour, mixed variant: Rent expense rose $30,000; Insurance expense rose $45,000 year over year.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000; Insurance expense rose $45,000 year over year.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“year over year”"
+      }
+    ]
+  },
+  {
+    "id": "LEX16",
+    "name": "lexicon neighbour, refusing variant: Rent expense rose $30,000 (favourable).",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 (favourable).",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“favourable”"
+      }
+    ]
+  },
+  {
+    "id": "LEX17",
+    "name": "lexicon neighbour, refusing variant: Rent expense rose $30,000 against the reforecast.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 against the reforecast.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds S1",
+        "get": "queue",
+        "op": "includes",
+        "value": "“against”"
+      }
+    ]
+  },
+  {
+    "id": "LEX18",
+    "name": "lexicon neighbour, accepting variant: Rent expense rose $30,000, or 30 percent.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000, or 30 percent.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "LEX19",
+    "name": "lexicon neighbour, accepting variant: Rent expense rose $30,000 over May on the new lease.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 over May on the new lease.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "LEX20",
+    "name": "lexicon neighbour, accepting variant: Rent expense changed by +$30,000 on the Suite 200 lease.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense changed by +$30,000 on the Suite 200 lease.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "LEX21",
+    "name": "lexicon neighbour, accepting variant: Rent expense rose $30,000 and Insurance expense rose $45,000.",
+    "required": "The risk lexicon probed one step past the words it lists, class by class: a currency written as an abbreviation or a symbol word (\"kr\", \"Fr.\", \"zł\", \"RM\"), a claim carried to \"both lines\", a comparison verb (\"eclipsing\", \"in lockstep with\"), a basis written as an average or a norm, a ranking written as \"a new high\" or \"a low base\", a period written as \"today\" or \"overnight\", a sign word, and points written after a percent. Each holds the sentence or leaves it not checked, a sentence with one clause that clears and one that does not is held, and plain claims still clear.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 and Insurance expense rose $45,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
       }
     ]
   }
