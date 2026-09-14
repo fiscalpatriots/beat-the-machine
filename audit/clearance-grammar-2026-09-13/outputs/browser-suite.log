@@ -1,0 +1,550 @@
+pass T01 correct variance, both figures verified
+pass T02 balance mistaken for the change
+pass T03 wrong account, numeric coincidence
+pass T04 sign reversed
+pass T05 parenthesised percent is not supported by the line
+pass T06 percentage points against a dollar balance
+pass T07 extra numeric column
+pass T08 unquoted thousands in a comma separated ledger
+pass T09 duplicate account number
+pass T10 zero prior balance
+pass T10b zero prior balance, excluded by policy
+pass T11 unmatched sentence
+pass T12 formula-like account name on export
+pass T12b formula-like sentence text on export
+pass T13 malformed source row
+pass T14 dollar boundary is more than
+pass T14b a cent over the dollar boundary
+pass T15 percent boundary is at least
+pass T15b unrounded percent below the boundary
+pass T16 ordinary numeric text
+pass T17 unresolved percent carried to the end
+pass T18 Halyard sample end to end, case halyard-v4
+pass T18b Brightwater sample end to end, case brightwater-v5
+pass T19 Kestrel QuickBooks sample end to end
+pass T20 N01 negation, did not increase
+pass T21 N02 a percentage written in words is read, and fails
+pass T22 N03 euro amount
+pass T23 N04 sterling amount
+pass T24 N05 a three digit number in a claim position
+pass T25 N06 a year shaped number used as a figure
+pass T26 N07 a dropped negative sign
+pass T27 N08 control, two accounts each with its own amount
+pass T28 N09 amounts swapped between two named accounts
+pass T29 N10 control, a percent that disagrees
+pass T30 N11 control, a percent that agrees
+pass T31 N12 an account number spent as a figure
+pass T32 N13 a no-change claim in a second clause, against a line that moved
+pass T33 N14 control, a direction that disagrees in the second clause
+pass T34 N15 control, a signed percent that disagrees
+pass T35 N16 a negation in a later clause
+pass T36 N17 a multiplier the grammar does not carry
+pass T37 N18 an explicit currency code
+pass T38 N19 a scale word after a bare number
+pass T39 N20 basis points
+pass T40 N21 control, two sentences each with one account
+pass T41 N22 a percent whose role the words do not give
+pass T42 N23 control, a supplied ratio
+pass T43 N24 a no-change claim on a bare account word, against a line that moved
+pass T44 units mismatch, percentage points against a dollar line
+pass T45 a figure standing in a different sentence from its account
+pass T46 a percent of a subtotal the checker was never given
+pass T47 a currency written in thousands against a ledger in whole dollars
+pass T48 a memo line quoting last year
+pass T49 a spelled-out quantity with no unit, standing where a claim stands
+pass T50 a fraction written in words
+pass T51 a spelled-out quantity with a unit word, true
+pass T52 a spelled-out quantity with a unit word, false
+pass T53 a hyphenated compound through the hundreds and thousands
+pass T54 a count written in words is not a figure about the account
+pass P01 third review probe P01
+pass P02 third review probe P02
+pass P03 third review probe P03
+pass P04 third review probe P04
+pass P05 third review probe P05, a multiplier, unresolved
+pass P06 third review probe P06, a multiplier, unresolved
+pass P07 third review probe P07, a fraction, unresolved
+pass P08 third review probe P08, a multiplier, unresolved
+pass P09 third review probe P09, a number glued to a letter, unresolved
+pass P10 third review probe P10, a unit the grammar does not read, unresolved
+pass P11 third review probe P11, a no-change claim on a line that moved, failed
+pass P12 third review probe P12, a no-change claim on a line that moved, failed
+pass P13 third review probe P13, a no-change claim on a line that moved, failed
+pass P14 third review probe P14, a flat claim on a line that moved, failed
+pass P15 third review probe P15, a negation, held
+pass P16 third review probe P16, a bound rather than a figure, held
+pass P17 third review probe P17, a bound, held
+pass P18 third review probe P18, a bound, held
+pass P19 third review probe P19, a bound, held
+pass P20 third review probe P20
+pass P21 third review probe P21, a decimal in words, unresolved
+pass P22 third review probe P22, a decimal in words, unresolved
+pass P23 third review probe P23, a fraction in a percent, unresolved
+pass P24 third review probe P24, a number glued to an underscore, unresolved
+pass P25 third review probe P25, Arabic-Indic digits, unresolved without a crash
+pass P26 third review probe P26
+pass P27 third review probe P27
+pass P28 third review probe P28
+pass P29 third review probe P29
+pass P30 third review probe P30
+pass P31 third review probe P31
+pass P32 third review probe P32, a negation, held
+pass P33 third review probe P33
+pass P34 third review probe P34, a fraction, unresolved
+pass P35 third review probe P35
+pass P36 third review probe P36
+pass P37 third review probe P37, a multiplier in the driver, unresolved
+pass P38 third review probe P38
+pass P39 third review probe P39, a year after "in" is a date, checked
+pass P40 third review probe P40
+pass MUL01 multiplier, refusing variant: Rent expense increased by $30,000 and doubled.
+pass MUL02 multiplier, refusing variant: Rent expense doubled, rising $30,000.
+pass MUL03 multiplier, refusing variant: Rent expense rose $30,000, more than doubling.
+pass MUL04 multiplier, refusing variant: Rent expense rose $30,000 as occupancy doubles.
+pass MUL05 multiplier, refusing variant: Rent expense tripled to $130,000.
+pass MUL06 multiplier, refusing variant: Rent expense rose $30,000, a two-fold increase.
+pass MUL07 multiplier, refusing variant: Rent expense rose $30,000, a twofold increase.
+pass MUL08 multiplier, refusing variant: Rent expense rose $30,000, a 3x increase.
+pass MUL09 multiplier, refusing variant: Rent expense rose $30,000, or 1.3x the prior balance.
+pass MUL10 multiplier, refusing variant: Rent expense rose $30,000, twice the prior month's change.
+pass MUL11 multiplier, refusing variant: Rent expense rose $30,000 and quadrupled.
+pass MUL12 multiplier, refusing variant: Rent expense rose $30,000 after halving in May.
+pass MUL13 multiplier, refusing variant: Rent expense rose $30,000, three times the insurance increas
+pass MUL14 multiplier, refusing variant: Rent expense rose $30,000; it has doubled since January.
+pass MUL15 multiplier, refusing variant: Rent expense rose $30,000 (doubled).
+pass MUL16 multiplier, refusing variant: Rent expense rose $30,000, a 2× rise.
+pass MUL17 multiplier, refusing variant: Rent expense rose $30,000 but did not double.
+pass MUL18 multiplier, refusing variant: Rent expense rose $30,000, or thirty percent, and was halved
+pass MUL19 multiplier, accepting variant: Rent expense rose $30,000 on the double-entry correction.
+pass MUL20 multiplier, accepting variant: Rent expense rose $30,000 after the double count in May was 
+pass MUL21 multiplier, accepting variant: Rent expense rose $30,000, or 30 percent, on the Suite 200 l
+pass MUL22 multiplier, accepting variant: Rent expense rose $30,000 (30%).
+pass STILL01 no-change claim, refusing variant: Rent expense remained at $130,000.
+pass STILL02 no-change claim, refusing variant: Rent expense remains at $130,000.
+pass STILL03 no-change claim, refusing variant: Rent expense stayed at $130,000.
+pass STILL04 no-change claim, refusing variant: Rent expense held at $130,000.
+pass STILL05 no-change claim, refusing variant: Rent expense was unchanged at $130,000.
+pass STILL06 no-change claim, refusing variant: Rent expense was unchanged.
+pass STILL07 no-change claim, refusing variant: Rent expense remained unchanged at $130,000.
+pass STILL08 no-change claim, refusing variant: Rent expense stayed the same at $130,000.
+pass STILL09 no-change claim, refusing variant: Rent expense remained $130,000.
+pass STILL10 no-change claim, refusing variant: At $130,000, rent expense remained flat.
+pass STILL11 no-change claim, refusing variant: Rent expense stayed flat at $130,000.
+pass STILL12 no-change claim, refusing variant: Rent expense, at $130,000, was unchanged from May.
+pass STILL13 no-change claim, refusing variant: Rent expense showed no change at $130,000.
+pass STILL14 no-change claim, refusing variant: Rent expense was held constant at $130,000.
+pass STILL15 no-change claim, refusing variant: Rent expense continued at $130,000.
+pass STILL16 no-change claim, refusing variant: Rent expense rose $30,000; Insurance expense remained at $95
+pass STILL17 no-change claim, refusing variant: Rent expense rose $30,000 and insurance stayed at $95,000.
+pass STILL18 no-change claim, refusing variant: Rent expense did not remain at $130,000.
+pass STILL19 no-change claim, refusing variant: Rent expense remained at $130,400.
+pass STILL20 no-change claim, accepting variant: Rent expense remained at $130,000.
+pass STILL21 no-change claim, accepting variant: Rent expense was unchanged at $130,000.
+pass STILL22 no-change claim, accepting variant: Rent expense held at $130,000.
+pass STILL23 no-change claim, accepting variant: Rent expense stayed the same at $130,000.
+pass STILL24 no-change claim, accepting variant: Rent expense held flat at $130,400.
+pass STILL25 no-change claim, accepting variant: Rent expense, unchanged at $130,000, carries no commentary.
+pass STILL26 no-change claim, refusing variant: Rent expense, at $130,000, fell.
+pass STILL27 no-change claim, refusing variant: At $130,000, rent expense fell.
+pass STILL28 no-change claim, accepting variant: At $130,000, rent expense rose.
+pass FRAC01 fraction or number words in a percent, refusing variant: Rent expense rose $30,000, or one and a half percent.
+pass FRAC02 fraction or number words in a percent, refusing variant: Rent expense rose $30,000, or one-and-a-half percent.
+pass FRAC03 fraction or number words in a percent, refusing variant: Rent expense rose $30,000, or a quarter.
+pass FRAC04 fraction or number words in a percent, refusing variant: Rent expense rose $30,000, or a quarter of the prior balance
+pass FRAC05 fraction or number words in a percent, refusing variant: Rent expense rose $30,000, or half a percent.
+pass FRAC06 fraction or number words in a percent, refusing variant: Rent expense rose $30,000, or a half percent.
+pass FRAC07 fraction or number words in a percent, refusing variant: Rent expense rose $30,000, or three quarters of a percent.
+pass FRAC08 fraction or number words in a percent, refusing variant: Rent expense rose $30,000, or two thirds.
+pass FRAC09 fraction or number words in a percent, refusing variant: Rent expense rose $30,000, or 1/2 percent.
+pass FRAC10 fraction or number words in a percent, refusing variant: Rent expense rose $30,000, or 1½ percent.
+pass FRAC11 fraction or number words in a percent, refusing variant: Rent expense rose $30,000, or ½%.
+pass FRAC12 fraction or number words in a percent, refusing variant: Rent expense rose $30,000, or thirty point five percent.
+pass FRAC13 fraction or number words in a percent, refusing variant: Rent expense rose $30,000, or point five percent.
+pass FRAC14 fraction or number words in a percent, refusing variant: Rent expense rose $30,000, or .5 percent.
+pass FRAC15 fraction or number words in a percent, refusing variant: Rent expense rose $30,000 after being cut in half in May.
+pass FRAC16 fraction or number words in a percent, refusing variant: Rent expense rose by a third, or $30,000.
+pass FRAC17 fraction or number words in a percent, refusing variant: Rent expense rose $30,000, nearly a third.
+pass FRAC18 fraction or number words in a percent, refusing variant: Rent expense rose $30,000, one quarter above May.
+pass FRAC19 fraction or number words in a percent, refusing variant: Rent expense rose $30,000, not a quarter.
+pass FRAC20 fraction or number words in a percent, refusing variant: Rent expense rose $30,000, or thirty and a half percent.
+pass FRAC21 fraction or number words in a percent, variant now held by the clearance grammar: Rent expense rose $30,000 in the first half of June.
+pass FRAC22 fraction or number words in a percent, accepting variant: Rent expense rose $30,000 on a third site lease.
+pass FRAC23 fraction or number words in a percent, variant now held by the clearance grammar: Rent expense rose $30,000 at quarter-end.
+pass FRAC24 fraction or number words in a percent, accepting variant: Rent expense rose $30,000, or thirty percent.
+pass FRAC25 fraction or number words in a percent, accepting variant: Rent expense rose $30,000 as the lease moved to a half-year 
+pass FRAC26 fraction or number words in a percent, accepting variant: Rent expense rose $30,000 on the lease that started on 6/1.
+pass DIGIT01 digits outside 0 to 9, refusing variant: Rent expense rose $30,000 and increased by ٣٠٠٠٠.
+pass DIGIT02 digits outside 0 to 9, refusing variant: Rent expense rose ٣٠٬٠٠٠ dollars.
+pass DIGIT03 digits outside 0 to 9, refusing variant: Rent expense rose $٣٠,٠٠٠.
+pass DIGIT04 digits outside 0 to 9, refusing variant: Rent expense rose $30,000, or ٣٠ percent.
+pass DIGIT05 digits outside 0 to 9, refusing variant: Rent expense rose $30,000, or ３０%.
+pass DIGIT06 digits outside 0 to 9, refusing variant: Rent expense rose $30,000, or 30％.
+pass DIGIT07 digits outside 0 to 9, refusing variant: Rent expense rose $३०,०००.
+pass DIGIT08 digits outside 0 to 9, refusing variant: Rent expense rose $30,000, or 30‰.
+pass DIGIT09 digits outside 0 to 9, refusing variant: Rent expense rose $30,000, or 30².
+pass DIGIT10 digits outside 0 to 9, refusing variant: Rent expense rose $30,000, up ۳۰ percent.
+pass DIGIT11 digits outside 0 to 9, refusing variant: Rent expense rose $30,000, or 9e1 percent.
+pass DIGIT12 digits outside 0 to 9, refusing variant: Rent expense rose $30,000 and increased by 30_000.
+pass DIGIT13 digits outside 0 to 9, refusing variant: Rent expense rose $30,000, or 90.0 per mille.
+pass DIGIT14 digits outside 0 to 9, refusing variant: Rent expense rose US$30,000.
+pass DIGIT15 digits outside 0 to 9, accepting variant: Rent expense rose $30,000 (30%).
+pass DIGIT16 digits outside 0 to 9, accepting variant: Rent expense rose $30,000 at the café on Main Street.
+pass COUNT01 a number that is not a figure, refusing variant: Rent expense rose $30,000, or 30.
+pass COUNT02 a number that is not a figure, refusing variant: Rent expense rose $30,000, a rise of 30.
+pass COUNT03 a number that is not a figure, refusing variant: Rent expense rose $30,000, or thirty.
+pass COUNT04 a number that is not a figure, refusing variant: Rent expense rose $30,000 and 800 to $130,000.
+pass COUNT05 a number that is not a figure, refusing variant: Rent expense rose $30,000, 3 points above plan.
+pass COUNT06 a number that is not a figure, accepting variant: Rent expense rose $30,000 on 12 new leases.
+pass COUNT07 a number that is not a figure, accepting variant: Rent expense rose $30,000 across three sites.
+pass COUNT08 a number that is not a figure, accepting variant: Rent expense rose $30,000 on the lease signed on June 30.
+pass COUNT09 a number that is not a figure, accepting variant: Rent expense rose $30,000 on the lease signed on 30 June 202
+pass COUNT10 a number that is not a figure, variant now held by the clearance grammar: Rent expense rose $30,000 in Q2.
+pass COUNT11 a number that is not a figure, accepting variant: Rent expense rose $30,000 on the 3rd floor lease.
+pass COUNT12 a number that is not a figure, accepting variant: Rent expense rose $30,000 under invoice 4471.
+pass COUNT13 a number that is not a figure, variant now held by the clearance grammar: Rent expense rose $30,000, one of the larger moves.
+pass COUNT14 a number that is not a figure, accepting variant: Rent expense rose $30,000 in 2026.
+pass COUNT15 a number that is not a figure, refusing variant: Rent expense rose $30,000 by 2026.
+pass ROLE01 the Prompt 1 line shape, accepting variant: 6100 Rent expense: prior $100,000, current $130,000, rose by
+pass ROLE02 the Prompt 1 line shape, accepting variant: 6100 Rent expense: prior $100,000.00, current $130,000.00, r
+pass ROLE03 the Prompt 1 line shape, refusing variant: 6100 Rent expense: prior $130,000, current $100,000, rose by
+pass ROLE04 the Prompt 1 line shape, refusing variant: 6100 Rent expense: prior $100,000, current $130,000, fell by
+pass ROLE05 the Prompt 1 line shape, refusing variant: 6100 Rent expense: prior year $100,000, current $130,000, ro
+pass ROLE06 the Prompt 1 line shape, accepting variant: 6100 Rent expense: previous $100,000, current $130,000, rose
+pass A001 independent audit probe A001, multiplier: Rent expense rose $30,000, or 1.3x the prior balance.
+pass A002 independent audit probe A002, multiplier: Rent expense rose $30,000 and grew 1.3-fold.
+pass A003 independent audit probe A003, multiplier: Rent expense rose $30,000 and grew twofold.
+pass A004 independent audit probe A004, multiplier: Rent expense rose $30,000 and grew by a third.
+pass A005 independent audit probe A005, multiplier: Rent expense rose $30,000 and was up by half.
+pass A006 independent audit probe A006, multiplier: Rent expense rose $30,000, a 1.3 times increase.
+pass A007 independent audit probe A007, multiplier: Rent expense quadrupled to $130,000.
+pass A008 independent audit probe A008, multiplier: Rent expense rose $30,000 and more than doubled.
+pass A009 independent audit probe A009, multiplier: Rent expense rose $30,000, or x1.3 the prior month.
+pass A010 independent audit probe A010, multiplier: Rent expense rose $30,000, roughly three tenths of the May balance.
+pass A011 independent audit probe A011, multiplier: Rent expense rose $30,000, a threefold jump.
+pass A012 independent audit probe A012, multiplier: Consulting revenue fell $60,000 and was halved.
+pass A013 independent audit probe A013, multiplier: Consulting revenue fell $60,000, down by a quarter.
+pass A014 independent audit probe A014, multiplier: Consulting revenue fell $60,000, or 0.75x of May.
+pass A015 independent audit probe A015, multiplier: Rent expense rose $30,000, or 1.5 times.
+pass A016 independent audit probe A016, nochange: Rent expense was flat at $130,000.
+pass A017 independent audit probe A017, nochange: Rent expense held steady at $130,000.
+pass A018 independent audit probe A018, nochange: Rent expense was essentially flat at $130,000.
+pass A019 independent audit probe A019, nochange: Rent expense was roughly unchanged at $130,000.
+pass A020 independent audit probe A020, nochange: Rent expense was broadly stable at $130,000.
+pass A021 independent audit probe A021, nochange: Rent expense was level at $130,000.
+pass A022 independent audit probe A022, nochange: Rent expense was consistent with May at $130,000.
+pass A023 independent audit probe A023, nochange: Rent expense was in line with May at $130,000.
+pass A024 independent audit probe A024, nochange: Rent expense showed no material change at $130,000.
+pass A025 independent audit probe A025, nochange: Rent expense was virtually unchanged from May at $130,000.
+pass A026 independent audit probe A026, nochange: Rent expense was flat.
+pass A027 independent audit probe A027, nochange: Rent expense remained flat month over month.
+pass A028 independent audit probe A028, nochange: Travel expense was unchanged at $12,000.
+pass A029 independent audit probe A029, nochange: Travel expense rose $150.
+pass A030 independent audit probe A030, nochange: Utilities expense was flat at $50,150.
+pass A031 independent audit probe A031, nochange: Utilities expense was unchanged at $50,150.
+pass A032 independent audit probe A032, nochange: Utilities expense held steady, up $150.
+pass A033 independent audit probe A033, nochange: Consulting revenue was stable at $180,000.
+pass A034 independent audit probe A034, approx: Rent expense rose about $32,000.
+pass A035 independent audit probe A035, approx: Rent expense rose roughly $29,000.
+pass A036 independent audit probe A036, approx: Rent expense rose nearly $31,000.
+pass A037 independent audit probe A037, approx: Rent expense rose just over $30,000.
+pass A038 independent audit probe A038, approx: Rent expense rose by almost $30,000.
+pass A039 independent audit probe A039, approx: Rent expense rose by well over $30,000.
+pass A040 independent audit probe A040, approx: Rent expense rose by up to $30,000.
+pass A041 independent audit probe A041, approx: Rent expense rose approximately 30 percent.
+pass A042 independent audit probe A042, approx: Rent expense rose by about 25 percent.
+pass A043 independent audit probe A043, approx: Consulting revenue fell by about $55,000.
+pass A044 independent audit probe A044, approx: Consulting revenue fell by a little under $60,000.
+pass A045 independent audit probe A045, range: Rent expense rose between $25,000 and $35,000.
+pass A046 independent audit probe A046, range: Rent expense rose between 25 and 35 percent.
+pass A047 independent audit probe A047, range: Rent expense rose $25,000-$35,000.
+pass A048 independent audit probe A048, range: Rent expense rose 20-40%.
+pass A049 independent audit probe A049, range: Rent expense rose in the range of $28,000 to $32,000.
+pass A050 independent audit probe A050, range: Rent expense rose 29 to 31 percent.
+pass A051 independent audit probe A051, scale: Rent expense rose $0.03 million.
+pass A052 independent audit probe A052, scale: Rent expense rose 30 thousand dollars.
+pass A053 independent audit probe A053, scale: Rent expense rose $30 thousand.
+pass A054 independent audit probe A054, scale: Rent expense rose $0.03M.
+pass A055 independent audit probe A055, scale: Rent expense rose $3M.
+pass A056 independent audit probe A056, scale: Rent expense rose $30 000.
+pass A057 independent audit probe A057, scale: Rent expense rose $30.000.
+pass A058 independent audit probe A058, scale: Rent expense rose $30 grand.
+pass A059 independent audit probe A059, scale: Rent expense rose $30,000k.
+pass A060 independent audit probe A060, scale: Rent expense rose 30,000 dollars.
+pass A061 independent audit probe A061, scale: Rent expense rose $30 thou.
+pass A062 independent audit probe A062, scale: Consulting revenue fell $0.06MM.
+pass A063 independent audit probe A063, scale: Consulting revenue fell $60 K.
+pass A064 independent audit probe A064, sign: Rent expense changed by (30,000).
+pass A065 independent audit probe A065, sign: Rent expense rose 30,000 CR.
+pass A066 independent audit probe A066, sign: Rent expense moved $30,000 DR.
+pass A067 independent audit probe A067, sign: Rent expense changed by -$30,000.
+pass A068 independent audit probe A068, sign: Rent expense changed by $-30,000.
+pass A069 independent audit probe A069, sign: Rent expense changed by 30,000-.
+pass A070 independent audit probe A070, sign: Rent expense changed by $(30,000).
+pass A071 independent audit probe A071, sign: Consulting revenue changed by (60,000).
+pass A072 independent audit probe A072, sign: Consulting revenue changed by 60,000.
+pass A073 independent audit probe A073, sign: Consulting revenue changed by +60,000.
+pass A074 independent audit probe A074, units: Rent expense rose $30,000, or 30 percentage points.
+pass A075 independent audit probe A075, units: Rent expense rose $30,000, or 3,000 basis points.
+pass A076 independent audit probe A076, units: Rent expense rose $30,000, or 30 pts.
+pass A077 independent audit probe A077, units: Rent expense rose $30,000, a 30 pct increase.
+pass A078 independent audit probe A078, units: Rent expense rose $30,000, or 30 p.p.
+pass A079 independent audit probe A079, units: Rent expense rose $30,000, or 30 bps.
+pass A080 independent audit probe A080, units: Rent expense rose 0.3 percent.
+pass A081 independent audit probe A081, units: Rent expense rose $30,000, or 0.30 in percentage terms.
+pass A082 independent audit probe A082, period: Rent expense rose $30,000, or 30 percent, year over year.
+pass A083 independent audit probe A083, period: Rent expense rose $30,000 compared with June 2025.
+pass A084 independent audit probe A084, period: Rent expense rose $30,000 over the last twelve months.
+pass A085 independent audit probe A085, period: Year to date, rent expense rose $30,000.
+pass A086 independent audit probe A086, period: Rent expense rose $30,000 quarter over quarter.
+pass A087 independent audit probe A087, period: Rent expense rose $30,000 against budget.
+pass A088 independent audit probe A088, period: Consulting revenue fell 25 percent from last year.
+pass A089 independent audit probe A089, two: Rent expense rose $30,000 and Insurance expense rose $40,000.
+pass A090 independent audit probe A090, two: Rent expense rose $30,000, or 30 percent, and ended at $140,000.
+pass A091 independent audit probe A091, two: Rent expense rose $30,000 to $130,000, and Insurance expense fell to $95,000.
+pass A092 independent audit probe A092, two: Rent expense rose $30,000 while Insurance expense was unchanged.
+pass A093 independent audit probe A093, two: Rent expense and Insurance expense rose $30,000 and $45,000 respectively.
+pass A094 independent audit probe A094, two: Rent expense rose $30,000; so did Insurance expense.
+pass A095 independent audit probe A095, two: Rent expense rose $30,000 and Insurance expense rose too, by 30 percent.
+pass A096 independent audit probe A096, two: Rent expense rose $30,000, the same increase as Insurance expense.
+pass A097 independent audit probe A097, two: Rent expense rose $30,000, or 30 percent, while Insurance expense rose 30 percent.
+pass A098 independent audit probe A098, negation: Rent expense not only increased by $30,000 but also ended at $130,000.
+pass A099 independent audit probe A099, negation: Rent expense did not decline; it rose $30,000.
+pass A100 independent audit probe A100, negation: Rent expense rose $45,000, not $30,000.
+pass A101 independent audit probe A101, negation: Rent expense rose $45,000 without any change in occupancy.
+pass A102 independent audit probe A102, negation: Rent expense rose $30,000 and Insurance expense didn’t rise.
+pass A103 independent audit probe A103, negation: Rent expense rose $30,000, and it is untrue that it fell.
+pass A104 independent audit probe A104, negation: Rent expense rose $30,000 and hardly moved.
+pass A105 independent audit probe A105, negation: Rent expense rose $30,000, not a decline of $30,000 as reported earlier.
+pass A106 independent audit probe A106, negation: Rent expense failed to fall, rising $30,000.
+pass A107 independent audit probe A107, negation: Rent expense rose $30,000; Insurance expense rose nowhere near $45,000.
+pass A108 independent audit probe A108, currency: Rent expense rose CAD 30,000.
+pass A109 independent audit probe A109, currency: Rent expense rose C$30,000.
+pass A110 independent audit probe A110, currency: Rent expense rose A$30,000.
+pass A111 independent audit probe A111, currency: Rent expense rose ¥30,000.
+pass A112 independent audit probe A112, currency: Rent expense rose 30,000 EUR.
+pass A113 independent audit probe A113, currency: Rent expense rose ₹30,000.
+pass A114 independent audit probe A114, currency: Rent expense rose 30,000 pesos.
+pass A115 independent audit probe A115, currency: Rent expense rose Rs. 30,000.
+pass A116 independent audit probe A116, currency: Rent expense rose 3,00,000 on the lakh grouping.
+pass A117 independent audit probe A117, digits: Rent expense rose ৩০,০০০.
+pass A118 independent audit probe A118, digits: Rent expense rose ３０,０００ dollars.
+pass A119 independent audit probe A119, digits: Rent expense rose $30,000, or 三十 percent.
+pass A120 independent audit probe A120, digits: Rent expense rose $30,000, or trente pour cent.
+pass A121 independent audit probe A121, digits: Rent expense rose $30,000, or XXX percent.
+pass A122 independent audit probe A122, digits: Rent expense rose $30,000, or ३० percent.
+pass A123 independent audit probe A123, typo: Rent expense rose $ 30,000.
+pass A124 independent audit probe A124, typo: Rent expense rose $30 000.
+pass A125 independent audit probe A125, typo: Rent expense changed by −$30,000.
+pass A126 independent audit probe A126, typo: Rent expense changed by –$30,000.
+pass A127 independent audit probe A127, typo: Rent expense changed by —30,000.
+pass A128 independent audit probe A128, typo: Rent expense rose $30,000, or 90 percent.
+pass A129 independent audit probe A129, typo: Rent expense rose $30,000, or 90 %.
+pass A130 independent audit probe A130, typo: Rent expense rose $30,​000.
+pass A131 independent audit probe A131, typo: Rent expense rose $30,000, or 90％.
+pass A132 independent audit probe A132, typo: Rent expense rose ＄30,000, or 90 percent.
+pass A133 independent audit probe A133, typo: Rent expense rose $30,000 – or 90 percent.
+pass A134 independent audit probe A134, typo: Rent expense rose $30,000, or 90 per­cent.
+pass A135 independent audit probe A135, typo: Rent expense rose $30,000, or 90 percent.
+pass A136 independent audit probe A136, long: Rent expense rose $30,000, the landlord's schedule item was noted, the landlord's sched...
+pass A137 independent audit probe A137, long: Rent expense rose $30,000, the landlord's schedule item was noted, the landlord's sched...
+pass A138 independent audit probe A138, long: Rent expense rose $30,000, the landlord's schedule item was noted, the landlord's sched...
+pass A139 independent audit probe A139, long: Rent expense rose $30,000, the landlord's schedule item was noted, the landlord's sched...
+pass B001 independent audit probe B001, currency: Rent expense rose 30,000 euros.
+pass B002 independent audit probe B002, currency: Rent expense rose 30,000 pounds.
+pass B003 independent audit probe B003, currency: Rent expense rose 30,000 yen.
+pass B004 independent audit probe B004, currency: Rent expense rose 30,000 rupees.
+pass B005 independent audit probe B005, currency: Rent expense rose 30,000 Canadian dollars.
+pass B006 independent audit probe B006, currency: Rent expense rose 30,000 Australian dollars.
+pass B007 independent audit probe B007, currency: Rent expense rose HK$30,000.
+pass B008 independent audit probe B008, currency: Rent expense rose R$30,000.
+pass B009 independent audit probe B009, currency: Rent expense rose 30,000 francs.
+pass B010 independent audit probe B010, currency: Rent expense rose $30,000 in Canadian currency.
+pass B011 independent audit probe B011, sign: Rent expense changed by $-30,000, or -30 percent.
+pass B012 independent audit probe B012, sign: Rent expense changed by +$30,000.
+pass B013 independent audit probe B013, sign: Consulting revenue changed by +$60,000.
+pass B014 independent audit probe B014, sign: Consulting revenue changed by $+60,000.
+pass B015 independent audit probe B015, sign: Consulting revenue changed by +25 percent.
+pass B016 independent audit probe B016, sign: Rent expense changed by minus $30,000.
+pass B017 independent audit probe B017, sign: Rent expense changed by negative $30,000.
+pass B018 independent audit probe B018, sign: Rent expense changed by 30,000 Cr.
+pass B019 independent audit probe B019, sign: Rent expense changed by $30,000 credit.
+pass B020 independent audit probe B020, nochange: Rent expense was stable at $130,000.
+pass B021 independent audit probe B021, nochange: Rent expense was steady at $130,000.
+pass B022 independent audit probe B022, nochange: Rent expense was constant at $130,000.
+pass B023 independent audit probe B023, nochange: Rent expense was the same as May at $130,000.
+pass B024 independent audit probe B024, nochange: Rent expense did not move and closed at $130,000.
+pass B025 independent audit probe B025, nochange: Rent expense was static at $130,000.
+pass B026 independent audit probe B026, nochange: Rent expense was unmoved at $130,000.
+pass B027 independent audit probe B027, nochange: Rent expense was on par with May at $130,000.
+pass B028 independent audit probe B028, nochange: Rent expense was equal to May at $130,000.
+pass B029 independent audit probe B029, nochange: Rent expense matched May at $130,000.
+pass B030 independent audit probe B030, nochange: Rent expense was unchanged month over month at $130,000.
+pass B031 independent audit probe B031, period: Rent expense rose $30,000 versus the prior year.
+pass B032 independent audit probe B032, period: Rent expense rose $30,000 on a trailing twelve month basis.
+pass B033 independent audit probe B033, period: Rent expense rose $30,000 since December.
+pass B034 independent audit probe B034, period: Rent expense rose $30,000 compared with last June.
+pass B035 independent audit probe B035, period: Rent expense rose $30,000, or 30 percent, over two years.
+pass B036 independent audit probe B036, period: Rent expense rose $30,000 in the first half.
+pass CUR01 currency, refusing variant: Rent expense rose 30,000 Euros.
+pass CUR02 currency, refusing variant: Rent expense rose 30,000 pounds sterling.
+pass CUR03 currency, refusing variant: Rent expense rose 30,000 Swiss francs.
+pass CUR04 currency, refusing variant: Rent expense rose 30,000 Mexican pesos.
+pass CUR05 currency, refusing variant: Rent expense rose $30,000 in Australian dollar terms.
+pass CUR06 currency, refusing variant: Rent expense rose 30,000 US dollars.
+pass CUR07 currency, refusing variant: Rent expense rose $30,000 at the current exchange rate.
+pass CUR08 currency, refusing variant: Rent expense rose $30,000, converted from euros.
+pass CUR09 currency, refusing variant: Rent expense rose $30,000 (EUR).
+pass CUR10 currency, refusing variant: Rent expense rose $30,000 in local currency.
+pass CUR11 currency, refusing variant: Rent expense rose 30,000 yuan renminbi.
+pass CUR12 currency, refusing variant: Rent expense rose thirty thousand euros.
+pass CUR13 currency, refusing variant: Rent expense rose $30,000, reported in GBP.
+pass CUR14 currency, refusing variant: Rent expense rose €30,000.
+pass CUR15 currency, refusing variant: Rent expense rose £30,000.
+pass CUR16 currency, refusing variant: Rent expense rose $30,000 on FX translation.
+pass CUR17 currency, refusing variant: Rent expense rose $30,000 (about €27,000).
+pass CUR18 currency, accepting variant: Rent expense rose $30,000.
+pass CUR19 currency, accepting variant: Rent expense rose 30,000 dollars.
+pass CUR20 currency, accepting variant: Rent expense rose thirty thousand dollars.
+pass CUR21 currency, accepting variant: Rent expense rose $30,000 on the new lease.
+pass SIGN01 sign form, refusing variant: Rent expense changed by $-30,000.
+pass SIGN02 sign form, refusing variant: Rent expense changed by - $30,000.
+pass SIGN03 sign form, refusing variant: Rent expense changed by -30,000.
+pass SIGN04 sign form, refusing variant: Rent expense changed by 30,000-.
+pass SIGN05 sign form, refusing variant: Rent expense changed by $30,000-.
+pass SIGN06 sign form, refusing variant: Rent expense changed by −30,000.
+pass SIGN07 sign form, refusing variant: Rent expense changed by –$30,000.
+pass SIGN08 sign form, refusing variant: Rent expense changed by 30,000 DR.
+pass SIGN09 sign form, refusing variant: Rent expense changed by 30,000 (Cr).
+pass SIGN10 sign form, refusing variant: Rent expense changed by $30,000 debit.
+pass SIGN11 sign form, refusing variant: Rent expense closed at a $130,000 credit balance.
+pass SIGN12 sign form, refusing variant: Rent expense changed by -30 percent.
+pass SIGN13 sign form, refusing variant: Rent expense changed by minus 30,000.
+pass SIGN14 sign form, refusing variant: Consulting revenue changed by +$60,000.
+pass SIGN15 sign form, refusing variant: Consulting revenue changed by + $60,000.
+pass SIGN16 sign form, refusing variant: Consulting revenue changed by +60000.
+pass SIGN17 sign form, refusing variant: Consulting revenue changed by $+60,000, or +25%.
+pass SIGN18 sign form, refusing variant: Consulting revenue changed by 60,000 CR.
+pass SIGN19 sign form, accepting variant: Rent expense changed by +$30,000.
+pass SIGN20 sign form, accepting variant: Consulting revenue changed by -$60,000.
+pass SIGN21 sign form, accepting variant: Consulting revenue changed by $-60,000, or -25 percent.
+pass SIGN22 sign form, accepting variant: Consulting revenue changed by 60,000-.
+pass SIGN23 sign form, accepting variant: Rent expense rose +$30,000 on the new lease.
+pass SIGN24 sign form, refusing variant: Rent expense changed by $30,000 unfavorable.
+pass SIGN25 sign form, refusing variant: Rent expense changed by $30,000 (U).
+pass SAME01 no-change or sameness word, refusing variant: Rent expense was stable at $130,000.
+pass SAME02 no-change or sameness word, refusing variant: Rent expense was steady at $130,000.
+pass SAME03 no-change or sameness word, refusing variant: Rent expense was consistent at $130,000.
+pass SAME04 no-change or sameness word, refusing variant: Rent expense was in line with May at $130,000.
+pass SAME05 no-change or sameness word, refusing variant: Rent expense was level at $130,000.
+pass SAME06 no-change or sameness word, refusing variant: Rent expense was the same as May at $130,000.
+pass SAME07 no-change or sameness word, refusing variant: Rent expense was comparable to May at $130,000.
+pass SAME08 no-change or sameness word, refusing variant: Rent expense matched May at $130,000.
+pass SAME09 no-change or sameness word, refusing variant: Rent expense was little changed at $130,000.
+pass SAME10 no-change or sameness word, refusing variant: Rent expense stayed around $130,000.
+pass SAME11 no-change or sameness word, refusing variant: Rent expense stabilized at $130,000.
+pass SAME12 no-change or sameness word, refusing variant: Rent expense was essentially unchanged at $130,000.
+pass SAME13 no-change or sameness word, refusing variant: Rent expense plateaued at $130,000.
+pass SAME14 no-change or sameness word, refusing variant: Rent expense was similar to May at $130,000.
+pass SAME15 no-change or sameness word, refusing variant: Rent expense held broadly steady at $130,000.
+pass SAME16 no-change or sameness word, refusing variant: Rent expense was identical to the prior month at $130,000.
+pass SAME17 no-change or sameness word, refusing variant: Rent expense tracked May at $130,000.
+pass SAME18 no-change or sameness word, refusing variant: Rent expense at $130,000 was equal to May.
+pass SAME19 no-change or sameness word, accepting variant: Rent expense was unchanged at $130,000.
+pass SAME20 no-change or sameness word, accepting variant: Rent expense held flat at $130,000.
+pass SAME21 no-change or sameness word, accepting variant: Rent expense stayed the same at $130,000.
+pass SAME22 no-change or sameness word, accepting variant: Rent expense remained at $130,000 month over month.
+pass PER01 period or basis, refusing variant: Rent expense rose $30,000 year on year.
+pass PER02 period or basis, refusing variant: Rent expense rose $30,000 YoY.
+pass PER03 period or basis, refusing variant: Rent expense rose $30,000 against plan.
+pass PER04 period or basis, refusing variant: Rent expense rose $30,000 versus forecast.
+pass PER05 period or basis, refusing variant: Quarter to date, rent expense rose $30,000.
+pass PER06 period or basis, refusing variant: Rent expense rose $30,000 from May to August.
+pass PER07 period or basis, refusing variant: Rent expense rose $30,000 on an annualized basis.
+pass PER08 period or basis, refusing variant: Rent expense rose $30,000, a $360,000 run rate.
+pass PER09 period or basis, refusing variant: Rent expense rose $30,000 from the prior year.
+pass PER10 period or basis, refusing variant: Rent expense rose $30,000 over the past three months.
+pass PER11 period or basis, refusing variant: Rent expense rose $30,000 for the third consecutive month.
+pass PER12 period or basis, refusing variant: Rent expense rose $30,000 since the start of the year.
+pass PER13 period or basis, refusing variant: Rent expense rose $30,000 in fiscal 2026.
+pass PER14 period or basis, refusing variant: Rent expense rose $30,000 in H1.
+pass PER15 period or basis, refusing variant: Rent expense rose $30,000 through June.
+pass PER16 period or basis, refusing variant: Rent expense rose $30,000 compared with June 2025.
+pass PER17 period or basis, refusing variant: Rent expense rose $30,000 compared with the same month last year.
+pass PER18 period or basis, refusing variant: Rent expense rose $30,000, or 30 percent, over budget.
+pass PER19 period or basis, refusing variant: Rent expense rose $30,000 a month.
+pass PER20 period or basis, refusing variant: Rent expense rose $30,000 from December.
+pass PER21 period or basis, refusing variant: Rent expense rose $30,000 in 2025.
+pass PER22 period or basis, refusing variant: Rent expense rose $30,000 cumulatively.
+pass PER23 period or basis, refusing variant: Rent expense rose $30,000 on a like-for-like basis.
+pass PER24 period or basis, accepting variant: Rent expense rose $30,000 month over month.
+pass PER25 period or basis, accepting variant: Rent expense rose $30,000 from the prior month.
+pass PER26 period or basis, accepting variant: Rent expense rose $30,000 from May to June.
+pass PER27 period or basis, accepting variant: Rent expense rose $30,000 over May.
+pass PER28 period or basis, accepting variant: Rent expense rose $30,000 in June 2026.
+pass PER29 period or basis, accepting variant: Rent expense rose $30,000 on the lease signed in the first half of June.
+pass PER30 period or basis, accepting variant: Rent expense rose $30,000 as the one-year lease began.
+pass ANA01 claim about another account, refusing variant: Rent expense rose $30,000; so did Insurance expense.
+pass ANA02 claim about another account, refusing variant: Rent expense rose $30,000, as did Insurance expense.
+pass ANA03 claim about another account, refusing variant: Rent expense rose $30,000, and Insurance expense likewise.
+pass ANA04 claim about another account, refusing variant: Rent expense rose $30,000; the same was true of Insurance expense.
+pass ANA05 claim about another account, refusing variant: Rent expense rose $30,000; Insurance expense did too.
+pass ANA06 claim about another account, refusing variant: Rent expense rose $30,000, and similarly Insurance expense.
+pass ANA07 claim about another account, refusing variant: Rent expense rose $30,000, matching Insurance expense.
+pass ANA08 claim about another account, refusing variant: Rent expense rose $30,000, in line with Insurance expense.
+pass ANA09 claim about another account, refusing variant: Rent expense rose $30,000, the same as Insurance expense.
+pass ANA10 claim about another account, refusing variant: Rent expense rose $30,000, outpacing Insurance expense.
+pass ANA11 claim about another account, refusing variant: Rent expense rose $30,000, more than Insurance expense.
+pass ANA12 claim about another account, refusing variant: Rent expense rose $30,000, as did the other lines.
+pass ANA13 claim about another account, refusing variant: Rent expense rose $30,000; so did every other account.
+pass ANA14 claim about another account, refusing variant: Rent expense rose $30,000, the largest movement on the statement.
+pass ANA15 claim about another account, accepting variant: Rent expense rose $30,000 and Insurance expense rose $45,000.
+pass ANA16 claim about another account, accepting variant: Rent expense rose $30,000 while Insurance expense rose $45,000.
+pass ANA17 claim about another account, refusing variant: Rent expense rose $30,000, and Insurance expense followed.
+pass ANA18 claim about another account, refusing variant: Rent expense rose $30,000 on the lease that also covers Insurance expense.
+pass ANA19 claim about another account, accepting variant: Rent expense rose $30,000 as the new lease began.
+pass RESP01 respectively, refusing variant: Rent expense and Insurance expense rose $30,000 and $45,000 respectively.
+pass RESP02 respectively, refusing variant: Rent expense and Insurance expense rose $30,000 and $45,000, respectively.
+pass RESP03 respectively, refusing variant: Rent and Insurance expense rose $30,000 and $45,000 respectively.
+pass RESP04 respectively, refusing variant: Rent expense and Insurance expense rose 30 percent and 90 percent respectively.
+pass RESP05 respectively, refusing variant: Rent expense and Insurance expense rose by $30,000 and $45,000 respectively, on new lea...
+pass RESP06 respectively, refusing variant: Rent expense and Insurance expense ended at $130,000 and $95,000 respectively.
+pass RESP07 respectively, refusing variant: Insurance expense and Rent expense rose $45,000 and $30,000 respectively.
+pass RESP08 respectively, refusing variant: Rent expense and Insurance expense each rose, by $30,000 and $45,000 respectively.
+pass RESP09 respectively, refusing variant: Rent expense and Insurance expense rose $31,000 and $45,000 respectively.
+pass RESP10 respectively, refusing variant: Rent expense and Insurance expense rose $45,000 and $30,000 respectively.
+pass RESP11 respectively, refusing variant: Respectively, Rent expense and Insurance expense rose $30,000 and $45,000.
+pass RESP12 respectively, accepting variant: Rent expense rose $30,000 and Insurance expense rose $45,000, on their respective renew...
+pass RESP13 respectively, accepting variant: Insurance expense rose $45,000 and Rent expense rose $30,000.
+pass RESP14 respectively, accepting variant: Rent expense rose $30,000 on the new lease.
+pass QTY01 size, rank or share word, refusing variant: Rent expense rose sharply, by $30,000.
+pass QTY02 size, rank or share word, refusing variant: Rent expense rose a significant $30,000.
+pass QTY03 size, rank or share word, refusing variant: Rent expense rose $30,000, mostly on the new lease.
+pass QTY04 size, rank or share word, refusing variant: Most of the $30,000 rise in rent expense came from the new lease.
+pass QTY05 size, rank or share word, refusing variant: Rent expense rose several thousand dollars to $130,000.
+pass QTY06 size, rank or share word, refusing variant: Rent expense rose $30,000, a record for the line.
+pass QTY07 size, rank or share word, refusing variant: Rent expense rose $30,000, more than any other line.
+pass QTY08 size, rank or share word, refusing variant: Rent expense rose $30,000 and soared.
+pass QTY09 size, rank or share word, refusing variant: Rent expense rose $30,000 on sharply higher rates at the new site.
+pass QTY10 size, rank or share word, refusing variant: Rent expense rose $30,000 and continued to climb.
+pass QTY11 size, rank or share word, refusing variant: Rent expense rose $30,000 because it grew sharply.
+pass SAME23 no-change or sameness word, refusing variant: Rent expense rose $30,000, which was stable.
+pass SAME24 no-change or sameness word, refusing variant: Rent expense rose $30,000 because the balance was stable.
+pass QTY12 size, rank or share word, accepting variant: Rent expense rose $30,000 on higher rates at the new site.
+pass QTY13 size, rank or share word, accepting variant: Rent expense rose approximately 30 percent.
+pass QTY14 size, rank or share word, accepting variant: Rent expense rose about $30,000 as three new leases began.
+pass CUR22 currency, refusing variant: Rent expense rose 30,000 quid.
+pass CUR23 currency, refusing variant: Rent expense rose 30 grand.
+pass CUR24 currency, refusing variant: Rent expense rose 3,000,000 cents.
+pass SIGN26 sign form, refusing variant: Rent expense changed by (-)$30,000.
+pass SAME25 no-change or sameness word, refusing variant: Rent expense was on a par with May at $130,000.
+pass SAME26 no-change or sameness word, refusing variant: Rent expense was no different from May at $130,000.
+pass SAME27 no-change or sameness word, refusing variant: Rent expense was even with May at $130,000.
+pass SAME28 no-change or sameness word, refusing variant: Rent expense, ditto May, ended at $130,000.
+pass PER31 period or basis, refusing variant: Rent expense rose $30,000 vs PY.
+pass PER32 period or basis, refusing variant: Rent expense rose $30,000 over the prior 12 months.
+pass PER33 period or basis, accepting variant: Rent expense rose $30,000 in June versus May.
+pass ANA20 claim about another account, refusing variant: Rent expense rose $30,000, as Insurance expense did.
+pass CORE 80 shared reader functions identical in checker.html and assets/second-pass-core.js
+pass CORE 77 shared constants and the clearance grammar block identical in both files
+
+548 passed, 0 failed, 548 run

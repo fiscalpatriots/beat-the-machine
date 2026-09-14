@@ -1,0 +1,190 @@
+{
+ "classes": {
+  "multiplier": {
+   "probes": 15,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0
+  },
+  "nochange": {
+   "probes": 29,
+   "fcBefore": 11,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0
+  },
+  "approx": {
+   "probes": 11,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0
+  },
+  "range": {
+   "probes": 6,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0
+  },
+  "scale": {
+   "probes": 13,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0
+  },
+  "sign": {
+   "probes": 19,
+   "fcBefore": 9,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0
+  },
+  "units": {
+   "probes": 8,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0
+  },
+  "period": {
+   "probes": 13,
+   "fcBefore": 12,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0
+  },
+  "two": {
+   "probes": 9,
+   "fcBefore": 2,
+   "fcAfter": 0,
+   "missBefore": 1,
+   "missAfter": 0
+  },
+  "negation": {
+   "probes": 10,
+   "fcBefore": 1,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0
+  },
+  "currency": {
+   "probes": 19,
+   "fcBefore": 9,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0
+  },
+  "digits": {
+   "probes": 6,
+   "fcBefore": 3,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0
+  },
+  "typo": {
+   "probes": 13,
+   "fcBefore": 1,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0
+  },
+  "long": {
+   "probes": 4,
+   "fcBefore": 0,
+   "fcAfter": 0,
+   "missBefore": 0,
+   "missAfter": 0
+  }
+ },
+ "totals": {
+  "probes": 175,
+  "fcBefore": 48,
+  "fcAfter": 0,
+  "missBefore": 1,
+  "missAfter": 0
+ },
+ "sets": {
+  "new-40": {
+   "inputs": 40,
+   "moved": []
+  },
+  "prior-24": {
+   "inputs": 24,
+   "moved": []
+  },
+  "six-drafts": [
+   {
+    "id": "halyard-blind",
+    "sentences": 30,
+    "checkedBefore": 2,
+    "checkedAfter": 1,
+    "moved": [
+     {
+      "label": "S9",
+      "before": "checked within scope",
+      "after": "needs review"
+     }
+    ]
+   },
+   {
+    "id": "halyard-prompt1",
+    "sentences": 8,
+    "checkedBefore": 7,
+    "checkedAfter": 7,
+    "moved": []
+   },
+   {
+    "id": "brightwater-blind",
+    "sentences": 6,
+    "checkedBefore": 3,
+    "checkedAfter": 3,
+    "moved": []
+   },
+   {
+    "id": "brightwater-prompt1",
+    "sentences": 4,
+    "checkedBefore": 3,
+    "checkedAfter": 3,
+    "moved": []
+   },
+   {
+    "id": "kestrel-blind",
+    "sentences": 7,
+    "checkedBefore": 3,
+    "checkedAfter": 0,
+    "moved": [
+     {
+      "label": "S2",
+      "before": "checked within scope",
+      "after": "needs review"
+     },
+     {
+      "label": "S4",
+      "before": "checked within scope",
+      "after": "needs review"
+     },
+     {
+      "label": "S6",
+      "before": "checked within scope",
+      "after": "needs review"
+     }
+    ]
+   },
+   {
+    "id": "kestrel-prompt1",
+    "sentences": 5,
+    "checkedBefore": 4,
+    "checkedAfter": 4,
+    "moved": []
+   }
+  ]
+ },
+ "prompt1": {
+  "sentences": 17,
+  "checkedBefore": 14,
+  "checkedAfter": 14
+ }
+}
