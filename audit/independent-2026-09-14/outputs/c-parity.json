@@ -1,0 +1,1535 @@
+[
+ {
+  "id": "C001",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "C002",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "C003",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C004",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C005",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "C006",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C007",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "C008",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C009",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C010",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C011",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C012",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C013",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C014",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C015",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "C016",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C017",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "C018",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C019",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope",
+   "S2": "failed"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope",
+   "S2": "failed"
+  }
+ },
+ {
+  "id": "C020",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C021",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C022",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C023",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C024",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C025",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C026",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C027",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C028",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C029",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C030",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C031",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C032",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C033",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C034",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C035",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C036",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C037",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "not checked"
+  },
+  "pythonStatus": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "C038",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C039",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C040",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C041",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C042",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C043",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C044",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C045",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C046",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "C047",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C048",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C049",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C050",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C051",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C052",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C053",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C054",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "not checked"
+  },
+  "pythonStatus": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "C055",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "not checked"
+  },
+  "pythonStatus": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "C056",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C057",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C058",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C059",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "not checked"
+  },
+  "pythonStatus": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "C060",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "not checked"
+  },
+  "pythonStatus": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "C061",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C062",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C063",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C064",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C065",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C066",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C067",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C068",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C069",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C070",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C071",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C072",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C073",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "C074",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C075",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C076",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C077",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C078",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C079",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C080",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C081",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C082",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C083",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C084",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C085",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C086",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C087",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C088",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C089",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C090",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C091",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C092",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C093",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C094",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C095",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C096",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C097",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C098",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C099",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C100",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C101",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C102",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C103",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C104",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C105",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C106",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C107",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C108",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C109",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C110",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C111",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "not checked"
+  },
+  "pythonStatus": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "C112",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C113",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C114",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C115",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C116",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C117",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C118",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "C119",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C120",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "C121",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C122",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "C123",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C124",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "C125",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C126",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope",
+   "S2": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope",
+   "S2": "checked within scope"
+  }
+ },
+ {
+  "id": "C127",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C128",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C129",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C130",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "C131",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C132",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C133",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C134",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C135",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C136",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "C137",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "C138",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "C139",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ }
+]

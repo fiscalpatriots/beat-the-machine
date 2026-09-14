@@ -1,0 +1,309 @@
+[
+ {
+  "id": "halyard-blind",
+  "review": {
+   "sent": 30,
+   "checked": 2,
+   "review": 13,
+   "notchecked": 13,
+   "failed": 2,
+   "rowsUsed": 14,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 55,
+   "totalsFail": 0
+  },
+  "sep13": {
+   "sent": 30,
+   "checked": 2,
+   "review": 13,
+   "notchecked": 13,
+   "failed": 2,
+   "rowsUsed": 14,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 54,
+   "totalsFail": 0
+  },
+  "sep14": {
+   "sent": 29,
+   "checked": 0,
+   "review": 15,
+   "notchecked": 12,
+   "failed": 2,
+   "rowsUsed": 14,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 59,
+   "totalsFail": 0
+  },
+  "statuses": {
+   "S1": "not checked",
+   "S2": "not checked",
+   "S3": "not checked",
+   "S4": "needs review",
+   "S5": "needs review",
+   "S6": "needs review",
+   "S7": "not checked",
+   "S8": "needs review",
+   "S9": "needs review",
+   "S10": "needs review",
+   "S11": "not checked",
+   "S12": "needs review",
+   "S13": "not checked",
+   "S14": "needs review",
+   "S15": "not checked",
+   "S16": "needs review",
+   "S17": "needs review",
+   "S18": "not checked",
+   "S19": "needs review",
+   "S20": "needs review",
+   "S21": "needs review",
+   "S22": "needs review",
+   "S23": "not checked",
+   "S24": "not checked",
+   "S25": "needs review",
+   "S26": "not checked",
+   "S27": "failed",
+   "S28": "failed",
+   "S29": "not checked"
+  }
+ },
+ {
+  "id": "halyard-prompt1",
+  "review": {
+   "sent": 8,
+   "checked": 0,
+   "review": 7,
+   "notchecked": 1,
+   "failed": 0,
+   "rowsUsed": 14,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 16,
+   "totalsFail": 0
+  },
+  "sep13": {
+   "sent": 8,
+   "checked": 7,
+   "review": 0,
+   "notchecked": 1,
+   "failed": 0,
+   "rowsUsed": 14,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 9,
+   "totalsFail": 0
+  },
+  "sep14": {
+   "sent": 8,
+   "checked": 7,
+   "review": 0,
+   "notchecked": 1,
+   "failed": 0,
+   "rowsUsed": 14,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 9,
+   "totalsFail": 0
+  },
+  "statuses": {
+   "1": "checked within scope",
+   "2": "checked within scope",
+   "3": "checked within scope",
+   "4": "checked within scope",
+   "5": "checked within scope",
+   "6": "checked within scope",
+   "7": "checked within scope",
+   "S8": "not checked"
+  }
+ },
+ {
+  "id": "brightwater-blind",
+  "review": {
+   "sent": 6,
+   "checked": 3,
+   "review": 1,
+   "notchecked": 2,
+   "failed": 0,
+   "rowsUsed": 5,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 4,
+   "totalsFail": 0
+  },
+  "sep13": {
+   "sent": 6,
+   "checked": 3,
+   "review": 1,
+   "notchecked": 2,
+   "failed": 0,
+   "rowsUsed": 5,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 4,
+   "totalsFail": 0
+  },
+  "sep14": {
+   "sent": 6,
+   "checked": 0,
+   "review": 4,
+   "notchecked": 2,
+   "failed": 0,
+   "rowsUsed": 5,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 8,
+   "totalsFail": 0
+  },
+  "statuses": {
+   "S1": "needs review",
+   "S2": "not checked",
+   "S3": "needs review",
+   "S4": "needs review",
+   "S5": "needs review",
+   "S6": "not checked"
+  }
+ },
+ {
+  "id": "brightwater-prompt1",
+  "review": {
+   "sent": 4,
+   "checked": 0,
+   "review": 3,
+   "notchecked": 1,
+   "failed": 0,
+   "rowsUsed": 5,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 7,
+   "totalsFail": 0
+  },
+  "sep13": {
+   "sent": 4,
+   "checked": 3,
+   "review": 0,
+   "notchecked": 1,
+   "failed": 0,
+   "rowsUsed": 5,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 4,
+   "totalsFail": 0
+  },
+  "sep14": {
+   "sent": 4,
+   "checked": 3,
+   "review": 0,
+   "notchecked": 1,
+   "failed": 0,
+   "rowsUsed": 5,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 4,
+   "totalsFail": 0
+  },
+  "statuses": {
+   "1": "checked within scope",
+   "2": "checked within scope",
+   "3": "checked within scope",
+   "S4": "not checked"
+  }
+ },
+ {
+  "id": "kestrel-blind",
+  "review": {
+   "sent": 7,
+   "checked": 3,
+   "review": 2,
+   "notchecked": 2,
+   "failed": 0,
+   "rowsUsed": 6,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 10,
+   "totalsFail": 0
+  },
+  "sep13": {
+   "sent": 7,
+   "checked": 3,
+   "review": 2,
+   "notchecked": 2,
+   "failed": 0,
+   "rowsUsed": 6,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 10,
+   "totalsFail": 0
+  },
+  "sep14": {
+   "sent": 9,
+   "checked": 2,
+   "review": 3,
+   "notchecked": 4,
+   "failed": 0,
+   "rowsUsed": 6,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 13,
+   "totalsFail": 0
+  },
+  "statuses": {
+   "S1": "checked within scope",
+   "S2": "not checked",
+   "S3": "needs review",
+   "S4": "not checked",
+   "S5": "needs review",
+   "S6": "needs review",
+   "S7": "checked within scope",
+   "S8": "not checked",
+   "S9": "not checked"
+  }
+ },
+ {
+  "id": "kestrel-prompt1",
+  "review": {
+   "sent": 5,
+   "checked": 0,
+   "review": 4,
+   "notchecked": 1,
+   "failed": 0,
+   "rowsUsed": 6,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 10,
+   "totalsFail": 0
+  },
+  "sep13": {
+   "sent": 5,
+   "checked": 4,
+   "review": 0,
+   "notchecked": 1,
+   "failed": 0,
+   "rowsUsed": 6,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 6,
+   "totalsFail": 0
+  },
+  "sep14": {
+   "sent": 5,
+   "checked": 4,
+   "review": 0,
+   "notchecked": 1,
+   "failed": 0,
+   "rowsUsed": 6,
+   "rowsSkipped": 0,
+   "silent": 0,
+   "queue": 6,
+   "totalsFail": 0
+  },
+  "statuses": {
+   "1": "checked within scope",
+   "2": "checked within scope",
+   "3": "checked within scope",
+   "4": "checked within scope",
+   "S5": "not checked"
+  }
+ }
+]

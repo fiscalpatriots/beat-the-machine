@@ -1,0 +1,1889 @@
+[
+ {
+  "id": "C001",
+  "cls": "reason",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 (it fell).",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "direction: a reason that points back with 'it' is tested"
+ },
+ {
+  "id": "C002",
+  "cls": "reason",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 (the balance declined).",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "direction: 'as the balance' points back"
+ },
+ {
+  "id": "C003",
+  "cls": "reason",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 because it fell.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "direction: 'because it' points back"
+ },
+ {
+  "id": "C004",
+  "cls": "reason",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 as the balance declined.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "the contract's own example of a reason pointing back"
+ },
+ {
+  "id": "C005",
+  "cls": "reason",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 since the account dropped.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "silent: 'the account' points back at the line"
+ },
+ {
+  "id": "C006",
+  "cls": "reason",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, after it declined.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "direction: 'after' opens a reason, 'it' points back"
+ },
+ {
+  "id": "C007",
+  "cls": "reason",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on the fall in Rent expense.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "direction: the reason names the bound line"
+ },
+ {
+  "id": "C008",
+  "cls": "reason",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, so it fell.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "direction: 'so' opens a reason, 'it' points back"
+ },
+ {
+  "id": "C009",
+  "cls": "reason",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 though it dropped.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "direction: 'though' opens a contrast, 'it' points back"
+ },
+ {
+  "id": "C010",
+  "cls": "reason",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000; it fell.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "direction: a clause of its own naming the line by 'it'"
+ },
+ {
+  "id": "C011",
+  "cls": "reason",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, which fell in June.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "silent: a relative clause about the line, plus an unbound month"
+ },
+ {
+  "id": "C012",
+  "cls": "reason",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Because vacancy decreased, rent expense rose $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review"
+  ],
+  "basis": "a reason in front of the claim"
+ },
+ {
+  "id": "C013",
+  "cls": "reason",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Due to a decrease in vacancy, rent expense rose $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review"
+  ],
+  "basis": "the same, with 'due to'"
+ },
+ {
+  "id": "C014",
+  "cls": "reason",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on a decrease in vacancy and an increase in rates.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope"
+  ],
+  "basis": "two reason nouns, neither naming a line"
+ },
+ {
+  "id": "C015",
+  "cls": "reason",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 per the “decline in vacancy” memo.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review"
+  ],
+  "basis": "silent: a direction noun inside a quoted title"
+ },
+ {
+  "id": "C016",
+  "cls": "reason",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the increase in Insurance expense.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review",
+   "failed"
+  ],
+  "basis": "direction: the reason names one bound line and Insurance expense did rise; the structural rule wants a claim for it"
+ },
+ {
+  "id": "C017",
+  "cls": "reason",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 because Insurance expense fell.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "direction: the reason names Insurance expense, which rose"
+ },
+ {
+  "id": "C018",
+  "cls": "reason",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on the lease; Insurance expense rose $45,000 on premiums.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope"
+  ],
+  "basis": "two clauses, each with its own claim"
+ },
+ {
+  "id": "C019",
+  "cls": "reason",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on a decrease in vacancy. Insurance expense fell $45,000 on premiums.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "two sentences, the second false"
+ },
+ {
+  "id": "C020",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a meaningful increase.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "size: an adjective standing on the movement noun"
+ },
+ {
+  "id": "C021",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a hefty increase.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "size: the same"
+ },
+ {
+  "id": "C022",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, an enormous increase.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "size: the same"
+ },
+ {
+  "id": "C023",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a healthy step up.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: a size adjective on a movement written as 'step up'"
+ },
+ {
+  "id": "C024",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a steep climb.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: a size noun the list does not carry"
+ },
+ {
+  "id": "C025",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, notably higher than May.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "size: a degree word on a comparative, and 'than'"
+ },
+ {
+  "id": "C026",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, appreciably above May.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "size: a degree word on a comparative"
+ },
+ {
+  "id": "C027",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000; the increase was manageable.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: a size adjective after the movement noun"
+ },
+ {
+  "id": "C028",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000; the change was not small.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "size: an adjective on the movement, under a negation"
+ },
+ {
+  "id": "C029",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on a tad more space.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: a degree word on a comparative inside a reason"
+ },
+ {
+  "id": "C030",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on outsized demand for space.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review"
+  ],
+  "basis": "size weak: it sizes the demand, not the movement"
+ },
+ {
+  "id": "C031",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on a massive new lease.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review"
+  ],
+  "basis": "size weak: it sizes the lease"
+ },
+ {
+  "id": "C032",
+  "cls": "share",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, the lion's share of it on the new lease.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "share of the movement"
+ },
+ {
+  "id": "C033",
+  "cls": "share",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a good chunk of it on the new lease.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: a share phrase the list does not carry"
+ },
+ {
+  "id": "C034",
+  "cls": "share",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, nearly all of it on the new lease.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "share of the movement"
+ },
+ {
+  "id": "C035",
+  "cls": "share",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, the remainder on the new lease.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: a share phrase"
+ },
+ {
+  "id": "C036",
+  "cls": "share",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, the balance of it on the new lease.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: a share phrase"
+ },
+ {
+  "id": "C037",
+  "cls": "share",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, two-thirds of it on the new lease.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b fraction"
+ },
+ {
+  "id": "C038",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose about $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: an approximation word on a true figure; the third review asked for ambiguous quantitative language to be held"
+ },
+ {
+  "id": "C039",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose approximately $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: the same"
+ },
+ {
+  "id": "C040",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose roughly $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: the same"
+ },
+ {
+  "id": "C041",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose circa $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope",
+   "not checked"
+  ],
+  "basis": "silent: the same"
+ },
+ {
+  "id": "C042",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose ~$30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope",
+   "not checked"
+  ],
+  "basis": "silent: a tilde in front of the figure"
+ },
+ {
+  "id": "C043",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 or so.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: a hedge after the figure"
+ },
+ {
+  "id": "C044",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, give or take.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: the same"
+ },
+ {
+  "id": "C045",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose some $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: 'some' in front of a figure"
+ },
+ {
+  "id": "C046",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose close to $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: a hedge that also bounds"
+ },
+ {
+  "id": "C047",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose in the region of $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: the same"
+ },
+ {
+  "id": "C048",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose north of $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: a bound written as a hedge"
+ },
+ {
+  "id": "C049",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose upwards of $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: the same"
+ },
+ {
+  "id": "C050",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose on the order of $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: the same"
+ },
+ {
+  "id": "C051",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose about 30 percent.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: a hedge on a true percent"
+ },
+ {
+  "id": "C052",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense, in euros, rose 30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "needs review"
+  ],
+  "basis": "1b a currency named in words"
+ },
+ {
+  "id": "C053",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "In euro terms, rent expense rose $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "lexicon currency: a qualifier away from the figure"
+ },
+ {
+  "id": "C054",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 (USD).",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "needs review"
+  ],
+  "basis": "1b USD beside the figure"
+ },
+ {
+  "id": "C055",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 USD.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked",
+   "needs review"
+  ],
+  "basis": "1b the same"
+ },
+ {
+  "id": "C056",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on the euro lease.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "lexicon currency, strong, inside a reason"
+ },
+ {
+  "id": "C057",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 per the FX table.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "lexicon currency: FX"
+ },
+ {
+  "id": "C058",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, translated at the June rate.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "lexicon currency and an unbound month"
+ },
+ {
+  "id": "C059",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 30,000 quid.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b a currency name"
+ },
+ {
+  "id": "C060",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or €27,000.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "1b a euro figure"
+ },
+ {
+  "id": "C061",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 at the current exchange rate.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "the contract's own example"
+ },
+ {
+  "id": "C062",
+  "cls": "currency",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on a dollar basis.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "lexicon basis: 'basis'"
+ },
+ {
+  "id": "C063",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by 30,000 (F).",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "lexicon sign: (F)"
+ },
+ {
+  "id": "C064",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by 30,000 (U).",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "lexicon sign: (U)"
+ },
+ {
+  "id": "C065",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by +/- 30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "lexicon sign: a sign apart from its figure"
+ },
+ {
+  "id": "C066",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by ±30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "lexicon sign: plus-minus"
+ },
+ {
+  "id": "C067",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by - $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked",
+   "failed"
+  ],
+  "basis": "lexicon sign: a minus standing apart from its figure"
+ },
+ {
+  "id": "C068",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000+.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked",
+   "checked within scope"
+  ],
+  "basis": "silent: a plus written after the figure"
+ },
+ {
+  "id": "C069",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by ＋30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked",
+   "failed"
+  ],
+  "basis": "silent: a fullwidth plus in front of a figure"
+ },
+ {
+  "id": "C070",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, favourable to plan.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "lexicon sign: favourable, and basis: plan"
+ },
+ {
+  "id": "C071",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, an adverse variance.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "lexicon sign: adverse"
+ },
+ {
+  "id": "C072",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "A credit balance of $30,000 sits in Rent expense.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "lexicon sign: credit balance"
+ },
+ {
+  "id": "C073",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by −30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "1 a Unicode minus reads as a minus, and the ledger rose"
+ },
+ {
+  "id": "C074",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 net of credits.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "lexicon quantity: net of"
+ },
+ {
+  "id": "C075",
+  "cls": "quarter",
+  "inputs": {
+   "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in Q2 2026.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope"
+  ],
+  "basis": "a quarter the column labels name"
+ },
+ {
+  "id": "C076",
+  "cls": "quarter",
+  "inputs": {
+   "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in 2Q26.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review"
+  ],
+  "basis": "silent: the 2Q26 spelling against a Q2 2026 label"
+ },
+ {
+  "id": "C077",
+  "cls": "quarter",
+  "inputs": {
+   "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in April.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "a column covering a quarter names no single month"
+ },
+ {
+  "id": "C078",
+  "cls": "quarter",
+  "inputs": {
+   "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in the first half.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "halves are held whatever the labels say"
+ },
+ {
+  "id": "C079",
+  "cls": "quarter",
+  "inputs": {
+   "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 quarter to date.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "QTD is part of a quarter and always held"
+ },
+ {
+  "id": "C080",
+  "cls": "quarter",
+  "inputs": {
+   "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 year to date.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "period strong: YTD"
+ },
+ {
+  "id": "C081",
+  "cls": "quarter",
+  "inputs": {
+   "ledger": "Account\tH1 2026\tH2 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in H2.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "halves are held whatever the labels say"
+ },
+ {
+  "id": "C082",
+  "cls": "quarter",
+  "inputs": {
+   "ledger": "Account\tH1 2026\tH2 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in the second half of the year.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "the same"
+ },
+ {
+  "id": "C083",
+  "cls": "quarter",
+  "inputs": {
+   "ledger": "Account\tH1 2026\tH2 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in Q2.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "labels that name halves do not name a quarter"
+ },
+ {
+  "id": "C084",
+  "cls": "quarter",
+  "inputs": {
+   "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in Q3.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "a quarter the labels contradict"
+ },
+ {
+  "id": "C085",
+  "cls": "quarter",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in the June quarter.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "silent: a quarter named by its month, on a monthly ledger"
+ },
+ {
+  "id": "C086",
+  "cls": "quarter",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in the quarter ended 30 June.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "a quarter on a monthly ledger"
+ },
+ {
+  "id": "C087",
+  "cls": "quarter",
+  "inputs": {
+   "ledger": "Account\tPrior month\tThis month\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in Q2.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "labels read as months, not quarters"
+ },
+ {
+  "id": "C088",
+  "cls": "period",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in June.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope"
+  ],
+  "basis": "a month either column names"
+ },
+ {
+  "id": "C089",
+  "cls": "period",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in May.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope"
+  ],
+  "basis": "the prior column's month"
+ },
+ {
+  "id": "C090",
+  "cls": "period",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in July.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "a month neither column names"
+ },
+ {
+  "id": "C091",
+  "cls": "period",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in June 2025.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "a year the labels contradict"
+ },
+ {
+  "id": "C092",
+  "cls": "period",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 as of 30 June.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review"
+  ],
+  "basis": "a date the current column's month binds"
+ },
+ {
+  "id": "C093",
+  "cls": "period",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on 30 July.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "a date neither column binds"
+ },
+ {
+  "id": "C094",
+  "cls": "period",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 over May.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review"
+  ],
+  "basis": "the prior column's label as the frame"
+ },
+ {
+  "id": "C095",
+  "cls": "period",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 over June.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "measured from the wrong column"
+ },
+ {
+  "id": "C096",
+  "cls": "period",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 compared with May.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review"
+  ],
+  "basis": "comparison introducing the ledger's own prior column"
+ },
+ {
+  "id": "C097",
+  "cls": "period",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 versus May.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review"
+  ],
+  "basis": "the same"
+ },
+ {
+  "id": "C098",
+  "cls": "period",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 vs. May 2026.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review"
+  ],
+  "basis": "the same, abbreviated, and never split after vs."
+ },
+ {
+  "id": "C099",
+  "cls": "period",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 from May to June.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review"
+  ],
+  "basis": "both column labels"
+ },
+ {
+  "id": "C100",
+  "cls": "period",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 month over month.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope"
+  ],
+  "basis": "labels two months in a row"
+ },
+ {
+  "id": "C101",
+  "cls": "period",
+  "inputs": {
+   "ledger": "Account\tPrior month\tThis month\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 month over month.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope"
+  ],
+  "basis": "labels read as months"
+ },
+ {
+  "id": "C102",
+  "cls": "period",
+  "inputs": {
+   "ledger": "Account\tPrior month\tThis month\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in June.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "labels name no month"
+ },
+ {
+  "id": "C103",
+  "cls": "period",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 for the month.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "labels name no period"
+ },
+ {
+  "id": "C104",
+  "cls": "period",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on an annual insurance premium.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "period strong: annual, where it gives the length of a premium"
+ },
+ {
+  "id": "C105",
+  "cls": "period",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on a yearly cleaning contract.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "the length-of-contract exception, one word to the side"
+ },
+ {
+  "id": "C106",
+  "cls": "period",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 as the one-year lease began.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope"
+  ],
+  "basis": "the contract's own example of the exception"
+ },
+ {
+  "id": "C107",
+  "cls": "binding",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, unlike Insurance expense.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "comparison strong, and Insurance expense carries no claim"
+ },
+ {
+  "id": "C108",
+  "cls": "binding",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 on Insurance expense's renewal.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "a name binds wherever it stands, and carries no claim of its own"
+ },
+ {
+  "id": "C109",
+  "cls": "binding",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 per the “Insurance expense” schedule.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "a name inside quotes still binds"
+ },
+ {
+  "id": "C110",
+  "cls": "binding",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, while Insurance expense rose $45,000.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope"
+  ],
+  "basis": "each account with its own claim"
+ },
+ {
+  "id": "C111",
+  "cls": "binding",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense and Insurance expense both rose.",
+   "ratios": ""
+  },
+  "req": [
+   "not checked"
+  ],
+  "basis": "no figures"
+ },
+ {
+  "id": "C112",
+  "cls": "binding",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 and Insurance expense followed.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "the contract's own structural example"
+ },
+ {
+  "id": "C113",
+  "cls": "binding",
+  "inputs": {
+   "ledger": "6100\tRent expense, level 3\t100000\t130000",
+   "memo": "Rent expense, level 3, rose $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review"
+  ],
+  "basis": "silent: 'level' inside the bound account's own name"
+ },
+ {
+  "id": "C114",
+  "cls": "binding",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 at the Stable Yard depot.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review"
+  ],
+  "basis": "silent: 'Stable' inside a proper name"
+ },
+ {
+  "id": "C115",
+  "cls": "binding",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 on the Constant Contact subscription.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review"
+  ],
+  "basis": "silent: 'Constant' inside a product name"
+ },
+ {
+  "id": "C116",
+  "cls": "binding",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 at the Level 3 data centre.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope",
+   "needs review"
+  ],
+  "basis": "silent: 'Level' inside a place name"
+ },
+ {
+  "id": "C117",
+  "cls": "mixed",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 30 percent, in June on the U.S. Treasury lease.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope"
+  ],
+  "basis": "every claim true, the month bound, the stop inside a name"
+ },
+ {
+  "id": "C118",
+  "cls": "mixed",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 31 percent, in June on the U.S. Treasury lease.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "5 the percent is false"
+ },
+ {
+  "id": "C119",
+  "cls": "mixed",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, or 30 percent, in June, and Insurance expense rose $45,000, or 90 percent, in June.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope"
+  ],
+  "basis": "two true claims on two lines"
+ },
+ {
+  "id": "C120",
+  "cls": "mixed",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, or 30 percent, in June, and Insurance expense rose $45,000, or 91 percent, in June.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "the second percent is false"
+ },
+ {
+  "id": "C121",
+  "cls": "mixed",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 30 percent, sharply, in June.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "a size word beside true figures"
+ },
+ {
+  "id": "C122",
+  "cls": "mixed",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 31 percent, sharply, in June.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "a failed figure keeps its status and gets no wording row"
+ },
+ {
+  "id": "C123",
+  "cls": "mixed",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 30 percent, and clears both legs, roughly.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: a threshold claim with a hedge on it"
+ },
+ {
+  "id": "C124",
+  "cls": "mixed",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 30 percent, and fails the dollar leg.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "the threshold claim is false: $30,000 clears a $25,000 floor"
+ },
+ {
+  "id": "C125",
+  "cls": "mixed",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 in June; Insurance expense was stable at $95,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "one clear sentence and one sameness word"
+ },
+ {
+  "id": "C126",
+  "cls": "mixed",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 in June. Insurance expense rose $45,000 in June.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope"
+  ],
+  "basis": "two sentences, both true and bound"
+ },
+ {
+  "id": "C127",
+  "cls": "ratio",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "The rent to insurance ratio was 136.8 percent.",
+   "ratios": "rent to insurance = (6100) / (6200)"
+  },
+  "req": [
+   "checked within scope",
+   "needs review",
+   "not checked"
+  ],
+  "basis": "2 a percent settled against a supplied ratio"
+ },
+ {
+  "id": "C128",
+  "cls": "ratio",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "The rent to insurance ratio was 136.8 percent, broadly.",
+   "ratios": "rent to insurance = (6100) / (6200)"
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "a sameness weak word inside the claim"
+ },
+ {
+  "id": "C129",
+  "cls": "ratio",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "The rent to insurance ratio was 200.0 percent.",
+   "ratios": "rent to insurance = (6100) / (6200)"
+  },
+  "req": [
+   "failed",
+   "needs review",
+   "not checked"
+  ],
+  "basis": "5 the ratio is 136.8 percent"
+ },
+ {
+  "id": "C130",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was steady at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed",
+   "needs review"
+  ],
+  "basis": "flat words are tested; 'steady' is in the flat list"
+ },
+ {
+  "id": "C131",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense did not budge from $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "negation"
+ },
+ {
+  "id": "C132",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense moved sideways at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "sameness strong: sideways"
+ },
+ {
+  "id": "C133",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was rangebound at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: a sameness word the list does not carry"
+ },
+ {
+  "id": "C134",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was unremarkable at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: the same"
+ },
+ {
+  "id": "C135",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense barely moved, rising $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "sameness strong: barely"
+ },
+ {
+  "id": "C136",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was flattish at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "sameness strong: flattish"
+ },
+ {
+  "id": "C137",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense held at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "a tested no-change phrase on a line that moved"
+ },
+ {
+  "id": "C138",
+  "cls": "long",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, in June on the U.S. Treasury lease.",
+   "ratios": ""
+  },
+  "req": [
+   "checked within scope"
+  ],
+  "basis": "a true sentence 400 words long, with the month bound"
+ },
+ {
+  "id": "C139",
+  "cls": "long",
+  "inputs": {
+   "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, the schedule item was noted, the schedule item was reviewed, sharply in June.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "a size word at the end of a long sentence"
+ }
+]

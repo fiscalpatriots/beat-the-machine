@@ -1,0 +1,658 @@
+[
+ {
+  "id": "D001",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was rangebound at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "silent: a no-change claim outside the tested list and outside the sameness lexicon; the clearance grammar's own rule is that nothing risky is left"
+ },
+ {
+  "id": "D002",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was unremarkable at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "silent: a no-change claim outside the tested list and outside the sameness lexicon; the clearance grammar's own rule is that nothing risky is left"
+ },
+ {
+  "id": "D003",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense went nowhere, ending at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "silent: a no-change claim outside the tested list and outside the sameness lexicon; the clearance grammar's own rule is that nothing risky is left"
+ },
+ {
+  "id": "D004",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was quiet at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "silent: a no-change claim outside the tested list and outside the sameness lexicon; the clearance grammar's own rule is that nothing risky is left"
+ },
+ {
+  "id": "D005",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was untouched at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "silent: a no-change claim outside the tested list and outside the sameness lexicon; the clearance grammar's own rule is that nothing risky is left"
+ },
+ {
+  "id": "D006",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was as before, at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "silent: a no-change claim outside the tested list and outside the sameness lexicon; the clearance grammar's own rule is that nothing risky is left"
+ },
+ {
+  "id": "D007",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was where it was in May, at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "silent: a no-change claim outside the tested list and outside the sameness lexicon; the clearance grammar's own rule is that nothing risky is left"
+ },
+ {
+  "id": "D008",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense held its ground at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "silent: a no-change claim outside the tested list and outside the sameness lexicon; the clearance grammar's own rule is that nothing risky is left"
+ },
+ {
+  "id": "D009",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was at a standstill at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "silent: a no-change claim outside the tested list and outside the sameness lexicon; the clearance grammar's own rule is that nothing risky is left"
+ },
+ {
+  "id": "D010",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was uniform with May at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "silent: a no-change claim outside the tested list and outside the sameness lexicon; the clearance grammar's own rule is that nothing risky is left"
+ },
+ {
+  "id": "D011",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense was unvaried at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "silent: a no-change claim outside the tested list and outside the sameness lexicon; the clearance grammar's own rule is that nothing risky is left"
+ },
+ {
+  "id": "D012",
+  "cls": "sameness",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense showed no real movement, ending at $130,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "basis": "silent: a no-change claim outside the tested list and outside the sameness lexicon; the clearance grammar's own rule is that nothing risky is left"
+ },
+ {
+  "id": "D013",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000; the increase was manageable.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "size: an adjective standing on the movement, in front of the movement noun or after it with 'was' between"
+ },
+ {
+  "id": "D014",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000; the increase was tolerable.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "size: an adjective standing on the movement, in front of the movement noun or after it with 'was' between"
+ },
+ {
+  "id": "D015",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000; the rise was decent.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "size: an adjective standing on the movement, in front of the movement noun or after it with 'was' between"
+ },
+ {
+  "id": "D016",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000; the increase was noteworthy.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "size: an adjective standing on the movement, in front of the movement noun or after it with 'was' between"
+ },
+ {
+  "id": "D017",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000; the movement was chunky.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "size: an adjective standing on the movement, in front of the movement noun or after it with 'was' between"
+ },
+ {
+  "id": "D018",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a beefy increase.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "size: an adjective standing on the movement, in front of the movement noun or after it with 'was' between"
+ },
+ {
+  "id": "D019",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a sizeable increase.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "size: an adjective standing on the movement, in front of the movement noun or after it with 'was' between"
+ },
+ {
+  "id": "D020",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a whopping increase.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "size: an adjective standing on the movement, in front of the movement noun or after it with 'was' between"
+ },
+ {
+  "id": "D021",
+  "cls": "size",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a punchy increase.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "size: an adjective standing on the movement, in front of the movement noun or after it with 'was' between"
+ },
+ {
+  "id": "D022",
+  "cls": "share",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a good chunk of it on the new lease.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "share of the movement: a word that says how much of the movement the sentence explains"
+ },
+ {
+  "id": "D023",
+  "cls": "share",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, nearly all of it on the new lease.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "share of the movement: a word that says how much of the movement the sentence explains"
+ },
+ {
+  "id": "D024",
+  "cls": "share",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, the remainder on the new lease.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "share of the movement: a word that says how much of the movement the sentence explains"
+ },
+ {
+  "id": "D025",
+  "cls": "share",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, the balance of it on the new lease.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "share of the movement: a word that says how much of the movement the sentence explains"
+ },
+ {
+  "id": "D026",
+  "cls": "share",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a fair bit of it on the new lease.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "share of the movement: a word that says how much of the movement the sentence explains"
+ },
+ {
+  "id": "D027",
+  "cls": "share",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, some of the increase on the new lease.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "share of the movement: a word that says how much of the movement the sentence explains"
+ },
+ {
+  "id": "D028",
+  "cls": "share",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a slice of the increase on the new lease.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "share of the movement: a word that says how much of the movement the sentence explains"
+ },
+ {
+  "id": "D029",
+  "cls": "share",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, the rest of the increase on the new lease.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review"
+  ],
+  "basis": "share of the movement: a word that says how much of the movement the sentence explains"
+ },
+ {
+  "id": "D030",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose about $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: an approximation on a figure that ties; the third review asked for ambiguous quantitative language to be held, and CHECKER.md lists no hedge class"
+ },
+ {
+  "id": "D031",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose approximately $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: an approximation on a figure that ties; the third review asked for ambiguous quantitative language to be held, and CHECKER.md lists no hedge class"
+ },
+ {
+  "id": "D032",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose roughly $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: an approximation on a figure that ties; the third review asked for ambiguous quantitative language to be held, and CHECKER.md lists no hedge class"
+ },
+ {
+  "id": "D033",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose ~$30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: an approximation on a figure that ties; the third review asked for ambiguous quantitative language to be held, and CHECKER.md lists no hedge class"
+ },
+ {
+  "id": "D034",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose some $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: an approximation on a figure that ties; the third review asked for ambiguous quantitative language to be held, and CHECKER.md lists no hedge class"
+ },
+ {
+  "id": "D035",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, give or take.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: an approximation on a figure that ties; the third review asked for ambiguous quantitative language to be held, and CHECKER.md lists no hedge class"
+ },
+ {
+  "id": "D036",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 or thereabouts.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: an approximation on a figure that ties; the third review asked for ambiguous quantitative language to be held, and CHECKER.md lists no hedge class"
+ },
+ {
+  "id": "D037",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose a ballpark $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: an approximation on a figure that ties; the third review asked for ambiguous quantitative language to be held, and CHECKER.md lists no hedge class"
+ },
+ {
+  "id": "D038",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 in round numbers.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: an approximation on a figure that ties; the third review asked for ambiguous quantitative language to be held, and CHECKER.md lists no hedge class"
+ },
+ {
+  "id": "D039",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose a touch over $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: an approximation on a figure that ties; the third review asked for ambiguous quantitative language to be held, and CHECKER.md lists no hedge class"
+ },
+ {
+  "id": "D040",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose just shy of $30,000.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: an approximation on a figure that ties; the third review asked for ambiguous quantitative language to be held, and CHECKER.md lists no hedge class"
+ },
+ {
+  "id": "D041",
+  "cls": "hedge",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose about 30 percent.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "checked within scope"
+  ],
+  "basis": "silent: an approximation on a figure that ties; the third review asked for ambiguous quantitative language to be held, and CHECKER.md lists no hedge class"
+ },
+ {
+  "id": "D042",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000+.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked",
+   "checked within scope"
+  ],
+  "basis": "silent: a plus after the figure; a minus after it is read as a sign (contract 1)"
+ },
+ {
+  "id": "D043",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 +.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked",
+   "checked within scope"
+  ],
+  "basis": "silent: the same, spaced"
+ },
+ {
+  "id": "D044",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000-plus.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked",
+   "checked within scope"
+  ],
+  "basis": "silent: the same, hyphenated"
+ },
+ {
+  "id": "D045",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose 30,000(+).",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked",
+   "checked within scope"
+  ],
+  "basis": "silent: a bracketed plus after the figure"
+ },
+ {
+  "id": "D046",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 plus.",
+   "ratios": ""
+  },
+  "req": [
+   "needs review",
+   "not checked"
+  ],
+  "basis": "sign weak: plus"
+ },
+ {
+  "id": "D047",
+  "cls": "sign",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed by 30,000-.",
+   "ratios": ""
+  },
+  "req": [
+   "failed"
+  ],
+  "basis": "contract 1: a minus written straight after the figure is a sign, and the ledger rose"
+ }
+]

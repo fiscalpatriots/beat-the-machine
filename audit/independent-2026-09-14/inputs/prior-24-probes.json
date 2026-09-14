@@ -1,0 +1,340 @@
+[
+ {
+  "id": "N01",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense did not increase by $30,000.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "checked within scope"
+  },
+  "statusInReviewV3": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "N02",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a change of ninety percent.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "checked within scope"
+  },
+  "statusInReviewV3": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "N03",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense increased by €30,000.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "checked within scope"
+  },
+  "statusInReviewV3": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "N04",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense increased by £30,000.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "checked within scope"
+  },
+  "statusInReviewV3": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "N05",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 and increased by 800.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "checked within scope"
+  },
+  "statusInReviewV3": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "N06",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 and increased by 1999.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "checked within scope"
+  },
+  "statusInReviewV3": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "N07",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 and increased by -30000.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "checked within scope"
+  },
+  "statusInReviewV3": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "N08",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 and Insurance expense rose $45,000.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "checked within scope"
+  },
+  "statusInReviewV3": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "N09",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $45,000 and Insurance expense rose $30,000.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "checked within scope"
+  },
+  "statusInReviewV3": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "N10",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 (90%).",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "failed"
+  },
+  "statusInReviewV3": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "N11",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, 30%.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "checked within scope"
+  },
+  "statusInReviewV3": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "N12",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 and increased by 6200.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "checked within scope"
+  },
+  "statusInReviewV3": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "N13",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000; Insurance expense remained at $95,000.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "checked within scope"
+  },
+  "statusInReviewV3": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "N14",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000, but Insurance expense fell $45,000.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "failed"
+  },
+  "statusInReviewV3": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "N15",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, and the change was -30 percent.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "failed"
+  },
+  "statusInReviewV3": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "N16",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000; the increase did not occur.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "checked within scope"
+  },
+  "statusInReviewV3": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "N17",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, or 0.30 times the prior balance.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "checked within scope"
+  },
+  "statusInReviewV3": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "N18",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 and increased by USD 90000.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "failed"
+  },
+  "statusInReviewV3": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "N19",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000 and increased by 30 thousand.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "checked within scope"
+  },
+  "statusInReviewV3": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "N20",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, a 30 basis point increase.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "checked within scope"
+  },
+  "statusInReviewV3": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "N21",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 (30%). Insurance expense rose $45,000.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "checked within scope",
+   "S2": "checked within scope"
+  },
+  "statusInReviewV3": {
+   "S1": "checked within scope",
+   "S2": "checked within scope"
+  }
+ },
+ {
+  "id": "N22",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense changed 30%.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "checked within scope"
+  },
+  "statusInReviewV3": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "N23",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000",
+   "memo": "Rent expense rose $30,000, at 30%.",
+   "ratios": "Other ratio = 6100 / 6100 * 0.30"
+  },
+  "statusInReviewV2": {
+   "S1": "needs review"
+  },
+  "statusInReviewV3": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "N24",
+  "inputs": {
+   "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+   "memo": "Rent expense rose $30,000 and insurance remained at $95,000.",
+   "ratios": ""
+  },
+  "statusInReviewV2": {
+   "S1": "checked within scope"
+  },
+  "statusInReviewV3": {
+   "S1": "checked within scope"
+  }
+ }
+]

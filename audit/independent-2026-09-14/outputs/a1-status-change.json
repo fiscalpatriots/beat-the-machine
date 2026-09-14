@@ -1,0 +1,2269 @@
+[
+ {
+  "id": "A001",
+  "cls": "multiplier",
+  "memo": "Rent expense rose $30,000, or 1.3x the prior balance.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A002",
+  "cls": "multiplier",
+  "memo": "Rent expense rose $30,000 and grew 1.3-fold.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A003",
+  "cls": "multiplier",
+  "memo": "Rent expense rose $30,000 and grew twofold.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A004",
+  "cls": "multiplier",
+  "memo": "Rent expense rose $30,000 and grew by a third.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A005",
+  "cls": "multiplier",
+  "memo": "Rent expense rose $30,000 and was up by half.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A006",
+  "cls": "multiplier",
+  "memo": "Rent expense rose $30,000, a 1.3 times increase.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A007",
+  "cls": "multiplier",
+  "memo": "Rent expense quadrupled to $130,000.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A008",
+  "cls": "multiplier",
+  "memo": "Rent expense rose $30,000 and more than doubled.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A009",
+  "cls": "multiplier",
+  "memo": "Rent expense rose $30,000, or x1.3 the prior month.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A010",
+  "cls": "multiplier",
+  "memo": "Rent expense rose $30,000, roughly three tenths of the May balance.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A011",
+  "cls": "multiplier",
+  "memo": "Rent expense rose $30,000, a threefold jump.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A012",
+  "cls": "multiplier",
+  "memo": "Consulting revenue fell $60,000 and was halved.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A013",
+  "cls": "multiplier",
+  "memo": "Consulting revenue fell $60,000, down by a quarter.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A014",
+  "cls": "multiplier",
+  "memo": "Consulting revenue fell $60,000, or 0.75x of May.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A015",
+  "cls": "multiplier",
+  "memo": "Rent expense rose $30,000, or 1.5 times.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A016",
+  "cls": "nochange",
+  "memo": "Rent expense was flat at $130,000.",
+  "required": [
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A017",
+  "cls": "nochange",
+  "memo": "Rent expense held steady at $130,000.",
+  "required": [
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A018",
+  "cls": "nochange",
+  "memo": "Rent expense was essentially flat at $130,000.",
+  "required": [
+   "failed",
+   "not checked"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A019",
+  "cls": "nochange",
+  "memo": "Rent expense was roughly unchanged at $130,000.",
+  "required": [
+   "failed",
+   "not checked"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A020",
+  "cls": "nochange",
+  "memo": "Rent expense was broadly stable at $130,000.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A021",
+  "cls": "nochange",
+  "memo": "Rent expense was level at $130,000.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A022",
+  "cls": "nochange",
+  "memo": "Rent expense was consistent with May at $130,000.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A023",
+  "cls": "nochange",
+  "memo": "Rent expense was in line with May at $130,000.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A024",
+  "cls": "nochange",
+  "memo": "Rent expense showed no material change at $130,000.",
+  "required": [
+   "failed",
+   "needs review"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A025",
+  "cls": "nochange",
+  "memo": "Rent expense was virtually unchanged from May at $130,000.",
+  "required": [
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A026",
+  "cls": "nochange",
+  "memo": "Rent expense was flat.",
+  "required": [
+   "failed",
+   "not checked"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A027",
+  "cls": "nochange",
+  "memo": "Rent expense remained flat month over month.",
+  "required": [
+   "failed",
+   "not checked"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A028",
+  "cls": "nochange",
+  "memo": "Travel expense was unchanged at $12,000.",
+  "required": [
+   "checked within scope"
+  ],
+  "on13": "checked within scope",
+  "on14": "checked within scope",
+  "python": "checked within scope",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A029",
+  "cls": "nochange",
+  "memo": "Travel expense rose $150.",
+  "required": [
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A030",
+  "cls": "nochange",
+  "memo": "Utilities expense was flat at $50,150.",
+  "required": [
+   "checked within scope"
+  ],
+  "on13": "checked within scope",
+  "on14": "checked within scope",
+  "python": "checked within scope",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A031",
+  "cls": "nochange",
+  "memo": "Utilities expense was unchanged at $50,150.",
+  "required": [
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A032",
+  "cls": "nochange",
+  "memo": "Utilities expense held steady, up $150.",
+  "required": [
+   "checked within scope",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "checked within scope",
+  "python": "checked within scope",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A033",
+  "cls": "nochange",
+  "memo": "Consulting revenue was stable at $180,000.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A034",
+  "cls": "approx",
+  "memo": "Rent expense rose about $32,000.",
+  "required": [
+   "failed",
+   "needs review",
+   "not checked"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A035",
+  "cls": "approx",
+  "memo": "Rent expense rose roughly $29,000.",
+  "required": [
+   "failed",
+   "needs review",
+   "not checked"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A036",
+  "cls": "approx",
+  "memo": "Rent expense rose nearly $31,000.",
+  "required": [
+   "failed",
+   "needs review",
+   "not checked"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A037",
+  "cls": "approx",
+  "memo": "Rent expense rose just over $30,000.",
+  "required": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A038",
+  "cls": "approx",
+  "memo": "Rent expense rose by almost $30,000.",
+  "required": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A039",
+  "cls": "approx",
+  "memo": "Rent expense rose by well over $30,000.",
+  "required": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A040",
+  "cls": "approx",
+  "memo": "Rent expense rose by up to $30,000.",
+  "required": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A041",
+  "cls": "approx",
+  "memo": "Rent expense rose approximately 30 percent.",
+  "required": [
+   "checked within scope"
+  ],
+  "on13": "checked within scope",
+  "on14": "checked within scope",
+  "python": "checked within scope",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A042",
+  "cls": "approx",
+  "memo": "Rent expense rose by about 25 percent.",
+  "required": [
+   "failed",
+   "needs review",
+   "not checked"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A043",
+  "cls": "approx",
+  "memo": "Consulting revenue fell by about $55,000.",
+  "required": [
+   "failed",
+   "needs review",
+   "not checked"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A044",
+  "cls": "approx",
+  "memo": "Consulting revenue fell by a little under $60,000.",
+  "required": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A045",
+  "cls": "range",
+  "memo": "Rent expense rose between $25,000 and $35,000.",
+  "required": [
+   "needs review",
+   "not checked",
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A046",
+  "cls": "range",
+  "memo": "Rent expense rose between 25 and 35 percent.",
+  "required": [
+   "needs review",
+   "not checked",
+   "failed"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A047",
+  "cls": "range",
+  "memo": "Rent expense rose $25,000-$35,000.",
+  "required": [
+   "needs review",
+   "not checked",
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A048",
+  "cls": "range",
+  "memo": "Rent expense rose 20-40%.",
+  "required": [
+   "needs review",
+   "not checked",
+   "failed"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A049",
+  "cls": "range",
+  "memo": "Rent expense rose in the range of $28,000 to $32,000.",
+  "required": [
+   "needs review",
+   "not checked",
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A050",
+  "cls": "range",
+  "memo": "Rent expense rose 29 to 31 percent.",
+  "required": [
+   "needs review",
+   "not checked",
+   "failed"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A051",
+  "cls": "scale",
+  "memo": "Rent expense rose $0.03 million.",
+  "required": [
+   "checked within scope",
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A052",
+  "cls": "scale",
+  "memo": "Rent expense rose 30 thousand dollars.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A053",
+  "cls": "scale",
+  "memo": "Rent expense rose $30 thousand.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A054",
+  "cls": "scale",
+  "memo": "Rent expense rose $0.03M.",
+  "required": [
+   "checked within scope"
+  ],
+  "on13": "checked within scope",
+  "on14": "checked within scope",
+  "python": "checked within scope",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A055",
+  "cls": "scale",
+  "memo": "Rent expense rose $3M.",
+  "required": [
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A056",
+  "cls": "scale",
+  "memo": "Rent expense rose $30 000.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A057",
+  "cls": "scale",
+  "memo": "Rent expense rose $30.000.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A058",
+  "cls": "scale",
+  "memo": "Rent expense rose $30 grand.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A059",
+  "cls": "scale",
+  "memo": "Rent expense rose $30,000k.",
+  "required": [
+   "failed",
+   "not checked"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A060",
+  "cls": "scale",
+  "memo": "Rent expense rose 30,000 dollars.",
+  "required": [
+   "checked within scope"
+  ],
+  "on13": "checked within scope",
+  "on14": "checked within scope",
+  "python": "checked within scope",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A061",
+  "cls": "scale",
+  "memo": "Rent expense rose $30 thou.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A062",
+  "cls": "scale",
+  "memo": "Consulting revenue fell $0.06MM.",
+  "required": [
+   "not checked",
+   "failed",
+   "checked within scope"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A063",
+  "cls": "scale",
+  "memo": "Consulting revenue fell $60 K.",
+  "required": [
+   "not checked",
+   "failed",
+   "checked within scope"
+  ],
+  "on13": "checked within scope",
+  "on14": "checked within scope",
+  "python": "checked within scope",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A064",
+  "cls": "sign",
+  "memo": "Rent expense changed by (30,000).",
+  "required": [
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A065",
+  "cls": "sign",
+  "memo": "Rent expense rose 30,000 CR.",
+  "required": [
+   "not checked",
+   "needs review",
+   "failed"
+  ],
+  "on13": "checked within scope",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A066",
+  "cls": "sign",
+  "memo": "Rent expense moved $30,000 DR.",
+  "required": [
+   "not checked",
+   "needs review",
+   "checked within scope"
+  ],
+  "on13": "needs review",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A067",
+  "cls": "sign",
+  "memo": "Rent expense changed by -$30,000.",
+  "required": [
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A068",
+  "cls": "sign",
+  "memo": "Rent expense changed by $-30,000.",
+  "required": [
+   "failed"
+  ],
+  "on13": "checked within scope",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A069",
+  "cls": "sign",
+  "memo": "Rent expense changed by 30,000-.",
+  "required": [
+   "failed",
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A070",
+  "cls": "sign",
+  "memo": "Rent expense changed by $(30,000).",
+  "required": [
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A071",
+  "cls": "sign",
+  "memo": "Consulting revenue changed by (60,000).",
+  "required": [
+   "checked within scope",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "checked within scope",
+  "python": "checked within scope",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A072",
+  "cls": "sign",
+  "memo": "Consulting revenue changed by 60,000.",
+  "required": [
+   "checked within scope",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "checked within scope",
+  "python": "checked within scope",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A073",
+  "cls": "sign",
+  "memo": "Consulting revenue changed by +60,000.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A074",
+  "cls": "units",
+  "memo": "Rent expense rose $30,000, or 30 percentage points.",
+  "required": [
+   "needs review"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A075",
+  "cls": "units",
+  "memo": "Rent expense rose $30,000, or 3,000 basis points.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A076",
+  "cls": "units",
+  "memo": "Rent expense rose $30,000, or 30 pts.",
+  "required": [
+   "not checked",
+   "needs review"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A077",
+  "cls": "units",
+  "memo": "Rent expense rose $30,000, a 30 pct increase.",
+  "required": [
+   "checked within scope"
+  ],
+  "on13": "checked within scope",
+  "on14": "checked within scope",
+  "python": "checked within scope",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A078",
+  "cls": "units",
+  "memo": "Rent expense rose $30,000, or 30 p.p.",
+  "required": [
+   "not checked",
+   "needs review"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A079",
+  "cls": "units",
+  "memo": "Rent expense rose $30,000, or 30 bps.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A080",
+  "cls": "units",
+  "memo": "Rent expense rose 0.3 percent.",
+  "required": [
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A081",
+  "cls": "units",
+  "memo": "Rent expense rose $30,000, or 0.30 in percentage terms.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A082",
+  "cls": "period",
+  "memo": "Rent expense rose $30,000, or 30 percent, year over year.",
+  "required": [
+   "needs review",
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A083",
+  "cls": "period",
+  "memo": "Rent expense rose $30,000 compared with June 2025.",
+  "required": [
+   "needs review",
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A084",
+  "cls": "period",
+  "memo": "Rent expense rose $30,000 over the last twelve months.",
+  "required": [
+   "needs review",
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A085",
+  "cls": "period",
+  "memo": "Year to date, rent expense rose $30,000.",
+  "required": [
+   "needs review",
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A086",
+  "cls": "period",
+  "memo": "Rent expense rose $30,000 quarter over quarter.",
+  "required": [
+   "needs review",
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A087",
+  "cls": "period",
+  "memo": "Rent expense rose $30,000 against budget.",
+  "required": [
+   "needs review",
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A088",
+  "cls": "period",
+  "memo": "Consulting revenue fell 25 percent from last year.",
+  "required": [
+   "needs review",
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A089",
+  "cls": "two",
+  "memo": "Rent expense rose $30,000 and Insurance expense rose $40,000.",
+  "required": [
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A090",
+  "cls": "two",
+  "memo": "Rent expense rose $30,000, or 30 percent, and ended at $140,000.",
+  "required": [
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A091",
+  "cls": "two",
+  "memo": "Rent expense rose $30,000 to $130,000, and Insurance expense fell to $95,000.",
+  "required": [
+   "failed",
+   "needs review"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A092",
+  "cls": "two",
+  "memo": "Rent expense rose $30,000 while Insurance expense was unchanged.",
+  "required": [
+   "failed",
+   "needs review"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A093",
+  "cls": "two",
+  "memo": "Rent expense and Insurance expense rose $30,000 and $45,000 respectively.",
+  "required": [
+   "needs review"
+  ],
+  "on13": "failed",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A094",
+  "cls": "two",
+  "memo": "Rent expense rose $30,000; so did Insurance expense.",
+  "required": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A095",
+  "cls": "two",
+  "memo": "Rent expense rose $30,000 and Insurance expense rose too, by 30 percent.",
+  "required": [
+   "failed",
+   "needs review"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A096",
+  "cls": "two",
+  "memo": "Rent expense rose $30,000, the same increase as Insurance expense.",
+  "required": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A097",
+  "cls": "two",
+  "memo": "Rent expense rose $30,000, or 30 percent, while Insurance expense rose 30 percent.",
+  "required": [
+   "failed",
+   "needs review"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A098",
+  "cls": "negation",
+  "memo": "Rent expense not only increased by $30,000 but also ended at $130,000.",
+  "required": [
+   "needs review"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A099",
+  "cls": "negation",
+  "memo": "Rent expense did not decline; it rose $30,000.",
+  "required": [
+   "needs review",
+   "checked within scope"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A100",
+  "cls": "negation",
+  "memo": "Rent expense rose $45,000, not $30,000.",
+  "required": [
+   "failed",
+   "needs review"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A101",
+  "cls": "negation",
+  "memo": "Rent expense rose $45,000 without any change in occupancy.",
+  "required": [
+   "failed",
+   "needs review"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A102",
+  "cls": "negation",
+  "memo": "Rent expense rose $30,000 and Insurance expense didn’t rise.",
+  "required": [
+   "needs review",
+   "failed"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A103",
+  "cls": "negation",
+  "memo": "Rent expense rose $30,000, and it is untrue that it fell.",
+  "required": [
+   "needs review",
+   "checked within scope"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A104",
+  "cls": "negation",
+  "memo": "Rent expense rose $30,000 and hardly moved.",
+  "required": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A105",
+  "cls": "negation",
+  "memo": "Rent expense rose $30,000, not a decline of $30,000 as reported earlier.",
+  "required": [
+   "needs review"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A106",
+  "cls": "negation",
+  "memo": "Rent expense failed to fall, rising $30,000.",
+  "required": [
+   "needs review",
+   "checked within scope"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A107",
+  "cls": "negation",
+  "memo": "Rent expense rose $30,000; Insurance expense rose nowhere near $45,000.",
+  "required": [
+   "needs review",
+   "failed",
+   "not checked"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A108",
+  "cls": "currency",
+  "memo": "Rent expense rose CAD 30,000.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A109",
+  "cls": "currency",
+  "memo": "Rent expense rose C$30,000.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A110",
+  "cls": "currency",
+  "memo": "Rent expense rose A$30,000.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A111",
+  "cls": "currency",
+  "memo": "Rent expense rose ¥30,000.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A112",
+  "cls": "currency",
+  "memo": "Rent expense rose 30,000 EUR.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A113",
+  "cls": "currency",
+  "memo": "Rent expense rose ₹30,000.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A114",
+  "cls": "currency",
+  "memo": "Rent expense rose 30,000 pesos.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A115",
+  "cls": "currency",
+  "memo": "Rent expense rose Rs. 30,000.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A116",
+  "cls": "currency",
+  "memo": "Rent expense rose 3,00,000 on the lakh grouping.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A117",
+  "cls": "digits",
+  "memo": "Rent expense rose ৩০,০০০.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A118",
+  "cls": "digits",
+  "memo": "Rent expense rose ３０,０００ dollars.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A119",
+  "cls": "digits",
+  "memo": "Rent expense rose $30,000, or 三十 percent.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "checked within scope",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A120",
+  "cls": "digits",
+  "memo": "Rent expense rose $30,000, or trente pour cent.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "checked within scope",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A121",
+  "cls": "digits",
+  "memo": "Rent expense rose $30,000, or XXX percent.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "checked within scope",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A122",
+  "cls": "digits",
+  "memo": "Rent expense rose $30,000, or ३० percent.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A123",
+  "cls": "typo",
+  "memo": "Rent expense rose $ 30,000.",
+  "required": [
+   "checked within scope",
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "checked within scope",
+  "python": "checked within scope",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A124",
+  "cls": "typo",
+  "memo": "Rent expense rose $30 000.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A125",
+  "cls": "typo",
+  "memo": "Rent expense changed by −$30,000.",
+  "required": [
+   "failed",
+   "not checked"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A126",
+  "cls": "typo",
+  "memo": "Rent expense changed by –$30,000.",
+  "required": [
+   "failed",
+   "not checked"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A127",
+  "cls": "typo",
+  "memo": "Rent expense changed by —30,000.",
+  "required": [
+   "failed",
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "A128",
+  "cls": "typo",
+  "memo": "Rent expense rose $30,000, or 90 percent.",
+  "required": [
+   "failed",
+   "not checked"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A129",
+  "cls": "typo",
+  "memo": "Rent expense rose $30,000, or 90 %.",
+  "required": [
+   "failed",
+   "not checked"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A130",
+  "cls": "typo",
+  "memo": "Rent expense rose $30,​000.",
+  "required": [
+   "not checked",
+   "failed",
+   "checked within scope"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A131",
+  "cls": "typo",
+  "memo": "Rent expense rose $30,000, or 90％.",
+  "required": [
+   "failed",
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A132",
+  "cls": "typo",
+  "memo": "Rent expense rose ＄30,000, or 90 percent.",
+  "required": [
+   "failed",
+   "not checked"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A133",
+  "cls": "typo",
+  "memo": "Rent expense rose $30,000 – or 90 percent.",
+  "required": [
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A134",
+  "cls": "typo",
+  "memo": "Rent expense rose $30,000, or 90 per­cent.",
+  "required": [
+   "failed",
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A135",
+  "cls": "typo",
+  "memo": "Rent expense rose $30,000, or 90 percent.",
+  "required": [
+   "failed",
+   "not checked"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A136",
+  "cls": "long",
+  "memo": "Rent expense rose $30,000, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlo ... [2568 chars] ... eviewed, and the balance fell by $45,000 by the end of June.",
+  "required": [
+   "failed",
+   "needs review"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A137",
+  "cls": "long",
+  "memo": "Rent expense rose $30,000, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlo ... [2531 chars] ... d, the landlord's schedule item was reviewed, or 90 percent.",
+  "required": [
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A138",
+  "cls": "long",
+  "memo": "Rent expense rose $30,000, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlo ... [2532 chars] ... , the landlord's schedule item was reviewed, and it doubled.",
+  "required": [
+   "not checked",
+   "failed"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "A139",
+  "cls": "long",
+  "memo": "Rent expense rose $30,000, the landlord's schedule item was noted, the landlord's schedule item was reviewed, the landlo ... [49803 chars] ... d, the landlord's schedule item was reviewed, or 90 percent.",
+  "required": [
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "B001",
+  "cls": "currency",
+  "memo": "Rent expense rose 30,000 euros.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B002",
+  "cls": "currency",
+  "memo": "Rent expense rose 30,000 pounds.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B003",
+  "cls": "currency",
+  "memo": "Rent expense rose 30,000 yen.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B004",
+  "cls": "currency",
+  "memo": "Rent expense rose 30,000 rupees.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B005",
+  "cls": "currency",
+  "memo": "Rent expense rose 30,000 Canadian dollars.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B006",
+  "cls": "currency",
+  "memo": "Rent expense rose 30,000 Australian dollars.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B007",
+  "cls": "currency",
+  "memo": "Rent expense rose HK$30,000.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "B008",
+  "cls": "currency",
+  "memo": "Rent expense rose R$30,000.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "not checked",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "B009",
+  "cls": "currency",
+  "memo": "Rent expense rose 30,000 francs.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B010",
+  "cls": "currency",
+  "memo": "Rent expense rose $30,000 in Canadian currency.",
+  "required": [
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B011",
+  "cls": "sign",
+  "memo": "Rent expense changed by $-30,000, or -30 percent.",
+  "required": [
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "B012",
+  "cls": "sign",
+  "memo": "Rent expense changed by +$30,000.",
+  "required": [
+   "checked within scope",
+   "failed"
+  ],
+  "on13": "checked within scope",
+  "on14": "checked within scope",
+  "python": "checked within scope",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "B013",
+  "cls": "sign",
+  "memo": "Consulting revenue changed by +$60,000.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B014",
+  "cls": "sign",
+  "memo": "Consulting revenue changed by $+60,000.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B015",
+  "cls": "sign",
+  "memo": "Consulting revenue changed by +25 percent.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B016",
+  "cls": "sign",
+  "memo": "Rent expense changed by minus $30,000.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "B017",
+  "cls": "sign",
+  "memo": "Rent expense changed by negative $30,000.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "B018",
+  "cls": "sign",
+  "memo": "Rent expense changed by 30,000 Cr.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B019",
+  "cls": "sign",
+  "memo": "Rent expense changed by $30,000 credit.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "not checked",
+  "python": "not checked",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B020",
+  "cls": "nochange",
+  "memo": "Rent expense was stable at $130,000.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B021",
+  "cls": "nochange",
+  "memo": "Rent expense was steady at $130,000.",
+  "required": [
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "B022",
+  "cls": "nochange",
+  "memo": "Rent expense was constant at $130,000.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "B023",
+  "cls": "nochange",
+  "memo": "Rent expense was the same as May at $130,000.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B024",
+  "cls": "nochange",
+  "memo": "Rent expense did not move and closed at $130,000.",
+  "required": [
+   "needs review",
+   "failed"
+  ],
+  "on13": "needs review",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "B025",
+  "cls": "nochange",
+  "memo": "Rent expense was static at $130,000.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B026",
+  "cls": "nochange",
+  "memo": "Rent expense was unmoved at $130,000.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "B027",
+  "cls": "nochange",
+  "memo": "Rent expense was on par with May at $130,000.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B028",
+  "cls": "nochange",
+  "memo": "Rent expense was equal to May at $130,000.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B029",
+  "cls": "nochange",
+  "memo": "Rent expense matched May at $130,000.",
+  "required": [
+   "failed",
+   "not checked",
+   "needs review"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B030",
+  "cls": "nochange",
+  "memo": "Rent expense was unchanged month over month at $130,000.",
+  "required": [
+   "failed"
+  ],
+  "on13": "failed",
+  "on14": "failed",
+  "python": "failed",
+  "wasFalseClearance": false
+ },
+ {
+  "id": "B031",
+  "cls": "period",
+  "memo": "Rent expense rose $30,000 versus the prior year.",
+  "required": [
+   "needs review",
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B032",
+  "cls": "period",
+  "memo": "Rent expense rose $30,000 on a trailing twelve month basis.",
+  "required": [
+   "needs review",
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B033",
+  "cls": "period",
+  "memo": "Rent expense rose $30,000 since December.",
+  "required": [
+   "needs review",
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B034",
+  "cls": "period",
+  "memo": "Rent expense rose $30,000 compared with last June.",
+  "required": [
+   "needs review",
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B035",
+  "cls": "period",
+  "memo": "Rent expense rose $30,000, or 30 percent, over two years.",
+  "required": [
+   "needs review",
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ },
+ {
+  "id": "B036",
+  "cls": "period",
+  "memo": "Rent expense rose $30,000 in the first half.",
+  "required": [
+   "needs review",
+   "not checked"
+  ],
+  "on13": "checked within scope",
+  "on14": "needs review",
+  "python": "needs review",
+  "wasFalseClearance": true
+ }
+]

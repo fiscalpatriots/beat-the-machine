@@ -1,0 +1,104 @@
+{
+  "savedAt": "2026-09-13T16:54:45.808Z",
+  "authoredBy": "second-pass-author 1.0.0",
+  "name": "Excluded review test",
+  "caseVersion": "v1",
+  "id": "own:Excluded review test:v1",
+  "case": {
+    "version": "v1",
+    "date": "2026-09-13",
+    "company": "Excluded review test",
+    "period": "June 2026 against May 2026",
+    "caption": "The 2 accounts the memo was written against.",
+    "columns": [
+      "May",
+      "June"
+    ],
+    "threshold": "A line owes commentary only when it clears both $25,000 and 10 percent.",
+    "policyScope": "The threshold sets what the monthly management report has to explain. It does not make a known error, or anything else that looks wrong, exempt from attention.",
+    "evidenceNote": "Every sentence under On file is a verified case assumption. A fact that is not listed was not supplied, which is not the same as saying the company has no such document.",
+    "ledger": [
+      [
+        "6100",
+        "Rent expense",
+        100000,
+        130000,
+        1
+      ],
+      [
+        "6200",
+        "Insurance expense",
+        50000,
+        95000,
+        1
+      ]
+    ],
+    "groups": [
+      {
+        "title": "Accounts",
+        "accts": [
+          "6100",
+          "6200"
+        ],
+        "total": "Total accounts"
+      }
+    ],
+    "cards": [
+      {
+        "n": 1,
+        "icon": "coins",
+        "acct": "6100",
+        "name": "Rent expense",
+        "prior": 100000,
+        "current": 130000,
+        "memo": "Rent expense did not increase by $30,000.",
+        "file": [
+          "A line owes commentary only when it clears both $25,000 and 10 percent."
+        ],
+        "key": "stand",
+        "type": "clean line",
+        "why": "The figures tie and the direction is right, so the arithmetic is not what fails here.",
+        "truth": "The figures tie and the direction is right, so the arithmetic is not what fails here.",
+        "over": "The figures tie and the direction is right, so the arithmetic is not what fails here.",
+        "ask": "",
+        "tell": "Excluded audit test. This intentionally retains the suggested key.",
+        "post": {
+          "flag": "Accept",
+          "stand": "Reject"
+        },
+        "basisKey": [
+          "the figure and reason hold"
+        ]
+      },
+      {
+        "n": 2,
+        "icon": "truck",
+        "acct": "6200",
+        "name": "Insurance expense",
+        "prior": 50000,
+        "current": 95000,
+        "memo": "",
+        "file": [
+          "Nothing was supplied about this account for either period.",
+          "A line owes commentary only when it clears both $25,000 and 10 percent."
+        ],
+        "key": "flag",
+        "type": "no explanation",
+        "why": "The line clears both legs of the rule, a change of $45,000 on a prior balance of $50,000, and no sentence in the memo explains it. Silence on a line that owes commentary is itself the finding, and the ask is for what drove it.",
+        "truth": "The line clears both legs of the rule, a change of $45,000 on a prior balance of $50,000, and no sentence in the memo explains it. Silence on a line that owes commentary is itself the finding, and the ask is for what drove it.",
+        "over": "The line clears both legs of the rule, a change of $45,000 on a prior balance of $50,000, and no sentence in the memo explains it. Silence on a line that owes commentary is itself the finding, and the ask is for what drove it.",
+        "ask": "Ask the controller for the document that settles account 6200.",
+        "tell": "Excluded audit test. This is the silent account.",
+        "post": {
+          "flag": "Accept",
+          "stand": "Reject"
+        },
+        "basisKey": [
+          "nothing written where owed"
+        ]
+      }
+    ],
+    "authoredBy": "second-pass-author 1.0.0"
+  },
+  "fresh": null
+}

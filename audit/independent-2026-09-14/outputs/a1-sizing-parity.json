@@ -1,0 +1,398 @@
+[
+ {
+  "id": "B001",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "not checked"
+  },
+  "pythonStatus": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "B002",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "not checked"
+  },
+  "pythonStatus": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "B003",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "not checked"
+  },
+  "pythonStatus": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "B004",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "not checked"
+  },
+  "pythonStatus": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "B005",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "not checked"
+  },
+  "pythonStatus": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "B006",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "not checked"
+  },
+  "pythonStatus": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "B007",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "not checked"
+  },
+  "pythonStatus": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "B008",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "not checked"
+  },
+  "pythonStatus": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "B009",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "not checked"
+  },
+  "pythonStatus": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "B010",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "not checked"
+  },
+  "pythonStatus": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "B011",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "B012",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "checked within scope"
+  },
+  "pythonStatus": {
+   "S1": "checked within scope"
+  }
+ },
+ {
+  "id": "B013",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "B014",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "B015",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "B016",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "B017",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "B018",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "not checked"
+  },
+  "pythonStatus": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "B019",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "not checked"
+  },
+  "pythonStatus": {
+   "S1": "not checked"
+  }
+ },
+ {
+  "id": "B020",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "B021",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "B022",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "B023",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "B024",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "B025",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "B026",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "B027",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "B028",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "B029",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "B030",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "failed"
+  },
+  "pythonStatus": {
+   "S1": "failed"
+  }
+ },
+ {
+  "id": "B031",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "B032",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "B033",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "B034",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "B035",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ },
+ {
+  "id": "B036",
+  "differingFields": [],
+  "sameStatus": true,
+  "browserStatus": {
+   "S1": "needs review"
+  },
+  "pythonStatus": {
+   "S1": "needs review"
+  }
+ }
+]
