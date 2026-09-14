@@ -455,7 +455,7 @@ as one line with no header row unless the row says otherwise.**
 | `Rent expense rose $30,000 in Q2.`, on a ledger headed `Account / Q1 2026 / Q2 2026` | checked within scope |
 
 The lexicon is a fence, not a proof. A sentence that clears under it has had every word the grammar
-knows to be risky taken out or read; it has not been understood. The regression suite holds 334
+knows to be risky taken out or read; it has not been understood. The regression suite holds 336
 mutations of these classes, of the sentence boundaries and of the periods the labels bind, each class
 with inputs it must refuse and inputs it must accept, and a new way of writing a quantity is compared
 only once it is added there.
@@ -542,11 +542,11 @@ node tests/run-checker-tests.cjs T02      one fixture
 node tests/run-checker-tests.cjs --dump T02
 ```
 
-`tests/checker-fixtures.json` holds **722** fixtures and **all 722 pass**, and the suite adds two
+`tests/checker-fixtures.json` holds **724** fixtures and **all 724 pass**, and the suite adds two
 more checks: every reader function `assets/second-pass-core.js` shares with `checker.html` must be the
 same function, and every one-line constant they share and the clearance grammar's block must be the
 same text, so the author page and the checker cannot read one memo two ways. The same file sits in
-the second-pass repository, where `tests/test_parity_shared_inputs.py` runs all 722 inputs through
+the second-pass repository, where `tests/test_parity_shared_inputs.py` runs all 724 inputs through
 this page under Node and through the Python checker and compares the outputs, and a further test
 holds the risk lexicon identical in both, entry for entry, together with the period and quarter
 binding's patterns, the size lists, the sentence splitter's abbreviation and name lists, what the
@@ -623,11 +623,11 @@ where the claim ends and the reason begins in a set of sentences.
   8 accepted, 2 mixed), **BIND01 to BIND17** account names at the end or edge of a sentence (12
   refused, 4 accepted, 1 mixed), and **LEX01 to LEX21** every class of the lexicon one step past the
   words it lists (16 refused, 4 accepted, 1 mixed).
-- **Three checker residuals, 64 fixtures**, written later on 14 September 2026 for the three the
+- **Three checker residuals, 66 fixtures**, written later on 14 September 2026 for the three the
   lane above left open, each from both sides and each asserting the sentences as a person reads
   them: **REAS01 to REAS19** a direction word a reason governs, in a clause and after a preposition
-  (10 refused, 7 accepted, 2 mixed), **NAME01 to NAME23** an abbreviation inside a name, `U.S.
-  Treasury`, `J.P. Morgan`, `St. Louis`, `Co. Ltd.` (10 refused, 11 accepted, 2 mixed), and
+  (10 refused, 7 accepted, 2 mixed), **NAME01 to NAME25** an abbreviation inside a name, `U.S.
+  Treasury`, `J.P. Morgan`, `St. Louis`, `Co. Ltd.` (10 refused, 13 accepted, 2 mixed), and
   **QTR01 to QTR22** a quarter against the column labels, held on a monthly ledger and bound on a
   quarterly one (14 refused, 7 accepted, 1 mixed). One expectation moved with them: **A086**, `Rent
   expense rose $30,000 quarter over quarter.`, from not checked to **needs review**, because the

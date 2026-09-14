@@ -16972,6 +16972,66 @@
     ]
   },
   {
+    "id": "NAME24",
+    "name": "abbreviation inside a name, refusing variant: Rent expense rose $30,000 on the J.P. Morgan facility in Q2.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the J.P. Morgan facility in Q2.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "“Q2”"
+      }
+    ]
+  },
+  {
+    "id": "NAME25",
+    "name": "abbreviation inside a name, refusing variant: Rent expense rose $45,000 per Mr. J. Smith.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $45,000 per Mr. J. Smith.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is failed",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "failed"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "$45,000"
+      }
+    ]
+  },
+  {
     "id": "QTR01",
     "name": "quarter against the column labels, refusing variant: Rent expense rose $30,000 in Q2.",
     "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
