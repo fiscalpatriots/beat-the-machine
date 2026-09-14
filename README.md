@@ -30,24 +30,26 @@ flow drawn as four boxes.
 
 A memo fails in six ways, and they split into two groups that need different things.
 
-Four are machine-checkable: arithmetic, wrong direction, threshold and silence. A script
-recomputes every figure and percent in every sentence against the ledger, tests each direction
-word against the sign of the movement, lists every account that clears both legs of the
-materiality threshold, and from that list names every account no sentence mentions. None of that
-needs a person.
+Four are machine-checkable where the checker recognizes the claim: arithmetic, wrong direction,
+threshold and silence. The checker recomputes the dollar and percent claims it can read under its
+accepted grammar against the ledger, tests the direction words it recognizes against the sign of
+the movement, lists every account that clears both legs of the materiality threshold, and from
+that list names every account no sentence mentions. It prints coverage beside the results, so a
+reviewer sees what it could not read before relying on what it checked. `CHECKER.md` sets out the
+accepted inputs and the contract.
 
-Two are reviewer judgment: invented driver and timing. Both need the facts on file and somebody
+Two are reviewer judgment: unsupported driver and timing. Both need the facts on file and somebody
 who knows the business, so both stay with the human.
 
-The entry also has to show learning rather than performance, so the round does not end with the
-fourteen trained lines. A second company follows, five lines the player has never seen, scored
-on its own, and the sheet carries both numbers so the findings can say whether a catch rate
-holds up on material nobody coached them through.
+The round does not end with the fourteen trained lines. A second company follows, five lines the
+player has never seen, scored on its own, and the sheet carries both numbers as two descriptive
+results: agreement with the key on the practice case and on an unseen keyed set. Five items with
+no baseline cannot show a learning gain, and the findings do not claim one.
 
-**Scope.** This build is a static case: fourteen lines and five fresh ones, one month, answers
-keyed by hand. It does
-not run on a live ledger, and the four mechanical checks run on any ledger and memo in the
-checker on this site; driver and timing stay with the reviewer. Next, the deterministic checks
+**Scope.** The drill is a static case: fourteen lines and five fresh ones, one month, answers
+keyed by hand, and it does not run on a live ledger. The checker on this site runs the mechanical
+checks on a pasted ledger and memo in the layouts `CHECKER.md` lists under "What goes in", refuses
+or flags the inputs that page describes, and leaves driver and timing with the reviewer. Next, the deterministic checks
 run first on every AI memo, and the reviewer's time goes only to the two judgment types.
 
 The code and the pilot records are at https://github.com/fiscalpatriots/second-pass, which is
@@ -75,7 +77,7 @@ come straight out of the responses sheet without any hand coding.
 | --- | --- |
 | Responses by organization | The chapter chips tapped on the second screen, posted in question A. One player may belong to more than one, so the counts sum above the response count and each is read as its own denominator. |
 | Decision accuracy by error type | The fourteen "Why" fields each carry the line, the account, the call, the key and the error type, so grouping on the type column gives an accuracy figure per type. In `halyard-v4` the eight flagged lines carry `arithmetic` twice, `unsupported driver` twice, and `timing`, `wrong direction`, `no explanation` and `unsupported attribution` once each; the six clean lines carry `clean line` and are the control. `no explanation` is what the screen calls silence, and threshold is the machine test that decides which lines owe commentary at all rather than a label of its own. |
-| Reason accuracy by error type | The same fourteen fields carry `Reason: agrees.` or `Reason: does not agree.` and the card's basis key, so the same grouping gives reason accuracy per type. Question B carries the two round totals beside the attempt identifier. A reason agrees when every chip the player tapped is in the card's basis key and at least one was tapped. |
+| Reason category agreement by error type | The same fourteen fields carry `Reason: agrees.` or `Reason: does not agree.` and the card's basis key, so the same grouping gives agreement with the accepted reason categories per type. Question B carries the two round totals beside the attempt identifier. A reason agrees when every chip the player tapped is in the card's basis key and at least one was tapped. |
 | False-flag rate | The six lines whose key is `stand` are the denominator. A `flag` call on any of them is a false flag, and question B carries the round's false flag count as well. |
 | Elapsed time | The clock runs from the first card to the last call and posts as whole minutes in the elapsed time question. It is elapsed time on the page rather than measured active work, and it is reported under that name. |
 | Fresh case accuracy | Question C (`entry.756559246`) opens with `Round2: right call 4/5, right reason 3/5; calls FSFFS; key FSFFS; seconds 61.` The two fractions are the call and reason scores on the five lines of a company the player had never seen, the letter strings are the five calls and the five keyed answers in card order with `F` for flag and `S` for let it stand, and the seconds are the round two clock. |
@@ -157,8 +159,7 @@ Four screens stand between the link and the first card.
 2. The data notice, read before anything is collected. See "The data notice" below.
 3. One screen for the codename and the chapters, on the same screen and both required.
 4. The ledger, read once as orientation, with a block under it saying what earns a flag and
-   what "Let it stand" means, and one optional step of ledger-only picks. See "The ledger-only
-   picks" below.
+   what "Let it stand" means, and a plain Continue to the first card.
 
 Nothing else is asked on the way in. After the round the player is offered a local record and a
 separate voluntary send, and neither is required to finish.
@@ -196,30 +197,13 @@ Under those four the screen prints the notice version and the product version. T
 rides into question A and into the local record, so a response can be tied to the wording the
 player actually read. Change the wording and the version goes up with it.
 
-## The ledger-only picks
+## The ledger-only picks, removed
 
-**Subject to Khaled's ruling.** This step was added on 13 September 2026 because the build
-handoff asks for a short ledger-only judgment before the narrative. It has not been approved as
-a permanent part of the path in, and removing it means deleting `prepickBlock`, `wirePrepicks`
-and `prepickLine` from `index.html` and restoring the plain Continue on the orientation screen.
-
-Under the statement on the orientation screen: "Before the memo: tap up to three lines you would
-ask about first, or skip." Fourteen chips, one per ledger account, capped at three, with Skip and
-Continue side by side under them. Once three are tapped the rest go grey until one is released.
-Nothing is typed and nothing is scored, so it costs a few seconds. The sticky bar on a phone and
-the rail on a desk read "Skip the picks and continue" and record a skip rather than pretending a
-player who never scrolled made a pick.
-
-The picks post into the round one free text question, `entry.1115022539`, which collected nothing
-before this. The cell reads:
-
-```
-Prepicks: 4200; 6000; 6400.
-```
-
-A skip posts `Prepicks: skipped.` rather than an empty cell, so a deliberate skip and a missing
-answer can be told apart. The picks are also in the local record under `prepicks`, with the
-question text and the entry id beside them.
+A short step on the orientation screen asked the player to tap up to three lines they would ask
+about first, before reading the memo. Khaled ruled on 13 September 2026 to drop it, and the drill
+no longer asks it. Rows filed while it was live carry `Prepicks:` followed by account numbers, or
+`Prepicks: skipped.`, in the round one free text question (`entry.1115022539`), and a record saved
+in that window carries a `prepicks` block. Neither was ever scored against a key.
 
 ## Test mode
 
@@ -241,7 +225,6 @@ their run. The fields are the ones the build handoff calls the minimum attempt r
 | Block | Fields |
 | --- | --- |
 | `attempt` | id, pseudonym and the note that a codename is not anonymity, organizations, role (null, not collected), notice version, product version, case versions and which path loaded them, form URL, mode per round, first attempt, run index, assistance source, started, completed, submission state, submission attempts, test attempt |
-| `prepicks` | picks, skipped, the entry id they post to, the question as it was asked |
 | `responses` | one per line for all nineteen: item id, round, case version, mode, account and name, error type, original decision, final decision, basis chips, the player's own words, `evidenceSupplied` (the on-file facts the card showed) and `evidenceSelected` (null, the page does not ask what the player read), confidence (null, not asked), assistance revealed, `elapsedSecondsOnCard`, skipped or missing reason, when feedback was revealed, the keyed decision, and whether the call agrees with the key |
 | `scoring` | key versions, the round one and round two counts, human rubric scores (null), scorer id (null), out-of-key finding (null), adjudication (null), exclusion reason, final resolution (null) |
 | `timing` | round one lap seconds, the whole minutes actually posted, round two seconds, `elapsedSecondsOnCards` summed over the nineteen lines |
@@ -395,7 +378,7 @@ the same everywhere. `review.html` shows the full block. For the other two:
 | Page | `<title>` | `<meta name="description">` |
 | --- | --- | --- |
 | `index.html` | Second Pass: the ten-minute drill | Fourteen ledger lines, eight carrying a planted problem, called against an answer key. A drill on AI-drafted close commentary, built at George Mason. |
-| `checker.html` | Second Pass Checker: tie every figure back to the ledger | Paste a ledger and the memo somebody drafted about it. Four checks settle every figure, every direction word and every account nobody mentioned. |
+| `checker.html` | Second Pass Checker: test the memo against the ledger | Paste a ledger and the memo drafted about it. It checks the dollar, percent and direction claims it recognizes, names every account over the threshold that nobody mentioned, and shows what it could not read. |
 
 The Open Graph block to repeat on each page, with `og:url` pointed at that page:
 
@@ -691,7 +674,9 @@ card's basis key beside them.
 Play again returns to the codename screen with the codename and the chapter chips still filled
 in and the score, the streak and the clock cleared. A second run posts a fresh response through
 the same entries, so repeat runs appear in the sheet as separate rows under the same codename.
-Count distinct codenames, not rows, when the question is how many people played.
+A codename is not a person. Report received attempts, completed attempts and distinct codenames
+as three separate counts, keep a codename's first eligible attempt in the initial results and its
+later attempts as reattempts, and count people only from a facilitator's session roster.
 
 ## Where the data lands
 
@@ -712,8 +697,7 @@ reuses the same attempt id so it cannot double count.
 Nobody types anything after the round. The fourteen calls post as `Accept` or `Reject` so the
 existing multiple choice questions keep working, and every text question receives the player's
 basis plus generated metadata rather than player prose: the fourteen "Why" fields carry the
-basis, the call, the key and the error type for that line, the round one free text field carries
-the ledger-only picks, question A carries the organizations and the three version stamps,
+basis, the call, the key and the error type for that line, question A carries the organizations and the three version stamps,
 question B carries the attempt id, the lines missed, the pattern, the result and the longest run.
 The elapsed minutes question receives the lap time, off the clock rather than a tap.
 
@@ -769,10 +753,10 @@ the form re-rendered and "This is a required question" in the body, which is how
 apart from the outside. The hidden iframe the page uses cannot read either one, so the probe is
 the only way to check this from a script.
 
-Two former placeholders now carry real data. The round one free text field
-(`entry.1115022539`) carries the ledger-only picks, and question C (`entry.756559246`) carries
-the round two string, the round two basis and the case version. Rows filed before 13 September
-2026 carry the old placeholder note in both.
+Question C (`entry.756559246`), a former placeholder, now carries the round two string, the round
+two basis and the case version, and rows filed before 13 September 2026 carry the old placeholder
+note there. The round one free text field (`entry.1115022539`) carried the ledger-only picks only
+while that step was live.
 
 ## The basis a player gives
 
@@ -809,8 +793,10 @@ on a clean line is a contradiction rather than a weak answer.
 
 The two scores never mix. The running pill shows the call score alone, as `Right 7 of 9`. The end
 screen shows both, as `Right call 12 of 14. Right reason 9 of 14.`, and the fresh case carries the
-same pair. Ranks and badges read the call score only and the end screen says so in one line. The
-coach section names every line where the call was right and the reason was not.
+same pair. The badges read the calls alone. The rank does not: an agreeing reason adds 50 points
+to a correct call, and the rank is read off total points, so fourteen correct Halyard calls reach
+Partner at 2,625 with every reason agreeing and stop at Senior at 1,925 with none. The coach
+section names every line where the call was right and the reason was not.
 
 Question B carries both round totals beside the attempt identifier. Each Why field carries
 `Reason: agrees.` or `Reason: does not agree.` and the card's basis key after the call verdict.
@@ -821,11 +807,15 @@ This exists because an independent release review completed the whole drill on 1
 while tapping `wrong account` on every one of the nineteen lines, and the page awarded 14 of 14
 and 5 of 5. The same run now scores zero on reason.
 
-The reason score is a compatibility check on the stated basis. It is not a rubric score, it does
-not establish that a player reasoned, and a player who taps `no source on file` on every flag and
-the hold chip on every stand would score well on it without having reasoned. The three-dimension
-reasoning rubric is scored by a person outside the page, and reviewer disagreements with the key
-are retained rather than settled by it.
+The reason score is a compatibility check on the stated basis, reported as agreement with the
+accepted reason categories. It is not a rubric score, it does not establish that a player reasoned,
+and a player who taps `no source on file` on every flag and the hold chip on every stand would
+score well on it without having reasoned. The measurement adopted on 13 September 2026 for the
+next assessment version, `brightwater-v6`, adds a short written explanation on each of the five
+fresh-case items, naming the decisive evidence, why it matters for this period, and the action or
+source request that follows. Those explanations are scored blind by an independent educator
+against a rubric, the chips are still reported separately, and disagreements with the key are
+retained rather than settled by it.
 
 ## Counting the organizations
 
@@ -847,7 +837,9 @@ Mason, which is the practitioner route added on 13 September 2026. To count a ch
 the responses sheet, test the question A column for the name, for example
 `=COUNTIF(H2:H, "*ACFE*")`. A player who tapped two chapters counts in both, which is what a
 multi-select means, so the chapter counts sum to more than the number of responses. Count
-players with `=COUNTA(...)` on the codename column instead.
+distinct codenames with `=COUNTA(UNIQUE(...))` on the codename column, and report that as distinct
+codenames rather than as people, because one person can play under two codenames and a codename
+can carry several attempts.
 
 ## If the form is ever rebuilt
 
@@ -900,9 +892,12 @@ set it always did.
 
 ### author.html, building a case from your own ledger
 
-`author.html` takes a ledger and a memo in the same two shapes the checker takes, runs the four
-mechanical checks over them, and hands back one card per memo sentence plus one for every account
-that clears the rule with nothing written about it.
+`author.html` takes a ledger and a memo in the same shapes the checker takes, runs the mechanical
+checks over them, and hands back a card for each memo sentence it binds to a ledger line plus one
+for every account that clears the rule with nothing written about it. A sentence that binds to no
+line gets a warning rather than a card, and the author page is being brought into line with the
+checker's statuses, so its suggestions are a starting point for the author and not a checker
+result.
 
 The checks suggest; the author decides. A failed arithmetic check pre-selects flag with the type
 `arithmetic`, the chip `figure does not tie` and the checker's own sentence as the why; a
@@ -930,13 +925,13 @@ The four mechanical checks are the checker's, not a second implementation of the
 nothing in it that touches the DOM.
 
 **`checker.html` was not changed and does not load it.** The extraction the build called for
-would have edited a file the checker lane owns, against whose code the 53 fixtures in
+would have edited a file the checker lane owns, against whose code the fixtures in
 `tests/run-checker-tests.cjs` are scored, so the copy path was taken instead and is recorded here
 rather than left to be discovered. `author.html` loads the module; `checker.html` still carries
 its own copy.
 
 **The task to unify:** point `checker.html` at `assets/second-pass-core.js`, delete its own copy
-of those functions, run `node tests/run-checker-tests.cjs` and confirm 53 of 53 still pass. Until
+of those functions, run `node tests/run-checker-tests.cjs` and confirm every fixture still passes. Until
 that lands a fix made in one copy has to be made in the other, and the comment at the top of the
 module says so.
 

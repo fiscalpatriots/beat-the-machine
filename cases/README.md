@@ -33,8 +33,13 @@ No card in either case has an amount booked in an account it does not belong in,
 reason. That is the point of counting the reason separately: the same run scored 14 of 14 and 5
 of 5 on the call in the 13 September review.
 
-The reason score is a compatibility check on the stated basis and not a rubric score. It never
-moves the rank or the badges, which read the call score only. A participant who taps
+The reason score is a compatibility check on the stated basis and not a rubric score: it measures
+agreement with the accepted reason categories on each card. It does move the rank. `linePoints` in
+`index.html` awards 50 points for an agreeing reason on top of the 100 for a correct call (and
+nothing for the reason when the call is wrong), and the rank is read off total points, so the same
+fourteen correct Halyard calls reach Partner at 2,625 points with every reason agreeing and stop at
+Senior at 1,925 with none agreeing. The badges read the calls alone and never the reason. The rank
+is a game device on one case, not a credential and not a learning outcome. A participant who taps
 `no source on file` on every flag and the hold chip on every stand would score well on reason
 without having reasoned, so the three-dimension reasoning rubric stays with a person outside the
 page, and reviewer disagreements are retained rather than settled by the key.
@@ -106,7 +111,14 @@ leg each.
 Two shortcuts reach 3 of 5 on the call. Five items cannot separate judgment from a shortcut on
 their own, which is why the fresh case is reported as five-item decision accuracy on a second
 unseen set, scored the same way as round one, and never as proof of transfer or of a learning
-gain. The reason score is the second reading, and a shortcut carries no reason with it.
+gain. The reason chips are a second reading, of agreement with accepted reason categories, and a
+chip shortcut reaches that too: `no source on file` on the three flags and the hold chip on the
+two stands scores 5 of 5 on reason without saying why the 31 May schedule cannot carry June plan
+starts. That is why the measurement adopted on 13 September 2026 for the next assessment version,
+`brightwater-v6`, asks for a short written explanation on each of the five items, naming the
+decisive evidence, why it matters for this period, and the action or source request that follows,
+scored blind by an independent educator against a rubric, with the chips still reported
+separately. Until that version is in this folder, `brightwater-v5` above is the assessment case.
 
 `build-cases.cjs` enforces the assessment contract. It refuses to write if a memo states a dollar
 figure the account does not produce, states a percent that is not the movement, uses a direction
