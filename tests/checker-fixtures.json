@@ -863,7 +863,7 @@
   },
   {
     "id": "T18b",
-    "name": "Brightwater sample end to end, case brightwater-v5",
+    "name": "Brightwater sample end to end, case brightwater-v6",
     "required": "The Brightwater sample, generated from cases/brightwater-v4.json. Every figure and every direction word in the v4 memo is correct, so the mechanical pass clears all five and the whole case turns on evidence a person has to weigh. A checker that failed a line here would be wrong.",
     "sample": "brightwater",
     "expect": [
@@ -871,7 +871,7 @@
         "desc": "the sample carries the shared case version",
         "get": "json",
         "op": "includes",
-        "value": "\"caseVersion\": \"brightwater-v5\""
+        "value": "\"caseVersion\": \"brightwater-v6\""
       },
       {
         "desc": "five ledger rows read",
@@ -963,7 +963,8 @@
         "op": "eq",
         "value": 0
       }
-    ]
+    ],
+    "note": "The sample was regenerated from cases/brightwater-v6.json on 14 September 2026, so the checker stamps the version the drill runs. v6 changed the evidence and the reveals on the cards and left the ledger and every memo sentence exactly as v5 wrote them, so no status, count or queue item on this sample moves; the case version and the memo version stamped on the run are what change."
   },
   {
     "id": "T19",
@@ -17688,6 +17689,606 @@
         "get": "queue",
         "op": "includes",
         "value": "“quarter to date”"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE01",
+    "name": "share of the movement, refusing variant: Rent expense rose $30,000 mostly on the new lease at the depot.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 mostly on the new lease at the depot.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“mostly”"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE02",
+    "name": "share of the movement, refusing variant: Rent expense rose $30,000, partly on the new lease.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000, partly on the new lease.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“partly”"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE03",
+    "name": "share of the movement, refusing variant: Rent expense rose $30,000 largely because the lease renewed.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 largely because the lease renewed.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“largely”"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE04",
+    "name": "share of the movement, refusing variant: Rent expense rose $30,000 on rent increases that were broadly in line across the sites.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on rent increases that were broadly in line across the sites.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“broadly”"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE05",
+    "name": "share of the movement, refusing variant: Rent expense rose $30,000, entirely on the new lease.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000, entirely on the new lease.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“entirely”"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE06",
+    "name": "share of the movement, refusing variant: Rent expense rose $30,000 on the new lease, which explains most of the increase.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the new lease, which explains most of the increase.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“most”"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE07",
+    "name": "share of the movement, refusing variant: Rent expense rose $30,000 in part on the new lease.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 in part on the new lease.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“in part”"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE08",
+    "name": "share of the movement, refusing variant: Rent expense rose $30,000 as the new lease began and volumes were essentially flat.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 as the new lease began and volumes were essentially flat.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“essentially”"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE09",
+    "name": "share of the movement, refusing variant: Rent expense rose $30,000, virtually all of it on the new lease.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000, virtually all of it on the new lease.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“virtually”"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE10",
+    "name": "share of the movement, refusing variant: Rent expense rose $30,000 on the new lease, which covers the bulk of the increase.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the new lease, which covers the bulk of the increase.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“bulk”"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE11",
+    "name": "share of the movement, refusing variant: Rent expense rose $30,000 on the new lease, for the most part.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the new lease, for the most part.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“for the most part”"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE12",
+    "name": "share of the movement, refusing variant: Rent expense rose $30,000 wholly on the new lease.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 wholly on the new lease.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“wholly”"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE13",
+    "name": "share of the movement, refusing variant: Rent expense rose $30,000 predominantly on the new lease.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 predominantly on the new lease.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“predominantly”"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE14",
+    "name": "share of the movement, accepting variant: Rent expense rose $30,000 on the new lease.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the new lease.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE15",
+    "name": "share of the movement, accepting variant: Rent expense rose $30,000 on the whole-floor lease at the depot.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the whole-floor lease at the depot.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE16",
+    "name": "share of the movement, accepting variant: Rent expense rose $30,000 on the new lease signed by all of the partners.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the new lease signed by all of the partners.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE17",
+    "name": "share of the movement, accepting variant: Rent expense rose $30,000 on a share of the new lease costs.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on a share of the new lease costs.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE18",
+    "name": "share of the movement, accepting variant: Rent expense rose $30,000 on fully loaded rent at the depot.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on fully loaded rent at the depot.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE19",
+    "name": "share of the movement, mixed, one clause clears and one is held: Rent expense rose $30,000 on the new lease, and Insurance expense rose $45,000 mainly on higher premiums.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the new lease, and Insurance expense rose $45,000 mainly on higher premiums.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“mainly”"
+      }
+    ]
+  },
+  {
+    "id": "HEDGE20",
+    "name": "share of the movement, mixed, one clause is held and one clears: Rent expense rose $30,000 primarily on the new lease, and Insurance expense rose $45,000 on higher premiums.",
+    "required": "A word that says how much of the movement a sentence explains is a claim of its own, and nothing a close uses documents what \"mostly\", \"partly\" or \"largely\" covers, so the checker never tests it: like a size word it holds the sentence at needs review wherever it stands, inside a reason as much as in the claim, and the queue names the word. A share of something that is not the movement, \"all of the partners\", \"a share of the new lease\", \"fully loaded rent\", stays with the reviewer's question about the reason and still clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 primarily on the new lease, and Insurance expense rose $45,000 on higher premiums.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word that holds it",
+        "get": "queue",
+        "op": "includes",
+        "value": "“primarily”"
       }
     ]
   }

@@ -213,16 +213,17 @@ it is treated as a published case rather than as one facilitator's own.
 ## For the checker lane
 
 `checker.html` generates its Halyard and Brightwater samples from `halyard-v4.json` and
-`brightwater-v5.json` through `node build-checker-cases.cjs`, so the two surfaces read one ledger
+`brightwater-v6.json` through `node build-checker-cases.cjs`, so the two surfaces read one ledger
 and one memo version rather than two drifting copies. The generated block sits between
 `BUILD:CHECKER-CASES-START` and `BUILD:CHECKER-CASES-END` and is never hand-edited, and the
 generator refuses to write when a card points at an account the ledger does not carry or a card's
 figures do not tie. `CHECKER.md` prints the expected output for every sample and the suite asserts
 all four end to end.
 
-The Brightwater sample still names `brightwater-v5` as its memo version while the drill runs
-`brightwater-v6`. The two files carry the same five memo sentences and the same figures, so the
-sample's output does not move, and the version label is the checker lane's to bring forward.
+The Brightwater sample was brought forward to `brightwater-v6` on 14 September 2026, so the
+checker stamps the version the drill runs. The two files carry the same five memo sentences and
+the same figures, so the sample's output did not move: only the case version and the memo version
+on the run changed, and the suite asserts the new stamp in `T18b`.
 
 Two things the game supplies that the checker does not, whatever the sample says:
 

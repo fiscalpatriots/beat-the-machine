@@ -1559,6 +1559,13 @@ function splitSentences(text){
      why:"carries the claim over to another line without a figure the checker can tie"},
     {cat:"other account",strong:0,re:"\\b(?:also|too|as\\s+well|together|alongside|equally)\\b",
      why:"points at another line the claim does not name"},
+    /* Share. A word that says how much of the movement the sentence explains is a
+       claim of its own, and nothing a close uses documents what "mostly" or "partly"
+       covers, so it is never tested: like a size word it holds the sentence wherever
+       it stands, inside a reason too. A share of something that is not the movement,
+       "all of the partners", "a share of the new lease", stays with the reason. */
+    {cat:"share",strong:1,re:"\\b(?:mostly|mainly|primarily|principally|chiefly|predominantly|largely|broadly|partly|partially|entirely|wholly|solely|exclusively|virtually|essentially|practically|basically)\\b|\\bin\\s+(?:part|large\\s+part|the\\s+main)\\b|\\bfor\\s+the\\s+most\\s+part\\b|\\bon\\s+the\\s+whole\\b(?!-)|\\bto\\s+(?:some\\s+extent|a\\s+degree)\\b|\\bmore\\s+or\\s+less\\b|\\b(?:bulk|majority|minority|remainder|portion|fraction|most|much|some|part|all|none)\\b(?=\\s+of\\s+(?:the|this|that|its|an?|it)?\\s*(?:[-+$0-9]|(?:[A-Za-z-]+\\s+){0,2}(?:"+MOVE_NOUNS+")\\b))",
+     why:"says how much of the movement the sentence explains, and no documented threshold says what that share is"},
     {cat:"sameness",strong:1,re:"\\b(?:same|identical(?:ly)?|equal(?:s|led|ed)?|equivalent|match(?:ed|es|ing)?|comparabl[ey]|similar|consistent(?:ly)?|in[\\s-]?line\\s+with|on\\s+(?:a\\s+)?par|par\\s+with|parity|unaltered|(?:no|not)\\s+different|even\\s+with|in\\s+keeping\\s+with|ditto|stable|stability|stabili[sz](?:ed|es|ing)|steady|steadily|static|constant|flattish|flat[\\s-]?lined?|stagna(?:nt|ted|tion)|stall(?:ed|s|ing)|plateau(?:ed|s|ing)?|sideways|little[\\s-]+changed?|level|barely|hardly|scarcely)\\b",
      why:"claims no change or sameness in a word the checker does not test"},
     {cat:"sameness",strong:0,re:"\\b(?:virtually|essentially|practically|basically|broadly|largely|roughly\\s+(?:flat|unchanged)|maintain(?:ed|s|ing)?|sustain(?:ed|s|ing)?|persist(?:ed|s|ing)?|remain(?:ed|s|ing)?|stay(?:ed|s|ing)?|held|hold(?:s|ing)?|kept|keep(?:s|ing)?|continu(?:ed|es|ing)|still|mirror(?:ed|s|ing)?|track(?:ed|s|ing)?)\\b",

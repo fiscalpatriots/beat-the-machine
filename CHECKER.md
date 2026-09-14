@@ -332,7 +332,7 @@ a figure; and the period frame of the ledger's own two columns, `month over mont
 month`, where the column labels show two months in a row, or a month the prior column's label names
 (`over May` on a ledger headed `May 2026 / June 2026`).
 
-**What is left is read against the risk lexicon.** Twenty-six entries, about 1,530 alternatives when
+**What is left is read against the risk lexicon.** Twenty-seven entries, about 1,560 alternatives when
 the alternatives each pattern allows are counted; the size entries repeat the adjective and
 movement-noun lists they attach to one another, so their share of that count is larger than their
 vocabulary. A **strong** entry holds the sentence wherever it stands. A **weak** entry holds it only
@@ -343,9 +343,13 @@ bracket), unless the reason points straight back at the line (`because it`, `as 
 `on the decrease in Insurance expense`, which points at another line). The direction check reads the
 same boundary, so a word inside a reason is left to the reason by both. A reason is already a
 question for a person, so a word that only
-describes the cause stays with that question: `rose $30,000 on strong demand` clears. A word that
-sizes a movement does not get that pass, because the size is a claim of its own: `rose $30,000 on
-sharply higher rates` and `rose $30,000 because volumes rose sharply` are held.
+describes the cause stays with that question: `rose $30,000 on strong demand` clears. Two kinds of
+word do not get that pass, because each is a claim of its own. A word that **sizes** a movement:
+`rose $30,000 on sharply higher rates` and `rose $30,000 because volumes rose sharply` are held. And
+a word that says **how much of the movement** the sentence explains: `rose $30,000 mostly on the new
+lease`, `partly on the new lease` and `on the new lease, which explains most of the increase` are
+held too. A share of something that is not the movement, `all of the partners`, `a share of the new
+lease costs`, `fully loaded rent`, stays with the reason and clears.
 
 | Class | Strength | What it catches, with examples |
 | --- | --- | --- |
@@ -364,10 +368,12 @@ sharply higher rates` and `rose $30,000 because volumes rose sharply` are held.
 | Change | weak | a change verb the direction check does not test and that gives no size: `sank`, `contracted`, `shrank`, `dwindled`, `rebounded`, `recovered`, `reversed`, `swung`, `moved`, `shifted`, `fluctuated`, `varied`, `widened`, `narrowed`, `improved`, `worsened`, `peaked`, `ramped`, `slowed`, `trended`, `changed`, `followed` |
 | Size | strong | an adverb of degree: `sharply`, `significantly`, `substantially`, `materially`, `markedly`, `dramatically`, `considerably`, `modestly`, `slightly`, `marginally`, `moderately`, `steeply`, `strongly`, `heavily`, `greatly`, `rapidly`, `gradually`, `somewhat` and kin; a degree word on a comparative: `much higher`, `far lower`, `well above`, `a bit more`; a movement verb or noun that carries its own size: `soared`, `skyrocketed`, `spiked`, `surged`, `jumped`, `leapt`, `ballooned`, `plunged`, `plummeted`, `tumbled`, `slumped`, `collapsed`, `dipped`, `eased`, `softened`, `slipped`, `ticked up`, `edged down`, `inched up`, `crept`, `a jump`, `a spike`, `an uptick`; and a size adjective standing on a movement, in front of the movement noun with at most two words between (`a significant increase`, `a sharp year-end rise`, `the sharpest rise`, `an outsized escalation`) or after it with `is`, `was`, `remained` or the like between (`the change was small`, `the increase in rates was material`) |
 | Size | weak | the same adjectives where they size something that is not a movement: `a large new office`, `strong demand`, `a major client` |
-| Share and quantity | weak | `mostly`, `mainly`, `primarily`, `partly`, `entirely`, `wholly`, `fully`, `solely`, `in part`, `bulk`, `majority`, `portion`, `share`, `offset`, `net of`, `several`, `many`, `much`, `numerous`, `multiple`, `few`, `more`, `less`, `dozens`, `hundreds`, `thousands`, `various`, `additional`, `incremental`, `excess`, `shortfall`, `gap`, `difference`, `delta`, `spread`, `margin`, `ratio`, `rate`, `proportion` |
+| Share of the movement | strong | a word that says how much of the movement the sentence explains: `mostly`, `mainly`, `primarily`, `principally`, `chiefly`, `predominantly`, `largely`, `broadly`, `partly`, `partially`, `entirely`, `wholly`, `solely`, `exclusively`, `virtually`, `essentially`, `practically`, `basically`, `in part`, `in large part`, `for the most part`, `on the whole`, `to some extent`, `more or less`, and `most of`, `much of`, `the bulk of`, `the majority of`, `a portion of` and kin where what follows is a movement or a figure (`most of the increase`, `the bulk of the $30,000`). A share of something else, `all of the partners`, is left alone |
+| Quantity | weak | what is left once the share words above are read: `fully`, `in full`, `share`, `offset`, `net of`, `several`, `many`, `much`, `numerous`, `multiple`, `few`, `more`, `less`, `dozens`, `hundreds`, `thousands`, `various`, `additional`, `incremental`, `excess`, `shortfall`, `gap`, `difference`, `delta`, `spread`, `margin`, `ratio`, `rate`, `proportion`, `fraction`, and `bulk`, `majority` or `portion` where what follows is not a movement |
 
-**Why a size word is held rather than tested.** The contract could define a threshold for
-"sharply" and test it; it does not, because nothing a close uses documents one. The commentary rule
+**Why a size word, or a share word, is held rather than tested.** The contract could define a
+threshold for "sharply", or a share for "mostly", and test it; it does not, because nothing a close
+uses documents either one. The commentary rule
 on this page decides whether a line owes an explanation, not whether a movement is sharp, and a
 threshold invented here would be a claim about the ledger that no controller made. So the word is
 named and a person reads it.
@@ -455,7 +461,7 @@ as one line with no header row unless the row says otherwise.**
 | `Rent expense rose $30,000 in Q2.`, on a ledger headed `Account / Q1 2026 / Q2 2026` | checked within scope |
 
 The lexicon is a fence, not a proof. A sentence that clears under it has had every word the grammar
-knows to be risky taken out or read; it has not been understood. The regression suite holds 336
+knows to be risky taken out or read; it has not been understood. The regression suite holds 356
 mutations of these classes, of the sentence boundaries and of the periods the labels bind, each class
 with inputs it must refuse and inputs it must accept, and a new way of writing a quantity is compared
 only once it is added there.
@@ -542,11 +548,11 @@ node tests/run-checker-tests.cjs T02      one fixture
 node tests/run-checker-tests.cjs --dump T02
 ```
 
-`tests/checker-fixtures.json` holds **724** fixtures and **all 724 pass**, and the suite adds two
+`tests/checker-fixtures.json` holds **744** fixtures and **all 744 pass**, and the suite adds two
 more checks: every reader function `assets/second-pass-core.js` shares with `checker.html` must be the
 same function, and every one-line constant they share and the clearance grammar's block must be the
 same text, so the author page and the checker cannot read one memo two ways. The same file sits in
-the second-pass repository, where `tests/test_parity_shared_inputs.py` runs all 724 inputs through
+the second-pass repository, where `tests/test_parity_shared_inputs.py` runs all 744 inputs through
 this page under Node and through the Python checker and compares the outputs, and a further test
 holds the risk lexicon identical in both, entry for entry, together with the period and quarter
 binding's patterns, the size lists, the sentence splitter's abbreviation and name lists, what the
@@ -623,13 +629,15 @@ where the claim ends and the reason begins in a set of sentences.
   8 accepted, 2 mixed), **BIND01 to BIND17** account names at the end or edge of a sentence (12
   refused, 4 accepted, 1 mixed), and **LEX01 to LEX21** every class of the lexicon one step past the
   words it lists (16 refused, 4 accepted, 1 mixed).
-- **Three checker residuals, 66 fixtures**, written later on 14 September 2026 for the three the
+- **Four checker residuals, 86 fixtures**, written later on 14 September 2026 for the four the
   lane above left open, each from both sides and each asserting the sentences as a person reads
   them: **REAS01 to REAS19** a direction word a reason governs, in a clause and after a preposition
   (10 refused, 7 accepted, 2 mixed), **NAME01 to NAME25** an abbreviation inside a name, `U.S.
   Treasury`, `J.P. Morgan`, `St. Louis`, `Co. Ltd.` (10 refused, 13 accepted, 2 mixed), and
   **QTR01 to QTR22** a quarter against the column labels, held on a monthly ledger and bound on a
-  quarterly one (14 refused, 7 accepted, 1 mixed). One expectation moved with them: **A086**, `Rent
+  quarterly one (14 refused, 7 accepted, 1 mixed), and **HEDGE01 to HEDGE20** a word that says how
+  much of the movement the sentence explains, in the claim and in a reason (13 refused, 5 accepted,
+  2 mixed). One expectation moved with them: **A086**, `Rent
   expense rose $30,000 quarter over quarter.`, from not checked to **needs review**, because the
   reader no longer takes `000 quarter` out of the figure as a fraction; the audit's basis for that
   probe is a period mismatch and it accepts either status.
@@ -647,7 +655,10 @@ driver because depreciation did not move. Halyard's queue grows from 14 to 17: t
 and the unresolved figure on card 14, and `eased` on card 3, a size verb in its reason, on a card
 that already failed. Ridgeline's T1, `on two new retainers that began in July`, is held because its
 ledger has no header row to bind July, and its queue grows from 3 to 4. Brightwater and Kestrel do not
-move, and neither does the Prompt 1 rerun, 14 of 17 checked within scope.
+move, and neither does the Prompt 1 rerun, 14 of 17 checked within scope. The checker residuals of the
+same day move no sample at all: Halyard stays at 3, 6, 0 and 3 with a queue of 17, and the other three
+are unchanged, because no sample sentence carries a quarter, an abbreviation inside a name, or a
+direction word a reason governs.
 
 ## What it does not do
 
@@ -669,9 +680,11 @@ move, and neither does the Prompt 1 rerun, 14 of 17 checked within scope.
   with May`, `year over year`, `against budget`, `quarter to date`, `run rate`, `so did Insurance
   expense` and `30,000 CR` are not worked out. The clearance grammar holds the sentence and names the
   word, and a person reads it.
-- **No threshold for a size word.** `sharply`, `slightly`, `surged`, `a significant increase` and
-  `the change was small` are not tested against anything, because nothing documents what they mean.
-  They hold the sentence wherever they stand, in a reason too.
+- **No threshold for a size word, and no share for a hedge.** `sharply`, `slightly`, `surged`, `a
+  significant increase` and `the change was small` are not tested against anything, because nothing
+  documents what they mean, and neither are `mostly`, `partly`, `largely` and `most of the increase`,
+  which say how much of the movement a sentence explains. They hold the sentence wherever they stand,
+  in a reason too.
 - **No period the column labels do not name.** A month, a date, a year, a quarter or `month over
   month` is never assumed to match the ledger. Where the labels do not bind it, the sentence is held;
   paste the header row that names the months, or the quarters, and the same sentence can clear. A
@@ -806,7 +819,7 @@ The **Samples** dropdown carries four cases, and each one loads both panes, the 
 thresholds and the close period, then runs.
 
 **Halyard and Brightwater are generated from the shared case definitions**, `cases/halyard-v4.json`
-and `cases/brightwater-v5.json`, which are the same files the game reads, so the checker and the
+and `cases/brightwater-v6.json`, which are the same files the game reads, so the checker and the
 game run the same ledger and the same memo version rather than two drifting copies of one case.
 The generated block sits in `checker.html` between `BUILD:CHECKER-CASES-START` and
 `BUILD:CHECKER-CASES-END`, and it is rewritten by:
@@ -889,9 +902,10 @@ transfer to the checker, and a status here is never evidence that a driver is su
 
 ## Brightwater Dental Partners, June 2026, the round two case
 
-**Brightwater Dental Partners** is generated from `cases/brightwater-v5.json`, the five-account,
+**Brightwater Dental Partners** is generated from `cases/brightwater-v6.json`, the five-account,
 five-sentence dental group the game scores a player on cold. The Memo version field carries
-`brightwater-v5 memo, 13 September 2026`. A plain tab separated ledger with a two column header,
+`brightwater-v6 memo, 13 September 2026`. v6 rewrote the evidence and the reveals on the cards and
+left the ledger and every memo sentence as v5 wrote them, so nothing in this run moves with it. A plain tab separated ledger with a two column header,
 `Account / May 2026 / June 2026`, read chronologically. Thresholds $25,000 and 10 percent, both
 legs, no ratios.
 
