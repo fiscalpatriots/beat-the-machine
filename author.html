@@ -103,7 +103,16 @@
 .kfield textarea{min-height:84px}
 .kfield .seg{width:100%}
 .kfield .seg button{flex:1 1 0;min-width:0}
+.kfield .seg button{white-space:normal;line-height:1.25}
 .kmiss{margin:var(--s3) 0 0;font-size:var(--t-small);line-height:1.5;color:var(--red);font-weight:600}
+.khead .status{margin-left:auto}
+/* a line whose figures or checker status moved on a new read waits here for the author */
+.recon{margin:0 0 var(--s4);padding:var(--s3) var(--s4);border-left:2px solid var(--red)}
+.recon .kmiss{margin:0 0 var(--s3)}
+.itemshead{margin:var(--s6) 0 var(--s2)}
+.kcard>.kfield+.kfield{margin-top:var(--s4)}
+.setgrid .f.wide{grid-column:1/-1}
+#stale,#savegate{margin:var(--s3) 0 0}
 .suggest{font-size:var(--t-label);font-weight:700;text-transform:uppercase;letter-spacing:.07em;
   color:var(--ink-soft);margin-left:var(--s2)}
 
@@ -141,12 +150,14 @@ details.more>div{padding:0 var(--s5) var(--s5)}
 
   <div class="band">
     <h1>Build a drill from your own ledger</h1>
-    <p class="promise">Paste a close ledger and the memo somebody drafted about it. The four
-    mechanical checks read it the way the checker does, then you key each line: the call, the
-    error type, the basis, and the two lines a player reads when the answer comes back.</p>
+    <p class="promise">Paste a close ledger and the memo somebody drafted about it. The page reads
+    both with the checker's own reader and gives every sentence one of the checker's four statuses.
+    A sentence the checker would hold for review is held here too, with no call suggested. Then you
+    key each line: the call, the error type, the basis, and the two lines a player reads when the
+    answer comes back.</p>
     <ol class="steps3">
       <li><span class="disc">1</span><b>Paste</b><span class="t">A ledger and the memo, in the shapes the checker takes.</span></li>
-      <li><span class="disc">2</span><b>Key each line</b><span class="t">The checks suggest; you decide and write the reason.</span></li>
+      <li><span class="disc">2</span><b>Key each line</b><span class="t">The checks suggest a call only where they settled the sentence; you decide and write the reason.</span></li>
       <li><span class="disc">3</span><b>Save</b><span class="t">A JSON file, and a copy this browser hands the drill.</span></li>
     </ol>
   </div>
@@ -196,6 +207,17 @@ details.more>div{padding:0 var(--s5) var(--s5)}
           <button type="button" data-v="exclude" aria-pressed="false">Excluded</button>
         </div>
       </div>
+      <div class="f wide">
+        <span class="lab" id="originlab">Where the figures come from</span>
+        <div class="seg" id="originseg" role="group" aria-labelledby="originlab">
+          <button type="button" data-v="synthetic" aria-pressed="false">Made up for this drill</button>
+          <button type="button" data-v="permitted" aria-pressed="false">A real close, used with permission</button>
+        </div>
+      </div>
+      <div class="f wide" id="permf" hidden>
+        <label for="cperm">Who gave permission, and for what use</label>
+        <input type="text" id="cperm" placeholder="The controller, for classroom use with names removed" autocomplete="off">
+      </div>
     </div>
   </div>
 
@@ -219,8 +241,10 @@ details.more>div{padding:0 var(--s5) var(--s5)}
         </div>
         <textarea id="memo" class="prose" spellcheck="false" placeholder="1. Subcontracted engineering fell $46,500 to $88,300 as the cutover was staffed through two partner firms.&#10;2. Salaries and wages held flat at $88,500."></textarea>
         <p class="hint">Free text. A line starting <b>S1.</b>, <b>1.</b> or <b>(a)</b> is kept whole;
-        anything else is split into sentences. One card comes back per sentence, and one more for
-        every account that clears the rule with nothing written about it.</p>
+        anything else is split into sentences. Every sentence comes back: a card for each one that
+        binds to a ledger line, and an open item for each one that binds to none, which you leave out
+        with a reason or rewrite and read again. One more card comes back for every account that
+        clears the rule with nothing written about it.</p>
       </div>
     </div>
     <div class="runrow">
@@ -228,6 +252,7 @@ details.more>div{padding:0 var(--s5) var(--s5)}
       <button class="btn secondary" id="clear">Clear</button>
     </div>
     <div id="msg" role="status" aria-live="polite"></div>
+    <div id="stale" role="status" aria-live="polite"></div>
   </div>
 
   <div id="readout" class="section hidden">
@@ -238,8 +263,12 @@ details.more>div{padding:0 var(--s5) var(--s5)}
 
   <div id="cardsec" class="section hidden">
     <h2>Key each line</h2>
-    <p class="sub">The checks fill in a suggestion where they found something. A suggestion is not
-    the key: confirm it or change it, and write the two lines in your own words.</p>
+    <p class="sub">Each card carries the status the checker gives its sentence. A card suggests a stand
+    only where every check it ran was checked within scope, and a flag only where a check failed. A
+    sentence held for review or not checked comes with no suggestion, and the call is yours. A
+    suggestion is not the key either: confirm it or change it, and write the two lines in your own
+    words.</p>
+    <div id="items"></div>
     <div id="cards"></div>
   </div>
 
@@ -285,6 +314,7 @@ details.more>div{padding:0 var(--s5) var(--s5)}
         <button class="btn secondary" id="fread">Read the fresh set</button>
       </div>
       <div id="fmsg" role="status" aria-live="polite"></div>
+      <div id="fitems"></div>
       <div id="fcards"></div>
     </div>
   </details>
@@ -293,12 +323,15 @@ details.more>div{padding:0 var(--s5) var(--s5)}
     <h2>Save it</h2>
     <p class="sub">Saving writes the case into this browser under the key the drill reads for
     <b>My own case</b>, and downloads the same JSON so the case can be committed to
-    <code>cases/</code> or handed to somebody else.</p>
+    <code>cases/</code> or handed to somebody else. The file carries the ledger figures the cards
+    were read from and a version stamp of the exact inputs and threshold that read took. Change any of
+    them after Read it and saving stays off until the case is read again.</p>
     <div class="actionbar">
       <button class="btn" id="save">Save the case</button>
       <button class="btn secondary" id="preview" disabled>Preview in the drill</button>
       <button class="btn secondary" id="forget" hidden>Forget the saved case</button>
     </div>
+    <div id="savegate" role="status" aria-live="polite"></div>
     <div id="saybox" role="status" aria-live="polite"></div>
   </div>
 
@@ -326,7 +359,7 @@ function core(){
   return C;
 }
 var OWN_KEY = "btm.owncase.v1";
-var AUTHOR_VERSION = "second-pass-author 1.0.0";
+var AUTHOR_VERSION = "second-pass-author 1.1.0";
 
 function $(id){ return document.getElementById(id); }
 function esc(s){ return String(s == null ? "" : s)
@@ -336,6 +369,11 @@ function say(box, cls, html){
   var b = $(box);
   b.innerHTML = html ? '<p class="status ' + cls + ' inline">' + html + '</p>' : "";
 }
+function cap(t){ t = String(t); return t.charAt(0).toUpperCase() + t.slice(1); }
+function dot(t){ t = cap(t); return /[.!?]$/.test(t) ? t : t + "."; }
+function norm(t){ return String(t).replace(/\s+/g, " ").trim().toLowerCase(); }
+function plural(n, one, many){ return n + " " + (n === 1 ? one : (many || one + "s")); }
+function acctKey(a){ return a.num || ("row " + a.row); }
 
 /* ---------- the vocabulary the drill already speaks ----------
    These five lists have to stay identical to the ones in index.html. A type or a chip
@@ -347,6 +385,9 @@ var BASIS_FLAG = ["figure does not tie", "direction wrong", "no source on file",
 var BASIS_HOLD = "the figure and reason hold";
 var ICONS = ["coins","truck","wrench","calendar","people","fuel","chip","alert","scales","bank",
              "box","brief","robot","badge","glass","flag","ledger"];
+
+/* the checker's four statuses and the word style each one wears */
+var BADGE = {"checked within scope":"pass", "not checked":"info", "needs review":"review", "failed":"fail"};
 
 /* ---------- the segmented controls ---------- */
 function segValue(id){
@@ -363,9 +404,10 @@ function wireSeg(box, onPick){
     });
   });
 }
-wireSeg($("ruleseg"));
-wireSeg($("zeroseg"));
-wireSeg($("fmodeseg"));
+wireSeg($("ruleseg"), function(){ refreshGate(); });
+wireSeg($("zeroseg"), function(){ refreshGate(); });
+wireSeg($("fmodeseg"), function(){ markDirty(); });
+wireSeg($("originseg"), function(v){ $("permf").hidden = v !== "permitted"; markDirty(); });
 
 /* ---------- the character counters ---------- */
 function count(from, to){
@@ -377,13 +419,134 @@ count("ledger","ledcc"); count("memo","memcc");
 count("fledger","fledcc"); count("fmemo","fmemcc");
 
 /* =============================================================================
-   The four mechanical checks.
+   What a read was taken from.
 
-   This is the checker's own orchestration, reduced to what an author needs: what
-   every figure ties to, what every direction word says against the sign, which
-   accounts clear the rule, and which of those nobody wrote about. The reading
-   itself is done by assets/second-pass-core.js, which is the checker's reader.
+   A read is stamped with every input that can change what it finds: the ledger, the
+   memo and the four threshold settings. A save is refused while what is on screen no
+   longer matches the stamp, so a file can never carry figures the page is not showing.
    ============================================================================= */
+function policyNow(){
+  return {dollar:Number($("dollar").value) || 0, pct:Number($("pct").value) || 0,
+          rule:segValue("ruleseg"), zero:segValue("zeroseg")};
+}
+function policySig(){
+  var p = policyNow();
+  return ["dollar", p.dollar, "pct", p.pct, "rule", p.rule, "zero", p.zero].join("\u0001");
+}
+function sigOf(led, memo){
+  return ["ledger", led, "memo", memo, policySig()].join("\u0002");
+}
+
+/* =============================================================================
+   The four mechanical checks, and the status each sentence ends on.
+
+   The reading is done by assets/second-pass-core.js, the checker's reader. foldSentence
+   below is the sentence half of the checker's run(), step for step and in the same order:
+   binding conflicts, duplicate account numbers, unconfirmed columns, spans the grammar does
+   not read, every figure with the multi-account and negation holds, direction, threshold
+   claims, and the last rule that a sentence with nothing tested is not checked. A status only
+   ever moves toward failed, so nothing later on this page can turn a held sentence into a
+   clean one.
+   ============================================================================= */
+function foldSentence(s, L, floorD, floorP, zp){
+  var C = core(), worse = C.worse;
+  s.st = s.bound.length ? (s.figs.length ? "checked within scope" : "not checked") : "not checked";
+  s.held = []; s.badFigs = []; s.okFigs = 0;
+
+  if(!s.bound.length) s.held.push("Nothing in this sentence binds it to a ledger line, so none of it was checked.");
+  if(s.conflicts.length){
+    s.st = worse(s.st, "needs review");
+    s.conflicts.forEach(function(c){
+      s.held.push(c.f.raw + " is also exactly a figure on " + C.acctId(c.a) +
+        ", which this sentence does not name, so the binding is unresolved.");
+    });
+  }
+  var dupHit = s.bound.filter(function(a){ return a.num && L.dups.indexOf(a.num) > -1; });
+  if(dupHit.length){
+    s.st = worse(s.st, "needs review");
+    s.held.push("Account " + dupHit[0].num + " appears on more than one row, so this sentence cannot be tied to one line.");
+  }
+  if(L.colsUnconfirmed){
+    s.st = worse(s.st, "needs review");
+    s.held.push("The ledger carries " + L.T + " numeric columns with no header row naming them, so which two are " +
+      "prior and current is unconfirmed.");
+  }
+  s.residue.forEach(function(r){
+    s.st = worse(s.st, "not checked");
+    s.held.push("“" + r.raw + "” is " + r.why + ", so the checker did not read it and this sentence is not checked.");
+  });
+
+  var negs = [];
+  C.spansOf(s.text, C.RE_COARSE).forEach(function(c){
+    var n = C.claimIn(c.text) ? C.negationIn(c.text) : null;
+    if(n) negs.push({at:c.at, end:c.end, w:n});
+  });
+  function negOf(at){
+    var hit = null;
+    negs.forEach(function(n){ if(at >= n.at && at < n.end) hit = n.w; });
+    return hit;
+  }
+
+  s.figs.forEach(function(f){
+    var res, bset = (s.multi && f.bind) ? f.bind : s.bound;
+    if(!s.bound.length){
+      res = {st:"review", txt:f.raw + ": no account is bound, so there is nothing to compare it with."};
+    } else if(f.unit === "dollars"){
+      res = C.checkDollar(f, bset, s.bound);
+    } else {
+      res = C.checkPercent(f, bset, [], C.zeroPolicyText(zp));
+    }
+    if(s.multi && !f.bind && res.st === "checked" && res.via !== "ratio"){
+      res = {st:"review", txt:f.raw + ": this sentence names " + s.bound.length + " accounts (" +
+        s.bound.map(function(a){ return C.acctId(a); }).join("; ") +
+        ") and the clause it stands in binds it to none of them on its own."};
+    }
+    var nw = negOf(f.at);
+    if(nw && res.st !== "review"){
+      res = {st:"review", txt:f.raw + " stands in a clause the words negate (“" + nw + "”). " + res.txt +
+        " A negation is not read as the claim without it and not as its opposite, so this figure is left open."};
+    }
+    var st = res.st === "checked" ? "checked within scope" : (res.st === "failed" ? "failed" : "needs review");
+    s.st = worse(s.st, st);
+    if(st === "failed") s.badFigs.push(res.txt);
+    else if(st === "needs review") s.held.push(res.txt);
+    else s.okFigs++;
+  });
+
+  var dir = C.directionOn(s);
+  s.badDir = dir ? dir.bad : []; s.voidDir = dir ? dir.voided : []; s.goodDir = dir ? dir.good : [];
+  if(s.badDir.length) s.st = worse(s.st, "failed");
+  if(s.voidDir.length){
+    s.st = worse(s.st, "needs review");
+    s.voidDir.forEach(function(t){ s.held.push(dot(t)); });
+  }
+
+  var pc = C.policyClaims(s.text);
+  s.badPolicy = []; s.goodPolicy = []; s.claims = pc.length;
+  if(pc.length && s.bound.length){
+    var a0 = s.bound[0];
+    pc.forEach(function(p){
+      if(p.leg === "both"){
+        if(!a0.legs.d && !a0.legs.p) s.goodPolicy.push("neither leg is met on " + C.acctId(a0));
+        else s.badPolicy.push("the memo says neither leg is met, but on " + C.acctId(a0) + " the " +
+          (a0.legs.d ? "dollar" : "percent") + " leg is met");
+      } else if(p.leg === "dollar"){
+        if(!a0.legs.d) s.goodPolicy.push("the dollar leg is not met on " + C.acctId(a0));
+        else s.badPolicy.push("the memo says the dollar leg fails, but " + money(a0.change) + " is more than " + money(floorD));
+      } else if(p.leg === "percent"){
+        if(!a0.legs.p) s.goodPolicy.push("the percent leg is not met on " + C.acctId(a0));
+        else s.badPolicy.push("the memo says the percent leg fails, but " + C.pctCell(a0) + " is at least " + floorP + " percent");
+      } else if(p.owes === false){
+        if(!a0.clears) s.goodPolicy.push("no commentary is owed on " + C.acctId(a0) + " under the rule as set");
+        else s.badPolicy.push("the memo says no commentary is owed, but " + C.acctId(a0) + " clears the rule");
+      }
+    });
+    if(s.badPolicy.length) s.st = worse(s.st, "failed");
+    if(s.st === "not checked" && !s.badPolicy.length) s.st = "checked within scope";
+  }
+  if(s.st === "checked within scope" && !s.figs.length && !pc.length) s.st = "not checked";
+}
+
 function readSet(ledText, memoText, floorD, floorP, rule, zp){
   var C = core();
   if(!C) return {error:"The ledger reader did not load. Reload the page."};
@@ -415,50 +578,11 @@ function readSet(ledText, memoText, floorD, floorP, rule, zp){
     });
     var b = C.bindSentence(s, L.accounts, s.figs, spent);
     s.bound = b.bound;
+    s.conflicts = b.conflicts || [];
     s.multi = s.bound.length > 1;
     if(s.multi) C.clauseBind(s);
     s.bound.forEach(function(a){ a.sent.push(s); });
-
-    /* check 1, arithmetic: every figure recomputed against the line it binds */
-    s.badFigs = []; s.okFigs = 0;
-    s.figs.forEach(function(f){
-      if(!s.bound.length) return;
-      var bset = (s.multi && f.bind) ? f.bind : s.bound;
-      var res = (f.unit === "dollars")
-        ? C.checkDollar(f, bset, s.bound)
-        : C.checkPercent(f, bset, [], C.zeroPolicyText(zp));
-      if(res.st === "failed") s.badFigs.push(res.txt);
-      else if(res.st === "checked") s.okFigs++;
-    });
-
-    /* check 2, direction: every direction word against the sign of the movement */
-    var dir = C.directionOn(s);
-    s.badDir = (dir && dir.bad) ? dir.bad : [];
-
-    /* check 4 in part: a threshold claim the memo makes about its own line.
-       The four claim shapes are the checker's, read the same way run() reads them. */
-    s.badPolicy = [];
-    if(s.bound.length){
-      var a0 = s.bound[0];
-      C.policyClaims(s.text).forEach(function(p){
-        if(p.leg === "both"){
-          if(a0.legs.d || a0.legs.p)
-            s.badPolicy.push("the memo says neither leg is met, but on " + C.acctId(a0) + " the " +
-              (a0.legs.d ? "dollar" : "percent") + " leg is met");
-        } else if(p.leg === "dollar"){
-          if(a0.legs.d)
-            s.badPolicy.push("the memo says the dollar leg fails, but " +
-              money(Math.abs(a0.change)) + " is more than " + money(floorD));
-        } else if(p.leg === "percent"){
-          if(a0.legs.p)
-            s.badPolicy.push("the memo says the percent leg fails, but " + C.pctCell(a0) +
-              " is at least " + floorP + " percent");
-        } else if(p.owes === false){
-          if(a0.clears)
-            s.badPolicy.push("the memo says no commentary is owed, but " + C.acctId(a0) + " clears the rule");
-        }
-      });
-    }
+    foldSentence(s, L, floorD, floorP, zp);
   });
 
   /* check 3 and the rest of 4: every line that clears the rule with nothing written about it */
@@ -469,54 +593,66 @@ function readSet(ledText, memoText, floorD, floorP, rule, zp){
 }
 
 /* =============================================================================
-   One card per memo sentence, and one per silent line. The mechanical result
-   arrives as a suggestion; the author confirms it or changes it.
+   One card per sentence that binds a ledger line, one open item per sentence that binds
+   none, and one card per silent line. The checker's status arrives with each; a call is
+   suggested only where the status settles one.
    ============================================================================= */
-function suggestFor(s, silentAcct){
+function suggestFor(s, silentAcct, rule){
   if(silentAcct){
-    return {call:"flag", type:"no explanation", basis:["nothing written where owed"],
-      why:"The line clears both legs of the rule, a change of " + money(silentAcct.change) +
-          " on a prior balance of " + money(silentAcct.prior) +
+    return {status:"failed", call:"flag", type:"no explanation", basis:["nothing written where owed"],
+      why:"The line clears the rule as set, " + (rule === "either" ? "either leg" : "both legs") + ", with a change of " +
+          money(silentAcct.change) + " on a prior balance of " + money(silentAcct.prior) +
           ", and no sentence in the memo explains it. Silence on a line that owes commentary is " +
           "itself the finding, and the ask is for what drove it.",
-      found:["Clears the rule and no sentence in the memo mentions it."]};
+      found:["Clears the rule and no sentence in the memo mentions it. The checker fails a silent line."]};
   }
-  var found = [], call = "stand", type = "clean line", basis = [BASIS_HOLD], why = "";
-  if(s.badFigs.length){
-    found = found.concat(s.badFigs);
-    call = "flag"; type = "arithmetic"; basis = ["figure does not tie"];
-    why = s.badFigs.join(" ");
-  }
-  if(s.badDir.length){
-    found = found.concat(s.badDir.map(function(t){ return t.charAt(0).toUpperCase() + t.slice(1) + "."; }));
+  var found = [], call = "", type = "", basis = [], why = [];
+  if(s.st === "failed"){
     call = "flag";
-    if(type === "clean line" || type === "arithmetic"){
-      if(!s.badFigs.length) type = "wrong direction";
-      basis = s.badFigs.length ? ["figure does not tie","direction wrong"] : ["direction wrong"];
+    if(s.badFigs.length){
+      found = found.concat(s.badFigs.map(dot));
+      type = "arithmetic"; basis = ["figure does not tie"];
+      why = why.concat(s.badFigs.map(dot));
     }
-    why = (why ? why + " " : "") + s.badDir.map(function(t){
-      return t.charAt(0).toUpperCase() + t.slice(1) + ".";
-    }).join(" ");
+    if(s.badDir.length){
+      found = found.concat(s.badDir.map(dot));
+      if(!type) type = "wrong direction";
+      basis.push("direction wrong");
+      why = why.concat(s.badDir.map(dot));
+    }
+    if(s.badPolicy.length){
+      found = found.concat(s.badPolicy.map(dot));
+      if(!type) type = "arithmetic";
+      if(basis.indexOf("figure does not tie") < 0) basis.push("figure does not tie");
+      why = why.concat(s.badPolicy.map(dot));
+    }
+    found = found.concat(s.held.map(dot));
+  } else if(s.st === "checked within scope"){
+    call = "stand"; type = "clean line"; basis = [BASIS_HOLD];
+    if(s.okFigs) found.push(s.okFigs === 1
+      ? "The one figure in this sentence was checked within scope against the line it binds."
+      : "All " + s.okFigs + " figures in this sentence were checked within scope against the line they bind.");
+    if(s.goodDir.length) found.push("Its direction agrees with the sign of the movement.");
+    else if(s.okFigs) found.push("It states no direction, so no direction was tested.");
+    if(s.goodPolicy.length) found.push("Its threshold claim is right under the rule as set.");
+    found.push("Whether the cause it names is supported is not something these checks test.");
+    why = [s.okFigs
+      ? (s.goodDir.length ? "The figures tie and the direction is right, so the arithmetic is not what fails here."
+                          : "The figures tie, so the arithmetic is not what fails here.")
+      : "The threshold claim holds under the rule as set."];
+  } else {
+    found.push(s.st === "needs review"
+      ? "The checker holds this sentence for review, so no call is suggested."
+      : "The checker did not check this sentence, so no call is suggested.");
+    found = found.concat(s.held.map(dot));
+    if(s.st === "not checked" && s.bound.length && !s.figs.length && !s.residue.length)
+      found.push("It carries no figure and makes no threshold claim, so nothing in it was tested against the ledger.");
   }
-  if(s.badPolicy.length){
-    found = found.concat(s.badPolicy.map(function(t){ return t.charAt(0).toUpperCase() + t.slice(1) + "."; }));
-    call = "flag";
-    if(type === "clean line") type = "arithmetic";
-    if(basis.indexOf("figure does not tie") < 0) basis = basis.filter(function(b){ return b !== BASIS_HOLD; }).concat(["figure does not tie"]);
-    why = (why ? why + " " : "") + s.badPolicy.map(function(t){
-      return t.charAt(0).toUpperCase() + t.slice(1) + ".";
-    }).join(" ");
+  if(s.bound.length > 1){
+    found.push("This sentence also binds " + s.bound.slice(1).map(function(a){ return core().acctId(a); }).join("; ") +
+      ". Its card keys it against " + core().acctId(s.bound[0]) + ".");
   }
-  if(!found.length){
-    found.push(s.bound.length
-      ? (s.okFigs ? "Every figure in this sentence ties, and every direction word agrees with the sign."
-                  : "Nothing numeric to recompute. The checks have nothing to say about this sentence.")
-      : "Nothing in this sentence binds it to a ledger line, so none of it was checked.");
-    why = s.bound.length && s.okFigs
-      ? "The figures tie and the direction is right, so the arithmetic is not what fails here."
-      : "";
-  }
-  return {call:call, type:type, basis:basis, why:why, found:found};
+  return {status:s.st, call:call, type:type, basis:basis, why:why.join(" "), found:found};
 }
 
 function cardModel(n, acct, name, prior, current, memo, sug){
@@ -524,28 +660,76 @@ function cardModel(n, acct, name, prior, current, memo, sug){
     n:n, icon:ICONS[(n - 1) % ICONS.length], acct:acct, name:name,
     prior:prior, current:current, memo:memo,
     file:[], key:sug.call, type:sug.type, basis:sug.basis.slice(),
-    why:sug.why, tell:"", found:sug.found
+    why:sug.why, tell:"", found:sug.found, status:sug.status,
+    sug:{call:sug.call, type:sug.type},
+    ident:(memo ? "s|" + norm(memo) : "silent") + "|" + acct,
+    touched:false, reconcile:"", confirmed:true
   };
 }
 
 function buildCards(R, thresholdLine){
-  var out = [], n = 0, used = {};
+  var cards = [], items = [], n = 0;
   R.sents.forEach(function(s){
-    if(!s.bound.length) return;           /* nothing to key: it binds to no ledger line */
+    if(!s.bound.length){
+      items.push({label:s.label, text:s.text, status:s.st, held:s.held.map(dot),
+                  res:"open", reason:"", ident:"u|" + norm(s.text)});
+      return;
+    }
     var a = s.bound[0];
     n++;
-    var m = cardModel(n, a.num || ("row " + a.row), a.name, a.prior, a.cur, s.text, suggestFor(s, null));
+    var m = cardModel(n, acctKey(a), a.name, a.prior, a.cur, s.text, suggestFor(s, null, R.rule));
+    m.label = s.label;
     m.file = [thresholdLine];
-    out.push(m);
-    used[a.num || ("row " + a.row)] = 1;
+    cards.push(m);
   });
   R.silent.forEach(function(a){
     n++;
-    var m = cardModel(n, a.num || ("row " + a.row), a.name, a.prior, a.cur, "", suggestFor(null, a));
+    var m = cardModel(n, acctKey(a), a.name, a.prior, a.cur, "", suggestFor(null, a, R.rule));
+    m.label = null;
     m.file = ["Nothing was supplied about this account for either period.", thresholdLine];
-    out.push(m);
+    cards.push(m);
   });
-  return out;
+  return {cards:cards, items:items};
+}
+
+/* A new read of inputs that changed keeps the author's own work where the line is still
+   there, and marks every line whose figures, status or threshold moved. Those lines hold the
+   save until the author confirms the key against what the new read found. */
+function carry(prevCards, cards, prevItems, items, policyMoved, thOld, thNew){
+  var byId = {}, seen = {}, t = {same:0, changed:0, gone:0};
+  prevCards.forEach(function(c){ byId[c.ident] = c; });
+  cards.forEach(function(c){
+    var o = byId[c.ident];
+    if(!o) return;
+    seen[c.ident] = 1;
+    if(!o.touched && !o.reconcile) return;
+    var moved = [];
+    if(Math.abs(o.prior - c.prior) > 0.005 || Math.abs(o.current - c.current) > 0.005)
+      moved.push(c.acct + " read " + money(o.prior) + " to " + money(o.current) + " before and reads " +
+                 money(c.prior) + " to " + money(c.current) + " now");
+    if(o.status !== c.status) moved.push("the checker said " + o.status + " and now says " + c.status);
+    if(policyMoved) moved.push("the threshold changed");
+    c.key = o.key; c.type = o.type; c.basis = o.basis.slice();
+    c.why = o.why; c.tell = o.tell;
+    c.file = o.file.map(function(x){ return x === thOld ? thNew : x; });
+    c.touched = true;
+    if(moved.length || (o.reconcile && !o.confirmed)){
+      c.reconcile = "Changed on this read: " + (moved.length ? moved.join("; ") : "the last change was never confirmed") +
+        ". Your call, type, basis and lines are carried over from before. Check them against what the checks found now, then confirm.";
+      c.confirmed = false;
+      t.changed++;
+    } else {
+      t.same++;
+    }
+  });
+  prevCards.forEach(function(o){ if((o.touched || o.reconcile) && !seen[o.ident]) t.gone++; });
+  var itemsById = {};
+  prevItems.forEach(function(i){ itemsById[i.ident] = i; });
+  items.forEach(function(i){
+    var o = itemsById[i.ident];
+    if(o){ i.res = o.res; i.reason = o.reason; }
+  });
+  return t;
 }
 
 /* ---------- the card, drawn ---------- */
@@ -557,33 +741,43 @@ function chipRow(id, card){
       '" aria-pressed="' + (on ? "true" : "false") + '">' + esc(t) + '</button>';
   }).join("") + '</div>';
 }
+function statusWord(st){
+  return '<span class="status ' + (BADGE[st] || "info") + ' inline">' + esc(st) + '</span>';
+}
 
 function drawCard(card, prefix){
   var id = prefix + card.n;
   var pct = card.prior ? ((card.current - card.prior) / card.prior * 100).toFixed(1) + "%" : "new line";
   return '<section class="kcard" id="' + id + '">' +
     '<div class="khead"><span class="no">Line ' + card.n + '</span>' +
-      '<b>' + esc(card.acct) + ' ' + esc(card.name) + '</b></div>' +
+      '<b>' + esc(card.acct) + ' ' + esc(card.name) + '</b>' + statusWord(card.status) + '</div>' +
     '<p class="kfig">' + money(card.prior) + ' to ' + money(card.current) + ', a change of ' +
       money(card.current - card.prior) + ', ' + pct + '</p>' +
     (card.memo
       ? '<p class="kquote">' + esc(card.memo) + '</p>'
       : '<p class="kquote silent">Nothing. This account is not mentioned anywhere in the commentary.</p>') +
+    (card.reconcile
+      ? '<div class="recon" id="' + id + '-rec"' + (card.confirmed ? " hidden" : "") + '>' +
+          '<p class="kmiss">' + esc(card.reconcile) + '</p>' +
+          '<button type="button" class="btn secondary" id="' + id + '-confirm">The key holds on this read</button></div>'
+      : '') +
     '<div class="kfound"><span class="label">What the checks found</span><ul>' +
       card.found.map(function(t){ return '<li>' + esc(t) + '</li>'; }).join("") +
     '</ul></div>' +
     '<div class="kgrid">' +
       '<div class="kfield"><span class="lab" id="' + id + '-clab">The call' +
-        '<span class="suggest">suggested: ' + (card.key === "flag" ? "flag" : "stand") + '</span></span>' +
+        '<span class="suggest">suggested: ' + (card.sug.call || "none, the call is yours") + '</span></span>' +
         '<div class="seg" id="' + id + '-call" role="group" aria-labelledby="' + id + '-clab">' +
           '<button type="button" data-v="stand" aria-pressed="' + (card.key === "stand") + '">Let it stand</button>' +
           '<button type="button" data-v="flag" aria-pressed="' + (card.key === "flag") + '">Flag it</button>' +
         '</div></div>' +
       '<div class="kfield"><label for="' + id + '-type">Error type' +
-        '<span class="suggest">suggested: ' + esc(card.type) + '</span></label>' +
-        '<select id="' + id + '-type">' + TYPES.map(function(t){
-          return '<option value="' + esc(t) + '"' + (t === card.type ? " selected" : "") + '>' + esc(t) + '</option>';
-        }).join("") + '</select></div>' +
+        '<span class="suggest">suggested: ' + esc(card.sug.type || "none") + '</span></label>' +
+        '<select id="' + id + '-type">' +
+          '<option value=""' + (card.type ? "" : " selected") + '>Choose a type</option>' +
+          TYPES.map(function(t){
+            return '<option value="' + esc(t) + '"' + (t === card.type ? " selected" : "") + '>' + esc(t) + '</option>';
+          }).join("") + '</select></div>' +
     '</div>' +
     '<div class="kfield"><span class="lab">The basis, at least one chip</span>' +
       chipRow(id + "-basis", card) + '</div>' +
@@ -601,8 +795,9 @@ function drawCard(card, prefix){
 
 function wireCard(card, prefix){
   var id = prefix + card.n;
-  wireSeg($(id + "-call"), function(v){ card.key = v; });
-  $(id + "-type").addEventListener("change", function(){ card.type = this.value; });
+  function touch(){ card.touched = true; markDirty(); }
+  wireSeg($(id + "-call"), function(v){ card.key = v; touch(); });
+  $(id + "-type").addEventListener("change", function(){ card.type = this.value; touch(); });
   var all = [BASIS_HOLD].concat(BASIS_FLAG);
   Array.prototype.forEach.call($(id + "-basis").querySelectorAll(".chip"), function(b){
     b.addEventListener("click", function(){
@@ -610,20 +805,62 @@ function wireCard(card, prefix){
       if(at > -1) card.basis.splice(at, 1); else card.basis.push(t);
       b.classList.toggle("on", at < 0);
       b.setAttribute("aria-pressed", at < 0 ? "true" : "false");
+      touch();
     });
   });
-  $(id + "-why").addEventListener("input", function(){ card.why = this.value.trim(); });
-  $(id + "-tell").addEventListener("input", function(){ card.tell = this.value.trim(); });
+  $(id + "-why").addEventListener("input", function(){ card.why = this.value.trim(); touch(); });
+  $(id + "-tell").addEventListener("input", function(){ card.tell = this.value.trim(); touch(); });
   $(id + "-file").addEventListener("input", function(){
     card.file = this.value.split(/\r?\n/).map(function(t){ return t.trim(); })
       .filter(function(t){ return t.length; });
+    touch();
   });
+  var ok = $(id + "-confirm");
+  if(ok) ok.addEventListener("click", function(){
+    card.confirmed = true;
+    $(id + "-rec").hidden = true;
+    markDirty();
+  });
+}
+
+/* ---------- a sentence no ledger line binds: kept, and settled by the author ---------- */
+function drawItem(item, prefix, ix){
+  var id = prefix + "u" + ix;
+  return '<section class="kcard" id="' + id + '">' +
+    '<div class="khead"><span class="no">Sentence ' + esc(item.label) + '</span><b>No ledger line</b>' +
+      statusWord(item.status) + '</div>' +
+    '<p class="kquote">' + esc(item.text) + '</p>' +
+    '<div class="kfound"><span class="label">What the checks found</span><ul>' +
+      item.held.map(function(t){ return '<li>' + esc(t) + '</li>'; }).join("") + '</ul></div>' +
+    '<div class="kfield"><span class="lab" id="' + id + '-rlab">What happens to it</span>' +
+      '<div class="seg" id="' + id + '-res" role="group" aria-labelledby="' + id + '-rlab">' +
+        '<button type="button" data-v="open" aria-pressed="' + (item.res !== "exclude") + '">Still open</button>' +
+        '<button type="button" data-v="exclude" aria-pressed="' + (item.res === "exclude") + '">Leave it out of the drill</button>' +
+      '</div></div>' +
+    '<div class="kfield" id="' + id + '-rf"' + (item.res === "exclude" ? "" : " hidden") + '>' +
+      '<label for="' + id + '-reason">Why it is left out, kept in the saved file</label>' +
+      '<textarea id="' + id + '-reason" class="prose" spellcheck="true">' + esc(item.reason) + '</textarea></div>' +
+    '<p class="hint">To key it instead, name the account in the sentence and press Read it again.</p>' +
+  '</section>';
+}
+function wireItem(item, prefix, ix){
+  var id = prefix + "u" + ix;
+  wireSeg($(id + "-res"), function(v){ item.res = v; $(id + "-rf").hidden = v !== "exclude"; markDirty(); });
+  $(id + "-reason").addEventListener("input", function(){ item.reason = this.value; markDirty(); });
+}
+function itemsBlock(items, prefix){
+  if(!items.length) return "";
+  return '<h3 class="itemshead">' + plural(items.length, "sentence") + ' no ledger line binds</h3>' +
+    '<p class="sub">Kept as open items. The case cannot be saved while one is still open: leave it out of the ' +
+    'drill with the reason written down, or name the account in the sentence and read again.</p>' +
+    items.map(function(it, ix){ return drawItem(it, prefix, ix + 1); }).join("");
 }
 
 /* =============================================================================
    Reading a set, and drawing what came back
    ============================================================================= */
-var SET1 = null, SET2 = null, CARDS1 = [], CARDS2 = [];
+var SET1 = null, SET2 = null, CARDS1 = [], CARDS2 = [], ITEMS1 = [], ITEMS2 = [];
+var DIRTY = false;
 
 function thresholdSentence(floorD, floorP, rule){
   return "A line owes commentary only when it clears " +
@@ -631,7 +868,7 @@ function thresholdSentence(floorD, floorP, rule){
 }
 
 function factsList(R){
-  var out = [];
+  var out = [], S = R.sents;
   out.push(R.L.accounts.length + " account rows read, " +
     R.L.accounts.filter(function(a){ return a.clears; }).length + " clearing the rule.");
   var bad = R.ties.filter(function(t){ return t.ok === false; });
@@ -639,54 +876,147 @@ function factsList(R){
     ? bad.length + " section total does not tie to the lines under it: " +
       bad.map(function(t){ return t.label; }).join(", ") + ". Check the paste before keying anything."
     : "Every section total ties to the lines under it.");
-  var figBad = 0, dirBad = 0, polBad = 0, unbound = 0;
-  R.sents.forEach(function(s){
-    figBad += s.badFigs.length; dirBad += s.badDir.length; polBad += s.badPolicy.length;
-    if(!s.bound.length) unbound++;
+  if(R.L.colsUnconfirmed) out.push("The ledger carries " + R.L.T + " numeric columns and no header row names them, " +
+    "so every sentence is held for review until the columns are named.");
+
+  var tally = {"checked within scope":0, "needs review":0, "not checked":0, "failed":0};
+  var figOk = 0, figHeld = 0, figBad = 0, noFig = 0, residue = 0;
+  var dirOk = 0, dirBad = 0, dirNeg = 0, dirNone = 0, unbound = 0, polBad = 0, polOk = 0;
+  S.forEach(function(s){
+    tally[s.st]++;
+    figOk += s.okFigs; figBad += s.badFigs.length;
+    figHeld += s.figs.length - s.okFigs - s.badFigs.length;
+    residue += s.residue.length;
+    if(!s.figs.length) noFig++;
+    if(!s.bound.length){ unbound++; return; }
+    if(s.badDir.length) dirBad++;
+    else if(s.voidDir.length) dirNeg++;
+    else if(s.goodDir.length) dirOk++;
+    else dirNone++;
+    polBad += s.badPolicy.length; polOk += s.goodPolicy.length;
   });
-  out.push(figBad ? figBad + " figure does not recompute against the line it binds." : "Every figure recomputes.");
-  out.push(dirBad ? dirBad + " direction word runs against the sign of the movement." : "Every direction word agrees with the sign.");
-  out.push(polBad ? polBad + " threshold claim in the memo is wrong." : "Every threshold claim in the memo is right.");
+  out.push(plural(S.length, "memo sentence") + " read: " + tally["checked within scope"] + " checked within scope, " +
+    tally["needs review"] + " " + (tally["needs review"] === 1 ? "needs" : "need") + " review, " +
+    tally["not checked"] + " not checked, " + tally["failed"] + " failed.");
+
+  function v(n, one, many){ return n + " " + (n === 1 ? one : many); }
+  /* a sentence of praise is printed only when it is true of every sentence in the memo */
+  var allChecked = S.length > 0 && tally["checked within scope"] === S.length;
+  if(allChecked && figOk && !figHeld && !figBad && !residue) out.push("Every figure recomputes.");
+  else out.push("Figures: " + v(figOk, "is", "are") + " checked within scope, " + v(figHeld, "is", "are") +
+    " held for review, " + v(figBad, "does", "do") + " not recompute" +
+    (residue ? ", and " + v(residue, "span is", "spans are") + " in a form the grammar does not read" : "") +
+    (noFig ? ". " + v(noFig, "sentence carries", "sentences carry") + " no figure the reader took" : "") + ".");
+  if(allChecked && dirOk === S.length) out.push("Every direction word agrees with the sign.");
+  else out.push("Direction, sentence by sentence: " + v(dirOk, "agrees", "agree") + " with the sign, " +
+    v(dirBad, "runs", "run") + " against it, " + v(dirNeg, "is", "are") + " negated and held for review, " +
+    v(dirNone, "states", "state") + " no direction" +
+    (unbound ? ", and " + v(unbound, "binds", "bind") + " no line, so its direction was not tested" : "") + ".");
+  out.push(polBad ? plural(polBad, "threshold claim") + " in the memo " + (polBad === 1 ? "is" : "are") + " wrong."
+    : (polOk ? "Every threshold claim the memo makes about a bound line is right." : "The memo makes no threshold claim the checks read."));
   out.push(R.silent.length
     ? R.silent.length + " line clears the rule with nothing written about it: " +
-      R.silent.map(function(a){ return (a.num || "row " + a.row) + " " + a.name; }).join(", ") + "."
+      R.silent.map(function(a){ return acctKey(a) + " " + a.name; }).join(", ") + "."
     : "No line clears the rule unexplained.");
-  if(unbound) out.push(unbound + " memo sentence binds to no ledger line and gets no card. Name the account in it and read again.");
+  if(unbound) out.push(plural(unbound, "memo sentence binds", "memo sentences bind") + " to no ledger line. " +
+    (unbound === 1 ? "It is" : "Each is") + " kept below as an open item that holds the save until it is left out " +
+    "with a reason or rewritten and read again.");
   return out;
 }
 
-function readMain(){
-  var floorD = Number($("dollar").value) || 0, floorP = Number($("pct").value) || 0;
-  var rule = segValue("ruleseg"), zp = segValue("zeroseg");
-  var R = readSet($("ledger").value, $("memo").value, floorD, floorP, rule, zp);
-  if(R.error){ say("msg", "fail", esc(R.error)); return; }
-  SET1 = R;
-  CARDS1 = buildCards(R, thresholdSentence(floorD, floorP, rule));
-  if(!CARDS1.length){
-    say("msg", "fail", "No sentence bound to a ledger line and no line was left silent, so there is nothing to key.");
+function readInto(which){
+  var main = which === 1;
+  var ledId = main ? "ledger" : "fledger", memId = main ? "memo" : "fmemo", msg = main ? "msg" : "fmsg";
+  var p = policyNow();
+  var R = readSet($(ledId).value, $(memId).value, p.dollar, p.pct, p.rule, p.zero);
+  if(R.error){ say(msg, "fail", esc(R.error)); refreshGate(); return; }
+  R.sig = sigOf($(ledId).value, $(memId).value);
+  R.version = core().srcVersion(R.sig);
+  R.readAt = new Date().toISOString();
+  R.policySig = policySig();
+  R.ledgerText = $(ledId).value;
+  R.memoText = $(memId).value;
+  R.threshold = thresholdSentence(p.dollar, p.pct, p.rule);
+  var built = buildCards(R, R.threshold);
+  if(!built.cards.length && !built.items.length){
+    say(msg, "fail", "The memo has no sentence and no line clears the rule, so there is nothing to key.");
+    refreshGate();
     return;
   }
-  say("msg", "pass", CARDS1.length + " line" + (CARDS1.length === 1 ? "" : "s") + " to key.");
-  $("readlead").textContent = "The reader took the ledger and the memo apart before anything is keyed by hand.";
-  $("facts").innerHTML = factsList(R).map(function(t){ return "<li>" + esc(t) + "</li>"; }).join("");
-  $("readout").classList.remove("hidden");
-  $("cards").innerHTML = CARDS1.map(function(c){ return drawCard(c, "k"); }).join("");
-  CARDS1.forEach(function(c){ wireCard(c, "k"); });
-  $("cardsec").classList.remove("hidden");
-}
+  var prev = main ? SET1 : SET2, t = null;
+  if(prev){
+    t = carry(main ? CARDS1 : CARDS2, built.cards, main ? ITEMS1 : ITEMS2, built.items,
+              prev.policySig !== R.policySig, prev.threshold, R.threshold);
+  }
+  if(main){ SET1 = R; CARDS1 = built.cards; ITEMS1 = built.items; }
+  else { SET2 = R; CARDS2 = built.cards; ITEMS2 = built.items; }
 
-function readFresh(){
-  var floorD = Number($("dollar").value) || 0, floorP = Number($("pct").value) || 0;
-  var rule = segValue("ruleseg"), zp = segValue("zeroseg");
-  var R = readSet($("fledger").value, $("fmemo").value, floorD, floorP, rule, zp);
-  if(R.error){ say("fmsg", "fail", esc(R.error)); return; }
-  SET2 = R;
-  CARDS2 = buildCards(R, thresholdSentence(floorD, floorP, rule));
-  if(!CARDS2.length){ say("fmsg", "fail", "Nothing to key in the fresh set."); return; }
-  say("fmsg", "pass", CARDS2.length + " fresh line" + (CARDS2.length === 1 ? "" : "s") + " to key.");
-  $("fcards").innerHTML = CARDS2.map(function(c){ return drawCard(c, "f"); }).join("");
-  CARDS2.forEach(function(c){ wireCard(c, "f"); });
+  var line = plural(built.cards.length, (main ? "" : "fresh ") + "line") + " to key" +
+    (built.items.length ? ", and " + plural(built.items.length, "open item") : "") + ".";
+  if(t && (t.same || t.changed || t.gone)){
+    line += " Read again: " + t.same + " keyed line" + (t.same === 1 ? "" : "s") + " carried over unchanged, " +
+      t.changed + " changed and wait" + (t.changed === 1 ? "s" : "") + " for you to confirm, " +
+      t.gone + " no longer in the memo.";
+  }
+  say(msg, t && t.changed ? "fail" : "pass", esc(line));
+
+  var prefix = main ? "k" : "f";
+  if(main){
+    $("readlead").textContent = "The reader took the ledger and the memo apart before anything is keyed by hand.";
+    $("facts").innerHTML = factsList(R).map(function(x){ return "<li>" + esc(x) + "</li>"; }).join("");
+    $("readout").classList.remove("hidden");
+    $("cardsec").classList.remove("hidden");
+  }
+  var cards = main ? CARDS1 : CARDS2, items = main ? ITEMS1 : ITEMS2;
+  $(main ? "items" : "fitems").innerHTML = itemsBlock(items, prefix);
+  items.forEach(function(it, ix){ wireItem(it, prefix, ix + 1); });
+  $(main ? "cards" : "fcards").innerHTML = cards.map(function(c){ return drawCard(c, prefix); }).join("");
+  cards.forEach(function(c){ wireCard(c, prefix); });
+  DIRTY = true;
+  refreshGate();
 }
+function readMain(){ readInto(1); }
+function readFresh(){ readInto(2); }
+
+/* ---------- the save gate ---------- */
+function storedCase(){
+  var raw = null;
+  try{ raw = window.localStorage.getItem(OWN_KEY); }catch(e){ return null; }
+  if(!raw) return null;
+  try{ var was = JSON.parse(raw); return (was && was["case"]) ? was : null; }catch(e){ return null; }
+}
+function freshWanted(){
+  return $("freshblock").open && !!($("fledger").value.trim() || $("fmemo").value.trim());
+}
+function mainStale(){ return !!SET1 && sigOf($("ledger").value, $("memo").value) !== SET1.sig; }
+function freshStale(){ return freshWanted() && !!SET2 && sigOf($("fledger").value, $("fmemo").value) !== SET2.sig; }
+function markDirty(){ DIRTY = true; refreshGate(); }
+
+function refreshGate(){
+  var sm = mainStale(), sf = freshStale(), stale = sm || sf;
+  $("save").disabled = stale;
+  $("preview").disabled = stale || (DIRTY && !!SET1) || !storedCase();
+  var what = sm && sf ? "The ledger, the memo, the fresh set or the threshold"
+           : (sm ? "The ledger, the memo or the threshold" : "The fresh ledger, the fresh memo or the threshold");
+  var again = sm && sf ? "Read it and Read the fresh set" : (sm ? "Read it" : "Read the fresh set");
+  say("stale", "fail", sm ? "Changed since the last read. The cards below describe the inputs as they were. Press Read it again before saving." : "");
+  if(stale){
+    say("savegate", "fail", esc(what) + " changed after the last read, so saving and the preview are off. Press " +
+      again + " again, then confirm any line that changed.");
+  } else if(DIRTY && SET1 && storedCase()){
+    say("savegate", "info", "The case on screen differs from the one saved in this browser. Save again to preview it.");
+  } else {
+    say("savegate", "", "");
+  }
+}
+["ledger","memo","dollar","pct","fledger","fmemo"].forEach(function(id){
+  $(id).addEventListener("input", refreshGate);
+  $(id).addEventListener("change", refreshGate);
+});
+$("freshblock").addEventListener("toggle", refreshGate);
+["cname","cver","cperiod","ccolA","ccolB","cperm","fname","fperiod"].forEach(function(id){
+  $(id).addEventListener("input", markDirty);
+});
 
 /* =============================================================================
    Validation, then the case file
@@ -695,24 +1025,37 @@ function cardProblems(cards, R, label){
   var out = [];
   cards.forEach(function(c){
     var where = label + " line " + c.n + " (" + c.acct + " " + c.name + ")";
-    if(c.key !== "flag" && c.key !== "stand") out.push(where + " has no call.");
+    if(c.key !== "flag" && c.key !== "stand") out.push(where + " has no call." +
+      (c.sug.call ? "" : " The checker settled nothing on it, so the call is yours to make."));
     if(TYPES.indexOf(c.type) < 0) out.push(where + " has no error type.");
     if(!c.basis.length) out.push(where + " has no basis chip. Every card needs at least one.");
     if(c.key === "stand" && c.basis.some(function(b){ return b !== BASIS_HOLD; }))
       out.push(where + " is a stand, so its basis can only be “" + BASIS_HOLD + "”. A chip naming a defect contradicts a line that has none.");
     if(c.key === "flag" && c.basis.indexOf(BASIS_HOLD) > -1)
       out.push(where + " is a flag, so it cannot carry “" + BASIS_HOLD + "”.");
-    if(c.key === "stand" && c.type !== "clean line")
+    if(c.key === "stand" && c.type && c.type !== "clean line")
       out.push(where + " is a stand, so its error type has to be “clean line”.");
     if(c.key === "flag" && c.type === "clean line")
       out.push(where + " is a flag, so its error type cannot be “clean line”.");
     if(!c.why) out.push(where + " has no why line.");
     if(!c.tell) out.push(where + " has no tell line.");
+    if(c.reconcile && !c.confirmed)
+      out.push(where + " changed on the last read and waits for you to confirm its key.");
     /* the figures have to reconcile to the ledger row the card points at */
-    var row = R.L.accounts.filter(function(a){ return (a.num || ("row " + a.row)) === c.acct; })[0];
+    var row = R.L.accounts.filter(function(a){ return acctKey(a) === c.acct; })[0];
     if(!row) out.push(where + " points at an account that is not in the ledger.");
     else if(Math.abs(row.prior - c.prior) > 0.01 || Math.abs(row.cur - c.current) > 0.01)
       out.push(where + " carries figures that do not reconcile to the ledger row.");
+  });
+  return out;
+}
+function itemProblems(items, label){
+  var out = [];
+  items.forEach(function(it){
+    var where = label + " sentence " + it.label + " (“" + it.text + "”)";
+    if(it.res !== "exclude") out.push(where + " binds to no ledger line and is still open. Leave it out of the drill " +
+      "with a reason, or name the account in it and press Read it again.");
+    else if(!String(it.reason).trim()) out.push(where + " is left out of the drill with no reason written.");
   });
   return out;
 }
@@ -722,16 +1065,48 @@ function groupsOf(R){
   R.L.accounts.forEach(function(a){
     var nm = a.section || "Accounts";
     if(!by[nm]){ by[nm] = []; order.push(nm); }
-    by[nm].push(a.num || ("row " + a.row));
+    by[nm].push(acctKey(a));
   });
   return order.map(function(nm){
     return {title:nm, accts:by[nm], total:/^total/i.test(nm) ? nm : "Total " + nm.toLowerCase()};
   });
 }
 
-function caseObject(name, version, period, cards, R, mode){
-  var floorD = Number($("dollar").value) || 0, floorP = Number($("pct").value) || 0;
-  var rule = segValue("ruleseg");
+function originNow(){
+  var k = segValue("originseg");
+  if(!k) return null;
+  var o = {kind:k};
+  if(k === "permitted") o.permission = $("cperm").value.trim();
+  return o;
+}
+
+/* what the file says it was read from: the version stamp, the exact inputs, the figures,
+   and where every memo sentence went */
+function sourceRecord(R, cards, items){
+  return {
+    version: R.version,
+    readAt: R.readAt,
+    reader: "assets/second-pass-core.js, each sentence folded into the checker's four statuses",
+    policy: {dollarFloor:R.floorD, percentFloor:R.floorP, rule:R.rule, zeroPrior:R.zp},
+    ledgerText: R.ledgerText,
+    memoText: R.memoText,
+    ledger: R.L.accounts.map(function(a){ return [acctKey(a), a.name, a.prior, a.cur]; }),
+    silent: R.silent.map(acctKey),
+    sentences: R.sents.map(function(s){
+      var card = cards.filter(function(c){ return c.label === s.label && c.memo === s.text; })[0];
+      var item = items.filter(function(i){ return i.label === s.label && i.text === s.text; })[0];
+      var rec = {label:s.label, text:s.text, status:s.st,
+                 account: s.bound.length ? acctKey(s.bound[0]) : null,
+                 card: card ? card.n : null};
+      if(card && card.sug) rec.suggested = card.sug.call || null;
+      if(card && card.reconcile) rec.confirmedAfterChange = !!card.confirmed;
+      if(item) rec.excluded = item.res === "exclude" ? String(item.reason).trim() : null;
+      return rec;
+    })
+  };
+}
+
+function caseObject(name, version, period, cards, items, R, mode){
   var o = {
     version: version,
     date: new Date().toISOString().slice(0, 10),
@@ -740,13 +1115,13 @@ function caseObject(name, version, period, cards, R, mode){
     caption: "The " + R.L.accounts.length + " accounts the memo was written against.",
     /* the two month names the drill prints over the ledger columns, the strips and the chart */
     columns: [($("ccolA").value || "Prior").trim(), ($("ccolB").value || "Current").trim()],
-    threshold: thresholdSentence(floorD, floorP, rule),
+    threshold: thresholdSentence(R.floorD, R.floorP, R.rule),
     policyScope: "The threshold sets what the monthly management report has to explain. It does not " +
                  "make a known error, or anything else that looks wrong, exempt from attention.",
     evidenceNote: "Every sentence under On file is a verified case assumption. A fact that is not " +
                   "listed was not supplied, which is not the same as saying the company has no such document.",
     ledger: R.L.accounts.map(function(a){
-      return [a.num || ("row " + a.row), a.name, a.prior, a.cur, a.clears ? 1 : 0];
+      return [acctKey(a), a.name, a.prior, a.cur, a.clears ? 1 : 0];
     }),
     groups: groupsOf(R),
     cards: cards.map(function(c){
@@ -763,10 +1138,12 @@ function caseObject(name, version, period, cards, R, mode){
           ? "Ask the controller for the document that settles account " + c.acct + "."
           : "",
         tell: c.tell,
-        post: c.key === "flag" ? {flag:"Accept", stand:"Reject"} : {flag:"Accept", stand:"Reject"},
+        post: {flag:"Accept", stand:"Reject"},
         basisKey: c.basis.slice()
       };
     }),
+    origin: originNow(),
+    source: sourceRecord(R, cards, items),
     authoredBy: AUTHOR_VERSION
   };
   if(mode === "assessment"){
@@ -783,23 +1160,36 @@ function collectProblems(){
   var name = $("cname").value.trim(), ver = $("cver").value.trim();
   if(!name) p.push("The case has no name.");
   if(!ver) p.push("The case has no version.");
-  if(!SET1 || !CARDS1.length) p.push("Nothing has been read yet. Paste a ledger and a memo, then press Read it.");
-  else p = p.concat(cardProblems(CARDS1, SET1, "Main set,"));
-  if($("freshblock").open && (($("fledger").value.trim()) || ($("fmemo").value.trim()))){
+  var o = originNow();
+  if(!o) p.push("Say where the figures come from: made up for this drill, or a real close used with permission.");
+  else if(o.kind === "permitted" && !o.permission) p.push("A real close needs a line on who gave permission and for what use.");
+  if(mainStale()) p.push("The ledger, the memo or the threshold changed after Read it. Press Read it again.");
+  if(!SET1) p.push("Nothing has been read yet. Paste a ledger and a memo, then press Read it.");
+  else {
+    if(!CARDS1.length) p.push("No sentence binds to a ledger line and no line is silent, so there is no card to key.");
+    p = p.concat(itemProblems(ITEMS1, "Main set,"));
+    p = p.concat(cardProblems(CARDS1, SET1, "Main set,"));
+  }
+  if(freshWanted()){
     if(!$("fname").value.trim()) p.push("The fresh set has no name.");
-    if(!SET2 || !CARDS2.length) p.push("The fresh set has not been read. Press Read the fresh set.");
-    else p = p.concat(cardProblems(CARDS2, SET2, "Fresh set,"));
+    if(freshStale()) p.push("The fresh ledger, the fresh memo or the threshold changed after Read the fresh set. Read it again.");
+    if(!SET2) p.push("The fresh set has not been read. Press Read the fresh set.");
+    else {
+      if(!CARDS2.length) p.push("The fresh set has no card to key.");
+      p = p.concat(itemProblems(ITEMS2, "Fresh set,"));
+      p = p.concat(cardProblems(CARDS2, SET2, "Fresh set,"));
+    }
   }
   return p;
 }
 
 function currentPayload(){
   var name = $("cname").value.trim(), ver = $("cver").value.trim();
-  var main = caseObject(name, ver, $("cperiod").value.trim(), CARDS1, SET1, "practice");
+  var main = caseObject(name, ver, $("cperiod").value.trim(), CARDS1, ITEMS1, SET1, "practice");
   var fresh = null;
-  if($("freshblock").open && SET2 && CARDS2.length && $("fname").value.trim()){
+  if(freshWanted() && SET2 && CARDS2.length && $("fname").value.trim()){
     fresh = caseObject($("fname").value.trim(), ver + "-fresh", $("fperiod").value.trim(),
-                       CARDS2, SET2, segValue("fmodeseg"));
+                       CARDS2, ITEMS2, SET2, segValue("fmodeseg"));
   }
   return {
     savedAt: new Date().toISOString(),
@@ -807,6 +1197,9 @@ function currentPayload(){
     name: name,
     caseVersion: ver,
     id: "own:" + name + ":" + ver,
+    origin: originNow(),
+    sourceVersion: main.source.version,
+    freshSourceVersion: fresh ? fresh.source.version : null,
     "case": main,
     fresh: fresh
   };
@@ -826,13 +1219,13 @@ function slug(s){
 }
 
 function doSave(){
+  refreshGate();
   var problems = collectProblems();
   if(problems.length){
     $("saybox").innerHTML =
       '<p class="status fail inline">The case is not saved. ' + problems.length +
       ' thing' + (problems.length === 1 ? "" : "s") + ' still to settle.</p>' +
       '<ul class="problems">' + problems.map(function(t){ return "<li>" + esc(t) + "</li>"; }).join("") + '</ul>';
-    $("preview").disabled = true;
     return;
   }
   var payload = currentPayload();
@@ -840,35 +1233,41 @@ function doSave(){
   try{ window.localStorage.setItem(OWN_KEY, JSON.stringify(payload)); }
   catch(e){ stored = false; }
   download(payload, slug(payload.name) + "-" + slug(payload.caseVersion) + ".json");
+  var left = ITEMS1.length + (payload.fresh ? ITEMS2.length : 0);
   $("saybox").innerHTML = '<p class="status pass inline">Saved. ' +
-    payload["case"].cards.length + ' line' + (payload["case"].cards.length === 1 ? "" : "s") +
+    plural(payload["case"].cards.length, "line") +
     (payload.fresh ? ", and " + payload.fresh.cards.length + " on the fresh set" : "") +
-    ". The JSON has downloaded" +
+    (left ? ", with " + plural(left, "memo sentence") + " left out and the reason written down" : "") +
+    ". Read from inputs " + esc(payload.sourceVersion) + ". The JSON has downloaded" +
     (stored ? " and this browser now hands the drill the same case as My own case." :
               ", but this browser refused to store it, so the drill will not find it here.") + '</p>';
-  $("preview").disabled = false;
-  $("forget").hidden = false;
+  DIRTY = false;
+  $("forget").hidden = !stored;
+  refreshGate();
 }
 
 $("read").addEventListener("click", readMain);
 $("fread").addEventListener("click", readFresh);
 $("save").addEventListener("click", doSave);
 $("preview").addEventListener("click", function(){
+  if(this.disabled) return;
   window.open("index.html?case=own&test=1", "_blank", "noopener");
 });
 $("forget").addEventListener("click", function(){
   try{ window.localStorage.removeItem(OWN_KEY); }catch(e){}
   $("saybox").innerHTML = '<p class="status info inline">The saved case is gone from this browser. The downloaded file is untouched.</p>';
-  $("preview").disabled = true;
   $("forget").hidden = true;
+  refreshGate();
 });
 $("clear").addEventListener("click", function(){
   $("ledger").value = ""; $("memo").value = "";
   $("ledger").dispatchEvent(new Event("input")); $("memo").dispatchEvent(new Event("input"));
-  SET1 = null; CARDS1 = [];
+  SET1 = null; CARDS1 = []; ITEMS1 = [];
   $("readout").classList.add("hidden"); $("cardsec").classList.add("hidden");
+  $("items").innerHTML = ""; $("cards").innerHTML = "";
   say("msg", "info", "");
   $("saybox").innerHTML = "";
+  refreshGate();
 });
 
 /* ---------- the sample, so the page can be tried without a ledger to hand ---------- */
@@ -913,27 +1312,32 @@ $("loadsample").addEventListener("click", function(){
   if(!$("cperiod").value) $("cperiod").value = "July close, prepared from the general ledger";
   if(!$("ccolA").value) $("ccolA").value = "June";
   if(!$("ccolB").value) $("ccolB").value = "July";
+  /* Kestrel is invented, so the sample says so; a real close is never assumed */
+  if(!segValue("originseg")) $("originseg").querySelector('[data-v="synthetic"]').click();
   say("msg", "info", "The Kestrel sample is in. Press Read it.");
 });
 
 /* a case already saved in this browser: say so, and let it be previewed or dropped */
 (function(){
-  var raw = null;
-  try{ raw = window.localStorage.getItem(OWN_KEY); }catch(e){ return; }
-  if(!raw) return;
-  var was;
-  try{ was = JSON.parse(raw); }catch(e){ return; }
-  if(!was || !was["case"]) return;
+  var was = storedCase();
+  if(!was) return;
+  var k = was.origin && was.origin.kind;
   $("saybox").innerHTML = '<p class="status info inline">This browser already holds ' +
     esc(was.name || "a case") + ", " + esc(was.caseVersion || "") +
     ', saved ' + esc(String(was.savedAt || "").slice(0, 10)) +
+    (k === "synthetic" ? ", made up for the drill" : (k === "permitted" ? ", a real close used with permission" : "")) +
     '. Saving again replaces it.</p>';
-  $("preview").disabled = false;
   $("forget").hidden = false;
+  refreshGate();
 })();
 
 window.__SPA = {read:readMain, readFresh:readFresh, save:doSave,
                 cards:function(){ return CARDS1; }, fresh:function(){ return CARDS2; },
+                items:function(){ return ITEMS1; }, freshItems:function(){ return ITEMS2; },
+                sentences:function(){ return SET1 ? SET1.sents.map(function(s){
+                  return {label:s.label, text:s.text, status:s.st}; }) : []; },
+                version:function(){ return core().srcVersion(sigOf($("ledger").value, $("memo").value)); },
+                stale:function(){ return {main:mainStale(), fresh:freshStale()}; },
                 payload:currentPayload, problems:collectProblems,
                 sample:{ledger:SAMPLE_LEDGER, memo:SAMPLE_MEMO}, key:OWN_KEY};
 })();

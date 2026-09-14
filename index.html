@@ -1588,7 +1588,7 @@ function intro(){
   screen.innerHTML =
     whyLine("You are about to review a close memo an AI assistant wrote, one line at a time.")+
     '<h1>Second Pass:<br>Beat the Machine</h1>'+
-    '<p>'+esc(shortName(CASE1.company))+' is a made-up company. Its close memo reads the way an AI assistant writes one, and it carries the mistakes they make.</p>'+
+    '<p>'+originIntro(CASE1)+'</p>'+
     '<p>The ledger does not explain itself, so the causes in the memo are guesses, and some of them are wrong. They read well enough that a busy reviewer would sign off and move on. You are the second pass. You will read '+numWord(LINES)+' lines and flag the ones that do not hold.'+fresh+'</p>'+
     caseControl()+
     playFrames()+
@@ -1611,15 +1611,40 @@ function numWord(n){ return NUMWORDS[n] || String(n); }
 function shortName(n){
   return String(n||"The company").split(/,| - /)[0].replace(/\s+(Inc|LLC|PLLC|Ltd|LLP)\.?$/i,"").trim();
 }
+/* Where the figures come from. The built-in cases are invented and say so. A case written in
+   author.html carries the origin its author recorded, synthetic or a real close used with
+   permission, and the drill repeats that and nothing more. A case saved before the author page
+   asked is described as unrecorded rather than guessed at. */
+function ownOrigin(c){
+  var k = c && c.origin && c.origin.kind;
+  return (k === "synthetic" || k === "permitted") ? k : "";
+}
+function originIntro(c){
+  var nm = esc(shortName(c.company));
+  if(CASE_PICK !== "own")
+    return nm+' is a made-up company. Its close memo reads the way an AI assistant writes one, and it carries the mistakes they make.';
+  var k = ownOrigin(c);
+  var what = k === "synthetic" ? nm+' is a made-up company, written for this drill.'
+           : k === "permitted" ? nm+' is a real close, used here with permission.'
+           : nm+' is a case saved from the author page, which did not record whether its figures are made up or real.';
+  return what+' The memo is the commentary drafted about its ledger, and the person who built the case keyed each line.';
+}
+function originBridge(c){
+  if(CASE_PICK !== "own") return 'Another made-up company, a memo built the same way, same job.';
+  var k = ownOrigin(c) || ownOrigin(CASE1);
+  return (k === "synthetic" ? 'Another company made up for this drill'
+        : k === "permitted" ? 'Another real close, used with permission'
+        : 'Another case from the author page')+', a memo built the same way, same job.';
+}
 
 function identity(){
   var chips = ORGS.map(function(o,idx){
     return '<button class="chip'+(S.orgs.indexOf(o)>-1?" on":"")+'" data-i="'+idx+'">'+esc(o)+'</button>';
   }).join("");
   screen.innerHTML =
-    whyLine("A codename keeps the run yours on the leaderboard without putting your name on it.")+
+    whyLine("A codename labels your run in the results without putting your name on it.")+
     '<h2>Before you start</h2>'+
-    '<p class="sub">A codename for the leaderboard, and the chapters you belong to.</p>'+
+    '<p class="sub">A codename for your run record, and the chapters you belong to.</p>'+
     '<input type="text" id="cn" placeholder="Silver Ledger" autocomplete="off" value="'+esc(S.codename)+'">'+
     '<div class="chips" id="orgs" style="margin-top:14px">'+chips+'</div>'+
     '<button class="btn" id="next" disabled>Start</button>';
@@ -2218,7 +2243,7 @@ function bridge(){
     whyLine("The same job on a company you have never read, which is the part that tells you whether the habit transferred.")+
     '<div class="card">'+
       '<h2>Round two: a memo you have not seen</h2>'+
-      '<p class="sub">Another made-up company, a memo built the same way, same job. '+numWord(LINES2).replace(/^./, function(c){return c.toUpperCase();})+' lines.</p>'+
+      '<p class="sub">'+originBridge(CASE2)+' '+numWord(LINES2).replace(/^./, function(c){return c.toUpperCase();})+' lines.</p>'+
       '<p class="tiny" style="margin:2px 0 0">'+esc(CASE2.company)+'.</p>'+
       scored+
       note+
