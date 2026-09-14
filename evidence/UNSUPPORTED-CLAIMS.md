@@ -133,7 +133,7 @@ defined unit. The four classes replace it, and the review page now carries the c
 
 ## The seven Halyard checker failures are not numerical mistakes
 
-Read at checker.html `09cec33`, where the Halyard blind draft comes back as 29 sentences, none
+Read at checker.html `b733040`, where the Halyard blind draft comes back as 29 sentences, none
 checked within scope, 15 needing review, 12 not checked and 2 failed, with 59 items in the
 reviewer's queue. The two failed sentences are the two sentences of the summary paragraph, and the
 class counts in this file do not move with the checker because they are a reading of the drafts

@@ -254,7 +254,7 @@ drift apart.
 | `EVIDENCE-LOG-TEMPLATE.csv` | The review log a practitioner fills, with two worked rows |
 | `EXCEL-TEMPLATE.md`, `Second-Pass-Excel-Template.xlsx`, `build_excel_template.py` | The same log as a workbook, and the script that builds it |
 | `READOUT-TEMPLATE.md`, `Second-Pass-Results-Readout.docx` | The readout a facilitator fills after a session, three pages: the counts, each defined once, then one block for each case set, naming the field for every cell |
-| `RUBRIC.md` | The three criteria an independent educator scores the written explanations against, the scoring sheet that hides the key, and how the second scorer's rows are drawn |
+| `RUBRIC.md` | The three criteria an independent educator will score the written explanations against, the scoring sheet that hides the key, and how the second scorer's rows are drawn |
 | `build-facilitator-pdf.py` | Builds the guide's docx and pdf from the markdown |
 
 ### Evidence
