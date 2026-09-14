@@ -1,0 +1,193 @@
+{
+ "sample": "ridgeline",
+ "label": "after",
+ "widths": [
+  {
+   "width": 320,
+   "heights": {
+    "doc": 7747,
+    "out": 3824,
+    "outTop": 3153,
+    "details": 4,
+    "open": 0,
+    "small": [],
+    "anchors": 6,
+    "missingAnchors": [],
+    "overflowOpened": {
+     "doc": "320/320",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "overflow": {
+    "doc": "320/320",
+    "clean": true,
+    "bad": []
+   },
+   "shots": [
+    "checker-after-ridgeline-320-results-top.png",
+    "checker-after-ridgeline-320-queue.png",
+    "checker-after-ridgeline-320-silent.png",
+    "checker-after-ridgeline-320-hero.png",
+    "checker-after-ridgeline-320-sentence-open.png",
+    "checker-after-ridgeline-320-ledger-open.png"
+   ]
+  },
+  {
+   "width": 375,
+   "heights": {
+    "doc": 7103,
+    "out": 3523,
+    "outTop": 2883,
+    "details": 4,
+    "open": 0,
+    "small": [],
+    "anchors": 6,
+    "missingAnchors": [],
+    "overflowOpened": {
+     "doc": "375/375",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "overflow": {
+    "doc": "375/375",
+    "clean": true,
+    "bad": []
+   },
+   "shots": [
+    "checker-after-ridgeline-375-results-top.png",
+    "checker-after-ridgeline-375-queue.png",
+    "checker-after-ridgeline-375-silent.png",
+    "checker-after-ridgeline-375-hero.png",
+    "checker-after-ridgeline-375-sentence-open.png",
+    "checker-after-ridgeline-375-ledger-open.png"
+   ]
+  },
+  {
+   "width": 768,
+   "heights": {
+    "doc": 5236,
+    "out": 2518,
+    "outTop": 2133,
+    "details": 4,
+    "open": 0,
+    "small": [],
+    "anchors": 6,
+    "missingAnchors": [],
+    "overflowOpened": {
+     "doc": "768/768",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "overflow": {
+    "doc": "768/768",
+    "clean": true,
+    "bad": []
+   },
+   "shots": [
+    "checker-after-ridgeline-768-results-top.png",
+    "checker-after-ridgeline-768-queue.png",
+    "checker-after-ridgeline-768-silent.png",
+    "checker-after-ridgeline-768-hero.png",
+    "checker-after-ridgeline-768-sentence-open.png",
+    "checker-after-ridgeline-768-ledger-open.png"
+   ]
+  },
+  {
+   "width": 1024,
+   "heights": {
+    "doc": 4598,
+    "out": 2367,
+    "outTop": 1668,
+    "details": 4,
+    "open": 0,
+    "small": [],
+    "anchors": 6,
+    "missingAnchors": [],
+    "overflowOpened": {
+     "doc": "1024/1024",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "overflow": {
+    "doc": "1024/1024",
+    "clean": true,
+    "bad": []
+   },
+   "shots": [
+    "checker-after-ridgeline-1024-results-top.png",
+    "checker-after-ridgeline-1024-queue.png",
+    "checker-after-ridgeline-1024-silent.png",
+    "checker-after-ridgeline-1024-hero.png",
+    "checker-after-ridgeline-1024-sentence-open.png",
+    "checker-after-ridgeline-1024-ledger-open.png"
+   ]
+  },
+  {
+   "width": 1280,
+   "heights": {
+    "doc": 4578,
+    "out": 2347,
+    "outTop": 1668,
+    "details": 4,
+    "open": 0,
+    "small": [],
+    "anchors": 6,
+    "missingAnchors": [],
+    "overflowOpened": {
+     "doc": "1280/1280",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "overflow": {
+    "doc": "1280/1280",
+    "clean": true,
+    "bad": []
+   },
+   "shots": [
+    "checker-after-ridgeline-1280-results-top.png",
+    "checker-after-ridgeline-1280-queue.png",
+    "checker-after-ridgeline-1280-silent.png",
+    "checker-after-ridgeline-1280-hero.png",
+    "checker-after-ridgeline-1280-sentence-open.png",
+    "checker-after-ridgeline-1280-ledger-open.png"
+   ]
+  },
+  {
+   "width": 1600,
+   "heights": {
+    "doc": 4578,
+    "out": 2347,
+    "outTop": 1668,
+    "details": 4,
+    "open": 0,
+    "small": [],
+    "anchors": 6,
+    "missingAnchors": [],
+    "overflowOpened": {
+     "doc": "1600/1600",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "overflow": {
+    "doc": "1600/1600",
+    "clean": true,
+    "bad": []
+   },
+   "shots": [
+    "checker-after-ridgeline-1600-results-top.png",
+    "checker-after-ridgeline-1600-queue.png",
+    "checker-after-ridgeline-1600-silent.png",
+    "checker-after-ridgeline-1600-hero.png",
+    "checker-after-ridgeline-1600-sentence-open.png",
+    "checker-after-ridgeline-1600-ledger-open.png"
+   ]
+  }
+ ],
+ "errors": []
+}

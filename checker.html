@@ -69,6 +69,14 @@
    loading="lazy". Both carry width and height so nothing reflows around them. */
 figure.shot{margin:0 0 var(--s7)}
 figure.shot img{border-radius:8px;border:1px solid var(--rule)}
+/* The figure was a 1,280 pixel screenshot of a run, shown at a quarter of that on a phone, so
+   its text could not be read and its counts went stale with every change to the checker. It
+   is now words at reading size and a button that runs the real case, which cannot go stale. */
+figure.tryit{border:1px solid var(--rule);border-radius:var(--radius);background:var(--card);
+  padding:var(--s5)}
+figure.tryit .tryhead{margin:0 0 var(--s2);font-size:var(--t-label);font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft)}
+figure.tryit p{margin:0 0 var(--s4);font-size:var(--t-body);line-height:1.55;max-width:70ch}
 
 /* ---------- the two input panes, each a card with a header row ---------- */
 .panes{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s5);margin:0}
@@ -170,6 +178,53 @@ td.ask{color:var(--ink-soft)}
   .datatable tbody tr.grp{padding:var(--s6) 0 0;border-bottom:1px solid var(--rule-strong)}
   .datatable tbody tr.grp td{padding:0 0 var(--s2)}
   .datatable tbody tr.grp td::before{content:none}
+}
+
+/* ---------- the results, sentence by sentence ---------- */
+/* each table under the results carries only the columns its rows need, and the widths are set
+   per table, so a line number never wraps and the result column takes what is left */
+.sentchecks col.c-mk,.ledgertable col.c-mk{width:30px}
+.sentchecks col.c-chk{width:19%}.sentchecks col.c-res{width:auto}.sentchecks col.c-ask{width:27%}
+.ledgertable col.c-line{width:76px}.ledgertable col.c-acct{width:25%}.ledgertable col.c-chk{width:15%}
+.ledgertable col.c-res{width:auto}.ledgertable col.c-ask{width:24%}
+.jumps{display:flex;flex-wrap:wrap;gap:var(--s2);margin:var(--s4) 0 0;padding:0;list-style:none}
+.jumps a{display:inline-flex;align-items:baseline;gap:var(--s2);min-height:40px;padding:var(--s2) var(--s4);
+  border:1px solid var(--rule-strong);border-radius:999px;background:var(--card);font-size:var(--t-small);
+  font-weight:600;line-height:1.3;color:var(--ink);text-decoration:none}
+.jumps a b{font-variant-numeric:tabular-nums}
+.jumps a:hover{border-color:var(--ink)}
+.foldall{min-height:0;padding:0;font-size:var(--t-small);font-weight:600}
+.resgroup{margin:var(--s5) 0 0}
+.resgroup>h3{margin:0 0 var(--s2);font-size:var(--t-label);font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--ink-soft)}
+details.sent{border-top:1px solid var(--rule)}
+.resgroup>details.sent:last-child{border-bottom:1px solid var(--rule)}
+details.sent>summary,details.ledgerfold>summary{cursor:pointer;list-style:none}
+details.sent>summary::-webkit-details-marker,details.ledgerfold>summary::-webkit-details-marker{display:none}
+details.sent>summary{display:grid;grid-template-columns:18px minmax(0,1fr);column-gap:var(--s3);
+  row-gap:3px;padding:var(--s3) 0}
+details.sent>summary>*{min-width:0}
+details.sent>summary>.sm{grid-row:1 / span 3;padding-top:3px}
+.shd{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s1) var(--s3)}
+.shd b{font-size:var(--t-label);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft)}
+.stx{font-size:var(--t-body);line-height:1.45;overflow-wrap:anywhere}
+.tally{font-size:var(--t-small);line-height:1.45;color:var(--ink-soft);overflow-wrap:anywhere}
+details.sent>summary .tally::after,details.ledgerfold>summary .tally::after{content:"  ·  Show the checks";
+  color:var(--mason);font-weight:600;white-space:nowrap}
+details.sent[open]>summary .tally::after{content:"  ·  Hide the checks"}
+details.ledgerfold>summary .tally::after{content:"  ·  Show every line"}
+details.ledgerfold[open]>summary .tally::after{content:"  ·  Hide the lines"}
+details.sent>summary:focus-visible,details.ledgerfold>summary:focus-visible{outline:2px solid var(--mason);
+  outline-offset:2px;border-radius:4px}
+.sentbody{padding:0 0 var(--s4) calc(18px + var(--s3))}
+.sentbody .why{margin:0 0 var(--s3);font-size:var(--t-small);line-height:1.55;color:var(--ink-soft);max-width:80ch}
+details.ledgerfold{margin:var(--s6) 0 0;border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule)}
+details.ledgerfold>summary{display:flex;flex-direction:column;gap:3px;padding:var(--s3) 0}
+details.ledgerfold>summary .lh{font-size:var(--t-h2);font-weight:700;line-height:1.24;color:var(--ink)}
+.totop{margin:var(--s5) 0 0;font-size:var(--t-small)}
+@media (max-width:759px){
+  .sentbody{padding-left:0}
+  .sentbody .datatable tbody tr:first-child{padding-top:0}
 }
 
 /* ---------- the reviewer's queue: a numbered list the reviewer can tick ---------- */
@@ -305,12 +360,12 @@ details.pr .btn-text{margin:0 0 var(--s5)}
     </ol>
   </div>
 
-  <figure class="figure shot">
-    <img src="screenshots/checker/hero-results.png" width="1280" height="600" decoding="async" fetchpriority="high"
-      alt="The checker on the Halyard sample: a stacked coverage bar, four stat tiles reading four checked within scope, five needs review, none not checked and three failed, then the results table under them.">
-    <figcaption class="figcap">See it on a real case. Halyard Provisioning Group, June 2026: fourteen ledger
-    lines against a twelve-sentence draft, one silent line and fourteen items left for a person. Load it from
-    either pane header, or from Samples below.</figcaption>
+  <figure class="figure shot tryit">
+    <figcaption class="tryhead">See it on a real case</figcaption>
+    <p>Halyard Provisioning Group, June 2026: fourteen ledger lines against a twelve-sentence draft. One run
+    shows how much of the memo was checked, which sentences failed and why, which ones a person still has to
+    read, and the line nobody wrote about.</p>
+    <button type="button" class="btn secondary" id="tryhalyard">Run the Halyard sample</button>
   </figure>
 
   <div class="panes">
@@ -2993,7 +3048,9 @@ function askShort(r){
 function render(out,rows,stats){
   var em=$("empty");
   if(em)em.className="empty hidden";
-  out.appendChild(el("h2",null,"Coverage"));
+  var ch2=el("h2",null,"Coverage");
+  ch2.id="res-top";
+  out.appendChild(ch2);
   out.appendChild(statusBar(stats));
   out.appendChild(statTiles(stats));
 
@@ -3032,77 +3089,223 @@ function render(out,rows,stats){
     }
   }
 
-  /* the reviewer's queue leaves the table and becomes a numbered list */
+  /* The results used to be one table in which every check repeated its sentence, and on a
+     phone every row stacked into a card, so the Halyard sample ran to about 44,000 pixels at
+     320. Now the sentences come first, worst status first, each one a disclosure whose summary
+     carries its status, the sentence once, and which checks failed, are open or passed. Every
+     check is still there when it is opened, and a button opens them all. The recomputed ledger
+     folds under its counts and opens by itself when a total does not tie. The silent lines and
+     the reviewer's queue, which are what a person has to answer, are never folded. */
   var cut=rows.length,i;
   for(i=0;i<rows.length;i++){if(rows[i].grp&&rows[i].grp.indexOf("4.")===0){cut=i;break;}}
   var shown=rows.slice(0,cut),queued=rows.slice(cut+1);
-
-  var wrap=el("div","datatable"),tbl=el("table");
-  var HEADS=["","Line","Sentence or account","Check","Result","Ask the controller"];
-  var cg=el("colgroup");
-  ["t0","t1","t2","t3","t4","t5"].forEach(function(c){cg.appendChild(el("col",c));});
-  tbl.appendChild(cg);
-  var thead=el("thead"),tr=el("tr");
-  HEADS.forEach(function(h,n){
-    var th=el("th",null,n===0?null:h);
-    th.setAttribute("scope","col");
-    if(n===0)th.appendChild(el("span","vh","Status"));
-    tr.appendChild(th);
-  });
-  thead.appendChild(tr);tbl.appendChild(thead);
-  var tb=el("tbody");
-  /* the header repeats as a per-cell label once the columns stack on a narrow
-     screen, which is what keeps the page off a horizontal scrollbar */
-  function cell(cls,txt,n){var td=el("td",cls,txt);td.setAttribute("data-label",HEADS[n]);return td;}
+  var ledRows=[],silentRows=[],byLabel={},step=0;
   shown.forEach(function(r){
-    var t=el("tr");
-    if(r.grp){
-      t.className="grp";
-      var td=el("td",null,r.grp);td.colSpan=6;t.appendChild(td);tb.appendChild(t);return;
-    }
-    var mk=cell("mk",null,0);
-    mk.innerHTML=markHTML(r.status);
-    mk.appendChild(el("span","vh",r.status));
-    t.appendChild(mk);
-    t.appendChild(cell("mono",r.line,1));
-    var subj=cell("subj",null,2);
-    if(r.label)subj.appendChild(el("b",null,r.label));
-    subj.appendChild(document.createTextNode(r.subj));
-    t.appendChild(subj);
-    t.appendChild(cell("chk",r.check,3));
-    var res=cell("res",null,4);
-    res.appendChild(el("span","status "+r.badge,r.result));
-    res.appendChild(el("span","det",r.det));
-    t.appendChild(res);
-    var ask=cell("ask",null,5);
-    var imp=askShort(r);
-    if(imp)ask.appendChild(document.createTextNode(imp));
-    if(r.roleSel){
-      var lab=el("label","rolelab","Confirm what this figure is:");
-      var sel=el("select","rolesel");
-      sel.id="rolesel-"+(++ROLESEQ);
-      lab.htmlFor=sel.id;
-      var o0=el("option",null,"not confirmed");o0.value="";sel.appendChild(o0);
-      ROLE_OPTIONS.forEach(function(name){
-        var o=el("option",null,name);o.value=name;sel.appendChild(o);
-      });
-      sel.value=r.roleSel.cur||"";
-      sel.onchange=function(){
-        if(this.value)ROLECONF[r.roleSel.key]=this.value;
-        else delete ROLECONF[r.roleSel.key];
-        run();
-      };
-      ask.appendChild(lab);ask.appendChild(sel);
-    }
-    t.appendChild(ask);
-    tb.appendChild(t);
+    if(r.grp){step=parseInt(r.grp,10)||step;return;}
+    if(step===1){ledRows.push(r);return;}
+    if(r.label){(byLabel[r.label]=byLabel[r.label]||[]).push(r);return;}
+    silentRows.push(r);
   });
-  tbl.appendChild(tb);wrap.appendChild(tbl);out.appendChild(wrap);
+  var sents=(LAST&&LAST.sents)||[];
+
+  var COLS={mk:"",line:"Line",acct:"Account",chk:"Check",res:"Result",ask:"Ask the controller"};
+  /* one table, with only the columns its rows need. The header repeats as a per-cell label
+     once the columns stack on a narrow screen, which keeps the page off a sideways scroll. */
+  function checkTable(list,keys,cls){
+    var wrap=el("div","datatable"+(cls?" "+cls:"")),tbl=el("table"),cg=el("colgroup");
+    keys.forEach(function(k){cg.appendChild(el("col","c-"+k));});
+    tbl.appendChild(cg);
+    var thead=el("thead"),tr=el("tr");
+    keys.forEach(function(k){
+      var th=el("th",null,k==="mk"?null:COLS[k]);
+      th.setAttribute("scope","col");
+      if(k==="mk")th.appendChild(el("span","vh","Status"));
+      tr.appendChild(th);
+    });
+    thead.appendChild(tr);tbl.appendChild(thead);
+    var tb=el("tbody");
+    function cell(cls2,txt,k){var td=el("td",cls2,txt);td.setAttribute("data-label",COLS[k]);return td;}
+    list.forEach(function(r){
+      var t=el("tr");
+      keys.forEach(function(k){
+        if(k==="mk"){
+          var mk=cell("mk",null,k);
+          mk.innerHTML=markHTML(r.status);
+          mk.appendChild(el("span","vh",r.status));
+          t.appendChild(mk);
+        }else if(k==="line"){t.appendChild(cell("mono",r.line,k));}
+        else if(k==="acct"){t.appendChild(cell("subj",r.subj,k));}
+        else if(k==="chk"){t.appendChild(cell("chk",r.check,k));}
+        else if(k==="res"){
+          var res=cell("res",null,k);
+          res.appendChild(el("span","status "+r.badge,r.result));
+          res.appendChild(el("span","det",r.det));
+          t.appendChild(res);
+        }else if(k==="ask"){
+          var ask=cell("ask",null,k);
+          var imp=askShort(r);
+          if(imp)ask.appendChild(document.createTextNode(imp));
+          if(r.roleSel){
+            var lab=el("label","rolelab","Confirm what this figure is:");
+            var sel=el("select","rolesel");
+            sel.id="rolesel-"+(++ROLESEQ);
+            lab.htmlFor=sel.id;
+            var o0=el("option",null,"not confirmed");o0.value="";sel.appendChild(o0);
+            ROLE_OPTIONS.forEach(function(name){
+              var o=el("option",null,name);o.value=name;sel.appendChild(o);
+            });
+            sel.value=r.roleSel.cur||"";
+            sel.onchange=function(){
+              if(this.value)ROLECONF[r.roleSel.key]=this.value;
+              else delete ROLECONF[r.roleSel.key];
+              run();
+            };
+            ask.appendChild(lab);ask.appendChild(sel);
+          }
+          t.appendChild(ask);
+        }
+      });
+      tb.appendChild(t);
+    });
+    tbl.appendChild(tb);wrap.appendChild(tbl);
+    return wrap;
+  }
+  function plural(n,one,many){return n+" "+(n===1?one:many);}
+  function toTop(){
+    var p=el("p","totop"),a=el("a",null,"Back to the top of the results");
+    a.setAttribute("href","#res-top");
+    p.appendChild(a);
+    return p;
+  }
+
+  /* where everything is, with its count, before any of it */
+  var jumps=el("ul","jumps");
+  jumps.setAttribute("aria-label","Parts of the results");
+  [["#res-sentences","Sentences, worst first",sents.length],["#res-silent","Silent lines",silentRows.length],
+   ["#res-ledger","Ledger lines recomputed",stats.rowsUsed],["#res-queue","The reviewer's queue",stats.queue]]
+    .forEach(function(j){
+      var li=el("li"),a=el("a");
+      a.setAttribute("href",j[0]);
+      a.appendChild(document.createTextNode(j[1]+" "));
+      a.appendChild(el("b",null,String(j[2])));
+      li.appendChild(a);jumps.appendChild(li);
+    });
+  out.appendChild(jumps);
+
+  /* ---- the sentences, worst status first, each folded under what it found */
+  var sh=el("h2",null,"Every sentence, worst first");
+  sh.id="res-sentences";
+  sh.style.margin="28px 0 0";
+  out.appendChild(sh);
+  var folds=[];
+  var openAll=el("button","btn-text quiet foldall","Open every sentence");
+  openAll.setAttribute("type","button");
+  openAll.onclick=function(){
+    var shut=folds.some(function(d){return !d.open;});
+    folds.forEach(function(d){d.open=shut;});
+    openAll.textContent=shut?"Close every sentence":"Open every sentence";
+  };
+  var lead=el("p","tiny","Each sentence shows its status and what its checks found. Open one to read every check on it.");
+  lead.appendChild(document.createTextNode(" "));
+  lead.appendChild(openAll);
+  out.appendChild(lead);
+  [["failed","Failed"],["needs review","Needs review"],["not checked","Not checked"],
+   ["checked within scope","Checked within scope"]].forEach(function(g){
+    var group=sents.filter(function(s){return s.st===g[0];});
+    if(!group.length)return;
+    var box=el("div","resgroup");
+    box.appendChild(el("h3",null,g[1]+", "+plural(group.length,"sentence","sentences")));
+    group.forEach(function(s){
+      var list=byLabel[s.label]||[];
+      var statusRow=null,checks=[];
+      list.forEach(function(r){if(r.check==="Sentence status")statusRow=r;else checks.push(r);});
+      var d=el("details","sent");
+      d.id="sent-"+s.label;
+      var sum=el("summary");
+      var mk=el("span","sm");
+      mk.innerHTML=markHTML(s.st);
+      sum.appendChild(mk);
+      var head=el("span","shd");
+      head.appendChild(el("b",null,s.label));
+      head.appendChild(el("span","status "+BADGE[s.st]+" inline",s.st.toUpperCase()));
+      sum.appendChild(head);
+      sum.appendChild(el("span","stx",s.text));
+      var bad=checks.filter(function(r){return r.status==="failed";}),
+          open=checks.filter(function(r){return r.status==="needs review";}),
+          untested=checks.filter(function(r){return r.status==="not checked";}),
+          ok=checks.length-bad.length-open.length-untested.length;
+      function names(xs){
+        var n=xs.map(function(r){return r.check;});
+        return n.length>3?n.slice(0,3).join(", ")+" and "+(n.length-3)+" more":n.join(", ");
+      }
+      var tl=[plural(checks.length,"check","checks")];
+      if(bad.length)tl.push(bad.length+" failed ("+names(bad)+")");
+      if(open.length)tl.push(open.length+" open ("+names(open)+")");
+      if(untested.length)tl.push(untested.length+" not tested ("+names(untested)+")");
+      if(ok)tl.push(ok+" passed");
+      sum.appendChild(el("span","tally",tl.join(" · ")));
+      d.appendChild(sum);
+      var body=el("div","sentbody");
+      if(statusRow)body.appendChild(el("p","why",statusRow.det));
+      if(checks.length)body.appendChild(checkTable(checks,["mk","chk","res","ask"],"sentchecks"));
+      d.appendChild(body);
+      box.appendChild(d);
+      folds.push(d);
+    });
+    out.appendChild(box);
+  });
+  if(!sents.length)out.appendChild(el("p","tiny","No sentence was read."));
+  else out.appendChild(toTop());
+
+  /* ---- the silent lines, never folded */
+  var slh=el("h2",null,"Silent lines");
+  slh.id="res-silent";
+  slh.style.margin="28px 0 0";
+  out.appendChild(slh);
+  if(!silentRows.length){
+    out.appendChild(el("p","tiny","No line clears the rule without a sentence about it."));
+  }else{
+    out.appendChild(el("p","tiny",plural(silentRows.length,"line clears","lines clear")+
+      " the rule and no sentence in the memo explains "+(silentRows.length===1?"it":"them")+"."));
+    out.appendChild(checkTable(silentRows,["mk","line","acct","res","ask"],"ledgertable"));
+  }
+
+  /* ---- every ledger line, recomputed, folded under its counts */
+  var recompute=ledRows.filter(function(r){return r.check==="Recompute";}),
+      totals=ledRows.filter(function(r){return r.check==="Totals tie";});
+  var clearsN=recompute.filter(function(r){return r.badge==="clears";}).length;
+  var tieBad=totals.filter(function(r){return r.status==="failed";}).length,
+      tieOk=totals.filter(function(r){return r.status==="checked within scope";}).length,
+      tieOut=totals.length-tieBad-tieOk;
+  var lf=el("details","ledgerfold");
+  lf.id="res-ledger";
+  var ls=el("summary");
+  ls.appendChild(el("span","lh","Every ledger line, recomputed"));
+  var lt=[plural(recompute.length,"line","lines"),clearsN+" clear the rule",(recompute.length-clearsN)+" below it"];
+  if(totals.length){
+    lt.push(plural(totals.length,"section total","section totals")+": "+tieOk+" tie"+
+      (tieBad?", "+tieBad+" do not tie":"")+(tieOut?", "+tieOut+" kept out":""));
+  }
+  ls.appendChild(el("span","tally",lt.join(" · ")));
+  lf.appendChild(ls);
+  if(tieBad){lf.open=true;lf.setAttribute("open","");}
+  if(ledRows.length)lf.appendChild(checkTable(ledRows,["mk","line","acct","chk","res"],"ledgertable"));
+  out.appendChild(lf);
 
   var qh=el("h2",null,"The reviewer's queue");
+  qh.id="res-queue";
   qh.style.margin="28px 0 0";
   out.appendChild(qh);
   out.appendChild(el("p","tiny","Everything a person still has to answer. Nothing here was settled by the run."));
+  /* the list carries more entries than the queue count, so it says what they are */
+  var judg=queued.filter(function(r){return r.check==="Reviewer";}).length,
+      together=queued.filter(function(r){return r.check==="Read together";}).length;
+  if(queued.length){
+    var qc=[plural(stats.queue,"item","items")+" the run left open"];
+    if(judg)qc.push(plural(judg,"sentence","sentences")+" checked within scope with the two judgment questions");
+    if(together)qc.push(plural(together,"line","lines")+" to read together");
+    out.appendChild(el("p","tiny",queued.length+" entries: "+(qc.length>1?qc.slice(0,-1).join(", ")+" and "+qc[qc.length-1]:qc[0])+"."));
+  }
   if(!queued.length){
     out.appendChild(el("p","tiny","Nothing reached the queue on this run."));
   }else{
@@ -3131,6 +3334,7 @@ function render(out,rows,stats){
     });
     out.appendChild(ol);
   }
+  out.appendChild(toTop());
 
   /* the four things a reviewer does with a finished run. On a phone the bar
      sticks to the bottom of the results rather than sitting under the fold. */
@@ -3749,6 +3953,12 @@ function loadPane(which){
   invalidate(which==="ledger"?"the ledger was edited":"the memo was edited");
 }
 if($("loadled"))$("loadled").onclick=function(){loadPane("ledger");};
+/* the case figure's button runs the Halyard sample and brings the results into view */
+if($("tryhalyard"))$("tryhalyard").onclick=function(){
+  $("samplepick").value="halyard";
+  if(loadSample("halyard"))run();
+  try{$("out").scrollIntoView({block:"start"});}catch(e){}
+};
 if($("loadmemo"))$("loadmemo").onclick=function(){loadPane("memo");};
 
 /* Ctrl and Enter, or Command and Enter on a Mac, runs it from either pane */

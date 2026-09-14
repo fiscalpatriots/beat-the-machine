@@ -1,0 +1,193 @@
+{
+ "sample": "brightwater",
+ "label": "after",
+ "widths": [
+  {
+   "width": 320,
+   "heights": {
+    "doc": 9268,
+    "out": 5164,
+    "outTop": 3333,
+    "details": 6,
+    "open": 0,
+    "small": [],
+    "anchors": 6,
+    "missingAnchors": [],
+    "overflowOpened": {
+     "doc": "320/320",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "overflow": {
+    "doc": "320/320",
+    "clean": true,
+    "bad": []
+   },
+   "shots": [
+    "checker-after-brightwater-320-results-top.png",
+    "checker-after-brightwater-320-queue.png",
+    "checker-after-brightwater-320-silent.png",
+    "checker-after-brightwater-320-hero.png",
+    "checker-after-brightwater-320-sentence-open.png",
+    "checker-after-brightwater-320-ledger-open.png"
+   ]
+  },
+  {
+   "width": 375,
+   "heights": {
+    "doc": 8365,
+    "out": 4627,
+    "outTop": 3041,
+    "details": 6,
+    "open": 0,
+    "small": [],
+    "anchors": 6,
+    "missingAnchors": [],
+    "overflowOpened": {
+     "doc": "375/375",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "overflow": {
+    "doc": "375/375",
+    "clean": true,
+    "bad": []
+   },
+   "shots": [
+    "checker-after-brightwater-375-results-top.png",
+    "checker-after-brightwater-375-queue.png",
+    "checker-after-brightwater-375-silent.png",
+    "checker-after-brightwater-375-hero.png",
+    "checker-after-brightwater-375-sentence-open.png",
+    "checker-after-brightwater-375-ledger-open.png"
+   ]
+  },
+  {
+   "width": 768,
+   "heights": {
+    "doc": 6201,
+    "out": 3368,
+    "outTop": 2248,
+    "details": 6,
+    "open": 0,
+    "small": [],
+    "anchors": 6,
+    "missingAnchors": [],
+    "overflowOpened": {
+     "doc": "768/768",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "overflow": {
+    "doc": "768/768",
+    "clean": true,
+    "bad": []
+   },
+   "shots": [
+    "checker-after-brightwater-768-results-top.png",
+    "checker-after-brightwater-768-queue.png",
+    "checker-after-brightwater-768-silent.png",
+    "checker-after-brightwater-768-hero.png",
+    "checker-after-brightwater-768-sentence-open.png",
+    "checker-after-brightwater-768-ledger-open.png"
+   ]
+  },
+  {
+   "width": 1024,
+   "heights": {
+    "doc": 5386,
+    "out": 3040,
+    "outTop": 1784,
+    "details": 6,
+    "open": 0,
+    "small": [],
+    "anchors": 6,
+    "missingAnchors": [],
+    "overflowOpened": {
+     "doc": "1024/1024",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "overflow": {
+    "doc": "1024/1024",
+    "clean": true,
+    "bad": []
+   },
+   "shots": [
+    "checker-after-brightwater-1024-results-top.png",
+    "checker-after-brightwater-1024-queue.png",
+    "checker-after-brightwater-1024-silent.png",
+    "checker-after-brightwater-1024-hero.png",
+    "checker-after-brightwater-1024-sentence-open.png",
+    "checker-after-brightwater-1024-ledger-open.png"
+   ]
+  },
+  {
+   "width": 1280,
+   "heights": {
+    "doc": 5367,
+    "out": 3020,
+    "outTop": 1784,
+    "details": 6,
+    "open": 0,
+    "small": [],
+    "anchors": 6,
+    "missingAnchors": [],
+    "overflowOpened": {
+     "doc": "1280/1280",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "overflow": {
+    "doc": "1280/1280",
+    "clean": true,
+    "bad": []
+   },
+   "shots": [
+    "checker-after-brightwater-1280-results-top.png",
+    "checker-after-brightwater-1280-queue.png",
+    "checker-after-brightwater-1280-silent.png",
+    "checker-after-brightwater-1280-hero.png",
+    "checker-after-brightwater-1280-sentence-open.png",
+    "checker-after-brightwater-1280-ledger-open.png"
+   ]
+  },
+  {
+   "width": 1600,
+   "heights": {
+    "doc": 5367,
+    "out": 3020,
+    "outTop": 1784,
+    "details": 6,
+    "open": 0,
+    "small": [],
+    "anchors": 6,
+    "missingAnchors": [],
+    "overflowOpened": {
+     "doc": "1600/1600",
+     "clean": true,
+     "bad": []
+    }
+   },
+   "overflow": {
+    "doc": "1600/1600",
+    "clean": true,
+    "bad": []
+   },
+   "shots": [
+    "checker-after-brightwater-1600-results-top.png",
+    "checker-after-brightwater-1600-queue.png",
+    "checker-after-brightwater-1600-silent.png",
+    "checker-after-brightwater-1600-hero.png",
+    "checker-after-brightwater-1600-sentence-open.png",
+    "checker-after-brightwater-1600-ledger-open.png"
+   ]
+  }
+ ],
+ "errors": []
+}

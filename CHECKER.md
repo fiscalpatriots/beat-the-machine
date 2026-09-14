@@ -354,10 +354,26 @@ page's own tokens, which fills once when a run lands. Under it sit **four tiles*
 marks and their counts: a green check for checked within scope, an ink square for needs review, a
 soft ring for not checked, a red cross for failed. Each count runs up to its number over a fifth of
 a second, and a reader whose system asks for less motion gets the number with no run-up. The same
-four marks are the first column of the table, so a row, a tile and the bar say the same thing. A
-line under the tiles carries the counts the bar does not: sentences read, ledger rows used, rows
+four marks lead every sentence and every check, so a sentence, a tile and the bar say the same thing.
+A line under the tiles carries the counts the bar does not: sentences read, ledger rows used, rows
 skipped, silent lines, and the size of the reviewer queue. Under it the run identifier and the
 source version, and, when a row was skipped, the statement that the ledger was not covered in full.
+
+Then four links, each with its count, to the four parts below, and the parts in the order a reviewer
+works them. **Every sentence, worst first**: failed, then needs review, then not checked, then checked
+within scope, each group headed with its count and each sentence in memo order inside it. Every
+sentence is one line that opens: its mark, its label, its status, the sentence once, and what its
+checks found, as in `7 checks · 3 failed (Figure $6,500, Figure 3.5 percent, Threshold claim) · 4
+passed`. Opened, it shows the sentence's status explanation and a table of its checks, each with its
+result, its finding and what to ask, and the role dropdown where a role needs confirming. **Open
+every sentence** opens them all. **Silent lines** are never folded. **Every ledger line, recomputed**
+folds under its counts (lines, how many clear the rule, the section totals that tie and those kept
+out) and opens by itself when a section total does not tie. **The reviewer's queue** is never folded,
+and it says how many of its entries are items the run left open, how many are sentences checked
+within scope carrying the two judgment questions, and how many are lines to read together. A **Back
+to the top of the results** link closes the sentences and the queue. On the Halyard sample this
+took the results from 44,311 pixels tall to 12,962 at 320 and from 19,636 to 7,163 at 1,280, with
+every check still one tap away.
 
 A row the ledger reader could not use is printed under the strip in a red box, by line number, with
 the reason, on every run. Rows the reader drops on purpose, the header row and the title block above
@@ -366,12 +382,12 @@ a report, are not counted as skipped; a row that looks like an account line and 
 The **reviewer queue** carries every failure, every binding conflict, every unmatched sentence,
 every skipped source row, every refused row, every malformed ratio, every unsupported numeric form,
 every discarded numeric column, every silent line and every account carrying two or more sentences.
-It is printed **below the table as a plain numbered list**, each item carrying the sentence, the
+It is printed **after the sentences, the silent lines and the ledger as a plain numbered list**, each item carrying the sentence, the
 finding and the questions beneath it. Every question carries **Yes, No and Not on file** beside it,
 and what a reviewer ticks rides out with the run: into the human conclusion column of the CSV, into
 the JSON record as `reviewerAnswer`, and onto the line in the printed summary where an untouched
-question prints a blank rule for a pen. The queue is also repeated verbatim in Prompt 2. The
-table's own **Ask the controller** column carries the instruction in one imperative, and the
+question prints a blank rule for a pen. The queue is also repeated verbatim in Prompt 2. Each
+check's **Ask the controller** column carries the instruction in one imperative, and the
 question itself is asked in full in the queue, which is where it gets answered. The reviewer queue also carries **unparsed
 figures**, **negated claims**, **binding conflicts**, **unresolved directions**, **unread wording** the clearance grammar held, and a **no source on file** item for
 every bound sentence that says no source is on file, owned by the controller, so a missing source stays a question
@@ -520,7 +536,7 @@ needs review or carries no figure.
 
 ## Using it in a close
 
-Run it **first**, before anybody reads the memo, and read the coverage strip before the table: how
+Run it **first**, before anybody reads the memo, and read the coverage strip before the sentences: how
 much of the memo was checked at all is the first fact, not how many findings came back. Then read
 the findings in order: the failures go back to the preparer, the silent lines go to the controller
 as a question, the needs-review rows get a role confirmed or an ambiguity settled, and only then
