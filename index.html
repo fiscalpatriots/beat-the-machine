@@ -1460,7 +1460,7 @@ function howScreen(){
       '<p><b>Machine-checkable.</b> Arithmetic, wrong direction, threshold, silence. A script ties each sentence to an account and tests the figures it can match against the ledger, then lists every line that clears both legs of the threshold with no sentence written about it.</p>'+
       '<p><b>Reviewer judgment.</b> Unsupported driver, timing, and a movement sitting in the wrong account. All three need the facts on file and a person who knows the business.</p>'+
       '<p class="howlead">Scope</p>'+
-      '<p>This build is a static case: fourteen lines, one month, answers keyed by hand. Halyard is a made-up company, and its memo was written for this build the way an AI assistant writes close commentary, with every failure planted so it can be taught and scored. It does not run on a live ledger, and the four mechanical checks run on any ledger and memo in the checker on this site; driver and timing stay with the reviewer. Next, the deterministic checks run first on every AI memo, and the reviewer\'s time goes only to the two judgment types.</p>'+
+      '<p>This build is a static case: fourteen lines, one month, answers keyed by hand. Halyard is a made-up company, and its memo was written for this build the way an AI assistant writes close commentary, with every failure planted so it can be taught and scored. It does not run on a live ledger. The checker on this site runs the four mechanical checks on a ledger pasted in a layout it accepts and the memo drafted about it, holds for review whatever it cannot read, and leaves driver and timing with the reviewer. Next, the deterministic checks run first on every AI memo, and the reviewer\'s time goes only to the two judgment types.</p>'+
       '<div class="howrun"><a class="btn" href="checker.html">Run the checker on your own ledger and memo</a></div>'+
       '<div class="linkrow"><a class="howlink" href="PROTOCOL.md">The review protocol, one page</a>'+
         '<a class="howlink" href="Second-Pass-Review-Protocol.pdf">The same page as a PDF</a>'+
@@ -2108,8 +2108,9 @@ function basisChips(val){
    set contradicts the key for that card, which is why "wrong account" on a clean line is wrong
    rather than merely unhelpful. A reason counts as right when the player tapped at least one
    chip in the key and no chip outside it. It is a compatibility check on the stated basis and
-   not a rubric score, it is counted separately from the call, and it never moves the rank or
-   the badges. The three-dimension reasoning rubric is scored by a person outside this page. */
+   not a rubric score, and it is counted separately from the call. Its fifty points go into the
+   total the rank is read off, so it moves the rank, and it never moves the badges. The
+   three-dimension reasoning rubric is scored by a person outside this page. */
 function basisKeyOf(c){
   if(c.basisKey && c.basisKey.length) return c.basisKey;
   return (c.key === "stand") ? [BASIS_HOLD] : [];
@@ -2433,7 +2434,7 @@ function summaryB(){
              "Reason score: " + reasonCount(1) + " of " + LINES + " in round one and " + reasonCount(2) +
              " of " + LINES2 + " on the fresh case. A reason counts as right when every chip tapped is in " +
              "the card's basis key and at least one was tapped. It is scored apart from the " +
-             "call and it does not move the rank.");
+             "call, and its points count toward the rank.");
   parts.push(miss.length
     ? "Lines missed: " + miss.map(function(c){ return c.n+" "+c.acct+" ("+c.type+")"; }).join("; ") + "."
     : "No lines missed.");
@@ -2615,7 +2616,7 @@ function itemRecord(c, idx, round){
     basisKey: basisKeyOf(c).slice(),
     reasonResult: (call === null || call === undefined) ? "no call recorded"
       : (reasonRight(c, chips) ? "agrees with key" : "does not agree"),
-    reasonScoringNote: "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call and never used for the rank or the badges.",
+    reasonScoringNote: "A reason agrees when every chip tapped is in basisKey and at least one was tapped. Scored apart from the call. Its points count toward the rank, and it is never used for the badges.",
     /* what the card put in front of the player, which is not the same thing as
        what the player read. The release review asked for both names apart, so
        the supplied list keeps its own name and the participant-selected list is
@@ -3090,7 +3091,7 @@ function done(){
   var reasonBlock = badReason.length
     ? '<div class="coach" style="margin-top:14px"><h3>Right call, wrong reason</h3>'+
       '<p class="tiny" style="margin:0 0 10px">The call agreed with the key on these lines and the basis you tapped did not. '+
-      'The reason is counted separately and it does not move the rank.</p>'+
+      'The reason is counted separately from the call, and its points count toward the rank.</p>'+
       badReason.map(function(x){
         return '<div class="miss"><b>'+(x.r===2?"Fresh line ":"Line ")+x.c.n+', '+esc(x.c.name)+', account '+x.c.acct+'</b>'+
                '<em>'+esc(x.c.type)+'</em>'+

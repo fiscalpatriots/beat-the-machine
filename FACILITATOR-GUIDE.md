@@ -60,7 +60,9 @@ player who has already seen the answers scores high for the wrong reason.
 and those two words are the only thing the sheet carries about them. A rule makes the leaderboard
 readable and keeps the room anonymous. An adjective and an animal works. So does two words from the
 player's own work. The rule that matters is that the same person uses the same codename every time,
-because that is how a replay is told from a new player.
+because the findings keep the first attempt under each codename and list the later ones as
+reattempts. A codename is still not a person: one person can type two and two people can type one,
+so if you need a count of people, keep the consented roster described under the readout.
 
 **Run one pass yourself in test mode first.** Put `?test=1` on the URL, or tap the footer line three
 times from inside the page. A band under the header reads "TEST MODE, nothing is sent", and a run
@@ -85,7 +87,7 @@ practitioner route, for anyone with no campus tie: a firm's staff training, a gu
 exists so a practitioner answers truthfully rather than claiming an affiliation they do not have,
 and a firm session where everybody taps Outside Mason reads correctly in the findings rather than
 reading as missing data. A player who belongs to two chapters counts in both, so the chip counts
-sum above the number of players and each one is read against the response total as its own
+sum above the number of attempts and each one is read against the first-attempt total as its own
 denominator.
 
 ## The session plan
@@ -119,8 +121,9 @@ minutes on the reason.
 
 **Close, five minutes.** Give the room whatever numbers you have, point at the send, and then say
 the part that outlives the game: four of the six failures are machine checkable and two are not.
-Arithmetic, direction, threshold and silence can all be recomputed by a script, and the checker on
-the same site does exactly that on any ledger and memo pasted into it. An unsupported driver and a
+Arithmetic, direction, threshold and silence can all be recomputed by a script. The checker on the
+same site does that for a ledger pasted in a layout it accepts, on the figures and direction words
+it can read, and holds for review whatever it cannot read. An unsupported driver and a
 timing problem need the facts on file and somebody who knows the business, so those two stay with a
 person. That is the whole argument, and five minutes is enough to make it.
 
@@ -153,7 +156,9 @@ hold", so tapping "wrong account" on a clean line is a contradiction rather than
 
 The two scores never mix. The running pill during the round shows the call score alone. The end
 screen shows both, as `Right call 12 of 14` beside `Right reason 9 of 14`, and the fresh case carries
-same pair. Ranks and badges read the call score only, and the end screen says so.
+same pair. The badges read the calls alone. The rank does not: an agreeing reason adds 50 points to
+a correct call and the rank is read off total points, so the same calls with different reasons can
+land on different ranks. Treat the rank as a game device, never as a credential or a result.
 
 This exists because an independent reviewer completed the whole drill on 13 September 2026 while
 tapping "wrong account" on every one of the nineteen lines, and the page awarded full marks. The
@@ -316,9 +321,12 @@ its output.
 Every Why cell splits on ` || `, which separates what the player said from what the page computed.
 The half before it reads `Basis: no source on file; wrong period | Words: the freight moved`.
 
-Two housekeeping rules before any of those numbers mean anything. Count distinct codenames rather
-than rows, because Play again posts a new row under the same codename. And drop your own test rows
-first, which is why a test codename should say so and why test mode marks the row itself.
+Two housekeeping rules before any of those numbers mean anything. Count attempts rather than rows,
+and read only the first attempt under each codename, because Play again posts a new row under the
+same codename and a retry of one send repeats its attempt identifier. A codename is not a person, so
+never report distinct codenames as a number of people; only a consented roster gives that count. And
+drop your own test rows first, which is why a test codename should say so and why test mode marks
+the row itself.
 
 One more thing to filter. Four questions the form still marks required are no longer asked on
 screen and post a fixed placeholder on every submission, so they are not player answers and must
@@ -349,10 +357,10 @@ into `checker.html` on the projector and run the checks on material the room mad
 
 **Run it as a timed individual assessment.** Par is ten minutes, no talking, one run each, and the
 result is the call score out of fourteen with the reason score, the lap time and the false flag
-count beside it. The ranks are Trainee at eight or fewer, Staff at nine or ten, Senior at eleven or
-twelve, Manager at thirteen and Partner at fourteen, and they read the call score only. Tell people
-in advance that flagging everything is a losing strategy, because it is, and a player who does it
-scores eight and lands at Trainee.
+count beside it. Report the call score and the reason score, not the rank: the rank is read off
+points, an agreeing reason adds to them, and each rank starts at a share of what the case can give.
+Tell people in advance that flagging everything is a losing strategy, because it is, and a player
+who does it scores eight of fourteen and cannot reach Senior.
 
 **Run it with the protocol as a controls exercise.** Hand out `PROTOCOL.md`, split the room into
 preparer, second pass reviewer and controller, and work one memo through the four mechanical checks

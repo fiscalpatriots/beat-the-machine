@@ -20,7 +20,7 @@ Forty minutes for a chapter meeting, a classroom or a firm's staff training. Ver
 
 ## The two-step lock, and the reason score
 
-The player calls the line, the buttons become a chip row, and no reveal comes until a chip is tapped. Say that in the framing. The chips: figure does not tie, direction wrong, no source on file, wrong period, wrong account, nothing written where owed, and on a stand, the figure and reason hold. Each card carries a key of the chips that fit it, so a reason scores right when one tapped chip is in the key and none is outside it. The end screen prints the call score beside the reason score, ranks read the call alone, and the reason score tests the stated basis for contradiction rather than proving anybody reasoned.
+The player calls the line, the buttons become a chip row, and no reveal comes until a chip is tapped. Say that in the framing. The chips: figure does not tie, direction wrong, no source on file, wrong period, wrong account, nothing written where owed, and on a stand, the figure and reason hold. Each card carries a key of the chips that fit it, so a reason scores right when one tapped chip is in the key and none is outside it. The end screen prints the call score beside the reason score. The badges read the calls alone, an agreeing reason adds points toward the rank, and the reason score tests the stated basis for contradiction rather than proving anybody reasoned.
 
 ## The debrief, six questions in order
 
@@ -37,4 +37,4 @@ Then three minutes on the reason. Ask which chip they tapped, type by type, and 
 
 ## Reading the response sheet in five minutes
 
-Run `findings.py` against the downloaded responses and fill `READOUT-TEMPLATE.md`, or take four by hand: call accuracy on the eight problem lines, 1, 2, 3, 7, 8, 11, 12 and 14; false flags on the six clean lines; reason accuracy from `Reason: agrees.` in each Why cell; the fresh case from question C. Card one is inverted, so flagging 4200 posts Reject. Count codenames, not rows, and drop test rows.
+Run `findings.py` against the downloaded responses and fill `READOUT-TEMPLATE.md`, or take four by hand: call accuracy on the eight problem lines, 1, 2, 3, 7, 8, 11, 12 and 14; false flags on the six clean lines; reason accuracy from `Reason: agrees.` in each Why cell; the fresh case from question C. Card one is inverted, so flagging 4200 posts Reject. Drop test rows, count attempts rather than rows, read only the first attempt under each codename, and never report codenames as people.

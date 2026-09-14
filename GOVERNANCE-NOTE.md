@@ -84,14 +84,16 @@ contradiction rather than a weak answer.
 | --- | --- |
 | The running pill | `Right 7 of 9`, the call score only, so the pill reads the same as it always did |
 | The end screen | `Right call 12 of 14. Right reason 9 of 14.`, and the fresh case carries the same pair |
-| The end screen, one line under the rank | That the rank and the badges are read off the call score only |
+| The end screen, one line under the rank | That the points, the rank and the badges are read off the trained lines. The badges read the calls alone; an agreeing reason adds points, so it counts toward the rank |
 | The coach section | A block naming every line where the call agreed with the key and the basis did not, with the chips the player tapped and the basis key beside them |
 | Question B on the form | The reason score for both rounds, beside the attempt identifier |
 | Question C on the form | The fresh case pair, and the reason verdict and basis key line by line |
 | The downloadable record | `basisKey` and `reasonResult` on every one of the nineteen items, and `rightReason` beside `right` in both rounds |
 
 The reason score is a compatibility check on the stated basis. It is not a rubric score, it does
-not establish that a player reasoned, and it never moves the rank or the badges. The
+not establish that a player reasoned, and it never moves the badges. Its points do count toward
+the total the rank is read off, so the same calls with different reasons can land on different
+ranks, and the rank is not a professional credential or a learning outcome. The
 three-dimension reasoning rubric is scored by a person outside the page, and reviewer
 disagreements with the key are retained rather than settled by it.
 

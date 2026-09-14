@@ -132,7 +132,9 @@ excluded from every measure, whether the row carries the literal `not asked` or 
 placeholder.
 
 `READOUT-TEMPLATE.md` prints a field name in every cell it wants filled, and the script's
-**Readout fields** section prints exactly those names with the value to copy across, 127 of them.
+**Readout fields** section prints exactly those names with the value to copy across: the run fields
+once, then one block for each case set the export holds, so the number of fields depends on the cases
+played.
 A field the responses cannot support prints *not available*, and that cell stays blank on the
 readout rather than being estimated.
 
@@ -972,7 +974,7 @@ Every run below was played through the page's own handlers, click by click, in t
 
 A perfect Kestrel run reaches Partner on twelve lines, as a perfect Halyard run does on fourteen,
 because the ladder is read as a share of what each case can give rather than as a fixed count of
-points. A rank still compares players on one case and never across two, since the cases differ in
+points. A rank still compares runs of one case and never runs of two, since the cases differ in
 length and in how much of the score a blanket call can reach.
 
 No console errors on any run. No horizontal scrolling on `index.html`, `author.html` or

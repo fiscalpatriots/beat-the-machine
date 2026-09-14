@@ -47,10 +47,12 @@ basis are scored separately, because agreeing with the answer key while naming t
 not judgment. After the fourteen practice lines a second company appears, five lines nobody has
 seen, run as an assessment with nothing revealed until all five are committed.
 
-**A checker.** Paste a ledger and a memo, set the commentary threshold, and the page recomputes
-every figure against the ledger, tests every direction word against the sign, names every account
-that clears the threshold with no sentence written about it, and returns one of four statuses per
-sentence: checked within scope, needs review, not checked, failed. It runs entirely in the
+**A checker.** Paste a ledger in a layout it accepts and a memo, set the commentary threshold, and
+the page recomputes each figure it can read against the ledger, tests the direction words it can tie
+to a line against the sign, names every account that clears the threshold with no sentence written
+about it, and returns one of four statuses per sentence: checked within scope, needs review, not
+checked, failed. A sentence carrying anything the grammar cannot read is not checked, and what it
+could not read goes to the reviewer. It runs entirely in the
 visitor's browser. Nothing pasted into it is transmitted anywhere.
 
 **An author page.** Paste your own trial balance and your own memo and the page reads them,
@@ -102,8 +104,8 @@ wrote, scored by a person against a three-point rubric the page does not attempt
 
 `tools/findings.py` computes exactly those, reads the responses export, drops test rows and
 repeats on the attempt identifier, counts each organization separately, and writes every field
-`READOUT-TEMPLATE.md` names, 127 of them. A field the responses cannot support prints *not
-available* rather than an estimate.
+`READOUT-TEMPLATE.md` names, the run fields once and one block per case set. A field the
+responses cannot support prints *not available* rather than an estimate.
 
 What the record cannot support is written down too: confidence is null because it was not asked;
 the evidence list is what the card supplied, not what the participant consulted; elapsed time does
@@ -151,7 +153,7 @@ drill reads, so the two surfaces cannot drift apart.
 | `author.html` | Build a drill from your own trial balance and your own memo |
 | `review.html` | The entry in one page: problem, governance, evidence, outcomes, scope, replicability |
 | `404.html` | The custom not-found page, with the three ways back |
-| `review-a.html`, `review-b.html` | Two earlier design variants of the reviewer page, kept for the record and linked from nothing |
+| `review-a.html`, `review-b.html` | Retired. Two earlier design variants of the reviewer page, now a short noindex page each that points to `review.html`, kept so old links do not end on a 404 |
 
 ### Shared assets
 
@@ -197,7 +199,7 @@ drill reads, so the two surfaces cannot drift apart.
 | `FACILITATOR-ONE-PAGE.md` | The same, cut to one page |
 | `EVIDENCE-LOG-TEMPLATE.csv` | The review log a practitioner fills, with two worked rows |
 | `EXCEL-TEMPLATE.md`, `Second-Pass-Excel-Template.xlsx`, `build_excel_template.py` | The same log as a workbook, and the script that builds it |
-| `READOUT-TEMPLATE.md`, `Second-Pass-Results-Readout.docx` | One page a facilitator fills after a session, naming the field for every cell |
+| `READOUT-TEMPLATE.md`, `Second-Pass-Results-Readout.docx` | The readout a facilitator fills after a session, three pages: the counts, each defined once, then one block for each case set, naming the field for every cell |
 | `build-facilitator-pdf.py` | Builds the guide's docx and pdf from the markdown |
 
 ### Evidence
@@ -213,7 +215,7 @@ drill reads, so the two surfaces cannot drift apart.
 
 | File | What it is |
 | --- | --- |
-| `tests/checker-fixtures.json` | 59 fixtures: the original defect set, the adversarial probe set, the boundary cases, and both sample cases end to end |
+| `tests/checker-fixtures.json` | 212 fixtures: the original defect set, the adversarial probe sets, the forty probes and 113 mutations from the third review, the boundary cases, and the sample cases end to end |
 | `tests/run-checker-tests.cjs` | Runs them against `checker.html` itself, with no browser |
 | `tools/findings.py` | Reads the responses export and writes the findings and every field the readout names |
 | `tools/make-sample-csv.py`, `tools/findings-sample.csv` | A synthetic response set in the shapes the page posts, so the script can be proved without waiting for participants |

@@ -2,7 +2,9 @@
 #
 # Content of record: FACILITATOR-ONE-PAGE.md and READOUT-TEMPLATE.md. Nothing is typed into
 # this script. The readout ships as a docx alone, so its PDF and page render are built to
-# prove one page and then deleted. The long form of the guide
+# prove its page allowance and then deleted. The readout was one page until the findings repair
+# of 13 September 2026 defined each count once and gave every case set its own block; it now
+# holds the counts and the case set blocks, so its allowance is three pages. The long form of the guide
 # is FACILITATOR-GUIDE.md and it is not built to PDF, because it does not fit on one page.
 #
 # Typography and the build route are carried over from
@@ -36,7 +38,7 @@ SUBJECT = 'Second Pass: Beat the Machine, running the session in forty minutes'
 # source markdown, output basename, maximum pages allowed, keep the PDF beside the docx
 JOBS = [
     ('FACILITATOR-ONE-PAGE.md', 'Second-Pass-Facilitator-Guide', 1, True),
-    ('READOUT-TEMPLATE.md', 'Second-Pass-Results-Readout', 1, False),
+    ('READOUT-TEMPLATE.md', 'Second-Pass-Results-Readout', 3, False),
 ]
 
 FIT = [(10.5, 1.00, 1.00), (10.5, 0.80, 1.00), (10.5, 0.60, 1.00), (10.5, 0.45, 1.00),
