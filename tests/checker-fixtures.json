@@ -7305,18 +7305,19 @@
     },
     "expect": [
       {
-        "desc": "the sentence is not checked",
+        "desc": "the sentence is needs review",
         "get": "status.S1",
         "op": "eq",
-        "value": "not checked"
+        "value": "needs review"
       },
       {
-        "desc": "the span the grammar does not read is in the queue",
-        "get": "queueKinds",
+        "desc": "the queue names the period that holds it",
+        "get": "queue",
         "op": "includes",
-        "value": "Unparsed figure"
+        "value": "“quarter over quarter”"
       }
-    ]
+    ],
+    "note": "Moved from not checked to needs review on 14 September 2026 by lane F4, with the quarters. The reader had taken \"000 quarter\" out of \"$30,000 quarter over quarter\" as a fraction, which no person reads there, so the sentence was left unchecked on an unparsed span. The figure is now read whole and the quarter frame is read as a period the ledger's monthly columns cannot show, so the sentence is held and the queue names it. The audit's own basis for A086 is a period mismatch and it accepts needs review or not checked, so the probe still returns a status the audit accepts."
   },
   {
     "id": "A087",
@@ -15677,6 +15678,1956 @@
         "get": "queueKinds",
         "op": "notIncludes",
         "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "REAS01",
+    "name": "direction word inside a reason, accepting variant: Rent expense rose $30,000 on a decrease in vacancy.",
+    "required": "A direction word a reason governs, whether the reason is a clause (\"as discounts declined\") or a preposition (\"on a decrease in vacancy\", \"despite an increase in volume\"), is never tested against the line the figures tied, so a sentence that is true is never failed on it. Where the reason names exactly one bound line the word is tested against that line, which is the subject the words give it; where it names none, or more than one, it stays with the reviewer's question about the reason. A direction or no-change word in the claim is tested as before, and a claim that disagrees with the ledger still fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on a decrease in vacancy.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "REAS02",
+    "name": "direction word inside a reason, accepting variant: Rent expense rose $30,000 despite an increase in sublease income.",
+    "required": "A direction word a reason governs, whether the reason is a clause (\"as discounts declined\") or a preposition (\"on a decrease in vacancy\", \"despite an increase in volume\"), is never tested against the line the figures tied, so a sentence that is true is never failed on it. Where the reason names exactly one bound line the word is tested against that line, which is the subject the words give it; where it names none, or more than one, it stays with the reviewer's question about the reason. A direction or no-change word in the claim is tested as before, and a claim that disagrees with the ledger still fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 despite an increase in sublease income.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "REAS03",
+    "name": "direction word inside a reason, accepting variant: Insurance expense rose $45,000 as discounts declined.",
+    "required": "A direction word a reason governs, whether the reason is a clause (\"as discounts declined\") or a preposition (\"on a decrease in vacancy\", \"despite an increase in volume\"), is never tested against the line the figures tied, so a sentence that is true is never failed on it. Where the reason names exactly one bound line the word is tested against that line, which is the subject the words give it; where it names none, or more than one, it stays with the reviewer's question about the reason. A direction or no-change word in the claim is tested as before, and a claim that disagrees with the ledger still fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Insurance expense rose $45,000 as discounts declined.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "REAS04",
+    "name": "direction word inside a reason, accepting variant: Rent expense rose $30,000 due to a decline in landlord credits.",
+    "required": "A direction word a reason governs, whether the reason is a clause (\"as discounts declined\") or a preposition (\"on a decrease in vacancy\", \"despite an increase in volume\"), is never tested against the line the figures tied, so a sentence that is true is never failed on it. Where the reason names exactly one bound line the word is tested against that line, which is the subject the words give it; where it names none, or more than one, it stays with the reviewer's question about the reason. A direction or no-change word in the claim is tested as before, and a claim that disagrees with the ledger still fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 due to a decline in landlord credits.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "REAS05",
+    "name": "direction word inside a reason, accepting variant: Rent expense rose $30,000 on flat volumes at the depot.",
+    "required": "A direction word a reason governs, whether the reason is a clause (\"as discounts declined\") or a preposition (\"on a decrease in vacancy\", \"despite an increase in volume\"), is never tested against the line the figures tied, so a sentence that is true is never failed on it. Where the reason names exactly one bound line the word is tested against that line, which is the subject the words give it; where it names none, or more than one, it stays with the reviewer's question about the reason. A direction or no-change word in the claim is tested as before, and a claim that disagrees with the ledger still fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on flat volumes at the depot.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "REAS06",
+    "name": "direction word inside a reason, accepting variant: Rent expense rose $30,000 with lower occupancy at the second site.",
+    "required": "A direction word a reason governs, whether the reason is a clause (\"as discounts declined\") or a preposition (\"on a decrease in vacancy\", \"despite an increase in volume\"), is never tested against the line the figures tied, so a sentence that is true is never failed on it. Where the reason names exactly one bound line the word is tested against that line, which is the subject the words give it; where it names none, or more than one, it stays with the reviewer's question about the reason. A direction or no-change word in the claim is tested as before, and a claim that disagrees with the ledger still fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 with lower occupancy at the second site.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "REAS07",
+    "name": "direction word inside a reason, accepting variant: Rent expense rose $30,000 amid falling demand for space.",
+    "required": "A direction word a reason governs, whether the reason is a clause (\"as discounts declined\") or a preposition (\"on a decrease in vacancy\", \"despite an increase in volume\"), is never tested against the line the figures tied, so a sentence that is true is never failed on it. Where the reason names exactly one bound line the word is tested against that line, which is the subject the words give it; where it names none, or more than one, it stays with the reviewer's question about the reason. A direction or no-change word in the claim is tested as before, and a claim that disagrees with the ledger still fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 amid falling demand for space.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "REAS08",
+    "name": "direction word inside a reason, refusing variant: Rent expense fell $30,000 on a decrease in vacancy.",
+    "required": "A direction word a reason governs, whether the reason is a clause (\"as discounts declined\") or a preposition (\"on a decrease in vacancy\", \"despite an increase in volume\"), is never tested against the line the figures tied, so a sentence that is true is never failed on it. Where the reason names exactly one bound line the word is tested against that line, which is the subject the words give it; where it names none, or more than one, it stays with the reviewer's question about the reason. A direction or no-change word in the claim is tested as before, and a claim that disagrees with the ledger still fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense fell $30,000 on a decrease in vacancy.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is failed",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "failed"
+      },
+      {
+        "desc": "the checks on S1 say what was found",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "the memo says \"fell\" but 6100 Rent expense rose"
+      }
+    ]
+  },
+  {
+    "id": "REAS09",
+    "name": "direction word inside a reason, refusing variant: Rent expense rose $30,000 on the decrease in Insurance expense.",
+    "required": "A direction word a reason governs, whether the reason is a clause (\"as discounts declined\") or a preposition (\"on a decrease in vacancy\", \"despite an increase in volume\"), is never tested against the line the figures tied, so a sentence that is true is never failed on it. Where the reason names exactly one bound line the word is tested against that line, which is the subject the words give it; where it names none, or more than one, it stays with the reviewer's question about the reason. A direction or no-change word in the claim is tested as before, and a claim that disagrees with the ledger still fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the decrease in Insurance expense.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is failed",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "failed"
+      },
+      {
+        "desc": "the checks on S1 say what was found",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "the memo says \"decrease\" but 6200 Insurance expense rose"
+      }
+    ]
+  },
+  {
+    "id": "REAS10",
+    "name": "direction word inside a reason, refusing variant: Insurance expense rose $45,000 on the decrease in Rent expense.",
+    "required": "A direction word a reason governs, whether the reason is a clause (\"as discounts declined\") or a preposition (\"on a decrease in vacancy\", \"despite an increase in volume\"), is never tested against the line the figures tied, so a sentence that is true is never failed on it. Where the reason names exactly one bound line the word is tested against that line, which is the subject the words give it; where it names none, or more than one, it stays with the reviewer's question about the reason. A direction or no-change word in the claim is tested as before, and a claim that disagrees with the ledger still fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Insurance expense rose $45,000 on the decrease in Rent expense.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is failed",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "failed"
+      },
+      {
+        "desc": "the checks on S1 say what was found",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "the memo says \"decrease\" but 6100 Rent expense rose"
+      }
+    ]
+  },
+  {
+    "id": "REAS11",
+    "name": "direction word inside a reason, refusing variant: Rent expense rose $30,000, driven by a drop in landlord credits.",
+    "required": "A direction word a reason governs, whether the reason is a clause (\"as discounts declined\") or a preposition (\"on a decrease in vacancy\", \"despite an increase in volume\"), is never tested against the line the figures tied, so a sentence that is true is never failed on it. Where the reason names exactly one bound line the word is tested against that line, which is the subject the words give it; where it names none, or more than one, it stays with the reviewer's question about the reason. A direction or no-change word in the claim is tested as before, and a claim that disagrees with the ledger still fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000, driven by a drop in landlord credits.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the checks on S1 say what was found",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "\"drop\" stands in a clause that ties to no figure and names no line"
+      }
+    ]
+  },
+  {
+    "id": "REAS12",
+    "name": "direction word inside a reason, refusing variant: Rent expense rose $30,000, reflecting a decrease in the landlord allowance.",
+    "required": "A direction word a reason governs, whether the reason is a clause (\"as discounts declined\") or a preposition (\"on a decrease in vacancy\", \"despite an increase in volume\"), is never tested against the line the figures tied, so a sentence that is true is never failed on it. Where the reason names exactly one bound line the word is tested against that line, which is the subject the words give it; where it names none, or more than one, it stays with the reviewer's question about the reason. A direction or no-change word in the claim is tested as before, and a claim that disagrees with the ledger still fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000, reflecting a decrease in the landlord allowance.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the checks on S1 say what was found",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "\"decrease\" stands in a clause that ties to no figure and names no line"
+      }
+    ]
+  },
+  {
+    "id": "REAS13",
+    "name": "direction word inside a reason, refusing variant: Rent expense was unchanged at $130,000 on lower incentives.",
+    "required": "A direction word a reason governs, whether the reason is a clause (\"as discounts declined\") or a preposition (\"on a decrease in vacancy\", \"despite an increase in volume\"), is never tested against the line the figures tied, so a sentence that is true is never failed on it. Where the reason names exactly one bound line the word is tested against that line, which is the subject the words give it; where it names none, or more than one, it stays with the reviewer's question about the reason. A direction or no-change word in the claim is tested as before, and a claim that disagrees with the ledger still fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense was unchanged at $130,000 on lower incentives.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is failed",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "failed"
+      },
+      {
+        "desc": "the checks on S1 say what was found",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "the memo says \"unchanged\" but 6100 Rent expense rose"
+      }
+    ]
+  },
+  {
+    "id": "REAS14",
+    "name": "direction word inside a reason, refusing variant: Rent expense rose $30,000 because it fell in the prior period.",
+    "required": "A direction word a reason governs, whether the reason is a clause (\"as discounts declined\") or a preposition (\"on a decrease in vacancy\", \"despite an increase in volume\"), is never tested against the line the figures tied, so a sentence that is true is never failed on it. Where the reason names exactly one bound line the word is tested against that line, which is the subject the words give it; where it names none, or more than one, it stays with the reviewer's question about the reason. A direction or no-change word in the claim is tested as before, and a claim that disagrees with the ledger still fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 because it fell in the prior period.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the checks on S1 say what was found",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "\"fell\" stands in a clause that ties to no figure and names no line"
+      }
+    ]
+  },
+  {
+    "id": "REAS15",
+    "name": "direction word inside a reason, refusing variant: Rent expense rose $30,000 on a decrease in vacancy in June.",
+    "required": "A direction word a reason governs, whether the reason is a clause (\"as discounts declined\") or a preposition (\"on a decrease in vacancy\", \"despite an increase in volume\"), is never tested against the line the figures tied, so a sentence that is true is never failed on it. Where the reason names exactly one bound line the word is tested against that line, which is the subject the words give it; where it names none, or more than one, it stays with the reviewer's question about the reason. A direction or no-change word in the claim is tested as before, and a claim that disagrees with the ledger still fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on a decrease in vacancy in June.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "“June”"
+      }
+    ]
+  },
+  {
+    "id": "REAS16",
+    "name": "direction word inside a reason, refusing variant: Rent expense rose $30,000 on sharply lower incentives.",
+    "required": "A direction word a reason governs, whether the reason is a clause (\"as discounts declined\") or a preposition (\"on a decrease in vacancy\", \"despite an increase in volume\"), is never tested against the line the figures tied, so a sentence that is true is never failed on it. Where the reason names exactly one bound line the word is tested against that line, which is the subject the words give it; where it names none, or more than one, it stays with the reviewer's question about the reason. A direction or no-change word in the claim is tested as before, and a claim that disagrees with the ledger still fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on sharply lower incentives.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "“sharply”"
+      }
+    ]
+  },
+  {
+    "id": "REAS17",
+    "name": "direction word inside a reason, refusing variant: Rent expense rose $30,000 on a decrease in vacancy; the line fell.",
+    "required": "A direction word a reason governs, whether the reason is a clause (\"as discounts declined\") or a preposition (\"on a decrease in vacancy\", \"despite an increase in volume\"), is never tested against the line the figures tied, so a sentence that is true is never failed on it. Where the reason names exactly one bound line the word is tested against that line, which is the subject the words give it; where it names none, or more than one, it stays with the reviewer's question about the reason. A direction or no-change word in the claim is tested as before, and a claim that disagrees with the ledger still fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on a decrease in vacancy; the line fell.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "stands in a clause that ties to no figure and names no line"
+      }
+    ]
+  },
+  {
+    "id": "REAS18",
+    "name": "direction word inside a reason, mixed, one clause clears and one fails: Rent expense rose $30,000 on a decrease in vacancy, and Insurance expense fell $45,000.",
+    "required": "A direction word a reason governs, whether the reason is a clause (\"as discounts declined\") or a preposition (\"on a decrease in vacancy\", \"despite an increase in volume\"), is never tested against the line the figures tied, so a sentence that is true is never failed on it. Where the reason names exactly one bound line the word is tested against that line, which is the subject the words give it; where it names none, or more than one, it stays with the reviewer's question about the reason. A direction or no-change word in the claim is tested as before, and a claim that disagrees with the ledger still fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on a decrease in vacancy, and Insurance expense fell $45,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is failed",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "failed"
+      },
+      {
+        "desc": "the checks on S1 say what was found",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "the memo says \"fell\" but 6200 Insurance expense rose"
+      }
+    ]
+  },
+  {
+    "id": "REAS19",
+    "name": "direction word inside a reason, mixed, both clauses clear with a reason each: Rent expense rose $30,000 on a decrease in vacancy, and Insurance expense rose $45,000 on higher premiums.",
+    "required": "A direction word a reason governs, whether the reason is a clause (\"as discounts declined\") or a preposition (\"on a decrease in vacancy\", \"despite an increase in volume\"), is never tested against the line the figures tied, so a sentence that is true is never failed on it. Where the reason names exactly one bound line the word is tested against that line, which is the subject the words give it; where it names none, or more than one, it stays with the reviewer's question about the reason. A direction or no-change word in the claim is tested as before, and a claim that disagrees with the ledger still fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on a decrease in vacancy, and Insurance expense rose $45,000 on higher premiums.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "NAME01",
+    "name": "abbreviation inside a name, mixed, a split a person makes: Revenue grew in the U.S. Rent expense rose $30,000.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Revenue grew in the U.S. Rent expense rose $30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is not checked",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "not checked"
+      },
+      {
+        "desc": "sentence S2 is checked within scope",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "NAME02",
+    "name": "abbreviation inside a name, accepting variant: Rent expense rose $30,000 on the U.S. Treasury lease.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the U.S. Treasury lease.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "NAME03",
+    "name": "abbreviation inside a name, accepting variant: Rent expense rose $30,000 at the U.K. subsidiary.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 at the U.K. subsidiary.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "NAME04",
+    "name": "abbreviation inside a name, accepting variant: Rent expense rose $30,000 on the J.P. Morgan facility.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the J.P. Morgan facility.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "NAME05",
+    "name": "abbreviation inside a name, accepting variant: Rent expense rose $30,000 at the St. Louis depot.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 at the St. Louis depot.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "NAME06",
+    "name": "abbreviation inside a name, accepting variant: Rent expense rose $30,000 at the Ft. Worth site.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 at the Ft. Worth site.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "NAME07",
+    "name": "abbreviation inside a name, accepting variant: Rent expense rose $30,000 under the Acme Co. Ltd. lease.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 under the Acme Co. Ltd. lease.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "NAME08",
+    "name": "abbreviation inside a name, accepting variant: Rent expense rose $30,000 per Mr. J. Smith.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 per Mr. J. Smith.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "NAME09",
+    "name": "abbreviation inside a name, accepting variant: Rent expense rose $30,000 under U.S. GAAP.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 under U.S. GAAP.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "NAME10",
+    "name": "abbreviation inside a name, refusing variant: The lease is with Acme Co. Rent expense rose $30,000.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "The lease is with Acme Co. Rent expense rose $30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is not checked",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "not checked"
+      },
+      {
+        "desc": "sentence S2 is checked within scope",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "NAME11",
+    "name": "abbreviation inside a name, accepting variant, split and both clear: Rent expense rose $30,000 on the lease with Acme Co. Insurance expense rose $45,000.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the lease with Acme Co. Insurance expense rose $45,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "sentence S2 is checked within scope",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "NAME12",
+    "name": "abbreviation inside a name, accepting variant, split and both clear: Rent expense rose $30,000 at the U.S. office. Insurance expense rose $45,000.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 at the U.S. office. Insurance expense rose $45,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "sentence S2 is checked within scope",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "NAME13",
+    "name": "abbreviation inside a name, refusing variant: Rent expense rose $30,000 on the U.S. Treasury lease renewed in June.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the U.S. Treasury lease renewed in June.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "“June”"
+      }
+    ]
+  },
+  {
+    "id": "NAME14",
+    "name": "abbreviation inside a name, refusing variant: Rent expense rose $30,000 on the U.S. Treasury lease, which is quarterly.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the U.S. Treasury lease, which is quarterly.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "“quarterly”"
+      }
+    ]
+  },
+  {
+    "id": "NAME15",
+    "name": "abbreviation inside a name, mixed, one sentence clears and one is unmatched: Rent expense rose $30,000 at the depot on Oak St. The lease renewed.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 at the depot on Oak St. The lease renewed.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "sentence S2 is not checked",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "not checked"
+      }
+    ]
+  },
+  {
+    "id": "NAME16",
+    "name": "abbreviation inside a name, accepting variant, split and both clear: Rent expense rose $30,000 per Schedule A. Insurance expense rose $45,000.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 per Schedule A. Insurance expense rose $45,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "sentence S2 is checked within scope",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "NAME17",
+    "name": "abbreviation inside a name, accepting variant, split and both clear: Rent expense rose $30,000 on rent, taxes, insurance, etc. Insurance expense rose $45,000.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on rent, taxes, insurance, etc. Insurance expense rose $45,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "sentence S2 is checked within scope",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "NAME18",
+    "name": "abbreviation inside a name, refusing variant: Rent expense fell $30,000 at the St. Louis depot.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense fell $30,000 at the St. Louis depot.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is failed",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "failed"
+      },
+      {
+        "desc": "the checks on S1 say what was found",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "the memo says \"fell\" but 6100 Rent expense rose"
+      }
+    ]
+  },
+  {
+    "id": "NAME19",
+    "name": "abbreviation inside a name, accepting variant: Interest expense on U.S. Treasury bills rose $31,200.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "7100\tInterest expense\t61200\t92400",
+      "memo": "Interest expense on U.S. Treasury bills rose $31,200.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "NAME20",
+    "name": "abbreviation inside a name, refusing variant: Revenue grew in the U.S. Rent expense fell $30,000.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Revenue grew in the U.S. Rent expense fell $30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 2 sentences, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "sentence S1 is not checked",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "not checked"
+      },
+      {
+        "desc": "sentence S2 is failed",
+        "get": "status.S2",
+        "op": "eq",
+        "value": "failed"
+      },
+      {
+        "desc": "the checks on S2 say what was found",
+        "get": "finding.S2",
+        "op": "includes",
+        "value": "the memo says \"fell\" but 6100 Rent expense rose"
+      }
+    ]
+  },
+  {
+    "id": "NAME21",
+    "name": "abbreviation inside a name, refusing variant: Rent expense rose $30,000 on the U.S. Treasury lease at quarter-end.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on the U.S. Treasury lease at quarter-end.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "“quarter-end”"
+      }
+    ]
+  },
+  {
+    "id": "NAME22",
+    "name": "abbreviation inside a name, refusing variant: Rent expense rose $45,000 at the St. Louis depot.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $45,000 at the St. Louis depot.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is failed",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "failed"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "$45,000"
+      }
+    ]
+  },
+  {
+    "id": "NAME23",
+    "name": "abbreviation inside a name, refusing variant: Rent expense rose $30,000 under the Acme Co. Ltd. lease, so did Insurance expense.",
+    "required": "A full stop inside a name does not end a sentence. After an initialism (\"U.S.\", \"J.P.\"), a company suffix (\"Co.\", \"Inc.\", \"Ltd.\") or a title (\"St.\", \"Ft.\"), a capitalized word is the rest of the name, unless a person reads a new sentence there: the word after the stop opens one (\"The\", \"It\", \"Management\"), or the text in front of the stop is already a sentence, carrying a claim or a finite verb, and what follows makes a claim of its own. Each fixture asserts the sentences as a person reads them and the status each one earns, and a sentence that runs on is still held by everything else in the grammar.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 under the Acme Co. Ltd. lease, so did Insurance expense.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "“so did”"
+      }
+    ]
+  },
+  {
+    "id": "QTR01",
+    "name": "quarter against the column labels, refusing variant: Rent expense rose $30,000 in Q2.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 in Q2.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "“Q2”"
+      }
+    ]
+  },
+  {
+    "id": "QTR02",
+    "name": "quarter against the column labels, refusing variant: Rent expense rose $30,000 in the second quarter.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 in the second quarter.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "“second quarter”"
+      }
+    ]
+  },
+  {
+    "id": "QTR03",
+    "name": "quarter against the column labels, refusing variant: Rent expense rose $30,000 for the quarter.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 for the quarter.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "“quarter”"
+      }
+    ]
+  },
+  {
+    "id": "QTR04",
+    "name": "quarter against the column labels, refusing variant: Rent expense rose $30,000 in the third qtr.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 in the third qtr.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "“qtr.”"
+      }
+    ]
+  },
+  {
+    "id": "QTR05",
+    "name": "quarter against the column labels, refusing variant: Rent expense rose $30,000 in 2Q.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 in 2Q.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "“2Q”"
+      }
+    ]
+  },
+  {
+    "id": "QTR06",
+    "name": "quarter against the column labels, refusing variant: Rent expense rose $30,000 quarter over quarter.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 quarter over quarter.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "“quarter over quarter”"
+      }
+    ]
+  },
+  {
+    "id": "QTR07",
+    "name": "quarter against the column labels, refusing variant: Rent expense rose $30,000 at quarter-end.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 at quarter-end.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "“quarter-end”"
+      }
+    ]
+  },
+  {
+    "id": "QTR08",
+    "name": "quarter against the column labels, refusing variant: Rent expense rose $30,000 on a quarterly cycle.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 on a quarterly cycle.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "“quarterly”"
+      }
+    ]
+  },
+  {
+    "id": "QTR09",
+    "name": "quarter against the column labels, refusing variant: Rent expense rose $30,000 over the three-month period.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 over the three-month period.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "“three-month”"
+      }
+    ]
+  },
+  {
+    "id": "QTR10",
+    "name": "quarter against the column labels, refusing variant: Rent expense rose $30,000 in Q2.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 in Q2.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "“Q2”"
+      }
+    ]
+  },
+  {
+    "id": "QTR11",
+    "name": "quarter against the column labels, refusing variant: Rent expense rose $30,000 in Q3.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 in Q3.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "is neither of the two quarters the ledger compares"
+      }
+    ]
+  },
+  {
+    "id": "QTR12",
+    "name": "quarter against the column labels, refusing variant: Rent expense rose $30,000 in June.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 in June.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "the ledger's columns are quarters, which show no single month"
+      }
+    ]
+  },
+  {
+    "id": "QTR13",
+    "name": "quarter against the column labels, refusing variant: Rent expense rose $30,000 month over month.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 month over month.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "frames the claim on a month, and the ledger's columns are quarters"
+      }
+    ]
+  },
+  {
+    "id": "QTR14",
+    "name": "quarter against the column labels, accepting variant: Rent expense rose $30,000 in Q2.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 in Q2.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "QTR15",
+    "name": "quarter against the column labels, accepting variant: Rent expense rose $30,000 in the second quarter.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 in the second quarter.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "QTR16",
+    "name": "quarter against the column labels, accepting variant: Rent expense rose $30,000 for the quarter.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 for the quarter.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "QTR17",
+    "name": "quarter against the column labels, accepting variant: Rent expense rose $30,000 quarter over quarter.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "Account\tPrior quarter\tThis quarter\n6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 quarter over quarter.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "QTR18",
+    "name": "quarter against the column labels, accepting variant: Rent expense rose $30,000 in Q1 2026.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "Account\tQ4 2025\tQ1 2026\n6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 in Q1 2026.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "QTR19",
+    "name": "quarter against the column labels, accepting variant: Rent expense rose $30,000 at quarter-end.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 at quarter-end.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "QTR20",
+    "name": "quarter against the column labels, accepting variant, the quarters put in order: Rent expense rose $30,000 in Q2.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "Account\tQ2 2026\tQ1 2026\n6100\tRent expense\t130000\t100000",
+      "memo": "Rent expense rose $30,000 in Q2.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "nothing is left for the clearance grammar to hold",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Unread wording"
+      }
+    ]
+  },
+  {
+    "id": "QTR21",
+    "name": "quarter against the column labels, mixed, the quarter clears and the month does not: Rent expense rose $30,000 in Q2, and Insurance expense rose $45,000 in June.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000 in Q2, and Insurance expense rose $45,000 in June.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "“June”"
+      }
+    ]
+  },
+  {
+    "id": "QTR22",
+    "name": "quarter against the column labels, refusing variant: Rent expense rose $30,000 quarter to date.",
+    "required": "A quarter is bound only by the ledger's column labels, the same way a month is. \"Q2\", \"2Q\", \"the second quarter\", \"the quarter\", \"quarterly\", \"quarter-end\", \"quarter over quarter\" and a three-month span are held at needs review with the period named on a ledger kept in months, or one whose labels name no period, and never clear there. Where the labels name that quarter, or show two quarters in a row, the same words clear, and a month or a month frame is held instead, because a column that covers a quarter shows no single month.",
+    "inputs": {
+      "ledger": "Account\tQ1 2026\tQ2 2026\n6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 quarter to date.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the memo reads as 1 sentence, as a person reads it",
+        "get": "stats.sent",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names what the checker found",
+        "get": "queue",
+        "op": "includes",
+        "value": "“quarter to date”"
       }
     ]
   }

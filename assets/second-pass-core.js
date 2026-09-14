@@ -108,6 +108,12 @@
     var y=t.match(/\b(19|20)\d{2}\b/);
     var year=y?parseInt(y[0],10):null;
     var m=t.match(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\b/);
+    /* a column headed with a quarter is ordered by the month that quarter ends in,
+       so "Q2 2026" before "Q1 2026" in an export is still read the right way round */
+    if(!m){
+      var q=labelQuarter(t);
+      if(q!==null)return (year===null?2000:year)*12+q*3;
+    }
     if(!m&&year===null)return null;
     if(!m)return year*12;
     return (year===null?2000:year)*12+MONTHNUM[m[1]];
@@ -345,10 +351,13 @@
      one of SENT_ABBR_NUM, a company suffix or an initialism ("No.", "p.", "Inc.",
      "U.S.") it does not before a figure, a number sign or a dollar sign, and it does
      before a capital, except that an initialism runs on into a word in capitals
-     ("U.S. GAAP"). After a month or a day ("Sept.") it does not before a digit.
-     After a title ("Dr.", "St.") or a single capital initial ("J.") it does not
-     before a capitalized name, unless the word in front is capitalized itself ("Oak
-     St.", "Schedule A."). After a figure it does before a capital or a dollar sign
+     ("U.S. GAAP") and that a name-forming abbreviation, a company suffix, a title or
+     an initialism, runs on into the rest of a name ("U.S. Treasury", "J.P. Morgan",
+     "Co. Ltd."), which nameBreak reads. After a month or a day ("Sept.") it does not
+     before a digit. After a title ("Dr.", "St.") or a single capital initial ("J.")
+     it does not before a capitalized name, unless the word in front is capitalized
+     itself ("Oak St.", "Schedule A.") and is no title ("Mr. J. Smith" is one name).
+     After a figure it does before a capital or a dollar sign
      ("$57,900. An annual renewal"), and before a digit too unless the figure is one
      to three bare digits ("rose 7. 5 percent"), which is a decimal broken by a space
      and is read as an unparsed span. A question mark or an exclamation mark always
@@ -357,6 +366,35 @@
   var SENT_ABBR_NUM=/^(?:no|nos|nr|num|est|ca|fr|sfr|kr|rp|ref|fig|figs|pp|para|paras|sec|secs|sch|exh|art|vol|ch|inv|invs|ste|apt|bldg|rm|fl|min|max|tot|bal|yr|yrs|mo|mos|wk|wks|qtr|qtrs|pt|pts|inc|co|cos|corp|ltd|llc|llp|lp|plc|bros|etc|jr|sr)$/i;
   var SENT_ABBR_DATE=/^(?:jan|feb|mar|apr|jun|jul|aug|sep|sept|oct|nov|dec|mon|tue|tues|wed|thu|thur|thurs|fri|sat|sun)$/i;
   var SENT_TITLE=/^(?:dr|st|mt|ft|capt|lt|sgt|gov|hon)$/i;
+  /* the abbreviations that carry on into a name: a company suffix, a title, and the
+     initialism pattern tested in sentenceBreak ("U.S.", "J.P.") */
+  var SENT_NAME=/^(?:inc|co|cos|corp|ltd|llc|llp|lp|plc|bros|assn|assoc|univ|st|mt|ft)$/i;
+  /* the words that open a sentence rather than continue a name */
+  var SENT_OPEN=/^(?:The|This|That|These|Those|It|They|We|He|She|There|Its|Their|Our|His|Her|A|An|Each|Both|Neither|Either|No|All|Any|Such|Management|However|Meanwhile|Overall)$/;
+  /* a finite verb the checker can see, which is what makes the text in front of a
+     stop a sentence in its own right */
+  var SENT_AUX=/\b(?:is|are|was|were|be|been|am|has|have|had|does|do|did|will|would|can|could|may|might|must|shall|should)\b/i;
+  /* where the sentence in front of a stop began */
+  var SENT_START=/[.!?]["')\]]*\s+(?=["“(\[]?[A-Z0-9$#])/g;
+  /* A dotted abbreviation standing inside a name. After an initialism ("U.S.",
+     "J.P."), a company suffix ("Co.", "Inc.", "Ltd.") or a title ("St.", "Ft."), a
+     capitalized word is the rest of the name, "U.S. Treasury", "J.P. Morgan", "St.
+     Louis", "Co. Ltd.", unless a person reads a new sentence there. Two things say a
+     person does: the word after the stop opens a sentence rather than continuing a
+     name ("The", "It", "Management"), or the text in front of the stop is already a
+     sentence, carrying a claim or a finite verb, and what follows makes a claim of
+     its own. That is the difference between "interest on U.S. Treasury bills rose
+     $30,000", which is one sentence, and "revenue grew in the U.S. Rent expense rose
+     $30,000", which is two. */
+  function nameBreak(line,i,len){
+    var t=String(line),after=t.slice(i+1).replace(/^["')\]]*\s*/,""),w=(after.match(/^[A-Za-z]+/)||[""])[0];
+    if(SENT_OPEN.test(w))return len;
+    var head=t.slice(0,i),m,at=0;
+    SENT_START.lastIndex=0;
+    while((m=SENT_START.exec(head))!==null)at=m.index+m[0].length;
+    head=head.slice(at);
+    return (claimIn(head)||SENT_AUX.test(head))&&claimIn(after.split(/[.,;:!?]/)[0])?len:0;
+  }
   /* how many characters, from the stop at i, end a sentence there: the stop and any
      closing quote or bracket after it, or 0 where the sentence runs on */
   function sentenceBreak(line,i){
@@ -371,16 +409,18 @@
     if(!tok)return len;
     if(/[0-9]$/.test(tok))return digit&&/^[-+]?[0-9]{1,3}$/.test(tok)?0:len;
     if(tok==="v")return 0;
-    if(/^[A-Z]$/.test(tok))return cap&&(!prev||/^[a-z][a-z'-]*$/.test(prev)||/^[A-Z]\.$/.test(prev))?0:len;
+    var pw=prev.replace(/\.+$/,"");
+    if(/^[A-Z]$/.test(tok))return cap&&(!prev||/^[a-z][a-z'-]*$/.test(prev)||/^[A-Z]\.$/.test(prev)||
+      /^(?:mr|mrs|ms|messrs|dr|prof|rev|sir)$/i.test(pw))?0:len;
     if(/^[a-z]$/.test(tok))return (tok==="p"||tok==="c")&&digit?0:len;
     if(SENT_ABBR.test(tok))return 0;
-    if(SENT_TITLE.test(tok))return cap&&(!prev||/^[a-z][a-z'-]*$/.test(prev))?0:len;
+    if(SENT_TITLE.test(tok))return cap&&(!prev||/^[a-z][a-z'-]*$/.test(prev))?0:(cap?nameBreak(line,i,len):len);
     if(SENT_ABBR_DATE.test(tok))return digit?0:len;
-    if(/^(?:[A-Za-z]\.)+[A-Za-z]$/.test(tok))return cap&&!caps?len:0;
-    if(SENT_ABBR_NUM.test(tok))return cap?len:0;
+    if(/^(?:[A-Za-z]\.)+[A-Za-z]$/.test(tok))return cap&&!caps?nameBreak(line,i,len):0;
+    if(SENT_ABBR_NUM.test(tok))return cap?(SENT_NAME.test(tok)?nameBreak(line,i,len):len):0;
     return len;
   }
-  function splitSentences(text){
+function splitSentences(text){
     var out=[],lines=deSmart(text).split(/\r?\n/),auto=0;
     lines.forEach(function(raw){
       var line=raw.replace(/^\s+|\s+$/g,"");
@@ -638,11 +678,15 @@
     while((m=FRAC_RE.exec(text))!==null){
       var w=m[2].toLowerCase(),lead=m[1]?m[1].toLowerCase():"",aft=text.slice(m.index+m[0].length),
           bef=text.slice(0,m.index);
+      /* a lead that is the tail of a figure already written is not a fraction's
+         lead: in "rose $30,000 quarter over quarter" the "000" belongs to the
+         figure and the word beside it is a period, not a fraction */
+      if(m[1]&&/[0-9][.,]?$/.test(bef))continue;
       if(w==="half"||w==="halves"){
         if(!lead&&/(?:first|second|latter|former|back|front)[\s-]*$/i.test(bef))continue;
         if(/^[\s-]*(?:years?|months?|days?|hours?|time)\b/i.test(aft))continue;
       }else if(w==="quarter"||w==="quarters"){
-        if(!lead||/^[\s-]*end\b/i.test(aft))continue;
+        if(!lead||/^[\s-]*end\b/i.test(aft)||/^[\s-]*(?:over|on|to)[\s-]+quarter/i.test(aft))continue;
       }else{
         if(!lead)continue;
         if((lead==="a"||lead==="an"||lead==="one")&&!/s$/.test(w)&&!FRAC_KEEP.test(aft))continue;
@@ -673,7 +717,9 @@
      as a reference, or a count written in front of the thing it counts. Anything
      else is an unparsed span. */
   function strayNumbers(text,taken,figs,skipNums){
-    var re=/-?[0-9][0-9,]*(?:\.[0-9]+)?/g,out=[],outside=[],m,t,hit,i,j;
+    /* a comma inside a run of digits is a thousands separator; one at the end of it is
+       punctuation, so "in Q2, and" reads the label "Q2" and not the number "2," */
+    var re=/-?[0-9](?:[0-9,]*[0-9])?(?:\.[0-9]+)?/g,out=[],outside=[],m,t,hit,i,j;
     while((m=re.exec(text))!==null){
       i=m.index;j=i+m[0].length;hit=false;
       for(t=0;t<taken.length;t++)if(i<taken[t][1]&&j>taken[t][0]){hit=true;break;}
@@ -686,6 +732,9 @@
         re.lastIndex=te;
         if(/^[0-9]+(?:st|nd|rd|th)$/i.test(tok))outside.push({raw:tok,at:ts,end:te,kind:"ordinal"});
         else if(/^[0-9]{1,2}(?:am|pm)$/i.test(tok))outside.push({raw:tok,at:ts,end:te,kind:"time"});
+        /* a period written with its number in front, "2Q", "2Q26", "1H26": a label
+           like "Q2", which the clearance grammar then reads as a period */
+        else if(/^(?:[1-4]q|[12]h)(?:[0-9]{2,4})?$/i.test(tok))outside.push({raw:tok,at:ts,end:te,kind:"label"});
         else if(/^[A-Za-z]{1,6}[0-9]+[A-Za-z]?$/.test(tok))outside.push({raw:tok,at:ts,end:te,kind:"label"});
         else out.push({raw:tok,at:ts,end:te,why:"a number written in a form the checker does not read"});
         continue;
@@ -1441,8 +1490,35 @@
   var MONTH_WORD=/\bmonth(?:ly|[\s-]?end|[\s-]to[\s-]month)?\b|\b(?:mom|m\/m)\b/gi;
   var FRAME_MONTH=new RegExp("\\b(?:over|from|versus|vs\\.?|against|compared\\s+(?:with|to)|relative\\s+to|than(?:\\s+(?:in|at))?)\\s+(?:the\\s+)?("+MONTHS_CAP+")\\.?(?:,?\\s+((?:19|20)[0-9]{2}))?\\b","gi");
   var MONTH_TOKEN=new RegExp("\\b(?:"+MONTHS_CAP+")\\b","g");
-  var REASON_AT=/\b(?:because|as|since|on|upon|due\s+to|owing\s+to|thanks\s+to|driven\s+by|caused\s+by|led\s+by|reflecting|reflects|following|after|with|amid|whereas|while)\b|\(/gi;
-  var REASON_BACK=/^\s*(?:it|its|this|these|that|the\s+(?:line|account|balance|movement|increase|decrease|rise|fall|change|variance|figure|amount|total))\b/i;
+  /* a quarter the sentence names, with its number, and the quarter frame with none */
+  var QUARTER_NUM=/\bq\s?([1-4])\b|\b([1-4])q(?:[0-9]{2,4})?\b|\b(?:qtrs?|quarters?)\.?\s*([1-4])\b|\b(first|second|third|fourth|1st|2nd|3rd|4th)[\s-]+(?:fiscal[\s-]+)?quarter\b/gi;
+  var QUARTER_WORD=/\bquarter[\s-]+(?:over|on)[\s-]+quarter\b|\bquarter[\s-]?end(?:ed|ing|s)?\b|\bquarterly\b|\bquarters?\b|\bqtrs?\.?|\b(?:qoq|q\/q)\b|\b(?:three|3)[\s-]month\b/gi;
+  var REASON_AT=/\b(?:because|as|since|on|upon|due\s+to|owing\s+to|thanks\s+to|driven\s+by|caused\s+by|led\s+by|helped\s+by|aided\s+by|boosted\s+by|offset\s+by|attributable\s+to|reflecting|reflects|following|after|with|amid|amidst|despite|notwithstanding|in\s+spite\s+of|given|whereas|while)\b|\(/gi;
+  var REASON_BACK=/^\s*(?:it|its|this|these|that|the\s+(?:line|account|balance)|the\s+(?:movement|increase|decrease|rise|fall|change|variance|figure|amount|total)(?!\s+(?:in|on|of|at|for|from|to|across|between)\b))\b/i;
+  /* Where the claim ends: after the last figure the sentence or clause carries, or,
+     with no figure, after the first direction word. */
+  function claimEnd(text,figs){
+    var last=-1,dm;
+    (figs||[]).forEach(function(f){if(f.end>last)last=f.end;});
+    if(last>=0)return last;
+    dm=new RegExp("\\b(?:"+UP.concat(DOWN).join("|")+")\\b","i").exec(String(text));
+    return dm?dm.index+dm[0].length:0;
+  }
+  /* Where the reason begins: the first word after the claim that opens one, passing
+     over a reason that points straight back at the line ("because it", "as the
+     balance"). The clearance grammar and the direction check read one boundary, so a
+     word inside a reason is left to the reviewer's question about the reason by both:
+     the grammar does not hold a weak word there, and the direction check does not test
+     a direction word there against the account the figures tied. */
+  function reasonAt(text,from){
+    var t=String(text),m,at=t.length;
+    REASON_AT.lastIndex=Math.max(0,from||0);
+    while((m=REASON_AT.exec(t))!==null){
+      if(REASON_BACK.test(t.slice(m.index+m[0].length)))continue;
+      at=m.index;break;
+    }
+    return at;
+  }
   var CONTRACT_NOUN=/^[\s-]+(?:terms?|leases?|contracts?|renewals?|subscriptions?|agreements?|plans?|polic(?:y|ies)|licen[cs]es?|commitments?|prepayments?|retainers?|warrant(?:y|ies)|deals?|bonus(?:es)?|fees?|dues|audits?|reviews?|minimums?|maintenance|rent|charges?|invoices?|billing)\b/i;
   var NUMW_RISK="two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|[0-9]+|several|few|past|last|prior|previous|recent|coming|next|many";
   /* Size. The ledger holds no documented threshold for "sharply", "slightly" or
@@ -1495,7 +1571,7 @@
      why:"measures against a budget, a plan, a forecast or a basis the ledger does not hold"},
     {cat:"period",strong:1,cs:1,re:"\\b(?:PY|LY|CY|PYTD|CYTD|YTD|QTD|MTD|TTM|LTM|YoY|QoQ)\\b",
      why:"frames the claim on a period other than the ledger's two columns"},
-    {cat:"period",strong:1,contract:1,re:"\\b(?:yrs?|years?(?:[\\s-]+(?:over|on|to)[\\s-]+(?:year|date))?|yearly|annual(?:ly)?|per\\s+annum|yoy|y\\/y|ytd|qtd|mtd|(?:month|quarter)[\\s-]to[\\s-]date|fiscal|fy\\s?[0-9]{0,4}|quarter(?:s|ly)?(?:[\\s-]end)?|q[1-4]|[1-4]q|h[12]|[12]h|half[\\s-]year(?:ly)?|semi[\\s-]?annual(?:ly)?|biannual(?:ly)?|trailing|ttm|ltm|ntm|rolling|twelve[\\s-]months?|12[\\s-]months?|months|weeks|quarters|(?:"+NUMW_RISK+")[\\s-]+(?:days|months|weeks|quarters|years)|(?:consecutive|straight|successive|running)\\s+(?:months?|quarters?|years?|periods?)|in\\s+a\\s+row|week[\\s-]over[\\s-]week|wow|qoq|q\\/q|sequential(?:ly)?|(?:prior|previous|comparable|same)\\s+periods?|period[\\s-]over[\\s-]period|since\\s+(?:the\\s+)?(?:start|beginning|end|last|jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?|(?:19|20)[0-9]{2}|q[1-4]|year|quarter)|(?:last|next|this|previous|prior)\\s+(?:jan(?:uary)?|feb(?:ruary)?|march|apr(?:il)?|may|june|july|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?|spring|summer|autumn|fall|winter)|(?:over|during|through(?:out)?|across|since)\\s+(?:the\\s+)?(?:spring|summer|autumn|fall|winter|holidays?|season)|(?:first|second|1st|2nd)\\s+half(?!\\s+of\\s+(?:the\\s+)?(?:month|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec))|ago|per\\s+(?:month|week|day|quarter)|today|yesterday|tomorrow|tonight|overnight|intra-?(?:day|month|quarter|year)|(?:this|last|next)\\s+week)\\b",
+    {cat:"period",strong:1,contract:1,re:"\\b(?:yrs?|years?(?:[\\s-]+(?:over|on|to)[\\s-]+(?:year|date))?|yearly|annual(?:ly)?|per\\s+annum|yoy|y\\/y|ytd|qtd|mtd|(?:month|quarter)[\\s-]to[\\s-]date|fiscal|fy\\s?[0-9]{0,4}|h[12]|[12]h|half[\\s-]year(?:ly)?|semi[\\s-]?annual(?:ly)?|biannual(?:ly)?|trailing|ttm|ltm|ntm|rolling|twelve[\\s-]months?|12[\\s-]months?|months|weeks|quarters|(?:"+NUMW_RISK+")[\\s-]+(?:days|months|weeks|quarters|years)|(?:consecutive|straight|successive|running)\\s+(?:months?|quarters?|years?|periods?)|in\\s+a\\s+row|week[\\s-]over[\\s-]week|wow|sequential(?:ly)?|(?:prior|previous|comparable|same)\\s+periods?|period[\\s-]over[\\s-]period|since\\s+(?:the\\s+)?(?:start|beginning|end|last|jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?|(?:19|20)[0-9]{2}|q[1-4]|year|quarter)|(?:last|next|this|previous|prior)\\s+(?:jan(?:uary)?|feb(?:ruary)?|march|apr(?:il)?|may|june|july|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?|spring|summer|autumn|fall|winter)|(?:over|during|through(?:out)?|across|since)\\s+(?:the\\s+)?(?:spring|summer|autumn|fall|winter|holidays?|season)|(?:first|second|1st|2nd)\\s+half(?!\\s+of\\s+(?:the\\s+)?(?:month|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec))|ago|per\\s+(?:month|week|day|quarter)|today|yesterday|tomorrow|tonight|overnight|intra-?(?:day|month|quarter|year)|(?:this|last|next)\\s+week)\\b",
      why:"frames the claim on a period other than the ledger's two columns"},
     {cat:"period",strong:0,re:"\\b(?:weeks?|days?|weekly|daily|hourly|nightly|week[\\s-]?end|spring|summer|autumn|winter|seasonal(?:ly)?|holidays?|through|thru|until|till|during|(?:first|second|third|fourth|last|final|early|late|mid)[\\s-]+(?:half|week|weeks|days?|part|month)|mid[\\s-]?month|early|late|recent(?:ly)?|previously|historically|typically|usually|normally|again|yet)\\b",
      why:"places the claim inside or across a period the ledger's two columns do not show"},
@@ -1532,6 +1608,27 @@
     var m=String(l==null?"":l).match(/\b(?:19|20)[0-9]{2}\b/);
     return m?parseInt(m[0],10):null;
   }
+  /* the quarter a ledger column label names, or null: "Q2", "Q2 2026", "2Q26",
+     "Quarter 2", "Qtr. 2", "Second quarter 2026" */
+  var QNUMW={first:1,second:2,third:3,fourth:4,"1st":1,"2nd":2,"3rd":3,"4th":4};
+  var QLABEL=/\bq\s?([1-4])\b|\b([1-4])\s?q(?:[0-9]{2,4})?\b|\b(?:qtrs?|quarters?)\.?\s*([1-4])\b|\b(first|second|third|fourth|1st|2nd|3rd|4th)[\s-]+(?:fiscal[\s-]+)?quarter\b/i;
+  function labelQuarter(l){
+    var m=String(l==null?"":l).match(QLABEL);
+    if(!m)return null;
+    var n=parseInt(m[1]||m[2]||m[3],10);
+    return isFinite(n)&&n?n:(m[4]?QNUMW[m[4].toLowerCase()]||null:null);
+  }
+  /* whether the two column labels, prior then current, show two quarters in a row:
+     "Q1 2026" then "Q2 2026", "4Q25" then "1Q26", or "Prior quarter" then "This
+     quarter" */
+  function labelsQuarterly(cols){
+    var p=String(cols&&cols[0]!=null?cols[0]:""),c=String(cols&&cols[1]!=null?cols[1]:"");
+    var qp=labelQuarter(p),qc=labelQuarter(c),yp=labelYear(p),yc=labelYear(c);
+    if(qp===null&&qc===null)return /\bq(?:tr|uarter)s?\b/i.test(p)&&/\bq(?:tr|uarter)s?\b/i.test(c);
+    if(qp===null||qc===null)return false;
+    if(yp!==null&&yc!==null)return yc*4+qc-(yp*4+qp)===1;
+    return (qc-qp+4)%4===1;
+  }
   /* whether the two column labels, prior then current, show two months in a row:
      "May 2026" then "June 2026", "Dec" then "Jan", or "Prior month" then "This month" */
   function labelsMonthly(cols){
@@ -1554,11 +1651,11 @@
       }
     }
     function add(raw,at,why,cat){out.push({raw:raw,at:at,end:at+raw.length,cat:cat,why:why});}
-    var figs=s.figs||[],bound=s.bound||[],lastFig=-1,held=[];
-    figs.forEach(function(f){eat(f.at,f.end);held.push([f.at,f.end]);if(f.end>lastFig)lastFig=f.end;});
+    var figs=s.figs||[],bound=s.bound||[],held=[];
+    figs.forEach(function(f){eat(f.at,f.end);held.push([f.at,f.end]);});
     (figs.rejected||[]).forEach(function(r){eat(r.at,r.end);held.push([r.at,r.end]);});
-    /* a label that names a period, "Q2", "H1" or "FY26", is read as a period here */
-    (figs.outside||[]).forEach(function(o){if(!/^(?:q[1-4]|[1-4]q|h[12]|[12]h|fy[0-9]*)$/i.test(o.raw))eat(o.at,o.end);});
+    /* a label that names a period, "Q2", "2Q26", "H1" or "FY26", is read as a period here */
+    (figs.outside||[]).forEach(function(o){if(!/^(?:q\s?[1-4]|[1-4]q|h[12]|[12]h)(?:[0-9]{2,4})?$|^fy[0-9]*$/i.test(o.raw))eat(o.at,o.end);});
     bound.forEach(function(a){
       if(a.num)eatRe(new RegExp("\\b"+a.num+"\\b","g"));
       var ws=String(a.flat||"").split(" ").filter(function(w){return w;});
@@ -1573,8 +1670,13 @@
     eatRe(new RegExp(STILL_FIG.source,"gi"));
     eatRe(ACCEPT_FRAME);
     var cols=(bound.length&&bound[0].cols)||[];
-    var mp=labelMonth(cols[0]),mc=labelMonth(cols[1]),yp=labelYear(cols[0]),yc=labelYear(cols[1]);
-    var monthly=labelsMonthly(cols),nolab=mp===null&&mc===null;
+    /* a column headed with a quarter names no single month, so a ledger read in
+       quarters binds no month and a ledger read in months binds no quarter */
+    var qp=labelQuarter(cols[0]),qc=labelQuarter(cols[1]),quarterly=labelsQuarterly(cols);
+    var quartered=quarterly||qp!==null||qc!==null;
+    var mp=quartered?null:labelMonth(cols[0]),mc=quartered?null:labelMonth(cols[1]);
+    var yp=labelYear(cols[0]),yc=labelYear(cols[1]);
+    var monthly=!quartered&&labelsMonthly(cols),nolab=mp===null&&mc===null;
     if(monthly)eatRe(MONTH_FRAME);
     FRAME_MONTH.lastIndex=0;
     while((m=FRAME_MONTH.exec(text))!==null){
@@ -1585,17 +1687,7 @@
     }
     /* the claim runs to the first word that opens a reason after the last figure,
        passing over a reason that points straight back at the line */
-    var anchor=lastFig;
-    if(anchor<0){
-      var dm=new RegExp("\\b(?:"+UP.concat(DOWN).join("|")+")\\b","i").exec(text);
-      anchor=dm?dm.index+dm[0].length:0;
-    }
-    var reasonAt=n;
-    REASON_AT.lastIndex=anchor;
-    while((m=REASON_AT.exec(text))!==null){
-      if(REASON_BACK.test(text.slice(m.index+m[0].length)))continue;
-      reasonAt=m.index;break;
-    }
+    var rsn=reasonAt(text,claimEnd(text,figs));
     function inHeld(a,b){
       for(k=0;k<held.length;k++)if(a<held[k][1]&&b>held[k][0])return true;
       return false;
@@ -1607,7 +1699,7 @@
         if(!m[0].length){e.rx.lastIndex++;continue;}
         for(k=a;k<b;k++)if(!used[k]&&/\S/.test(text.charAt(k))){all=false;break;}
         if(all)continue;
-        if(!e.strong&&a>=reasonAt)continue;
+        if(!e.strong&&a>=rsn)continue;
         if(e.not&&e.not.test(text.slice(b)))continue;
         if(e.contract&&CONTRACT_NOUN.test(text.slice(b)))continue;
         if(e.tail&&m[1])add(m[1],b-m[1].length,e.why,e.cat);
@@ -1625,7 +1717,8 @@
       if(used[m.index])continue;
       var tm=MONTHNUM[m[0].slice(0,3).toLowerCase()];
       if(tm===mp||tm===mc)continue;
-      add(m[0],m.index,nolab?"names a month, and the ledger's column labels name no month to tie it to":
+      add(m[0],m.index,quartered?"names a month, and the ledger's columns are quarters, which show no single month":
+        nolab?"names a month, and the ledger's column labels name no month to tie it to":
         "is neither of the two months the ledger compares","period");
     }
     (figs.outside||[]).forEach(function(o){
@@ -1634,7 +1727,8 @@
       if(!dm)return;
       var mo=parseInt(dm[1],10);
       if(mo===mp||mo===mc)return;
-      add(o.raw,o.at,nolab?"is a date, and the ledger's column labels name no month to tie it to":
+      add(o.raw,o.at,quartered?"is a date, and the ledger's columns are quarters, which show no single month":
+        nolab?"is a date, and the ledger's column labels name no month to tie it to":
         "is a date in neither of the two months the ledger compares","period");
     });
     if(!monthly){
@@ -1643,7 +1737,36 @@
         var wa=m.index,wb=wa+m[0].length,eaten=true;
         for(k=wa;k<wb;k++)if(!used[k]){eaten=false;break;}
         if(eaten||CONTRACT_NOUN.test(text.slice(wb)))continue;
-        add(m[0],wa,"frames the claim on a month, and the ledger's column labels do not show two months in a row","period");
+        /* a three-month span is the column itself on a ledger kept in quarters */
+        if(quarterly&&/(?:three|3)[\s-]$/i.test(text.slice(0,wa)))continue;
+        add(m[0],wa,quartered?"frames the claim on a month, and the ledger's columns are quarters":
+          "frames the claim on a month, and the ledger's column labels do not show two months in a row","period");
+      }
+    }
+    /* A quarter is bound the same way a month is. "Q2", "2Q26" and "the second
+       quarter" are bound by a column that names that quarter; "the quarter",
+       "quarterly", "quarter-end", "quarter over quarter" and a three-month span are
+       bound where the labels show two quarters in a row. A ledger kept in months, or
+       one whose labels name no period, binds none of them, so a quarter reference on a
+       monthly ledger is held with the word named and never clears. */
+    QUARTER_NUM.lastIndex=0;
+    while((m=QUARTER_NUM.exec(text))!==null){
+      var qa=m.index,qb=qa+m[0].length,qeaten=true;
+      for(k=qa;k<qb;k++)if(!used[k]){qeaten=false;break;}
+      if(qeaten)continue;
+      var tq=parseInt(m[1]||m[2]||m[3],10);
+      if(!isFinite(tq)||!tq)tq=m[4]?QNUMW[m[4].toLowerCase()]||null:null;
+      if(tq!==null&&(tq===qp||tq===qc)){eat(qa,qb);continue;}
+      add(m[0],qa,quartered?"is neither of the two quarters the ledger compares":
+        "names a quarter, and the ledger's column labels name no quarter to tie it to","period");
+    }
+    if(!quarterly){
+      QUARTER_WORD.lastIndex=0;
+      while((m=QUARTER_WORD.exec(text))!==null){
+        var ca=m.index,cb=ca+m[0].length,ceaten=true;
+        for(k=ca;k<cb;k++)if(!used[k]){ceaten=false;break;}
+        if(ceaten||CONTRACT_NOUN.test(text.slice(cb)))continue;
+        add(m[0],ca,"frames the claim on a quarter, and the ledger's column labels do not show two quarters in a row","period");
       }
     }
     var yr=/\b(?:19|20)[0-9]{2}\b/g;
@@ -1689,7 +1812,7 @@
     });
     return kept;
   }
-  /* end of the clearance grammar */
+/* end of the clearance grammar */
 
   /* ============================================================ the parse preview */
   var USERCOLS=null,PVTIMER=null,PVSIG="";
@@ -1756,9 +1879,34 @@
         return;
       }
       anchored.push(c);
-      testClause(c,anchor);
+      testClause(c,anchor,cf);
     });
-    function testClause(c,anchor){
+    /* the bound lines a stretch of text names */
+    function namesIn(c){
+      var ct=" "+String(c).toLowerCase().replace(/[^a-z0-9\s]/g," ").replace(/\s+/g," ")+" ",named=[];
+      s.bound.forEach(function(a){
+        if((a.num&&new RegExp("(^|[^0-9])"+a.num+"([^0-9]|$)").test(c))||
+           (a.flat&&ct.indexOf(" "+a.flat+" ")>-1)||(a.two&&a.two.indexOf(" ")>-1&&ct.indexOf(" "+a.two+" ")>-1))named.push(a);
+      });
+      return named;
+    }
+    /* A clause is read in two parts. Its claim is tested against the line the figures
+       tied. Its reason, from the first word that opens one, is about the cause: a
+       direction word there belongs to what the reason names, not to the account, so
+       "rose $30,000 on a decrease in vacancy" never fails on "decrease". Where the
+       reason names exactly one bound line, the word is tested against that line,
+       which is the subject the words give it; where it names none or more than one,
+       it is left with the reviewer's question about the reason, as a clause opened
+       by "as", "because" or "while" already is. */
+    function testClause(c,anchor,cf){
+      var ra=reasonAt(c,claimEnd(c,cf||figures(c,s.numset))),named;
+      readClaim(c.slice(0,ra),anchor);
+      if(ra<c.length&&/\S/.test(c.slice(ra))){
+        named=namesIn(c.slice(ra));
+        if(named.length===1)readClaim(c.slice(ra),named[0]);
+      }
+    }
+    function readClaim(c,anchor){
       var sign=anchor.change>0?1:(anchor.change<0?-1:0);
       var anm=acctId(anchor),fw=flatWord(c);
       if(fw){
@@ -1781,12 +1929,7 @@
          sentence binds, it is held, because the checker cannot tell what it
          describes. */
       open.forEach(function(o){
-        var c=o.text;
-        var ct=" "+c.toLowerCase().replace(/[^a-z0-9\s]/g," ").replace(/\s+/g," ")+" ",named=[];
-        s.bound.forEach(function(a){
-          if((a.num&&new RegExp("(^|[^0-9])"+a.num+"([^0-9]|$)").test(c))||
-             (a.flat&&ct.indexOf(" "+a.flat+" ")>-1)||(a.two&&a.two.indexOf(" ")>-1&&ct.indexOf(" "+a.two+" ")>-1))named.push(a);
-        });
+        var c=o.text,named=namesIn(c);
         if(named.length===1){testClause(c,named[0]);return;}
         /* a clause opened by "as", "because", "while" and the like names a cause or a
            contrast, and its direction word is about that, unless it points back at
@@ -1938,12 +2081,19 @@
     directionRead: directionRead,
     labelMonth: labelMonth,
     labelYear: labelYear,
+    labelQuarter: labelQuarter,
+    labelsQuarterly: labelsQuarterly,
     RISK_LEX: RISK_LEX,
     ACCEPT_FRAME: ACCEPT_FRAME,
     FRAME_MONTH: FRAME_MONTH,
     MONTH_TOKEN: MONTH_TOKEN,
+    QUARTER_NUM: QUARTER_NUM,
+    QUARTER_WORD: QUARTER_WORD,
+    QLABEL: QLABEL,
     REASON_AT: REASON_AT,
     REASON_BACK: REASON_BACK,
+    claimEnd: claimEnd,
+    reasonAt: reasonAt,
     CONTRACT_NOUN: CONTRACT_NOUN,
     CUR_NAMES: CUR_NAMES,
     CUR_NAT: CUR_NAT,
@@ -1960,6 +2110,10 @@
     SENT_ABBR_NUM: SENT_ABBR_NUM,
     SENT_ABBR_DATE: SENT_ABBR_DATE,
     SENT_TITLE: SENT_TITLE,
+    SENT_NAME: SENT_NAME,
+    SENT_OPEN: SENT_OPEN,
+    SENT_AUX: SENT_AUX,
+    nameBreak: nameBreak,
     BROKEN_DEC: BROKEN_DEC,
     PCT_POINTS_AFTER: PCT_POINTS_AFTER,
     MONTH_FRAME: MONTH_FRAME,
