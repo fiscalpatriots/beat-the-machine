@@ -192,7 +192,7 @@ chip and its type is not `clean line`, every card has at least one chip, a why a
 every card's figures reconcile to the ledger row it points at. It names what is missing instead of
 refusing silently.
 
-An authored case is generated rather than policed. `build-cases.cjs` is still the gate for
+An authored case is generated rather than policed. `build-cases.cjs` is still the check for
 anything that goes into `index.html`'s inline fallback, and an authored file has to pass it before
 it is treated as a published case rather than as one facilitator's own.
 
