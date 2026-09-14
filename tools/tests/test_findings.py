@@ -593,5 +593,174 @@ class ExplanationTest(unittest.TestCase):
             self.run_rows(rows, scores_path=bad)
 
 
+def keyed_calls(version, off=()):
+    """The key's call on every line, turned over on the zero-based lines named in off."""
+    out = []
+    for i, card in enumerate(load(version)["cards"]):
+        call = card["key"]
+        if i in off:
+            call = "stand" if call == "flag" else "flag"
+        out.append(call)
+    return out
+
+
+def read_cell(version, picks, calls, late=False, counts=None, letters=None):
+    """The round one cell the way prepickLine() in index.html writes the required read."""
+    cards = load(version)["cards"]
+    read = ["flag" if c["acct"] in picks else "stand" for c in cards]
+    toward = away = held = 0
+    for r, final, card in zip(read, calls, cards):
+        if final == r:
+            held += 1
+        elif final == card["key"]:
+            toward += 1
+        else:
+            away += 1
+    counts = counts or (toward, away, held)
+    letters = letters or "".join("F" if r == "flag" else "S" for r in read)
+    cell = ("Prepicks: %s. Required read before the AI draft, case %s, by line, F tapped for a "
+            "second look and S left untapped: %s. Final calls after the draft: %s. Against the "
+            "key: %d changed toward it, %d changed away from it, %d held."
+            % ("; ".join(picks), version, letters,
+               "".join("F" if c == "flag" else "S" for c in calls),
+               counts[0], counts[1], counts[2]))
+    if late:
+        cell += " Taken after a call was locked, so not a read before the draft."
+    return cell
+
+
+def with_read(code, attempt, version, picks, off=(), ts="2026-09-15 10:00:00", **kw):
+    calls = keyed_calls(version, off)
+    cell = kw.pop("cell", None) or read_cell(version, picks, calls, **kw)
+    return response(code, attempt, version, calls=calls, ts=ts, extra={f.ROUND1_TITLE: cell})
+
+
+class PrepickTest(unittest.TestCase):
+    """The required read before the draft, set against the final calls in the findings."""
+
+    def setUp(self):
+        self.tmp = Folder()
+
+    def tearDown(self):
+        self.tmp.close()
+
+    def run_rows(self, rows, **kw):
+        path = self.tmp.csv("responses.csv", rows)
+        kw.setdefault("cases_dir", CASES)
+        return f.analyze(path, **kw)
+
+    def test_cell_shapes_parse_old_and_required(self):
+        old = f.parse_prepicks("Prepicks: 4200; 6000; 6400.")
+        self.assertEqual((old["picks"], old["required"]), (["4200", "6000", "6400"], False))
+        self.assertTrue(f.parse_prepicks("Prepicks: skipped.")["skipped"])
+        self.assertTrue(f.parse_prepicks("Prepicks: not recorded.")["not_recorded"])
+        self.assertIsNone(f.parse_prepicks(""))
+        cell = read_cell("halyard-v4", ["4200", "4000"], keyed_calls("halyard-v4"), late=True)
+        new = f.parse_prepicks(cell)
+        self.assertEqual(new["picks"], ["4200", "4000"])
+        self.assertTrue(new["required"] and new["late"])
+        self.assertEqual(new["version"], "halyard-v4")
+        self.assertEqual(new["read"], "FSSSSSFSSSSFSS")
+        self.assertEqual(new["posted"], (5, 0, 9))
+
+    def test_required_read_is_set_against_final_calls_toward_away_and_held(self):
+        # line 5 is a clean line called flag: untapped before the draft, flagged after it
+        rows = [with_read("NORTHSTAR", "att-n1", "halyard-v4", ["4200", "6200", "4100"], off=(4,)),
+                with_read("TIEOUT", "att-t1", "halyard-v4", ["6000"])]
+        report = self.run_rows(rows)
+        self.assertEqual(report["disagreements"], [])
+        one = next(a for a in report["initial"] if a["codename"] == "NORTHSTAR")
+        self.assertEqual((one["read"]["toward"], one["read"]["away"], one["read"]["held"]),
+                         (7, 1, 6))
+        self.assertEqual(one["read"]["moves"][3], "toward")    # tapped, then let stand, key stand
+        self.assertEqual(one["read"]["moves"][4], "away")      # untapped, then flagged, key stand
+        self.assertEqual(one["read"]["moves"][0], "held")
+        r = report["sets"][0]["read"]
+        self.assertEqual((r["n"], r["changed_any"], r["compared"], r["changed"], r["toward"],
+                          r["away"], r["held"]), (2, 2, 28, 15, 14, 1, 13))
+        line5 = r["per_line"][4]
+        self.assertEqual((line5["compared"], line5["tapped"], line5["away"], line5["held"]),
+                         (2, 0, 1, 1))
+        line11 = r["per_line"][10]
+        self.assertEqual((line11["tapped"], line11["held"], line11["toward"]), (1, 1, 1))
+        fields = dict(f.readout_fields(report, "responses.csv")["sets"][0][1])
+        self.assertEqual(fields["prepick.first_attempts_with_read"], 2)
+        self.assertEqual(fields["prepick.lines_changed"], 15)
+        self.assertAlmostEqual(fields["prepick.changed_toward_key_rate"], 100.0 * 14 / 15)
+        self.assertEqual(f.fmt_field(fields["prepick.lines_changed_rate"],
+                                     "prepick.lines_changed_rate"), "53.6%")
+        self.assertNotIn("r1.prepicks_given", fields)
+
+    def test_first_attempts_only_and_each_case_version_apart(self):
+        rows = [with_read("REDLINE", "att-r1", "halyard-v4", ["6000"], ts="2026-09-15 09:00:00"),
+                # a reattempt by the same codename, with a different read: in no count
+                with_read("REDLINE", "att-r2", "halyard-v4", ["4100"], off=(0, 1, 2),
+                          ts="2026-09-15 11:00:00"),
+                with_read("KITE", "att-k1", "kestrel-v1", ["4100"], ts="2026-09-15 10:00:00")]
+        report = self.run_rows(rows)
+        self.assertEqual(len(report["reattempts"]), 1)
+        by_version = {s["case1"]["version"]: s["read"] for s in report["sets"]}
+        self.assertEqual(by_version["halyard-v4"]["n"], 1)
+        self.assertEqual((by_version["halyard-v4"]["toward"], by_version["halyard-v4"]["away"],
+                          by_version["halyard-v4"]["held"]), (7, 0, 7))
+        # kestrel-v1 carries account 4100 on lines 4 and 8, both keyed flag, so one tap reads
+        # as a flag on both
+        kestrel = by_version["kestrel-v1"]
+        self.assertEqual((kestrel["n"], kestrel["toward"], kestrel["away"], kestrel["held"]),
+                         (1, 5, 0, 7))
+        self.assertEqual((kestrel["per_line"][3]["tapped"], kestrel["per_line"][7]["tapped"]),
+                         (1, 1))
+        self.assertEqual(report["disagreements"], [])
+
+    def test_optional_era_late_and_missing_reads_enter_no_count(self):
+        calls = keyed_calls("halyard-v4")
+        rows = [with_read("ONE", "att-1", "halyard-v4", ["4200"]),
+                with_read("TWO", "att-2", "halyard-v4", [], cell="Prepicks: 4200; 6000; 6400."),
+                with_read("THREE", "att-3", "halyard-v4", [], cell="Prepicks: skipped."),
+                with_read("FOUR", "att-4", "halyard-v4", ["6000"], late=True),
+                response("FIVE", "att-5", "halyard-v4", calls=calls)]
+        report = self.run_rows(rows)
+        r = report["sets"][0]["read"]
+        self.assertEqual((r["n"], r["n_before_required"], r["n_late"], r["n_missing"]),
+                         (1, 2, 1, 1))
+        self.assertEqual(r["compared"], 14)
+        fields = dict(f.readout_fields(report, "responses.csv")["sets"][0][1])
+        self.assertEqual(fields["prepick.first_attempts_before_required"], 2)
+        self.assertEqual(fields["prepick.first_attempts_read_after_a_call"], 1)
+        text = f.build_markdown(report, "responses.csv")
+        self.assertIn("two posted before the read was required; one locked in after a call; "
+                      "one with no read in the round one question", text)
+
+    def test_posted_letters_and_counts_are_checked_and_the_case_file_decides(self):
+        calls = keyed_calls("halyard-v4")
+        bad = read_cell("halyard-v4", ["4200"], calls, counts=(9, 0, 5), letters="SSSSSSSSSSSSSS")
+        report = self.run_rows([with_read("DRIFT", "att-d", "halyard-v4", ["4200"], cell=bad)])
+        a = report["initial"][0]
+        self.assertEqual((a["read"]["toward"], a["read"]["away"], a["read"]["held"]), (7, 0, 7))
+        joined = " ".join(report["disagreements"])
+        self.assertIn("the page posted the read SSSSSSSSSSSSSS", joined)
+        self.assertIn("the page posted 9 toward, 0 away and 5 held", joined)
+
+    def test_no_read_block_says_so_and_labels_never_claim_learning(self):
+        rows = [with_read("LABEL", "att-l", "halyard-v4", ["7100", "6400"], off=(3,))]
+        report = self.run_rows(rows)
+        text = f.build_markdown(report, "responses.csv")
+        self.assertIn("### The read before the draft, against the final calls", text)
+        self.assertIn("Descriptive agreement on a keyed exercise, first attempts only.", text)
+        self.assertIn("it is not a learning gain", text)
+        self.assertNotIn("learning gain from", text.lower())
+        names = [n for _, vals in f.readout_fields(report, "responses.csv")["sets"]
+                 for n, _ in vals if n.startswith("prepick.")]
+        self.assertEqual(len(names), 13)
+        self.assertFalse([n for n in names if "player" in n or "gain" in n or "learn" in n])
+        empty = self.run_rows([response("NOREAD", "att-x", "halyard-v4")])
+        self.assertIn("No first attempt on this case set carries the required read",
+                      f.build_markdown(empty, "responses.csv"))
+        fields = dict(f.readout_fields(empty, "responses.csv")["sets"][0][1])
+        self.assertIsNone(fields["prepick.lines_changed_rate"])
+        self.assertEqual(f.fmt_field(fields["prepick.lines_changed"], "prepick.lines_changed"),
+                         "not available")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

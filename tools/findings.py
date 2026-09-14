@@ -70,6 +70,23 @@ educator's scores and the two scorers' agreement apart from reason chip agreemen
 explanation is read from the Evidence, Period and Action segments question C carries on each
 line, named in one block, EXPLANATION_PARTS.
 
+The read before the draft
+-------------------------
+Before a single sentence of the AI draft is shown, the page asks every player to tap, from the
+ledger alone, the accounts they would give a second look. It is required, it has no skip, and
+it posts into the round one question with the case version, the read and the final call on each
+line as letters, and three counts. A tapped account reads as a flag on each of its lines and an
+untapped one as let it stand. For first attempts only, and inside each case set, the script
+sets that read beside the final call on every practice line against the key from the case file:
+held, changed toward the key, or changed away from it. The accounts tapped are the data, so the
+read is rebuilt from them against the recorded version, and the letters and counts the page
+posted are only checked against that. A read locked in after a call was made, and every row
+filed before the read was required (the optional picks of up to three accounts, or "skipped"),
+enter no count and are counted apart. This is descriptive agreement on a keyed exercise. Each
+final call was made after reading the draft, the file on the card and, in practice mode, the
+reveals of the lines before it, so a change toward the key is not attributed to the draft alone,
+and it is never a learning gain.
+
 Roster file (optional, --roster)
 --------------------------------
 A CSV the facilitator writes after a session, one row per codename, no accounts involved:
@@ -490,7 +507,27 @@ RESULT_RE = re.compile(
     r"result\s*:\s*right\s+call\s+(\d+)\s+of\s+(\d+)\s*,\s*right\s+reason\s+(\d+)"
     r"\s+of\s+(\d+)\s*,\s*(\d+)\s+caught\s*,\s*(\d+)\s+let\s+stand\s+correctly\s*,\s*"
     r"(\d+)\s+false\s+flags?\s*,\s*([\d,]+)\s+points\s*,\s*rank\s+(\w+)", re.I)
-PREPICK_RE = re.compile(r"prepicks\s*:\s*(.*?)\s*\.?\s*$", re.I | re.S)
+# The round one question, from prepickLine() in index.html. The required read since the
+# evening of 13 September 2026:
+#   Prepicks: 4200; 5100; 6000. Required read before the AI draft, case halyard-v4, by line,
+#   F tapped for a second look and S left untapped: FSFSSSSSSSFSSS. Final calls after the
+#   draft: FFFSSSFFSSFFSF. Against the key: 5 changed toward it, 0 changed away from it, 9 held.
+# with " Taken after a call was locked, so not a read before the draft." when it was. Earlier
+# that day the step was optional and capped at three: "Prepicks: 4200; 6000; 6400." or
+# "Prepicks: skipped."
+PREPICK_RE = re.compile(r"prepicks\s*:\s*(.*?)\s*(?:\.\s*required read before|\.?\s*$)", re.I | re.S)
+PREPICK_READ_RE = re.compile(
+    r"required read before the ai draft\s*,\s*case\s+([\w.:+-]+?)\s*,\s*by line[^:]*:\s*"
+    r"([FS]+)\s*\.\s*final calls after the draft\s*:\s*([FS-]+)\s*\.\s*"
+    r"against the key\s*:\s*(\d+)\s+changed toward it\s*,\s*(\d+)\s+changed away from it\s*,"
+    r"\s*(\d+)\s+held", re.I)
+PREPICK_LATE_RE = re.compile(r"taken after a call was locked", re.I)
+PREPICK_NOTE = ("Descriptive agreement on a keyed exercise, first attempts only. The read is "
+                "taken from the ledger alone before the AI draft is shown, and a tapped account "
+                "reads as a flag on its lines. Each final call came after reading the draft, "
+                "the file on the card and, in practice mode, the reveals of the lines before "
+                "it, so a change toward the key is not credited to the draft alone. It is not "
+                "a pre-test and post-test, and it is not a learning gain.")
 
 
 def reason_agrees(chips, basis_key):
@@ -628,13 +665,76 @@ def parse_cases(text):
 
 
 def parse_prepicks(text):
-    match = PREPICK_RE.search((text or "").strip())
+    """The round one cell, or None when it carries no Prepicks sentence at all.
+
+    required is True only for the required read, which alone carries a version, the letters
+    and the counts. picks is the accounts tapped, empty for an old skip or "not recorded"."""
+    raw = (text or "").strip()
+    match = PREPICK_RE.search(raw)
     if not match:
         return None
     body = match.group(1).strip().strip(".")
-    if not body or norm(body) == "skipped":
-        return []
-    return [piece.strip() for piece in body.split(";") if piece.strip()]
+    read = PREPICK_READ_RE.search(raw)
+    out = {"picks": [], "required": bool(read), "skipped": False, "not_recorded": False,
+           "version": None, "read": None, "final": None, "posted": None,
+           "late": bool(PREPICK_LATE_RE.search(raw))}
+    if norm(body) == "skipped":
+        out["skipped"] = True
+    elif norm(body) == "not recorded":
+        out["not_recorded"] = True
+    elif body:
+        out["picks"] = [piece.strip() for piece in body.split(";") if piece.strip()]
+    if read:
+        out.update({"version": read.group(1), "read": read.group(2).upper(),
+                    "final": read.group(3).upper(),
+                    "posted": (int(read.group(4)), int(read.group(5)), int(read.group(6)))})
+    return out
+
+
+def score_prepick(a, case):
+    """The required read against the final calls, line by line, on the recorded version.
+
+    a["read"] stays None for a row with no required read. The read is rebuilt from the
+    accounts tapped, and the letters and counts the page posted are checked against it."""
+    p = a["prepicks"]
+    a["read"] = None
+    if not p or not p["required"]:
+        return
+    code, version, cards = a["codename"], case["version"], case["cards"]
+    dis = a["disagreements"]
+    if p["version"] and p["version"] != version:
+        dis.append("%s: the read before the draft names case %s, question A names %s"
+                   % (code, p["version"], version))
+    tapped = {norm(x) for x in p["picks"]}
+    read = ["flag" if norm(c["acct"]) in tapped else "stand" for c in cards]
+    letters = "".join("F" if r == "flag" else "S" for r in read)
+    if not p["picks"]:
+        dis.append("%s: the read before the draft carries no account, which the page does not "
+                   "allow" % code)
+    if p["read"] and p["read"] != letters:
+        dis.append("%s: the page posted the read %s, the accounts tapped read %s on %s"
+                   % (code, p["read"], letters, version))
+    if p["late"]:
+        a["read"] = {"late": True}
+        return
+    moves = []
+    for i, card in enumerate(cards):
+        final = a["calls"][i] if i < len(a["calls"]) else None
+        if final is None:
+            moves.append(None)
+        elif final == read[i]:
+            moves.append("held")
+        elif final == card["key"]:
+            moves.append("toward")
+        else:
+            moves.append("away")
+    counts = (moves.count("toward"), moves.count("away"), moves.count("held"))
+    if p["posted"] and p["posted"] != counts:
+        dis.append("%s: the page posted %d toward, %d away and %d held after the draft, %s "
+                   "reads %d, %d and %d" % ((code,) + p["posted"] + (version,) + counts))
+    a["read"] = {"late": False, "read": read, "moves": moves, "toward": counts[0],
+                 "away": counts[1], "held": counts[2],
+                 "compared": sum(1 for m in moves if m is not None)}
 
 
 def parse_attempt(text):
@@ -972,7 +1072,7 @@ def read_attempt(index, row, cols, library):
         "case1": None, "case2": None, "set": None,
         "calls": [], "posted": [], "whys": [], "reasons": [], "answered": [], "score": 0,
         "reason_right": 0, "reason_scored": 0, "flags": 0, "coverage": 0,
-        "fresh": None, "r2_basis": [], "explanations": {},
+        "fresh": None, "r2_basis": [], "explanations": {}, "read": None,
     }
     if not cases:
         a["refusal"] = "no case version recorded in question A"
@@ -999,6 +1099,7 @@ def read_attempt(index, row, cols, library):
                                       % (code, cases["one_lines"], a["case1"]["version"],
                                          len(a["case1"]["cards"])))
         score_practice(a, row, cols, a["case1"])
+        score_prepick(a, a["case1"])
         if a["case2"]:
             others = [cell(row, c) for c in cols["why"] if c] + [qb, qa]
             score_fresh(a, qc, others, a["case2"])
@@ -1158,6 +1259,37 @@ def analyze(path, roster_path=None, cases_dir=None, synthetic_check=False,
     return report
 
 
+def read_results(cards, first):
+    """The read before the draft against the final calls, for the first attempts of one set."""
+    with_read = [a for a in first if a.get("read") and not a["read"]["late"]]
+    per_line = []
+    for i, card in enumerate(cards):
+        moves = [a["read"]["moves"][i] for a in with_read if a["read"]["moves"][i] is not None]
+        tapped = sum(1 for a in with_read if a["read"]["read"][i] == "flag")
+        per_line.append({"n": card["n"], "acct": card["acct"], "name": card["name"],
+                         "key": card["key"], "type": card["type"], "compared": len(moves),
+                         "tapped": tapped, "held": moves.count("held"),
+                         "toward": moves.count("toward"), "away": moves.count("away")})
+    compared = sum(a["read"]["compared"] for a in with_read)
+    toward = sum(a["read"]["toward"] for a in with_read)
+    away = sum(a["read"]["away"] for a in with_read)
+    held = sum(a["read"]["held"] for a in with_read)
+    changed = toward + away
+    changed_any = sum(1 for a in with_read if a["read"]["toward"] + a["read"]["away"])
+    return {
+        "n": len(with_read),
+        "n_late": sum(1 for a in first if a.get("read") and a["read"]["late"]),
+        "n_before_required": sum(1 for a in first if a["prepicks"] and
+                                 not a["prepicks"]["required"]),
+        "n_missing": sum(1 for a in first if not a["prepicks"]),
+        "changed_any": changed_any, "changed_any_rate": pct(changed_any, len(with_read)),
+        "compared": compared, "changed": changed, "changed_rate": pct(changed, compared),
+        "toward": toward, "toward_rate": pct(toward, changed),
+        "away": away, "away_rate": pct(away, changed), "held": held,
+        "per_line": per_line,
+    }
+
+
 def analyze_set(label, case1, case2, first, again, report):
     """Every first-attempt rate for one case set. Reattempts are carried, never pooled."""
     cards = case1["cards"]
@@ -1284,6 +1416,8 @@ def analyze_set(label, case1, case2, first, again, report):
         rank = a["posted_rank"] or "not posted"
         ranks[rank] = ranks.get(rank, 0) + 1
     s["ranks"] = ranks
+
+    s["read"] = read_results(cards, first)
 
     # --- orgs ------------------------------------------------------------------
     org_counts = {}
@@ -1651,8 +1785,22 @@ def set_fields(s):
         _mean([100.0 * a["reason_right"] / a["reason_scored"] for a in first
                if a["reason_scored"]]))
     add("r1.lap_median", _median([a["minutes"] for a in first]))
-    add("r1.prepicks_given", sum(1 for a in first if a["prepicks"]))
     add("reason.limitation", " ".join(x["text"] for x in s["limitations"]) or None)
+
+    r = s["read"]
+    add("prepick.first_attempts_with_read", r["n"])
+    add("prepick.first_attempts_changed_any", r["changed_any"] if r["n"] else None)
+    add("prepick.first_attempts_changed_any_rate", r["changed_any_rate"])
+    add("prepick.lines_compared", r["compared"] if r["n"] else None)
+    add("prepick.lines_changed", r["changed"] if r["n"] else None)
+    add("prepick.lines_changed_rate", r["changed_rate"])
+    add("prepick.changed_toward_key", r["toward"] if r["n"] else None)
+    add("prepick.changed_toward_key_rate", r["toward_rate"])
+    add("prepick.changed_away_from_key", r["away"] if r["n"] else None)
+    add("prepick.changed_away_from_key_rate", r["away_rate"])
+    add("prepick.lines_held", r["held"] if r["n"] else None)
+    add("prepick.first_attempts_before_required", r["n_before_required"])
+    add("prepick.first_attempts_read_after_a_call", r["n_late"])
 
     e = s.get("explain")
     if e:
@@ -1926,6 +2074,51 @@ def build_explanation_markdown(e, s, report, out):
     out.append("")
 
 
+def build_read_markdown(s, out):
+    r = s["read"]
+    out.append("### The read before the draft, against the final calls")
+    out.append("")
+    out.append(PREPICK_NOTE)
+    out.append("")
+    apart = []
+    if r["n_before_required"]:
+        apart.append("%s posted before the read was required" % say(r["n_before_required"]))
+    if r["n_late"]:
+        apart.append("%s locked in after a call" % say(r["n_late"]))
+    if r["n_missing"]:
+        apart.append("%s with no read in the round one question" % say(r["n_missing"]))
+    if not r["n"]:
+        out.append("No first attempt on this case set carries the required read, so nothing is "
+                   "compared%s." % ((". First attempts left out: " + "; ".join(apart)) if apart
+                                    else ""))
+        out.append("")
+        return
+    out.append("| Measure | Value |")
+    out.append("| --- | --- |")
+    out.append("| First attempts with the required read | %d of %d |" % (r["n"], s["n_attempts"]))
+    out.append("| First attempts whose final calls moved off the read on at least one line | "
+               "%s (%d of %d) |" % (fmt_pct(r["changed_any_rate"], 1), r["changed_any"], r["n"]))
+    out.append("| Lines where the final call moved off the read | %s (%d of %d lines compared) |"
+               % (fmt_pct(r["changed_rate"], 1), r["changed"], r["compared"]))
+    out.append("| Of those, changed toward the key | %s (%d of %d) |"
+               % (fmt_pct(r["toward_rate"], 1), r["toward"], r["changed"]))
+    out.append("| Of those, changed away from the key | %s (%d of %d) |"
+               % (fmt_pct(r["away_rate"], 1), r["away"], r["changed"]))
+    out.append("| Lines where the final call held the read | %d |" % r["held"])
+    out.append("")
+    if apart:
+        out.append("First attempts left out of this table: %s." % "; ".join(apart))
+        out.append("")
+    out.append("| Line | Account | Key | Error type | Compared | Tapped before the draft | Held | "
+               "Toward the key | Away from the key |")
+    out.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- |")
+    for c in r["per_line"]:
+        out.append("| %d | %s %s | %s | %s | %d | %d | %d | %d | %d |"
+                   % (c["n"], c["acct"], c["name"], c["key"], c["type"], c["compared"],
+                      c["tapped"], c["held"], c["toward"], c["away"]))
+    out.append("")
+
+
 def build_set_markdown(s, report, out):
     case1, case2 = s["case1"], s["case2"]
     out.append("## Case set %s" % s["label"])
@@ -2090,6 +2283,8 @@ def build_set_markdown(s, report, out):
                       fmt_pct(c["rate"], 1), c["right"], c["flagged"],
                       fmt_pct(c["reason_rate"], 1)))
     out.append("")
+
+    build_read_markdown(s, out)
 
     out.append("### By first attempt")
     out.append("")
@@ -2368,6 +2563,11 @@ def print_summary(report, out_path):
               % ("%.1f" % s["mean_score"] if s["mean_score"] is not None else "n/a", s["n_lines"]))
         print("  Reason chip agreement %s (%d of %d scored), agreement with accepted categories"
               % (fmt_pct(s["reason_rate"], 1), s["reason_counts"][0], s["reason_counts"][1]))
+        if s["read"]["n"]:
+            r = s["read"]
+            print("  Read before the draft %d of %d lines moved, %d toward the key, %d away, "
+                  "first attempts, descriptive" % (r["changed"], r["compared"], r["toward"],
+                                                   r["away"]))
         if s["fresh"] and s["fresh"]["n"]:
             f = s["fresh"]
             print("  Fresh case            call agreement %s (%d of %d), n=%d, %s"

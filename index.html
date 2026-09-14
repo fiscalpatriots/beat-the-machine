@@ -281,12 +281,21 @@
 .explain{margin:0 0 var(--s2)}
 .explain textarea{display:block;width:100%;max-width:100%;min-height:64px;resize:vertical;margin:0 0 var(--s3)}
 
-/* ---------- one optional step before the memo ---------- */
+/* ---------- the required read before the draft, and what the end screen makes of it ---------- */
 .prepick{margin:var(--s6) 0 0;padding:var(--s5) 0 0;border-top:1px solid var(--rule)}
 .prepick h3{margin:0 0 var(--s1)}
 .prepick p{margin:0 0 var(--s4);font-size:var(--t-small);line-height:1.55;color:var(--ink-soft)}
-.prepick .chips{margin:0 0 var(--s4)}
-.prepick .chip{font-size:var(--t-small);text-align:left;overflow-wrap:anywhere}
+.prepick .chips{margin:0 0 var(--s3)}
+.prepick .chip{font-size:var(--t-small);text-align:left;overflow-wrap:anywhere;min-width:0;max-width:100%}
+.prepick .prepickstat{margin:0;font-size:var(--t-small);font-weight:600;color:var(--ink)}
+.readshift{margin:var(--s5) 0 0;padding:var(--s5) 0 0;border-top:1px solid var(--rule);text-align:left}
+.readshift h3{margin:0 0 var(--s2)}
+.readshift p{margin:0 0 var(--s3);font-size:var(--t-body);line-height:1.55;color:var(--ink)}
+.readshift summary{cursor:pointer;margin:0 0 var(--s3);font-size:var(--t-small);font-weight:600;color:var(--ink)}
+.readshift ul{margin:0 0 var(--s3);padding:0;list-style:none}
+.readshift li{padding:var(--s3) 0;border-top:1px solid var(--rule);font-size:var(--t-small);line-height:1.55;color:var(--ink-soft)}
+.readshift li b{display:block;font-size:var(--t-body);color:var(--ink)}
+.readshift .readnote{font-size:var(--t-small);color:var(--ink-soft)}
 
 /* ---------- the data notice ---------- */
 .notice{margin:0 0 var(--s5);padding:var(--s5) 0;
@@ -543,7 +552,7 @@ body{overflow-x:clip}
 var PRODUCT_NAME = "Second Pass: Beat the Machine";
 var PRODUCT_VERSION = "1.6.1";
 var PRODUCT_STAMP = "second-pass-drill " + PRODUCT_VERSION;
-var NOTICE_VERSION = "notice-2026-09-13b";
+var NOTICE_VERSION = "notice-2026-09-13c";
 
 /* ---------- test mode ----------
    ?test=1 in the address, or three taps on the footer line. While it is on the page never
@@ -798,7 +807,10 @@ function newAttemptId(){
 }
 
 var S = {
-  step:0, codename:"", orgs:[], prepicks:[], prepickSkipped:false,
+  /* prepicks are the accounts tapped on the required read before the draft, prepickAt is when
+     that read was locked in (0 until it is), and prepickCallsBefore is how many calls were
+     already locked at that moment, which is 0 on every path the page offers */
+  step:0, codename:"", orgs:[], prepicks:[], prepickAt:0, prepickCallsBefore:0,
   /* sel is the call that is selected and not yet committed, first is the very first call the
      player selected on that line, and calls is the committed one. A line is locked when calls
      carries a value, and only a locked line is scored or revealed. */
@@ -842,7 +854,7 @@ function freshRun(){
   S.caught = 0; S.cleared = 0; S.falseFlags = 0; S.streak = 0; S.best = 0; S.points = 0;
   S.r2caught = 0; S.r2cleared = 0; S.r2false = 0; S.r2Start = 0; S.r2End = 0; S.r2Revealed = 0;
   S.confPost = null; S.qd = null;
-  S.prepicks = []; S.prepickSkipped = false;
+  S.prepicks = []; S.prepickAt = 0; S.prepickCallsBefore = 0;
   S.started = Date.now(); S.lapStart = 0; S.lapEnd = 0; S.itemStart = 0; S.completedAt = 0;
   S.hiddenTotal = 0; S.hiddenAt = 0; S.itemHiddenBase = 0;
   /* a second run is a second attempt, so it gets its own id rather than reusing the first one,
@@ -1371,6 +1383,10 @@ function whyLine(t){ return '<p class="whyline">'+esc(t)+'</p>'; }
 
 function render(){
   setKeys(null);
+  /* The read before the draft is required. No screen after it draws until it is locked in,
+     whether the step came from a button, a restored run, the step hook or an edited saved run,
+     so every one of those lands back on the ledger with nothing of the memo shown. */
+  if(S.step >= 3 && S.step !== 90 && S.step !== 91 && !prepickTaken()){ S.step = 2; saveRun(); }
   var app = document.getElementById("app");
   app.classList.toggle("wide", S.step===2);
   app.classList.toggle("hasbar", S.step===2);
@@ -1453,6 +1469,7 @@ function howScreen(){
       whyLine("Where this check sits in a real close, and how to run it on a ledger of your own.")+
       '<h2>How this works in a real close</h2>'+
       '<p>Second Pass sits between the AI draft and the sign-off. The reviewer still signs, and nothing else does.</p>'+
+      '<p>The drill asks for your own read of the ledger before any of the draft is shown, so you have decided which lines deserve a question before the draft\'s wording can frame them. The end screen shows where your final calls moved off that read.</p>'+
       '<figure class="figure">'+howDiagram()+
         '<figcaption class="figcap">Where the check sits: after the draft, before anyone signs.</figcaption>'+
       '</figure>'+
@@ -1487,7 +1504,7 @@ function openHow(){ howFrom = S.step; go(90); }
 var NOTICE = {
   head: "What this records",
   items: [
-    "What is collected: the codename you pick, the chapters you tap, your call on each line of the run, the basis chips behind each call, whether that basis agrees with the card's key, the optional line of your own words, the three short written answers each line of the fresh case asks for, and how long each line and each round took you.",
+    "What is collected: the codename you pick, the chapters you tap, the lines you tap on the ledger before the memo, your call on each line of the run, the basis chips behind each call, whether that basis agrees with the card's key, the optional line of your own words, the three short written answers each line of the fresh case asks for, and how long each line and each round took you.",
     "A codename is a pseudonym and not anonymity. Anyone who knows which codename you chose can read your run, so pick one you are willing to be known by.",
     "Where it goes if you send it: the Google Form responses sheet owned by Khaled Alkurd, who built this drill and writes the findings from it.",
     "You can finish the whole run without sending anything. At the end you can save your own record as a file, and sending your results to the form is a separate button you do not have to press."
@@ -1595,7 +1612,7 @@ function intro(){
     whyLine("You are about to review a close memo an AI assistant wrote, one line at a time.")+
     '<h1>Second Pass:<br>Beat the Machine</h1>'+
     '<p>'+originIntro(CASE1)+'</p>'+
-    '<p>The ledger does not explain itself, so the causes in the memo are guesses, and some of them are wrong. They read well enough that a busy reviewer would sign off and move on. You are the second pass. You will read '+numWord(LINES)+' lines and flag the ones that do not hold.'+fresh+'</p>'+
+    '<p>The ledger does not explain itself, so the causes in the memo are guesses, and some of them are wrong. They read well enough that a busy reviewer would sign off and move on. You are the second pass. Before any of the memo appears, you read the ledger on its own and tap the lines you would give a second look. Then you read '+numWord(LINES)+' lines of the memo and flag the ones that do not hold.'+fresh+'</p>'+
     caseControl()+
     playFrames()+
     '<button class="btn" id="go">Play</button>'+
@@ -1710,47 +1727,96 @@ function wireFlagCards(){
   });
 }
 
-/* ---------- the ledger-only judgment ----------
-   One optional step on the orientation screen, before a single memo sentence is read: up to
-   three accounts the player would ask about first, tapped rather than typed, so it costs a
-   few seconds. Skip is a real answer and is recorded as one. The picks post into the round
-   one free text question, entry.1115022539, which collected nothing before this. */
-var PREPICK_MAX = 3;
+/* ---------- the read before the draft ----------
+   The one point in a run where the player decides from the ledger alone, before a single
+   sentence of the AI draft is on the screen, which is the decide-before-you-see-the-AI habit
+   the drill exists to build. It is required and it has no skip. The player taps every account
+   they would give a second look, at least one, and an account left untapped counts as one they
+   would let stand. It is not scored and it moves no points, no rank and no badge.
+
+   Once the player goes on it is locked, and nothing later can change it. The end screen sets it
+   beside the final call on each round one line, made after reading the draft, and says where the
+   two differ and whether the call moved toward the key or away from it. It posts into the round
+   one free text question, entry.1115022539, and rides in the record under prepicks and on every
+   round one response. */
+var PREPICK_QUESTION = "Before any AI draft is shown: tap every line you would give a second look, " +
+  "judging from the ledger alone. A line you leave untapped counts as one you would let stand.";
+function ledgerCodes(){ return (ROWS || []).map(function(r){ return String(r[0]); }); }
+/* locked in on this run, with at least one account, every one of them on this ledger */
+function prepickTaken(){
+  if(!S.prepickAt || !Array.isArray(S.prepicks) || !S.prepicks.length) return false;
+  var codes = ledgerCodes();
+  return S.prepicks.every(function(p){ return codes.indexOf(String(p)) > -1; });
+}
+/* the read on one round one line: a flag when its account was tapped, let it stand when not */
+function prepickReadAt(i){
+  return (S.prepicks || []).indexOf(String(CARDS[i].acct)) > -1 ? "flag" : "stand";
+}
+/* every round one line: the read before the draft, the final call after it, and the move */
+function readShift(){
+  if(!prepickTaken()) return null;
+  var out = {lines:[], held:0, toward:0, away:0, compared:0, beforeAnyCall: !S.prepickCallsBefore};
+  for(var i=0;i<CARDS.length;i++){
+    var read = prepickReadAt(i), fin = S.calls[i], move = null;
+    if(fin === "flag" || fin === "stand"){
+      out.compared++;
+      if(fin === read){ move = "held"; out.held++; }
+      else if(fin === CARDS[i].key){ move = "toward"; out.toward++; }
+      else { move = "away"; out.away++; }
+    }
+    out.lines.push({i:i, read:read, final:(fin === "flag" || fin === "stand") ? fin : null, move:move});
+  }
+  return out;
+}
+var MOVE_WORDS = {held:"held", toward:"changed toward the key", away:"changed away from the key"};
 function prepickBlock(){
+  var locked = prepickTaken();
   var chips = ROWS.map(function(r,idx){
-    return '<button type="button" class="chip sm" data-p="'+idx+'" aria-pressed="false">'+
-      esc(r[0]+" "+r[1])+'</button>';
+    var on = (S.prepicks || []).indexOf(String(r[0])) > -1;
+    return '<button type="button" class="chip sm'+(on ? " on" : "")+'" data-p="'+idx+'" aria-pressed="'+
+      (on ? "true" : "false")+'"'+(locked ? " disabled" : "")+'>'+esc(r[0]+" "+r[1])+'</button>';
   }).join("");
-  return '<section class="prepick">'+
-    '<h3>Before the memo</h3>'+
-    '<p>Tap up to three lines you would ask about first, or skip. Nothing here is scored, '+
-      'and it takes a few seconds.</p>'+
-    '<div class="chips" id="prepicks" role="group" aria-label="Lines you would ask about first">'+chips+'</div>'+
-    '<div class="two"><button class="btn secondary" id="preskip">Skip</button>'+
-      '<button class="btn secondary" id="precont">Continue</button></div>'+
+  return '<section class="prepick" id="prepicksection" aria-labelledby="prepickhead">'+
+    '<h3 id="prepickhead">Your read, before any AI draft</h3>'+
+    '<p>Tap every line you would give a second look, judging from these figures alone. A line you '+
+      'leave untapped counts as one you would let stand. Nothing here is scored, and at the end you '+
+      'will see where your calls moved once you had read the draft.</p>'+
+    '<div class="chips" id="prepicks" role="group" aria-labelledby="prepickhead">'+chips+'</div>'+
+    '<p class="prepickstat" id="prepickstat" aria-live="polite"></p>'+
   '</section>';
 }
 function wirePrepicks(){
   var box = document.getElementById("prepicks");
   if(!box) return;
-  var picked = S.prepicks.slice();
+  var locked = prepickTaken();
   var btns = Array.prototype.slice.call(box.querySelectorAll(".chip"));
+  var goes = Array.prototype.slice.call(screen.querySelectorAll("[data-precont]"));
+  var stat = document.getElementById("prepickstat");
+  function tapped(){ return (S.prepicks || []).filter(function(p){ return ledgerCodes().indexOf(String(p)) > -1; }); }
   function paint(){
+    var list = tapped(), n = list.length;
     btns.forEach(function(b){
-      var code = ROWS[Number(b.getAttribute("data-p"))][0];
-      var on = picked.indexOf(code) > -1;
+      var on = list.indexOf(String(ROWS[Number(b.getAttribute("data-p"))][0])) > -1;
       b.classList.toggle("on", on);
       b.setAttribute("aria-pressed", on ? "true" : "false");
-      b.disabled = !on && picked.length >= PREPICK_MAX;
     });
+    goes.forEach(function(g){
+      g.textContent = locked ? "Continue to the memo" : (n ? "Lock in my read and continue" : "Tap at least one line");
+    });
+    if(stat) stat.textContent = locked
+      ? "Your read is locked in, and nothing after the memo can change it."
+      : (n ? "You have tapped " + n + " line" + (n === 1 ? "" : "s") + ". The rest count as lines you would let stand."
+           : "Tap at least one line before you go on.");
   }
   btns.forEach(function(b){
     function toggle(){
-      var code = ROWS[Number(b.getAttribute("data-p"))][0];
-      var at = picked.indexOf(code);
-      if(at > -1) picked.splice(at,1);
-      else if(picked.length < PREPICK_MAX) picked.push(code);
-      else return;
+      if(locked) return;
+      var code = String(ROWS[Number(b.getAttribute("data-p"))][0]);
+      var list = tapped(), at = list.indexOf(code);
+      if(at > -1) list.splice(at, 1); else list.push(code);
+      /* kept in ledger order, and saved on every tap so a reload keeps what was tapped */
+      S.prepicks = ledgerCodes().filter(function(c){ return list.indexOf(c) > -1; });
+      saveRun();
       paint();
     }
     b.addEventListener("click", toggle);
@@ -1759,39 +1825,46 @@ function wirePrepicks(){
     });
   });
   paint();
-  function leave(skipped){
-    S.prepicks = skipped ? [] : picked.slice();
-    S.prepickSkipped = skipped || picked.length === 0;
+  function onward(){
+    if(locked) return go(3);
+    var list = tapped();
+    if(!list.length){
+      /* there is no way past an empty read: the button takes the player to the lines instead */
+      var sec = document.getElementById("prepicksection");
+      if(sec && sec.scrollIntoView) sec.scrollIntoView({block:"center"});
+      if(btns[0]){ try{ btns[0].focus({preventScroll:true}); }catch(e){ btns[0].focus(); } }
+      return;
+    }
+    S.prepicks = list;
+    S.prepickAt = Date.now();
+    S.prepickCallsBefore = doneIn(S.calls);
     saveRun();
     go(3);
   }
-  document.getElementById("precont").addEventListener("click", function(){ leave(false); });
-  document.getElementById("preskip").addEventListener("click", function(){ leave(true); });
-  /* the sticky bar on a phone and the rail on a desk are the escape hatch: they leave the
-     picks behind rather than pretending a player who never scrolled made one */
-  Array.prototype.forEach.call(screen.querySelectorAll("[data-go3]"), function(b){
-    b.addEventListener("click", function(){ leave(true); });
-  });
+  goes.forEach(function(g){ g.addEventListener("click", onward); });
 }
 
 function roundOne(){
-  var hero = '<div class="hero"><h2>The ledger, '+esc(BOOK1.months[0])+' against '+esc(BOOK1.months[1])+'</h2>'+
+  var hero = '<div class="hero"><h2 id="orienthead" tabindex="-1">The ledger, '+esc(BOOK1.months[0])+' against '+esc(BOOK1.months[1])+'</h2>'+
     '<p>Read it before the memo. You can open it again from any card.</p></div>';
-  var go3 = '<button class="btn secondary" data-go3="1">Skip the picks and continue</button>';
+  var cont = '<button type="button" class="btn" data-precont="1">Tap at least one line</button>';
   screen.innerHTML =
-    whyLine("Read the ledger first, because every call you make compares what the memo says against what the accounts did.")+
+    whyLine("Your own read of the ledger comes first, before any sentence of the AI draft is on the screen.")+
     hero+
     '<div class="orient stmtwrap">'+
       '<div class="orientmain">'+flagCard()+statement("", true)+prepickBlock()+'</div>'+
-      '<aside class="orientside">'+flagCard()+go3+'</aside>'+
+      '<aside class="orientside">'+flagCard()+cont+'</aside>'+
     '</div>'+
-    '<div class="stickygo">'+go3+'</div>';
+    '<div class="stickygo">'+cont+'</div>';
   wirePrepicks();
   wireFlagCards();
   /* on a desk the legend is always open */
   if(window.matchMedia && window.matchMedia("(min-width:900px)").matches){
     Array.prototype.forEach.call(screen.querySelectorAll(".flagmore"), function(m){ m.hidden = false; });
   }
+  /* focus starts on the screen's heading, so a keyboard or a screen reader begins at the ledger */
+  var head = document.getElementById("orienthead");
+  if(head){ try{ head.focus({preventScroll:true}); }catch(e){} }
 }
 
 /* ---------- the card, shared by both rounds ----------
@@ -2349,11 +2422,24 @@ function r2Results(){
 
 
 /* ---------- generated summaries. Nothing here is typed by the player. ---------- */
-/* the round one free text question, entry.1115022539, now carries the ledger-only picks.
-   A skip posts as a skip rather than as an empty cell, so the two can be told apart. */
+/* The round one free text question, entry.1115022539, carries the required read before the
+   draft: the accounts tapped, the case version, the read and the final call on every line as
+   letters in card order (F a flag, S let it stand), and the three counts against the key.
+   tools/findings.py reads this sentence for sentence, so change the two together. A read locked
+   in after a call, which no button allows, says so, and the findings leave it out. */
+function prepickLetters(list){
+  return list.map(function(v){ return v === "flag" ? "F" : (v === "stand" ? "S" : "-"); }).join("");
+}
 function prepickLine(){
-  if(!S.prepicks || !S.prepicks.length) return "Prepicks: skipped.";
-  return "Prepicks: " + S.prepicks.join("; ") + ".";
+  var r = readShift();
+  if(!r) return "Prepicks: not recorded.";
+  var line = "Prepicks: " + S.prepicks.join("; ") + ". Required read before the AI draft, case " +
+    CASE1.version + ", by line, F tapped for a second look and S left untapped: " +
+    prepickLetters(r.lines.map(function(x){ return x.read; })) + ". Final calls after the draft: " +
+    prepickLetters(r.lines.map(function(x){ return x.final; })) + ". Against the key: " +
+    r.toward + " changed toward it, " + r.away + " changed away from it, " + r.held + " held.";
+  if(!r.beforeAnyCall) line += " Taken after a call was locked, so not a read before the draft.";
+  return line;
 }
 /* the player's own basis, in the shape the response sheet reads:
    Basis: no source on file; wrong period | Words: the freight moved */
@@ -2510,7 +2596,7 @@ var PLACEHOLDERS = PLACEHOLDER_MODE === "empty"
 function payload(){
   var p = {};
   p["entry."+E.codename] = S.codename;
-  /* the ledger-only picks, taken before a memo sentence was read */
+  /* the required read before the draft, taken from the ledger alone, set beside the final calls */
   p["entry."+E.round1] = prepickLine();
   /* Four questions on the form are not asked in this version: expected quality, confidence
      before, close experience and, below, final confidence. All four are marked required and
@@ -2644,7 +2730,16 @@ function itemRecord(c, idx, round){
       ? (S.r2Revealed ? new Date(S.r2Revealed).toISOString() : null)
       : "immediately after the call",
     keyDecision: c.key,
-    decisionResult: (call === c.key) ? "agrees with key" : "does not agree"
+    decisionResult: (call === c.key) ? "agrees with key" : "does not agree",
+    /* the required read before the draft, on this line, beside the call made after it.
+       Round two has no read, because its ledger is never shown before its memo. */
+    ledgerOnlyRead: (round === 1 && prepickTaken()) ? prepickReadAt(idx) : null,
+    readVersusFinal: (function(){
+      if(round !== 1) return null;
+      var r = readShift();
+      var x = r ? r.lines[idx] : null;
+      return (x && x.move) ? MOVE_WORDS[x.move] : null;
+    })()
   };
 }
 function attemptRecord(sentPayload){
@@ -2719,12 +2814,32 @@ function attemptRecord(sentPayload){
             ? "A receipt endpoint is set and it did not confirm this attempt. The state field says why."
             : "No receipt endpoint is set in this build, so nothing confirms receipt to this page."))
     },
-    prepicks: {
-      picks: (S.prepicks || []).slice(),
-      skipped: !!S.prepickSkipped,
-      postedTo: "entry." + E.round1,
-      question: "Before the memo: tap up to three lines you would ask about first, or skip."
-    },
+    prepicks: (function(){
+      var r = readShift();
+      return {
+        required: true,
+        taken: !!r,
+        picks: r ? S.prepicks.slice() : [],
+        takenAt: r ? new Date(S.prepickAt).toISOString() : null,
+        beforeAnyCall: r ? r.beforeAnyCall : null,
+        caseId: CASE_RUN_ID,
+        caseVersion: CASE1.version,
+        readByLine: r ? prepickLetters(r.lines.map(function(x){ return x.read; })) : null,
+        finalByLine: r ? prepickLetters(r.lines.map(function(x){ return x.final; })) : null,
+        afterDraft: r ? {changedTowardKey: r.toward, changedAwayFromKey: r.away, held: r.held,
+                         linesCompared: r.compared} : null,
+        postedTo: "entry." + E.round1,
+        question: PREPICK_QUESTION,
+        note: "Taken from the ledger alone, before any sentence of the AI draft is shown, and " +
+          "required: the page offers no way past it without at least one tapped line. A tapped " +
+          "account counts as a flag on each of its round one lines and an untapped one as let it " +
+          "stand. readByLine and finalByLine run in card order, F a flag and S let it stand. " +
+          "afterDraft compares the read with the final call on each line, which was made after " +
+          "reading the draft and the file on the card and, in practice mode, the reveals of the " +
+          "lines before it. It describes agreement with the key on a keyed exercise. It is not " +
+          "scored, adds no points, and is not a measure of learning."
+      };
+    })(),
     writtenExplanationPrompts: {
       version: EXPLAIN_VERSION,
       asked: HAS_R2 && ASSESS ? "on every line of the fresh case, required before the call locks" : "not on this run",
@@ -2985,6 +3100,50 @@ function earnedLine(){
   return "Right call " + (S.caught + S.cleared) + " of " + LINES + ". Right reason " + reasonCount(1) + " of " + LINES + ".";
 }
 
+/* ---------- the one fact the read before the draft makes possible ----------
+   Where the player's read from the ledger alone and their final call, made after reading the
+   AI draft, differ, and whether each difference moved toward the key or away from it. It adds
+   no points and moves no rank. */
+function readShiftBlock(){
+  var r = readShift();
+  if(!r || !r.compared) return "";
+  var head = '<h3>Your read before the draft, and your final calls</h3>';
+  if(!r.beforeAnyCall){
+    return '<section class="readshift">'+head+
+      '<p>Your read was locked in after a call had been made, so it is not set beside your final calls.</p></section>';
+  }
+  var n = S.prepicks.length, changed = r.toward + r.away;
+  function cap(t){ return t.charAt(0).toUpperCase() + t.slice(1); }
+  var lead = 'Before the memo you tapped '+numWord(n)+' account'+(n === 1 ? '' : 's')+' on the ledger for a second look. ';
+  if(!changed){
+    lead += 'After reading the AI draft, all '+numWord(r.compared)+' of your final calls matched that read.';
+  } else {
+    lead += 'After reading the AI draft, your final call moved off that read on '+numWord(changed)+' of the '+
+      numWord(r.compared)+' lines. ';
+    if(r.toward && r.away){
+      lead += cap(numWord(r.toward))+' of those changes moved toward the answer key and '+numWord(r.away)+' moved away from it. ';
+    } else {
+      lead += (changed === 1 ? 'That change moved ' : 'Every one of those changes moved ')+
+        (r.toward ? 'toward the answer key. ' : 'away from the answer key. ');
+    }
+    if(r.held) lead += (r.held === 1 ? 'On the one other line, ' : 'On the other '+numWord(r.held)+' lines, ')+
+      'your final call matched your first read.';
+  }
+  var items = r.lines.filter(function(x){ return x.move === "toward" || x.move === "away"; }).map(function(x){
+    var c = CARDS[x.i];
+    return '<li><b>Line '+c.n+', '+esc(c.name)+'</b>'+
+      (x.read === "flag" ? 'Tapped before the draft, let stand after it. ' : 'Left untapped before the draft, flagged after it. ')+
+      (x.move === "toward" ? 'That change moved toward the key.' : 'That change moved away from the key.')+'</li>';
+  }).join("");
+  return '<section class="readshift">'+head+
+    '<p>'+lead.trim()+'</p>'+
+    (items ? '<details class="readlines"><summary>'+(changed === 1 ? 'See the line that moved' : 'See the '+numWord(changed)+' lines that moved')+
+      '</summary><ul>'+items+'</ul></details>' : '')+
+    '<p class="readnote">A tapped account counts as a flag on its lines and an untapped one as let it stand. '+
+      'This sets two of your own calls against the key on this exercise, and it adds no points.</p>'+
+  '</section>';
+}
+
 
 /* ---------- the two actions at the end ----------
    The run is finished either way. One button hands the player their own record, the other
@@ -3149,6 +3308,7 @@ function done(){
       (HAS_R2 ? '<p class="fresh">Fresh case: right call '+r2Right()+' of '+LINES2+'. Right reason '+reasonCount(2)+' of '+LINES2+'.</p>' : '')+
       (HAS_R2 ? '<p class="tiny" style="margin:4px 0 0">A second company, read once, scored on its own. '+
         'The points, the rank and the badges are read off the '+numWord(LINES)+' trained lines.</p>' : '')+
+      readShiftBlock()+
       medals+
       '<div class="sharecard"><span class="label">Your card</span>'+
         '<p>'+esc(share)+'</p><button class="btn-text" id="copyshare">Copy</button></div>'+

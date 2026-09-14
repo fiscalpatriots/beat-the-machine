@@ -2,7 +2,9 @@
 """Builds findings-sample.csv and findings-sample-roster.csv for testing findings.py.
 
 The response file carries the form's real headers and invented responses, written the way
-index.html writes its cells in product 1.6.1: the ledger picks in the round one question, a
+index.html writes its cells in product 1.6.1: the read before the draft in the round one question
+(the required read on the two brightwater-v6 runs, and the optional picks of up to three accounts
+it replaced on the rest, which findings.py counts apart), a
 basis, the page's own reason verdict and the card's basis key in every Why field, the attempt
 identifier and the reason score in question B, and the Round2 string with its per line basis
 at the tail of question C. Every key comes from the case file for the version a row names.
@@ -277,10 +279,12 @@ def r2_cell(calls, seconds, style="right", fresh=FRESH, explain=None):
 def row(ts, codename, calls, orgs, minutes, streak, cases=HALYARD, round2=None,
         style="plain", words_on=(), old_shape=False, stale_column=None,
         prepicks=("4000", "5000", "6000"), attempt=None, run_index=1, line=None,
-        test=False, words_marker=None):
+        test=False, words_marker=None, read=None):
     cards = cases["cards"]
     r2_text, r2_reason = (round2 if round2 else (None, 0))
     picks = ("Prepicks: " + "; ".join(prepicks) + "." if prepicks else "Prepicks: skipped.")
+    if read:
+        picks = read_cell(cases, read, calls)
     if old_shape:
         out = [ts, codename, NOTE, PLACEHOLDERS[0], PLACEHOLDERS[1], PLACEHOLDERS[2]]
     else:
@@ -313,6 +317,21 @@ def row(ts, codename, calls, orgs, minutes, streak, cases=HALYARD, round2=None,
             r2_text or ("Round2: no fresh case on this run. " + NOTE),
             str(minutes)]
     return out
+
+
+def read_cell(cases, picks, calls):
+    """The round one question as prepickLine() in index.html writes the required read."""
+    cards = cases["cards"]
+    picks = list(picks)  # given in ledger order, the order the page posts them in
+    read = ["flag" if c["acct"] in picks else "stand" for c in cards]
+    moves = ["held" if calls[i] == read[i] else ("toward" if calls[i] == c["key"] else "away")
+             for i, c in enumerate(cards)]
+    letters = lambda seq: "".join("F" if v == "flag" else "S" for v in seq)
+    return ("Prepicks: %s. Required read before the AI draft, case %s, by line, F tapped for a "
+            "second look and S left untapped: %s. Final calls after the draft: %s. Against the "
+            "key: %d changed toward it, %d changed away from it, %d held."
+            % ("; ".join(picks), cases["version"], letters(read), letters(calls),
+               moves.count("toward"), moves.count("away"), moves.count("held")))
 
 
 def misses(cases, miss_indexes):
@@ -432,12 +451,13 @@ ROWS = [
     # run is reported as its own case set rather than pooled with the brightwater-v5 runs
     dict(ts="2026/09/21 9:05:12", codename="COLDREAD", calls=misses(HALYARD, [11]),
          orgs=["Beta Alpha Psi"], minutes=16, streak=10, words_on=(0, 2),
+         read=["4200", "6000", "6200"],
          line=case_line("halyard", "halyard-v4", 14, two="brightwater-v6"),
          round2=r2_cell("FSFFS", 212, fresh=FRESH6, explain=EXPLAIN_COLDREAD)),
     # a second brightwater-v6 run: one wrong call, and one explanation that stops at the
     # document without saying what to request
     dict(ts="2026/09/21 9:40:37", codename="SIGNOFF", calls=misses(HALYARD, [2, 10]),
-         orgs=["Outside Mason"], minutes=19, streak=7, words_on=(1,),
+         orgs=["Outside Mason"], minutes=19, streak=7, words_on=(1,), read=["4000"],
          line=case_line("halyard", "halyard-v4", 14, two="brightwater-v6"),
          round2=r2_cell("FSSFS", 260, fresh=FRESH6, explain=EXPLAIN_SIGNOFF)),
     # a row in the shape of the third review's synthetic records

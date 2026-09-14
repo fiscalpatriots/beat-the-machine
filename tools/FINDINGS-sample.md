@@ -223,6 +223,12 @@ Verbatim, up to three per error type.
 | 13 | 5000 Cost of product sold | stand | clean line | 8 | 75.0% (6) | 2 | 75.0% |
 | 14 | 7100 Interest expense | flag | unsupported driver | 8 | 75.0% (6) | 6 | 75.0% |
 
+### The read before the draft, against the final calls
+
+Descriptive agreement on a keyed exercise, first attempts only. The read is taken from the ledger alone before the AI draft is shown, and a tapped account reads as a flag on its lines. Each final call came after reading the draft, the file on the card and, in practice mode, the reveals of the lines before it, so a change toward the key is not credited to the draft alone. It is not a pre-test and post-test, and it is not a learning gain.
+
+No first attempt on this case set carries the required read, so nothing is compared. First attempts left out: eight posted before the read was required.
+
 ### By first attempt
 
 The game rank is the page's own label for its points, which include a bonus for agreeing reason chips. It is a game rank, not a credential or a measure of professional skill, and a row filed before the page posted it reads not posted.
@@ -407,6 +413,36 @@ Verbatim, up to three per error type.
 | 13 | 5000 Cost of product sold | stand | clean line | 2 | 100.0% (2) | 0 | 100.0% |
 | 14 | 7100 Interest expense | flag | unsupported driver | 2 | 100.0% (2) | 2 | 100.0% |
 
+### The read before the draft, against the final calls
+
+Descriptive agreement on a keyed exercise, first attempts only. The read is taken from the ledger alone before the AI draft is shown, and a tapped account reads as a flag on its lines. Each final call came after reading the draft, the file on the card and, in practice mode, the reveals of the lines before it, so a change toward the key is not credited to the draft alone. It is not a pre-test and post-test, and it is not a learning gain.
+
+| Measure | Value |
+| --- | --- |
+| First attempts with the required read | 2 of 2 |
+| First attempts whose final calls moved off the read on at least one line | 100.0% (2 of 2) |
+| Lines where the final call moved off the read | 28.6% (8 of 28 lines compared) |
+| Of those, changed toward the key | 100.0% (8 of 8) |
+| Of those, changed away from the key | 0.0% (0 of 8) |
+| Lines where the final call held the read | 20 |
+
+| Line | Account | Key | Error type | Compared | Tapped before the draft | Held | Toward the key | Away from the key |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 4200 Freight billed to customers | flag | arithmetic | 2 | 1 | 1 | 1 | 0 |
+| 2 | 6200 Repairs and maintenance, depots | flag | timing | 2 | 1 | 1 | 1 | 0 |
+| 3 | 5100 Inbound freight | flag | wrong direction | 2 | 0 | 1 | 1 | 0 |
+| 4 | 4100 Service revenue, equipment maintenance | stand | clean line | 2 | 0 | 2 | 0 | 0 |
+| 5 | 6500 Professional fees | stand | clean line | 2 | 0 | 2 | 0 | 0 |
+| 6 | 7400 Inventory shrink adjustment | stand | clean line | 2 | 0 | 2 | 0 | 0 |
+| 7 | 4000 Product revenue, distribution | flag | unsupported driver | 2 | 1 | 1 | 1 | 0 |
+| 8 | 6400 Bad debt expense | flag | arithmetic | 2 | 0 | 0 | 2 | 0 |
+| 9 | 6100 Fleet fuel | stand | clean line | 2 | 0 | 2 | 0 | 0 |
+| 10 | 6300 Software subscriptions | stand | clean line | 2 | 0 | 2 | 0 | 0 |
+| 11 | 6000 Warehouse wages | flag | no explanation | 2 | 1 | 2 | 0 | 0 |
+| 12 | 4000 Product revenue, distribution | flag | unsupported attribution | 2 | 1 | 2 | 0 | 0 |
+| 13 | 5000 Cost of product sold | stand | clean line | 2 | 0 | 2 | 0 | 0 |
+| 14 | 7100 Interest expense | flag | unsupported driver | 2 | 0 | 0 | 2 | 0 |
+
 ### By first attempt
 
 The game rank is the page's own label for its points, which include a bonus for agreeing reason chips. It is a game rank, not a credential or a measure of professional skill, and a row filed before the page posted it reads not posted.
@@ -587,6 +623,12 @@ Verbatim, up to three per error type.
 | 11 | 5200 Travel and onsite delivery | stand | clean line | 2 | 100.0% (2) | 0 | 100.0% |
 | 12 | 4000 Recurring managed services | flag | no explanation | 2 | 100.0% (2) | 2 | 100.0% |
 
+### The read before the draft, against the final calls
+
+Descriptive agreement on a keyed exercise, first attempts only. The read is taken from the ledger alone before the AI draft is shown, and a tapped account reads as a flag on its lines. Each final call came after reading the draft, the file on the card and, in practice mode, the reveals of the lines before it, so a change toward the key is not credited to the draft alone. It is not a pre-test and post-test, and it is not a learning gain.
+
+No first attempt on this case set carries the required read, so nothing is compared. First attempts left out: two posted before the read was required.
+
 ### By first attempt
 
 The game rank is the page's own label for its points, which include a bonus for agreeing reason chips. It is a game rank, not a credential or a measure of professional skill, and a row filed before the page posted it reads not posted.
@@ -734,6 +776,12 @@ Nobody used the optional line of their own words on this case set.
 | 12 | 4000 Product revenue, distribution | flag | unsupported attribution | 1 | 100.0% (1) | 1 | n/a |
 | 13 | 5000 Cost of product sold | stand | clean line | 1 | 0.0% (0) | 1 | n/a |
 | 14 | 7100 Interest expense | flag | unsupported driver | 1 | 100.0% (1) | 1 | n/a |
+
+### The read before the draft, against the final calls
+
+Descriptive agreement on a keyed exercise, first attempts only. The read is taken from the ledger alone before the AI draft is shown, and a tapped account reads as a flag on its lines. Each final call came after reading the draft, the file on the card and, in practice mode, the reveals of the lines before it, so a change toward the key is not credited to the draft alone. It is not a pre-test and post-test, and it is not a learning gain.
+
+No first attempt on this case set carries the required read, so nothing is compared. First attempts left out: one with no read in the round one question.
 
 ### By first attempt
 
@@ -936,8 +984,20 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 | `r1.call_agreement_mean` | 82.1% |
 | `r1.reason_agreement_mean` | 75.9% |
 | `r1.lap_median` | 9.5 |
-| `r1.prepicks_given` | 7 |
 | `reason.limitation` | On halyard-v4, seven of the eight flag lines accept "no source on file" and six of the six stand lines accept only "the figure and reason hold". A player who taps those two chips after correct calls agrees on thirteen of fourteen lines without stating why the evidence fails or holds, and the stand chip largely restates the decision. Read this result as agreement with accepted reason categories, not as reasoning quality. On brightwater-v5, three of the three flag lines accept "no source on file" and two of the two stand lines accept only "the figure and reason hold". A player who taps those two chips after correct calls agrees on five of five lines without stating why the evidence fails or holds, and the stand chip largely restates the decision. Read this result as agreement with accepted reason categories, not as reasoning quality. |
+| `prepick.first_attempts_with_read` | 0 |
+| `prepick.first_attempts_changed_any` | not available |
+| `prepick.first_attempts_changed_any_rate` | not available |
+| `prepick.lines_compared` | not available |
+| `prepick.lines_changed` | not available |
+| `prepick.lines_changed_rate` | not available |
+| `prepick.changed_toward_key` | not available |
+| `prepick.changed_toward_key_rate` | not available |
+| `prepick.changed_away_from_key` | not available |
+| `prepick.changed_away_from_key_rate` | not available |
+| `prepick.lines_held` | not available |
+| `prepick.first_attempts_before_required` | 8 |
+| `prepick.first_attempts_read_after_a_call` | 0 |
 | `explain.case_version` | brightwater-v5 |
 | `explain.items_with_text` | 0 |
 | `explain.fresh_calls_without_text` | 40 |
@@ -1095,8 +1155,20 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 | `r1.call_agreement_mean` | 89.3% |
 | `r1.reason_agreement_mean` | 85.7% |
 | `r1.lap_median` | 17.5 |
-| `r1.prepicks_given` | 2 |
 | `reason.limitation` | On halyard-v4, seven of the eight flag lines accept "no source on file" and six of the six stand lines accept only "the figure and reason hold". A player who taps those two chips after correct calls agrees on thirteen of fourteen lines without stating why the evidence fails or holds, and the stand chip largely restates the decision. Read this result as agreement with accepted reason categories, not as reasoning quality. On brightwater-v6, three of the three flag lines accept "no source on file" and two of the two stand lines accept only "the figure and reason hold". A player who taps those two chips after correct calls agrees on five of five lines without stating why the evidence fails or holds, and the stand chip largely restates the decision. Read this result as agreement with accepted reason categories, not as reasoning quality. |
+| `prepick.first_attempts_with_read` | 2 |
+| `prepick.first_attempts_changed_any` | 2 |
+| `prepick.first_attempts_changed_any_rate` | 100.0% |
+| `prepick.lines_compared` | 28 |
+| `prepick.lines_changed` | 8 |
+| `prepick.lines_changed_rate` | 28.6% |
+| `prepick.changed_toward_key` | 8 |
+| `prepick.changed_toward_key_rate` | 100.0% |
+| `prepick.changed_away_from_key` | 0 |
+| `prepick.changed_away_from_key_rate` | 0.0% |
+| `prepick.lines_held` | 20 |
+| `prepick.first_attempts_before_required` | 0 |
+| `prepick.first_attempts_read_after_a_call` | 0 |
 | `explain.case_version` | brightwater-v6 |
 | `explain.items_with_text` | 10 |
 | `explain.fresh_calls_without_text` | 0 |
@@ -1249,8 +1321,20 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 | `r1.call_agreement_mean` | 91.7% |
 | `r1.reason_agreement_mean` | 83.3% |
 | `r1.lap_median` | 10 |
-| `r1.prepicks_given` | 2 |
 | `reason.limitation` | On kestrel-v1, six of the seven flag lines accept "no source on file" and five of the five stand lines accept only "the figure and reason hold". A player who taps those two chips after correct calls agrees on eleven of twelve lines without stating why the evidence fails or holds, and the stand chip largely restates the decision. Read this result as agreement with accepted reason categories, not as reasoning quality. On brightwater-v5, three of the three flag lines accept "no source on file" and two of the two stand lines accept only "the figure and reason hold". A player who taps those two chips after correct calls agrees on five of five lines without stating why the evidence fails or holds, and the stand chip largely restates the decision. Read this result as agreement with accepted reason categories, not as reasoning quality. |
+| `prepick.first_attempts_with_read` | 0 |
+| `prepick.first_attempts_changed_any` | not available |
+| `prepick.first_attempts_changed_any_rate` | not available |
+| `prepick.lines_compared` | not available |
+| `prepick.lines_changed` | not available |
+| `prepick.lines_changed_rate` | not available |
+| `prepick.changed_toward_key` | not available |
+| `prepick.changed_toward_key_rate` | not available |
+| `prepick.changed_away_from_key` | not available |
+| `prepick.changed_away_from_key_rate` | not available |
+| `prepick.lines_held` | not available |
+| `prepick.first_attempts_before_required` | 2 |
+| `prepick.first_attempts_read_after_a_call` | 0 |
 | `explain.case_version` | brightwater-v5 |
 | `explain.items_with_text` | 0 |
 | `explain.fresh_calls_without_text` | 10 |
@@ -1400,8 +1484,20 @@ Every name READOUT-TEMPLATE.md prints in a cell, with the value to copy into it.
 | `r1.call_agreement_mean` | 64.3% |
 | `r1.reason_agreement_mean` | not available |
 | `r1.lap_median` | 15 |
-| `r1.prepicks_given` | 0 |
 | `reason.limitation` | not available |
+| `prepick.first_attempts_with_read` | 0 |
+| `prepick.first_attempts_changed_any` | not available |
+| `prepick.first_attempts_changed_any_rate` | not available |
+| `prepick.lines_compared` | not available |
+| `prepick.lines_changed` | not available |
+| `prepick.lines_changed_rate` | not available |
+| `prepick.changed_toward_key` | not available |
+| `prepick.changed_toward_key_rate` | not available |
+| `prepick.changed_away_from_key` | not available |
+| `prepick.changed_away_from_key_rate` | not available |
+| `prepick.lines_held` | not available |
+| `prepick.first_attempts_before_required` | 0 |
+| `prepick.first_attempts_read_after_a_call` | 0 |
 | `explain.case_version` | brightwater-v2 |
 | `explain.items_with_text` | 0 |
 | `explain.fresh_calls_without_text` | 0 |
