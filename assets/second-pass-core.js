@@ -7,14 +7,13 @@
    four mechanical checks on a pasted ledger and memo without a second, drifting
    implementation of the same reader.
 
-   checker.html still carries its own copy and does NOT load this file. That was a
-   deliberate call rather than an oversight: the checker lane owns checker.html and
-   its 53 fixtures are scored against the code inside it, so nothing here touches it.
-
-   TASK TO UNIFY: point checker.html at assets/second-pass-core.js, delete its own
-   copy of these functions, then run tests/run-checker-tests.cjs and confirm all 53
-   fixtures still pass. Until that lands, a fix made here has to be made in
-   checker.html as well, and the reverse.
+   checker.html still carries its own copy inline, because its regression suite
+   lifts the script out of the page. The two copies are held identical: the suite,
+   node tests/run-checker-tests.cjs, compares every function this file shares with
+   checker.html and fails on any difference. The reader was brought back into line
+   with the page on 13 September 2026, after the third review, when the page's
+   no-change, multiplier, fraction and digit rules were added. A fix made in one
+   copy has to be made in the other before the suite passes.
 
    Nothing in this file touches the DOM, reads a global or stores anything.
    ============================================================================= */
@@ -404,37 +403,236 @@
      standing where a claim stands that the figure reader did not take. */
   var FOREIGN_BEFORE=/(?:[\u20AC\u00A3\u00A5\u20B9\u20BD\u20A9\u20AA\u20BA\u0E3F\u00A2]|\b(?:EUR|GBP|JPY|CHF|CAD|AUD|NZD|CNY|RMB|INR|MXN|BRL|ZAR|SEK|NOK|DKK|SGD|HKD|USD)\s)\s*$/i;
   var FOREIGN_AFTER=/^\s*(?:[\u20AC\u00A3\u00A5\u20B9\u20BD\u20A9\u20AA\u20BA\u0E3F\u00A2]|\b(?:EUR|GBP|JPY|CHF|CAD|AUD|NZD|CNY|RMB|INR|MXN|BRL|ZAR|SEK|NOK|DKK|SGD|HKD|USD)\b)/i;
-  var SCALE_AFTER=/^[\s-]*(?:thousands?|millions?|billions?|trillions?|mn|bn|basis\s+points?|bps|times|multiples?)\b/i;
+  var SCALE_AFTER=/^[\s-]*(?:thousands?|millions?|billions?|trillions?|mn|bn|basis\s+points?|bps|bp|times|multiples?|per\s?mille|permille|per\s+thousand|points?|pts)\b/i;
   var NUMWORD_RE=/\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion)(?:[\s-]+(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion))*\b/gi;
   var UNIT_AFTER=/^[\s,-]*(?:percent|per\s?cent|pct|%|percentage\s+points?|basis\s+points?|points?|dollars?)\b/i;
 
-  /* a number written out in words, where the words make it a figure: "ninety
-     percent", or "30 thousand" with a digit in front of the scale word */
-  function numberWords(text){
-    var out=[],m;
+  /* a quantity written out in words. Units through millions, hyphenated
+     compounds, "thousand" and "million" are read. Where the run is well formed
+     and the words beside it give it a unit, it becomes an ordinary figure and is
+     compared like any other. Where it is well formed but carries no unit, and
+     where the parser cannot resolve it at all, it is an unparsed span: the
+     sentence is not called checked and the span is listed in the reviewer's
+     queue. A count in words that stands where no claim stands, "the thirty-one
+     new plans", is left alone, the same way a bare run of digits is. */
+  var FRACTION_AFTER=/^[\s-]*(?:half|halves|third|thirds|quarter|quarters|fifth|fifths|sixth|sixths|seventh|sevenths|eighth|eighths|ninth|ninths|tenth|tenths|twelfth|twelfths|hundredth|hundredths|thousandth|thousandths)\b/i;
+  var WORD_UNIT=/^[\s,-]*(?:(percentage\s+points?|pp)|(percent|per\s?cent|pct|%)|(dollars?))\b/i;
+  var NW_SMALL={one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9};
+  var NW_TEEN={ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,
+               seventeen:17,eighteen:18,nineteen:19};
+  var NW_TENS={twenty:20,thirty:30,forty:40,fifty:50,sixty:60,seventy:70,eighty:80,ninety:90};
+  function nwLead(w){
+    if(NW_SMALL[w]!==undefined)return NW_SMALL[w];
+    if(NW_TEEN[w]!==undefined)return NW_TEEN[w];
+    if(NW_TENS[w]!==undefined)return NW_TENS[w];
+    return null;
+  }
+  /* one group below a thousand: "one hundred twenty-five", "nineteen", "thirty" */
+  function nwGroup(tk,i){
+    var v=0,any=false,h;
+    if(i+1<tk.length&&tk[i+1]==="hundred"&&(h=nwLead(tk[i]))!==null){v=h*100;any=true;i+=2;}
+    if(i<tk.length&&NW_TENS[tk[i]]!==undefined){
+      v+=NW_TENS[tk[i]];any=true;i++;
+      if(i<tk.length&&NW_SMALL[tk[i]]!==undefined){v+=NW_SMALL[tk[i]];i++;}
+    }else if(i<tk.length&&(NW_SMALL[tk[i]]!==undefined||NW_TEEN[tk[i]]!==undefined)){
+      v+=NW_SMALL[tk[i]]!==undefined?NW_SMALL[tk[i]]:NW_TEEN[tk[i]];any=true;i++;
+    }
+    return any?{v:v,i:i}:null;
+  }
+  /* the value of the whole run, or null where the parser cannot resolve it.
+     "billion" is deliberately out of range: the grammar reads units through
+     millions, and anything above that goes to the reviewer rather than being
+     guessed at. */
+  function wordsToNumber(run){
+    var tk=String(run).toLowerCase().split(/[\s-]+/).filter(function(w){return w;});
+    var i=0,total=0,last=Infinity,got=false,g,sc;
+    while(i<tk.length){
+      g=nwGroup(tk,i);
+      if(!g)return null;
+      i=g.i;sc=1;
+      if(i<tk.length&&(tk[i]==="thousand"||tk[i]==="million")){sc=tk[i]==="thousand"?1000:1000000;i++;}
+      if(sc>=last)return null;
+      if(sc===1&&i<tk.length)return null;
+      last=sc;
+      total+=g.v*sc;got=true;
+    }
+    return got?total:null;
+  }
+  /* every run of number words, split into the ones that become figures and the
+     ones that have to reach the reviewer. `always` marks a span that goes to the
+     queue wherever it stands; the rest go only where the words put a claim. */
+  function wordNumbers(text,taken){
+    var figs=[],pending=[],m;
     NUMWORD_RE.lastIndex=0;
     while((m=NUMWORD_RE.exec(text))!==null){
-      var j=m.index+m[0].length;
-      if(UNIT_AFTER.test(text.slice(j,j+26))||/\d\s*$/.test(text.slice(Math.max(0,m.index-14),m.index)))
-        out.push({raw:m[0],at:m.index,end:j,why:"a figure written in words"});
+      var i=m.index,j=i+m[0].length,t,hit=false;
+      for(t=0;t<taken.length;t++)if(i<taken[t][1]&&j>taken[t][0]){hit=true;break;}
+      if(hit)continue;
+      var after=text.slice(j,j+30),fm,u,v;
+      if(/\d\s*$/.test(text.slice(Math.max(0,i-14),i))){
+        pending.push({raw:m[0],at:i,end:j,why:"a figure written in words",always:true});continue;
+      }
+      if((fm=after.match(FRACTION_AFTER))){
+        pending.push({raw:text.slice(i,j+fm[0].length),at:i,end:j+fm[0].length,
+          why:"a quantity in words the checker cannot resolve",always:true});continue;
+      }
+      v=wordsToNumber(m[0]);
+      if(v===null){
+        pending.push({raw:m[0],at:i,end:j,
+          why:"a quantity in words the checker cannot resolve",always:true});continue;
+      }
+      if((u=after.match(WORD_UNIT))){
+        figs.push({raw:text.slice(i,j+u[0].length).replace(/^\s+|\s+$/g,""),v:v,at:i,end:j+u[0].length,
+          unit:u[1]?"percentage points":(u[2]?"percent":"dollars"),signed:false,words:true});
+        continue;
+      }
+      if(UNIT_AFTER.test(after)){
+        pending.push({raw:m[0],at:i,end:j,
+          why:"a quantity in words the checker cannot resolve",always:true});continue;
+      }
+      pending.push({raw:m[0],at:i,end:j,why:"a figure written in words with no unit",always:false});
     }
-    return out;
+    return {figs:figs,pending:pending};
   }
-  /* a run of digits the figure reader did not take, standing where the words put
-     a claim, or carrying a unit the grammar does not read */
-  function strayNumbers(text,taken,figs){
-    var re=/-?\d[\d,]*(?:\.\d+)?/g,out=[],m,t,hit,i,j;
+  /* ---------- 0b. QUANTITIES THE FIGURE READER DOES NOT PARSE -------------
+     A sentence is checked within scope only when every quantitative expression in
+     it is accounted for. These forms carry a quantity the figure reader does not
+     parse, so each one is an unparsed span wherever it stands: a multiplier
+     ("doubled", "twice", "threefold", "3x"), a fraction ("one and a half", "a
+     quarter of", "half the prior balance", "1/2"), a decimal written in words
+     ("thirty point five"), a digit outside 0 to 9 (Arabic-Indic, fullwidth,
+     superscript), a fraction or per mille character, and a number glued to
+     letters or underscores ("9e1", "30_000"). */
+  var ODD_NUM_RE=/(?:[0-9][0-9.,]*)?[٠-٩۰-۹०-९০-৯๐-๙０-９²³¹⁰⁴-⁹₀-₉¼-¾⅐-⅞①-⑳‰‱％]+(?:[0-9.,٫٬]*[0-9٠-٩۰-۹०-९০-৯๐-๙０-９²³¹⁰⁴-⁹₀-₉¼-¾⅐-⅞①-⑳‰‱％])*/g;
+  var MULT_RE=/\b(?:doubl(?:e|ed|es|ing)|tripl(?:e|ed|es|ing)|quadrupl(?:e|ed|es|ing)|quintupl(?:e|ed|es|ing)|halv(?:e|ed|es|ing)|twice|thrice|(?:two|three|four|five|six|seven|eight|nine|ten|twenty|hundred|[0-9]+(?:\.[0-9]+)?)[\s-]?fold|(?:one|two|three|four|five|six|seven|eight|nine|ten)\s+times|[0-9]+(?:\.[0-9]+)?\s?[x×])(?![A-Za-z0-9])/gi;
+  var MULT_NOT=/^[\s-]+(?:entry|entries|count|counted|counting|check|checked|checking)\b/i;
+  var FRACW="half|halves|third|thirds|quarter|quarters|fifth|fifths|sixth|sixths|seventh|sevenths|eighth|eighths|ninth|ninths|tenth|tenths|twelfth|twelfths|hundredth|hundredths|thousandth|thousandths";
+  var FRAC_RE=new RegExp("\\b(?:(a|an|one|two|three|four|five|six|seven|eight|nine|ten|[0-9]+)[\\s-]+(?:and[\\s-]+(?:a|one)[\\s-]+)?)?("+FRACW+")\\b","gi");
+  var FRAC_KEEP=/^[\s-]*(?:of|percent|per|pct|point|points|again|more|less|higher|lower|the|a|an|and|or)\b|^[\s-]*(?:[^A-Za-z\s-]|$)/i;
+  var DECW="zero|oh|one|two|three|four|five|six|seven|eight|nine";
+  var DECWORD_RE=new RegExp("\\b(?:(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|zero)(?:[\\s-]+(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|zero))*[\\s-]+)?point(?:[\\s-]+(?:"+DECW+"))+\\b","gi");
+  var SLASH_RE=/\b[0-9]{1,4}\s?\/\s?[0-9]{1,4}(?:\/[0-9]{2,4})?\b|\b[0-9]{4}-[0-9]{2}-[0-9]{2}\b|\b[0-9]{1,2}:[0-9]{2}\b/g;
+  var DATE_PREP=/\b(?:on|by|as\s+of|through|thru|since|until|from|to|dated|of|in|ending|ended|at|the|and|or|between|before|after|jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\s+$/i;
+  var MONTHW="jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?";
+  var DATE_AFTER=new RegExp("^(?:st|nd|rd|th)?,?\\s+(?:of\\s+)?(?:"+MONTHW+")\\b","i");
+  var DATE_BEFORE=new RegExp("\\b(?:"+MONTHW+")\\.?\\s+$","i");
+  var YEAR_BEFORE=new RegExp("\\b(?:in|of|for|since|during|through|until|fiscal|calendar|year|fy|"+MONTHW+")[\\s,]+$","i");
+  var LABEL_BEFORE=/(?:#|\b(?:no|nos|number|note|notes|line|lines|row|rows|item|items|card|cards|page|pages|section|sections|schedule|exhibit|appendix|step|phase|form|store|site|suite|building|route|account|acct|invoice|version|tier|level|class|grade|sku|asc|ias|ifrs|asu|gasb|fasb|irc|topic|chapter|part|article|rule|clause|option|question|week|day|round|case|table|figure|chart|slide|task|ticket|order|po|batch|lot|room|floor|zone|region|district)\.?)[\s#-]*$/i;
+  var COUNT_AFTER=/^[\s-]+([A-Za-z]{2,})/;
+  var ONE_IDIOM=/^one(?:\s+(?:of|another)\b|[\s-]+(?:time|off)\b)/i;
+  var ONE_BEFORE=/\b(?:the|this|that|each|every|any|no|other|larger|smaller|last|first|new|old)\s+$/i;
+  var COUNT_STOP=null;
+  function countStop(){
+    if(COUNT_STOP)return COUNT_STOP;
+    COUNT_STOP={};
+    ("percent per pct pp bp bps basis point points pts dollar dollars usd cent cents thousand thousands million "+
+     "millions billion billions trillion trillions mn bn times fold mille percentage to from by at of in on and or "+
+     "but nor than over under above below versus vs against compared since for with as because while after before "+
+     "the a an this that these those which who is was were are be been being it its so then when into through each "+
+     "more less higher lower plus minus now again same").split(" ").forEach(function(w){COUNT_STOP[w]=1;});
+    UP.concat(DOWN).forEach(function(w){COUNT_STOP[w]=1;});
+    Object.keys(MOVE_NOUN).forEach(function(w){COUNT_STOP[w]=1;});
+    return COUNT_STOP;
+  }
+  var OUTSIDE_WHY={count:"a count the ledger does not hold",date:"a date",year:"a year",label:"a label or reference",
+                   ordinal:"an ordinal",time:"a time of day"};
+  /* the forms above, found before any figure is read so no part of one is ever
+     read as a figure. `outside` collects the dates it recognized on the way. */
+  function oddQuantities(text){
+    var out=[],outside=[],m;
+    ODD_NUM_RE.lastIndex=0;
+    while((m=ODD_NUM_RE.exec(text))!==null){
+      out.push({raw:m[0],at:m.index,end:m.index+m[0].length,why:"a digit or numeric character the checker does not read"});
+    }
+    MULT_RE.lastIndex=0;
+    while((m=MULT_RE.exec(text))!==null){
+      if(/^doubl/i.test(m[0])&&MULT_NOT.test(text.slice(m.index+m[0].length)))continue;
+      out.push({raw:m[0],at:m.index,end:m.index+m[0].length,why:"a multiplier the checker does not read"});
+    }
+    DECWORD_RE.lastIndex=0;
+    while((m=DECWORD_RE.exec(text))!==null){
+      out.push({raw:m[0],at:m.index,end:m.index+m[0].length,why:"a decimal written in words the checker does not read"});
+    }
+    FRAC_RE.lastIndex=0;
+    while((m=FRAC_RE.exec(text))!==null){
+      var w=m[2].toLowerCase(),lead=m[1]?m[1].toLowerCase():"",aft=text.slice(m.index+m[0].length),
+          bef=text.slice(0,m.index);
+      if(w==="half"||w==="halves"){
+        if(!lead&&/(?:first|second|latter|former|back|front)[\s-]*$/i.test(bef))continue;
+        if(/^[\s-]*(?:years?|months?|days?|hours?|time)\b/i.test(aft))continue;
+      }else if(w==="quarter"||w==="quarters"){
+        if(!lead||/^[\s-]*end\b/i.test(aft))continue;
+      }else{
+        if(!lead)continue;
+        if((lead==="a"||lead==="an"||lead==="one")&&!/s$/.test(w)&&!FRAC_KEEP.test(aft))continue;
+      }
+      out.push({raw:m[0],at:m.index,end:m.index+m[0].length,why:"a fraction the checker does not read"});
+    }
+    SLASH_RE.lastIndex=0;
+    while((m=SLASH_RE.exec(text))!==null){
+      var sb=text.slice(0,m.index),sa=text.slice(m.index+m[0].length);
+      var dated=/-|:/.test(m[0])||/\/[0-9]+\//.test(m[0])||DATE_PREP.test(sb);
+      if(dated&&!/^\s*(?:of\b|percent|per\s?cent|pct|%)/i.test(sa)){
+        outside.push({raw:m[0],at:m.index,end:m.index+m[0].length,kind:/:/.test(m[0])?"time":"date"});
+      }else{
+        out.push({raw:m[0],at:m.index,end:m.index+m[0].length,why:"a fraction the checker does not read"});
+      }
+    }
+    out.sort(function(a,b){return a.at-b.at||b.end-a.end;});
+    var merged=[];
+    out.forEach(function(o){
+      var last=merged[merged.length-1];
+      if(last&&o.at<last.end){if(o.end>last.end){last.end=o.end;last.raw=text.slice(last.at,last.end);}return;}
+      merged.push(o);
+    });
+    return {spans:merged,outside:outside};
+  }
+  /* A run of digits the figure reader did not take. It is accounted for only as
+     a year, a date, a label, an ordinal, a time of day, an account number standing
+     as a reference, or a count written in front of the thing it counts. Anything
+     else is an unparsed span. */
+  function strayNumbers(text,taken,figs,skipNums){
+    var re=/-?[0-9][0-9,]*(?:\.[0-9]+)?/g,out=[],outside=[],m,t,hit,i,j;
     while((m=re.exec(text))!==null){
       i=m.index;j=i+m[0].length;hit=false;
       for(t=0;t<taken.length;t++)if(i<taken[t][1]&&j>taken[t][0]){hit=true;break;}
       if(hit)continue;
-      var after=text.slice(j,j+26);
+      var ts=i,te=j;
+      while(ts>0&&/[A-Za-z0-9_]/.test(text.charAt(ts-1)))ts--;
+      while(te<text.length&&/[A-Za-z0-9_]/.test(text.charAt(te)))te++;
+      if(ts<i||te>j){
+        var tok=text.slice(ts,te);
+        re.lastIndex=te;
+        if(/^[0-9]+(?:st|nd|rd|th)$/i.test(tok))outside.push({raw:tok,at:ts,end:te,kind:"ordinal"});
+        else if(/^[0-9]{1,2}(?:am|pm)$/i.test(tok))outside.push({raw:tok,at:ts,end:te,kind:"time"});
+        else if(/^[A-Za-z]{1,6}[0-9]+[A-Za-z]?$/.test(tok))outside.push({raw:tok,at:ts,end:te,kind:"label"});
+        else out.push({raw:tok,at:ts,end:te,why:"a number written in a form the checker does not read"});
+        continue;
+      }
+      var after=text.slice(j,j+26),before=text.slice(Math.max(0,i-40),i);
       var unit=SCALE_AFTER.test(after)||FOREIGN_AFTER.test(after);
+      if(unit){
+        out.push({raw:m[0]+(after.match(SCALE_AFTER)||after.match(FOREIGN_AFTER))[0],at:i,end:j,
+          why:"a unit the checker does not read"});
+        continue;
+      }
       var r=roleOf(text,{at:i,end:j,unit:"dollars"},0,[]);
-      if(!unit&&r.role==="unknown")continue;
-      out.push({raw:m[0]+(unit?(after.match(SCALE_AFTER)||after.match(FOREIGN_AFTER))[0]:""),at:i,end:j,
-        why:unit?"a unit the checker does not read":"a number standing where the words put a claim"});
+      var digits=m[0].replace(/[^0-9]/g,""),whole=/^[0-9]+$/.test(m[0]),n=parseInt(digits,10),cw;
+      if(/^(19|20)[0-9]{2}$/.test(m[0])&&(r.role==="unknown"||YEAR_BEFORE.test(before))){
+        outside.push({raw:m[0],at:i,end:j,kind:"year"});continue;
+      }
+      if(skipNums&&skipNums[m[0]]&&r.role==="unknown")continue;
+      if(whole&&n>=1&&n<=31&&(DATE_AFTER.test(after)||DATE_BEFORE.test(before))){
+        outside.push({raw:m[0],at:i,end:j,kind:"date"});continue;
+      }
+      if(whole&&LABEL_BEFORE.test(before)){outside.push({raw:m[0],at:i,end:j,kind:"label"});continue;}
+      if(whole&&(cw=after.match(COUNT_AFTER))&&!countStop()[cw[1].toLowerCase()]){
+        outside.push({raw:m[0],at:i,end:j,kind:"count"});continue;
+      }
+      out.push({raw:m[0],at:i,end:j,
+        why:r.role!=="unknown"?"a number standing where the words put a claim":"a number the checker cannot place"});
     }
+    out.outside=outside;
     return out;
   }
 
@@ -448,9 +646,29 @@
     /* parentheses only make a figure negative when they close around it. A lone
        opening bracket, as in "increased by $30,000 (30%)", is punctuation. */
     function hasSign(raw){return /^\s*-/.test(raw)||(/^\s*\(/.test(raw)&&/\)\s*$/.test(raw));}
+    /* a figure glued to the letters, digits, dots or slashes in front of it, as in
+       "9e1 percent" or "US$30,000", is not the figure it would be on its own */
+    var glued=[];
+    function gluedAt(m){
+      var k=m.index+Math.max(0,m[0].search(/[-($0-9]/)),s=k;
+      if(k===0||!/[A-Za-z0-9_.\/]/.test(text.charAt(k-1)))return false;
+      while(s>0&&/[A-Za-z0-9_.\/]/.test(text.charAt(s-1)))s--;
+      var end=m.index+m[0].length;
+      glued.push({raw:text.slice(s,end).replace(/\s+$/,""),at:s,end:end,
+        why:/^[A-Za-z]+$/.test(text.slice(s,k))&&text.charAt(k)==="$"?"a currency the checker does not read":
+          "a number written in a form the checker does not read"});
+      taken.push([s,end]);
+      return true;
+    }
+
+    var odd=oddQuantities(text);
+    odd.spans.forEach(function(o){taken.push([o.at,o.end]);});
+    odd.outside.forEach(function(o){taken.push([o.at,o.end]);});
 
     var rp=/([-(]?\s?\$?\s?\d[\d,]*(?:\.\d+)?\s?\)?)\s*(percentage points?|percent|per cent|pct|pp|%)/gi;
     while((m=rp.exec(text))!==null){
+      if(overlaps(m.index,m.index+m[0].length))continue;
+      if(gluedAt(m))continue;
       var ptxt=m[1],neg=hasSign(ptxt);
       if(/^\s*\(/.test(ptxt)&&!/\)\s*$/.test(ptxt))ptxt=ptxt.replace(/^\s*\(/,"");
       var pv=parseNum(ptxt);
@@ -464,6 +682,7 @@
     var rd=/\(\s?\$?\s?\d(?:[\d,]*\d)?(?:\.\d+)?\s?[kKmMbB]?\s?\)|-?\$\s?\d(?:[\d,]*\d)?(?:\.\d+)?(?:\s?[kKmMbB]\b)?|\b\d{1,3}(?:,\d{3})+(?:\.\d+)?\b|\b\d+(?:\.\d+)?[kKmMbB]\b/g;
     while((m=rd.exec(text))!==null){
       if(overlaps(m.index,m.index+m[0].length))continue;
+      if(gluedAt(m))continue;
       var dv=parseFig(m[0]);
       if(isNaN(dv))continue;
       out.push({raw:m[0].replace(/^\s+|\s+$/g,""),v:dv,at:m.index,end:m.index+m[0].length,
@@ -480,18 +699,27 @@
       if(overlaps(m.index,m.index+m[0].length))continue;
       var bare=m[0].replace(/[^0-9.]/g,"");
       if(/^(19|20)\d\d$/.test(bare))continue;
+      if(LABEL_BEFORE.test(text.slice(Math.max(0,m.index-40),m.index)))continue;
       if(skipNums&&skipNums[bare])continue;
+      if(gluedAt(m))continue;
       out.push({raw:m[0].replace(/\s+/g,""),v:parseFloat(bare)*(/^-/.test(m[0])?-1:1),
                 at:m.index,end:m.index+m[0].length,
                 unit:"dollars",signed:/^-/.test(m[0]),plain:true});
       taken.push([m.index,m.index+m[0].length]);
     }
+    /* a quantity in words that the parser resolved and the words gave a unit is
+       an ordinary figure from here on. */
+    var wn=wordNumbers(text,taken);
+    wn.figs.forEach(function(f){
+      if(overlaps(f.at,f.end))return;
+      out.push(f);taken.push([f.at,f.end]);
+    });
     out.sort(function(a,b){return a.at-b.at;});
 
     /* a figure written in a currency the checker does not read, or carrying a
        scale word it does not carry, is not a figure it may compare against a
        dollar ledger. It comes out of the accepted set and goes to the queue. */
-    var rejected=[],keep=[];
+    var rejected=odd.spans.concat(glued),keep=[],outside=odd.outside.slice();
     out.forEach(function(f){
       var before=text.slice(0,f.at),after=text.slice(f.end),mm;
       if(f.unit==="dollars"&&(mm=before.match(FOREIGN_BEFORE))){
@@ -515,15 +743,41 @@
     var spans=[],k;
     for(k=0;k<keep.length;k++)spans.push([keep[k].at,keep[k].end]);
     for(k=0;k<rejected.length;k++)spans.push([rejected[k].at,rejected[k].end]);
-    numberWords(text).forEach(function(w){
+    for(k=0;k<outside.length;k++)spans.push([outside[k].at,outside[k].end]);
+    /* a quantity in words with no unit is accounted for only as a count written in
+       front of the thing it counts, or as "one" standing as a pronoun or an idiom */
+    wn.pending.forEach(function(w){
       for(k=0;k<spans.length;k++)if(w.at<spans[k][1]&&w.end>spans[k][0])return;
-      rejected.push(w);spans.push([w.at,w.end]);
+      if(!w.always){
+        var cw=text.slice(w.end,w.end+30).match(COUNT_AFTER),low=w.raw.toLowerCase();
+        if(cw&&!countStop()[cw[1].toLowerCase()]){outside.push({raw:w.raw,at:w.at,end:w.end,kind:"count"});return;}
+        if(low==="one"&&(ONE_IDIOM.test(text.slice(w.at))||ONE_BEFORE.test(text.slice(0,w.at))))return;
+        if(LABEL_BEFORE.test(text.slice(Math.max(0,w.at-40),w.at))){outside.push({raw:w.raw,at:w.at,end:w.end,kind:"label"});return;}
+        if(roleOf(text,{at:w.at,end:w.end,unit:"dollars"},0,[]).role==="unknown")w.why="a figure written in words the checker cannot place";
+      }
+      rejected.push({raw:w.raw,at:w.at,end:w.end,why:w.why});spans.push([w.at,w.end]);
     });
-    strayNumbers(text,spans,keep).forEach(function(n){rejected.push(n);});
+    var stray=strayNumbers(text,spans,keep,skipNums);
+    stray.forEach(function(n){rejected.push(n);});
+    stray.outside.forEach(function(o){outside.push(o);});
     rejected.sort(function(a,b){return a.at-b.at;});
+    outside.sort(function(a,b){return a.at-b.at;});
     keep.rejected=rejected;
+    keep.outside=outside;
     return keep;
   }
+  /* kept for callers of the earlier module; figures() no longer uses it */
+  function numberWords(text){
+    var out=[],m;
+    NUMWORD_RE.lastIndex=0;
+    while((m=NUMWORD_RE.exec(text))!==null){
+      var j=m.index+m[0].length;
+      if(UNIT_AFTER.test(text.slice(j,j+26))||/\d\s*$/.test(text.slice(Math.max(0,m.index-14),m.index)))
+        out.push({raw:m[0],at:m.index,end:j,why:"a figure written in words"});
+    }
+    return out;
+  }
+
   function dollarsIn(figs){return figs.filter(function(f){return f.unit==="dollars";});}
   function pctsIn(figs){return figs.filter(function(f){return f.unit!=="dollars";});}
 
@@ -531,8 +785,12 @@
      Read from the words around the figure, never from the fact that it happens to
      equal something in the ledger. Where the words do not say, the role is
      unknown and the reviewer is asked to confirm it in a dropdown. */
-  var CUE_PRIOR={from:1};
-  var CUE_CURRENT={to:1,at:1,now:1,reached:1,reaching:1,stands:1,standing:1,hit:1,hits:1};
+  /* "prior" and "current" standing in front of a figure are the role labels
+     Prompt 1 asks the drafting tool to write, so they are read as roles too */
+  var CUE_PRIOR={from:1,prior:1,previous:1};
+  var CUE_CURRENT={to:1,at:1,now:1,reached:1,reaching:1,stands:1,standing:1,hit:1,hits:1,current:1};
+  /* words after a figure that turn it into a bound rather than a figure */
+  var BOUND_AFTER=/^\s*(?:or\s+(?:more|less|so|higher|lower|above|below|over|under)|at\s+(?:most|least)|and\s+(?:up|above|over))\b/i;
   var CUE_MOVE={by:1};
   var MOVE_NOUN={increase:1,increases:1,decrease:1,decreases:1,rise:1,rises:1,fall:1,falls:1,drop:1,
                  drops:1,gain:1,gains:1,growth:1,decline:1,declines:1,movement:1,change:1,variance:1,
@@ -551,6 +809,7 @@
     var pct=f.unit!=="dollars";
     if(f.unit==="percentage points")
       return {role:"rate change in points",from:"the words \"percentage points\""};
+    if(BOUND_AFTER.test(post))return {role:"unknown",from:""};
     if(pct&&/^\s*of\s+(the\s+)?(prior|previous|last|opening|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i.test(post))
       return {role:"relative movement",from:"\"of\" naming the period it is a share of"};
     var nx=post.replace(/^[^A-Za-z]*/,"").toLowerCase().split(/[^a-z]/)[0];
@@ -938,8 +1197,19 @@
             "eased","ease","eases","easing","softened","soften","softens","softening",
             "slipped","slip","slips","receded","recede","recedes"];
   /* "flat" is a direction too, and it is tested against a movement inside half a percent of zero */
-  var FLATW=["held flat","held steady","held level","held at","no change","no movement","flat",
-             "unchanged","steady","level with","unmoved"];
+  /* "flat" is a direction too. Two kinds. A no-change claim, "unchanged", "remained
+     at", "held at", "stayed the same", asserts zero movement and is tested against
+     a movement of zero to the half cent. A flat claim, "flat", "steady", "stable",
+     is tested against a movement inside half a percent of zero. */
+  var STILLW=["unchanged","unmoved","no change","no movement","no net change","held at","holds at","remained at",
+              "remains at","remain at","stayed at","stays at","stay at","kept at","continued at","maintained at",
+              "remained unchanged","stayed unchanged","remained the same","stayed the same","remained constant",
+              "stayed constant","held constant","was constant","were constant","level with"];
+  var FLATW=["held flat","held steady","held level","flat","steady","remained flat","stayed flat",
+             "remained steady","stayed steady","remained level","stayed level","remained stable","stayed stable"]
+            .concat(STILLW);
+  /* "remained" or "stayed" written straight in front of a figure is the same claim */
+  var STILL_FIG=/\b(remain(?:ed|s)?|stay(?:ed|s)?)\s+(?:\$|\(|-?[0-9])/i;
   var FLAT_TOL=0.5;
   function dirWords(txt){
     var t=" "+txt.toLowerCase().replace(/[^a-z\s]/g," ").replace(/\s+/g," ")+" ",out=[];
@@ -948,17 +1218,27 @@
     return out;
   }
   function flatWord(txt){
-    var t=" "+txt.toLowerCase().replace(/[^a-z\s]/g," ").replace(/\s+/g," ")+" ",found=null;
+    var t=" "+txt.toLowerCase().replace(/[^a-z\s]/g," ").replace(/\s+/g," ")+" ",found=null,m;
     FLATW.forEach(function(w){
       if(t.indexOf(" "+w+" ")>-1&&(!found||w.length>found.length))found=w;
     });
+    if(!found&&(m=String(txt).match(STILL_FIG)))found=m[1].toLowerCase();
     return found;
+  }
+  /* a no-change word, as against a flat word */
+  function stillWord(w){
+    return !!w&&(STILLW.indexOf(w)>-1||/^(?:remain|stay)/.test(w));
   }
   /* a movement the checker will let a "flat" claim stand on */
   function isFlat(a){
     if(a.pct===null)return a.change===0;
     return Math.abs(a.pct)<=FLAT_TOL;
   }
+  /* a movement a no-change claim stands on: none, to the half cent */
+  function isStill(a){
+    return Math.abs(a.change)<=TOL_D;
+  }
+  function flatAgrees(w,a){return stillWord(w)?isStill(a):isFlat(a);}
   /* Clauses, with the offsets kept so a figure can be placed in the clause it was
      written in. A comma inside a figure is part of the figure, never a break, and
      the guard character is one character wide so every offset still lines up. */
@@ -1028,8 +1308,10 @@
     /* ---- from checker.html 2092-2159: the direction check ---- */
   function directionOn(s){
     if(!s.bound.length)return null;
-    var bad=[],good=[],anchored=[],voided=[];
-    clausesOf(s.text).forEach(function(c){
+    var bad=[],good=[],anchored=[],voided=[],loose=[],open=[],prevEnd=0;
+    spansOf(s.text,RE_COARSE).forEach(function(sp){
+      var c=sp.text,sep=s.text.slice(prevEnd,sp.at).replace(/^\s+|\s+$/g,"").toLowerCase();
+      prevEnd=sp.end;
       var cf=figures(c,s.numset),anchor=null,neg=negationIn(c);
       dollarsIn(cf).forEach(function(d){
         if(anchor)return;
@@ -1044,13 +1326,19 @@
         if(anchor)anchored.push(c);
         return;
       }
-      if(!anchor)return;
+      if(!anchor){
+        if(flatWord(c)||dirWords(c).length)open.push({text:c,sep:sep});
+        return;
+      }
       anchored.push(c);
+      testClause(c,anchor);
+    });
+    function testClause(c,anchor){
       var sign=anchor.change>0?1:(anchor.change<0?-1:0);
       var anm=acctId(anchor),fw=flatWord(c);
       if(fw){
-        if(isFlat(anchor))good.push("\""+fw+"\" agrees with "+anm+", which moved "+money(anchor.change)+
-          (anchor.pct===null?"":", "+pctTxt(anchor.pct))+", inside half a percent of no movement");
+        if(flatAgrees(fw,anchor))good.push("\""+fw+"\" agrees with "+anm+", which moved "+money(anchor.change)+
+          (anchor.pct===null?"":", "+pctTxt(anchor.pct))+(stillWord(fw)?", which is no movement at all":", inside half a percent of no movement"));
         else bad.push("the memo says \""+fw+"\" but "+anm+" "+(sign>0?"rose ":"fell ")+
           money(Math.abs(anchor.change))+(anchor.pct===null?"":" ("+pctTxt(anchor.pct)+")"));
       }
@@ -1060,42 +1348,87 @@
         else bad.push("the memo says \""+w.w+"\" but "+anm+" "+(sign>0?"rose ":"fell ")+
           money(Math.abs(anchor.change))+(anchor.pct===null?"":" ("+pctTxt(anchor.pct)+")"));
       });
-    });
-    if(!anchored.length){
-      if(voided.length)return {bad:bad,good:good,voided:voided};
-      var sneg=negationIn(s.text);
-      if(sneg&&(flatWord(s.text)||dirWords(s.text).length)){
-        voided.push("the words negate this sentence (“"+sneg+"”), so what it claims about the "+
-          "direction is not settled by the checker");
-        return {bad:bad,good:good,voided:voided};
-      }
-      var sfw=flatWord(s.text);
-      if(sfw){
-        var fok=false,fnames=[];
+    }
+    if(anchored.length){
+      /* a direction or no-change word in a clause of its own, beside a clause the
+         figures did tie. Where that clause names one bound line it is tested
+         against that line; where it names none and disagrees with the lines the
+         sentence binds, it is held, because the checker cannot tell what it
+         describes. */
+      open.forEach(function(o){
+        var c=o.text;
+        var ct=" "+c.toLowerCase().replace(/[^a-z0-9\s]/g," ").replace(/\s+/g," ")+" ",named=[];
         s.bound.forEach(function(a){
-          fnames.push(acctId(a)+" moved "+money(a.change)+(a.pct===null?"":", "+pctTxt(a.pct)));
-          if(isFlat(a))fok=true;
+          if((a.num&&new RegExp("(^|[^0-9])"+a.num+"([^0-9]|$)").test(c))||
+             (a.flat&&ct.indexOf(" "+a.flat+" ")>-1)||(a.two&&a.two.indexOf(" ")>-1&&ct.indexOf(" "+a.two+" ")>-1))named.push(a);
         });
-        if(fok)good.push("\""+sfw+"\" agrees with the bound line");
-        else if(fnames.length)bad.push("the memo says \""+sfw+"\" but "+fnames.join(" and "));
-      }
-      dirWords(s.text).forEach(function(w){
-        var agrees=false,names=[];
+        if(named.length===1){testClause(c,named[0]);return;}
+        /* a clause opened by "as", "because", "while" and the like names a cause or a
+           contrast, and its direction word is about that, unless it points back at
+           the line with "it" or names no one else */
+        if(/^(?:so|because|while|but|as|after|before|though)$/.test(o.sep)&&!named.length&&
+           !/^\s*(?:it|its|the\s+(?:line|account|balance))\b/i.test(c))return;
+        var fw=flatWord(c),words=dirWords(c),agrees=false;
         s.bound.forEach(function(a){
           var sign=a.change>0?1:(a.change<0?-1:0);
-          if(sign===0)return;
-          names.push(acctId(a)+" "+(sign>0?"rose":"fell"));
-          if(w.d===sign)agrees=true;
+          if(fw&&flatAgrees(fw,a))agrees=true;
+          words.forEach(function(w){if(w.d===sign)agrees=true;});
         });
-        if(!names.length)return;
-        if(agrees)good.push("\""+w.w+"\" agrees with the bound line");
-        else bad.push("the memo says \""+w.w+"\" but "+names.join(" and "));
+        if(!agrees)loose.push("\""+(fw||words.map(function(w){return w.w;}).join("\", \""))+"\" stands in a clause that "+
+          "ties to no figure and names no line, and it does not agree with "+s.bound.map(acctId).join("; ")+
+          ", so the checker cannot tell what it describes");
       });
+      return {bad:bad,good:good,voided:voided,loose:loose};
     }
-    return {bad:bad,good:good,voided:voided};
+    if(voided.length)return {bad:bad,good:good,voided:voided,loose:loose};
+    var sneg=negationIn(s.text);
+    if(sneg&&(flatWord(s.text)||dirWords(s.text).length)){
+      voided.push("the words negate this sentence (“"+sneg+"”), so what it claims about the "+
+        "direction is not settled by the checker");
+      return {bad:bad,good:good,voided:voided,loose:loose};
+    }
+    var sfw=flatWord(s.text);
+    if(sfw){
+      var fok=false,fnames=[];
+      s.bound.forEach(function(a){
+        fnames.push(acctId(a)+" moved "+money(a.change)+(a.pct===null?"":", "+pctTxt(a.pct)));
+        if(flatAgrees(sfw,a))fok=true;
+      });
+      if(fok)good.push("\""+sfw+"\" agrees with the bound line");
+      else if(fnames.length)bad.push("the memo says \""+sfw+"\" but "+fnames.join(" and "));
+    }
+    dirWords(s.text).forEach(function(w){
+      var agrees=false,names=[];
+      s.bound.forEach(function(a){
+        var sign=a.change>0?1:(a.change<0?-1:0);
+        if(sign===0)return;
+        names.push(acctId(a)+" "+(sign>0?"rose":"fell"));
+        if(w.d===sign)agrees=true;
+      });
+      if(!names.length)return;
+      if(agrees)good.push("\""+w.w+"\" agrees with the bound line");
+      else bad.push("the memo says \""+w.w+"\" but "+names.join(" and "));
+    });
+    return {bad:bad,good:good,voided:voided,loose:loose};
   }
 
   root.SecondPassCore = {
+    OUTSIDE_WHY: OUTSIDE_WHY,
+    BOUND_AFTER: BOUND_AFTER,
+    STILLW: STILLW,
+    LABEL_BEFORE: LABEL_BEFORE,
+    SLASH_RE: SLASH_RE,
+    DECWORD_RE: DECWORD_RE,
+    FRAC_RE: FRAC_RE,
+    MULT_RE: MULT_RE,
+    ODD_NUM_RE: ODD_NUM_RE,
+    flatAgrees: flatAgrees,
+    isStill: isStill,
+    stillWord: stillWord,
+    countStop: countStop,
+    oddQuantities: oddQuantities,
+    wordsToNumber: wordsToNumber,
+    wordNumbers: wordNumbers,
     nowMs: nowMs,
     money: money,
     pctTxt: pctTxt,

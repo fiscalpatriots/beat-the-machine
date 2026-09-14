@@ -189,6 +189,30 @@ FIXTURES.forEach((fx) => {
   }
 });
 
+/* The author page reads the checker through assets/second-pass-core.js, a copy of
+ * the reader functions in checker.html. Every function the two share must be the
+ * same function, or the author page and the checker read one memo two ways. */
+if (!only.length) {
+  const CORE = fs.readFileSync(path.join(ROOT, "assets", "second-pass-core.js"), "utf8");
+  const bodyOf = (src, name) => {
+    const i = src.indexOf("function " + name + "(");
+    if (i < 0) return null;
+    let d = 0, k = src.indexOf("{", i);
+    for (; k < src.length; k++) { if (src[k] === "{") d++; else if (src[k] === "}") { d--; if (!d) break; } }
+    return src.slice(i, k + 1).replace(/\s+/g, " ");
+  };
+  const shared = [...CORE.matchAll(/^\s*function (\w+)\(/gm)].map((m) => m[1]).filter((n) => bodyOf(HTML, n) !== null);
+  const drift = shared.filter((n) => bodyOf(HTML, n) !== bodyOf(CORE, n));
+  if (drift.length) {
+    fail++;
+    failed.push("CORE drift: assets/second-pass-core.js differs from checker.html in " + drift.join(", "));
+    console.log("FAIL CORE " + shared.length + " shared reader functions, " + drift.length + " differ");
+  } else {
+    pass++;
+    console.log("pass CORE " + shared.length + " shared reader functions identical in checker.html and assets/second-pass-core.js");
+  }
+}
+
 console.log("\n" + pass + " passed, " + fail + " failed, " + (pass + fail) + " run");
 if (failed.length) {
   console.log("\n--- failures ---");
