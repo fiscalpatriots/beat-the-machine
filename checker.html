@@ -1601,7 +1601,7 @@ function bindSentence(s,accounts,figs,spent){
    other. Where it does not, the binding is unresolved and the figure cannot be
    called checked, whatever it happens to equal. */
 function clauseBind(s){
-  var spans=spansOf(s.text,RE_FINE),distinct={};
+  var spans=spansOf(s.text,RE_FINE),distinct={},prev=null;
   s.bound.forEach(function(a){
     distinct[acctId(a)]=a.words.filter(function(w){
       var shared=false;
@@ -1627,6 +1627,11 @@ function clauseBind(s){
     /* "respectively" pairs figures with accounts by position, which the clauses do
    not show, so no figure in such a sentence is bound by its clause */
 f.bind=(hits.length===1&&!/\brespectively\b/i.test(s.text))?hits:null;
+    /* a figure that restates the one before it, "$30,000, or 30 percent", is the same
+       claim in another unit, so where its own clause names no line it belongs to the
+       line the figure it restates belongs to */
+    if(!f.bind&&!hits.length&&prev&&prev.bind&&/restating the figure before it$/.test(f.roleFrom||""))f.bind=prev.bind;
+    prev=f;
   });
 }
 
@@ -2049,6 +2054,25 @@ function maskTitles(t){
     return titleInner(q)?pre+all.charAt(pre.length)+q.replace(/\S/g,"x")+all.charAt(all.length-1):all;
   });
 }
+/* A financial subject a ledger of account lines does not carry as a line: a statement
+   total or a measure built from several lines. Named in the claim, in a clause that
+   carries a figure or a direction word, it holds the sentence unless it is part of a line
+   the sentence binds or a ratio in the ratio pane, because the figure in that clause can
+   only have tied to some other line ("Rent expense rose $30,000, so gross profit increased
+   $30,000"). */
+var FIN_SUBJECT=/\b(?:gross\s+(?:profit|margin)s?|net\s+(?:income|loss(?:es)?|profit|earnings|margin|revenues?|sales)|operating\s+(?:income|loss(?:es)?|profit|margin|expenses?|costs?|results?|cash\s+flows?)|ebitda|ebit|pre-?tax\s+(?:income|profit|earnings)|earnings|profits?|profitability|total\s+(?:revenues?|income|sales|expenses?|costs?|operating\s+expenses)|cost\s+of\s+(?:goods\s+sold|sales|revenues?)|cogs|(?:free\s+)?cash\s+flows?|working\s+capital|contribution\s+margin|bottom[\s-]line|top[\s-]line)\b/gi;
+/* the first financial subject a stretch of text names that is not part of a line the
+   sentence binds or a ratio in the ratio pane, or null */
+function subjectIn(c,s){
+  var re=new RegExp(FIN_SUBJECT.source,"gi"),m,key;
+  var own=(s.bound||[]).map(function(a){return " "+String(a.flat||"")+" ";})
+    .concat((s.ratioNames||[]).map(function(r){return " "+String(r).toLowerCase().replace(/[^a-z0-9]+/g," ")+" ";}));
+  while((m=re.exec(String(c)))!==null){
+    key=" "+m[0].toLowerCase().replace(/[^a-z0-9]+/g," ")+" ";
+    if(!own.some(function(n){return n.indexOf(key)>-1;}))return m[0];
+  }
+  return null;
+}
 /* Where the claim ends: after the last figure the sentence or clause carries, or,
    with no figure, after the first direction word. */
 function claimEnd(text,figs){
@@ -2363,6 +2387,21 @@ function riskTokens(s){
       var raw=nm?nm[0]:hits[0].text.replace(/^\s+|\s+$/g,""),at=hits[0].at+(nm?nm.index:hits[0].text.search(/\S/));
       add(raw,at,"is named with no figure and no direction word of its own, so what the sentence claims about it is not tied to the ledger","other account");
     });
+  }
+  /* a financial subject the ledger does not carry, named in the claim, in a clause that
+     carries a figure or a direction word */
+  var rnames=(s.ratioNames||[]).map(function(r){return " "+String(r).toLowerCase().replace(/[^a-z0-9]+/g," ")+" ";});
+  var coarse=spansOf(titled,RE_COARSE);
+  FIN_SUBJECT.lastIndex=0;
+  while((m=FIN_SUBJECT.exec(text))!==null){
+    var sa=m.index,sb=sa+m[0].length,seaten=true,scl=null,skey=" "+m[0].toLowerCase().replace(/[^a-z0-9]+/g," ")+" ";
+    for(k=sa;k<sb;k++)if(!used[k]&&/\S/.test(text.charAt(k))){seaten=false;break;}
+    if(seaten||sa>=rsn)continue;
+    if(rnames.some(function(r){return r.indexOf(skey)>-1;}))continue;
+    coarse.forEach(function(c){if(sa>=c.at&&sa<c.end)scl=c;});
+    if(!scl)continue;
+    if(!figs.some(function(f){return f.at>=scl.at&&f.at<scl.end;})&&!dirWords(scl.text).length&&!flatWord(scl.text))continue;
+    add(m[0],sa,"is a financial subject that is not a line this sentence binds, and a figure or a direction word in its clause cannot be tied to it","other subject");
   }
   out.sort(function(x,y){return x.at-y.at||y.end-x.end;});
   var kept=[];
@@ -2690,6 +2729,7 @@ function run(){
     s.bound=b.bound;s.how=b.how;s.conflicts=b.conflicts;
     s.multi=s.bound.length>1;
     if(s.multi)clauseBind(s);
+    s.ratioNames=R.ratios.map(function(r){return r.name;});
     s.negs={};
     spansOf(s.text,RE_COARSE).forEach(function(c){
       var n=claimIn(c.text)?negationIn(c.text):null;
@@ -3047,12 +3087,12 @@ function directionRead(s){
   spansOf(T,RE_COARSE).forEach(function(sp){
     var c=sp.text,sep=T.slice(prevEnd,sp.at).replace(/^\s+|\s+$/g,"").toLowerCase();
     prevEnd=sp.end;
-    var cf=figures(c,s.numset),anchor=null,neg=negationIn(c);
+    var cf=figures(c,s.numset),anchor=null,anchorAt=0,neg=negationIn(c);
     dollarsIn(cf).forEach(function(d){
       if(anchor)return;
       s.bound.forEach(function(a){
         if(anchor)return;
-        if(near(d.v,a.prior,TOL_D)||near(d.v,a.cur,TOL_D)||near(d.v,a.change,TOL_D))anchor=a;
+        if(near(d.v,a.prior,TOL_D)||near(d.v,a.cur,TOL_D)||near(d.v,a.change,TOL_D)){anchor=a;anchorAt=d.at;}
       });
     });
     if(neg&&(flatWord(c)||dirWords(c).length)){
@@ -3066,6 +3106,10 @@ function directionRead(s){
       return;
     }
     anchored.push(c);
+    /* a clause that names a financial subject the ledger does not carry in front of the
+       figure that tied ("so gross profit increased $30,000") is about that subject, so its
+       direction word is not tested against the line the figure happened to tie to */
+    if(subjectIn(c.slice(0,anchorAt),s))return;
     testClause(c,anchor,cf);
   });
   /* the bound lines a stretch of text names */

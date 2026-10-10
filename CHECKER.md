@@ -387,13 +387,26 @@ on this page decides whether a line owes an explanation, not whether a movement 
 threshold invented here would be a claim about the ledger that no controller made. So the word is
 named and a person reads it.
 
-**Two rules that are structural rather than lexical.**
+**The rules that are structural rather than lexical.**
 
 - **Every account a sentence binds needs a claim of its own.** Where a sentence binds more than one
   account, every account it names needs a figure or a tested direction word in its own clause, so
   `Rent expense rose $30,000, and Insurance expense followed` is held even though no listed word
   carries the second account, and so is `on the lease that also covers Insurance expense.`, now
-  that a name at the end of a sentence binds.
+  that a name at the end of a sentence binds. A figure that restates the one before it in another
+  unit, `$30,000, or 30 percent`, belongs to the line the figure it restates belongs to where its own
+  clause names none, so `Rent expense rose $30,000, or 30 percent, and Insurance expense rose $45,000,
+  or 90 percent` tests each percent against its own line.
+- **A financial subject the ledger does not carry holds the sentence.** `gross profit`, `gross
+  margin`, `net income`, `net loss`, `operating income`, `operating expenses`, `EBITDA`, `earnings`,
+  `profit`, `total revenue`, `total expenses`, `cost of goods sold`, `cash flow`, `working capital`,
+  `the bottom line` and kin, named in the claim in a clause that carries a figure or a direction
+  word, hold the sentence at needs review with the subject named, unless the subject is part of a
+  line the sentence binds or of a ratio's name in the ratio pane. A figure in such a clause can only
+  have tied to some other line, so `Rent expense rose $30,000, so gross profit increased $30,000` is
+  held, and the direction word in that clause is not tested against the line the figure happened to
+  tie to, so `so net income fell $30,000` is never failed against rent expense. A subject inside a
+  reason, `because gross profit fell`, stays with the reviewer's question about the reason.
 - **A period is bound only by the column labels.** A month, a date, a year, and the words `month`,
   `monthly`, `month-end`, `this month` and `month over month`, are read against the two column
   labels wherever they stand in the sentence, in a reason as much as in the claim. A month or a
