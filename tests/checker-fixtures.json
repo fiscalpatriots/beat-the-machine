@@ -18543,5 +18543,149 @@
         "value": "the memo says \"fall\""
       }
     ]
+  },
+  {
+    "id": "TITLE01",
+    "name": "a direction word inside a quoted document title: Rent expense rose $30,000 per the “decline in vacancy” memo. (audit N6, C015)",
+    "required": "A quoted title of two words or more with no digit is the name of a document, not a claim about the line, so \"decline\" inside it is not tested against the movement. The independent audit of 14 September 2026 found this true sentence failed (N6, probe C015); it is checked within scope.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 per the “decline in vacancy” memo.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "\"decline\" inside the title is not tested",
+        "get": "finding.S1",
+        "op": "notIncludes",
+        "value": "the memo says \"decline\""
+      },
+      {
+        "desc": "\"rose\" is tested",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "\"rose\" agrees with 6100 Rent expense"
+      }
+    ]
+  },
+  {
+    "id": "TITLE02",
+    "name": "the same title in single quotes: Rent expense rose $30,000 per the 'decline in vacancy' memo.",
+    "required": "The 8 October 2026 review wrote the title in single quotes. A single-quoted title is read the same way as a double-quoted one, and an apostrophe inside a word does not open or close it.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 per the 'decline in vacancy' memo.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "\"decline\" inside the title is not tested",
+        "get": "finding.S1",
+        "op": "notIncludes",
+        "value": "the memo says \"decline\""
+      }
+    ]
+  },
+  {
+    "id": "TITLE03",
+    "name": "the same title in straight double quotes: Rent expense rose $30,000 per the \"decline in vacancy\" memo.",
+    "required": "Straight double quotes are read as curly ones are.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 per the \"decline in vacancy\" memo.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "TITLE04",
+    "name": "a quoted single word is still a claim: Rent expense \"fell\" $30,000.",
+    "required": "Quotation marks around one word do not make a title. \"fell\" is still tested, and on a line that rose the sentence fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense \"fell\" $30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is failed",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "failed"
+      },
+      {
+        "desc": "the failure names \"fell\"",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "the memo says \"fell\" but 6100 Rent expense rose $30,000"
+      }
+    ]
+  },
+  {
+    "id": "TITLE05",
+    "name": "a title does not hide a wrong direction outside it: Rent expense fell $30,000 per the “rise in vacancy” memo.",
+    "required": "Writing over the title takes nothing else out of the sentence: \"fell\" is tested against a line that rose and the sentence fails, on \"fell\" and not on \"rise\".",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense fell $30,000 per the “rise in vacancy” memo.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is failed",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "failed"
+      },
+      {
+        "desc": "the failure names \"fell\"",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "the memo says \"fell\" but 6100 Rent expense rose $30,000"
+      },
+      {
+        "desc": "the title's word is not tested",
+        "get": "finding.S1",
+        "op": "notIncludes",
+        "value": "\"rise\" agrees"
+      }
+    ]
+  },
+  {
+    "id": "TITLE06",
+    "name": "a quoted span carrying a figure is read as written: Rent expense rose \"$45,000 on the lease\".",
+    "required": "A quoted span with a digit in it is not a title, so its figure is read and compared; $45,000 is not the movement on a line that rose $30,000, and the sentence fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose \"$45,000 on the lease\".",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is failed",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "failed"
+      }
+    ]
   }
 ]
