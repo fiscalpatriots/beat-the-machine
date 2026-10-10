@@ -18291,5 +18291,257 @@
         "value": "“primarily”"
       }
     ]
+  },
+  {
+    "id": "SEASON01",
+    "name": "a season word is not a direction: the practitioner session case of 10 October 2026, first draft, sentence 6 \"Marketing rose $3,500 on the fall open house mailer.\"",
+    "required": "\"fall\" in front of a noun names the autumn and is not a direction word, so a true sentence is never failed on it. The first draft of the practitioner session case failed sentence 6 on \"fall\" when it was run on the command line on 10 October 2026; it is checked within scope, and the run reads 3 checked, 1 needs review and 2 failed, as the corrected draft does.",
+    "inputs": {
+      "ledger": "Account\tJuly 2026\tAugust 2026\n4000 Patient visit revenue\t412000\t448600\n4100 Workers compensation case revenue\t88000\t121400\n4200 Wellness membership revenue\t26500\t27300\n5000 Clinician wages\t236000\t268500\n5100 Contract clinician fees\t18000\t41000\n6000 Rent expense\t54000\t54000\n6100 Medical supplies\t21400\t19800\n6200 Billing service fees\t30600\t61900\n6300 Marketing\t12000\t15500\n6400 Software subscriptions\t9800\t10100\n",
+      "memo": "1. Workers compensation case revenue rose $33,400, or 38.0 percent, as two new employer referral contracts began in August.\n2. Clinician wages rose $23,500, or 13.8 percent, on two physical therapists hired in July.\n3. Contract clinician fees fell $23,000 as the two new hires replaced agency coverage.\n4. Patient visit revenue of $448,600 reflects steady volume across both clinics.\n5. Medical supplies fell $1,600, which fails the dollar leg.\n6. Marketing rose $3,500 on the fall open house mailer.\n",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence 6 is checked within scope",
+        "get": "status.6",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "the season word is not tested as a direction",
+        "get": "finding.6",
+        "op": "notIncludes",
+        "value": "the memo says \"fall\""
+      },
+      {
+        "desc": "two sentences fail, the two the case plants",
+        "get": "stats.failed",
+        "op": "eq",
+        "value": 2
+      },
+      {
+        "desc": "three sentences are checked within scope",
+        "get": "stats.checked",
+        "op": "eq",
+        "value": 3
+      },
+      {
+        "desc": "one sentence needs review",
+        "get": "stats.review",
+        "op": "eq",
+        "value": 1
+      },
+      {
+        "desc": "four items in the queue",
+        "get": "stats.queue",
+        "op": "eq",
+        "value": 4
+      }
+    ]
+  },
+  {
+    "id": "SEASON02",
+    "name": "a season word inside a reason: Marketing rose $3,500 on the fall open house mailer.",
+    "required": "\"the fall open house mailer\" names a mailing, not a movement, so the reason opened by \"on\" is not read as pointing back at the line, the season word is left with the reviewer's question about the reason, as \"spring\" and \"summer\" are, and the sentence clears.",
+    "inputs": {
+      "ledger": "6300\tMarketing\t12000\t15500",
+      "memo": "Marketing rose $3,500 on the fall open house mailer.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "\"rose\" is the word tested",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "\"rose\" agrees with 6300 Marketing"
+      },
+      {
+        "desc": "\"fall\" is not tested",
+        "get": "finding.S1",
+        "op": "notIncludes",
+        "value": "the memo says \"fall\""
+      }
+    ]
+  },
+  {
+    "id": "SEASON03",
+    "name": "a season word inside the claim: Marketing rose $3,500 for the fall open house mailer.",
+    "required": "\"for\" opens no reason, so the season word stands in the claim, where the clearance grammar holds a period word the ledger's two columns do not show, as it holds \"summer\" there. It is held at needs review with the word named, and never failed.",
+    "inputs": {
+      "ledger": "6300\tMarketing\t12000\t15500",
+      "memo": "Marketing rose $3,500 for the fall open house mailer.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the season word as a period",
+        "get": "queue",
+        "op": "includes",
+        "value": "“fall” places the claim inside or across a period"
+      },
+      {
+        "desc": "no failure is raised on the season",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Failure"
+      }
+    ]
+  },
+  {
+    "id": "SEASON04",
+    "name": "a season word opening the sentence: Fall enrollment revenue rose $30,000.",
+    "required": "\"Fall\" in front of \"enrollment\" is the season, so the sentence is not failed on it; it stands in the claim and is held at needs review as a period word.",
+    "inputs": {
+      "ledger": "4100\tEnrollment revenue\t100000\t130000",
+      "memo": "Fall enrollment revenue rose $30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the season word",
+        "get": "queue",
+        "op": "includes",
+        "value": "“Fall” places the claim inside or across a period"
+      },
+      {
+        "desc": "no failure is raised on the season",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Failure"
+      }
+    ]
+  },
+  {
+    "id": "SEASON05",
+    "name": "a fall that is a movement: Marketing saw a fall of $3,500.",
+    "required": "\"fall\" in front of \"of\" is the movement, so it is still tested, and on a line that rose the sentence fails.",
+    "inputs": {
+      "ledger": "6300\tMarketing\t12000\t15500",
+      "memo": "Marketing saw a fall of $3,500.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is failed",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "failed"
+      },
+      {
+        "desc": "the failure names the direction word",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "the memo says \"fall\" but 6300 Marketing rose $3,500"
+      }
+    ]
+  },
+  {
+    "id": "SEASON06",
+    "name": "a fall in front of a verb: Marketing rose $3,500; the fall reflects lower print costs.",
+    "required": "A word ending in a single -s after \"fall\" may be a verb, so \"the fall reflects\" keeps \"fall\" a direction word; in a clause of its own that ties to no figure and disagrees with the line, it holds the sentence as it did before.",
+    "inputs": {
+      "ledger": "6300\tMarketing\t12000\t15500",
+      "memo": "Marketing rose $3,500; the fall reflects lower print costs.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the direction is unresolved and names \"fall\"",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "\"fall\", \"lower\" stands in a clause that ties to no figure"
+      }
+    ]
+  },
+  {
+    "id": "SEASON07",
+    "name": "spring and summer in a reason clear as they did: Marketing rose $3,500 on the spring open house mailer.",
+    "required": "\"spring\" was never a direction word; in a reason it stays with the reviewer's question about the reason, and the sentence clears.",
+    "inputs": {
+      "ledger": "6300\tMarketing\t12000\t15500",
+      "memo": "Marketing rose $3,500 on the spring open house mailer.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "SEASON08",
+    "name": "spring and summer in a reason clear as they did: Marketing rose $3,500 on the summer open house mailer.",
+    "required": "\"summer\" was never a direction word; in a reason it stays with the reviewer's question about the reason, and the sentence clears.",
+    "inputs": {
+      "ledger": "6300\tMarketing\t12000\t15500",
+      "memo": "Marketing rose $3,500 on the summer open house mailer.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "SEASON09",
+    "name": "a season word does not hide a wrong direction: Marketing fell $3,500 on the fall open house mailer.",
+    "required": "Reading \"fall\" as the season takes nothing else out of the sentence: \"fell\" is tested against a line that rose and the sentence fails.",
+    "inputs": {
+      "ledger": "6300\tMarketing\t12000\t15500",
+      "memo": "Marketing fell $3,500 on the fall open house mailer.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is failed",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "failed"
+      },
+      {
+        "desc": "the failure names \"fell\"",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "the memo says \"fell\" but 6300 Marketing rose $3,500"
+      },
+      {
+        "desc": "and not \"fall\"",
+        "get": "finding.S1",
+        "op": "notIncludes",
+        "value": "the memo says \"fall\""
+      }
+    ]
   }
 ]
