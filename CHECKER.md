@@ -159,8 +159,19 @@ as the same thing. They are not.
    **separate unit**, read from `pp` and `percentage point`. A figure carries **its own sign** when
    the words write one: a minus or a plus in front of it (`-$30,000`, `+$60,000`, `-30,000`,
    `+25 percent`, and a minus in front of a bare number), a minus or a plus just after the dollar
-   sign (`$-30,000`, `$+60,000`), a minus written straight after it (`30,000-`), or a closed pair of
-   parentheses. A dash or a Unicode minus in front of a figure reads as a minus. A plus or a minus
+   sign (`$-30,000`, `$+60,000`), a minus or a plus written straight after it (`30,000-`,
+   `$30,000+`), a plus one space after it at the end of the clause (`rose $30,000 +.`), or a closed
+   pair of parentheses. A dash or a Unicode minus in front of a figure reads as a minus. **One
+   approximation class.** A word that says a figure is approximate, in front of it or after it
+   (`about`, `approximately`, `approx.`, `roughly`, `around`, `some`, `circa`, `~`, `a ballpark`,
+   `in the region of`, `on the order of`, `give or take`, `or so`, `or thereabouts`, `in round
+   numbers`), is read and taken out, and the figure is compared with the ledger unrounded, as
+   written: a hedged figure that ties is checked within scope and one that does not tie fails. A
+   word that makes the figure one side of a bound (`nearly`, `almost`, `close to`, `just shy of`,
+   `a touch over`, `north of`, `upwards of`, `more than`, `at least`, `in excess of`, and `or more`
+   after it) says the figure is not the amount, so its role is left unknown and the sentence is held
+   at needs review. `up to` stays outside the class, and its `to` reads the figure as the current
+   balance. A plus or a minus
    glued to a digit or a letter in front of it, as in `25,000-35,000`, is a range or a hyphen, not a
    sign. A lone opening bracket, as in `rose $30,000 (30%)`, is punctuation and the percent inside it
    is read normally.
@@ -282,7 +293,13 @@ claim, `flat`, `held flat`, `steady`, `remained flat`, is looser and is tested a
 movement inside half a percent of zero. Those are the only no-change words the direction check
 tests. Any other, `stable`, `level`, `static`, `consistent`, `in line with May`, `the same as May`,
 `on par with`, `matched`, `little changed`, is not read as a claim at all: the clearance grammar
-below holds the sentence at needs review and names the word.
+below holds the sentence at needs review and names the word. A no-change claim in words no list
+carries, `rangebound`, `as before`, `went nowhere`, `showed no real movement`, is held by a structural
+rule rather than by a longer list: a sentence whose only figures are balances on one side of the
+comparison, with no movement figure, no direction or no-change word in its claim and no threshold
+claim, cannot be checked within scope, whatever word it uses, and the queue names the balance. A prior
+and a current balance together state the movement, so `went from $100,000 to $130,000` is not held by
+this rule, and neither is `rose to $130,000`.
 
 **Negation.** `not`, `no`, `never`, `neither`, `nor`, `without`, `rather than`, `instead of`,
 `failed to` and the contracted forms **void** the direction claim and the figure claims in the
@@ -341,10 +358,11 @@ a figure; and the period frame of the ledger's own two columns, `month over mont
 month`, where the column labels show two months in a row, or a month the prior column's label names
 (`over May` on a ledger headed `May 2026 / June 2026`).
 
-**What is left is read against the risk lexicon.** Twenty-seven entries, about 1,560 alternatives when
-the alternatives each pattern allows are counted; the size entries repeat the adjective and
-movement-noun lists they attach to one another, so their share of that count is larger than their
-vocabulary. A **strong** entry holds the sentence wherever it stands. A **weak** entry holds it only
+**What is left is read against the risk lexicon.** Thirty entries. Twenty-seven are lists, about 1,560
+alternatives when the alternatives each pattern allows are counted; the size entries repeat the
+adjective and movement-noun lists they attach to one another, so their share of that count is larger
+than their vocabulary. Three, added on 10 October 2026, are structural: they hold any word standing in
+a given place, said of the movement or taking a share of it, rather than a listed word. A **strong** entry holds the sentence wherever it stands. A **weak** entry holds it only
 inside the claim, which runs from the start of the sentence to the first word that opens a reason
 after its last figure (`because`, `as`, `since`, `on`, `due to`, `driven by`, `after`, `with`,
 `while`, the contrast words `despite`, `notwithstanding` and `in spite of`, and kin, or an opening
@@ -375,9 +393,9 @@ lease costs`, `fully loaded rent`, stays with the reason and clears.
 | Period | strong | `year`, `years`, `yr`, `year over year`, `year to date`, `YoY`, `YTD`, `QTD`, `MTD`, `PY`, `LY`, `annual`, `fiscal`, `FY26`, `H1`, `half-year`, `semiannual`, `trailing`, `TTM`, `LTM`, `rolling`, `twelve months`, `months`, `weeks`, `three months`, `30 days`, `consecutive months`, `in a row`, `week over week`, `sequentially`, `prior period`, `same period`, `since December`, `since the start`, `last June`, `over the summer`, `first half` (not `first half of June`), `ago`, `per month`, `today`, `yesterday`, `overnight`, `intra-month`, `this week`. A period word that only gives the length of a lease, a contract, a fee or a renewal (`a one-year lease`, `a half-year term`) is left alone. `quarter`, `quarterly`, `quarter-end`, `Q2` and their kin are not listed here: they are bound by the column labels, below |
 | Period | weak | `week`, `day`, `weekly`, `daily`, `spring`, `summer`, `fall` in front of a noun, `seasonal`, `holiday`, `through`, `until`, `during`, `first half of June`, `third month`, `mid-month`, `early`, `late`, `recently`, `previously`, `typically`, `usually`, `again`, `yet` |
 | Change | weak | a change verb the direction check does not test and that gives no size: `sank`, `contracted`, `shrank`, `dwindled`, `rebounded`, `recovered`, `reversed`, `swung`, `moved`, `shifted`, `fluctuated`, `varied`, `widened`, `narrowed`, `improved`, `worsened`, `peaked`, `ramped`, `slowed`, `trended`, `changed`, `followed` |
-| Size | strong | an adverb of degree: `sharply`, `significantly`, `substantially`, `materially`, `markedly`, `dramatically`, `considerably`, `modestly`, `slightly`, `marginally`, `moderately`, `steeply`, `strongly`, `heavily`, `greatly`, `rapidly`, `gradually`, `somewhat` and kin; a degree word on a comparative: `much higher`, `far lower`, `well above`, `a bit more`; a movement verb or noun that carries its own size: `soared`, `skyrocketed`, `spiked`, `surged`, `jumped`, `leapt`, `ballooned`, `plunged`, `plummeted`, `tumbled`, `slumped`, `collapsed`, `dipped`, `eased`, `softened`, `slipped`, `ticked up`, `edged down`, `inched up`, `crept`, `a jump`, `a spike`, `an uptick`; and a size adjective standing on a movement, in front of the movement noun with at most two words between (`a significant increase`, `a sharp year-end rise`, `the sharpest rise`, `an outsized escalation`) or after it with `is`, `was`, `remained` or the like between (`the change was small`, `the increase in rates was material`) |
+| Size | strong | an adverb of degree: `sharply`, `significantly`, `substantially`, `materially`, `markedly`, `dramatically`, `considerably`, `modestly`, `slightly`, `marginally`, `moderately`, `steeply`, `strongly`, `heavily`, `greatly`, `rapidly`, `gradually`, `somewhat` and kin; a degree word on a comparative: `much higher`, `far lower`, `well above`, `a bit more`; a movement verb or noun that carries its own size: `soared`, `skyrocketed`, `spiked`, `surged`, `jumped`, `leapt`, `ballooned`, `plunged`, `plummeted`, `tumbled`, `slumped`, `collapsed`, `dipped`, `eased`, `softened`, `slipped`, `ticked up`, `edged down`, `inched up`, `crept`, `a jump`, `a spike`, `an uptick`; and a size adjective standing on a movement, in front of the movement noun with at most two words between (`a significant increase`, `a sharp year-end rise`, `the sharpest rise`, `an outsized escalation`) or after it with `is`, `was`, `remained` or the like between (`the change was small`, `the increase in rates was material`); and, by structure rather than by list, any word said of the movement itself after `the increase was` or the like (`the increase was manageable`, `the rise was decent`, unless a reason opens there, `was due to`), and any word on the movement in a phrase that restates it after the claim (`, a beefy increase`; a month there binds by the column labels instead) |
 | Size | weak | the same adjectives where they size something that is not a movement: `a large new office`, `strong demand`, `a major client` |
-| Share of the movement | strong | a word that says how much of the movement the sentence explains: `mostly`, `mainly`, `primarily`, `principally`, `chiefly`, `predominantly`, `largely`, `broadly`, `partly`, `partially`, `entirely`, `wholly`, `solely`, `exclusively`, `virtually`, `essentially`, `practically`, `basically`, `in part`, `in large part`, `for the most part`, `on the whole`, `to some extent`, `more or less`, and `most of`, `much of`, `the bulk of`, `the majority of`, `a portion of` and kin where what follows is a movement or a figure (`most of the increase`, `the bulk of the $30,000`). A share of something else, `all of the partners`, is left alone |
+| Share of the movement | strong | a word that says how much of the movement the sentence explains: `mostly`, `mainly`, `primarily`, `principally`, `chiefly`, `predominantly`, `largely`, `broadly`, `partly`, `partially`, `entirely`, `wholly`, `solely`, `exclusively`, `virtually`, `essentially`, `practically`, `basically`, `in part`, `in large part`, `for the most part`, `on the whole`, `to some extent`, `more or less`, and `most of`, `much of`, `the bulk of`, `the majority of`, `a portion of` and kin where what follows is a movement or a figure (`most of the increase`, `the bulk of the $30,000`). A share of something else, `all of the partners`, is left alone; and, by structure, any word that takes a share `of it` or of the movement (`a good chunk of it`, `nearly all of it`, `a slice of the increase`) other than a word that names a cause (`the cause of the increase`), and `the remainder` standing alone |
 | Quantity | weak | what is left once the share words above are read: `fully`, `in full`, `share`, `offset`, `net of`, `several`, `many`, `much`, `numerous`, `multiple`, `few`, `more`, `less`, `dozens`, `hundreds`, `thousands`, `various`, `additional`, `incremental`, `excess`, `shortfall`, `gap`, `difference`, `delta`, `spread`, `margin`, `ratio`, `rate`, `proportion`, `fraction`, and `bulk`, `majority` or `portion` where what follows is not a movement |
 
 **Why a size word, or a share word, is held rather than tested.** The contract could define a
@@ -397,6 +415,11 @@ named and a person reads it.
   unit, `$30,000, or 30 percent`, belongs to the line the figure it restates belongs to where its own
   clause names none, so `Rent expense rose $30,000, or 30 percent, and Insurance expense rose $45,000,
   or 90 percent` tests each percent against its own line.
+- **A sentence that carries only a balance is held.** Where every figure is a balance on
+  one side of the comparison and nothing in the claim is a movement figure, a direction or no-change
+  word or a threshold claim, the sentence is held at needs review with the balance named, so a
+  no-change claim in words no list carries, `was rangebound at $130,000`, never clears. The rule is
+  structural, so it holds such a sentence on a line that did not move too, and a reviewer reads it.
 - **A financial subject the ledger does not carry holds the sentence.** `gross profit`, `gross
   margin`, `net income`, `net loss`, `operating income`, `operating expenses`, `EBITDA`, `earnings`,
   `profit`, `total revenue`, `total expenses`, `cost of goods sold`, `cash flow`, `working capital`,
