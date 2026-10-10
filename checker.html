@@ -1310,7 +1310,7 @@ function strayNumbers(text,taken,figs,skipNums){
    the text gave it an explicit sign. Nothing here binds an account, and nothing
    here decides what the figure means. Those are separate steps on purpose. */
 function figures(text,skipNums){
-  var out=[],taken=[],m;
+  var out=[],taken=[],m,tp;
   function overlaps(i,j){var t;for(t=0;t<taken.length;t++){if(i<taken[t][1]&&j>taken[t][0])return true;}return false;}
   /* parentheses only make a figure negative when they close around it. A lone
      opening bracket, as in "increased by $30,000 (30%)", is punctuation. */
@@ -1326,6 +1326,14 @@ function signLead(m){
 /* a minus written after the figure, as in "changed by 30,000-" */
 function trailMinus(end){
   return text.charAt(end)==="-"&&!/[0-9$A-Za-z(]/.test(text.charAt(end+1)||"");
+}
+/* a plus written after the figure is its sign too, glued to it as in "rose $30,000+", or
+   one space after it at the end of the clause as in "rose $30,000 +."; the answer is how
+   many characters it takes */
+function trailPlus(end){
+  if(text.charAt(end)==="+"&&!/[0-9$A-Za-z(]/.test(text.charAt(end+1)||""))return 1;
+  if(text.charAt(end)===" "&&text.charAt(end+1)==="+"&&/^[.,;:!?)]?$/.test(text.charAt(end+2)||""))return 2;
+  return 0;
 }
   /* a figure glued to the letters, digits, dots or slashes in front of it, as in
      "9e1 percent" or "US$30,000", is not the figure it would be on its own */
@@ -1371,6 +1379,7 @@ var dv=parseFig(draw);
     if(isNaN(dv))continue;
     var dsg=hasSign(draw);
 if(!dsg&&trailMinus(dend)){dsg=true;dv=-Math.abs(dv);dend++;draw+="-";}
+else if(!dsg&&(tp=trailPlus(dend))){dsg=true;dv=Math.abs(dv);draw+=text.slice(dend,dend+tp);dend+=tp;}
 out.push({raw:draw.replace(/^\s+|\s+$/g,""),v:dv,at:dm.index,end:dend,
               unit:"dollars",signed:dsg});
     taken.push([m.index,dend]);
@@ -1390,7 +1399,8 @@ out.push({raw:draw.replace(/^\s+|\s+$/g,""),v:dv,at:dm.index,end:dend,
     if(gluedAt(m))continue;
     var bm=signLead(m),bend=m.index+m[0].length,bneg=/^-/.test(bm[0]),bsg=/^[-+]/.test(bm[0]);
 if(!bsg&&trailMinus(bend)){bsg=true;bneg=true;bend++;}
-out.push({raw:bm[0].replace(/\s+/g,"")+(bend>m.index+m[0].length?"-":""),v:parseFloat(bare)*(bneg?-1:1),
+else if(!bsg&&(tp=trailPlus(bend))){bsg=true;bend+=tp;}
+out.push({raw:bm[0].replace(/\s+/g,"")+text.slice(m.index+m[0].length,bend).replace(/\s+/g,""),v:parseFloat(bare)*(bneg?-1:1),
               at:bm.index,end:bend,
               unit:"dollars",signed:bsg,plain:true});
     taken.push([m.index,bend]);
@@ -1486,7 +1496,20 @@ function pctsIn(figs){return figs.filter(function(f){return f.unit!=="dollars";}
 var CUE_PRIOR={from:1,prior:1,previous:1};
 var CUE_CURRENT={to:1,at:1,now:1,reached:1,reaching:1,stands:1,standing:1,hit:1,hits:1,current:1};
 /* words after a figure that turn it into a bound rather than a figure */
-var BOUND_AFTER=/^\s*(?:or\s+(?:more|less|so|higher|lower|above|below|over|under)|at\s+(?:most|least)|and\s+(?:up|above|over))\b/i;
+var BOUND_AFTER=/^\s*(?:or\s+(?:more|less|higher|lower|above|below|over|under)|at\s+(?:most|least)|and\s+(?:up|above|over))\b/i;
+/* One approximation class. A word that says a figure is approximate, in front of it or
+   after it ("about", "approximately", "roughly", "around", "some", "circa", "~", "a
+   ballpark", "in the region of", "on the order of", "give or take", "or so", "or
+   thereabouts", "in round numbers"), is read and taken out, and the figure is compared
+   with the ledger unrounded, as written: a hedged figure that ties is checked within scope
+   and one that does not tie fails. A word that makes the figure one side of a bound
+   ("nearly", "almost", "close to", "just shy of", "a touch over", "north of", "upwards of",
+   "more than", "at least", "in excess of") says the figure is not the amount, so
+   its role is left unknown and the sentence is held at needs review. "up to" is left out
+   of the class: its "to" reads the figure as the current balance, as fixture A040 pins. */
+var APPROX_BEFORE=/(?:\b(?:about|approximately|approx\.?|roughly|around|some|circa|ballpark|in\s+the\s+(?:region|neighbou?rhood|vicinity)\s+of|on\s+the\s+order\s+of|in\s+the\s+order\s+of)|~)\s*$/i;
+var APPROX_AFTER=/^\s*,?\s*(?:give\s+or\s+take|or\s+(?:so|thereabouts)|in\s+round\s+(?:numbers|figures|terms))\b/i;
+var BOUND_BEFORE=/\b(?:nearly|almost|close\s+to|just\s+(?:shy\s+of|short\s+of|under|over|above|below)|shy\s+of|(?:a\s+(?:touch|bit|tad|shade|little)\s+)?(?:over|under|above|below)|north\s+of|south\s+of|upwards?\s+of|more\s+than|less\s+than|fewer\s+than|at\s+(?:least|most)|in\s+excess\s+of|not\s+quite|as\s+(?:much|high|low|little)\s+as)\s*$/i;
 var CUE_MOVE={by:1};
 var MOVE_NOUN={increase:1,increases:1,decrease:1,decreases:1,rise:1,rises:1,fall:1,falls:1,drop:1,
                drops:1,gain:1,gains:1,growth:1,decline:1,declines:1,movement:1,change:1,variance:1,
@@ -1506,6 +1529,8 @@ function roleOf(text,f,idx,all){
   if(f.unit==="percentage points")
     return {role:"rate change in points",from:"the words \"percentage points\""};
   if(BOUND_AFTER.test(post))return {role:"unknown",from:""};
+  if(BOUND_BEFORE.test(pre))return {role:"unknown",from:""};
+  pre=pre.replace(APPROX_BEFORE," ");
   if(pct&&/^\s*of\s+(the\s+)?(prior|previous|last|opening|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i.test(post))
     return {role:"relative movement",from:"\"of\" naming the period it is a share of"};
   var nx=post.replace(/^[^A-Za-z]*/,"").toLowerCase().split(/[^a-z]/)[0];
@@ -1601,7 +1626,7 @@ function bindSentence(s,accounts,figs,spent){
    other. Where it does not, the binding is unresolved and the figure cannot be
    called checked, whatever it happens to equal. */
 function clauseBind(s){
-  var spans=spansOf(s.text,RE_FINE),distinct={};
+  var spans=spansOf(s.text,RE_FINE),distinct={},prev=null;
   s.bound.forEach(function(a){
     distinct[acctId(a)]=a.words.filter(function(w){
       var shared=false;
@@ -1627,6 +1652,11 @@ function clauseBind(s){
     /* "respectively" pairs figures with accounts by position, which the clauses do
    not show, so no figure in such a sentence is bound by its clause */
 f.bind=(hits.length===1&&!/\brespectively\b/i.test(s.text))?hits:null;
+    /* a figure that restates the one before it, "$30,000, or 30 percent", is the same
+       claim in another unit, so where its own clause names no line it belongs to the
+       line the figure it restates belongs to */
+    if(!f.bind&&!hits.length&&prev&&prev.bind&&/restating the figure before it$/.test(f.roleFrom||""))f.bind=prev.bind;
+    prev=f;
   });
 }
 
@@ -1910,8 +1940,20 @@ var FLATW=["held flat","held steady","held level","flat","steady","remained flat
 /* "remained" or "stayed" written straight in front of a figure is the same claim */
 var STILL_FIG=/\b(remain(?:ed|s)?|stay(?:ed|s)?)\s+(?:\$|\(|-?[0-9])/i;
 var FLAT_TOL=0.5;
+/* A season is not a direction. "fall" standing in front of a noun names the autumn ("the
+   fall open house mailer", "fall enrollment"), so it is not tested as a direction word, and
+   the clearance grammar reads it as a period word, as it reads "spring" and "summer". It
+   stays a direction word in front of a preposition, a conjunction, an auxiliary, a pronoun,
+   a period word, a figure or the end of the clause ("a fall in rent", "fall by $5,000",
+   "the fall was", "fall next month"), and in front of a word ending in -ly, -ed, -ing or a
+   single -s, which may be an adverb or a verb ("fall sharply", "the fall reflects"). */
+var SEASON_TAIL="(?=[\\s-]+(?!(?:in|on|of|at|to|from|by|for|per|across|over|under|below|above|beneath|beyond|since|during|after|before|with|within|without|into|onto|upon|between|among|against|versus|vs|than|through|throughout|toward|towards|behind|back|away|off|out|outside|apart|short|further|again|another|more|less|much|now|then|due|and|or|but|so|as|because|while|which|that|when|where|if|though|although|nor|yet|is|was|were|are|be|been|being|has|had|have|will|would|could|should|may|might|must|can|did|does|do|it|its|this|these|those|the|a|an|next|last|year|month|quarter|week|period|percent|pct|point|points|dollars)\\b)[a-z]+(?![a-z])(?<!ly)(?<!ed)(?<!ing)(?<![^su]s))";
+var SEASON_FALL=new RegExp("\\bfall"+SEASON_TAIL,"gi");
+/* the text with every season "fall" written so no direction pattern reads it, and every
+   offset where it was */
+function unseason(t){return String(t).replace(SEASON_FALL,"fa_l");}
 function dirWords(txt){
-  var t=" "+txt.toLowerCase().replace(/[^a-z\s]/g," ").replace(/\s+/g," ")+" ",out=[];
+  var t=" "+unseason(txt).toLowerCase().replace(/[^a-z\s]/g," ").replace(/\s+/g," ")+" ",out=[];
   UP.forEach(function(w){if(t.indexOf(" "+w+" ")>-1)out.push({w:w,d:1});});
   DOWN.forEach(function(w){if(t.indexOf(" "+w+" ")>-1)out.push({w:w,d:-1});});
   return out;
@@ -2021,13 +2063,48 @@ var QUARTER_NUM=/\bq\s?([1-4])\b|\b([1-4])q(?:[0-9]{2,4})?\b|\b(?:qtrs?|quarters
 var QUARTER_WORD=/\bquarter[\s-]+(?:over|on)[\s-]+quarter\b|\bquarter[\s-]?end(?:ed|ing|s)?\b|\bquarterly\b|\bquarters?\b|\bqtrs?\.?|\b(?:qoq|q\/q)\b|\b(?:three|3)[\s-]month\b/gi;
 var REASON_AT=/\b(?:because|as|since|on|upon|due\s+to|owing\s+to|thanks\s+to|driven\s+by|caused\s+by|led\s+by|helped\s+by|aided\s+by|boosted\s+by|offset\s+by|attributable\s+to|reflecting|reflects|following|after|with|amid|amidst|despite|notwithstanding|in\s+spite\s+of|given|whereas|while)\b|\(/gi;
 var REASON_BACK=/^\s*(?:it|its|this|these|that|the\s+(?:line|account|balance)|the\s+(?:movement|increase|decrease|rise|fall|change|variance|figure|amount|total)(?!\s+(?:in|on|of|at|for|from|to|across|between)\b))\b/i;
+/* A quoted document title is a name, not a claim. A span in quotation marks that runs to
+   two words or more and carries no digit, as in "per the 'decline in vacancy' memo", is
+   written over before the direction check and the claim and reason boundary read the
+   sentence, so a direction word inside a title is never tested against the line and never
+   moves the boundary. A quoted single word ("fell") or a quoted figure is still read, and
+   the clearance grammar still reads every word of the title. */
+var TITLE_DQ=/[“"]([^“”"\n]{3,120})[”"]/g;
+var TITLE_SQ=/(^|[\s(\[])[‘']([A-Za-z][^‘’'\n]{1,118}[A-Za-z0-9.!?])[’'](?![^\s.,;:!?)\]])/g;
+function titleInner(q){return /\S\s+\S/.test(q)&&!/[0-9]/.test(q);}
+function maskTitles(t){
+  return String(t).replace(TITLE_DQ,function(all,q){
+    return titleInner(q)?all.charAt(0)+q.replace(/\S/g,"x")+all.charAt(all.length-1):all;
+  }).replace(TITLE_SQ,function(all,pre,q){
+    return titleInner(q)?pre+all.charAt(pre.length)+q.replace(/\S/g,"x")+all.charAt(all.length-1):all;
+  });
+}
+/* A financial subject a ledger of account lines does not carry as a line: a statement
+   total or a measure built from several lines. Named in the claim, in a clause that
+   carries a figure or a direction word, it holds the sentence unless it is part of a line
+   the sentence binds or a ratio in the ratio pane, because the figure in that clause can
+   only have tied to some other line ("Rent expense rose $30,000, so gross profit increased
+   $30,000"). */
+var FIN_SUBJECT=/\b(?:gross\s+(?:profit|margin)s?|net\s+(?:income|loss(?:es)?|profit|earnings|margin|revenues?|sales)|operating\s+(?:income|loss(?:es)?|profit|margin|expenses?|costs?|results?|cash\s+flows?)|ebitda|ebit|pre-?tax\s+(?:income|profit|earnings)|earnings|profits?|profitability|total\s+(?:revenues?|income|sales|expenses?|costs?|operating\s+expenses)|cost\s+of\s+(?:goods\s+sold|sales|revenues?)|cogs|(?:free\s+)?cash\s+flows?|working\s+capital|contribution\s+margin|bottom[\s-]line|top[\s-]line)\b/gi;
+/* the first financial subject a stretch of text names that is not part of a line the
+   sentence binds or a ratio in the ratio pane, or null */
+function subjectIn(c,s){
+  var re=new RegExp(FIN_SUBJECT.source,"gi"),m,key;
+  var own=(s.bound||[]).map(function(a){return " "+String(a.flat||"")+" ";})
+    .concat((s.ratioNames||[]).map(function(r){return " "+String(r).toLowerCase().replace(/[^a-z0-9]+/g," ")+" ";}));
+  while((m=re.exec(String(c)))!==null){
+    key=" "+m[0].toLowerCase().replace(/[^a-z0-9]+/g," ")+" ";
+    if(!own.some(function(n){return n.indexOf(key)>-1;}))return m[0];
+  }
+  return null;
+}
 /* Where the claim ends: after the last figure the sentence or clause carries, or,
    with no figure, after the first direction word. */
 function claimEnd(text,figs){
   var last=-1,dm;
   (figs||[]).forEach(function(f){if(f.end>last)last=f.end;});
   if(last>=0)return last;
-  dm=new RegExp("\\b(?:"+UP.concat(DOWN).join("|")+")\\b","i").exec(String(text));
+  dm=new RegExp("\\b(?:"+UP.concat(DOWN).join("|")+")\\b","i").exec(unseason(text));
   return dm?dm.index+dm[0].length:0;
 }
 /* Where the reason begins: the first word after the claim that opens one, passing
@@ -2037,7 +2114,7 @@ function claimEnd(text,figs){
    the grammar does not hold a weak word there, and the direction check does not test
    a direction word there against the account the figures tied. */
 function reasonAt(text,from){
-  var t=String(text),m,at=t.length;
+  var t=unseason(text),m,at=t.length;
   REASON_AT.lastIndex=Math.max(0,from||0);
   while((m=REASON_AT.exec(t))!==null){
     if(REASON_BACK.test(t.slice(m.index+m[0].length)))continue;
@@ -2092,6 +2169,11 @@ var RISK_LEX=[
      "all of the partners", "a share of the new lease", stays with the reason. */
   {cat:"share",strong:1,re:"\\b(?:mostly|mainly|primarily|principally|chiefly|predominantly|largely|broadly|partly|partially|entirely|wholly|solely|exclusively|virtually|essentially|practically|basically)\\b|\\bin\\s+(?:part|large\\s+part|the\\s+main)\\b|\\bfor\\s+the\\s+most\\s+part\\b|\\bon\\s+the\\s+whole\\b(?!-)|\\bto\\s+(?:some\\s+extent|a\\s+degree)\\b|\\bmore\\s+or\\s+less\\b|\\b(?:bulk|majority|minority|remainder|portion|fraction|most|much|some|part|all|none)\\b(?=\\s+of\\s+(?:the|this|that|its|an?|it)?\\s*(?:[-+$0-9]|(?:[A-Za-z-]+\\s+){0,2}(?:"+MOVE_NOUNS+")\\b))",
    why:"says how much of the movement the sentence explains, and no documented threshold says what that share is"},
+  /* the share structurally: any word that takes a share "of it" or of the movement ("a
+     good chunk of it", "nearly all of it", "a slice of the increase"), and "the remainder"
+     standing alone */
+  {cat:"share",strong:1,re:"\\b(?!(?:because|instead|ahead|out|cause|causes|source|sources|driver|drivers|reason|reasons|result|results|timing|explanation|nature|direction|sign|size|terms|top|front|inside|outside|rest|any|each|both|either|neither|form|kind|type|account|line)\\b)[A-Za-z][A-Za-z'\\u2019-]*(?=\\s+of\\s+(?:it\\b|the\\s+(?:[A-Za-z$0-9][A-Za-z0-9$,.%'-]*\\s+)?(?:"+MOVE_NOUNS+")\\b))|\\b(?:remainder|residual)\\b(?!\\s+of\\b)",
+   why:"says how much of the movement the sentence explains, and no documented threshold says what that share is"},
   {cat:"sameness",strong:1,re:"\\b(?:same|identical(?:ly)?|equal(?:s|led|ed)?|equivalent|match(?:ed|es|ing)?|comparabl[ey]|similar|consistent(?:ly)?|in[\\s-]?line\\s+with|on\\s+(?:a\\s+)?par|par\\s+with|parity|unaltered|(?:no|not)\\s+different|even\\s+with|in\\s+keeping\\s+with|ditto|stable|stability|stabili[sz](?:ed|es|ing)|steady|steadily|static|constant|flattish|flat[\\s-]?lined?|stagna(?:nt|ted|tion)|stall(?:ed|s|ing)|plateau(?:ed|s|ing)?|sideways|little[\\s-]+changed?|level|barely|hardly|scarcely)\\b",
    why:"claims no change or sameness in a word the checker does not test"},
   {cat:"sameness",strong:0,re:"\\b(?:virtually|essentially|practically|basically|broadly|largely|roughly\\s+(?:flat|unchanged)|maintain(?:ed|s|ing)?|sustain(?:ed|s|ing)?|persist(?:ed|s|ing)?|remain(?:ed|s|ing)?|stay(?:ed|s|ing)?|held|hold(?:s|ing)?|kept|keep(?:s|ing)?|continu(?:ed|es|ing)|still|mirror(?:ed|s|ing)?|track(?:ed|s|ing)?)\\b",
@@ -2106,7 +2188,7 @@ var RISK_LEX=[
    why:"frames the claim on a period other than the ledger's two columns"},
   {cat:"period",strong:1,contract:1,re:"\\b(?:yrs?|years?(?:[\\s-]+(?:over|on|to)[\\s-]+(?:year|date))?|yearly|annual(?:ly)?|per\\s+annum|yoy|y\\/y|ytd|qtd|mtd|(?:month|quarter)[\\s-]to[\\s-]date|fiscal|fy\\s?[0-9]{0,4}|h[12]|[12]h|half[\\s-]year(?:ly)?|semi[\\s-]?annual(?:ly)?|biannual(?:ly)?|trailing|ttm|ltm|ntm|rolling|twelve[\\s-]months?|12[\\s-]months?|months|weeks|quarters|(?:"+NUMW_RISK+")[\\s-]+(?:days|months|weeks|quarters|years)|(?:consecutive|straight|successive|running)\\s+(?:months?|quarters?|years?|periods?)|in\\s+a\\s+row|week[\\s-]over[\\s-]week|wow|sequential(?:ly)?|(?:prior|previous|comparable|same)\\s+periods?|period[\\s-]over[\\s-]period|since\\s+(?:the\\s+)?(?:start|beginning|end|last|jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?|(?:19|20)[0-9]{2}|q[1-4]|year|quarter)|(?:last|next|this|previous|prior)\\s+(?:jan(?:uary)?|feb(?:ruary)?|march|apr(?:il)?|may|june|july|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?|spring|summer|autumn|fall|winter)|(?:over|during|through(?:out)?|across|since)\\s+(?:the\\s+)?(?:spring|summer|autumn|fall|winter|holidays?|season)|(?:first|second|1st|2nd)\\s+half(?!\\s+of\\s+(?:the\\s+)?(?:month|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec))|ago|per\\s+(?:month|week|day|quarter)|today|yesterday|tomorrow|tonight|overnight|intra-?(?:day|month|quarter|year)|(?:this|last|next)\\s+week)\\b",
    why:"frames the claim on a period other than the ledger's two columns"},
-  {cat:"period",strong:0,re:"\\b(?:weeks?|days?|weekly|daily|hourly|nightly|week[\\s-]?end|spring|summer|autumn|winter|seasonal(?:ly)?|holidays?|through|thru|until|till|during|(?:first|second|third|fourth|last|final|early|late|mid)[\\s-]+(?:half|week|weeks|days?|part|month)|mid[\\s-]?month|early|late|recent(?:ly)?|previously|historically|typically|usually|normally|again|yet)\\b",
+  {cat:"period",strong:0,re:"\\b(?:weeks?|days?|weekly|daily|hourly|nightly|week[\\s-]?end|spring|summer|autumn|winter|fall"+SEASON_TAIL+"|seasonal(?:ly)?|holidays?|through|thru|until|till|during|(?:first|second|third|fourth|last|final|early|late|mid)[\\s-]+(?:half|week|weeks|days?|part|month)|mid[\\s-]?month|early|late|recent(?:ly)?|previously|historically|typically|usually|normally|again|yet)\\b",
    why:"places the claim inside or across a period the ledger's two columns do not show"},
   {cat:"change",strong:0,re:"\\b(?:sank|sink(?:s|ing)?|sunk|contract(?:ed|ing)|shrunk|shrink(?:s|ing)?|dwindl(?:ed|es|ing)|retreat(?:ed|s|ing)|rebound(?:ed|s|ing)?|recover(?:ed|s|ing)|bounc(?:ed|es|ing)|revers(?:ed|es|ing)|swung|swing(?:s|ing)|flipp(?:ed|ing)|mov(?:ed|es|ing)|move|shift(?:ed|s|ing)?|fluctuat(?:ed|es|ing|ions?)|var(?:ied|ies|ying)|widen(?:ed|s|ing)|narrow(?:ed|s|ing)|deepen(?:ed|s|ing)|improv(?:ed|es|ing|ements?)|worsen(?:ed|s|ing)|deteriorat(?:ed|es|ing|ion)|strengthen(?:ed|s|ing)|weaken(?:ed|s|ing)|peak(?:ed|s|ing)|bottom(?:ed|s|ing)|surpass(?:ed|es|ing)|escalat(?:ed|es|ing)|inflat(?:ed|es|ing)|deflat(?:ed|es|ing)|compress(?:ed|es|ing)|erod(?:ed|es|ing)|ramp(?:ed|s|ing)|decelerat(?:ed|es|ing)|slow(?:ed|s|ing)|trend(?:ed|s|ing)?|went\\s+(?:up|down)|came\\s+(?:in|down)|pick(?:ed|s)\\s+up|chang(?:ed|es|ing)|climbing|follow(?:ed|s))\\b",
    why:"describes a change in a word the checker does not test against the ledger"},
@@ -2118,6 +2200,13 @@ var RISK_LEX=[
    why:"sizes the movement, and no documented threshold says what that size is"},
   {cat:"size",strong:1,tail:1,re:"\\b(?:"+MOVE_NOUNS+")\\b(?:[\\s,-]+[A-Za-z0-9$][A-Za-z0-9$,.%'-]*){0,4}?[\\s,-]+(?:is|was|were|are|been|being|be|remains?|remained|looks?|looked|appears?|appeared|seems?|seemed|proved|proves|proven)(?:[\\s-]+(?:very|quite|fairly|relatively|rather|particularly|especially|extremely|exceptionally|unusually|not|so|too|less|more|most|least|also))?[\\s-]+("+SIZE_ADJ+")\\b",
    why:"sizes the movement, and no documented threshold says what that size is"},
+  /* the size structurally: any word said of the movement itself ("the increase was
+     manageable", "the rise was decent"), and any word standing on the movement in a phrase
+     that restates it after the claim (", a beefy increase") */
+  {cat:"size",strong:1,tail:1,re:"\\b(?:the|this|that|its|their|our)\\s+(?:[A-Za-z$0-9][A-Za-z0-9$,.%'-]*\\s+){0,2}?(?:"+MOVE_NOUNS+")\\s+(?:is|was|were|are|has\\s+been|had\\s+been|remains?|remained|looks?|looked|appears?|appeared|seems?|seemed|proved|proves)(?:\\s+(?:very|quite|fairly|relatively|rather|particularly|especially|extremely|so|too|also))?\\s+(?!(?:not|no|the|a|an|in|on|at|to|from|by|for|due|because|as|of|its|their|this|that|these|those|it|also|all|both|each|then|there|here|largely|mostly|partly|mainly|entirely|wholly|primarily)\\b)([A-Za-z][A-Za-z-]*)\\b(?![\\s-]+(?:by|to|from|of|in|on|at|for|with|across|over|into|than|and|or)\\b)",
+   why:"says what the movement was like in a word the checker does not test, and no documented threshold says what it means"},
+  {cat:"size",strong:1,tail:1,re:"[,;:\\u2013\\u2014]\\s*(?:a|an)\\s+(?!(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?|q[1-4])\\b)([A-Za-z][A-Za-z-]*)(?=\\s+(?:"+MOVE_NOUNS+")\\b)",
+   why:"says what the movement was like in a word the checker does not test, and no documented threshold says what it means"},
   {cat:"size",strong:0,re:"\\b(?:"+SIZE_ADJ+")\\b",
    why:"sizes something in a word the checker does not test"},
   {cat:"quantity",strong:0,re:"\\b(?:most(?:ly)?|main(?:ly)?|primar(?:y|ily)|partly|partial(?:ly)?|entire(?:ly)?|whol(?:e|ly)|full(?:y)?|sole(?:ly)?|chief(?:ly)?|predominant(?:ly)?|exclusive(?:ly)?|principal(?:ly)?|in\\s+part|in\\s+full|bulk|majority|minority|portion|share|offset(?:s|ting)?|net\\s+of|several|many|much|numerous|multiple|few|fewer|more|less|lesser|dozens?|hundreds|thousands|millions|billions|lots?|plenty|handful|countless|various|extra|additional|incremental|excess|surplus|shortfall|deficit|gap|difference|delta|spread|margin|ratio|rate|proportion|fraction)\\b",
@@ -2176,9 +2265,10 @@ function riskTokens(s){
   var text=String(s.text),n=text.length,used=[],out=[],i,m,k;
   for(i=0;i<n;i++)used.push(0);
   function eat(a,b){for(k=Math.max(0,a);k<Math.min(n,b);k++)used[k]=1;}
-  function eatRe(re){
+  function eatRe(re,src){
+    var t=src==null?text:src;
     re.lastIndex=0;
-    while((m=re.exec(text))!==null){
+    while((m=re.exec(t))!==null){
       eat(m.index,m.index+m[0].length);
       if(!m[0].length)re.lastIndex++;
     }
@@ -2198,10 +2288,16 @@ function riskTokens(s){
   /* a direction word that also gives the movement a size ("surged", "eased") is
      tested for its direction and left for the size entry to read */
   var sizeVerb=new RegExp("^(?:"+SIZE_VERBS+")$","i");
-  eatRe(new RegExp("\\b(?:"+UP.concat(DOWN).concat(Object.keys(MOVE_NOUN)).filter(function(w){return !sizeVerb.test(w);}).join("|")+")\\b","gi"));
+  eatRe(new RegExp("\\b(?:"+UP.concat(DOWN).concat(Object.keys(MOVE_NOUN)).filter(function(w){return !sizeVerb.test(w);}).join("|")+")\\b","gi"),unseason(text));
   FLATW.forEach(function(w){eatRe(new RegExp("\\b"+w.replace(/ /g,"\\s+")+"\\b","gi"));});
   eatRe(new RegExp(STILL_FIG.source,"gi"));
   eatRe(ACCEPT_FRAME);
+  /* the approximation class, read and taken out beside the figure it hedges */
+  figs.forEach(function(f){
+    var ab=APPROX_BEFORE.exec(text.slice(0,f.at)),aa=APPROX_AFTER.exec(text.slice(f.end));
+    if(ab)eat(ab.index,f.at);
+    if(aa)eat(f.end,f.end+aa[0].length);
+  });
   var cols=(bound.length&&bound[0].cols)||[];
   /* a column headed with a quarter names no single month, so a ledger read in
      quarters binds no month and a ledger read in months binds no quarter */
@@ -2220,7 +2316,7 @@ function riskTokens(s){
   }
   /* the claim runs to the first word that opens a reason after the last figure,
      passing over a reason that points straight back at the line */
-  var rsn=reasonAt(text,claimEnd(text,figs));
+  var titled=maskTitles(text),rsn=reasonAt(titled,claimEnd(titled,figs));
   function inHeld(a,b){
     for(k=0;k<held.length;k++)if(a<held[k][1]&&b>held[k][0])return true;
     return false;
@@ -2335,6 +2431,21 @@ function riskTokens(s){
       add(raw,at,"is named with no figure and no direction word of its own, so what the sentence claims about it is not tied to the ledger","other account");
     });
   }
+  /* a financial subject the ledger does not carry, named in the claim, in a clause that
+     carries a figure or a direction word */
+  var rnames=(s.ratioNames||[]).map(function(r){return " "+String(r).toLowerCase().replace(/[^a-z0-9]+/g," ")+" ";});
+  var coarse=spansOf(titled,RE_COARSE);
+  FIN_SUBJECT.lastIndex=0;
+  while((m=FIN_SUBJECT.exec(text))!==null){
+    var sa=m.index,sb=sa+m[0].length,seaten=true,scl=null,skey=" "+m[0].toLowerCase().replace(/[^a-z0-9]+/g," ")+" ";
+    for(k=sa;k<sb;k++)if(!used[k]&&/\S/.test(text.charAt(k))){seaten=false;break;}
+    if(seaten||sa>=rsn)continue;
+    if(rnames.some(function(r){return r.indexOf(skey)>-1;}))continue;
+    coarse.forEach(function(c){if(sa>=c.at&&sa<c.end)scl=c;});
+    if(!scl)continue;
+    if(!figs.some(function(f){return f.at>=scl.at&&f.at<scl.end;})&&!dirWords(scl.text).length&&!flatWord(scl.text))continue;
+    add(m[0],sa,"is a financial subject that is not a line this sentence binds, and a figure or a direction word in its clause cannot be tied to it","other subject");
+  }
   out.sort(function(x,y){return x.at-y.at||y.end-x.end;});
   var kept=[];
   out.forEach(function(o){
@@ -2344,6 +2455,31 @@ function riskTokens(s){
     kept.push(o);
   });
   return kept;
+}
+/* A sentence whose only figures are balances on one side of the comparison, with no
+   movement figure, no direction or no-change word in its claim and no threshold claim,
+   says nothing about the movement that the checker can tie to the ledger, whatever words
+   it uses for it ("was rangebound at $130,000", "went nowhere, ending at $130,000",
+   "showed no real movement, ending at $130,000"). It is held, with the balance named.
+   This is the structural rule the audit of 14 September 2026 asked for in place of a
+   longer list of no-change words. A prior and a current balance together state the
+   movement, so a sentence carrying both is not held by this rule. */
+function balanceOnly(s){
+  var figs=s.figs||[],sides={},i,f,T,claim;
+  if(!figs.length||policyClaims(s.text).length)return null;
+  for(i=0;i<figs.length;i++){
+    f=figs[i];
+    if(f.role!=="prior balance"&&f.role!=="current balance"&&f.role!=="ratio")return null;
+    sides[f.side||(f.role==="prior balance"?"prior":"current")]=1;
+  }
+  if(sides.prior&&sides.current)return null;
+  T=maskTitles(s.text);
+  claim=T.slice(0,reasonAt(T,claimEnd(T,figs)));
+  if(dirWords(claim).length||flatWord(claim))return null;
+  f=figs[0];
+  return {raw:f.raw,at:f.at,end:f.end,cat:"balance only",
+    why:"is a balance and the only kind of figure in this sentence, and with no movement figure, no direction word in the claim and no threshold claim, nothing ties what it says about the movement to the ledger",
+    txt:"“"+f.raw+"” is a balance and the only kind of figure in this sentence, and with no movement figure, no direction word in the claim and no threshold claim, nothing ties what it says about the movement to the ledger, so this sentence is held for a person to read"};
 }
 /* end of the clearance grammar */
 
@@ -2661,6 +2797,7 @@ function run(){
     s.bound=b.bound;s.how=b.how;s.conflicts=b.conflicts;
     s.multi=s.bound.length>1;
     if(s.multi)clauseBind(s);
+    s.ratioNames=R.ratios.map(function(r){return r.name;});
     s.negs={};
     spansOf(s.text,RE_COARSE).forEach(function(c){
       var n=claimIn(c.text)?negationIn(c.text):null;
@@ -3009,21 +3146,27 @@ function directionOn(s){
   d.risk=riskTokens(s);
   d.held=!(s.residue&&s.residue.length)&&!!((s.figs&&s.figs.length)||policyClaims(s.text).length)&&
     (s.st===undefined||s.st==="checked within scope"||s.st==="not checked");
+  /* where nothing else would stop it clearing, a sentence that carries only a balance is
+     held by the structural rule */
+  if(d.held&&!d.risk.length&&!d.bad.length&&!d.voided.length&&!d.loose.length){
+    var bo=balanceOnly(s);
+    if(bo)d.risk.push(bo);
+  }
   if(d.held)d.risk.forEach(function(r){d.loose.push(r.txt);});
   return d;
 }
 function directionRead(s){
   if(!s.bound.length)return null;
-  var bad=[],good=[],anchored=[],voided=[],loose=[],open=[],prevEnd=0;
-  spansOf(s.text,RE_COARSE).forEach(function(sp){
-    var c=sp.text,sep=s.text.slice(prevEnd,sp.at).replace(/^\s+|\s+$/g,"").toLowerCase();
+  var bad=[],good=[],anchored=[],voided=[],loose=[],open=[],prevEnd=0,T=maskTitles(s.text);
+  spansOf(T,RE_COARSE).forEach(function(sp){
+    var c=sp.text,sep=T.slice(prevEnd,sp.at).replace(/^\s+|\s+$/g,"").toLowerCase();
     prevEnd=sp.end;
-    var cf=figures(c,s.numset),anchor=null,neg=negationIn(c);
+    var cf=figures(c,s.numset),anchor=null,anchorAt=0,neg=negationIn(c);
     dollarsIn(cf).forEach(function(d){
       if(anchor)return;
       s.bound.forEach(function(a){
         if(anchor)return;
-        if(near(d.v,a.prior,TOL_D)||near(d.v,a.cur,TOL_D)||near(d.v,a.change,TOL_D))anchor=a;
+        if(near(d.v,a.prior,TOL_D)||near(d.v,a.cur,TOL_D)||near(d.v,a.change,TOL_D)){anchor=a;anchorAt=d.at;}
       });
     });
     if(neg&&(flatWord(c)||dirWords(c).length)){
@@ -3037,6 +3180,10 @@ function directionRead(s){
       return;
     }
     anchored.push(c);
+    /* a clause that names a financial subject the ledger does not carry in front of the
+       figure that tied ("so gross profit increased $30,000") is about that subject, so its
+       direction word is not tested against the line the figure happened to tie to */
+    if(subjectIn(c.slice(0,anchorAt),s))return;
     testClause(c,anchor,cf);
   });
   /* the bound lines a stretch of text names */
@@ -3107,13 +3254,13 @@ function directionRead(s){
     return {bad:bad,good:good,voided:voided,loose:loose};
   }
   if(voided.length)return {bad:bad,good:good,voided:voided,loose:loose};
-  var sneg=negationIn(s.text);
-  if(sneg&&(flatWord(s.text)||dirWords(s.text).length)){
+  var sneg=negationIn(T);
+  if(sneg&&(flatWord(T)||dirWords(T).length)){
     voided.push("the words negate this sentence (“"+sneg+"”), so what it claims about the "+
       "direction is not settled by the checker");
     return {bad:bad,good:good,voided:voided,loose:loose};
   }
-  var sfw=flatWord(s.text);
+  var sfw=flatWord(T);
   if(sfw){
     var fok=false,fnames=[];
     s.bound.forEach(function(a){
@@ -3123,7 +3270,7 @@ function directionRead(s){
     if(fok)good.push("\""+sfw+"\" agrees with the bound line");
     else if(fnames.length)bad.push("the memo says \""+sfw+"\" but "+fnames.join(" and "));
   }
-  dirWords(s.text).forEach(function(w){
+  dirWords(T).forEach(function(w){
     var agrees=false,names=[];
     s.bound.forEach(function(a){
       var sign=a.change>0?1:(a.change<0?-1:0);

@@ -462,7 +462,7 @@ p.measures-note{margin:0 0 16px;font-size:16.5px;color:var(--ink-soft);line-heig
       </nav>
       <div class="railblock">
         <dl>
-          <dt>Product</dt><dd id="v-product">second-pass-drill 1.7.0</dd>
+          <dt>Product</dt><dd id="v-product">second-pass-drill 1.7.1</dd>
           <dt>Practice case</dt><dd id="v-practice">halyard-v4, 13 September 2026</dd>
           <dt>Assessment case</dt><dd id="v-assessment">brightwater-v6, 13 September 2026</dd>
           <dt>Data notice</dt><dd id="v-notice">notice-2026-09-14</dd>
@@ -593,7 +593,7 @@ p.measures-note{margin:0 0 16px;font-size:16.5px;color:var(--ink-soft);line-heig
         <p>Three independent reviews by ChatGPT read this build on 13 September 2026, each one against
         the live pages and the code rather than against a description of them. Every probe they wrote
         is kept as a regression fixture, seventeen from the first, twenty-four from the second and
-        forty from the third. A separate adversarial audit that built none of this graded the third
+        forty from the third. An AI agent session that built none of this graded the third
         review into 41 findings, and then wrote 175 new probes against the repaired checker. Forty-eight of
         them cleared a sentence that should have been held: a figure written in euros, a plus sign on
         a line that fell, a claim about last year on a ledger holding two months. That is the failure
@@ -606,8 +606,14 @@ p.measures-note{margin:0 0 16px;font-size:16.5px;color:var(--ink-soft);line-heig
         practitioner working a ledger they did not build.</p>
         <p>The repair was the rule rather than another list of words. A sentence now clears only when
         nothing risky is left once every claim in it has been read, so the same 175 probes come back
-        with none of them cleared wrongly, and the suite is 744 fixtures that the browser checker and
-        a separate command-line checker both run, agreeing on every compared field. What has not happened is as short to say: no participant has played this
+        with none of them cleared wrongly, and the suite is 799 fixtures that the browser checker and
+        a separate command-line checker both run, agreeing on every compared field. The audit&rsquo;s
+        second round on 14 September wrote 186 new probes, and 34 of them still cleared, such as
+        &ldquo;rangebound at $130,000&rdquo; on a line that rose 30 percent. Release 1.7.1 adds the
+        rules that hold them, set out in <a href="RELEASE-NOTES.md">the release notes</a>.
+        Run again on 10 October 2026, 185 of the 186 return the status the audit requires.
+        The last is a memo of two sentences whose second is the false one, and the audit&rsquo;s grader
+        reads only the first, while both checkers fail the second. What has not happened is as short to say: no participant has played this
         release, no practitioner has been watched using it, and no educator has scored a written
         explanation.</p>
         <p>The refining started before any of this shipped. The command-line trainer this grew out of
