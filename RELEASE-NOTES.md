@@ -1,7 +1,41 @@
-# Second Pass, release 1.7.0
+# Second Pass, release 1.7.1
 
-14 September 2026. Khaled Alkurd, George Mason University.
+10 October 2026. Khaled Alkurd, George Mason University.
 Live at https://fiscalpatriots.github.io/beat-the-machine/
+
+---
+
+## 1.7.1, what changed since 1.7.0
+
+Cut 10 October 2026. The checker changes, in the browser and in the command-line package
+together, and the drill, the cases, the protocol and the data notice do not. The product stamp
+moves to `second-pass-drill 1.7.1` so a record says which checker stood behind the page. Every
+change answers the second round of the independent audit of 14 September 2026
+(`audit/INDEPENDENT-AUDIT-2026-09-14.md`, N1 to N6), a ChatGPT review of 8 October 2026, or a false
+failure found on 10 October 2026 on a made-up practice case. Each rule went in after a commit of
+fixtures that failed against the code before it. Commits in the second-pass repository are marked
+as such.
+
+The suites at this release: **799 shared fixtures**, 55 more than 1.7.0 with no earlier
+expectation changed; the browser checker **801 of 801**; the command-line checker **1,679
+passed**, of which 878 stand alone; parity **801 passed**, every fixture on all eleven fields; the
+findings script **54 passed**. The audit's 186 probes of 14 September 2026, graded by its own
+`grade-probes.cjs`, return the status each one requires on 185, up from 158 at 1.7.0, and the
+browser and the command line agree on all eleven fields for all 186. The one left, C019, is a memo
+of two sentences whose basis says the second is false; the grader reads only the first, and the
+second fails in both checkers. The four sample coverage strips in `CHECKER.md` are unchanged.
+
+| What was wrong | What changed | Commits |
+| --- | --- | --- |
+| **A season read as a direction.** "On the fall open house mailer" failed as a fall in the line | `fall` in front of a noun is read as the autumn. It is not tested for direction or read as a reason pointing back at the line, and it is held as a weak period word inside the claim, as `spring` and `summer` are. `SEASON01` to `SEASON09` | `e179a78`, `4127ed5`; second-pass `13388e5`, `6b8ebb5` |
+| **A quoted document title read as a claim.** A direction word inside a quoted memo title was tested against the line (audit N6, C015) | A span in curly, straight or single quotes of two words or more with no digit is written over before the direction check and the claim and reason boundary read the sentence. A quoted single word and a quoted figure are still read. `TITLE01` to `TITLE06` | `55991a3`, `b17183c`; second-pass `f2e93f2`, `a3ec8c1` |
+| **A second financial subject took the first one's figure.** "Rent expense rose $30,000, so gross profit increased $30,000" cleared (ChatGPT review, 8 October 2026), and a percent restating a figure was bound to another line (audit C119) | `gross profit`, `net income`, `operating expenses`, `cost of goods sold`, `cash flow` and their kin, named in the claim in a clause with a figure or a direction word, hold the sentence at needs review unless the subject is a bound line or part of a ratio's name, and that clause's direction word is no longer tested against the line its figure happened to tie to. `$30,000, or 30 percent` binds the percent to the line of the figure it restates. `SUBJ01` to `SUBJ09` | `0318571`, `d56d3aa`; second-pass `9e808b9`, `f2e2255` |
+| **Words outside the lists cleared** (audit N1 to N5, and C046 of N6). "Rangebound at $130,000" cleared on a line that rose 30 percent, as did size, share and approximation words after the noun and `$30,000+` | The no-change rule is structural: a sentence whose only figures are balances on one side, with no movement figure, no direction word in its claim and no threshold claim, is held whatever word it uses. `about`, `approximately`, `roughly`, `around`, `circa`, `~`, `give or take`, `or so` and the rest of one approximation class are taken out and the figure is compared unrounded, while bound words such as `nearly`, `north of` and `at least` leave the role unknown and hold. A plus after a figure is a sign. Size and share words are read by their place: after `the increase was`, in a phrase restating the movement, or taking a share `of it`. `STRUCT01` to `STRUCT08`, `APPROX01` to `APPROX08`, `PLUS01` to `PLUS04`, `SIZEST01` to `SIZEST05`, `SHAREST01` to `SHAREST06` | `e0972fd`, `193ed1c`; second-pass `b299820`, `56058b9` |
+
+### What remains open
+
+Everything listed as open under 1.7.0 below is still open. No person outside the build has used
+the checker or played the drill.
 
 ---
 
@@ -66,7 +100,7 @@ checks each, with viewport screenshots at six widths looked at by eye, in
 
 | What | Where | Evidence |
 | --- | --- | --- |
-| A quantity written out in words is read, or the sentence says it was not. Units through millions, hyphenated compounds included: a run becomes a figure where the parser resolves it and the words give it a unit, and otherwise it reaches the reviewer's queue and the sentence is not checked. A count in words beside no claim is left alone | `checker.html`, `CHECKER.md` rule 1c | fixtures `T49` to `T54`, and `T21` now fails a false percentage in words rather than leaving it unparsed. 59 fixtures, 59 pass at 1.6.1; 744 fixtures and 746 checks pass now. Mirrored in `second_pass/checker.py`, 138 pass at 1.6.1 and 1,569 now |
+| A quantity written out in words is read, or the sentence says it was not. Units through millions, hyphenated compounds included: a run becomes a figure where the parser resolves it and the words give it a unit, and otherwise it reaches the reviewer's queue and the sentence is not checked. A count in words beside no claim is left alone | `checker.html`, `CHECKER.md` rule 1c | fixtures `T49` to `T54`, and `T21` now fails a false percentage in words rather than leaving it unparsed. 59 fixtures, 59 pass at 1.6.1; 799 fixtures and 801 checks pass now. Mirrored in `second_pass/checker.py`, 138 pass at 1.6.1 and 1,679 now |
 | Three claims on the reviewer page corrected, and five more found reading the page against `CHECKER.md`, `PROTOCOL.md` and the evidence note | `review.html` | the page now says the protocol asks for four steps rather than that the site enforces them, that this checker leaves the driver and the period to a reviewer, and that the machine check is a figure that does not tie to the line it names |
 | Two record fields renamed to what they hold, with the old names alongside for this version | `index.html`, `README.md` | `evidenceSupplied` with `evidenceSelected` beside it, `elapsedSecondsOnCard` and `activeSecondsOnCard`, `firstRunInThisTab`, and `renamedFields` on the record |
 | The card clock now also reports time with the tab's hidden time taken out of it | `index.html` | `activeSecondsOnCard`, `activeSecondsOnCards` and `hiddenSecondsInRun`, measured on `visibilitychange` |
@@ -280,7 +314,7 @@ drift apart.
 
 | File | What it is |
 | --- | --- |
-| `tests/checker-fixtures.json` | 744 fixtures: the original defect set, the adversarial probe sets, the forty probes and 113 mutations from the third review, the independent audit's 175 probes, 159 mutations of the clearance grammar's classes, 111 of the residual classes, 86 of the checker residuals, the boundary cases, and the four sample cases end to end |
+| `tests/checker-fixtures.json` | 799 fixtures: the original defect set, the adversarial probe sets, the forty probes and 113 mutations from the third review, the independent audit's 175 probes, 159 mutations of the clearance grammar's classes, 111 of the residual classes, 86 of the checker residuals, 55 of the 10 October 2026 classes (a season word, a quoted title, a financial subject, and the structural, approximation, sign, size and share classes), the boundary cases, and the four sample cases end to end |
 | `tests/run-checker-tests.cjs` | Runs them against `checker.html` itself, with no browser |
 | `tools/findings.py` | Reads the responses export and writes the findings and every field the readout names |
 | `tools/make-sample-csv.py`, `tools/findings-sample.csv` | A synthetic response set in the shapes the page posts, so the script can be proved without waiting for participants |

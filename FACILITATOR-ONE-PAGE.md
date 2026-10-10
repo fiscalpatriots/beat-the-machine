@@ -1,6 +1,6 @@
 # Second Pass: Beat the Machine, a Facilitator's Guide
 
-Forty minutes for a chapter meeting, a classroom or a firm's staff training. Version 2.3, 14 September 2026, against `halyard-v4`, `brightwater-v6` and the build stamped product 1.7.0. Long version: `FACILITATOR-GUIDE.md`.
+Forty minutes for a chapter meeting, a classroom or a firm's staff training. Version 2.3, 14 September 2026, against `halyard-v4`, `brightwater-v6` and the build stamped product 1.7.1. Long version: `FACILITATOR-GUIDE.md`.
 
 ## What you need, and what to do first
 

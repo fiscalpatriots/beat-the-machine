@@ -3,7 +3,7 @@
 A facilitator's guide for a chapter meeting, a classroom, or a firm's staff training. Version 2.2,
 14 September 2026, written against `halyard-v4` and `brightwater-v6`, on the build that asks for the
 read before the draft and for three written answers on each fresh call. That build stamps itself
-`second-pass-drill 1.7.0`.
+`second-pass-drill 1.7.1`.
 
 The game is short and the debrief is what teaches. A room that plays and leaves
 has had a diversion. A room that plays and then answers the questions below out loud has learned a

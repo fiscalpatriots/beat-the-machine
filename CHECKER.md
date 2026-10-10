@@ -593,11 +593,11 @@ node tests/run-checker-tests.cjs T02      one fixture
 node tests/run-checker-tests.cjs --dump T02
 ```
 
-`tests/checker-fixtures.json` holds **744** fixtures and **all 744 pass**, and the suite adds two
+`tests/checker-fixtures.json` holds **799** fixtures and **all 799 pass**, and the suite adds two
 more checks: every reader function `assets/second-pass-core.js` shares with `checker.html` must be the
 same function, and every one-line constant they share and the clearance grammar's block must be the
 same text, so the author page and the checker cannot read one memo two ways. The same file sits in
-the second-pass repository, where `tests/test_parity_shared_inputs.py` runs all 744 inputs through
+the second-pass repository, where `tests/test_parity_shared_inputs.py` runs all 799 inputs through
 this page under Node and through the Python checker and compares the outputs, and a further test
 holds the risk lexicon identical in both, entry for entry, together with the period and quarter
 binding's patterns, the size lists, the sentence splitter's abbreviation and name lists, what the
@@ -686,6 +686,15 @@ where the claim ends and the reason begins in a set of sentences.
   expense rose $30,000 quarter over quarter.`, from not checked to **needs review**, because the
   reader no longer takes `000 quarter` out of the figure as a fraction; the audit's basis for that
   probe is a period mismatch and it accepts either status.
+- **The four fixes of 10 October 2026, 55 fixtures**, each class added in a commit of its own that failed
+  against the code before the rule went in, and no earlier expectation changed: **SEASON01 to
+  SEASON09** `fall` in front of a noun read as the season, **TITLE01 to TITLE06** a direction word
+  inside a quoted document title, **SUBJ01 to SUBJ09** a financial subject the ledger does not carry
+  and a figure that restates the one before it, and the structural classes of the audit's second
+  round of 14 September 2026 (`audit/INDEPENDENT-AUDIT-2026-09-14.md`, N1 to N6): **STRUCT01 to
+  STRUCT08** a balance with no movement, **APPROX01 to APPROX08** the approximation and bound words,
+  **PLUS01 to PLUS04** a plus after a figure, **SIZEST01 to SIZEST05** a size word by its place and
+  **SHAREST01 to SHAREST06** a share word by its place.
 
 The runner lifts the script out of `checker.html` and runs it against a document stub, so there is
 no build step and no dependency; a change to the page that breaks a probe fails the suite. After the
