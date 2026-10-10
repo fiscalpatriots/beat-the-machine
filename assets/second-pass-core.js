@@ -1384,8 +1384,20 @@ function splitSentences(text){
   /* "remained" or "stayed" written straight in front of a figure is the same claim */
   var STILL_FIG=/\b(remain(?:ed|s)?|stay(?:ed|s)?)\s+(?:\$|\(|-?[0-9])/i;
   var FLAT_TOL=0.5;
+  /* A season is not a direction. "fall" standing in front of a noun names the autumn ("the
+     fall open house mailer", "fall enrollment"), so it is not tested as a direction word, and
+     the clearance grammar reads it as a period word, as it reads "spring" and "summer". It
+     stays a direction word in front of a preposition, a conjunction, an auxiliary, a pronoun,
+     a period word, a figure or the end of the clause ("a fall in rent", "fall by $5,000",
+     "the fall was", "fall next month"), and in front of a word ending in -ly, -ed, -ing or a
+     single -s, which may be an adverb or a verb ("fall sharply", "the fall reflects"). */
+  var SEASON_TAIL="(?=[\\s-]+(?!(?:in|on|of|at|to|from|by|for|per|across|over|under|below|above|beneath|beyond|since|during|after|before|with|within|without|into|onto|upon|between|among|against|versus|vs|than|through|throughout|toward|towards|behind|back|away|off|out|outside|apart|short|further|again|another|more|less|much|now|then|due|and|or|but|so|as|because|while|which|that|when|where|if|though|although|nor|yet|is|was|were|are|be|been|being|has|had|have|will|would|could|should|may|might|must|can|did|does|do|it|its|this|these|those|the|a|an|next|last|year|month|quarter|week|period|percent|pct|point|points|dollars)\\b)[a-z]+(?![a-z])(?<!ly)(?<!ed)(?<!ing)(?<![^su]s))";
+  var SEASON_FALL=new RegExp("\\bfall"+SEASON_TAIL,"gi");
+  /* the text with every season "fall" written so no direction pattern reads it, and every
+     offset where it was */
+  function unseason(t){return String(t).replace(SEASON_FALL,"fa_l");}
   function dirWords(txt){
-    var t=" "+txt.toLowerCase().replace(/[^a-z\s]/g," ").replace(/\s+/g," ")+" ",out=[];
+    var t=" "+unseason(txt).toLowerCase().replace(/[^a-z\s]/g," ").replace(/\s+/g," ")+" ",out=[];
     UP.forEach(function(w){if(t.indexOf(" "+w+" ")>-1)out.push({w:w,d:1});});
     DOWN.forEach(function(w){if(t.indexOf(" "+w+" ")>-1)out.push({w:w,d:-1});});
     return out;
@@ -1501,7 +1513,7 @@ function splitSentences(text){
     var last=-1,dm;
     (figs||[]).forEach(function(f){if(f.end>last)last=f.end;});
     if(last>=0)return last;
-    dm=new RegExp("\\b(?:"+UP.concat(DOWN).join("|")+")\\b","i").exec(String(text));
+    dm=new RegExp("\\b(?:"+UP.concat(DOWN).join("|")+")\\b","i").exec(unseason(text));
     return dm?dm.index+dm[0].length:0;
   }
   /* Where the reason begins: the first word after the claim that opens one, passing
@@ -1511,7 +1523,7 @@ function splitSentences(text){
      the grammar does not hold a weak word there, and the direction check does not test
      a direction word there against the account the figures tied. */
   function reasonAt(text,from){
-    var t=String(text),m,at=t.length;
+    var t=unseason(text),m,at=t.length;
     REASON_AT.lastIndex=Math.max(0,from||0);
     while((m=REASON_AT.exec(t))!==null){
       if(REASON_BACK.test(t.slice(m.index+m[0].length)))continue;
@@ -1580,7 +1592,7 @@ function splitSentences(text){
      why:"frames the claim on a period other than the ledger's two columns"},
     {cat:"period",strong:1,contract:1,re:"\\b(?:yrs?|years?(?:[\\s-]+(?:over|on|to)[\\s-]+(?:year|date))?|yearly|annual(?:ly)?|per\\s+annum|yoy|y\\/y|ytd|qtd|mtd|(?:month|quarter)[\\s-]to[\\s-]date|fiscal|fy\\s?[0-9]{0,4}|h[12]|[12]h|half[\\s-]year(?:ly)?|semi[\\s-]?annual(?:ly)?|biannual(?:ly)?|trailing|ttm|ltm|ntm|rolling|twelve[\\s-]months?|12[\\s-]months?|months|weeks|quarters|(?:"+NUMW_RISK+")[\\s-]+(?:days|months|weeks|quarters|years)|(?:consecutive|straight|successive|running)\\s+(?:months?|quarters?|years?|periods?)|in\\s+a\\s+row|week[\\s-]over[\\s-]week|wow|sequential(?:ly)?|(?:prior|previous|comparable|same)\\s+periods?|period[\\s-]over[\\s-]period|since\\s+(?:the\\s+)?(?:start|beginning|end|last|jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?|(?:19|20)[0-9]{2}|q[1-4]|year|quarter)|(?:last|next|this|previous|prior)\\s+(?:jan(?:uary)?|feb(?:ruary)?|march|apr(?:il)?|may|june|july|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?|spring|summer|autumn|fall|winter)|(?:over|during|through(?:out)?|across|since)\\s+(?:the\\s+)?(?:spring|summer|autumn|fall|winter|holidays?|season)|(?:first|second|1st|2nd)\\s+half(?!\\s+of\\s+(?:the\\s+)?(?:month|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec))|ago|per\\s+(?:month|week|day|quarter)|today|yesterday|tomorrow|tonight|overnight|intra-?(?:day|month|quarter|year)|(?:this|last|next)\\s+week)\\b",
      why:"frames the claim on a period other than the ledger's two columns"},
-    {cat:"period",strong:0,re:"\\b(?:weeks?|days?|weekly|daily|hourly|nightly|week[\\s-]?end|spring|summer|autumn|winter|seasonal(?:ly)?|holidays?|through|thru|until|till|during|(?:first|second|third|fourth|last|final|early|late|mid)[\\s-]+(?:half|week|weeks|days?|part|month)|mid[\\s-]?month|early|late|recent(?:ly)?|previously|historically|typically|usually|normally|again|yet)\\b",
+    {cat:"period",strong:0,re:"\\b(?:weeks?|days?|weekly|daily|hourly|nightly|week[\\s-]?end|spring|summer|autumn|winter|fall"+SEASON_TAIL+"|seasonal(?:ly)?|holidays?|through|thru|until|till|during|(?:first|second|third|fourth|last|final|early|late|mid)[\\s-]+(?:half|week|weeks|days?|part|month)|mid[\\s-]?month|early|late|recent(?:ly)?|previously|historically|typically|usually|normally|again|yet)\\b",
      why:"places the claim inside or across a period the ledger's two columns do not show"},
     {cat:"change",strong:0,re:"\\b(?:sank|sink(?:s|ing)?|sunk|contract(?:ed|ing)|shrunk|shrink(?:s|ing)?|dwindl(?:ed|es|ing)|retreat(?:ed|s|ing)|rebound(?:ed|s|ing)?|recover(?:ed|s|ing)|bounc(?:ed|es|ing)|revers(?:ed|es|ing)|swung|swing(?:s|ing)|flipp(?:ed|ing)|mov(?:ed|es|ing)|move|shift(?:ed|s|ing)?|fluctuat(?:ed|es|ing|ions?)|var(?:ied|ies|ying)|widen(?:ed|s|ing)|narrow(?:ed|s|ing)|deepen(?:ed|s|ing)|improv(?:ed|es|ing|ements?)|worsen(?:ed|s|ing)|deteriorat(?:ed|es|ing|ion)|strengthen(?:ed|s|ing)|weaken(?:ed|s|ing)|peak(?:ed|s|ing)|bottom(?:ed|s|ing)|surpass(?:ed|es|ing)|escalat(?:ed|es|ing)|inflat(?:ed|es|ing)|deflat(?:ed|es|ing)|compress(?:ed|es|ing)|erod(?:ed|es|ing)|ramp(?:ed|s|ing)|decelerat(?:ed|es|ing)|slow(?:ed|s|ing)|trend(?:ed|s|ing)?|went\\s+(?:up|down)|came\\s+(?:in|down)|pick(?:ed|s)\\s+up|chang(?:ed|es|ing)|climbing|follow(?:ed|s))\\b",
      why:"describes a change in a word the checker does not test against the ledger"},
@@ -1650,9 +1662,10 @@ function splitSentences(text){
     var text=String(s.text),n=text.length,used=[],out=[],i,m,k;
     for(i=0;i<n;i++)used.push(0);
     function eat(a,b){for(k=Math.max(0,a);k<Math.min(n,b);k++)used[k]=1;}
-    function eatRe(re){
+    function eatRe(re,src){
+      var t=src==null?text:src;
       re.lastIndex=0;
-      while((m=re.exec(text))!==null){
+      while((m=re.exec(t))!==null){
         eat(m.index,m.index+m[0].length);
         if(!m[0].length)re.lastIndex++;
       }
@@ -1672,7 +1685,7 @@ function splitSentences(text){
     /* a direction word that also gives the movement a size ("surged", "eased") is
        tested for its direction and left for the size entry to read */
     var sizeVerb=new RegExp("^(?:"+SIZE_VERBS+")$","i");
-    eatRe(new RegExp("\\b(?:"+UP.concat(DOWN).concat(Object.keys(MOVE_NOUN)).filter(function(w){return !sizeVerb.test(w);}).join("|")+")\\b","gi"));
+    eatRe(new RegExp("\\b(?:"+UP.concat(DOWN).concat(Object.keys(MOVE_NOUN)).filter(function(w){return !sizeVerb.test(w);}).join("|")+")\\b","gi"),unseason(text));
     FLATW.forEach(function(w){eatRe(new RegExp("\\b"+w.replace(/ /g,"\\s+")+"\\b","gi"));});
     eatRe(new RegExp(STILL_FIG.source,"gi"));
     eatRe(ACCEPT_FRAME);
