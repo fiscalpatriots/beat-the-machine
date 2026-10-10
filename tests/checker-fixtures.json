@@ -18687,5 +18687,227 @@
         "value": "failed"
       }
     ]
+  },
+  {
+    "id": "SUBJ01",
+    "name": "a second financial subject takes a figure bound to the first: Rent expense rose $30,000, so gross profit increased $30,000. (review of 8 October 2026, finding 1)",
+    "required": "Gross profit is not a line this ledger carries, so the second $30,000 can only have tied to rent expense, and the clause is not about rent expense. A clause that names a financial subject the ledger does not carry, in the claim and beside a figure or a direction word, holds the sentence at needs review with the subject named. The review of 8 October 2026 found this sentence checked within scope.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000, so gross profit increased $30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the subject",
+        "get": "queue",
+        "op": "includes",
+        "value": "“gross profit” is a financial subject that is not a line this sentence binds"
+      },
+      {
+        "desc": "the direction word in the subject's clause is not tested against rent expense",
+        "get": "finding.S1",
+        "op": "notIncludes",
+        "value": "\"increased\" agrees with 6100 Rent expense"
+      }
+    ]
+  },
+  {
+    "id": "SUBJ02",
+    "name": "the subject's direction word is not failed against the wrong line: Rent expense rose $30,000, so net income fell $30,000.",
+    "required": "\"fell\" in the clause about net income describes net income, not rent expense, so it is not tested against rent expense and the sentence is not failed on it. The subject holds the sentence at needs review.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000, so net income fell $30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "no failure is raised on the subject's direction",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Failure"
+      },
+      {
+        "desc": "the queue names the subject",
+        "get": "queue",
+        "op": "includes",
+        "value": "“net income” is a financial subject"
+      }
+    ]
+  },
+  {
+    "id": "SUBJ03",
+    "name": "the subject first, the line second: Net income fell $30,000 as rent expense rose $30,000.",
+    "required": "The first clause is about net income, which the ledger does not carry, so its \"fell\" is not tested against rent expense; the second clause is tested and agrees. The sentence is held at needs review on the subject and never failed.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Net income fell $30,000 as rent expense rose $30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "no failure is raised",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Failure"
+      },
+      {
+        "desc": "\"rose\" is tested against rent expense",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "\"rose\" agrees with 6100 Rent expense"
+      }
+    ]
+  },
+  {
+    "id": "SUBJ04",
+    "name": "a subject inside a reason stays with the reason: Rent expense rose $30,000 because gross profit fell.",
+    "required": "A reason is already a question for a person, and a subject named inside one carries no figure the checker tied, so the sentence clears as it did before.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 because gross profit fell.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "SUBJ05",
+    "name": "a subject that is the bound line's own name: Cost of goods sold rose $88,200.",
+    "required": "Where the ledger carries the subject as a line and the sentence binds it, the subject is that line and nothing is held.",
+    "inputs": {
+      "ledger": "4000\tRevenue\t1000000\t1100000\n5000\tCost of goods sold\t750000\t838200",
+      "memo": "Cost of goods sold rose $88,200.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "SUBJ06",
+    "name": "a subject the ratio pane carries: Revenue rose $100,000 while gross profit fell from 25.0 percent to 23.8 percent, with a ratio named Gross profit percent.",
+    "required": "A ratio in the ratio pane is something the checker computes from the ledger, so a subject its name carries is not held, and the two percents tie to it.",
+    "inputs": {
+      "ledger": "4000\tRevenue\t1000000\t1100000\n5000\tCost of goods sold\t750000\t838200",
+      "memo": "Revenue rose $100,000 while gross profit fell from 25.0 percent to 23.8 percent.",
+      "ratios": "Gross profit percent = (4000 - 5000) / 4000"
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "SUBJ07",
+    "name": "the same sentence with a ratio of another name: the subject is held",
+    "required": "With the ratio named Product mix, the pane carries no gross profit, so the subject is held at needs review even though the percents tie to the ratio by value.",
+    "inputs": {
+      "ledger": "4000\tRevenue\t1000000\t1100000\n5000\tCost of goods sold\t750000\t838200",
+      "memo": "Revenue rose $100,000 while gross profit fell from 25.0 percent to 23.8 percent.",
+      "ratios": "Product mix = (4000 - 5000) / 4000"
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the subject",
+        "get": "queue",
+        "op": "includes",
+        "value": "“gross profit” is a financial subject"
+      }
+    ]
+  },
+  {
+    "id": "SUBJ08",
+    "name": "a figure restating the one before it belongs to that figure's line: Rent expense rose $30,000, or 30 percent, in June, and Insurance expense rose $45,000, or 90 percent, in June. (audit of 14 September 2026, probe C119)",
+    "required": "\"or 30 percent\" restates $30,000 in another unit, so where its own clause names no line it belongs to the line $30,000 belongs to, and each percent is tested against its own line. Two true claims on two lines are checked within scope; the audit found this sentence held.",
+    "inputs": {
+      "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000, or 30 percent, in June, and Insurance expense rose $45,000, or 90 percent, in June.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "the first percent is tested against rent expense",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "30 percent is the relative movement, 6100 Rent expense percent change"
+      },
+      {
+        "desc": "the second against insurance expense",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "90 percent is the relative movement, 6200 Insurance expense percent change"
+      }
+    ]
+  },
+  {
+    "id": "SUBJ09",
+    "name": "a restating figure that is wrong for its own line fails: Rent expense rose $30,000, or 30 percent, and Insurance expense rose $45,000, or 30 percent.",
+    "required": "Bound to insurance expense through the figure it restates, the second \"30 percent\" is compared with insurance expense's 90.0 percent and the sentence fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000\n6200\tInsurance expense\t50000\t95000",
+      "memo": "Rent expense rose $30,000, or 30 percent, and Insurance expense rose $45,000, or 30 percent.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is failed",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "failed"
+      },
+      {
+        "desc": "the failure names insurance expense's movement",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "the relative movement on 6200 Insurance expense is 90.0% unrounded"
+      }
+    ]
   }
 ]
