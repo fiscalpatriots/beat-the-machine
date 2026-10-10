@@ -18909,5 +18909,617 @@
         "value": "the relative movement on 6200 Insurance expense is 90.0% unrounded"
       }
     ]
+  },
+  {
+    "id": "STRUCT01",
+    "name": "a no-change claim in words outside the list, on a line that moved: Rent expense was rangebound at $130,000. (audit N1, D001)",
+    "required": "A sentence whose only figure is a balance, with no movement figure, no direction word in its claim and no threshold claim, cannot be checked within scope, whatever word it uses for the movement. The audit of 14 September 2026 found this sentence cleared on a line that rose 30 percent. It is held at needs review with the balance named.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense was rangebound at $130,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the balance and the rule",
+        "get": "queue",
+        "op": "includes",
+        "value": "“$130,000” is a balance and the only kind of figure in this sentence"
+      }
+    ]
+  },
+  {
+    "id": "STRUCT02",
+    "name": "a no-change claim across two clauses: Rent expense went nowhere, ending at $130,000. (audit N1, D003)",
+    "required": "The structural rule reads the whole sentence, so a no-change claim in a clause of its own is held as well.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense went nowhere, ending at $130,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "STRUCT03",
+    "name": "a no-change claim as a noun: Rent expense showed no real movement, ending at $130,000. (audit N1, D012)",
+    "required": "\"no real movement\" is a claim about the movement that no tested word carries; the sentence is held.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense showed no real movement, ending at $130,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "STRUCT04",
+    "name": "the rule is structural, so it holds a balance-only sentence on a line that did not move: Rent expense was rangebound at $130,000.",
+    "required": "The rule does not test the word against the ledger; it says nothing in the sentence ties a claim about the movement to the ledger. On a line that did not move the sentence is still held, and a reviewer reads it.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t130000\t130000",
+      "memo": "Rent expense was rangebound at $130,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "STRUCT05",
+    "name": "a balance with a tested direction word clears: Rent expense rose to $130,000.",
+    "required": "A direction word in the claim is tested against the line, so a balance beside it is a checked claim and the sentence clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose to $130,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "STRUCT06",
+    "name": "two balances state the movement: Rent expense went from $100,000 to $130,000.",
+    "required": "A prior and a current balance that both tie state the movement between them, so the structural rule does not hold the sentence.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense went from $100,000 to $130,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "STRUCT07",
+    "name": "a tested no-change word on a line that did not move clears: Rent expense held at $130,000.",
+    "required": "\"held at\" is a no-change claim the direction check tests, and on a line that did not move it passes, so the sentence clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t130000\t130000",
+      "memo": "Rent expense held at $130,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "STRUCT08",
+    "name": "a balance beside a threshold claim clears: Medical supplies ended at $19,800, which fails the dollar leg.",
+    "required": "A threshold claim is tested against the rule as set, so a balance-only sentence that makes one is not held by the structural rule.",
+    "inputs": {
+      "ledger": "6100\tMedical supplies\t21400\t19800",
+      "memo": "Medical supplies ended at $19,800, which fails the dollar leg.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "APPROX01",
+    "name": "one approximation class: Rent expense rose around $30,000.",
+    "required": "An approximation word in front of a figure is read and taken out, and the figure is compared unrounded as written. \"around\" was held as an unknown role while \"about\" cleared; both now read the same way, and a figure that ties clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose around $30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      },
+      {
+        "desc": "the figure is read as the movement",
+        "get": "role.S1",
+        "op": "eq",
+        "value": "$30,000=dollars/absolute movement"
+      }
+    ]
+  },
+  {
+    "id": "APPROX02",
+    "name": "one approximation class: Rent expense rose circa $30,000. (audit N4, C041)",
+    "required": "\"circa\" is in the approximation class and reads as \"about\" does.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose circa $30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "APPROX03",
+    "name": "one approximation class, after the figure: Rent expense rose $30,000 or so. (audit N4, C043)",
+    "required": "\"or so\" after a figure is an approximation, not a bound, so it is read and taken out like \"give or take\" and \"or thereabouts\".",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 or so.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "APPROX04",
+    "name": "one approximation class: Rent expense rose in the region of $30,000. (audit N4, C047)",
+    "required": "\"in the region of\" is in the approximation class.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose in the region of $30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "APPROX05",
+    "name": "an approximation does not widen the tolerance: Rent expense rose around $31,000.",
+    "required": "The hedged figure is compared unrounded, as written, so $31,000 against a $30,000 movement fails, as \"about $32,000\" does.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose around $31,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is failed",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "failed"
+      }
+    ]
+  },
+  {
+    "id": "APPROX06",
+    "name": "a bound is not a balance: Rent expense rose close to $30,000. (audit N6, C046)",
+    "required": "\"close to\" makes the figure one side of a bound, so its \"to\" does not read the figure as the current balance; the role is left unknown and the sentence is held at needs review, never failed. The audit found this true sentence failed.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose close to $30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "no failure is raised",
+        "get": "queueKinds",
+        "op": "notIncludes",
+        "value": "Failure"
+      },
+      {
+        "desc": "the role is unknown",
+        "get": "role.S1",
+        "op": "eq",
+        "value": "$30,000=dollars/unknown"
+      }
+    ]
+  },
+  {
+    "id": "APPROX07",
+    "name": "a bound: Rent expense rose a touch over $30,000. (audit N4, D039)",
+    "required": "\"a touch over\" is a bound and holds the sentence at needs review.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose a touch over $30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "APPROX08",
+    "name": "a bound: Rent expense rose nearly $30,000.",
+    "required": "\"nearly\" is a bound and holds the sentence at needs review.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose nearly $30,000.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "PLUS01",
+    "name": "a plus after a figure is its sign: Rent expense rose $30,000+. (audit N5, D042)",
+    "required": "A plus written straight after a figure is read as the figure's sign, as a minus written there already is, and the figure is compared as written.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000+.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the figure carries its sign",
+        "get": "role.S1",
+        "op": "eq",
+        "value": "$30,000+=dollars/absolute movement"
+      },
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "PLUS02",
+    "name": "a plus one space after a figure at the end of the clause: Rent expense rose $30,000 +. (audit N5, D043)",
+    "required": "A plus standing one space after a figure, with nothing after it but the end of the clause, is the figure's sign too.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 +.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "the figure carries its sign",
+        "get": "role.S1",
+        "op": "eq",
+        "value": "$30,000 +=dollars/absolute movement"
+      }
+    ]
+  },
+  {
+    "id": "PLUS03",
+    "name": "a plus that disagrees with the ledger fails: Rent expense changed by $30,000+. on a line that fell",
+    "required": "Read as a sign, the plus is a claim the words gave, so on a line that fell $30,000 the signs clash and the sentence fails.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t130000\t100000",
+      "memo": "Rent expense changed by $30,000+.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is failed",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "failed"
+      },
+      {
+        "desc": "the failure names the sign",
+        "get": "finding.S1",
+        "op": "includes",
+        "value": "is written with a sign of its own"
+      }
+    ]
+  },
+  {
+    "id": "PLUS04",
+    "name": "a plus in words is still held: Rent expense rose $30,000 plus. (audit N5, D046)",
+    "required": "\"plus\" in words is not a sign the checker reads, so the sentence stays held at needs review.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 plus.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "SIZEST01",
+    "name": "a word said of the movement itself: Rent expense rose $30,000; the increase was manageable. (audit N2, D013)",
+    "required": "Any word said of the movement after \"the increase was\" describes the movement in a way the checker does not test, so it holds the sentence at needs review and the queue names it, whether or not it is in the size list.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000; the increase was manageable.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word",
+        "get": "queue",
+        "op": "includes",
+        "value": "“manageable” says what the movement was like"
+      }
+    ]
+  },
+  {
+    "id": "SIZEST02",
+    "name": "a word said of the movement itself: Rent expense rose $30,000; the rise was decent. (audit N2, D015)",
+    "required": "The same rule for \"the rise was\".",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000; the rise was decent.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "SIZEST03",
+    "name": "a word on the movement in a phrase that restates it: Rent expense rose $30,000, a beefy increase. (audit N2, D018)",
+    "required": "A phrase after the claim that restates the movement, \"a ___ increase\", says what the movement was like in its descriptive word, so that word holds the sentence at needs review.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000, a beefy increase.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word",
+        "get": "queue",
+        "op": "includes",
+        "value": "“beefy” says what the movement was like"
+      }
+    ]
+  },
+  {
+    "id": "SIZEST04",
+    "name": "a reason said of the movement stays with the reason: Rent expense rose $30,000; the increase was due to the new lease.",
+    "required": "\"due to\" opens a reason, so nothing is said of the movement's size and the sentence clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000; the increase was due to the new lease.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "SIZEST05",
+    "name": "a month on the restated movement binds by the column labels: Rent expense rose $30,000, a June increase.",
+    "required": "A month in the restating phrase is a period, bound by the column labels, not a word about the movement's size; on a ledger headed May and June it clears.",
+    "inputs": {
+      "ledger": "Account\tMay 2026\tJune 2026\n6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000, a June increase.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "SHAREST01",
+    "name": "any word that takes a share of it: Rent expense rose $30,000, a good chunk of it on the new lease. (audit N3, D022)",
+    "required": "A word that takes a share \"of it\", where \"it\" is the movement, says how much of the movement the reason explains, so it holds the sentence at needs review whether or not it is in the share list.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000, a good chunk of it on the new lease.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      },
+      {
+        "desc": "the queue names the word",
+        "get": "queue",
+        "op": "includes",
+        "value": "“chunk” says how much of the movement the sentence explains"
+      }
+    ]
+  },
+  {
+    "id": "SHAREST02",
+    "name": "any word that takes a share of it: Rent expense rose $30,000, nearly all of it on the new lease. (audit N3, C034 and D023)",
+    "required": "\"all of it\" is a share of the movement and holds the sentence.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000, nearly all of it on the new lease.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "SHAREST03",
+    "name": "the remainder standing alone: Rent expense rose $30,000, the remainder on the new lease. (audit N3, D024)",
+    "required": "\"the remainder\" standing alone is a share of the movement and holds the sentence.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000, the remainder on the new lease.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "SHAREST04",
+    "name": "any word that takes a share of the movement: Rent expense rose $30,000, a slice of the increase on the new lease. (audit N3, D028)",
+    "required": "\"a slice of the increase\" is a share of the movement and holds the sentence.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000, a slice of the increase on the new lease.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is needs review",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "needs review"
+      }
+    ]
+  },
+  {
+    "id": "SHAREST05",
+    "name": "the cause of the movement is not a share of it: Rent expense rose $30,000; the cause of the increase is the new lease.",
+    "required": "\"the cause of the increase\" names a reason, not a share, so the sentence clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000; the cause of the increase is the new lease.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
+  },
+  {
+    "id": "SHAREST06",
+    "name": "the remainder of something else stays with the reason: Rent expense rose $30,000 on the lease, which runs for the remainder of the lease term.",
+    "required": "\"the remainder of the lease term\" is not a share of the movement, so the sentence clears.",
+    "inputs": {
+      "ledger": "6100\tRent expense\t100000\t130000",
+      "memo": "Rent expense rose $30,000 on the lease, which runs for the remainder of the lease term.",
+      "ratios": ""
+    },
+    "expect": [
+      {
+        "desc": "sentence S1 is checked within scope",
+        "get": "status.S1",
+        "op": "eq",
+        "value": "checked within scope"
+      }
+    ]
   }
 ]
