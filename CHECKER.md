@@ -311,7 +311,11 @@ season is not a direction: `fall` in front of a noun names the autumn (`on the f
 mailer`, `Fall enrollment`) and is read as a period word, like `spring` and `summer`, while in front of
 a preposition, a conjunction, an auxiliary, a period word, a figure, a word ending in `-ly`, `-ed`,
 `-ing` or a single `-s`, or the end of the clause it is still the movement (`a fall in rent`, `the fall
-was`, `the fall reflects`). **Threshold claims** test a sentence that asserts something about the rule itself, "fails
+was`, `the fall reflects`). A quoted document title, a span in quotation marks of two words or more
+with no digit in it (`per the “decline in vacancy” memo`, in curly, straight or single quotes), is a
+name and not a claim: a direction word inside it is not tested and does not move the boundary between
+claim and reason, while a quoted single word (`"fell"`) or a quoted figure is still read, and the
+clearance grammar below still reads every word of the title. **Threshold claims** test a sentence that asserts something about the rule itself, "fails
 the dollar leg", "clears neither leg", "carries no driver", against the rule as set; it is the one
 case where a sentence can be checked on its words rather than on a figure.
 

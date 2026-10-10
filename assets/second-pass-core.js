@@ -1507,6 +1507,22 @@ function splitSentences(text){
   var QUARTER_WORD=/\bquarter[\s-]+(?:over|on)[\s-]+quarter\b|\bquarter[\s-]?end(?:ed|ing|s)?\b|\bquarterly\b|\bquarters?\b|\bqtrs?\.?|\b(?:qoq|q\/q)\b|\b(?:three|3)[\s-]month\b/gi;
   var REASON_AT=/\b(?:because|as|since|on|upon|due\s+to|owing\s+to|thanks\s+to|driven\s+by|caused\s+by|led\s+by|helped\s+by|aided\s+by|boosted\s+by|offset\s+by|attributable\s+to|reflecting|reflects|following|after|with|amid|amidst|despite|notwithstanding|in\s+spite\s+of|given|whereas|while)\b|\(/gi;
   var REASON_BACK=/^\s*(?:it|its|this|these|that|the\s+(?:line|account|balance)|the\s+(?:movement|increase|decrease|rise|fall|change|variance|figure|amount|total)(?!\s+(?:in|on|of|at|for|from|to|across|between)\b))\b/i;
+  /* A quoted document title is a name, not a claim. A span in quotation marks that runs to
+     two words or more and carries no digit, as in "per the 'decline in vacancy' memo", is
+     written over before the direction check and the claim and reason boundary read the
+     sentence, so a direction word inside a title is never tested against the line and never
+     moves the boundary. A quoted single word ("fell") or a quoted figure is still read, and
+     the clearance grammar still reads every word of the title. */
+  var TITLE_DQ=/[“"]([^“”"\n]{3,120})[”"]/g;
+  var TITLE_SQ=/(^|[\s(\[])[‘']([A-Za-z][^‘’'\n]{1,118}[A-Za-z0-9.!?])[’'](?![^\s.,;:!?)\]])/g;
+  function titleInner(q){return /\S\s+\S/.test(q)&&!/[0-9]/.test(q);}
+  function maskTitles(t){
+    return String(t).replace(TITLE_DQ,function(all,q){
+      return titleInner(q)?all.charAt(0)+q.replace(/\S/g,"x")+all.charAt(all.length-1):all;
+    }).replace(TITLE_SQ,function(all,pre,q){
+      return titleInner(q)?pre+all.charAt(pre.length)+q.replace(/\S/g,"x")+all.charAt(all.length-1):all;
+    });
+  }
   /* Where the claim ends: after the last figure the sentence or clause carries, or,
      with no figure, after the first direction word. */
   function claimEnd(text,figs){
@@ -1707,7 +1723,7 @@ function splitSentences(text){
     }
     /* the claim runs to the first word that opens a reason after the last figure,
        passing over a reason that points straight back at the line */
-    var rsn=reasonAt(text,claimEnd(text,figs));
+    var titled=maskTitles(text),rsn=reasonAt(titled,claimEnd(titled,figs));
     function inHeld(a,b){
       for(k=0;k<held.length;k++)if(a<held[k][1]&&b>held[k][0])return true;
       return false;
@@ -1876,9 +1892,9 @@ function splitSentences(text){
   }
   function directionRead(s){
     if(!s.bound.length)return null;
-    var bad=[],good=[],anchored=[],voided=[],loose=[],open=[],prevEnd=0;
-    spansOf(s.text,RE_COARSE).forEach(function(sp){
-      var c=sp.text,sep=s.text.slice(prevEnd,sp.at).replace(/^\s+|\s+$/g,"").toLowerCase();
+    var bad=[],good=[],anchored=[],voided=[],loose=[],open=[],prevEnd=0,T=maskTitles(s.text);
+    spansOf(T,RE_COARSE).forEach(function(sp){
+      var c=sp.text,sep=T.slice(prevEnd,sp.at).replace(/^\s+|\s+$/g,"").toLowerCase();
       prevEnd=sp.end;
       var cf=figures(c,s.numset),anchor=null,neg=negationIn(c);
       dollarsIn(cf).forEach(function(d){
@@ -1969,13 +1985,13 @@ function splitSentences(text){
       return {bad:bad,good:good,voided:voided,loose:loose};
     }
     if(voided.length)return {bad:bad,good:good,voided:voided,loose:loose};
-    var sneg=negationIn(s.text);
-    if(sneg&&(flatWord(s.text)||dirWords(s.text).length)){
+    var sneg=negationIn(T);
+    if(sneg&&(flatWord(T)||dirWords(T).length)){
       voided.push("the words negate this sentence (“"+sneg+"”), so what it claims about the "+
         "direction is not settled by the checker");
       return {bad:bad,good:good,voided:voided,loose:loose};
     }
-    var sfw=flatWord(s.text);
+    var sfw=flatWord(T);
     if(sfw){
       var fok=false,fnames=[];
       s.bound.forEach(function(a){
@@ -1985,7 +2001,7 @@ function splitSentences(text){
       if(fok)good.push("\""+sfw+"\" agrees with the bound line");
       else if(fnames.length)bad.push("the memo says \""+sfw+"\" but "+fnames.join(" and "));
     }
-    dirWords(s.text).forEach(function(w){
+    dirWords(T).forEach(function(w){
       var agrees=false,names=[];
       s.bound.forEach(function(a){
         var sign=a.change>0?1:(a.change<0?-1:0);
