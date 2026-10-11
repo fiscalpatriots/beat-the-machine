@@ -46,8 +46,10 @@
 #app{max-width:560px;margin:0 auto;padding:0 var(--gut) var(--s9);
   display:flex;flex-direction:column}
 #app>*{min-width:0;max-width:100%}
-#screen{flex:1;min-height:58vh;display:flex;flex-direction:column;justify-content:center;
-  padding:var(--s2) 0 var(--s4)}
+/* every screen starts at the same top edge, so a short screen and a long one begin in the same
+   place and the card under the progress line never jumps between them (1.8.0) */
+#screen{flex:1;min-height:58vh;display:flex;flex-direction:column;justify-content:flex-start;
+  padding:var(--s3) 0 var(--s4)}
 #screen>*{min-width:0}
 
 /* the codename rides the masthead, right above the player's car */
@@ -66,7 +68,9 @@
 
 /* ---------- the race track ---------- */
 #bar{position:sticky;top:0;z-index:5;background:var(--paper);padding:var(--s3) 0 var(--s2)}
-#track{line-height:0}
+/* the track keeps the 520 pixel column on every screen, so on the wide ledger screen it stays a
+   line rather than a 119 pixel band (1.8.0) */
+#track{line-height:0;max-width:520px}
 #trk{display:block;width:100%;height:auto;overflow:visible}
 #fill{transition:width .32s cubic-bezier(.3,.8,.35,1),fill .24s ease,fill-opacity .24s ease}
 #carpos{transition:transform .32s cubic-bezier(.3,.8,.35,1)}
@@ -145,9 +149,7 @@
 .file .cite{display:block;margin-top:2px;font-size:var(--t-small);line-height:1.5;
   color:var(--ink-soft);border-left:2px solid var(--rule);padding-left:var(--s3)}
 .file .cite b{font-weight:600;font-style:normal}
-.ask{font-weight:600;font-size:var(--t-body);margin:var(--s5) 0 0}
-.two{display:flex;gap:var(--s3);margin-top:var(--s3)}
-.two .btn{flex:1;padding:var(--s3) var(--s2)}
+.ask{font-weight:600;font-size:var(--t-lead);line-height:1.35;margin:var(--s5) 0 0}
 
 /* ---------- the reveal ---------- */
 .outcome{margin:var(--s5) 0 var(--s4);padding:var(--s4) 0;
@@ -275,7 +277,6 @@
 .basis{margin-top:var(--s2)}
 .basishint{margin:0 0 var(--s3)}
 .basis .chips{margin:0 0 var(--s4)}
-.basis .chip{flex:1 1 180px;min-width:0;overflow-wrap:anywhere}
 .basiswords{display:block;font-size:var(--t-small);font-weight:600;color:var(--ink-soft);
   margin:0 0 var(--s2)}
 .basis .btn{display:flex;width:100%;margin-top:var(--s4)}
@@ -303,7 +304,6 @@
 .prepick h3{margin:0 0 var(--s1)}
 .prepick p{margin:0 0 var(--s4);font-size:var(--t-small);line-height:1.55;color:var(--ink-soft)}
 .prepick .chips{margin:0 0 var(--s3)}
-.prepick .chip{font-size:var(--t-small);text-align:left;overflow-wrap:anywhere;min-width:0;max-width:100%}
 .prepick .prepickstat{margin:0;font-size:var(--t-small);font-weight:600;color:var(--ink)}
 .readshift{margin:var(--s5) 0 0;padding:var(--s5) 0 0;border-top:1px solid var(--rule);text-align:left}
 .readshift h3{margin:0 0 var(--s2)}
@@ -407,7 +407,6 @@
 a.btn{text-decoration:none}
 /* in the drill a button is always the width of the column it sits in */
 #screen .btn,.stickygo .btn{display:flex;width:100%;margin-top:var(--s3)}
-#screen .two .btn{margin-top:0}
 #screen .btn:first-child{margin-top:0}
 
 /* =============================================================================
@@ -434,7 +433,7 @@ body{overflow-x:clip}
   display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s4)}
 .frames li{min-width:0}
 .frames svg{display:block;width:100%;height:auto}
-.frames p{margin:var(--s2) 0 0;font-size:13px;line-height:1.45;color:var(--ink)}
+.frames p{margin:var(--s2) 0 0;font-size:var(--t-small);line-height:1.45;color:var(--ink)}
 @media (max-width:440px){
   .frames{display:block}
   .frames li{display:flex;align-items:center;gap:var(--s4);margin:0 0 var(--s4)}
@@ -443,14 +442,8 @@ body{overflow-x:clip}
   .frames p{margin:0}
 }
 
-/* ---------- the two call buttons: one selected, the other still live ---------- */
-.two.calls .btn{transition:opacity .16s ease}
-.two.calls .btn.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-.two.calls .btn.dim{opacity:.45}
-.two.calls .btn.dim:hover{opacity:.85;border-color:var(--ink-soft)}
+/* ---------- the key hint riding a choice row ---------- */
 .kbd.ink{border-color:var(--rule-strong);color:var(--ink-soft)}
-.btn.on .kbd.ink{border-color:rgba(255,255,255,.45);color:#fff}
-@media (prefers-reduced-motion:reduce){.two.calls .btn{transition:none}}
 
 /* ---------- the commit step ---------- */
 .commit{margin-top:var(--s5);padding-top:var(--s5);border-top:1px solid var(--rule)}
@@ -459,24 +452,9 @@ body{overflow-x:clip}
 .locknote{margin:var(--s3) 0 0;text-align:center}
 .backrow{display:flex;justify-content:center;margin-top:var(--s2)}
 
-/* ---------- the rank meter in the header ---------- */
-#rankmeter{margin-top:var(--s2)}
-.rmtop{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s3);
-  font-size:var(--t-small);line-height:1.4}
-.rmtop b{font-weight:700;color:var(--ink);white-space:nowrap}
-.rmtop span{min-width:0;text-align:right;color:var(--ink-soft);
-  font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+/* ---------- the rank bar under the running score on the reveal ---------- */
 .rmbar{height:4px;background:var(--rule);border-radius:2px;overflow:hidden;margin-top:var(--s2)}
-.rmbar i{display:block;height:100%;width:0;background:var(--ink);
-  transition:width .32s cubic-bezier(.3,.8,.35,1)}
-#rankmeter.up .rmbar i{animation:rankflash .4s ease-out 1}
-@keyframes rankflash{0%,62%{background:var(--gold)}100%{background:var(--ink)}}
-#rankmeter.up .rmtop b{animation:rankname .4s ease-out 1}
-@keyframes rankname{from{opacity:.2}to{opacity:1}}
-@media (prefers-reduced-motion:reduce){
-  .rmbar i{transition:none}
-  #rankmeter.up .rmbar i,#rankmeter.up .rmtop b{animation:none}
-}
+.rmbar i{display:block;height:100%;width:0;background:var(--ink)}
 
 /* ---------- the reveal face ---------- */
 .reveal{background:var(--card);border:1px solid var(--rule);border-radius:var(--radius);
@@ -484,7 +462,7 @@ body{overflow-x:clip}
   min-height:232px;display:flex;flex-direction:column;justify-content:center}
 .reveal .revtype{display:block;margin:0 0 var(--s2);font-size:var(--t-label);font-weight:700;
   text-transform:uppercase;letter-spacing:.09em;color:var(--ink-soft)}
-.verdict{margin:0 0 var(--s3);font-size:32px;line-height:1.1;letter-spacing:-.02em}
+.verdict{margin:0 0 var(--s3);font-size:var(--t-h1);line-height:1.15;letter-spacing:-.02em}
 .reveal.good .verdict{color:var(--mason)}
 .reveal.bad .verdict{color:var(--red)}
 .revtell,.revtruth{margin:0;font-size:var(--t-body);line-height:1.6}
@@ -493,23 +471,18 @@ body{overflow-x:clip}
 .revnil{margin:var(--s4) 0 0;font-size:var(--t-small);font-weight:600;color:var(--ink)}
 .revcoach{margin:var(--s4) 0 0;padding:var(--s4) 0 0;border-top:1px solid var(--rule);
   font-size:var(--t-small);line-height:1.6;color:var(--ink-soft)}
-@media (max-width:400px){.verdict{font-size:27px}.reveal{padding:var(--s5) var(--s4)}}
+@media (max-width:400px){.reveal{padding:var(--s5) var(--s4)}}
 
-/* the card turns over to its verdict face. Reduced motion gets the same beat as a fade. */
-.reveal.turn{animation:turnin .3s cubic-bezier(.2,.7,.3,1) both}
-@keyframes turnin{
-  from{transform:perspective(900px) rotateY(-88deg);opacity:.15}
-  to{transform:perspective(900px) rotateY(0);opacity:1}
-}
-@media (prefers-reduced-motion:reduce){
-  .reveal.turn{animation:turnfade .2s ease both}
-  @keyframes turnfade{from{opacity:0}to{opacity:1}}
-}
+/* the verdict face fades in once, in 200ms, and nothing turns, counts or flashes (1.8.0).
+   Reduced motion gets it with no fade at all. */
+.reveal.turn{animation:turnfade .2s ease both}
+@keyframes turnfade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.reveal.turn{animation:none}}
 
 /* ---------- the points earned on the line ---------- */
 .ptsblock{margin:var(--s5) 0 0;padding:var(--s4) 0 0;border-top:1px solid var(--rule)}
 .ptstotal{display:flex;align-items:baseline;gap:var(--s3);margin:0 0 var(--s4)}
-.ptstotal span{font-size:34px;font-weight:700;line-height:1;letter-spacing:-.02em;
+.ptstotal span{font-size:var(--t-h1);font-weight:700;line-height:1;letter-spacing:-.02em;
   font-variant-numeric:tabular-nums;color:var(--ink);
   display:inline-block;padding-bottom:var(--s1);border-bottom:3px solid var(--gold)}
 .ptstotal i{font-style:normal;font-size:var(--t-small);color:var(--ink-soft)}
@@ -541,6 +514,46 @@ body{overflow-x:clip}
 .pointsbig{display:flex;align-items:baseline;gap:var(--s3);margin:var(--s2) 0 var(--s5)}
 .pointsbig i{font-style:normal;font-size:var(--t-small);color:var(--ink-soft)}
 .sharecard .label{margin-bottom:var(--s3)}
+
+/* =============================================================================
+   ONE CLEAN SCREEN AT A TIME - 1.8.0, 11 October 2026
+   Taken from a practice quiz he pointed at: one question on the screen, its
+   choices as full-width rows of one height directly under it, a selection that
+   fills the whole row, and one quiet line of progress. Every choice in the drill
+   now wears the same row: the call, the basis and the read before the draft.
+   ============================================================================= */
+
+/* ---------- choices: full-width rows of one height ---------- */
+#screen .opts{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s2);margin:var(--s3) 0 0}
+#screen .opt{display:flex;align-items:center;gap:var(--s3);width:100%;max-width:100%;min-width:0;
+  min-height:52px;margin:0;padding:var(--s3) var(--s4);
+  border:1px solid var(--rule-strong);border-radius:var(--radius);
+  background:var(--card);color:var(--ink);
+  font-size:var(--t-body);font-weight:600;line-height:1.35;text-align:left;overflow-wrap:anywhere}
+#screen .opt:hover{border-color:var(--ink)}
+/* a ring where one answer is taken, a square where several can be */
+#screen .opt .mk{flex:0 0 auto;position:relative;width:18px;height:18px;
+  border:1.5px solid var(--ink-soft);border-radius:50%}
+#screen .opt.multi .mk{border-radius:4px}
+#screen .opt .ol{flex:1 1 auto;min-width:0}
+#screen .opt .kbd{margin-left:auto}
+#screen .opt .code{font-family:var(--mono);font-size:13px;font-weight:400;color:var(--ink-soft)}
+/* chosen: the whole row fills ink and the mark fills white. Never a tint, never blue. */
+#screen .opt.on,#screen .opt[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+#screen .opt.on .mk,#screen .opt[aria-pressed="true"] .mk{border-color:#fff}
+#screen .opt.on .mk::after,#screen .opt[aria-pressed="true"] .mk::after{content:"";position:absolute;
+  left:3.5px;top:3.5px;width:8px;height:8px;border-radius:50%;background:#fff}
+#screen .opt.multi.on .mk::after,#screen .opt.multi[aria-pressed="true"] .mk::after{left:4.5px;top:1px;
+  width:5px;height:9px;border-radius:0;background:none;border:solid #fff;border-width:0 2px 2px 0;
+  transform:rotate(45deg)}
+#screen .opt.on .code,#screen .opt[aria-pressed="true"] .code{color:#d7d5d0}
+#screen .opt.on .kbd.ink{border-color:rgba(255,255,255,.45);color:#fff}
+#screen .opt:disabled{opacity:.45;cursor:not-allowed}
+#screen .opt:disabled:hover{border-color:var(--rule-strong)}
+/* the read before the draft: one column on a phone, two beside the legend on a desk */
+#screen .prepick .opts{margin:0 0 var(--s3)}
+@media (min-width:900px){#screen .prepick .opts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+#screen .basis .opts{margin:0 0 var(--s4)}
 </style>
 </head>
 <body>
@@ -550,10 +563,6 @@ body{overflow-x:clip}
   <div id="bar">
     <div id="track"></div>
     <div id="label"><span id="step"></span><span id="score" class="hidden"></span></div>
-    <div id="rankmeter" role="group" hidden>
-      <div class="rmtop"><b id="rmname"></b><span id="rmnote"></span></div>
-      <div class="rmbar"><i id="rmfill"></i></div>
-    </div>
   </div>
   <div id="screen"></div>
   <p id="masonfoot"><b id="verline"></b></p>
@@ -567,7 +576,7 @@ body{overflow-x:clip}
    One constant. It prints under the footer line on every screen, rides into the posted
    payload on question A, and stamps the local record. README and review.html state it too. */
 var PRODUCT_NAME = "Second Pass: Beat the Machine";
-var PRODUCT_VERSION = "1.7.1";
+var PRODUCT_VERSION = "1.8.0";
 var PRODUCT_STAMP = "second-pass-drill " + PRODUCT_VERSION;
 var NOTICE_VERSION = "notice-2026-09-14";
 
@@ -1210,38 +1219,11 @@ function rankProgress(){
 }
 function pointsText(n){ return Number(n||0).toLocaleString("en-US"); }
 
-/* the header meter: the rank the points have reached, and how far into the next one they are */
-function paintRank(){
-  var box = document.getElementById("rankmeter");
-  if(!box) return;
-  var show = !barQuiet() && S.step >= 3 && S.step <= STEP_L1_LAST && lapsDone() > 0;
-  box.hidden = !show;
-  if(!show) return;
-  var pr = rankProgress();
-  document.getElementById("rmname").textContent = pr.name;
-  document.getElementById("rmnote").textContent = pr.next
-    ? pointsText(S.points) + " points, " + pr.next + " at " + pointsText(pr.at)
-    : pointsText(S.points) + " points, top rank";
-  var fill = document.getElementById("rmfill");
-  fill.style.width = pr.pct + "%";
-  box.setAttribute("aria-label", "Rank " + pr.name + ", " + pointsText(S.points) + " points");
-}
-/* a rank crossed: the bar flashes gold once and the name changes under it */
-function flashRank(){
-  var box = document.getElementById("rankmeter");
-  if(!box) return;
-  box.classList.remove("up");
-  void box.offsetWidth;
-  box.classList.add("up");
-  setTimeout(function(){ box.classList.remove("up"); }, 440);
-}
-
 function progress(){
   var trk = document.getElementById("track");
   var quiet = barQuiet();
   if(trk) trk.hidden = quiet;
   if(!quiet) paintTrack();
-  paintRank();
   var lab = document.getElementById("step");
   var sc = document.getElementById("score");
   if(S.step>=3 && S.step<=STEP_L1_LAST){
@@ -1256,8 +1238,10 @@ function progress(){
     lab.textContent = ASSESS ? ((S.step-STEP_BRIDGE)+" of "+LINES2) : ("Fresh line "+(S.step-STEP_BRIDGE)+" of "+LINES2);
     if(!ASSESS && seen2){ sc.classList.remove("hidden"); sc.textContent = "Right "+(S.r2caught+S.r2cleared)+" of "+seen2; }
     else sc.classList.add("hidden");
-  } else if(S.step===0){ lab.textContent=""; sc.classList.add("hidden"); }
-  else { lab.textContent = "Second Pass"; sc.classList.add("hidden"); }
+  } else { lab.textContent = ""; sc.classList.add("hidden"); }
+  /* one quiet line of progress, and none at all on a screen with no progress to state */
+  var row = document.getElementById("label");
+  if(row) row.classList.toggle("hidden", !lab.textContent && sc.classList.contains("hidden"));
 }
 
 /* ---------- the ledger, on call from every card ---------- */
@@ -1587,12 +1571,16 @@ function playFrames(){
     '<path d="M11 40h78" stroke="'+rule+'"/>'+
     '<circle cx="13" cy="48" r="1.6" fill="'+soft+'"/><path d="M19 48h62" stroke="'+rule+'" stroke-width="2.2" stroke-linecap="round"/>'+
     '<circle cx="13" cy="56" r="1.6" fill="'+soft+'"/><path d="M19 56h46" stroke="'+rule+'" stroke-width="2.2" stroke-linecap="round"/>';
+  /* the two calls as the card now draws them: two full-width rows, the second one chosen */
   var two =
     box+
-    '<rect x="9" y="19" width="39" height="28" rx="5" fill="none" stroke="'+rule+'"/>'+
-    '<path d="M17 33h23" stroke="'+soft+'" stroke-width="2.4" stroke-linecap="round"/>'+
-    '<rect x="52" y="19" width="39" height="28" rx="5" fill="'+ink+'"/>'+
-    '<path d="M60 33h23" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>';
+    '<rect x="9" y="12" width="82" height="19" rx="4" fill="none" stroke="'+rule+'"/>'+
+    '<circle cx="18" cy="21.5" r="3.6" fill="none" stroke="'+soft+'" stroke-width="1.3"/>'+
+    '<path d="M27 21.5h30" stroke="'+soft+'" stroke-width="2.4" stroke-linecap="round"/>'+
+    '<rect x="9" y="36" width="82" height="19" rx="4" fill="'+ink+'"/>'+
+    '<circle cx="18" cy="45.5" r="3.6" fill="none" stroke="#fff" stroke-width="1.3"/>'+
+    '<circle cx="18" cy="45.5" r="1.6" fill="#fff"/>'+
+    '<path d="M27 45.5h22" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>';
   var three =
     box+
     '<path d="M28 17l6 6 12-13" fill="none" stroke="var(--mason)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'+
@@ -1653,8 +1641,8 @@ function intro(){
     '<p>'+originIntro(CASE1)+'</p>'+
     '<p>The ledger does not explain itself, so the causes in the memo are guesses, and some of them are wrong. They read well enough that a busy reviewer would sign off and move on. You are the second pass. Before any of the memo appears, you read the ledger on its own and tap the lines you would give a second look. Then you read '+numWord(LINES)+' '+plural(LINES, 'line')+' of the memo and flag the ones that do not hold.'+fresh+'</p>'+
     caseControl()+
-    playFrames()+
     '<button class="btn" id="go">Play</button>'+
+    playFrames()+
     '<div class="linkrow"><button class="howlink" id="howlink">How this works in a real close</button>'+
       '<a class="howlink" href="checker.html">Checker</a>'+
       '<a class="howlink" href="author.html">Build one from your own ledger</a>'+
@@ -1814,15 +1802,16 @@ function prepickBlock(){
   var locked = prepickTaken();
   var chips = ROWS.map(function(r,idx){
     var on = (S.prepicks || []).indexOf(String(r[0])) > -1;
-    return '<button type="button" class="chip sm'+(on ? " on" : "")+'" data-p="'+idx+'" aria-pressed="'+
-      (on ? "true" : "false")+'"'+(locked ? " disabled" : "")+'>'+esc(r[0]+" "+r[1])+'</button>';
+    return '<button type="button" class="chip opt multi'+(on ? " on" : "")+'" data-p="'+idx+'" aria-pressed="'+
+      (on ? "true" : "false")+'"'+(locked ? " disabled" : "")+'><span class="mk" aria-hidden="true"></span>'+
+      '<span class="ol"><span class="code">'+esc(r[0])+'</span> '+esc(r[1])+'</span></button>';
   }).join("");
   return '<section class="prepick" id="prepicksection" aria-labelledby="prepickhead">'+
     '<h3 id="prepickhead">Your read, before any AI draft</h3>'+
     '<p>Tap every line you would give a second look, judging from these figures alone. A line you '+
       'leave untapped counts as one you would let stand. Nothing here is scored, and at the end you '+
       'will see where your calls moved once you had read the draft.</p>'+
-    '<div class="chips" id="prepicks" role="group" aria-labelledby="prepickhead">'+chips+'</div>'+
+    '<div class="chips opts" id="prepicks" role="group" aria-labelledby="prepickhead">'+chips+'</div>'+
     '<p class="prepickstat" id="prepickstat" aria-live="polite"></p>'+
     /* on a desk the onward button sits under the lines it depends on; on a phone it is the bar */
     '<div class="prepickgo"><button type="button" class="btn" data-precont="1">Tap at least one line</button></div>'+
@@ -2112,15 +2101,19 @@ function callCard(i, round){
     ? '<div class="backrow"><button class="btn-text quiet" id="backline">Back to '+
       (round === 2 ? "fresh line " : "line ")+prev.n+'</button></div>'
     : "";
+  /* the instruction line prints over the first card of a round and not over the thirteen after it,
+     the way a quiz states its rule once and then shows only the question (1.8.0) */
   screen.innerHTML =
-    whyLine("Read the memo against the ledger and the file, then make the call you would defend to a reviewer.")+
+    (i === 0 ? whyLine("Read the memo against the ledger and the file, then make the call you would defend to a reviewer.") : "")+
     '<div class="card">'+
       cardBody(c, round, i)+
-      '<p class="ask">Does the memo\'s explanation hold?</p>'+
-      '<div class="two calls">'+
-        '<button class="btn call" id="stand" aria-pressed="false">Let it stand'+
+      '<p class="ask" id="callask">Does the memo\'s explanation hold?</p>'+
+      '<div class="opts calls" role="group" aria-labelledby="callask">'+
+        '<button type="button" class="opt" id="stand" aria-pressed="false">'+
+          '<span class="mk" aria-hidden="true"></span><span class="ol">Let it stand</span>'+
           '<span class="kbd ink">1</span></button>'+
-        '<button class="btn call" id="flag" aria-pressed="false">Flag it'+
+        '<button type="button" class="opt" id="flag" aria-pressed="false">'+
+          '<span class="mk" aria-hidden="true"></span><span class="ol">Flag it</span>'+
           '<span class="kbd ink">2</span></button>'+
       '</div>'+
       '<div class="commit" id="commit" hidden></div>'+
@@ -2137,7 +2130,6 @@ function callCard(i, round){
       var on = sel === pair[0];
       pair[1].setAttribute("aria-pressed", on ? "true" : "false");
       pair[1].classList.toggle("on", on);
-      pair[1].classList.toggle("dim", !!sel && !on);
     });
   }
 
@@ -2238,11 +2230,12 @@ function callCard(i, round){
       '<div class="basis">'+
         '<p class="ask">You said '+(sel === "flag" ? "flag it" : "let it stand")+'. What is your basis?</p>'+
         '<p class="tiny basishint">Tap at least one. More than one is fine.</p>'+
-        '<div class="chips" role="group" aria-label="Your basis">'+
+        '<div class="chips opts" role="group" aria-label="Your basis">'+
           opts.map(function(o, k){
             var on = picked.indexOf(o) > -1;
-            return '<button type="button" class="chip'+(on ? " on" : "")+'" data-k="'+k+'" '+
-                   'aria-pressed="'+(on ? "true" : "false")+'">'+esc(o)+'</button>';
+            return '<button type="button" class="chip opt multi'+(on ? " on" : "")+'" data-k="'+k+'" '+
+                   'aria-pressed="'+(on ? "true" : "false")+'"><span class="mk" aria-hidden="true"></span>'+
+                   '<span class="ol">'+esc(o)+'</span></button>';
           }).join("")+
         '</div>'+
         wordsBox+
@@ -2455,19 +2448,6 @@ function openNote(c){
    face with what was actually true, the ask the reviewer should have made, and the line from
    the case that teaches it. Nothing here plays a sound. */
 var LEVELED = false;
-function countUp(el, to){
-  if(!el) return;
-  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches;
-  if(reduce || !to){ el.textContent = pointsText(to); return; }
-  var t0 = 0, dur = 520;
-  function frame(ts){
-    if(!t0) t0 = ts;
-    var k = Math.min(1, (ts - t0) / dur);
-    el.textContent = pointsText(Math.round(to * (1 - Math.pow(1 - k, 3))));
-    if(k < 1) window.requestAnimationFrame(frame);
-  }
-  window.requestAnimationFrame(frame);
-}
 /* the run of correct calls that stood before this line, so a broken streak can be named */
 function streakBefore(i){
   var st = 0;
@@ -2517,7 +2497,7 @@ function reveal(i, round){
     if(p.cover) rows += '<li><span>Cover story caught</span><b>+'+PT_COVER+'</b></li>';
     var pts = scored
       ? '<div class="ptsblock">'+
-          '<p class="ptstotal"><span id="ptscount">0</span><i>points on this line</i></p>'+
+          '<p class="ptstotal"><span id="ptscount">'+pointsText(p.total || 0)+'</span><i>points on this line</i></p>'+
           '<ul class="ptslist">'+rows+'</ul>'+
         '</div>'
       : '';
@@ -2554,7 +2534,7 @@ function reveal(i, round){
     ? (round === 2 ? "See how you did" : "Start round two")
     : "Next line";
   screen.innerHTML =
-    whyLine("This is what the answer key says about the call you just locked in.")+
+    (i === 0 ? whyLine("This is what the answer key says about the call you just locked in.") : "")+
     face+
     (reasonRightAt(i, round) ? "" : reasonNote(i, round))+
     openNote(c)+
@@ -2562,8 +2542,7 @@ function reveal(i, round){
     ledgerBig(c.acct, round === 2 ? 2 : undefined)+
     '<button class="btn" id="next">'+nextLabel+'<span class="kbd">Enter</span></button>';
   wireLedger();
-  if(scored && right) countUp(document.getElementById("ptscount"), (LINE_PTS[i] || {}).total || 0);
-  if(LEVELED){ flashRank(); LEVELED = false; }
+  LEVELED = false;
   function onward(){
     if(last) return go(round === 2 ? STEP_DONE : (HAS_R2 ? STEP_BRIDGE : STEP_DONE));
     go(S.step + 1);
@@ -2971,7 +2950,7 @@ function attemptRecord(sentPayload){
     recordFormat: "btm-attempt-1",
     renamedFields: {
       note: "Two fields were renamed in 1.6.1 because their old names claimed more than they held. " +
-            "The old names are written beside the new ones through 1.7.1 and come out in the release after it.",
+            "The old names are written beside the new ones through 1.8.0 and come out in the release after it.",
       evidenceReferences: "evidenceSupplied",
       firstAttempt: "firstRunInThisTab",
       elapsedActiveSeconds: "elapsedSecondsOnCard and activeSecondsOnCard, and the two matching " +
@@ -3546,6 +3525,7 @@ function done(){
   document.getElementById("howlink").addEventListener("click", openHow);
   document.getElementById("step").textContent = "Done";
   document.getElementById("score").classList.add("hidden");
+  document.getElementById("label").classList.remove("hidden");
   /* a second run keeps the codename and the chips and posts its own row to the form */
   document.getElementById("playagain").addEventListener("click", function(){
     freshRun();
