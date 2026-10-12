@@ -4,7 +4,7 @@ Two exports leave this repository and neither one is a conclusion. The checker w
 recomputed; the drill writes what a player called and why. This note says which column each
 piece lands in and which columns a person still has to fill.
 
-The control the checker feeds is `PROTOCOL.md`, version 1.1. The file it fills is
+The control the checker feeds is `PROTOCOL.md`, version 1.2. The file it fills is
 `EVIDENCE-LOG-TEMPLATE.csv`. The page's own contract is `CHECKER.md`, which is in this
 repository and is the authority on statuses and on the reviewer queue.
 
@@ -66,8 +66,9 @@ and in `drafts-2026-09-05-aina/EXERCISE-case-01-form-rev4.md`. Halyard does not 
 figure in it came from any real company or engagement.
 
 The first row is the one to read before filling a log. The preparer corrected the figure, the
-recomputation ties, and the row is still `resolved: no`, because what the $5,000 above the named
-Coastal Grocers reserve is has not been established and no June reserve rollforward is on file.
+recomputation ties, and the row is still `resolved: no`, because what drove the $47,000 movement
+has not been established, no June reserve rollforward is on file, and nothing on file sizes the
+Coastal Grocers reserve.
 A corrected number is not a supported cause. Until 13 September 2026 that row named a routine
 monthly provision the ledger does not support and signed the line off, which taught the opposite
 of the control.

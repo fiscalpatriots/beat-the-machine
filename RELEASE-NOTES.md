@@ -1,7 +1,49 @@
-# Second Pass, release 1.7.1
+# Second Pass, release 1.8.0
 
-10 October 2026. Khaled Alkurd, George Mason University.
+11 October 2026. Khaled Alkurd, George Mason University.
 Live at https://fiscalpatriots.github.io/beat-the-machine/
+
+---
+
+## 1.8.0, what changed since 1.7.1
+
+Cut 11 October 2026. The drill's screens change and nothing under them does. Khaled pointed at a
+practice quiz he found clean to answer, and the elements of it that fit a review drill came across:
+one question on the screen with its choices directly under it, choices as full-width rows of one
+height, a selection that fills the whole row, one quiet line of progress, and feedback that
+arrives without a show. The product stamp moves to `second-pass-drill 1.8.0`.
+
+| What changed | Why | Where |
+| --- | --- | --- |
+| **The call is two full-width rows.** Let it stand above Flag it, each with a ring on the left and the whole row as the target. A chosen row fills ink and its ring fills; the other row stays as it was | Two side-by-side buttons read as a toolbar, and the quiz showed how much faster a stacked choice reads on a phone | `callCard()`, the `.opt` rules at the foot of the page style |
+| **The basis is one column of rows with a square.** It was a two-up grid of chips of uneven height on a desk | One choice style for every question in the drill, and a square says more than one may be tapped | `paintCommit()` |
+| **The read before the draft is a list of rows,** the account number in a small monospace face beside the name, one column on a phone and two beside the legend from 900 pixels | Fourteen chips of fourteen widths were the most ragged block in the product | `prepickBlock()` |
+| **One line of progress.** The rank meter leaves the header; the reveal and the end screen keep the rank, the points and the distance to the next rank. "Second Pass" printed under the track on screens with no progress is gone, and on those screens the line takes no room | The header showed the score twice over the card where the player was deciding | `progress()`, the `#bar` markup |
+| **The track keeps the 520 pixel column** on every screen | On the wide ledger screen it stretched to 1,048 pixels and stood 119 pixels tall | `#track` |
+| **The verdict fades in once.** The card no longer turns over, the points no longer count up and the rank bar no longer flashes gold. Reduced motion shows the face with no fade | Calm feedback; the gold flash was also a fourth use of gold | `reveal()` and its style block |
+| **Every screen starts at the same top edge** instead of floating to the middle of the window | A short screen and a long one now begin in the same place, so the card does not jump | `#screen` |
+| **The question sits at the lead size directly on its choices,** and the instruction line prints over the first card of a round and not the thirteen after it | A quiz states its rule once and then shows only the question | `.ask`, `callCard()`, `reveal()` |
+| **Play sits under the opening text,** before How to play | Play now shows in the first screen at 1,280 by 800 | `intro()` |
+| **One type scale.** The verdict and the points numeral take the 28 pixel heading size (they were 32 and 34), and the How to play captions take the 14 pixel small size (they were 13). The How to play frame for the call now draws the two stacked rows | The drill's own scale, applied the same way everywhere | page style, `playFrames()` |
+
+Unchanged, and checked: the scoring and the rank ladder, both answer keys and the case files, the
+badges, the Google Form posting and its 38 entry identifiers, the payload, the attempt record (the
+two renamed fields still ride beside their new names, now through 1.8.0), the codename band, the
+organization chips, test mode, the checker and every fixture, and the copy. The element ids the
+audit walks drive (`#stand`, `#flag`, `#lockin`, `#prepicks .chip`, `#commit .chip`) are kept.
+
+The suites at this release, each run on a copy of the branch: the browser checker **801 of 801**;
+the findings tools **54 passed**, which includes the written-answer minimum read out of
+`index.html`; `node build-cases.cjs` passes its card checks and rewrites the inline case copy with
+only its date stamp changed; `audit/prepicks-2026-09-13/walk-prepicks.cjs` **44 of 44** on Halyard
+and **44 of 44** on Kestrel; `audit/findings-and-lock-2026-09-13/lock-walk.cjs` **62 passed, 0
+failed**; `audit/author-repair-2026-09-13/walk-drill.cjs` at 320, 375, 768, 1,024, 1,280 and 1,600
+reaches the end screen with no screen overflowing and no page error. The same commands on 1.7.1
+returned the same counts.
+
+### What remains open
+
+Everything listed as open under 1.7.1 below is still open.
 
 ---
 
@@ -281,7 +323,7 @@ drift apart.
 | --- | --- |
 | `README.md` | The whole build: every screen, every rule, every number and where it comes from |
 | `CHECKER.md` | What the checker checks, what it refuses to check, and the expected output for all four samples |
-| `PROTOCOL.md` | The one-page control, version 1.1 |
+| `PROTOCOL.md` | The two-page control, version 1.2 |
 | `Second-Pass-Review-Protocol.pdf` | The same protocol, printable |
 | `PROVENANCE.md` | Where the case came from, who wrote the memo, and what was authored rather than generated |
 | `GOVERNANCE-NOTE.md` | The decisions taken during the build and who took them |

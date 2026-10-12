@@ -9,7 +9,7 @@ Live at https://fiscalpatriots.github.io/beat-the-machine/ from `main`.
 
 | What | Version | Where it is stated |
 | --- | --- | --- |
-| Product | `second-pass-drill 1.7.1` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
+| Product | `second-pass-drill 1.8.0` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
 | Round one case | `halyard-v4`, 13 September 2026 | `cases/halyard-v4.json`, question A, the local record |
 | Round two case | `brightwater-v6`, 13 September 2026 | `cases/brightwater-v6.json`, questions A and C, the local record |
 | Data notice | `notice-2026-09-14` | the notice screen, question A, the local record |
@@ -63,9 +63,10 @@ repository documents it. It is linked from the intro screen's link row and from 
 
 `PROTOCOL.md` is what a reviewer works from, and `Second-Pass-Review-Protocol.pdf` is the
 same page to print or hand across a desk; both are linked from the "How this works in a real
-close" screen. `EVIDENCE-LOG-TEMPLATE.csv` is the log the protocol fills in, and it is the column
-order the checker's **Download CSV** writes, so an exported run drops straight into it with the
-reviewer columns left blank. `GOVERNANCE-NOTE.md` records who signs and what the tool is not
+close" screen. `EVIDENCE-LOG-TEMPLATE.csv` is the log the protocol fills in. The checker's
+**Download CSV** writes eighteen columns and the log has fourteen; the governance note maps one to
+the other, and the reviewer columns are filled by hand. `GOVERNANCE-NOTE.md` records who signs and
+what the tool is not
 allowed to decide.
 
 ### How the game's data feeds the findings
@@ -215,8 +216,10 @@ removed in `cc29007` and restored in `ea639f1` before this ruling replaced it.
 **The screen.** Under the ledger on the orientation screen, headed "Your read, before any AI
 draft": "Tap every line you would give a second look, judging from these figures alone. A line
 you leave untapped counts as one you would let stand. Nothing here is scored, and at the end you
-will see where your calls moved once you had read the draft." One chip per ledger account, with
-no cap. The onward button, fixed to the bottom on a phone and under the status line on a desk,
+will see where your calls moved once you had read the draft." One full-width row per ledger
+account, with no cap: the account number in a small monospace face, the name beside it and a
+square on the left that fills when the row is tapped. The rows run one column on a phone and two
+beside the legend from 900 pixels. The onward button, fixed to the bottom on a phone and under the status line on a desk,
 reads "Tap at least one line" until one is tapped, and pressing it then brings the section's
 heading to rest just under the progress bar and puts focus on the first chip. Once a line is tapped it reads "Lock in my read and continue". Taps are saved as
 they happen, so a reload keeps them. Focus starts on the screen's heading.
@@ -282,7 +285,7 @@ their run. The fields are the ones the build handoff calls the minimum attempt r
 | `notAsked` | the four form questions nobody was asked, why a placeholder is posted, and the placeholder mode |
 | `payload` | the exact payload, with a note saying whether it was posted, would have been posted, or has not been posted |
 
-**Two fields were renamed in 1.6.1, and the old names ride along through 1.7.1.** The
+**Two fields were renamed in 1.6.1, and the old names ride along through 1.8.0.** The
 release review found that `evidenceReferences` held the card's whole supplied file list under a
 name that read as the documents the participant used. It is now `evidenceSupplied`, and
 `evidenceSelected` was added beside it and left `null`, because the page does not ask which
@@ -290,7 +293,7 @@ document the player relied on and will not imply an answer it did not collect.
 `elapsedActiveSeconds` measured wall-clock time that does not pause when the tab is in the
 background, so it is now `elapsedSecondsOnCard` per line and `elapsedSecondsOnCards` in the
 timing block, with a note on the record saying what the clock does and does not do. Both old
-names are written beside the new ones through 1.7.1 so a script reading an older export keeps
+names are written beside the new ones through 1.8.0 so a script reading an older export keeps
 working, and `renamedFields` on the record names the pairs. They come out in the release after it.
 
 Nothing in it is invented. The four unasked questions are reported as not asked rather than as
@@ -402,8 +405,9 @@ own fallbacks behind it: Open Sans, then Franklin Gothic, then the system stack.
 request fails the page still sets correctly. Typeface guidance is at
 https://brand.gmu.edu/brand-guide/fonts-and-typography.
 
-The two call buttons are the same outlined ink button, side by side. They are never green or
-gold and neither is filled, because the choice between them has to read as even.
+The two calls are the same outlined row, Let it stand above Flag it, each the full width of the
+card. They are never green or gold and neither is filled until it is chosen, because the choice
+between them has to read as even. A chosen row fills ink, never a tint.
 
 ### The shared header, the footer and the link preview
 
@@ -521,8 +525,11 @@ viewport.
 
 Fourteen accounts come one at a time. Each card carries the account's ledger strip, a two bar
 picture of the movement with no figures repeated on it, the memo's sentence quoted once, and an
-"On file" panel holding only facts not already visible above it. The two calls are equal weight
-and neutral, with Let it stand on the left and Flag it on the right.
+"On file" panel holding only facts not already visible above it. The question "Does the memo's
+explanation hold?" sits at the lead size directly on its two calls, which are equal weight and
+neutral: two full-width rows of one height, Let it stand above Flag it, each with a ring on the
+left and the whole row as the target. The instruction line prints over the first card of a round
+and not over the cards after it.
 
 Every card is scored. Flagging a line that was already right costs exactly what missing a
 problem costs, and the running count reads `Right N of M` over the cards seen so far. The split
@@ -534,7 +541,8 @@ twelve. Neither number is ever printed for the player. Flagging all fourteen sco
 ### The call commits in two steps
 
 Since 13 September 2026 a tap on Flag it or Let it stand does not commit anything. It selects the
-call: the button fills, the other one dims and stays live, and the basis row opens underneath it
+call: the row fills ink and its ring fills, the other row stays as it was and stays live, and the
+basis rows open underneath it, one full-width row per reason with a square on the left,
 with the memo, the figures and the On file facts still on screen above. A second control, **Lock
 it in**, is what commits. Until it is pressed the player can tap the other button, change chips,
 edit their line of words, or press **Back** to reopen the line before this one with its call
@@ -554,10 +562,10 @@ two steps there are a plain change of mind.
 
 ### The reveal
 
-The verdict takes the card area for a beat. A call that agrees with the key turns the card over
-in 300ms, which `prefers-reduced-motion` serves as a fade, onto a face carrying the error type,
-the verdict word (`Caught it` or `Cleared it`), the tell in one line, and the points the line
-earned counting up. A call that does not agree gets a calm face: `It got past you` when the key
+The verdict takes the card area for a beat. Since 1.8.0 the face fades in once, in 200ms, and
+`prefers-reduced-motion` shows it with no fade; nothing turns over, counts up or flashes. A call
+that agrees with the key gets a face carrying the error type, the verdict word (`Caught it` or
+`Cleared it`), the tell in one line, and the points the line earned, printed at their value. A call that does not agree gets a calm face: `It got past you` when the key
 says flag, `A false flag` when it says stand, then what was actually true in one line, the ask
 the reviewer should have made, the line saying no points and which streak ended, and one line of
 coaching from the case's tell. Both faces carry the running score and the rank bar underneath.
@@ -595,9 +603,11 @@ Points and rank are read off the fourteen trained lines. The fresh case runs as 
 is scored on its own, because a points total that moved between those five lines would tell the
 player how the last call went.
 
-The header carries the ladder: the rank name, the points, the points the next rank starts at, and
-a bar filling toward it. Crossing a rank flashes the bar gold once for 400ms and changes the name
-under it, and the reveal face says `New rank, Staff.` beside the points. Verified in test mode on
+Since 1.8.0 the ladder sits under the running score on every reveal (the rank name, the points,
+how many points the next rank needs, and a bar filling toward it) and on the end screen. The header
+carries one line of progress and no meter, because a rank moving over the card where the player
+is deciding was a second scoreboard over the question. Crossing a rank prints `New rank, Staff.`
+on the reveal face beside the points. Verified in test mode on
 13 September 2026:
 
 | Run | Right calls | Points | Rank |
@@ -673,7 +683,10 @@ trail, three adds the flame and the streak line in the points list on the reveal
 and lights the track behind the car gold. A wrong call ends the streak, the
 trail and the flame fade out and the car takes the pit lane dip. Every animation is 250ms or
 under, there is no sound, and everything is switched off under `prefers-reduced-motion: reduce`. The bar holds a fixed height from the first
-paint, so nothing on the page moves when the car does.
+paint, so nothing on the page moves when the car does. Since 1.8.0 the track keeps the 520
+pixel column on every screen; on the wide ledger screen it used to stretch to 1,048 pixels and
+stand 119 pixels tall. Under it sits one line of progress, `Line 2 of 14` and `Right 1 of 1` on a
+line card, and on a screen with no progress to state that line takes no room at all.
 
 The run is timed from the first card to the fourteenth call. The end screen prints it as
 `Lap time 6:42` beside the score, with `Best streak 7` next to it, and the lap time rounded to
