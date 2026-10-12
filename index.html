@@ -2570,7 +2570,7 @@ function bridge(){
     ? '<div class="file"><h4>What is already settled</h4><ul><li>'+esc(CASE2.assessmentNote)+'</li></ul></div>'
     : "";
   screen.innerHTML =
-    whyLine("The same job on a company you have never read, which is the part that tells you whether the habit transferred.")+
+    whyLine("The same job on a second company, with no feedback until all five lines are locked.")+
     '<div class="card">'+
       '<h2>Round two: a memo you have not seen</h2>'+
       '<p class="sub">'+originBridge(CASE2)+' '+numWord(LINES2).replace(/^./, function(c){return c.toUpperCase();})+' '+plural(LINES2, 'line')+'.</p>'+
@@ -2821,7 +2821,7 @@ function payload(){
   p["entry."+E.qc] = r2Line() + (HAS_R2
       ? " Fresh case: " + CASE2.company + ", case version " + CASE2.version + ", " + LINES2 + " " + plural(LINES2, "line") + ", " +
         (ASSESS ? "run as an assessment with no feedback between lines. " : "run as practice. ") +
-        "A company the player had not seen."
+        "A second company, run as an assessment."
       : " This case carried no fresh set, so round two did not run.") +
       " Not a player answer to question C.";
   p["entry."+E.qd] = lapMinutes();
@@ -3445,7 +3445,7 @@ function done(){
                '<span>'+esc(c.tell)+'</span></div>';
       }).join("")+'</div>'
     : '<div class="coach" style="margin-top:14px"><h3>On the memo you had not seen</h3>'+
-      '<p class="tiny" style="margin:0">Every fresh call agrees with the answer key, on a company you had not seen, which is the read that matters.</p></div>';
+      '<p class="tiny" style="margin:0">Every call on the second company agrees with the answer key.</p></div>';
   var badReason = rightCallWrongReason(1).map(function(c){ return {c:c, r:1}; })
         .concat(rightCallWrongReason(2).map(function(c){ return {c:c, r:2}; }));
   var reasonBlock = badReason.length
@@ -3478,7 +3478,7 @@ function done(){
   }
   var share = "Second Pass: Beat the Machine at Mason. Rank " + rank() + ", " +
     pointsText(S.points) + " points. Right call " + (S.caught+S.cleared) + " of " + LINES + " and right reason " +
-    reasonCount(1) + " of " + LINES + (HAS_R2 ? ", with " + r2Right() + " of " + LINES2 + " on a company I had not seen" : "") + ". Best streak " +
+    reasonCount(1) + " of " + LINES + (HAS_R2 ? ", with " + r2Right() + " of " + LINES2 + " on a second company" : "") + ". Best streak " +
     S.best + ".";
   var b = badges();
   var medals = b.length

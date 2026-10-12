@@ -323,7 +323,7 @@ drift apart.
 | --- | --- |
 | `README.md` | The whole build: every screen, every rule, every number and where it comes from |
 | `CHECKER.md` | What the checker checks, what it refuses to check, and the expected output for all four samples |
-| `PROTOCOL.md` | The one-page control, version 1.1 |
+| `PROTOCOL.md` | The two-page control, version 1.2 |
 | `Second-Pass-Review-Protocol.pdf` | The same protocol, printable |
 | `PROVENANCE.md` | Where the case came from, who wrote the memo, and what was authored rather than generated |
 | `GOVERNANCE-NOTE.md` | The decisions taken during the build and who took them |

@@ -63,9 +63,10 @@ repository documents it. It is linked from the intro screen's link row and from 
 
 `PROTOCOL.md` is what a reviewer works from, and `Second-Pass-Review-Protocol.pdf` is the
 same page to print or hand across a desk; both are linked from the "How this works in a real
-close" screen. `EVIDENCE-LOG-TEMPLATE.csv` is the log the protocol fills in, and it is the column
-order the checker's **Download CSV** writes, so an exported run drops straight into it with the
-reviewer columns left blank. `GOVERNANCE-NOTE.md` records who signs and what the tool is not
+close" screen. `EVIDENCE-LOG-TEMPLATE.csv` is the log the protocol fills in. The checker's
+**Download CSV** writes eighteen columns and the log has fourteen; the governance note maps one to
+the other, and the reviewer columns are filled by hand. `GOVERNANCE-NOTE.md` records who signs and
+what the tool is not
 allowed to decide.
 
 ### How the game's data feeds the findings
