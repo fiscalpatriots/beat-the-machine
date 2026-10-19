@@ -621,9 +621,10 @@ var PRODUCT_STAMP = "second-pass-drill " + PRODUCT_VERSION;
 var NOTICE_VERSION = "notice-2026-09-14";
 
 /* ---------- test mode ----------
-   ?test=1 in the address, or three taps on the footer line. While it is on the page never
-   posts to the form: the payload it would have sent is written into the local record and
-   labelled as a test attempt, so the live participant dataset is never seeded from here. */
+   ?test=1 in the address, or three taps on the footer line, which turn it on one way. While it
+   is on the page never posts to the form: the payload it would have sent is written into the
+   local record and labelled as a test attempt, so the live participant dataset is never seeded
+   from here. Nothing on the page turns it off again; a live run needs a new tab without ?test=1. */
 var TEST_MODE = false;
 try{ TEST_MODE = /(?:^|[?&])test=1(?:&|$)/.test(window.location.search); }catch(e){ TEST_MODE = false; }
 function paintTestBand(){
@@ -633,7 +634,7 @@ function paintTestBand(){
      tester's answers, the second line says where they go, and until then it says what 1.9.1 said,
      so the band is true with the two prefill constants set or empty (1.9.2) */
   if(band && TEST_MODE) band.innerHTML = 'Tester link<span>' + (prefillOn()
-    ? 'Nothing is sent from this page. Your answers go along in the feedback form, where you see them before you submit.'
+    ? 'Nothing is sent from this page. The feedback form opens with your answers filled in, and Khaled sees them only if you submit it.'
     : 'Nothing you do here is sent.') + '</span>';
   var ver = document.getElementById("verline");
   if(ver) ver.textContent = PRODUCT_STAMP + (TEST_MODE ? ", test mode" : "");
@@ -656,41 +657,71 @@ var TESTER_LINES = 5;
      https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=<formId>
    and FEEDBACK_PREFILL_PARAM is the name question 9 carries in that link, the part before its "=".
    Both come from Get pre-filled link in the form's settings, with any probe answer left out.
+   prefillBase() forgives the usual slips in that paste: a trailing "&" or "?", the probe answer
+   still attached, or an "&" or "=" around the name. A BASE with no "ResponsePage.aspx?id=" in it
+   counts as empty, so the button falls back to the bare form.
 
    The link is BASE + "&" + PARAM + "=" + encodeURIComponent(record) and stays under
-   FEEDBACK_URL_MAX characters. A record too long for that keeps the earliest lines, newest last,
-   and ends with "truncated after line N", so the five lines the stop asks for go first.
+   FEEDBACK_URL_MAX characters. When the whole record does not fit, the tester's words go first:
+   cut to 40 characters a line, then 20, and the record says "words cut to N". If that is still
+   too long the newest lines give up their words, so the early notes stay, and the record says
+   "words left off after line M". Then the words go altogether ("words cut to 0"). Only when the
+   calls alone still do not fit are whole lines dropped, from the newest back, and the record ends
+   "truncated after line N". Fourteen lines with no words fit with room to spare, so in practice
+   the cut only ever touches words.
 
    The record is one line of plain text that a person can read in the form and that
-   tools/tester_record_parse.py reads back. Its grammar:
+   tools/tester_record_parse.py reads back. The delimiters carry no spaces, because each space
+   costs three characters in the link. Its grammar:
 
-     record  = header { " || " line } [ " || truncated after line " N ]
-     header  = stamp " | " codename " | " attemptId " | case " pick
-               " | answered " count " | right " count " | points " count
-     line    = "L" n " | " account " | " call " | " chips " | key " call " | " outcome
-               " | basis " ( "agrees" | "differs" ) " | " seconds "s" [ " | " words ]
+     record  = header { "||" line } [ "||words cut to " N ] [ "||words left off after line " M ]
+               [ "||truncated after line " N ]
+     header  = stamp "|" codename "|" attemptId "|case " pick "|answered " count
+               "|right " count "|points " count "|run " count "|case file " caseVersion
+     line    = "L" n "|" account "|" call "|" chips "|key " call "|" outcome
+               "|basis " ( "agrees" | "differs" ) "|" seconds "s" [ "|" words ]
      stamp   = "second-pass-drill " version
      call    = "stand" | "flag"
      chips   = chip { "+" chip }, or "none"
      chip    = holds | tie | direction | source | period | account | owed  (TESTER_CHIP)
      outcome = "caught" | "missed" | "cleared" | "false flag"
 
-   Lines are round one lines in order, one per locked call. Answered and right count every locked
-   line, the ones cut by truncation included, and points is the run's total. Words is the tester's
-   own line, trimmed, at most 80 characters, with "|", tabs and line breaks turned into spaces,
-   and it is left off when the tester wrote nothing. Every free text field (codename, account,
-   words) loses its "|", so " | " and " || " only ever appear as delimiters. Nothing identifying
-   rides in it beyond the random codename: no chapter chips, no notice answers, no clock times. */
+   Lines are round one lines in order, one per locked call. Round two is never carried. Answered
+   and right count every locked line, the ones cut by truncation included, and points is the
+   run's total. Run is 1 for the first run in the tab and counts up with every Play again, so a run
+   played after the tester has seen the key can be kept out of the rates. Case file is the version
+   of the case the lines were played on. Seconds are active seconds, with the time the tab sat
+   hidden taken out, and line 1's include the tour. Words is the tester's own line, trimmed, at
+   most 80 characters, with "|", tabs and line breaks turned into spaces, and it is left off when
+   the tester wrote nothing. Every free text field (codename, account, words) loses its "|", so
+   "|" and "||" only ever appear as delimiters. Nothing identifying rides in it beyond the random
+   codename: no chapter chips, no notice answers, and no clock time except the run's start, which
+   the attempt id carries in base 36. */
 var FEEDBACK_PREFILL_BASE = "";
 var FEEDBACK_PREFILL_PARAM = "";
 var FEEDBACK_URL_MAX = 1800;
 var TESTER_WORDS_MAX = 80;
+/* the shorter word limits tried, in order, before any line is dropped */
+var TESTER_WORDS_CUTS = [40, 20, 0];
 var TESTER_CHIP = {
   "the figure and reason hold":"holds", "figure does not tie":"tie", "direction wrong":"direction",
   "no source on file":"source", "wrong period":"period", "wrong account":"account",
   "nothing written where owed":"owed"
 };
-function prefillOn(){ return !!(FEEDBACK_PREFILL_BASE && FEEDBACK_PREFILL_PARAM); }
+/* question 9's name as pasted, without an "&" before it or an "=" and probe after it */
+function prefillParam(){
+  return String(FEEDBACK_PREFILL_PARAM || "").trim().replace(/^[&?]+/, "").replace(/=.*$/, "");
+}
+/* the pasted base made safe to append to, or "" when it is not a Forms pre-filled link */
+function prefillBase(){
+  var b = String(FEEDBACK_PREFILL_BASE || "").trim(), p = prefillParam();
+  if(!b || !p) return "";
+  var name = p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  b = b.replace(new RegExp("([?&])" + name + "=[^&]*", "g"), "$1");
+  b = b.replace(/&&+/g, "&").replace(/[?&]+$/, "");
+  return /ResponsePage\.aspx\?id=[^&]+/i.test(b) ? b : "";
+}
+function prefillOn(){ return !!prefillBase(); }
 /* free text made safe for the record: no delimiter, one line, no half of a surrogate pair (which
    would make encodeURIComponent throw), and at most max characters counted as code points */
 function testerClean(s, max){
@@ -720,35 +751,70 @@ function testerChips(list){
   });
   return out.length ? out.join("+") : "none";
 }
-/* the record and what it holds: text, how many lines made it in, and how many are locked */
+/* the seconds a line took with the hidden time taken out, or the wall clock for a run saved by a
+   build that kept no active clock */
+function testerSecs(i){
+  var a = S.asecs && S.asecs[i];
+  return Math.max(0, Math.round(Number(a !== null && a !== undefined ? a : S.secs[i]) || 0));
+}
+/* The record and what it holds: the text, how many lines made it in, how many are locked, the
+   word limit the cut settled on (80 when nothing was shortened), and the last line that kept its
+   words when later ones lost theirs (null when none did). */
 function testerRecordParts(budget){
   var max = (typeof budget === "number" && budget >= 0) ? budget : Infinity;
-  var segs = [], right = 0, i, c, call, words, outcome, seg;
+  var segs = [], right = 0, i, c, call, outcome;
   for(i=0;i<CARDS.length;i++){
     call = S.calls[i];
     if(call !== "stand" && call !== "flag") continue;
     c = CARDS[i];
     if(call === c.key){ right++; outcome = (c.key === "flag") ? "caught" : "cleared"; }
     else outcome = (c.key === "flag") ? "missed" : "false flag";
-    seg = "L" + (i+1) + " | " + (testerClean(c.acct) || "unknown") + " | " + call + " | " +
-          testerChips(S.basis[i]) + " | key " + c.key + " | " + outcome + " | basis " +
-          (reasonRight(c, S.basis[i]) ? "agrees" : "differs") + " | " +
-          Math.max(0, Math.round(Number(S.secs[i]) || 0)) + "s";
-    words = testerClean(S.words[i], TESTER_WORDS_MAX);
-    if(words) seg += " | " + words;
-    segs.push({n:i+1, text:seg});
+    segs.push({n:i+1,
+      core:"L" + (i+1) + "|" + (testerClean(c.acct) || "unknown") + "|" + call + "|" +
+           testerChips(S.basis[i]) + "|key " + c.key + "|" + outcome + "|basis " +
+           (reasonRight(c, S.basis[i]) ? "agrees" : "differs") + "|" + testerSecs(i) + "s",
+      words:testerClean(S.words[i], TESTER_WORDS_MAX)});
   }
   var head = [PRODUCT_STAMP, testerClean(S.codename) || "no codename", testerClean(S.attemptId),
               "case " + CASE_PICK, "answered " + segs.length, "right " + right,
-              "points " + (Number(S.points) || 0)].join(" | ");
-  var k = segs.length, text;
-  for(;;){
-    text = [head].concat(segs.slice(0, k).map(function(x){ return x.text; })).join(" || ");
-    if(k < segs.length) text += " || truncated after line " + (k ? segs[k-1].n : 0);
-    if(k === 0 || encodeURIComponent(text).length <= max) break;
-    k--;
+              "points " + (Number(S.points) || 0), "run " + (Number(S.runIndex) || 1),
+              "case file " + (testerClean(CASE1 && CASE1.version) || "unknown")].join("|");
+  /* k lines, words cut to cap, and words kept on only the first keep of those lines */
+  function build(k, cap, keep){
+    var cut = false, off = false;
+    var body = segs.slice(0, k).map(function(x, idx){
+      var w = (cap && idx < keep) ? testerClean(x.words, cap) : "";
+      if(w !== x.words){ if(idx < keep) cut = true; else off = true; }
+      return w ? x.core + "|" + w : x.core;
+    });
+    if(cut) body.push("words cut to " + cap);
+    if(off) body.push("words left off after line " + (keep ? segs[keep-1].n : 0));
+    if(k < segs.length) body.push("truncated after line " + (k ? segs[k-1].n : 0));
+    return {text:[head].concat(body).join("||"), k:k, cap:cut ? cap : TESTER_WORDS_MAX,
+            offAfter:off ? (keep ? segs[keep-1].n : 0) : null};
   }
-  return {text:text, included:k, answered:segs.length};
+  function fits(b){ return encodeURIComponent(b.text).length <= max; }
+  function done(b){
+    return {text:b.text, included:b.k, answered:segs.length, wordsCap:b.cap, wordsOffAfter:b.offAfter};
+  }
+  var n = segs.length, caps = [TESTER_WORDS_MAX].concat(TESTER_WORDS_CUTS), j, b, k;
+  var least = caps[caps.length-2];
+  /* every line with its words, shortened step by step to the least limit above none */
+  for(j=0;j<caps.length-1;j++){
+    b = build(n, caps[j], n);
+    if(fits(b)) return done(b);
+  }
+  /* then the newest lines give up their words first, so the early notes stay */
+  for(k=n-1;k>0;k--){
+    b = build(n, least, k);
+    if(fits(b)) return done(b);
+  }
+  /* then no words at all, and only then do lines go, newest first */
+  for(k=n;k>0;k--){
+    b = build(k, 0, k);
+    if(fits(b)) return done(b);
+  }
+  return done(build(0, 0, 0));
 }
 /* With no budget the whole record comes back; with one, as much as fits in that many encoded
    characters. */
@@ -756,13 +822,16 @@ function testerRecord(budget){ return testerRecordParts(budget).text; }
 /* The link and what it carries. It falls back to the bare form whenever the prefill is off, and
    also when a link with only the header would still be too long, so the button always opens. */
 function testerPrefill(){
-  var bare = {href:FEEDBACK_FORM, on:false, included:0, answered:0};
-  if(!prefillOn()) return bare;
-  var head = FEEDBACK_PREFILL_BASE + "&" + FEEDBACK_PREFILL_PARAM + "=";
+  var bare = {href:FEEDBACK_FORM, on:false, included:0, answered:0, wordsCap:TESTER_WORDS_MAX,
+              wordsOffAfter:null};
+  var base = prefillBase();
+  if(!base) return bare;
+  var head = base + "&" + prefillParam() + "=";
   var parts = testerRecordParts(FEEDBACK_URL_MAX - 1 - head.length);
   var href = head + encodeURIComponent(parts.text);
   if(href.length >= FEEDBACK_URL_MAX) return bare;
-  return {href:href, on:true, included:parts.included, answered:parts.answered};
+  return {href:href, on:true, included:parts.included, answered:parts.answered, wordsCap:parts.wordsCap,
+          wordsOffAfter:parts.wordsOffAfter};
 }
 function feedbackHref(){ return testerPrefill().href; }
 /* Read at the moment the button draws, which is after every lock and every Back, and read again
@@ -780,16 +849,32 @@ function wireFeedbackLink(){
   document.addEventListener("auxclick", fresh, true);
   document.addEventListener("contextmenu", fresh, true);
 }
-/* the line under "That's five lines", true to what the link carries (1.9.2) */
-function testerStopNote(){
+/* The line beside the feedback button, true to what the link carries (1.9.2). It draws at the
+   line 5 stop and on the tester end screen, and says nothing while the prefill is off. On the end
+   screen it counts the lines against the ones locked, and tells a tester who already sent the
+   form at the stop that sending it again carries the lines since. */
+function testerStopNote(where){
   var pf = testerPrefill();
   if(!pf.on || !pf.included) return "";
+  var end = where === "end";
   var all = pf.included === pf.answered, one = pf.included === 1;
   var lead = one
     ? (all ? "Your answer is" : "Your first answer is")
-    : (all ? "Your " : "Your first ") + numWord(pf.included) + " answers are";
-  return '<p class="stopnote">' + lead + ' already filled into the feedback form, and submitting ' +
-    'that form is the only way Khaled sees ' + (one ? 'it' : 'them') + '.</p>';
+    : (all ? "Your " + numWord(pf.included)
+           : "Your first " + numWord(pf.included) + (end ? " of " + numWord(pf.answered) : "")) +
+      " answers are";
+  var cut = pf.wordsCap < TESTER_WORDS_MAX, off = pf.wordsOffAfter !== null && pf.wordsOffAfter !== undefined;
+  var words = !pf.wordsCap ? " Your own words are left out so the link fits."
+    : (cut && off) ? " Your own words are cut to their first " + pf.wordsCap + " characters, and the ones after line " +
+                     pf.wordsOffAfter + " are left out, so the link fits."
+    : cut ? " Your own words are cut to their first " + pf.wordsCap + " characters so the link fits."
+    : off ? " Your own words after line " + pf.wordsOffAfter + " are left out so the link fits."
+    : "";
+  var again = (end && pf.answered > TESTER_LINES)
+    ? " If you already sent the form at line " + TESTER_LINES + ", send it again from here and the lines since go with it."
+    : "";
+  return '<p class="stopnote">' + lead + ' filled in when the feedback form opens, and Khaled sees ' +
+    (one ? 'it' : 'them') + ' only if you submit it.' + words + again + '</p>';
 }
 
 /* ---------- Google Form wiring. Thirty eight entry ids, unchanged. ---------- */
@@ -1152,6 +1237,9 @@ function restoreRun(){
   /* a saved run belongs to the case it was played on. A run saved on one case is not
      restored onto another, because its calls index a different set of lines. */
   if((was.casePick || "halyard") !== CASE_PICK) return false;
+  /* the tester link never picks up a public run left in this tab, because that run's codename
+     may be one the player typed, and it would ride in the tester record (1.9.2) */
+  if(TEST_MODE && !was.testAttempt) return false;
   if(!Array.isArray(was.calls) || was.calls.length !== LINES) return false;
   if(!Array.isArray(was.r2calls) || was.r2calls.length !== LINES2) return false;
   restoring = true;
@@ -2038,8 +2126,8 @@ function prepickRead(){
 }
 /* The tester link starts on the first memo line (1.9.0), so it records the read as skipped:
    locked at the moment Play was pressed, with no account tapped and the flag set. Only the
-   tester link honours a skipped read. On the public link the read stays required, and a run
-   whose test mode is turned off from the footer goes back to the ledger to take one. */
+   tester link honours a skipped read. On the public link the read stays required. Test mode
+   can no longer be turned off from the footer (1.9.2), so a tester run never lands there. */
 function prepickSkipped(){
   return !!(TEST_MODE && S.prepickSkipped && S.prepickAt &&
             Array.isArray(S.prepicks) && !S.prepicks.length);
@@ -3074,7 +3162,7 @@ function reveal(i, round){
     (testerStop
       ? '<section class="testerstop" aria-labelledby="stophead">'+
           '<p class="stophead" id="stophead">That\'s five lines, which is all the feedback needs.</p>'+
-          testerStopNote()+
+          testerStopNote("stop")+
           feedbackButton()+
           '<button type="button" class="btn-text quiet" id="keepgoing">Keep going</button>'+
         '</section>'
@@ -3911,8 +3999,8 @@ function actionsBlock(){
     '<div id="recwrap" hidden><textarea class="recordbox" id="recbox" readonly spellcheck="false"></textarea>'+
       '<button class="btn-text" id="copyrec">Copy the record</button></div>'+
     /* the tester link posts nothing, so its end screen offers the feedback form in place of
-       Send my results (1.9.1) */
-    (TEST_MODE ? feedbackButton() :
+       Send my results (1.9.1), with a line that says what the link carries (1.9.2) */
+    (TEST_MODE ? testerStopNote("end") + feedbackButton() :
     '<h3 class="sendhead">Send your results</h3>'+
     '<p>Voluntary. It posts your calls to the Google Form responses sheet described in the '+
       'notice at the start.'+
@@ -4114,8 +4202,10 @@ function done(){
   });
 }
 
-/* three taps on the footer line turn test mode on and off, for a facilitator standing at the
-   front of a room with no address bar to edit. It is a toggle, and the band says which way. */
+/* three taps on the footer line turn test mode on, for a facilitator standing at the front of a
+   room with no address bar to edit. It is one way (1.9.2), because a tap that turned it off would
+   hand a tester a live Send my results that posts to Google. A live run needs a new tab without
+   ?test=1. */
 function wireTestTap(){
   var foot = document.getElementById("masonfoot");
   if(!foot) return;
@@ -4126,9 +4216,9 @@ function wireTestTap(){
     last = now;
     if(taps >= 3){
       taps = 0;
-      TEST_MODE = !TEST_MODE;
-      S.testAttempt = TEST_MODE;
-      if(!TEST_MODE && S.sendState === "not sent, test mode") S.sendState = "not sent";
+      if(TEST_MODE) return;
+      TEST_MODE = true;
+      S.testAttempt = true;
       saveRun();
       paintTestBand();
       render();

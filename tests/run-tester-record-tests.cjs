@@ -4,10 +4,12 @@
  *   node tests/run-tester-record-tests.cjs
  *
  * Every test boots index.html in the harness (tests/index-harness.cjs) and plays the tester link
- * by pressing the page's own buttons: Play, Let it stand or Flag it, Lock it in, Keep going and
- * Back. The basis chips are set in the run state, because the stub draws no chip elements.
- * Every way the page could reach the network is a spy, and the last tests walk the whole tester
- * link and the send guard to prove test mode posts nothing.
+ * by pressing the page's own buttons: Play, Let it stand or Flag it, Lock it in, Keep going, Back,
+ * Play again and the footer line. The basis chips are set in the run state, because the stub
+ * draws no chip elements. Every way the page could reach the network is a spy, and the last tests
+ * walk the whole tester link, the footer taps and the send guard to prove test mode posts nothing.
+ *
+ * Characters outside ASCII are built with String.fromCharCode, so this file stays ASCII.
  */
 "use strict";
 const { boot } = require("./index-harness.cjs");
@@ -18,10 +20,16 @@ const PREFILL = {
   base: "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__TESTONLYUMkpXSE9GRkJaWkFHMVBTNkJBTVVDQi4u",
   param: "r0123456789abcdef0123456789abcdef",
 };
+const HEAD_LEN = (PREFILL.base + "&" + PREFILL.param + "=").length;
+const BUDGET = 1800 - 1 - HEAD_LEN;
 const CHIP = {
   hold: "the figure and reason hold", tie: "figure does not tie", dir: "direction wrong",
   src: "no source on file", period: "wrong period", acct: "wrong account", owed: "nothing written where owed",
 };
+const ch = (n) => String.fromCharCode(n);
+const ARABIC = ch(0x0645);
+const EMOJI = String.fromCodePoint(0x1F4CA);
+const EM_DASH = ch(0x2014);
 
 let passed = 0, failed = 0;
 const fails = [];
@@ -56,6 +64,15 @@ function play(t, call, chips, words, secs) {
 }
 /* Next line, when the reveal carries one (the line 5 stop carries Keep going instead) */
 function next(t) { if (t.el("next")) t.click("next"); }
+/* every round one line from where the run stands, Keep going pressed at the stop */
+function playAll(t, line) {
+  const S = t.S();
+  while (S.step - 3 >= 0 && S.step - 3 < t.steps().lines && !S.calls[S.step - 3]) {
+    const i = S.step - 3;
+    play(t, ...line(i));
+    if (i < t.steps().lines - 1) { if (t.el("next")) t.click("next"); else if (t.el("keepgoing")) t.click("keepgoing"); }
+  }
+}
 /* the five lines the stop asks for, one of every outcome and both basis results */
 const FIVE = [
   ["flag", [CHIP.tie, CHIP.owed], "Totals | do not || tie\nat all\tin June", 34],
@@ -69,18 +86,69 @@ async function fiveLines(opts) {
   FIVE.forEach((l, k) => { play(t, l[0], l[1], l[2], l[3]); if (k < FIVE.length - 1) next(t); });
   return t;
 }
+/* five flagged lines with the same words on each, ending on the line 5 stop */
+async function fiveWith(words) {
+  const t = await testerRun({ prefill: PREFILL });
+  for (let k = 0; k < 5; k++) { play(t, "flag", [CHIP.src, CHIP.tie], words, 5); if (k < 4) next(t); }
+  return t;
+}
 function valueOf(href) {
   const head = PREFILL.base + "&" + PREFILL.param + "=";
   if (!href || href.indexOf(head) !== 0) return null;
   return decodeURIComponent(href.slice(head.length));
 }
+const TAIL_RE = /^(truncated after line|words cut to|words left off after line) \d+$/;
 function split(record) {
-  const parts = record.split(" || ");
-  return { head: parts[0].split(" | "), lines: parts.slice(1).filter((p) => !/^truncated after line \d+$/.test(p)).map((p) => p.split(" | ")), tail: parts[parts.length - 1] };
+  const parts = record.split("||");
+  return {
+    head: parts[0].split("|"),
+    lines: parts.slice(1).filter((p) => !TAIL_RE.test(p)).map((p) => p.split("|")),
+    trunc: parts.find((p) => /^truncated after line \d+$/.test(p)) || null,
+    cut: parts.find((p) => /^words cut to \d+$/.test(p)) || null,
+    off: parts.find((p) => /^words left off after line \d+$/.test(p)) || null,
+  };
+}
+/* the record a word limit would give with words kept on the first keep lines, built from the
+   full one the way the drill cuts */
+function capRecord(full, cap, keep) {
+  const parts = full.split("||");
+  const segs = parts.slice(1);
+  if (keep === undefined) keep = segs.length;
+  let cut = false, off = false;
+  const body = segs.map((p, idx) => {
+    const f = p.split("|");
+    if (f.length < 9) return p;
+    const w = (cap && idx < keep) ? Array.from(f[8]).slice(0, cap).join("").trim() : "";
+    if (w !== f[8]) { if (idx < keep) cut = true; else off = true; }
+    return w ? f.slice(0, 8).concat([w]).join("|") : f.slice(0, 8).join("|");
+  });
+  if (cut) body.push("words cut to " + cap);
+  if (off) body.push("words left off after line " + (keep ? segs[keep - 1].split("|")[0].slice(1) : 0));
+  return [parts[0]].concat(body).join("||");
 }
 function netNonGet(t) {
   return t.net.filter((n) => !(n.kind === "fetch" && n.method === "GET" && /^cases\/[a-z0-9-]+\.json$/.test(n.url)));
 }
+function tap(t, times) { for (let k = 0; k < times; k++) t.click("masonfoot"); }
+/* round two and the tester end screen, from wherever round one finished */
+function finish(t) {
+  const S = t.S();
+  next(t);
+  if (t.el("r2go")) t.click("r2go");
+  while (S.step >= t.steps().l2 && S.step <= t.steps().l2last) {
+    const j = S.step - t.steps().l2;
+    t.click("stand");
+    S.r2basis[j] = [CHIP.hold];
+    S.r2explain[j] = { decisiveEvidence: "The invoice on file matches", periodRelevance: "It is dated inside June", actionOrRequest: "No request needed here" };
+    S.itemStart = Date.now() - 5000;
+    t.click("lockin");
+  }
+  if (t.el("r2see")) t.click("r2see");
+  if (S.step === 92 && t.el("r2next")) t.click("r2next");
+  if (S.step !== t.steps().done) t.go(t.steps().done);
+}
+const BAND_OFF = "Tester link<span>Nothing you do here is sent.</span>";
+const BAND_ON = "Tester link<span>Nothing is sent from this page. The feedback form opens with your answers filled in, and Khaled sees them only if you submit it.</span>";
 
 (async () => {
   /* ---------- T01-T04: the bare link when either constant is empty ---------- */
@@ -90,15 +158,15 @@ function netNonGet(t) {
     eq("T01", "no prefill: the line 5 stop links to the bare form exactly as 1.9.1 did", t.feedbackHref(), BARE);
     check("T02", "no prefill: the stop keeps its 1.9.1 sentence and adds no note about the form",
       html.indexOf("That's five lines, which is all the feedback needs.") > -1 && html.indexOf("stopnote") === -1 && !!t.el("keepgoing"));
-    eq("T03", "no prefill: the band still says nothing is sent", t.el("testband").innerHTML, "Tester link<span>Nothing you do here is sent.</span>");
+    eq("T03", "no prefill: the band still says nothing is sent", t.el("testband").innerHTML, BAND_OFF);
     eq("T03b", "no prefill: the version prints as 1.9.2 on the footer", t.el("verline").textContent, "second-pass-drill 1.9.2, test mode");
   }
   for (const [id, pf] of [["T04a", { base: PREFILL.base, param: "" }], ["T04b", { base: "", param: PREFILL.param }]]) {
     const t = await fiveLines({ prefill: pf });
-    eq(id, "one constant empty (" + (pf.base ? "param" : "base") + "): the bare form, and the 1.9.1 band", [t.feedbackHref(), t.el("testband").innerHTML], [BARE, "Tester link<span>Nothing you do here is sent.</span>"]);
+    eq(id, "one constant empty (" + (pf.base ? "param" : "base") + "): the bare form, and the 1.9.1 band", [t.feedbackHref(), t.el("testband").innerHTML], [BARE, BAND_OFF]);
   }
 
-  /* ---------- T05-T16: the record at the line 5 stop ---------- */
+  /* ---------- T05-T19: the record at the line 5 stop ---------- */
   let five;
   {
     const t = await fiveLines({ prefill: PREFILL });
@@ -109,9 +177,10 @@ function netNonGet(t) {
     check("T05", "prefill: the link is BASE & PARAM = the encoded record", rec !== null && href === PREFILL.base + "&" + PREFILL.param + "=" + encodeURIComponent(rec), href);
     eq("T06", "prefill: the link carries the record the page builds now", rec, t.window.__BTM_TESTER.record());
     const r = split(rec);
-    eq("T07", "header: stamp, codename, attempt id, case, answered, right, points",
-      r.head, ["second-pass-drill 1.9.2", S.codename, S.attemptId, "case halyard", "answered 5", "right 3", "points " + S.points]);
+    eq("T07", "header: stamp, codename, attempt id, case, answered, right, points, run, case file",
+      r.head, ["second-pass-drill 1.9.2", S.codename, S.attemptId, "case halyard", "answered 5", "right 3", "points " + S.points, "run 1", "case file halyard-v4"]);
     check("T07b", "header: points are the run's own total and above zero", S.points > 0 && r.head[6] === "points " + S.points);
+    check("T07c", "the delimiters carry no spaces", rec.indexOf(" | ") === -1 && rec.indexOf(" || ") === -1 && /\|\|L1\|/.test(rec), rec);
     eq("T08", "five line segments, one per locked line, in order", r.lines.map((l) => l[0]), ["L1", "L2", "L3", "L4", "L5"]);
     eq("T09", "line 1: account, call, chips, key, caught, basis agrees, seconds, words with delimiters removed",
       r.lines[0], ["L1", "4200", "flag", "tie+owed", "key flag", "caught", "basis agrees", "34s", "Totals do not tie at all in June"]);
@@ -119,17 +188,16 @@ function netNonGet(t) {
     eq("T11", "line 3: caught with an extra chip is caught with a basis that differs", r.lines[2], ["L3", "5100", "flag", "direction+account", "key flag", "caught", "basis differs", "21s", "direction looks off"]);
     eq("T12", "line 4: a flag on a clean line is a false flag, words capped at 80", r.lines[3], ["L4", "4100", "flag", "source", "key stand", "false flag", "basis differs", "40s", "x".repeat(80)]);
     eq("T13", "line 5: cleared, basis agrees, no words field when nothing was written", r.lines[4], ["L5", "6500", "stand", "holds", "key stand", "cleared", "basis agrees", "9s"]);
-    check("T14", "no truncation note when every line fits", !/truncated/.test(rec));
+    check("T14", "no truncation note and no word cut when every line fits", !/truncated|words cut/.test(rec) && t.window.__BTM_TESTER.prefill().wordsCap === 80);
     check("T15", "the link is under 1,800 characters", href.length < 1800, String(href.length));
     check("T16", "nothing identifying rides in it beyond the codename: no chapters, no notice, no clock",
       !/Beta Alpha|ACFE|NABA|notice|20\d\d-\d\d-\d\d|\d{10,}/.test(rec), rec);
-    eq("T17", "prefill: the band says where the answers go",
-      t.el("testband").innerHTML, "Tester link<span>Nothing is sent from this page. Your answers go along in the feedback form, where you see them before you submit.</span>");
-    check("T18", "prefill: the stop says the five answers are in the form and the form is the only way Khaled sees them",
-      t.screenHtml().indexOf('<p class="stopnote">Your five answers are already filled into the feedback form, and submitting that form is the only way Khaled sees them.</p>') > -1);
+    eq("T17", "prefill: the band says nothing leaves the page and the form opens with the answers in it", t.el("testband").innerHTML, BAND_ON);
+    check("T18", "prefill: the stop says the five answers are filled in when the form opens and Khaled sees them only on submit",
+      t.screenHtml().indexOf('<p class="stopnote">Your five answers are filled in when the feedback form opens, and Khaled sees them only if you submit it.</p>') > -1, t.screenHtml());
     const html = t.screenHtml();
     check("T19", "the href is written HTML-escaped, so the & between id and question survives", html.indexOf('href="' + PREFILL.base + "&amp;" + PREFILL.param + "=") > -1);
-    check("T19b", "the copy carries no em dash", !/\u2014/.test(html + t.el("testband").innerHTML));
+    check("T19b", "the copy carries no em dash", (html + t.el("testband").innerHTML).indexOf(EM_DASH) === -1);
   }
 
   /* ---------- T20-T24: escaping and the 80 character cap ---------- */
@@ -137,13 +205,12 @@ function netNonGet(t) {
     const t = await testerRun({ prefill: PREFILL });
     const S = t.S();
     S.codename = "Amber | Owl";
-    play(t, "flag", [CHIP.tie], "a || b | c\r\nd\u2028e  \t f", 5); next(t);
-    const emoji = "\ud83d\udcca".repeat(100);
-    play(t, "flag", [CHIP.period, CHIP.src], emoji, 5); next(t);
-    play(t, "flag", [CHIP.dir], "lone \ud800 high and \udc00 low", 5);
+    play(t, "flag", [CHIP.tie], "a || b | c\r\nd" + ch(0x2028) + "e  \t f", 5); next(t);
+    play(t, "flag", [CHIP.period, CHIP.src], EMOJI.repeat(100), 5); next(t);
+    play(t, "flag", [CHIP.dir], "lone " + ch(0xD800) + " high and " + ch(0xDC00) + " low", 5);
     const rec = t.window.__BTM_TESTER.record();
     const r = split(rec);
-    eq("T20", "a codename with a pipe loses it, and the header keeps seven fields", [r.head.length, r.head[1]], [7, "Amber Owl"]);
+    eq("T20", "a codename with a pipe loses it, and the header keeps nine fields", [r.head.length, r.head[1]], [9, "Amber Owl"]);
     eq("T21", "words lose pipes, line breaks, tabs and the line separators, and collapse their spaces", r.lines[0][8], "a b c d e f");
     eq("T22", "every line keeps its nine fields, so the delimiters only ever delimit", r.lines.map((l) => l.length), [9, 9, 9]);
     eq("T23", "the 80 character cap counts characters, so an emoji is never split", Array.from(r.lines[1][8]).length + ":" + r.lines[1][8].length, "80:160");
@@ -153,7 +220,7 @@ function netNonGet(t) {
     eq("T24c", "testerClean on its own: trims, removes pipes, caps", t.window.__BTM_TESTER.clean("  a|b  ", 2), "a");
   }
 
-  /* ---------- T25-T29: Keep going, the 1,800 character cap and truncation ---------- */
+  /* ---------- T25-T29: Keep going, the 1,800 character cap, and words cut before lines ---------- */
   {
     const t = await fiveLines({ prefill: PREFILL });
     t.click("keepgoing");
@@ -167,39 +234,64 @@ function netNonGet(t) {
     const pf = t.window.__BTM_TESTER.prefill();
     const rec = valueOf(pf.href);
     const r = split(rec);
-    check("T26", "fourteen long lines are cut to fit under 1,800 characters", pf.href.length < 1800 && pf.included < 14, pf.href.length + " chars, " + pf.included + " lines");
-    eq("T27", "the cut keeps the earliest lines in order, newest last, and says where it stopped",
-      [r.lines.map((l) => l[0]), r.tail], [Array.from({ length: pf.included }, (_, k) => "L" + (k + 1)), "truncated after line " + pf.included]);
-    check("T28", "the five lines the stop asks for always make it in", pf.included >= 5, String(pf.included));
+    check("T26", "fourteen lines with long words all fit under 1,800 characters, because the words are cut and no line is",
+      pf.href.length < 1800 && pf.included === 14 && pf.wordsCap === 20, pf.href.length + " chars, " + pf.included + " lines, words " + pf.wordsCap);
+    eq("T27", "the record keeps every line in order, says how far the words were cut, and carries no truncation note",
+      [r.lines.map((l) => l[0]), r.cut, r.trunc], [Array.from({ length: 14 }, (_, k) => "L" + (k + 1)), "words cut to 20", null]);
+    check("T28", "every line's words are within the cut, and the calls are untouched",
+      r.lines.every((l) => l.length < 9 || Array.from(l[8]).length <= 20) && r.lines.slice(5).every((l) => l[2] === "flag" && l[3] === "source+tie+period"));
     eq("T29", "the header still counts every locked line", r.head[4], "answered 14");
-    const one = t.window.__BTM_TESTER.record(pf.href.length - (PREFILL.base.length + PREFILL.param.length + 2) + 1);
-    check("T29b", "one more line does not fit, so the cut is the most that fits",
-      encodeURIComponent(t.window.__BTM_TESTER.parts(1e9).text).length > 1800 - (PREFILL.base.length + PREFILL.param.length + 2) && one === rec);
+    const full = t.window.__BTM_TESTER.record();
+    const keep = pf.wordsOffAfter === null ? 14 : pf.wordsOffAfter;
+    const looser = keep < 14 ? capRecord(full, 20, keep + 1) : capRecord(full, 40);
+    check("T29b", "the cut is the gentlest that fits: the step before it would not, and the record is that step exactly",
+      encodeURIComponent(full).length > BUDGET && encodeURIComponent(looser).length > BUDGET && capRecord(full, 20, keep) === rec,
+      "full " + encodeURIComponent(full).length + ", one step looser " + encodeURIComponent(looser).length + ", budget " + BUDGET + ", kept through " + keep);
+    check("T29h", "when words must go from some lines, the newest lines lose theirs and the early notes stay",
+      pf.wordsOffAfter === null || (r.off === "words left off after line " + pf.wordsOffAfter &&
+        r.lines.slice(0, 5).filter((l) => l.length === 9).length === 3 && r.lines.slice(pf.wordsOffAfter).every((l) => l.length === 8)),
+      rec);
     const wide = await testerRun({ prefill: PREFILL });
-    const ws = wide.S();
-    for (let i = 0; i < 6; i++) { play(wide, "flag", [CHIP.src], "\u0645".repeat(80), 5); if (i < 4) next(wide); else if (i === 4) wide.click("keepgoing"); }
+    for (let i = 0; i < 6; i++) { play(wide, "flag", [CHIP.src], ARABIC.repeat(80), 5); if (i < 4) next(wide); else if (i === 4) wide.click("keepgoing"); }
     const wp = wide.window.__BTM_TESTER.prefill();
-    check("T29c", "eighty letters a line in a script that encodes long still stays under the cap", wp.href.length < 1800 && /truncated after line \d+$/.test(valueOf(wp.href)), wp.href.length + " chars");
+    check("T29c", "eighty letters a line in a script that encodes long keeps all six calls under the cap",
+      wp.href.length < 1800 && wp.included === 6 && !/truncated after line/.test(valueOf(wp.href)), wp.href.length + " chars, " + wp.included + " lines");
+    /* the old cut dropped lines first; lines only go now when the calls alone do not fit */
+    const tight = t.window.__BTM_TESTER.parts(600);
+    const tr = split(tight.text);
+    check("T29d", "a budget too small for the calls drops lines from the newest, words left out, and says where it stopped",
+      tight.included < 14 && tight.included > 0 && tr.trunc === "truncated after line " + tight.included &&
+      tr.lines.every((l) => l.length === 8) && encodeURIComponent(tight.text).length <= 600, tight.text);
 
     /* the end screen: round two, then the tester's own end screen */
-    next(t);
-    if (t.el("r2go")) t.click("r2go");
-    while (S.step >= t.steps().l2 && S.step <= t.steps().l2last) {
-      const j = S.step - t.steps().l2;
-      t.click("stand");
-      S.r2basis[j] = [CHIP.hold];
-      S.r2explain[j] = { decisiveEvidence: "The invoice on file matches", periodRelevance: "It is dated inside June", actionOrRequest: "No request needed here" };
-      S.itemStart = Date.now() - 5000;
-      t.click("lockin");
-    }
-    if (t.el("r2see")) t.click("r2see");
-    if (S.step === 92 && t.el("r2next")) t.click("r2next");
-    if (S.step !== t.steps().done) t.go(t.steps().done);
+    finish(t);
     eq("T30", "the tester end screen draws with the form link and no Send my results", [S.step === t.steps().done, !!t.el("feedbackform"), !!t.el("sendres")], [true, true, false]);
     const end = valueOf(t.feedbackHref());
-    eq("T31", "the end screen's link carries the run as it stands, cut to fit", [end, t.feedbackHref().length < 1800], [t.window.__BTM_TESTER.record(1800 - 1 - (PREFILL.base.length + PREFILL.param.length + 2)), true]);
+    eq("T31", "the end screen's link carries the run as it stands, cut to fit", [end, t.feedbackHref().length < 1800], [t.window.__BTM_TESTER.record(BUDGET), true]);
+    const endPf = t.window.__BTM_TESTER.prefill();
+    const notes = endPf.wordsOffAfter === null
+      ? " Your own words are cut to their first " + endPf.wordsCap + " characters so the link fits."
+      : " Your own words are cut to their first " + endPf.wordsCap + " characters, and the ones after line " + endPf.wordsOffAfter + " are left out, so the link fits.";
+    const want = '<p class="stopnote">Your ' + (endPf.included === 14 ? "fourteen" : "?") +
+      " answers are filled in when the feedback form opens, and Khaled sees them only if you submit it." + notes +
+      " If you already sent the form at line 5, send it again from here and the lines since go with it.</p>";
+    check("T31b", "the end screen says what the link carries, its count matches prefill().included, and a tester who sent at line 5 is told to send again",
+      endPf.included === 14 && t.screenHtml().indexOf(want) > -1, t.screenHtml().match(/<p class="stopnote">[^<]*<\/p>/) + "");
     check("T32", "the whole tester link, round two and the end screen included, made no request but the three case files",
       netNonGet(t).length === 0 && t.net.length === 3, JSON.stringify(t.net));
+  }
+
+  /* ---------- T29e-T29g: five lines of words that encode long keep all five calls ---------- */
+  for (const [id, label, words] of [["T29e", "80 Arabic letters", ARABIC.repeat(80)], ["T29f", "80 emoji", EMOJI.repeat(80)],
+                                    ["T29g", "80 accented letters", ch(0xE9).repeat(80)]]) {
+    const t = await fiveWith(words);
+    const pf = t.window.__BTM_TESTER.prefill();
+    const r = split(valueOf(pf.href));
+    const note = (t.screenHtml().match(/<p class="stopnote">[^<]*<\/p>/) || [""])[0];
+    check(id, "five lines with " + label + " each keep all five calls, and the stop says the notes were cut",
+      pf.on && pf.included === 5 && r.lines.length === 5 && r.lines.every((l) => l[2] === "flag") && pf.href.length < 1800 &&
+      note.indexOf("Your five answers are filled in") > -1 && /Your own words (are cut to their first \d+ characters(, and the ones after line \d+ are left out,)?|are left out|after line \d+ are left out) so the link fits\./.test(note),
+      pf.href.length + " chars, " + pf.included + " lines, words " + pf.wordsCap + ", " + note);
   }
 
   /* ---------- T33-T37: Back and a changed answer ---------- */
@@ -246,6 +338,105 @@ function netNonGet(t) {
     p.click("sendres");
     eq("T41", "a test attempt presses Send and posts nothing: no form submit, no fetch POST, no beacon",
       [netNonGet(p), S.sendState], [[], "not sent, test mode"]);
+  }
+
+  /* ---------- T42-T43: three taps on the footer turn test mode on, and never off ---------- */
+  {
+    const t = await testerRun({ prefill: PREFILL });
+    const S = t.S();
+    tap(t, 3);
+    eq("T42", "on the tester link, three taps on the footer leave test mode on: band shown, test attempt, footer says test mode",
+      [t.el("testband").hidden, S.testAttempt, t.el("verline").textContent, t.el("testband").innerHTML], [false, true, "second-pass-drill 1.9.2, test mode", BAND_ON]);
+    tap(t, 3);
+    FIVE.forEach((l, k) => { play(t, l[0], l[1], l[2], l[3]); if (k < FIVE.length - 1) next(t); });
+    check("T42b", "after six taps the line 5 stop still draws with the feedback form and Keep going",
+      !!t.el("keepgoing") && !!t.el("feedbackform") && t.screenHtml().indexOf("stopnote") > -1);
+    t.click("keepgoing");
+    playAll(t, () => ["stand", [CHIP.hold], undefined, 4]);
+    finish(t);
+    eq("T42c", "the end screen after the taps has the feedback form and no Send my results", [S.step === t.steps().done, !!t.el("feedbackform"), !!t.el("sendres"), S.testAttempt], [true, true, false, true]);
+    check("T42d", "and nothing was posted on the way", netNonGet(t).length === 0, JSON.stringify(t.net));
+
+    const p = boot({ search: "" });
+    await p.ready();
+    tap(p, 3);
+    const on = [p.el("testband").hidden, p.S().testAttempt];
+    tap(p, 3);
+    eq("T43", "on the public link three taps turn test mode on, and three more do not turn it off",
+      [on, p.el("testband").hidden, p.S().testAttempt, p.el("verline").textContent], [[false, true], false, true, "second-pass-drill 1.9.2, test mode"]);
+  }
+
+  /* ---------- T44: Play again marks the record as a later run ---------- */
+  {
+    const t = await fiveLines({ prefill: PREFILL });
+    const S = t.S();
+    const first = { id: S.attemptId, code: S.codename, head: split(t.window.__BTM_TESTER.record()).head };
+    t.click("keepgoing");
+    playAll(t, () => ["stand", [CHIP.hold], undefined, 4]);
+    t.go(t.steps().done);
+    t.click("playagain");
+    eq("T44", "Play again on the tester link goes straight to line 1 as run 2", [S.step, S.runIndex], [3, 2]);
+    FIVE.forEach((l, k) => { play(t, l[0], l[1], l[2], l[3]); if (k < FIVE.length - 1) next(t); });
+    const h = split(valueOf(t.feedbackHref())).head;
+    eq("T44b", "the first run's header says run 1, the second's run 2, same codename, a new attempt id",
+      [first.head[7], h[7], h[1] === first.code, h[2] !== first.id, h[4]], ["run 1", "run 2", true, true, "answered 5"]);
+  }
+
+  /* ---------- T45: a public run left in the tab is not picked up by the tester link ---------- */
+  {
+    const p = boot({ search: "" });
+    await p.ready();
+    p.S().codename = "Jane Q Student";
+    p.go(1);
+    const saved = p.store["btm.run.v1"];
+    check("T45", "the public run was saved with its typed codename and as no test attempt",
+      !!saved && JSON.parse(saved).codename === "Jane Q Student" && JSON.parse(saved).testAttempt === false);
+    const t = boot({ search: "?test=1", session: { "btm.run.v1": saved } });
+    await t.ready();
+    t.S().tourSeen = true;
+    t.click("go");
+    play(t, "flag", [CHIP.tie], "", 5);
+    const h = split(t.window.__BTM_TESTER.record()).head;
+    check("T45b", "the tester link starts its own run under a random codename, not the saved one",
+      h[1] !== "Jane Q Student" && h[2] !== JSON.parse(saved).attemptId && t.S().testAttempt === true, h.join("|"));
+    /* a tester run itself still survives a reload */
+    const mine = five.store["btm.run.v1"];
+    const r = boot({ search: "?test=1", session: { "btm.run.v1": mine } });
+    await r.ready();
+    eq("T45c", "a tester run reloaded on the tester link keeps its codename and its five calls",
+      [r.S().codename, r.S().calls.filter((c) => c).length], [JSON.parse(mine).codename, 5]);
+  }
+
+  /* ---------- T46: seconds are active seconds ---------- */
+  {
+    const t = await testerRun({ prefill: PREFILL });
+    const S = t.S();
+    t.click("flag");
+    S.basis[0] = [CHIP.tie];
+    S.itemStart = Date.now() - 50000;
+    S.hiddenTotal = (S.itemHiddenBase || 0) + 30000;
+    t.click("lockin");
+    eq("T46", "a line that sat 30 of its 50 seconds in a hidden tab records 20 seconds",
+      [S.secs[0], S.asecs[0], split(t.window.__BTM_TESTER.record()).lines[0][7]], [50, 20, "20s"]);
+  }
+
+  /* ---------- T47: the usual slips in pasting the two constants ---------- */
+  {
+    const clean = PREFILL.base + "&" + PREFILL.param + "=";
+    for (const [id, label, pf] of [
+      ["T47a", "a base pasted with a trailing &", { base: PREFILL.base + "&", param: PREFILL.param }],
+      ["T47b", "a base pasted with the probe answer still on it", { base: PREFILL.base + "&" + PREFILL.param + "=probe", param: PREFILL.param }],
+      ["T47c", "a name pasted with its & and =", { base: PREFILL.base, param: "&" + PREFILL.param + "=" }],
+      ["T47d", "a base pasted with a trailing ?", { base: PREFILL.base + "?", param: PREFILL.param }],
+    ]) {
+      const t = await fiveLines({ prefill: pf });
+      const href = t.feedbackHref();
+      check(id, label + ": the link still carries question 9 once, after the clean base",
+        href.indexOf(clean) === 0 && href.split(PREFILL.param + "=").length === 2 && valueOf(href) === t.window.__BTM_TESTER.record(), href.slice(0, 260));
+    }
+    const t = await fiveLines({ prefill: { base: BARE, param: PREFILL.param } });
+    eq("T47e", "a base with no ResponsePage.aspx?id= counts as empty: the bare form and the 1.9.1 band",
+      [t.feedbackHref(), t.el("testband").innerHTML, t.screenHtml().indexOf("stopnote")], [BARE, BAND_OFF, -1]);
   }
 
   console.log("\n" + passed + " passed, " + failed + " failed, " + (passed + failed) + " run");
