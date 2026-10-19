@@ -153,7 +153,7 @@ const BAND_ON = "Tester link<span>Nothing is sent from this page. The feedback f
 (async () => {
   /* ---------- T01-T04: the bare link when either constant is empty ---------- */
   {
-    const t = await fiveLines();
+    const t = await fiveLines({ prefill: { base: "", param: "" } });
     const html = t.screenHtml();
     eq("T01", "no prefill: the line 5 stop links to the bare form exactly as 1.9.1 did", t.feedbackHref(), BARE);
     check("T02", "no prefill: the stop keeps its 1.9.1 sentence and adds no note about the form",
