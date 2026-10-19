@@ -9,7 +9,7 @@ Live at https://fiscalpatriots.github.io/beat-the-machine/ from `main`.
 
 | What | Version | Where it is stated |
 | --- | --- | --- |
-| Product | `second-pass-drill 1.9.1` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
+| Product | `second-pass-drill 1.9.2` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
 | Round one case | `halyard-v4`, 13 September 2026 | `cases/halyard-v4.json`, question A, the local record |
 | Round two case | `brightwater-v6`, 13 September 2026 | `cases/brightwater-v6.json`, questions A and C, the local record |
 | Data notice | `notice-2026-09-14` | the notice screen, question A, the local record |
@@ -174,7 +174,7 @@ Every screen opens with one line in soft type saying what the player is doing an
 intro through the end screen. The drill loads the shared header and footer from `assets/nav.js`,
 the same pair `checker.html` and `review.html` load, so the three pages wear one chrome; the
 drill's own footer line under it carries the version stamp and nothing else, and three taps on it
-still toggle test mode.
+still turn test mode on, one way.
 
 `screenshots/game/` holds the five verification shots at 375: a card mid-call, a right reveal, a
 wrong reveal, a level up and the end screen. They are written from the running page by a headless
@@ -258,16 +258,155 @@ final call came after the draft, the file on the card and, in practice, the reve
 before it, so the result is descriptive agreement on a keyed exercise. It is not a pre-test and
 post-test and never a learning gain. The readout fields carry the prefix `prepick.`.
 
-## Test mode
+## Test mode, and the tester link
 
-`?test=1` on the URL turns it on, and three taps on the footer line toggle it from inside the
-page for a facilitator with no address bar to edit. A band under the Mason header reads "TEST
-MODE, nothing is sent" and the footer version line gains ", test mode".
+`?test=1` on the URL turns it on, and three taps on the footer line turn it on from inside the
+page for a facilitator with no address bar to edit. The taps work one way. Nothing on the page
+turns test mode off again, so a live run needs a new tab without `?test=1`. The footer version
+line gains ", test mode". The tester link is https://fiscalpatriots.github.io/beat-the-machine/?test=1,
+and in 1.9.2 a tester's run goes like this:
 
-While it is on, "Send my results" builds the payload, writes it into the local record and posts
-nothing. The record carries `attempt.testAttempt: true`, `scoring.exclusionReason: "test
-attempt"`, and question A of the payload carries "TEST ATTEMPT, exclude from reports." Use it for
-every walkthrough, because the live participant dataset must never be seeded from automated runs.
+1. Play goes straight to line 1 under a random codename, with a six-tip tour over that line. The
+   tester link has no notice screen, no codename screen and no case picker, and always plays
+   Halyard. A public run left in the same tab is not picked up, so a codename typed there never
+   rides in the tester record.
+2. A band under the Mason header reads "Tester link" over one line. While the two prefill
+   constants below are empty it reads "Nothing you do here is sent." Once both are set it reads
+   "Nothing is sent from this page. The feedback form opens with your answers filled in, and
+   Khaled sees them only if you submit it."
+3. The reveal of line 5 stops with "That's five lines, which is all the feedback needs.", an
+   Open the feedback form button and a quiet Keep going. With the prefill set, a line under the
+   heading says "Your five answers are filled in when the feedback form opens, and Khaled sees
+   them only if you submit it." When the tester's notes had to be shortened to fit the link, the
+   same line says so, for example "Your own words are cut to their first 20 characters so the link
+   fits."
+4. The end screen, for a tester who kept going, offers Save my record and the same feedback
+   button with the same kind of line, counted against every locked line, and "If you already sent
+   the form at line 5, send it again from here and the lines since go with it." It has no Send my
+   results, and the footer taps cannot bring one back.
+5. Play again keeps the codename, goes straight to line 1 and marks the record "run 2". The tester
+   has seen the key by then, so the parser leaves later runs out of the rates.
+
+The drill itself posts nothing in test mode: no form post, no receipt call and no request of any
+kind beyond loading the page, its own stylesheet, script, icon and fonts, and the case files. `sendResults()` still refuses
+to post for a run marked as a test attempt and records "not sent, test mode", the record carries
+`attempt.testAttempt: true` and `scoring.exclusionReason: "test attempt"`, and question A of the
+payload carries "TEST ATTEMPT, exclude from reports." Use it for every walkthrough, because the
+live participant dataset must never be seeded from automated runs.
+
+### The feedback form, and the answers that ride in it (1.9.2)
+
+The feedback form is the Mason Microsoft Form "Second Pass: tester feedback", at
+`FEEDBACK_FORM` in `index.html` (https://forms.cloud.microsoft/r/Q2gRni88vR). Its question 9 is
+"Your drill answers (the drill fills this in for you, so please leave it as it is)", optional and
+long answer, and the form has pre-filled answers turned on. A tester who opens the form from the
+bare link, in an email for instance, sends an empty question 9, so the stop's button is the way in.
+
+Two constants beside `FEEDBACK_FORM` turn the prefill on. Both start empty, and while either one is
+empty the button opens the bare form exactly as 1.9.1 did and the band and the stop keep their
+1.9.1 words.
+
+| Constant | What goes in it |
+| --- | --- |
+| `FEEDBACK_PREFILL_BASE` | the pre-filled link up to and including its id: `https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=<formId>` |
+| `FEEDBACK_PREFILL_PARAM` | the name question 9 carries in that link, the part between `&` and `=` |
+
+Both come from Get pre-filled link in the form: type a probe answer into question 9 only, copy
+the link, and split it at the `&` in front of question 9's name. The page forgives the usual slips
+in that paste. A trailing `&` or `?`, the probe answer left on the base, and an `&` or `=` around
+the name are all cleaned off, and a base with no `ResponsePage.aspx?id=` in it counts as empty, so
+the button falls back to the bare form.
+
+With both set, the button links to `BASE&PARAM=` followed by the encoded record from
+`testerRecord()`. The record is one line of plain text the tester reads in question 9 before
+submitting. It holds a header (version, codename, attempt id, case, lines answered, right count,
+points, run, case file) and one segment per locked round one line: line number, account, call,
+basis chips, key, caught, missed, cleared or false flag, whether the basis agrees with the key,
+active seconds, and the tester's own words trimmed to 80 characters. Only round one lines are
+carried; round two is not. Fields are split by `|` and lines by `||`, with no spaces, because each
+space costs three characters in the link. The grammar is written out in the comment above the
+constants. Active seconds take out the time the tab sat hidden, and line 1's include the tour.
+
+The link stays under 1,800 characters, and the words give way before any call does. They are cut
+to 40 characters a line, then 20, and the record says "words cut to N". If that is still too long,
+the newest lines give up their words first so the early notes stay ("words left off after line
+M"), and then the words go altogether. Only if the calls alone do not fit are lines dropped, newest
+first, and the record ends "truncated after line N". Measured with the tests' stand-in link (a
+78 character form id and a 33 character question name), five lines of plain English with 80
+characters of words each fit whole at 1,342 characters, and fourteen lines with no words fit at
+1,537. An accented or Arabic letter takes six characters in the link and an emoji twelve, where a
+plain letter takes one. Five lines of 80 Arabic or accented letters keep all five calls with
+their notes cut to 20, and five lines of 80 emoji keep all five calls with notes cut to 20 on the
+first four. When anything is cut, the line at the stop says how much made it in.
+
+Nothing identifying rides in it beyond the random codename: no chapter chips, no notice answers,
+and no clock time except the run's start, which the attempt id carries in base 36. The answers
+leave the browser when the form opens, inside the link, so Microsoft receives them then and the
+link sits in the browser's history. Khaled sees them only when the tester submits. The href is
+read when the button draws, which is after every lock and every Back, and again when it is
+pressed. Whether a form already open and unsubmitted in the same browser keeps the answers it
+first opened with is one of the things the live check below settles.
+
+### Before the two constants are filled in
+
+Nobody has tried the prefill against the real Mason form yet. The tests stop at the link the page
+builds, with test values for the two constants. The prefill goes live only after one round trip
+through Microsoft Forms, recorded in RELEASE-NOTES.md, in this order.
+
+1. In the form's settings, choose Anyone can respond, so a response carries no name or email. If
+   it has to stay Mason only, untick Record name. The parser counts any row that still carries a
+   name or email and says so.
+2. Check that question 9 has no branching in front of it, because Forms can drop a pre-filled
+   answer on a question the respondent never sees.
+3. Paste the two constants into a local copy of `index.html`, never straight onto `main`.
+4. Build three links with `window.__BTM_TESTER.prefill()`: a five-line run with notes, a
+   fourteen-line run close to the 1,800 cap, and a run whose notes carry a curly apostrophe, one
+   Arabic word and one emoji. Open each in a fresh InPrivate window, on desktop and on a phone,
+   once signed in to Mason and once signed out. Question 9 has to show the record byte for byte,
+   and a `+` between chips has to stay a `+`. If the sign-in redirect breaks or cuts the link,
+   lower `FEEDBACK_URL_MAX` until it does not.
+5. Open link A, close the tab without submitting, then open link B in the same browser and see
+   which record question 9 shows. If it shows A, record when the button is pressed and add a line
+   under the button on the redrawn stop and on the end screen: "The form you opened earlier keeps
+   the answers it opened with. Submit it there."
+6. Submit each link once with question 4 starting "TEST RESPONSE" and once without. Export the
+   responses and run `tools/tester_record_parse.py`. It has to report the test rows dropped, no
+   rows with a name or email, and each kept row parsed to the same lines
+   `window.__BTM_TESTER.parts()` gave.
+7. Write the result into RELEASE-NOTES.md, then fill the constants on the branch and push.
+
+### Reading the answers back
+
+```
+python tools/tester_record_parse.py responses.xlsx
+```
+
+It takes the Excel file Forms exports, or that sheet saved as CSV. It finds question 9 by its
+title and drops every row with an answer starting "TEST RESPONSE" in any other question, so a
+question that exports as several columns cannot hide one (`--q4 "<title start>"` checks one
+question only). It checks every record against the case file the record names. The outcome has to
+follow from the call and the key, the account and the key have to be that file's, the basis has to
+agree or differ as the chips say, a line number cannot repeat or fall outside the case, and the
+header's counts have to match its lines. A record that fails is reported as edited by the tester
+and left out, while a note typed after the last line is kept as words. It keeps the latest response
+for an attempt sent twice and writes `tester_lines.csv` beside the export (`--out` to put it
+elsewhere): one row per tester per line, every run included with a run column, and never the
+Email or Name columns.
+
+The summary counts first runs only. It opens with "Attempts with drill answers: N (first runs N1,
+reattempts N2)", and a later run, played after the key was shown, is listed on its own line and
+left out of the rates unless `--all-runs` is given. Codenames are random and can repeat, so they do
+not count people. The rates lead with lines 1 to 5 from every first run, then the lines added by
+testers who kept going, each as caught, false flags, right calls and right reason on a caught
+problem line. Median active seconds leave out line 1, whose time includes the tour. It prints the
+drill versions and case files pooled, warns when there is more than one, and lists the commonest
+reason chips on missed lines and on false flags. `python tools/tester_record_parse.py
+tests/tester-record-sample.csv --out <somewhere>` runs it on the eight-row sample.
+
+The checks: `node tests/run-tester-record-tests.cjs` plays the tester link through `index.html` in
+a browserless harness with every network path spied, and `python
+tools/tests/test_tester_record_parse.py` tests the parser, including a drift guard that reads back
+records the drill itself writes.
 
 ## The participant record
 
@@ -746,14 +885,16 @@ later attempts as reattempts, and count people only from a facilitator's session
 
 ## Where the data lands
 
-Every answer posts to the live form:
+On the public link, a run sent with Send my results posts every answer to the live form:
 
 ```
 https://docs.google.com/forms/d/e/1FAIpQLSfteTMPZrDKhYmRjxPKADAZERjyDntdMLIVZMH-FoIrcHusKg/formResponse
 ```
 
 Nothing posts on its own. The send is a button on the end screen, it is voluntary, and the run is
-complete whether or not it is pressed. Test mode never posts at all.
+complete whether or not it is pressed. Test mode, which is the tester link, never posts at all. A
+tester's answers reach Khaled only inside the Mason feedback form, and only when the tester
+submits it (see "Test mode, and the tester link").
 
 All 38 questions are mapped to their `entry.NNNN` ids in the `E` object at the top of the
 script, and all 38 are populated on every submission. The three pages post as one request with

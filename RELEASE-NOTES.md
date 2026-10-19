@@ -1,3 +1,46 @@
+# Second Pass, release 1.9.2
+
+19 October 2026. Khaled Alkurd, George Mason University.
+Live at https://fiscalpatriots.github.io/beat-the-machine/
+
+---
+
+## 1.9.2, what changed since 1.9.1
+
+Cut 19 October 2026, on Khaled's ask for every tester's line-by-line answers, kept in Mason
+(Microsoft 365) tools rather than Google. Before this release a tester's calls stayed in their own
+tab and never reached him. Every change is on the tester link unless the row says otherwise. The
+public link plays as 1.9.1 did, except that three taps on the footer no longer turn test mode off.
+No answer key, basis key or case file changed. The product stamp moves to `second-pass-drill 1.9.2`.
+
+| What changed | Why | Where |
+| --- | --- | --- |
+| **The feedback button can carry the tester's answers.** Two new constants beside `FEEDBACK_FORM`, `FEEDBACK_PREFILL_BASE` (the form's pre-filled link up to its id) and `FEEDBACK_PREFILL_PARAM` (question 9's name in that link). With both set, the button at the line 5 stop and on the tester end screen opens the Mason form with question 9, "Your drill answers", already filled in. With either one empty it opens the bare form exactly as 1.9.1 did. A trailing `&` or `?`, the probe answer left on the base, or an `&` or `=` around the name is cleaned off, and a base with no `ResponsePage.aspx?id=` in it counts as empty | The form is the only channel from a tester to Khaled, and he needs each tester's lines to cite | `FEEDBACK_PREFILL_BASE`, `FEEDBACK_PREFILL_PARAM`, `prefillBase()`, `prefillParam()`, `prefillOn()`, `testerPrefill()`, `feedbackHref()`, `feedbackButton()` |
+| **The record is one line a person can read and a script can parse.** A header (version, codename, attempt id, case, answered, right, points, run, case file), then one segment per locked round one line: line, account, call, basis chips, key, caught, missed, cleared or false flag, whether the basis agrees with the key, active seconds, and the tester's words trimmed to 80 characters. Fields split on `\|` and lines on `\|\|`, with no spaces, and every free text field loses its pipes. Round two is never carried. The grammar is in the comment above the constants | The tester reads it in question 9 before submitting, and `tools/tester_record_parse.py` reads it back. The run number keeps a second run, played after the key was shown, out of the rates | `testerRecord()`, `testerRecordParts()`, `testerClean()`, `testerChips()`, `testerSecs()`, `TESTER_CHIP` |
+| **The link stays under 1,800 characters, and words give way before calls.** Words are cut to 40 characters a line, then 20 ("words cut to N"), then the newest lines give up theirs so the early notes stay ("words left off after line M"), then they go altogether. Only when the calls alone do not fit are lines dropped, newest first ("truncated after line N"). Five lines of plain English, 80 characters of words each, fit whole at 1,342 characters on the tests' stand-in link, and fourteen lines with no words fit at 1,537. Accented letters, other scripts and emoji take six to twelve times the room of a plain letter in the link. Five lines of 80 Arabic letters keep all five calls with notes cut to 20, five lines of 80 emoji keep all five with notes cut to 20 on the first four, and when anything is cut the stop says how much made it in | The review found the old cut dropped whole lines before it shortened any words, so the testers who wrote the most lost the most lines, and the separators alone took a third of the link | `FEEDBACK_URL_MAX`, `TESTER_WORDS_CUTS`, `testerRecordParts()` |
+| **The link is rebuilt on every draw.** It is read when the button draws, which follows every lock and every Back, and read again when the button is pressed. A tester who goes back and changes line 5 gets a link with the changed line. Whether Forms shows the new record in a browser that already opened the form and did not submit it is part of the live check below | The link must never carry a line that has since changed | `feedbackButton()`, `wireFeedbackLink()` |
+| **The band, the stop and the end screen say what the link carries, and only once it does.** With the prefill set the band reads "Nothing is sent from this page. The feedback form opens with your answers filled in, and Khaled sees them only if you submit it." The stop adds "Your five answers are filled in when the feedback form opens, and Khaled sees them only if you submit it.", with a sentence when notes were cut. The tester end screen carries the same line counted against every locked line, and tells a tester who sent the form at line 5 that sending it again carries the lines since. With the prefill empty all three keep their 1.9.1 words. The hidden band markup drops "TEST MODE, nothing is sent" for the same "Tester link" copy | The answers leave the browser inside the link when the form opens, so "nothing leaves before submit" would not be true | `paintTestBand()`, `testerStopNote()`, `actionsBlock()`, the `#testband` markup, `.stopnote` |
+| **Three taps on the footer turn test mode on, one way.** They used to toggle it, and a desktop triple click on the version line was enough to turn it off: the line 5 stop and the feedback button went, and the end screen offered a live Send my results that posted to the Google form with no test attempt tag and a notice the tester never saw. Now nothing on the page turns test mode off, on either link | Test mode must never post, and the tester link must keep its answers in Mason tools | `wireTestTap()` |
+| **The tester link never picks up a public run left in the same tab.** A saved run that is not a test attempt is not restored on `?test=1`, so the tester starts fresh under a random codename | A codename typed on the public link can be a real name, and it would have ridden in the tester record | `restoreRun()` |
+| **The drill still sends nothing.** No new request of any kind; the answers leave the tab only inside a form the tester opens and submits | Test mode must never post | unchanged `sendResults()` guard |
+| **A parser for the export.** `tools/tester_record_parse.py` (standard library only) reads the Forms Excel export or a CSV save of it and finds question 9 by its title. It drops a row with "TEST RESPONSE" at the start of any other question. It checks every record against the case file it names (outcome from call and key, account, key, basis, line numbers, header counts) and leaves an edited record out. It keeps the latest response for an attempt sent twice, counts rows that carry a name or email, and writes `tester_lines.csv` with a run column. The summary counts first runs only unless `--all-runs` is given, leads with lines 1 to 5, puts lines 6 and up under the testers who kept going, reports the right reason on caught problem lines, leaves line 1 out of the median seconds, and warns when versions are pooled | The numbers for the scholarship write-up, from Mason tools, and safe to cite: a second-sight run or a hand-edited record cannot inflate them | `tools/tester_record_parse.py`, `tests/tester-record-sample.csv` |
+| **The version prints as 1.9.2** on the footer and in the payload, and `review.html` states it again, where it had stayed at 1.8.0 | One version everywhere it prints | `PRODUCT_VERSION`, `review.html` |
+
+Live check against the real Mason form: not yet run. The two constants stay empty until the seven
+steps in the README section "Before the two constants are filled in" are done: the form set to
+Anyone can respond, question 9 free of branching, three links opened signed in and signed out on
+desktop and phone, the reopen test, and an export read back by the parser. The result goes here
+before the constants are merged.
+
+Tests: `node tests/run-tester-record-tests.cjs` (new, 74 checks on a browserless harness of
+`index.html`, `tests/index-harness.cjs`, with every network path spied, including tests that test
+mode makes no POST and that the footer taps cannot turn it off), `python
+tools/tests/test_tester_record_parse.py` (new, 34 tests, among them a drift guard against records
+the drill itself writes through `tests/tester-record-emit.cjs`, including a second run after Play
+again), the checker suite at 801 of 801 and the findings tools at 54 of 54.
+
+---
+
 # Second Pass, release 1.9.1
 
 19 October 2026. Khaled Alkurd, George Mason University.
