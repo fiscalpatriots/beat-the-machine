@@ -1,3 +1,49 @@
+# Second Pass, release 1.9.0
+
+19 October 2026. Khaled Alkurd, George Mason University.
+Live at https://fiscalpatriots.github.io/beat-the-machine/
+
+---
+
+## 1.9.0, what changed since 1.8.1
+
+Cut 19 October 2026, on Khaled's ask for the tester link: a one question tutorial with tooltips so
+a tester gets the gist of it, and no full ledger before they start, because that much at once is
+overwhelming. Every change below is on the tester link (`?test=1`) only. The public link plays as
+1.8.1 did. The product stamp moves to `second-pass-drill 1.9.0`.
+
+| What changed | Why | Where |
+| --- | --- | --- |
+| **The tester link opens on line 1, not on the ledger.** Play goes from the intro straight to the first memo line, and Play again does the same. Each line card already shows its own account's row from the ledger, both months and the change, so nothing a tester needs is lost | A tester asked to try five lines should start on a line, not on fourteen accounts | `intro()`, the Play again handler, `render()` |
+| **The read before the draft is recorded as skipped,** and nothing reads it as a read. Play stores an empty read with `prepickSkipped` set, which meets the gate in `render()` honestly. The end screen draws no read-shift block, the record carries `prepicks.skipped: true` and `required: false` with a note, every round one line carries `ledgerOnlyRead: null`, and question one would carry "Prepicks: skipped.", the sentence `tools/findings.py` already reads as a skip. Only the tester link honours a skip. On the public link the read stays required, and a tester run whose test mode is turned off from the footer goes back to the ledger | An empty read would otherwise count as fourteen lines let stand and report a shift off a read nobody took | `prepickSkipped()`, `prepickRead()`, `skipReadForTester()`, `readShift()`, `prepickLine()`, `attemptRecord()` |
+| **A six-tip tour runs over line 1.** Each tip sits on the real part it names, with a count such as 2 of 6, a Next button and a Skip tour link. The card stays live: the tester makes the call and taps the basis themselves, choosing a call moves the tour on to the reason rows, and line 1 is scored like any other line and counts as one of the five | His ask: one question, walked through with tips | `TOUR_STEPS`, `tourStart()`, `tourNext()`, `tourAfterCall()` |
+| **The tour stays out of the way.** Escape closes it. Focus moves to the tip and back to the part it named, and Tab from Next lands on that part. A polite live region reads each tip out. Enter on Next never locks the call. A tip never sits over the part it points at: it opens beside the card at 1,280 pixels, below the part at 1,024, and under 600 pixels it is a sheet along the bottom with the part scrolled clear above it. Reduced motion drops the fade and the smooth scroll | A tour that covers the control it explains, or traps a keyboard, teaches the wrong thing | `tourPlace()`, `tourKeys()`, `tourFocus()`, the tour block at the foot of the page style |
+| **The tour shows once per tab.** `tourSeen` rides in the run state, so a reload mid-run does not repeat it, and Play again leaves it set | A tester who has seen it once should not sit through it twice | `S.tourSeen`, which `freshRun()` leaves alone |
+| **The tester copy stops describing a read it does not take.** The intro says each line sits beside its own figures and that the first line comes with a short tour, and the How this works panel drops its paragraph on the read | The words on the tester link should match its screens | `intro()`, `howScreen()` |
+
+The six tips, in order, one sentence each:
+
+| Tip | Points at | Says |
+| --- | --- | --- |
+| 1 | the memo sentence | This is the sentence the AI wrote about this account, and it is the one you are checking. |
+| 2 | the account's figures | These are the ledger figures for the same account, so you can check the memo's numbers for yourself. |
+| 3 | On file | This is what is on file, and if nothing here backs the memo's reason, that reason is not established. |
+| 4 | Let it stand and Flag it | Make your call here: let it stand if the figure and the reason both hold, or flag it if either one does not. |
+| 5 | the basis rows | Now tap the reason behind your call, and you can pick more than one. |
+| 6 | Lock it in | When you are sure, lock it in and the answer key comes back to show how you did. |
+
+Next on tip 4 waits for a call, and says so: "Choose Let it stand or Flag it first, and the next
+tip opens by itself." Tips 2 and 3 are left out on a line whose card has no figures row or no On
+file block, so an authored case never points a tip at nothing.
+
+Unchanged, and checked: the public link screen by screen against 1.8.1 at 1,280 and 320 pixels
+(the intro, the notice, the codename filled in, the chapters, the ledger read and line 1 match
+once the version stamp is set aside), the read still required there, the scoring, both answer
+keys, the Google Form posting and its entry identifiers, the findings tools (54 passed) and the
+checker (801 of 801 tests pass).
+
+---
+
 # Second Pass, release 1.8.1
 
 19 October 2026. Khaled Alkurd, George Mason University.

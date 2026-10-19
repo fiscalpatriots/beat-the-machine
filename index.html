@@ -554,6 +554,38 @@ body{overflow-x:clip}
 #screen .prepick .opts{margin:0 0 var(--s3)}
 @media (min-width:900px){#screen .prepick .opts{grid-template-columns:repeat(2,minmax(0,1fr))}}
 #screen .basis .opts{margin:0 0 var(--s4)}
+/* ---------- the line 1 tour on the tester link (1.9.0) ----------
+   A tip in the card's own face: white, an ink hairline, the label size for its count. On a
+   desk it floats by the part it names with a caret; under 600 pixels it is a sheet along the
+   bottom. The part itself gets the focus ring's green, set off from its edge. */
+.sronly{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+#tour{position:absolute;z-index:15;box-sizing:border-box;width:340px;max-width:calc(100vw - 32px);
+  padding:var(--s4) var(--s4) var(--s1);background:var(--card);color:var(--ink);
+  border:1px solid var(--ink);border-radius:var(--radius);box-shadow:var(--shadow);outline:none}
+#tour:focus-visible{outline:2px solid var(--mason);outline-offset:2px}
+#tour[hidden]{display:none}
+.tourcount{margin:0 0 var(--s1);font-size:var(--t-label);font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.tourtext{margin:0;font-size:var(--t-body);line-height:1.5}
+.tourwait{margin:var(--s2) 0 0;font-size:var(--t-small);line-height:1.45;color:var(--ink-soft)}
+.tourrow{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);margin-top:var(--s2)}
+.tourrow .btn{min-width:96px;margin:0 0 var(--s3)}
+.tourrow .btn-text{margin:0 0 var(--s3)}
+#tour .btn[aria-disabled="true"]{opacity:.4;cursor:not-allowed}
+.tourarrow{position:absolute;width:12px;height:12px;background:var(--card);
+  border:1px solid var(--ink);transform:rotate(45deg)}
+#tour.below .tourarrow{top:-7px;left:var(--ax,24px);border-right:0;border-bottom:0}
+#tour.above .tourarrow{bottom:-7px;left:var(--ax,24px);border-left:0;border-top:0}
+#tour.side .tourarrow{left:-7px;top:var(--ay,20px);border-right:0;border-top:0}
+#tour.sheet{position:fixed;left:0;right:0;bottom:0;top:auto;width:auto;max-width:none;
+  border-width:1px 0 0;border-radius:var(--radius) var(--radius) 0 0;
+  padding:var(--s4) var(--gut) calc(var(--s1) + env(safe-area-inset-bottom, 0px));
+  box-shadow:0 -8px 24px rgba(26,26,26,.12)}
+#tour.sheet .tourarrow{display:none}
+.tourspot{outline:2px solid var(--mason);outline-offset:4px;border-radius:6px}
+@keyframes tourin{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:no-preference){#tour.in{animation:tourin .18s ease-out}}
 </style>
 </head>
 <body>
@@ -576,7 +608,7 @@ body{overflow-x:clip}
    One constant. It prints under the footer line on every screen, rides into the posted
    payload on question A, and stamps the local record. README and review.html state it too. */
 var PRODUCT_NAME = "Second Pass: Beat the Machine";
-var PRODUCT_VERSION = "1.8.1";
+var PRODUCT_VERSION = "1.9.0";
 var PRODUCT_STAMP = "second-pass-drill " + PRODUCT_VERSION;
 var NOTICE_VERSION = "notice-2026-09-14";
 
@@ -849,6 +881,10 @@ var S = {
      that read was locked in (0 until it is), and prepickCallsBefore is how many calls were
      already locked at that moment, which is 0 on every path the page offers */
   step:0, codename:"", orgs:[], prepicks:[], prepickAt:0, prepickCallsBefore:0,
+  /* prepickSkipped is the tester link's honest record that it took no read before the draft
+     (1.9.0), and tourSeen says the line 1 tour has been shown in this tab. Play again keeps
+     tourSeen, so a second run is not walked through the same tour. */
+  prepickSkipped:false, tourSeen:false,
   /* sel is the call that is selected and not yet committed, first is the very first call the
      player selected on that line, and calls is the committed one. A line is locked when calls
      carries a value, and only a locked line is scored or revealed. */
@@ -892,7 +928,7 @@ function freshRun(){
   S.caught = 0; S.cleared = 0; S.falseFlags = 0; S.streak = 0; S.best = 0; S.points = 0;
   S.r2caught = 0; S.r2cleared = 0; S.r2false = 0; S.r2Start = 0; S.r2End = 0; S.r2Revealed = 0;
   S.confPost = null; S.qd = null;
-  S.prepicks = []; S.prepickAt = 0; S.prepickCallsBefore = 0;
+  S.prepicks = []; S.prepickAt = 0; S.prepickCallsBefore = 0; S.prepickSkipped = false;
   S.started = Date.now(); S.lapStart = 0; S.lapEnd = 0; S.itemStart = 0; S.completedAt = 0;
   S.hiddenTotal = 0; S.hiddenAt = 0; S.itemHiddenBase = 0;
   /* a second run is a second attempt, so it gets its own id rather than reusing the first one,
@@ -1403,6 +1439,15 @@ function whyLine(t){ return '<p class="whyline">'+esc(t)+'</p>'; }
 
 function render(){
   setKeys(null);
+  tourStop(false);
+  /* The tester link has no read before the draft (1.9.0). A tester run that arrives at the
+     ledger screen anyway, a run restored from 1.8.1 or one whose test mode was turned on from
+     the footer, records the read as skipped and opens on the first memo line instead. */
+  if(TEST_MODE && S.step >= 2 && S.step !== 90 && S.step !== 91 && !prepickTaken()){
+    skipReadForTester();
+    if(S.step === 2) S.step = 3;
+    saveRun();
+  }
   /* The read before the draft is required. No screen after it draws until it is locked in,
      whether the step came from a button, a restored run, the step hook or an edited saved run,
      so every one of those lands back on the ledger with nothing of the memo shown. */
@@ -1504,7 +1549,9 @@ function howScreen(){
       whyLine("Where this check sits in a real close, and how to run it on a ledger of your own.")+
       '<h2>How this works in a real close</h2>'+
       '<p>Second Pass sits between the AI draft and the sign-off. The reviewer still signs, and nothing else does.</p>'+
-      '<p>The drill asks for your own read of the ledger before any of the draft is shown, so you have decided which lines deserve a question before the draft\'s wording can frame them. The end screen shows where your final calls moved off that read.</p>'+
+      /* the tester link takes no read before the draft (1.9.0), so it does not describe one */
+      (TEST_MODE ? '' :
+      '<p>The drill asks for your own read of the ledger before any of the draft is shown, so you have decided which lines deserve a question before the draft\'s wording can frame them. The end screen shows where your final calls moved off that read.</p>')+
       '<figure class="figure">'+howDiagram()+
         '<figcaption class="figcap">Where the check sits: after the draft, before anyone signs.</figcaption>'+
       '</figure>'+
@@ -1653,7 +1700,13 @@ function intro(){
     whyLine("You are about to review a close memo an AI assistant wrote, one line at a time.")+
     '<h1>Second Pass:<br>Beat the Machine</h1>'+
     '<p>'+originIntro(CASE1)+'</p>'+
-    '<p>The ledger does not explain itself, so the causes in the memo are guesses, and some of them are wrong. They read well enough that a busy reviewer would sign off and move on. You are the second pass. Before any of the memo appears, you read the ledger on its own and tap the lines you would give a second look. Then you read '+numWord(LINES)+' '+plural(LINES, 'line')+' of the memo and flag the ones that do not hold.'+fresh+'</p>'+
+    '<p>The ledger does not explain itself, so the causes in the memo are guesses, and some of them are wrong. They read well enough that a busy reviewer would sign off and move on. You are the second pass. '+
+      /* the tester link opens on the first memo line, with that account's figures on the card and
+         a short tour over it, rather than on the whole ledger (1.9.0) */
+      (TEST_MODE
+        ? 'You read '+numWord(LINES)+' '+plural(LINES, 'line')+' of the memo, each one beside its own figures from the ledger, and flag the ones that do not hold.'+fresh+
+          (S.tourSeen ? '' : ' The first line comes with a short tour.')
+        : 'Before any of the memo appears, you read the ledger on its own and tap the lines you would give a second look. Then you read '+numWord(LINES)+' '+plural(LINES, 'line')+' of the memo and flag the ones that do not hold.'+fresh)+'</p>'+
     caseControl()+
     '<button class="btn" id="go">Play</button>'+
     playFrames()+
@@ -1670,7 +1723,9 @@ function intro(){
     S.started = Date.now();
     if(TEST_MODE){
       if(!S.codename) S.codename = randomCodename();
-      go(2);
+      /* and from 1.9.0 past the ledger read as well, to the first memo line */
+      if(!prepickTaken()) skipReadForTester();
+      go(3);
     } else go(91);
   });
   document.getElementById("howlink").addEventListener("click", openHow);
@@ -1800,11 +1855,27 @@ function wireFlagCards(){
 var PREPICK_QUESTION = "Before any AI draft is shown: tap every line you would give a second look, " +
   "judging from the ledger alone. A line you leave untapped counts as one you would let stand.";
 function ledgerCodes(){ return (ROWS || []).map(function(r){ return String(r[0]); }); }
-/* locked in on this run, with at least one account, every one of them on this ledger */
-function prepickTaken(){
+/* a read actually taken: locked in on this run, with at least one account, every one of them
+   on this ledger */
+function prepickRead(){
   if(!S.prepickAt || !Array.isArray(S.prepicks) || !S.prepicks.length) return false;
   var codes = ledgerCodes();
   return S.prepicks.every(function(p){ return codes.indexOf(String(p)) > -1; });
+}
+/* The tester link starts on the first memo line (1.9.0), so it records the read as skipped:
+   locked at the moment Play was pressed, with no account tapped and the flag set. Only the
+   tester link honours a skipped read. On the public link the read stays required, and a run
+   whose test mode is turned off from the footer goes back to the ledger to take one. */
+function prepickSkipped(){
+  return !!(TEST_MODE && S.prepickSkipped && S.prepickAt &&
+            Array.isArray(S.prepicks) && !S.prepicks.length);
+}
+function prepickTaken(){ return prepickRead() || prepickSkipped(); }
+function skipReadForTester(){
+  S.prepicks = [];
+  S.prepickSkipped = true;
+  S.prepickAt = Date.now();
+  S.prepickCallsBefore = doneIn(S.calls);
 }
 /* the read on one round one line: a flag when its account was tapped, let it stand when not */
 function prepickReadAt(i){
@@ -1812,7 +1883,8 @@ function prepickReadAt(i){
 }
 /* every round one line: the read before the draft, the final call after it, and the move */
 function readShift(){
-  if(!prepickTaken()) return null;
+  /* a skipped read has nothing to set beside the final calls, so there is no shift to report */
+  if(!prepickRead()) return null;
   var out = {lines:[], held:0, toward:0, away:0, compared:0, beforeAnyCall: !S.prepickCallsBefore};
   for(var i=0;i<CARDS.length;i++){
     var read = prepickReadAt(i), fin = S.calls[i], move = null;
@@ -1828,7 +1900,7 @@ function readShift(){
 }
 var MOVE_WORDS = {held:"held", toward:"changed toward the key", away:"changed away from the key"};
 function prepickBlock(){
-  var locked = prepickTaken();
+  var locked = prepickRead();
   var chips = ROWS.map(function(r,idx){
     var on = (S.prepicks || []).indexOf(String(r[0])) > -1;
     return '<button type="button" class="chip opt multi'+(on ? " on" : "")+'" data-p="'+idx+'" aria-pressed="'+
@@ -1849,7 +1921,7 @@ function prepickBlock(){
 function wirePrepicks(){
   var box = document.getElementById("prepicks");
   if(!box) return;
-  var locked = prepickTaken();
+  var locked = prepickRead();
   var btns = Array.prototype.slice.call(box.querySelectorAll(".chip"));
   var goes = Array.prototype.slice.call(screen.querySelectorAll("[data-precont]"));
   var stat = document.getElementById("prepickstat");
@@ -1904,6 +1976,7 @@ function wirePrepicks(){
     S.prepicks = list;
     S.prepickAt = Date.now();
     S.prepickCallsBefore = doneIn(S.calls);
+    S.prepickSkipped = false;
     saveRun();
     go(3);
   }
@@ -2334,6 +2407,7 @@ function callCard(i, round){
     saveRun();
     paintButtons();
     paintCommit();
+    tourAfterCall();
   }
 
   function lock(){
@@ -2403,6 +2477,231 @@ function callCard(i, round){
 
   paintButtons();
   paintCommit();
+  /* the tester link walks its first line once, after go() has put the screen back at the top */
+  if(tourWanted(i, round)) setTimeout(tourStart, 0);
+}
+
+/* ---------- the line 1 tour, on the tester link only (1.9.0) ----------
+   His ask: a one-question tutorial with tips, so a tester gets the gist before the drill asks
+   anything of them. Six tips sit over the real parts of line 1, one sentence each, with a Next
+   button, a Skip tour link and a count. The card under them stays live: the player makes the
+   call and taps the basis themselves, so line 1 is answered and scored like any other line.
+   It shows once per tab. The flag rides in the run state and Play again leaves it set. A tip
+   never sits over the part it points at: on a wide desk it opens beside the card, on a narrower
+   one below the part, or above it when the part is too tall to share the window, and under 600
+   pixels it is a sheet along the bottom with the part scrolled clear above it. Escape closes it,
+   focus goes to the tip and comes back to the part, and a polite live region reads each tip out. */
+var TOUR_STEPS = [
+  {sel:".card .quote",
+   text:"This is the sentence the AI wrote about this account, and it is the one you are checking."},
+  {sel:".card .strip", optional:true,
+   text:"These are the ledger figures for the same account, so you can check the memo's numbers for yourself."},
+  {sel:".card .file", optional:true,
+   text:"This is what is on file, and if nothing here backs the memo's reason, that reason is not established."},
+  {sel:".card .opts.calls", call:true,
+   text:"Make your call here: let it stand if the figure and the reason both hold, or flag it if either one does not."},
+  {sel:"#commit .basis .opts",
+   text:"Now tap the reason behind your call, and you can pick more than one."},
+  {sel:"#lockin",
+   text:"When you are sure, lock it in and the answer key comes back to show how you did."}
+];
+var TOUR_WAIT = "Choose Let it stand or Flag it first, and the next tip opens by itself.";
+var TOUR_CLOSED = "The tour is closed, and line 1 is yours to answer.";
+var TOUR = null;
+
+function tourWanted(i, round){ return TEST_MODE && round === 1 && i === 0 && !S.tourSeen; }
+function tourMedia(q){ return !!(window.matchMedia && window.matchMedia(q).matches); }
+function tourLive(){
+  var l = document.getElementById("tourlive");
+  if(!l){
+    l = document.createElement("div");
+    l.id = "tourlive"; l.className = "sronly";
+    l.setAttribute("role", "status"); l.setAttribute("aria-live", "polite");
+    document.body.appendChild(l);
+  }
+  return l;
+}
+function tourCallMade(){ return !!selOf(1)[0]; }
+/* focus lands on the part a tip pointed at: the chosen row or the first live control inside it,
+   or the part itself when it holds none. A lock that is still disabled hands focus to the basis. */
+function tourFocus(el){
+  if(!el || !el.isConnected) return;
+  var f = null;
+  if(/^(BUTTON|INPUT|TEXTAREA|SELECT|A)$/.test(el.tagName) && !el.disabled) f = el;
+  if(!f){
+    var list = Array.prototype.filter.call(el.querySelectorAll("button,input,textarea,select,a[href]"),
+      function(n){ return !n.disabled; });
+    f = list.filter(function(n){ return n.getAttribute("aria-pressed") === "true"; })[0] || list[0] || null;
+  }
+  if(!f && el.disabled) f = document.querySelector("#commit .chip");
+  if(!f){ el.setAttribute("tabindex", "-1"); f = el; }
+  try{ f.focus({preventScroll:true}); }catch(e){ f.focus(); }
+}
+function tourKeys(e){
+  if(!TOUR || e.key !== "Escape" || sheetOpen()) return;
+  e.preventDefault(); e.stopPropagation();
+  tourStop(true);
+}
+function tourResize(){
+  if(!TOUR || TOUR.raf) return;
+  TOUR.raf = requestAnimationFrame(function(){ if(TOUR){ TOUR.raf = 0; tourPlace(true); } });
+}
+function tourStart(){
+  if(TOUR || S.step !== 3 || !tourWanted(0, 1) || callsOf(1)[0]) return;
+  var steps = TOUR_STEPS.filter(function(st){ return !st.optional || document.querySelector(st.sel); });
+  if(!document.querySelector(steps[0].sel)) return;
+  var tip = document.createElement("div");
+  tip.id = "tour";
+  tip.setAttribute("role", "dialog");
+  tip.setAttribute("aria-modal", "false");
+  tip.setAttribute("aria-label", "Line 1 tour");
+  tip.tabIndex = -1;
+  tip.innerHTML = '<span class="tourarrow" aria-hidden="true"></span>'+
+    '<p class="tourcount" id="tourcount"></p>'+
+    '<p class="tourtext" id="tourtext"></p>'+
+    '<p class="tourwait" id="tourwait" hidden></p>'+
+    '<div class="tourrow"><button type="button" class="btn-text quiet" id="tourskip">Skip tour</button>'+
+      '<button type="button" class="btn" id="tournext">Next</button></div>';
+  document.body.appendChild(tip);
+  TOUR = {k:0, steps:steps, tip:tip, spot:null, raf:0};
+  document.getElementById("tournext").addEventListener("click", tourNext);
+  document.getElementById("tourskip").addEventListener("click", function(){ tourStop(true); });
+  tip.addEventListener("keydown", function(e){
+    /* the card's own keys stay off the tip: Enter there would lock the call, not press Next */
+    if(e.key === "Enter" || e.key === " " || e.key === "Spacebar" || e.key === "Backspace") e.stopPropagation();
+    if(e.key !== "Tab" || !TOUR) return;
+    var a = document.activeElement;
+    var back = e.shiftKey ? (a === tip || a === document.getElementById("tourskip"))
+                          : (a === document.getElementById("tournext"));
+    if(back){ e.preventDefault(); tourFocus(document.querySelector(TOUR.steps[TOUR.k].sel)); }
+  });
+  document.addEventListener("keydown", tourKeys, true);
+  window.addEventListener("resize", tourResize);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ if(TOUR) tourPlace(false); });
+  tourShow(0);
+}
+function tourShow(k){
+  if(!TOUR) return;
+  TOUR.k = k;
+  var st = TOUR.steps[k], n = TOUR.steps.length;
+  document.getElementById("tourcount").textContent = (k + 1) + " of " + n;
+  document.getElementById("tourtext").textContent = st.text;
+  document.getElementById("tournext").textContent = (k === n - 1) ? "Got it" : "Next";
+  var wait = document.getElementById("tourwait");
+  wait.hidden = true; wait.textContent = "";
+  tourPaintNext();
+  tourLive().textContent = "Tip " + (k + 1) + " of " + n + ". " + st.text;
+  var tip = TOUR.tip;
+  tip.classList.remove("in"); void tip.offsetWidth; tip.classList.add("in");
+  tourPlace(true);
+  try{ tip.focus({preventScroll:true}); }catch(e){ tip.focus(); }
+}
+function tourPaintNext(){
+  if(!TOUR) return;
+  var wait = !!TOUR.steps[TOUR.k].call && !tourCallMade();
+  document.getElementById("tournext").setAttribute("aria-disabled", wait ? "true" : "false");
+}
+function tourNext(){
+  if(!TOUR) return;
+  if(TOUR.steps[TOUR.k].call && !tourCallMade()){
+    var w = document.getElementById("tourwait");
+    w.textContent = TOUR_WAIT; w.hidden = false;
+    tourLive().textContent = TOUR_WAIT;
+    tourPlace(true);
+    tourFocus(document.getElementById("stand"));
+    return;
+  }
+  if(TOUR.k >= TOUR.steps.length - 1) return tourStop(true);
+  tourShow(TOUR.k + 1);
+}
+/* a call was chosen on the card: on the call tip the reason rows have just opened under it, so
+   the tour moves on to them; on any other tip the card grew, so the tip is placed again */
+function tourAfterCall(){
+  if(!TOUR) return;
+  if(TOUR.steps[TOUR.k].call) return tourShow(TOUR.k + 1);
+  tourPaintNext();
+  tourPlace(false);
+}
+function tourPlace(scroll){
+  if(!TOUR) return;
+  var tip = TOUR.tip, target = document.querySelector(TOUR.steps[TOUR.k].sel);
+  if(TOUR.spot && TOUR.spot !== target) TOUR.spot.classList.remove("tourspot");
+  TOUR.spot = target;
+  if(!target){ tip.hidden = true; return; }
+  tip.hidden = false;
+  target.classList.add("tourspot");
+  var vw = document.documentElement.clientWidth, vh = window.innerHeight;
+  var bar = document.getElementById("bar"), barH = bar ? bar.offsetHeight : 0;
+  var M = 12, GAP = 14, sy = window.pageYOffset;
+  var r = target.getBoundingClientRect();
+  var tTop = r.top + sy, tBot = r.bottom + sy;
+  var want = null;
+  tip.classList.remove("sheet", "below", "above", "side");
+  if(tourMedia("(max-width:599px)")){
+    /* the sheet: the part is scrolled into the band between the progress line and the sheet */
+    tip.classList.add("sheet");
+    tip.style.left = ""; tip.style.top = ""; tip.style.width = "";
+    var h = tip.offsetHeight;
+    document.body.style.paddingBottom = (h + M) + "px";
+    var floor = vh - h - M;
+    if(r.height > floor - barH - M || r.top < barH + M) want = tTop - barH - M;
+    else if(r.bottom > floor) want = tBot - floor;
+  } else {
+    document.body.style.paddingBottom = "";
+    var w = Math.min(340, vw - 32);
+    tip.style.width = w + "px";
+    var h2 = tip.offsetHeight;
+    var band = vh - barH - 2 * M;
+    var left, top, place;
+    if(vw - r.right - GAP - 16 >= w){
+      /* a wide window has room beside the card, so the tip covers nothing on it */
+      place = "side";
+      top = tTop;
+      left = r.right + GAP;
+      var regTop = tTop - M, regBot = Math.max(tTop + h2, tBot) + M;
+      if(regBot - regTop > vh - barH || regTop < sy + barH) want = regTop - barH;
+      else if(regBot > sy + vh) want = regBot - vh;
+    } else if(r.height + GAP + h2 <= band){
+      place = "below";
+      top = tBot + GAP;
+      left = Math.max(16, Math.min(r.left, vw - w - 16));
+      if(tTop - M < sy + barH) want = tTop - M - barH;
+      else if(top + h2 + M > sy + vh) want = top + h2 + M - vh;
+    } else {
+      place = "above";
+      top = tTop - GAP - h2;
+      left = Math.max(16, Math.min(r.left, vw - w - 16));
+      want = top - M - barH;
+    }
+    tip.classList.add(place);
+    tip.style.left = left + "px";
+    tip.style.top = Math.max(0, top) + "px";
+    tip.style.setProperty("--ax", Math.max(14, Math.min(r.left + Math.min(32, r.width / 2) - left - 6, w - 26)) + "px");
+    tip.style.setProperty("--ay", Math.max(12, Math.min(r.height / 2 - 6, 28)) + "px");
+  }
+  if(scroll && want !== null && Math.abs(want - sy) > 1){
+    var to = Math.max(0, want);
+    try{ window.scrollTo({top:to, behavior: tourMedia("(prefers-reduced-motion: reduce)") ? "auto" : "smooth"}); }
+    catch(e){ window.scrollTo(0, to); }
+  }
+}
+/* back is true when the player closed it (Skip tour, Escape or the last tip), and focus goes back
+   to the part the tip was on. A lock or a new screen closes it quietly. Either way it is seen. */
+function tourStop(back){
+  if(!TOUR) return;
+  var t = TOUR;
+  TOUR = null;
+  if(t.raf) cancelAnimationFrame(t.raf);
+  var target = document.querySelector(t.steps[t.k].sel);
+  if(t.spot) t.spot.classList.remove("tourspot");
+  if(t.tip.parentNode) t.tip.parentNode.removeChild(t.tip);
+  document.removeEventListener("keydown", tourKeys, true);
+  window.removeEventListener("resize", tourResize);
+  document.body.style.paddingBottom = "";
+  S.tourSeen = true;
+  saveRun();
+  tourLive().textContent = back ? TOUR_CLOSED : "";
+  if(back) tourFocus(target);
 }
 
 /* ---------- the basis row ----------
@@ -2503,6 +2802,7 @@ function runState(round){
 }
 
 function reveal(i, round){
+  tourStop(false);
   var c = cardsOf(round)[i];
   var call = callsOf(round)[i];
   var right = call === c.key;
@@ -2657,6 +2957,8 @@ function prepickLetters(list){
   return list.map(function(v){ return v === "flag" ? "F" : (v === "stand" ? "S" : "-"); }).join("");
 }
 function prepickLine(){
+  /* the sentence tools/findings.py already reads as a skip */
+  if(prepickSkipped()) return "Prepicks: skipped.";
   var r = readShift();
   if(!r) return "Prepicks: not recorded.";
   var line = "Prepicks: " + S.prepicks.join("; ") + ". Required read before the AI draft, case " +
@@ -2959,7 +3261,7 @@ function itemRecord(c, idx, round){
     decisionResult: (call === c.key) ? "agrees with key" : "does not agree",
     /* the required read before the draft, on this line, beside the call made after it.
        Round two has no read, because its ledger is never shown before its memo. */
-    ledgerOnlyRead: (round === 1 && prepickTaken()) ? prepickReadAt(idx) : null,
+    ledgerOnlyRead: (round === 1 && prepickRead()) ? prepickReadAt(idx) : null,
     readVersusFinal: (function(){
       if(round !== 1) return null;
       var r = readShift();
@@ -3042,9 +3344,15 @@ function attemptRecord(sentPayload){
     },
     prepicks: (function(){
       var r = readShift();
+      var skip = prepickSkipped();
       return {
-        required: true,
+        required: !skip,
         taken: !!r,
+        skipped: skip,
+        skippedNote: skip
+          ? "The tester link (?test=1) opens on the first memo line, so this run took no read " +
+            "before the draft. Nothing is set beside the final calls and no shift is reported."
+          : null,
         picks: r ? S.prepicks.slice() : [],
         takenAt: r ? new Date(S.prepickAt).toISOString() : null,
         beforeAnyCall: r ? r.beforeAnyCall : null,
@@ -3559,7 +3867,8 @@ function done(){
   document.getElementById("playagain").addEventListener("click", function(){
     freshRun();
     S.runIndex = (S.runIndex || 1) + 1;
-    go(TEST_MODE ? 2 : 1);
+    if(TEST_MODE){ skipReadForTester(); go(3); }
+    else go(1);
   });
   var mb = document.getElementById("missbox"), sm = document.getElementById("showmiss");
   sm.addEventListener("click", function(){
