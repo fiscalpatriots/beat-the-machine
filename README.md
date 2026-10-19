@@ -9,7 +9,7 @@ Live at https://fiscalpatriots.github.io/beat-the-machine/ from `main`.
 
 | What | Version | Where it is stated |
 | --- | --- | --- |
-| Product | `second-pass-drill 1.9.1` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
+| Product | `second-pass-drill 1.9.2` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
 | Round one case | `halyard-v4`, 13 September 2026 | `cases/halyard-v4.json`, question A, the local record |
 | Round two case | `brightwater-v6`, 13 September 2026 | `cases/brightwater-v6.json`, questions A and C, the local record |
 | Data notice | `notice-2026-09-14` | the notice screen, question A, the local record |
@@ -258,16 +258,84 @@ final call came after the draft, the file on the card and, in practice, the reve
 before it, so the result is descriptive agreement on a keyed exercise. It is not a pre-test and
 post-test and never a learning gain. The readout fields carry the prefix `prepick.`.
 
-## Test mode
+## Test mode, and the tester link
 
 `?test=1` on the URL turns it on, and three taps on the footer line toggle it from inside the
-page for a facilitator with no address bar to edit. A band under the Mason header reads "TEST
-MODE, nothing is sent" and the footer version line gains ", test mode".
+page for a facilitator with no address bar to edit. The footer version line gains ", test mode".
+The tester link is https://fiscalpatriots.github.io/beat-the-machine/?test=1, and in 1.9.2 a
+tester's run goes like this:
 
-While it is on, "Send my results" builds the payload, writes it into the local record and posts
-nothing. The record carries `attempt.testAttempt: true`, `scoring.exclusionReason: "test
-attempt"`, and question A of the payload carries "TEST ATTEMPT, exclude from reports." Use it for
-every walkthrough, because the live participant dataset must never be seeded from automated runs.
+1. Play goes straight to line 1 under a random codename, with a six-tip tour over that line. The
+   tester link has no notice screen, no codename screen and no case picker, and always plays
+   Halyard.
+2. A band under the Mason header reads "Tester link" over one line. While the two prefill
+   constants below are empty it reads "Nothing you do here is sent." Once both are set it reads
+   "Nothing is sent from this page. Your answers go along in the feedback form, where you see
+   them before you submit."
+3. The reveal of line 5 stops with "That's five lines, which is all the feedback needs.", an
+   Open the feedback form button and a quiet Keep going. With the prefill set, a line under the
+   heading says "Your five answers are already filled into the feedback form, and submitting that
+   form is the only way Khaled sees them."
+4. The end screen, for a tester who kept going, offers Save my record and the same feedback
+   button. It has no Send my results.
+
+The drill itself posts nothing in test mode: no form post, no receipt call and no request of any
+kind beyond loading the page, its own stylesheet, script, icon and fonts, and the case files. `sendResults()` still refuses
+to post for a run marked as a test attempt and records "not sent, test mode", the record carries
+`attempt.testAttempt: true` and `scoring.exclusionReason: "test attempt"`, and question A of the
+payload carries "TEST ATTEMPT, exclude from reports." Use it for every walkthrough, because the
+live participant dataset must never be seeded from automated runs.
+
+### The feedback form, and the answers that ride in it (1.9.2)
+
+The feedback form is the Mason Microsoft Form "Second Pass: tester feedback", at
+`FEEDBACK_FORM` in `index.html` (https://forms.cloud.microsoft/r/Q2gRni88vR). Its question 9 is
+"Your drill answers (the drill fills this in for you, so please leave it as it is)", optional and
+long answer, and the form has pre-filled answers turned on.
+
+Two constants beside `FEEDBACK_FORM` turn the prefill on. Both start empty, and while either one is
+empty the button opens the bare form exactly as 1.9.1 did and the band and the stop keep their
+1.9.1 words.
+
+| Constant | What goes in it |
+| --- | --- |
+| `FEEDBACK_PREFILL_BASE` | the pre-filled link up to and including its id: `https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=<formId>` |
+| `FEEDBACK_PREFILL_PARAM` | the name question 9 carries in that link, the part between `&` and `=` |
+
+Both come from Get pre-filled link in the form: type a probe answer into question 9 only, copy
+the link, and split it at the `&` in front of question 9's name.
+
+With both set, the button links to `BASE&PARAM=` followed by the encoded record from
+`testerRecord()`. The record is one line of plain text the tester reads in question 9 before
+submitting, and it holds a header (version, codename, attempt id, case, lines answered, right
+count, points) and one segment per locked line: line number, account, call, basis chips, key,
+caught, missed, cleared or false flag, whether the basis agrees with the key, seconds, and the
+tester's own words trimmed to 80 characters. Fields are split by " | " and lines by " || ", and the
+grammar is written out in the comment above the constants. The link stays under 1,800 characters:
+a run too long for that, which only happens to a tester who kept going, keeps its earliest lines
+and ends "truncated after line N". Nothing identifying rides in it beyond the random codename. The
+href is read when the button draws, which is after every lock and every Back, and again when it
+is pressed.
+
+### Reading the answers back
+
+```
+python tools/tester_record_parse.py responses.xlsx
+```
+
+It takes the Excel file Forms exports, or that sheet saved as CSV. It finds question 9 by its
+title, drops every row whose question 4 answer starts "TEST RESPONSE" (`--q4 "<title start>"`
+picks question 4 by title if the columns ever move), keeps the latest response for an attempt sent
+twice, writes `tester_lines.csv` beside the export (`--out` to put it elsewhere) with one row per
+tester per line, and prints the summary: testers, lines answered, catch rate by line and overall,
+false flag rate, reason agreement, median seconds by line, and the commonest reason chips on missed
+lines and on false flags. `python tools/tester_record_parse.py tests/tester-record-sample.csv
+--out <somewhere>` runs it on the six-row sample.
+
+The checks: `node tests/run-tester-record-tests.cjs` plays the tester link through `index.html` in
+a browserless harness with every network path spied, and `python
+tools/tests/test_tester_record_parse.py` tests the parser, including a drift guard that reads back
+records the drill itself writes.
 
 ## The participant record
 
@@ -746,14 +814,16 @@ later attempts as reattempts, and count people only from a facilitator's session
 
 ## Where the data lands
 
-Every answer posts to the live form:
+On the public link, a run sent with Send my results posts every answer to the live form:
 
 ```
 https://docs.google.com/forms/d/e/1FAIpQLSfteTMPZrDKhYmRjxPKADAZERjyDntdMLIVZMH-FoIrcHusKg/formResponse
 ```
 
 Nothing posts on its own. The send is a button on the end screen, it is voluntary, and the run is
-complete whether or not it is pressed. Test mode never posts at all.
+complete whether or not it is pressed. Test mode, which is the tester link, never posts at all. A
+tester's answers reach Khaled only inside the Mason feedback form, and only when the tester
+submits it (see "Test mode, and the tester link").
 
 All 38 questions are mapped to their `entry.NNNN` ids in the `E` object at the top of the
 script, and all 38 are populated on every submission. The three pages post as one request with

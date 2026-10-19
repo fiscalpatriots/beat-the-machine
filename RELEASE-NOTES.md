@@ -1,3 +1,37 @@
+# Second Pass, release 1.9.2
+
+19 October 2026. Khaled Alkurd, George Mason University.
+Live at https://fiscalpatriots.github.io/beat-the-machine/
+
+---
+
+## 1.9.2, what changed since 1.9.1
+
+Cut 19 October 2026, on Khaled's ask for every tester's line-by-line answers, kept in Mason
+(Microsoft 365) tools rather than Google. Before this release a tester's calls stayed in their own
+tab and never reached him. Every change is on the tester link unless the row says otherwise, and the
+public link plays as 1.9.1 did. No answer key, basis key or case file changed. The product stamp
+moves to `second-pass-drill 1.9.2`.
+
+| What changed | Why | Where |
+| --- | --- | --- |
+| **The feedback button can carry the tester's answers.** Two new constants beside `FEEDBACK_FORM`, `FEEDBACK_PREFILL_BASE` (the form's pre-filled link up to its id) and `FEEDBACK_PREFILL_PARAM` (question 9's name in that link). With both set, the button at the line 5 stop and on the tester end screen opens the Mason form with question 9, "Your drill answers", already filled in. With either one empty it opens the bare form exactly as 1.9.1 did | The form is the only channel from a tester to Khaled, and he needs each tester's lines to cite | `FEEDBACK_PREFILL_BASE`, `FEEDBACK_PREFILL_PARAM`, `prefillOn()`, `testerPrefill()`, `feedbackHref()`, `feedbackButton()` |
+| **The record is one line a person can read and a script can parse.** A header (version, codename, attempt id, case, answered, right, points), then one segment per locked line: line, account, call, basis chips, key, caught, missed, cleared or false flag, whether the basis agrees with the key, seconds, and the tester's words trimmed to 80 characters. Fields split on " \| ", lines on " \|\| ", and every free text field loses its pipes. The grammar is in the comment above the constants | The tester reads it in question 9 before submitting, and `tools/tester_record_parse.py` reads it back | `testerRecord()`, `testerRecordParts()`, `testerClean()`, `testerChips()`, `TESTER_CHIP` |
+| **The link stays under 1,800 characters.** A run too long for that, a tester who kept going, keeps its earliest lines, newest last, and ends "truncated after line N". Five lines with 80 characters of words each fit with room to spare | Some servers refuse a link much past 2,000 characters, and a cut link would drop the tester's last lines silently | `FEEDBACK_URL_MAX`, `testerRecordParts()` |
+| **The link is never stale.** It is read when the button draws, which follows every lock and every Back, and read again when the button is pressed | A tester who goes back and changes line 5 sends the changed line | `feedbackButton()`, `wireFeedbackLink()` |
+| **The band and the stop say where the answers go, and only once they do.** With the prefill set the band reads "Nothing is sent from this page. Your answers go along in the feedback form, where you see them before you submit." and the stop adds "Your five answers are already filled into the feedback form, and submitting that form is the only way Khaled sees them." With it empty both keep their 1.9.1 words. The hidden band markup drops "TEST MODE, nothing is sent" for the same "Tester link" copy | The words have to be true whether or not the constants are filled in | `paintTestBand()`, `testerStopNote()`, the `#testband` markup, `.stopnote` |
+| **The drill still sends nothing.** No new request of any kind; the answers leave the tab only inside a form the tester submits | Test mode must never post | unchanged `sendResults()` guard |
+| **A parser for the export.** `tools/tester_record_parse.py` (standard library only) reads the Forms Excel export or a CSV save of it, finds question 9 by its title, drops rows whose question 4 starts "TEST RESPONSE", keeps the latest response for an attempt sent twice, writes `tester_lines.csv` and prints the write-up summary | The numbers for the scholarship write-up, from Mason tools | `tools/tester_record_parse.py`, `tests/tester-record-sample.csv` |
+| **The version prints as 1.9.2** on the footer and in the payload, and `review.html` states it again, where it had stayed at 1.8.0 | One version everywhere it prints | `PRODUCT_VERSION`, `review.html` |
+
+Tests: `node tests/run-tester-record-tests.cjs` (new, 51 checks on a browserless harness of
+`index.html`, `tests/index-harness.cjs`, with every network path spied, including a test that test
+mode makes no POST), `python tools/tests/test_tester_record_parse.py` (new, 16 tests, among them a
+drift guard against records the drill itself writes through `tests/tester-record-emit.cjs`), the
+checker suite at 801 of 801 and the findings tools at 54 of 54.
+
+---
+
 # Second Pass, release 1.9.1
 
 19 October 2026. Khaled Alkurd, George Mason University.
