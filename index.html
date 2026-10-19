@@ -576,7 +576,7 @@ body{overflow-x:clip}
    One constant. It prints under the footer line on every screen, rides into the posted
    payload on question A, and stamps the local record. README and review.html state it too. */
 var PRODUCT_NAME = "Second Pass: Beat the Machine";
-var PRODUCT_VERSION = "1.8.0";
+var PRODUCT_VERSION = "1.8.1";
 var PRODUCT_STAMP = "second-pass-drill " + PRODUCT_VERSION;
 var NOTICE_VERSION = "notice-2026-09-14";
 
@@ -823,6 +823,18 @@ function loadCases(pick, then){
    "Outside Mason" is the practitioner route: somebody with no campus tie answers truthfully
    rather than claiming an affiliation they do not have. */
 var ORGS = ["Beta Alpha Psi", "ACFE", "ASM", "NABA", "AAA", "GMU Student", "Professor", "Outside Mason"];
+
+/* A codename is handed out, never asked for (1.8.1). Like the anonymous animal a shared sheet
+   gives a visitor who is not signed in, every run starts with a random pair in the same style
+   as the old placeholder, so Start never waits on a name. The player can type over it. */
+var CODE_ADJ = ["Amber","Cobalt","Copper","Coral","Crimson","Emerald","Indigo","Ivory",
+                "Jade","Saffron","Silver","Slate","Teal","Violet"];
+var CODE_NOUN = ["Badger","Falcon","Heron","Lynx","Marten","Osprey","Otter","Owl",
+                 "Puffin","Raven","Seal","Swift","Wren","Fox"];
+function randomCodename(){
+  function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+  return pick(CODE_ADJ)+" "+pick(CODE_NOUN);
+}
 
 /* one attempt identifier per run, reused by every retry so a retry cannot double count */
 function newAttemptId(){
@@ -1501,11 +1513,13 @@ function howScreen(){
       '<p><b>Reviewer judgment.</b> Unsupported driver, timing, and a movement sitting in the wrong account. All three need the facts on file and a person who knows the business.</p>'+
       '<p class="howlead">Scope</p>'+
       '<p>This build is a static case: fourteen lines, one month, answers keyed by hand. Halyard is a made-up company, and its memo was written for this build the way an AI assistant writes close commentary, with every failure planted so it can be taught and scored. It does not run on a live ledger. The checker on this site runs the four mechanical checks on a ledger pasted in a layout it accepts and the memo drafted about it, says what it could not read instead of clearing it, and leaves driver and timing with the reviewer. Next, the deterministic checks run first on every AI memo, and the reviewer\'s time goes only to the two judgment types.</p>'+
+      /* the tester link keeps a tester on the drill: no checker button, no document links (1.8.1) */
+      (TEST_MODE ? '' :
       '<div class="howrun"><a class="btn" href="checker.html">Run the checker on your own ledger and memo</a></div>'+
       '<div class="linkrow"><a class="howlink" href="PROTOCOL.md">The review protocol</a>'+
         '<a class="howlink" href="Second-Pass-Review-Protocol.pdf">The same page as a PDF</a>'+
         '<a class="howlink" href="PROVENANCE.md">Where this case came from</a>'+
-        '<a class="howlink" href="evidence/EVIDENCE-NOTE.md">What a real AI draft got wrong</a></div>'+
+        '<a class="howlink" href="evidence/EVIDENCE-NOTE.md">What a real AI draft got wrong</a></div>')+
       '<div class="howuse"><h3>Use it on your own memo</h3>'+
         '<p>Paste this into the AI tool your firm already uses, then paste your ledger and the memo under it.</p>'+
         '<textarea id="howprompt" readonly rows="10" spellcheck="false">'+esc(HOWPROMPT)+'</textarea>'+
@@ -1644,11 +1658,21 @@ function intro(){
     '<button class="btn" id="go">Play</button>'+
     playFrames()+
     '<div class="linkrow"><button class="howlink" id="howlink">How this works in a real close</button>'+
+      (TEST_MODE ? '' :
       '<a class="howlink" href="checker.html">Checker</a>'+
       '<a class="howlink" href="author.html">Build one from your own ledger</a>'+
-      '<a class="howlink" href="review.html">For reviewers: the entry in one page</a></div>';
+      '<a class="howlink" href="review.html">For reviewers: the entry in one page</a>')+'</div>';
   wireCaseControl();
-  document.getElementById("go").addEventListener("click", function(){ S.started = Date.now(); go(91); });
+  /* The tester link goes from Play straight into the drill under a random codename. Test mode
+     posts nothing, so the notice about what gets posted and the codename screen have nothing
+     to ask of a tester (1.8.1). */
+  document.getElementById("go").addEventListener("click", function(){
+    S.started = Date.now();
+    if(TEST_MODE){
+      if(!S.codename) S.codename = randomCodename();
+      go(2);
+    } else go(91);
+  });
   document.getElementById("howlink").addEventListener("click", openHow);
 }
 /* prose counts its lines in words, the way the intro always did. Counters and scores keep
@@ -1690,18 +1714,20 @@ function originBridge(c){
 }
 
 function identity(){
+  if(!S.codename) S.codename = randomCodename();
   var chips = ORGS.map(function(o,idx){
     return '<button class="chip'+(S.orgs.indexOf(o)>-1?" on":"")+'" data-i="'+idx+'">'+esc(o)+'</button>';
   }).join("");
   screen.innerHTML =
     whyLine("A codename labels your run in the results without putting your name on it.")+
     '<h2>Before you start</h2>'+
-    '<p class="sub">A codename for your run record, and the chapters you belong to.</p>'+
-    '<input type="text" id="cn" placeholder="Silver Ledger" autocomplete="off" value="'+esc(S.codename)+'">'+
+    '<p class="sub">Your codename is picked for you, and you can type over it. Then tap the chapters you belong to.</p>'+
+    '<input type="text" id="cn" placeholder="Silver Ledger" autocomplete="off" aria-label="Codename" value="'+esc(S.codename)+'">'+
     '<div class="chips" id="orgs" style="margin-top:14px">'+chips+'</div>'+
     '<button class="btn" id="next" disabled>Start</button>';
   var inp = document.getElementById("cn"), nx = document.getElementById("next");
-  function upd(){ nx.disabled = S.codename.length < 2 || S.orgs.length === 0; }
+  /* the name never holds Start: a field cleared to nothing gets a fresh random codename on Start */
+  function upd(){ nx.disabled = S.orgs.length === 0; }
   inp.addEventListener("input", function(){ S.codename = inp.value.trim(); upd(); });
   Array.prototype.forEach.call(screen.querySelectorAll("#orgs .chip"), function(b){
     b.addEventListener("click", function(){
@@ -1711,7 +1737,10 @@ function identity(){
       upd();
     });
   });
-  nx.addEventListener("click", function(){ go(2); });
+  nx.addEventListener("click", function(){
+    if(S.codename.length < 2){ S.codename = randomCodename(); }
+    go(2);
+  });
   S.codename = inp.value.trim();
   upd();
 }
@@ -2693,7 +2722,7 @@ function r2Line(){
 }
 /* The organization taps ride at the front of question A, behind a fixed prefix, so the
    responses sheet can be counted by chapter without a new form question. */
-function orgLine(){ return "Organizations: " + S.orgs.join("; ") + "."; }
+function orgLine(){ return "Organizations: " + (S.orgs.length ? S.orgs.join("; ") : "none given") + "."; }
 function caseLine(){
   return "Case: " + CASE_RUN_ID + ", version " + CASE1.version + " (practice, " + LINES + " " + plural(LINES, "line") + ")" +
          (HAS_R2 ? " and " + CASE2.version + " (" + (ASSESS ? "assessment" : "practice") + ", " + LINES2 + " " + plural(LINES2, "line") + ")" : ", no fresh case") +
@@ -3530,7 +3559,7 @@ function done(){
   document.getElementById("playagain").addEventListener("click", function(){
     freshRun();
     S.runIndex = (S.runIndex || 1) + 1;
-    go(1);
+    go(TEST_MODE ? 2 : 1);
   });
   var mb = document.getElementById("missbox"), sm = document.getElementById("showmiss");
   sm.addEventListener("click", function(){

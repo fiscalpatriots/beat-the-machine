@@ -83,6 +83,15 @@
     return f === '' ? 'index.html' : f;
   }
 
+  /* The tester link (the drill with ?test=1) shows the drill and nothing else: no row of
+     four links, no footer links, and a wordmark that goes nowhere. A tester asked for five
+     lines and a form, and three more pages one tap away were overload (his call, 1.8.1). */
+  function drillOnly() {
+    var t = false;
+    try { t = /(?:^|[?&])test=1(?:&|$)/.test(location.search); } catch (e) { t = false; }
+    return t && here() === 'index.html';
+  }
+
   function link(item, current) {
     var a = document.createElement('a');
     a.href = item.href;
@@ -117,19 +126,22 @@
       skip.textContent = 'Skip to the main content';
     }
 
+    var solo = drillOnly();
     var head = document.createElement('header');
     head.id = 'sp-nav';
     var hin = document.createElement('div');
     hin.className = 'in';
-    var mark = document.createElement('a');
+    var mark = document.createElement(solo ? 'span' : 'a');
     mark.className = 'mark';
-    mark.href = 'review.html';
+    if (!solo) mark.href = 'review.html';
     mark.textContent = 'Second Pass';
     hin.appendChild(mark);
-    var nav = document.createElement('nav');
-    nav.setAttribute('aria-label', 'Second Pass');
-    PAGES.forEach(function (p) { nav.appendChild(link(p, current)); });
-    hin.appendChild(nav);
+    if (!solo) {
+      var nav = document.createElement('nav');
+      nav.setAttribute('aria-label', 'Second Pass');
+      PAGES.forEach(function (p) { nav.appendChild(link(p, current)); });
+      hin.appendChild(nav);
+    }
     head.appendChild(hin);
     document.body.insertBefore(head, document.body.firstChild);
     if (skip) document.body.insertBefore(skip, head);
@@ -141,13 +153,15 @@
     var line = document.createElement('p');
     line.textContent = 'Built by Khaled Alkurd. A drill for the AI-native accounting student.';
     fin.appendChild(line);
-    var ul = document.createElement('ul');
-    FOOT.forEach(function (f) {
-      var li = document.createElement('li');
-      li.appendChild(link(f, ''));
-      ul.appendChild(li);
-    });
-    fin.appendChild(ul);
+    if (!solo) {
+      var ul = document.createElement('ul');
+      FOOT.forEach(function (f) {
+        var li = document.createElement('li');
+        li.appendChild(link(f, ''));
+        ul.appendChild(li);
+      });
+      fin.appendChild(ul);
+    }
     foot.appendChild(fin);
     document.body.appendChild(foot);
   }
