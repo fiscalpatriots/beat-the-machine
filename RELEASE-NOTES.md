@@ -1,3 +1,29 @@
+# Second Pass, release 1.8.1
+
+19 October 2026. Khaled Alkurd, George Mason University.
+Live at https://fiscalpatriots.github.io/beat-the-machine/
+
+---
+
+## 1.8.1, what changed since 1.8.0
+
+Cut 19 October 2026, on Khaled's review of the tester link before the AI Native Accounting
+Foundation outreach: a tester should land on the drill and nothing else, and a name field should
+never hold the Start button shut. The product stamp moves to `second-pass-drill 1.8.1`.
+
+| What changed | Why | Where |
+| --- | --- | --- |
+| **The tester link shows the drill only.** With `?test=1` the header drops the Drill, Checker, Review and Author row and the wordmark stops being a link, the footer keeps its one line and drops its links, and the intro and the How this works panel drop the checker, author, reviewer and document links | Three more pages one tap away were overload for someone asked to try five lines and answer a form | `assets/nav.js` `drillOnly()`, `intro()`, the How panel |
+| **The tester link goes from Play straight into the drill** under a random codename. Test mode posts nothing, so the notice about what gets posted and the codename screen have nothing to ask of a tester; Play again returns to the ledger | One tap from the email to the first screen of work | `intro()`, the Play again handler |
+| **Every run gets a random codename,** two words in the style of the old placeholder (Saffron Raven, Copper Puffin), the way a shared sheet names a visitor who is not signed in. On the public link the codename screen shows it filled in, the player can type over it, and a field cleared to nothing gets a fresh one on Start, so the name never holds Start shut | His ask: the name field was stopping Start from being clickable | `randomCodename()`, `identity()` |
+| **An empty chapter list reads "none given"** in the organizations line of the local record | A tester skips the chapter chips, and the line should not print "Organizations: ." | `orgLine()` |
+
+Unchanged, and checked: the public drill's flow (notice, codename and chapters, ledger, memo), the
+chapters still required on the public link, the scoring, both answer keys, the Google Form posting
+and its entry identifiers, and the checker (801 of 801 tests pass).
+
+---
+
 # Second Pass, release 1.8.0
 
 11 October 2026. Khaled Alkurd, George Mason University.
