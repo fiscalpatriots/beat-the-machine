@@ -1,3 +1,39 @@
+# Second Pass, release 1.9.1
+
+19 October 2026. Khaled Alkurd, George Mason University.
+Live at https://fiscalpatriots.github.io/beat-the-machine/
+
+---
+
+## 1.9.1, what changed since 1.9.0
+
+Cut 19 October 2026, on four adversarial reviews of 1.9.0 (a student on a phone, a CPA, a UX and
+accessibility reviewer and a scholarship reviewer) and a code review. Every change is on the
+tester link unless the row says otherwise, and the public link plays as 1.8.1 did. No answer key,
+basis key or case file changed. The product stamp moves to `second-pass-drill 1.9.1`.
+
+| What changed | Why | Where |
+| --- | --- | --- |
+| **The tester link stops after line 5.** The reveal of line 5 carries one panel in place of Next: "That's five lines, which is all the feedback needs.", a primary Open the feedback form button, and a quiet Keep going that opens line 6. No key carries a tester past it | Every reviewer named the missing stop as the blocker: testers are asked for five lines and had no sign they were done | `reveal()`, `feedbackButton()`, `FEEDBACK_FORM`, `TESTER_LINES` |
+| **The feedback form** is https://forms.cloud.microsoft/r/Q2gRni88vR, opened in a new tab with `rel="noopener"` so the drill stays where it was | One constant, used by the stop and the end screen | `FEEDBACK_FORM` |
+| **The tester intro asks for five lines and the form.** It drops the fourteen lines and the second company and reads: "Read each line of the memo beside its own figures and flag the ones that do not hold. Do the first five, then the three-minute feedback form. The first line comes with a short tour." | The intro should ask for what the email asks for | `intro()` |
+| **The band reads "Tester link" over "Nothing you do here is sent."** | Shorter, and it names the link the tester was sent | `paintTestBand()` |
+| **The tester end screen offers the feedback form where Send my results was.** Save my record stays. The heading, the paragraph and the Google Form button are gone from the tester link | The tester link posts nothing, so a Send button there only confused the ask | `actionsBlock()`, `wireActions()` |
+| **No case picker on the tester link.** Testers always play Halyard | One case for every tester, so their feedback is about the same lines | `caseControl()` |
+| **Tip 5 reads "Now tap every reason that applies, and only those."** and **tip 6 reads "When you are sure, lock it in to see the answer key."** Tip 6 hides Skip tour and keeps Got it | The old tip 5 invited extra chips, which the basis score marks wrong | `TOUR_STEPS`, `tourShow()` |
+| **Enter on Let it stand or Flag it presses that row** on the tester link, rather than locking the call already selected | A keyboard tester could lock the wrong call. The public link keeps its 1.8.1 handling, as this release changes nothing there | the Enter branch of `callCard()` |
+| **One announcement per tip.** The tip is described by its count and its sentence, the live region is made once at boot, and it stays quiet when focus lands on the tip. It still speaks for the wait on tip 4 and when the tour closes | A screen reader heard every tip twice | `tourStart()`, `tourShow()`, `boot()` |
+| **"Tap any time to open the full ledger." is gone under the ledger button** on the tester link | The button already says it | `cardBody()` |
+| **A read taken after the memo was shown is never set beside the final calls.** The run records `memoBeforeRead` the first time a memo line draws with no read taken, and keeps it across the footer's change of mode. A tester who turns test mode off there and then takes the read sees "Your read was taken after the memo was already on the screen, so it is not set beside your final calls.", the record carries `memoShownBeforeRead: true` and `beforeAnyCall: false`, and question one adds "Taken after the memo was shown, so not a read before the draft." `tools/findings.py` reads that sentence as a late read, the same as one taken after a call | The code review found the comparison claiming a read came first when the memo had | `lineScreen()`, `readShift()`, `readShiftBlock()`, `prepickLine()`, `attemptRecord()`, `PREPICK_LATE_RE` in `tools/findings.py` |
+| **Focus the tour hands back is scrolled into view.** Got it on tip 6 with no reason tapped hands focus to the first reason, which now scrolls clear of the sticky progress line and, while the sheet is up, of the sheet | The code review found that control sitting under the progress line | `tourFocus()`, `tourReveal()` |
+
+Unchanged, and checked: the public link against 1.8.1 at 1,280 and 320 pixels, screen by screen
+from the intro to line 1, then the reveal of line 5 (Next still there) and the end screen (Send
+my results still there), once the version stamp, the codename and the lap time are set aside. The
+checker passes 801 of 801 and the findings tools 54 of 54.
+
+---
+
 # Second Pass, release 1.9.0
 
 19 October 2026. Khaled Alkurd, George Mason University.

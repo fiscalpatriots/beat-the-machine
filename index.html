@@ -564,13 +564,13 @@ body{overflow-x:clip}
   padding:var(--s4) var(--s4) var(--s1);background:var(--card);color:var(--ink);
   border:1px solid var(--ink);border-radius:var(--radius);box-shadow:var(--shadow);outline:none}
 #tour:focus-visible{outline:2px solid var(--mason);outline-offset:2px}
-#tour[hidden]{display:none}
+#tour[hidden],#tour [hidden]{display:none}
 .tourcount{margin:0 0 var(--s1);font-size:var(--t-label);font-weight:700;letter-spacing:.08em;
   text-transform:uppercase;color:var(--ink-soft);font-variant-numeric:tabular-nums}
 .tourtext{margin:0;font-size:var(--t-body);line-height:1.5}
 .tourwait{margin:var(--s2) 0 0;font-size:var(--t-small);line-height:1.45;color:var(--ink-soft)}
 .tourrow{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);margin-top:var(--s2)}
-.tourrow .btn{min-width:96px;margin:0 0 var(--s3)}
+.tourrow .btn{min-width:96px;margin:0 0 var(--s3) auto}
 .tourrow .btn-text{margin:0 0 var(--s3)}
 #tour .btn[aria-disabled="true"]{opacity:.4;cursor:not-allowed}
 .tourarrow{position:absolute;width:12px;height:12px;background:var(--card);
@@ -586,6 +586,12 @@ body{overflow-x:clip}
 .tourspot{outline:2px solid var(--mason);outline-offset:4px;border-radius:6px}
 @keyframes tourin{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:no-preference){#tour.in{animation:tourin .18s ease-out}}
+/* the stop after line 5 on the tester link (1.9.1): one panel, the form first, going on second */
+.testerstop{margin:var(--s5) 0 0;padding:var(--s5);background:var(--card);
+  border:1px solid var(--rule-strong);border-radius:var(--radius)}
+.stophead{margin:0;font-size:var(--t-lead);font-weight:600;line-height:1.4;color:var(--ink)}
+.testerstop .btn-text{display:block;margin:var(--s2) auto 0}
+.actions #feedbackform{margin-top:var(--s6)}
 </style>
 </head>
 <body>
@@ -608,7 +614,7 @@ body{overflow-x:clip}
    One constant. It prints under the footer line on every screen, rides into the posted
    payload on question A, and stamps the local record. README and review.html state it too. */
 var PRODUCT_NAME = "Second Pass: Beat the Machine";
-var PRODUCT_VERSION = "1.9.0";
+var PRODUCT_VERSION = "1.9.1";
 var PRODUCT_STAMP = "second-pass-drill " + PRODUCT_VERSION;
 var NOTICE_VERSION = "notice-2026-09-14";
 
@@ -621,8 +627,21 @@ try{ TEST_MODE = /(?:^|[?&])test=1(?:&|$)/.test(window.location.search); }catch(
 function paintTestBand(){
   var band = document.getElementById("testband");
   if(band) band.hidden = !TEST_MODE;
+  /* the tester link says what it is in two short lines (1.9.1) */
+  if(band && TEST_MODE) band.innerHTML = 'Tester link<span>Nothing you do here is sent.</span>';
   var ver = document.getElementById("verline");
   if(ver) ver.textContent = PRODUCT_STAMP + (TEST_MODE ? ", test mode" : "");
+}
+
+/* ---------- the tester feedback form (1.9.1) ----------
+   The tester link asks for five lines and then this form, so it stops after line 5 with a
+   button to it, and its end screen offers it where the public link offers Send my results.
+   It opens in a new tab and the drill stays where it was. */
+var FEEDBACK_FORM = "https://forms.cloud.microsoft/r/Q2gRni88vR";
+var TESTER_LINES = 5;
+function feedbackButton(){
+  return '<a class="btn" id="feedbackform" href="'+FEEDBACK_FORM+'" target="_blank" rel="noopener">'+
+    'Open the feedback form</a>';
 }
 
 /* ---------- Google Form wiring. Thirty eight entry ids, unchanged. ---------- */
@@ -885,6 +904,10 @@ var S = {
      (1.9.0), and tourSeen says the line 1 tour has been shown in this tab. Play again keeps
      tourSeen, so a second run is not walked through the same tour. */
   prepickSkipped:false, tourSeen:false,
+  /* memoBeforeRead is set the first time a memo line draws with no read taken, which only the
+     tester link allows. It survives the footer's change of mode, so a read taken later on that
+     run is never set beside the final calls as if it came first (1.9.1). */
+  memoBeforeRead:false,
   /* sel is the call that is selected and not yet committed, first is the very first call the
      player selected on that line, and calls is the committed one. A line is locked when calls
      carries a value, and only a locked line is scored or revealed. */
@@ -929,6 +952,7 @@ function freshRun(){
   S.r2caught = 0; S.r2cleared = 0; S.r2false = 0; S.r2Start = 0; S.r2End = 0; S.r2Revealed = 0;
   S.confPost = null; S.qd = null;
   S.prepicks = []; S.prepickAt = 0; S.prepickCallsBefore = 0; S.prepickSkipped = false;
+  S.memoBeforeRead = false;
   S.started = Date.now(); S.lapStart = 0; S.lapEnd = 0; S.itemStart = 0; S.completedAt = 0;
   S.hiddenTotal = 0; S.hiddenAt = 0; S.itemHiddenBase = 0;
   /* a second run is a second attempt, so it gets its own id rather than reusing the first one,
@@ -1669,6 +1693,8 @@ function playFrames(){
    own case appears when author.html has written one into this browser. Changing it reloads
    the case and starts the run clean, because calls index a set of lines. */
 function caseControl(){
+  /* testers always play Halyard (1.9.1) */
+  if(TEST_MODE) return "";
   var open = CASE_CHOICES.filter(function(c){ return CASE_AVAILABLE[c.id]; });
   if(open.length < 2) return "";
   return '<div class="casepick"><label for="casesel">Case</label>'+
@@ -1704,7 +1730,7 @@ function intro(){
       /* the tester link opens on the first memo line, with that account's figures on the card and
          a short tour over it, rather than on the whole ledger (1.9.0) */
       (TEST_MODE
-        ? 'You read '+numWord(LINES)+' '+plural(LINES, 'line')+' of the memo, each one beside its own figures from the ledger, and flag the ones that do not hold.'+fresh+
+        ? 'Read each line of the memo beside its own figures and flag the ones that do not hold. Do the first five, then the three-minute feedback form.'+
           (S.tourSeen ? '' : ' The first line comes with a short tour.')
         : 'Before any of the memo appears, you read the ledger on its own and tap the lines you would give a second look. Then you read '+numWord(LINES)+' '+plural(LINES, 'line')+' of the memo and flag the ones that do not hold.'+fresh)+'</p>'+
     caseControl()+
@@ -1885,7 +1911,8 @@ function prepickReadAt(i){
 function readShift(){
   /* a skipped read has nothing to set beside the final calls, so there is no shift to report */
   if(!prepickRead()) return null;
-  var out = {lines:[], held:0, toward:0, away:0, compared:0, beforeAnyCall: !S.prepickCallsBefore};
+  var out = {lines:[], held:0, toward:0, away:0, compared:0,
+             beforeAnyCall: !S.prepickCallsBefore && !S.memoBeforeRead};
   for(var i=0;i<CARDS.length;i++){
     var read = prepickReadAt(i), fin = S.calls[i], move = null;
     if(fin === "flag" || fin === "stand"){
@@ -2030,7 +2057,7 @@ function cardBody(c, round, i){
   var hint = "";
   if(i===0) hint = (round===2)
     ? '<p class="ledgerhint">The ledger button now opens the '+ROWS2.length+' '+plural(ROWS2.length, 'account')+' of the fresh case.</p>'
-    : '<p class="ledgerhint">Tap any time to open the full ledger.</p>';
+    : (TEST_MODE ? '' : '<p class="ledgerhint">Tap any time to open the full ledger.</p>');
   return strip(c.acct, bk)+
     ledgerBig(c.acct, round===2 ? 2 : undefined)+
     hint+
@@ -2064,6 +2091,7 @@ function lastIndex(r){ return (r === 2 ? LINES2 : LINES) - 1; }
 /* a line that is already committed shows its verdict rather than its buttons, which is also
    what a player gets back when they reload the tab in the middle of a run */
 function lineScreen(i, round){
+  if(!prepickRead() && !S.memoBeforeRead){ S.memoBeforeRead = true; saveRun(); }
   var call = callsOf(round)[i];
   if(call === null || call === undefined) return callCard(i, round);
   if(round === 2 && ASSESS) return go(i === LINES2 - 1 ? 92 : S.step + 1);
@@ -2469,6 +2497,9 @@ function callCard(i, round){
     else if(e.key === "2" && !typing){ e.preventDefault(); select("flag"); }
     else if(e.key === "Enter"){
       if(t && t.classList && t.classList.contains("chip")) return;
+      /* Enter on Let it stand or Flag it presses that row rather than locking the call already
+         selected (1.9.1, the tester link) */
+      if(TEST_MODE && t && t.classList && t.classList.contains("opt")) return;
       if(tag === "TEXTAREA") return;
       e.preventDefault(); lock();
     }
@@ -2501,9 +2532,9 @@ var TOUR_STEPS = [
   {sel:".card .opts.calls", call:true,
    text:"Make your call here: let it stand if the figure and the reason both hold, or flag it if either one does not."},
   {sel:"#commit .basis .opts",
-   text:"Now tap the reason behind your call, and you can pick more than one."},
+   text:"Now tap every reason that applies, and only those."},
   {sel:"#lockin",
-   text:"When you are sure, lock it in and the answer key comes back to show how you did."}
+   text:"When you are sure, lock it in to see the answer key."}
 ];
 var TOUR_WAIT = "Choose Let it stand or Flag it first, and the next tip opens by itself.";
 var TOUR_CLOSED = "The tour is closed, and line 1 is yours to answer.";
@@ -2524,7 +2555,7 @@ function tourLive(){
 function tourCallMade(){ return !!selOf(1)[0]; }
 /* focus lands on the part a tip pointed at: the chosen row or the first live control inside it,
    or the part itself when it holds none. A lock that is still disabled hands focus to the basis. */
-function tourFocus(el){
+function tourFocus(el, reveal){
   if(!el || !el.isConnected) return;
   var f = null;
   if(/^(BUTTON|INPUT|TEXTAREA|SELECT|A)$/.test(el.tagName) && !el.disabled) f = el;
@@ -2536,6 +2567,20 @@ function tourFocus(el){
   if(!f && el.disabled) f = document.querySelector("#commit .chip");
   if(!f){ el.setAttribute("tabindex", "-1"); f = el; }
   try{ f.focus({preventScroll:true}); }catch(e){ f.focus(); }
+  if(reveal !== false) tourReveal(f);
+}
+/* the control that took focus is scrolled into the band between the sticky progress line and
+   the window's foot, or the sheet's top while the sheet is up (1.9.1) */
+function tourReveal(f){
+  var bar = document.getElementById("bar"), barH = bar ? bar.offsetHeight : 0;
+  var tip = document.getElementById("tour"), floor = window.innerHeight, M = 12, d = 0;
+  if(tip && !tip.hidden && tip.classList.contains("sheet")) floor = tip.getBoundingClientRect().top;
+  var r = f.getBoundingClientRect();
+  if(r.top < barH + M) d = r.top - barH - M;
+  else if(r.bottom > floor - M) d = Math.min(r.bottom - floor + M, r.top - barH - M);
+  if(!d) return;
+  try{ window.scrollBy({top:d, behavior: tourMedia("(prefers-reduced-motion: reduce)") ? "auto" : "smooth"}); }
+  catch(e){ window.scrollBy(0, d); }
 }
 function tourKeys(e){
   if(!TOUR || e.key !== "Escape" || sheetOpen()) return;
@@ -2555,6 +2600,7 @@ function tourStart(){
   tip.setAttribute("role", "dialog");
   tip.setAttribute("aria-modal", "false");
   tip.setAttribute("aria-label", "Line 1 tour");
+  tip.setAttribute("aria-describedby", "tourcount tourtext");
   tip.tabIndex = -1;
   tip.innerHTML = '<span class="tourarrow" aria-hidden="true"></span>'+
     '<p class="tourcount" id="tourcount"></p>'+
@@ -2571,8 +2617,8 @@ function tourStart(){
     if(e.key === "Enter" || e.key === " " || e.key === "Spacebar" || e.key === "Backspace") e.stopPropagation();
     if(e.key !== "Tab" || !TOUR) return;
     var a = document.activeElement;
-    var back = e.shiftKey ? (a === tip || a === document.getElementById("tourskip"))
-                          : (a === document.getElementById("tournext"));
+    var skip = document.getElementById("tourskip"), nx = document.getElementById("tournext");
+    var back = e.shiftKey ? (a === tip || a === skip || (a === nx && skip.hidden)) : (a === nx);
     if(back){ e.preventDefault(); tourFocus(document.querySelector(TOUR.steps[TOUR.k].sel)); }
   });
   document.addEventListener("keydown", tourKeys, true);
@@ -2589,8 +2635,12 @@ function tourShow(k){
   document.getElementById("tournext").textContent = (k === n - 1) ? "Got it" : "Next";
   var wait = document.getElementById("tourwait");
   wait.hidden = true; wait.textContent = "";
+  /* the last tip has one way out */
+  document.getElementById("tourskip").hidden = (k === n - 1);
   tourPaintNext();
-  tourLive().textContent = "Tip " + (k + 1) + " of " + n + ". " + st.text;
+  /* focus lands on the tip, which reads out its count and its sentence, so the live region
+     stays quiet here and speaks only when focus goes somewhere else (1.9.1) */
+  tourLive().textContent = "";
   var tip = TOUR.tip;
   tip.classList.remove("in"); void tip.offsetWidth; tip.classList.add("in");
   tourPlace(true);
@@ -2608,7 +2658,8 @@ function tourNext(){
     w.textContent = TOUR_WAIT; w.hidden = false;
     tourLive().textContent = TOUR_WAIT;
     tourPlace(true);
-    tourFocus(document.getElementById("stand"));
+    /* the placement has already scrolled the call rows clear */
+    tourFocus(document.getElementById("stand"), false);
     return;
   }
   if(TOUR.k >= TOUR.steps.length - 1) return tourStop(true);
@@ -2862,6 +2913,9 @@ function reveal(i, round){
   var nextLabel = last
     ? (round === 2 ? "See how you did" : "Start round two")
     : "Next line";
+  /* the tester link stops after line 5: the form is the next step and going on is a choice,
+     so this reveal carries the form and a quiet Keep going in place of Next (1.9.1) */
+  var testerStop = TEST_MODE && round === 1 && i === TESTER_LINES - 1 && !last;
   screen.innerHTML =
     (i === 0 ? whyLine("This is what the answer key says about the call you just locked in.") : "")+
     face+
@@ -2869,20 +2923,28 @@ function reveal(i, round){
     openNote(c)+
     runState(round)+
     ledgerBig(c.acct, round === 2 ? 2 : undefined)+
-    '<button class="btn" id="next">'+nextLabel+'<span class="kbd">Enter</span></button>';
+    (testerStop
+      ? '<section class="testerstop" aria-labelledby="stophead">'+
+          '<p class="stophead" id="stophead">That\'s five lines, which is all the feedback needs.</p>'+
+          feedbackButton()+
+          '<button type="button" class="btn-text quiet" id="keepgoing">Keep going</button>'+
+        '</section>'
+      : '<button class="btn" id="next">'+nextLabel+'<span class="kbd">Enter</span></button>');
   wireLedger();
   LEVELED = false;
   function onward(){
     if(last) return go(round === 2 ? STEP_DONE : (HAS_R2 ? STEP_BRIDGE : STEP_DONE));
     go(S.step + 1);
   }
-  document.getElementById("next").addEventListener("click", onward);
+  document.getElementById(testerStop ? "keepgoing" : "next").addEventListener("click", onward);
   setKeys(function(e){
     if(e.metaKey || e.ctrlKey || e.altKey) return;
     if(sheetOpen()){
       if(e.key === "Escape"){ e.preventDefault(); var sh = document.getElementById("sheet"); if(sh) sh.remove(); }
       return;
     }
+    /* no key carries a tester past the stop; Enter works only on the button it is on */
+    if(testerStop) return;
     if(e.key === "Enter" || e.key === " " || e.code === "Space"){ e.preventDefault(); onward(); }
   });
   window.scrollTo(0, 0);
@@ -2966,7 +3028,9 @@ function prepickLine(){
     prepickLetters(r.lines.map(function(x){ return x.read; })) + ". Final calls after the draft: " +
     prepickLetters(r.lines.map(function(x){ return x.final; })) + ". Against the key: " +
     r.toward + " changed toward it, " + r.away + " changed away from it, " + r.held + " held.";
-  if(!r.beforeAnyCall) line += " Taken after a call was locked, so not a read before the draft.";
+  if(!r.beforeAnyCall) line += S.memoBeforeRead
+    ? " Taken after the memo was shown, so not a read before the draft."
+    : " Taken after a call was locked, so not a read before the draft.";
   return line;
 }
 /* the player's own basis, in the shape the response sheet reads:
@@ -3356,6 +3420,7 @@ function attemptRecord(sentPayload){
         picks: r ? S.prepicks.slice() : [],
         takenAt: r ? new Date(S.prepickAt).toISOString() : null,
         beforeAnyCall: r ? r.beforeAnyCall : null,
+        memoShownBeforeRead: !!S.memoBeforeRead,
         caseId: CASE_RUN_ID,
         caseVersion: CASE1.version,
         readByLine: r ? prepickLetters(r.lines.map(function(x){ return x.read; })) : null,
@@ -3647,7 +3712,9 @@ function readShiftBlock(){
   var head = '<h3>Your read before the draft, and your final calls</h3>';
   if(!r.beforeAnyCall){
     return '<section class="readshift">'+head+
-      '<p>Your read was locked in after a call had been made, so it is not set beside your final calls.</p></section>';
+      '<p>'+(S.memoBeforeRead
+        ? 'Your read was taken after the memo was already on the screen, so it is not set beside your final calls.'
+        : 'Your read was locked in after a call had been made, so it is not set beside your final calls.')+'</p></section>';
   }
   var n = S.prepicks.length, changed = r.toward + r.away;
   function cap(t){ return t.charAt(0).toUpperCase() + t.slice(1); }
@@ -3694,13 +3761,16 @@ function actionsBlock(){
     '<button class="btn secondary" id="saverec">Save my record</button>'+
     '<div id="recwrap" hidden><textarea class="recordbox" id="recbox" readonly spellcheck="false"></textarea>'+
       '<button class="btn-text" id="copyrec">Copy the record</button></div>'+
+    /* the tester link posts nothing, so its end screen offers the feedback form in place of
+       Send my results (1.9.1) */
+    (TEST_MODE ? feedbackButton() :
     '<h3 class="sendhead">Send your results</h3>'+
     '<p>Voluntary. It posts your calls to the Google Form responses sheet described in the '+
       'notice at the start.'+
       (receiptEndpoint() ? ' The same record goes to the receipts sheet, which answers with a '+
         'receipt you can keep.' : '')+'</p>'+
     '<button class="btn" id="sendres">Send my results</button>'+
-    '<p class="sendstate" id="sendstate"></p>'+
+    '<p class="sendstate" id="sendstate"></p>')+
   '</div>';
 }
 function wireActions(){
@@ -3725,6 +3795,8 @@ function wireActions(){
   document.getElementById("copyrec").addEventListener("click", function(){
     copyText(this, box.value, "Copied");
   });
+  /* the tester end screen has no send section */
+  if(!document.getElementById("sendres")) return;
   var state = document.getElementById("sendstate");
   var btn = document.getElementById("sendres");
   /* The time the endpoint says it wrote the row, in the player's own clock. If the string it
@@ -3932,6 +4004,8 @@ function boot(){
   /* every counter is derived, so the run is scored from its calls before the first paint */
   rescore(); rescore2();
   paintTestBand();
+  /* the tour's live region exists before anything is written into it */
+  if(TEST_MODE) tourLive();
   wireTestTap();
   buildTrack();
   render();

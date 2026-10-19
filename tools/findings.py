@@ -698,7 +698,9 @@ PREPICK_READ_RE = re.compile(
     r"([FS]+)\s*\.\s*final calls after the draft\s*:\s*([FS-]+)\s*\.\s*"
     r"against the key\s*:\s*(\d+)\s+changed toward it\s*,\s*(\d+)\s+changed away from it\s*,"
     r"\s*(\d+)\s+held", re.I)
-PREPICK_LATE_RE = re.compile(r"taken after a call was locked", re.I)
+# 1.9.1 adds "Taken after the memo was shown", for a read a tester-link run took after its first
+# memo line had drawn. Either sentence means the read did not come before the draft.
+PREPICK_LATE_RE = re.compile(r"taken after (?:a call was locked|the memo was shown)", re.I)
 PREPICK_NOTE = ("Descriptive agreement on a keyed exercise, first attempts only. The read is "
                 "taken from the ledger alone before the AI draft is shown, and a tapped account "
                 "reads as a flag on its lines. Each final call came after reading the draft, "
