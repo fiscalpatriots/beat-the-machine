@@ -590,6 +590,8 @@ body{overflow-x:clip}
 .testerstop{margin:var(--s5) 0 0;padding:var(--s5);background:var(--card);
   border:1px solid var(--rule-strong);border-radius:var(--radius)}
 .stophead{margin:0;font-size:var(--t-lead);font-weight:600;line-height:1.4;color:var(--ink)}
+/* the line that says the answers are already in the form (1.9.2) */
+.stopnote{margin:var(--s2) 0 0;line-height:1.5;color:var(--ink-soft)}
 .testerstop .btn-text{display:block;margin:var(--s2) auto 0}
 .actions #feedbackform{margin-top:var(--s6)}
 </style>
@@ -597,7 +599,7 @@ body{overflow-x:clip}
 <body>
 <div id="app">
   <div id="mason"><b>George Mason University</b><span>Costello College of Business</span><span id="codetag" hidden></span></div>
-  <div id="testband" hidden role="status">TEST MODE, nothing is sent<span>The would-be form payload is written to your local record instead.</span></div>
+  <div id="testband" hidden role="status">Tester link<span>Nothing you do here is sent.</span></div>
   <div id="bar">
     <div id="track"></div>
     <div id="label"><span id="step"></span><span id="score" class="hidden"></span></div>
@@ -614,7 +616,7 @@ body{overflow-x:clip}
    One constant. It prints under the footer line on every screen, rides into the posted
    payload on question A, and stamps the local record. README and review.html state it too. */
 var PRODUCT_NAME = "Second Pass: Beat the Machine";
-var PRODUCT_VERSION = "1.9.1";
+var PRODUCT_VERSION = "1.9.2";
 var PRODUCT_STAMP = "second-pass-drill " + PRODUCT_VERSION;
 var NOTICE_VERSION = "notice-2026-09-14";
 
@@ -627,8 +629,12 @@ try{ TEST_MODE = /(?:^|[?&])test=1(?:&|$)/.test(window.location.search); }catch(
 function paintTestBand(){
   var band = document.getElementById("testband");
   if(band) band.hidden = !TEST_MODE;
-  /* the tester link says what it is in two short lines (1.9.1) */
-  if(band && TEST_MODE) band.innerHTML = 'Tester link<span>Nothing you do here is sent.</span>';
+  /* the tester link says what it is in two short lines (1.9.1). Once the form link carries the
+     tester's answers, the second line says where they go, and until then it says what 1.9.1 said,
+     so the band is true with the two prefill constants set or empty (1.9.2) */
+  if(band && TEST_MODE) band.innerHTML = 'Tester link<span>' + (prefillOn()
+    ? 'Nothing is sent from this page. Your answers go along in the feedback form, where you see them before you submit.'
+    : 'Nothing you do here is sent.') + '</span>';
   var ver = document.getElementById("verline");
   if(ver) ver.textContent = PRODUCT_STAMP + (TEST_MODE ? ", test mode" : "");
 }
@@ -639,9 +645,151 @@ function paintTestBand(){
    It opens in a new tab and the drill stays where it was. */
 var FEEDBACK_FORM = "https://forms.cloud.microsoft/r/Q2gRni88vR";
 var TESTER_LINES = 5;
+
+/* ---------- the tester's answers ride in the form link (1.9.2) ----------
+   The drill still sends nothing. With both constants below set, the feedback button opens the
+   Mason form with question 9 ("Your drill answers") already holding the tester's locked lines, so
+   an answer leaves the tab only inside a form the tester reads and submits themselves. With either
+   one empty the button opens the bare FEEDBACK_FORM, exactly as 1.9.1 did.
+
+   FEEDBACK_PREFILL_BASE is the form's pre-filled link up to and including its id, in the shape
+     https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=<formId>
+   and FEEDBACK_PREFILL_PARAM is the name question 9 carries in that link, the part before its "=".
+   Both come from Get pre-filled link in the form's settings, with any probe answer left out.
+
+   The link is BASE + "&" + PARAM + "=" + encodeURIComponent(record) and stays under
+   FEEDBACK_URL_MAX characters. A record too long for that keeps the earliest lines, newest last,
+   and ends with "truncated after line N", so the five lines the stop asks for go first.
+
+   The record is one line of plain text that a person can read in the form and that
+   tools/tester_record_parse.py reads back. Its grammar:
+
+     record  = header { " || " line } [ " || truncated after line " N ]
+     header  = stamp " | " codename " | " attemptId " | case " pick
+               " | answered " count " | right " count " | points " count
+     line    = "L" n " | " account " | " call " | " chips " | key " call " | " outcome
+               " | basis " ( "agrees" | "differs" ) " | " seconds "s" [ " | " words ]
+     stamp   = "second-pass-drill " version
+     call    = "stand" | "flag"
+     chips   = chip { "+" chip }, or "none"
+     chip    = holds | tie | direction | source | period | account | owed  (TESTER_CHIP)
+     outcome = "caught" | "missed" | "cleared" | "false flag"
+
+   Lines are round one lines in order, one per locked call. Answered and right count every locked
+   line, the ones cut by truncation included, and points is the run's total. Words is the tester's
+   own line, trimmed, at most 80 characters, with "|", tabs and line breaks turned into spaces,
+   and it is left off when the tester wrote nothing. Every free text field (codename, account,
+   words) loses its "|", so " | " and " || " only ever appear as delimiters. Nothing identifying
+   rides in it beyond the random codename: no chapter chips, no notice answers, no clock times. */
+var FEEDBACK_PREFILL_BASE = "";
+var FEEDBACK_PREFILL_PARAM = "";
+var FEEDBACK_URL_MAX = 1800;
+var TESTER_WORDS_MAX = 80;
+var TESTER_CHIP = {
+  "the figure and reason hold":"holds", "figure does not tie":"tie", "direction wrong":"direction",
+  "no source on file":"source", "wrong period":"period", "wrong account":"account",
+  "nothing written where owed":"owed"
+};
+function prefillOn(){ return !!(FEEDBACK_PREFILL_BASE && FEEDBACK_PREFILL_PARAM); }
+/* free text made safe for the record: no delimiter, one line, no half of a surrogate pair (which
+   would make encodeURIComponent throw), and at most max characters counted as code points */
+function testerClean(s, max){
+  var t = String(s === null || s === undefined ? "" : s), whole = "", i, c, d;
+  for(i=0;i<t.length;i++){
+    c = t.charCodeAt(i);
+    if(c >= 0xD800 && c <= 0xDBFF){
+      d = t.charCodeAt(i+1);
+      if(d >= 0xDC00 && d <= 0xDFFF){ whole += t.charAt(i) + t.charAt(i+1); i++; }
+      continue;
+    }
+    if(c >= 0xDC00 && c <= 0xDFFF) continue;
+    whole += t.charAt(i);
+  }
+  whole = whole.replace(/[|\r\n\t\u2028\u2029]+/g, " ").replace(/\s+/g, " ").trim();
+  if(max){
+    var cps = Array.from(whole);
+    if(cps.length > max) whole = cps.slice(0, max).join("").trim();
+  }
+  return whole;
+}
+function testerChips(list){
+  var out = [];
+  (list || []).forEach(function(ch){
+    var k = TESTER_CHIP[ch] || testerClean(ch).replace(/\+/g, " ").replace(/\s+/g, " ").trim();
+    if(k) out.push(k);
+  });
+  return out.length ? out.join("+") : "none";
+}
+/* the record and what it holds: text, how many lines made it in, and how many are locked */
+function testerRecordParts(budget){
+  var max = (typeof budget === "number" && budget >= 0) ? budget : Infinity;
+  var segs = [], right = 0, i, c, call, words, outcome, seg;
+  for(i=0;i<CARDS.length;i++){
+    call = S.calls[i];
+    if(call !== "stand" && call !== "flag") continue;
+    c = CARDS[i];
+    if(call === c.key){ right++; outcome = (c.key === "flag") ? "caught" : "cleared"; }
+    else outcome = (c.key === "flag") ? "missed" : "false flag";
+    seg = "L" + (i+1) + " | " + (testerClean(c.acct) || "unknown") + " | " + call + " | " +
+          testerChips(S.basis[i]) + " | key " + c.key + " | " + outcome + " | basis " +
+          (reasonRight(c, S.basis[i]) ? "agrees" : "differs") + " | " +
+          Math.max(0, Math.round(Number(S.secs[i]) || 0)) + "s";
+    words = testerClean(S.words[i], TESTER_WORDS_MAX);
+    if(words) seg += " | " + words;
+    segs.push({n:i+1, text:seg});
+  }
+  var head = [PRODUCT_STAMP, testerClean(S.codename) || "no codename", testerClean(S.attemptId),
+              "case " + CASE_PICK, "answered " + segs.length, "right " + right,
+              "points " + (Number(S.points) || 0)].join(" | ");
+  var k = segs.length, text;
+  for(;;){
+    text = [head].concat(segs.slice(0, k).map(function(x){ return x.text; })).join(" || ");
+    if(k < segs.length) text += " || truncated after line " + (k ? segs[k-1].n : 0);
+    if(k === 0 || encodeURIComponent(text).length <= max) break;
+    k--;
+  }
+  return {text:text, included:k, answered:segs.length};
+}
+/* With no budget the whole record comes back; with one, as much as fits in that many encoded
+   characters. */
+function testerRecord(budget){ return testerRecordParts(budget).text; }
+/* The link and what it carries. It falls back to the bare form whenever the prefill is off, and
+   also when a link with only the header would still be too long, so the button always opens. */
+function testerPrefill(){
+  var bare = {href:FEEDBACK_FORM, on:false, included:0, answered:0};
+  if(!prefillOn()) return bare;
+  var head = FEEDBACK_PREFILL_BASE + "&" + FEEDBACK_PREFILL_PARAM + "=";
+  var parts = testerRecordParts(FEEDBACK_URL_MAX - 1 - head.length);
+  var href = head + encodeURIComponent(parts.text);
+  if(href.length >= FEEDBACK_URL_MAX) return bare;
+  return {href:href, on:true, included:parts.included, answered:parts.answered};
+}
+function feedbackHref(){ return testerPrefill().href; }
+/* Read at the moment the button draws, which is after every lock and every Back, and read again
+   when it is pressed, so the link never carries a line that has since changed. */
 function feedbackButton(){
-  return '<a class="btn" id="feedbackform" href="'+FEEDBACK_FORM+'" target="_blank" rel="noopener">'+
+  return '<a class="btn" id="feedbackform" href="'+esc(feedbackHref())+'" target="_blank" rel="noopener">'+
     'Open the feedback form</a>';
+}
+function wireFeedbackLink(){
+  function fresh(e){
+    var t = e && e.target, a = (t && t.closest) ? t.closest("#feedbackform") : null;
+    if(a) a.setAttribute("href", feedbackHref());
+  }
+  document.addEventListener("click", fresh, true);
+  document.addEventListener("auxclick", fresh, true);
+  document.addEventListener("contextmenu", fresh, true);
+}
+/* the line under "That's five lines", true to what the link carries (1.9.2) */
+function testerStopNote(){
+  var pf = testerPrefill();
+  if(!pf.on || !pf.included) return "";
+  var all = pf.included === pf.answered, one = pf.included === 1;
+  var lead = one
+    ? (all ? "Your answer is" : "Your first answer is")
+    : (all ? "Your " : "Your first ") + numWord(pf.included) + " answers are";
+  return '<p class="stopnote">' + lead + ' already filled into the feedback form, and submitting ' +
+    'that form is the only way Khaled sees ' + (one ? 'it' : 'them') + '.</p>';
 }
 
 /* ---------- Google Form wiring. Thirty eight entry ids, unchanged. ---------- */
@@ -2926,6 +3074,7 @@ function reveal(i, round){
     (testerStop
       ? '<section class="testerstop" aria-labelledby="stophead">'+
           '<p class="stophead" id="stophead">That\'s five lines, which is all the feedback needs.</p>'+
+          testerStopNote()+
           feedbackButton()+
           '<button type="button" class="btn-text quiet" id="keepgoing">Keep going</button>'+
         '</section>'
@@ -4007,6 +4156,7 @@ function boot(){
   /* the tour's live region exists before anything is written into it */
   if(TEST_MODE) tourLive();
   wireTestTap();
+  wireFeedbackLink();
   buildTrack();
   render();
   /* the brand face lands after the first paint and the codename gets wider, so place it again */
@@ -4017,6 +4167,9 @@ function boot(){
   window.__BTM_CARDS2 = CARDS2;
   window.__BTM_RECORD = attemptRecord;
   window.__BTM_REASON = {one:reasonCount, right:reasonRightAt, key:basisKeyOf};
+  /* the tester record and the form link it rides in, readable from outside (1.9.2) */
+  window.__BTM_TESTER = {record:testerRecord, parts:testerRecordParts, prefill:testerPrefill,
+                         href:feedbackHref, clean:testerClean, max:FEEDBACK_URL_MAX};
   /* the receipt path, readable from outside so a check can see which endpoint is in force
      and what the last send came back with */
   window.__BTM_RECEIPT = function(){
