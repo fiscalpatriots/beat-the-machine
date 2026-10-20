@@ -1,3 +1,34 @@
+# Second Pass, release 1.9.4
+
+20 October 2026. Khaled Alkurd, George Mason University.
+Live at https://fiscalpatriots.github.io/beat-the-machine/
+
+---
+
+## 1.9.4, what changed since 1.9.3
+
+Cut 20 October 2026 from the first tester feedback on the Mason form, on Khaled's go ahead. No
+answer key, basis key, case file, reason value or record grammar changed, so the score, question
+9's pre-filled record and `tools/tester_record_parse.py` read a 1.9.4 run exactly as a 1.9.3 one.
+The product stamp moves to `second-pass-drill 1.9.4`.
+
+| What changed | Why | Where |
+| --- | --- | --- |
+| **Every reason says what it means.** Under each reason's name, inside the same row, one plain line: for example "The memo gives a reason, but nothing on file backs that reason up." under no source on file and "The change is big enough to need an explanation, and the memo gives none." under nothing written where owed. The text is visible, so it works on a phone as well as a desk. Tour tip 5 adds "The line under each reason says what it means." | A tester: "It took me a while to understand what the difference between the reasons for flagging the issue, mostly 'no source on file' and 'nothing written where owed'." | `BASIS_HINT`, `paintCommit()`, `.oh` |
+| **Let it stand reads as its own list.** On a stand, the figure and reason hold comes first, then the line "Letting it stand even though you saw a problem? Tap the problem as well." and the six problems under it. The reasons themselves are unchanged | A tester asked for different reasons under Let it stand. The answer key gives a stand one right reason, `build-cases.cjs` refuses any other on a stand, and the parser checks every line's basis against the case file, so new stand reasons would have been scored wrong or broken the record check. The facilitator guide also reads a problem tapped on a line let stand. The list is labelled per call instead | `BASIS_STAND_SPLIT`, `.basissplit` |
+| **The tour no longer stalls on a keyboard.** Each tip takes focus when it opens, and before 1.9.4 Enter and Space there did nothing, so a tester who pressed Enter sat on tip 1. Now they press Next, and on the call tip they move focus to Let it stand as the Next button does | A tester: "Intro walkthrough got hung." Reproduced in headless Edge: eight presses of Enter left the tour on 1 of 6. The mouse path ran clean at 320, 375, 768, 1024, 1280 and 1600 wide | the tip's keydown handler in `tourStart()` |
+| **The checker page is named where the form is.** The line 5 stop and the tester end screen close with "The form also asks about the checker page (checker.html, where you can run your own ledger). It is a separate page from the answer you see after each line." and a link that opens it in a new tab. The How it works sheet calls it the checker page in the same words, and the public intro link reads Checker page | A tester took the form's "Checker Page" for the answer screen after each line. The tester link never showed the checker | `feedbackPanel()`, `howScreen()`, `intro()` |
+
+Tests: `node tests/run-tester-record-tests.cjs` at 97 of 97, `python
+tools/tests/test_tester_record_parse.py` at 34 of 34, the checker suite at 801 of 801 and the
+findings tools passing.
+
+Screens: `screenshots/verify/1.9.4-<width>-*` at 320, 375, 768, 1024, 1280 and 1600, from the page
+served locally and captured in headless Edge: the intro, the tour's first tip, tip 5 over the
+stand reasons, both reason lists, the line 5 stop and the tester end screen.
+
+---
+
 # Second Pass, release 1.9.3
 
 20 October 2026. Khaled Alkurd, George Mason University.

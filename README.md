@@ -9,7 +9,7 @@ Live at https://fiscalpatriots.github.io/beat-the-machine/ from `main`.
 
 | What | Version | Where it is stated |
 | --- | --- | --- |
-| Product | `second-pass-drill 1.9.3` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
+| Product | `second-pass-drill 1.9.4` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
 | Round one case | `halyard-v4`, 13 September 2026 | `cases/halyard-v4.json`, question A, the local record |
 | Round two case | `brightwater-v6`, 13 September 2026 | `cases/brightwater-v6.json`, questions A and C, the local record |
 | Data notice | `notice-2026-09-14` | the notice screen, question A, the local record |
@@ -264,12 +264,15 @@ post-test and never a learning gain. The readout fields carry the prefix `prepic
 page for a facilitator with no address bar to edit. The taps work one way. Nothing on the page
 turns test mode off again, so a live run needs a new tab without `?test=1`. The footer version
 line gains ", test mode". The tester link is https://fiscalpatriots.github.io/beat-the-machine/?test=1,
-and in 1.9.3 a tester's run goes like this:
+and in 1.9.4 a tester's run goes like this:
 
 1. Play goes straight to line 1 under a random codename, with a six-tip tour over that line. The
    tester link has no notice screen, no codename screen and no case picker, and always plays
    Halyard. A public run left in the same tab is not picked up, so a codename typed there never
-   rides in the tester record.
+   rides in the tester record. Enter or Space on a tip presses Next, as the Next button does (1.9.4).
+   Every reason under a call carries a one-line meaning, and on Let it stand the hold reason comes
+   first with the six problems under "Letting it stand even though you saw a problem? Tap the
+   problem as well." (1.9.4)
 2. A band under the Mason header reads "Tester link" over one line. While the two prefill
    constants below are empty it reads "Nothing you do here is sent." Once both are set it reads
    "Nothing is sent from this page. The feedback form opens with your answers filled in, and
@@ -295,6 +298,9 @@ and in 1.9.3 a tester's run goes like this:
    record further down. The panel carries the same kind of line, counted against every locked line, and "If you already sent
    the form at line 5, send it again from here and the lines since go with it." It has no Send my
    results, and the footer taps cannot bring one back.
+   From 1.9.4 the stop and the end screen close with a line naming the checker page
+   (checker.html, where you can run your own ledger), which the form asks about, and a link that
+   opens it in a new tab.
 5. Play again keeps the codename, goes straight to line 1 and marks the record "run 2". The tester
    has seen the key by then, so the parser leaves later runs out of the rates.
 
