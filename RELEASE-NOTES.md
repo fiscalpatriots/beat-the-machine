@@ -1,3 +1,38 @@
+# Second Pass, release 1.9.3
+
+20 October 2026. Khaled Alkurd, George Mason University.
+Live at https://fiscalpatriots.github.io/beat-the-machine/
+
+---
+
+## 1.9.3, what changed since 1.9.2
+
+Cut 20 October 2026, on Khaled's ask for a feedback button more testers actually press, and for
+the form at the start as well, so a tester can open it alongside the drill. Every change is on the
+tester link. The public link plays as 1.9.2 did. No answer key, basis key, case file or record
+grammar changed. The product stamp moves to `second-pass-drill 1.9.3`.
+
+| What changed | Why | Where |
+| --- | --- | --- |
+| **The bare form is linked from the start.** Under the tester band, from the intro until line 5 is locked, a line reads "Open the feedback form in a new tab now so you can see the questions. Send it from the button after line 5, which fills in your answers." Its first eight words are the link, to the bare `FEEDBACK_FORM` in a new tab. With the prefill off the line ends at "after line 5." It goes away at the stop, comes back if Back reopens line 5, and never shows on the public link | Testers are asked to look at the form first, and the line also says which button to send it from, since only that one carries the answers | `paintFormFirst()`, the `#formfirst` markup, `render()`, `reveal()`, `paintTestBand()` |
+| **The feedback button says what it does and is the largest thing on the stop.** It reads "Open the feedback form with your answers" over "Opens in a new tab", in Mason green, full width and taller than any other control on the stop. With the prefill off it reads "Open the feedback form". Keep going stays quiet text under it. The note beside it is unchanged | "Open the feedback form" read like one choice among three, and the stop is where the answers have to leave | `feedbackButton()`, `.feedbackgo` |
+| **Copy my answers.** An outlined button under the feedback button puts the whole record on the clipboard, read at the press, with the hint "Already have the form open? Paste into question 9." It answers "Copied. Paste it into question 9 of the feedback form." When the clipboard refuses, the browser's copy command is tried on a read-only box, and when that fails too the box stays open with the record selected and the line says "This browser did not let the page copy. Your answers are selected in the box below, so copy them from there." The copy is the full record with nothing cut to fit a link, in the same grammar, so the parser reads a pasted answer as it reads a pre-filled one | A tester who opened the form at the start and sends from that tab would otherwise send an empty question 9 | `feedbackPanel()`, `copyAnswers()`, `testerCopyText()`, `wireCopyAnswers()`, `TESTER_COPY_MAX` |
+| **The tester end screen leads with the form.** A panel under the score reads "Your last step is the feedback form." with the same note, button and Copy my answers. Save my record stays in Your record further down, and the end screen still has no Send my results | The button used to sit at the very bottom, under the read out and the record | `testerEndPanel()`, `actionsBlock()` |
+| **Nothing else moved.** Nothing is sent from the page, the pre-filled link is still rebuilt at every draw and every press, Enter and Space still carry nobody past the stop, and every new control has a name a screen reader reads: the link says it opens a new tab, the copy button is described by its hint, the copy line is a polite status, and the box is named | The 1.9.1 and 1.9.2 guarantees | unchanged `wireFeedbackLink()`, the stop's key handler |
+
+Tests: `node tests/run-tester-record-tests.cjs` at 97 of 97, up from 74, with new checks T48 to
+T54 on the start link (shown before Play, gone at the stop, back on Back, absent on the public
+link, never rewritten, no request), the button's face, the copy (the record read at the press,
+the fallback box, the copy command path, no request) and the end screen panel. `python
+tools/tests/test_tester_record_parse.py` at 34 of 34 (the drift guard now reads the version from
+the page), the checker suite at 801 of 801 and the findings tools at 54 of 54.
+
+Screens: `screenshots/verify/1.9.3-375-*` and `1.9.3-1280-*`, from the page served by
+`python -m http.server` and captured in headless Chrome: the first screen, the line 5 stop (with
+Copied and the fallback box), and the tester end screen. No sideways scroll at either width.
+
+---
+
 # Second Pass, release 1.9.2
 
 19 October 2026. Khaled Alkurd, George Mason University.

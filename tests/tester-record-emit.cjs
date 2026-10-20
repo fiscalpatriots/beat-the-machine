@@ -110,7 +110,7 @@ function snapshot(t, run) {
   }
   return {
     record, included, words_cap: wordsCap, words_off_after: wordsOffAfter,
-    header: { version: "1.9.2", codename: S.codename, attempt_id: S.attemptId, case: "halyard",
+    header: { version: t.window.__BTM_CASES.product.replace("second-pass-drill ", ""), codename: S.codename, attempt_id: S.attemptId, case: "halyard",
               answered: facts.length, right: facts.filter((f) => f.outcome === "caught" || f.outcome === "cleared").length,
               points: S.points, run: S.runIndex, case_file: "halyard-v4" },
     lines: facts.slice(0, included),

@@ -9,7 +9,7 @@ Live at https://fiscalpatriots.github.io/beat-the-machine/ from `main`.
 
 | What | Version | Where it is stated |
 | --- | --- | --- |
-| Product | `second-pass-drill 1.9.2` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
+| Product | `second-pass-drill 1.9.3` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
 | Round one case | `halyard-v4`, 13 September 2026 | `cases/halyard-v4.json`, question A, the local record |
 | Round two case | `brightwater-v6`, 13 September 2026 | `cases/brightwater-v6.json`, questions A and C, the local record |
 | Data notice | `notice-2026-09-14` | the notice screen, question A, the local record |
@@ -264,7 +264,7 @@ post-test and never a learning gain. The readout fields carry the prefix `prepic
 page for a facilitator with no address bar to edit. The taps work one way. Nothing on the page
 turns test mode off again, so a live run needs a new tab without `?test=1`. The footer version
 line gains ", test mode". The tester link is https://fiscalpatriots.github.io/beat-the-machine/?test=1,
-and in 1.9.2 a tester's run goes like this:
+and in 1.9.3 a tester's run goes like this:
 
 1. Play goes straight to line 1 under a random codename, with a six-tip tour over that line. The
    tester link has no notice screen, no codename screen and no case picker, and always plays
@@ -273,15 +273,26 @@ and in 1.9.2 a tester's run goes like this:
 2. A band under the Mason header reads "Tester link" over one line. While the two prefill
    constants below are empty it reads "Nothing you do here is sent." Once both are set it reads
    "Nothing is sent from this page. The feedback form opens with your answers filled in, and
-   Khaled sees them only if you submit it."
-3. The reveal of line 5 stops with "That's five lines, which is all the feedback needs.", an
-   Open the feedback form button and a quiet Keep going. With the prefill set, a line under the
+   Khaled sees them only if you submit it." Under the band, from the intro until line 5 is locked,
+   a line reads "Open the feedback form in a new tab now so you can see the questions. Send it
+   from the button after line 5, which fills in your answers." Its first words link the bare form
+   in a new tab. With the prefill off the line stops at "after line 5." (1.9.3)
+3. The reveal of line 5 stops with "That's five lines, which is all the feedback needs.", the
+   feedback button and a quiet Keep going. From 1.9.3 the button is the largest control on the
+   stop, in Mason green, and reads "Open the feedback form with your answers" over "Opens in a new
+   tab" ("Open the feedback form" while the prefill is off). Under it, an outlined Copy my answers
+   puts the whole record on the clipboard, with the hint "Already have the form open? Paste into
+   question 9." It answers "Copied. Paste it into question 9 of the feedback form." When the
+   browser will not copy, a read-only box opens with the record selected and the line says "This
+   browser did not let the page copy. Your answers are selected in the box below, so copy them
+   from there." With the prefill set, a line under the
    heading says "Your five answers are filled in when the feedback form opens, and Khaled sees
    them only if you submit it." When the tester's notes had to be shortened to fit the link, the
    same line says so, for example "Your own words are cut to their first 20 characters so the link
    fits."
-4. The end screen, for a tester who kept going, offers Save my record and the same feedback
-   button with the same kind of line, counted against every locked line, and "If you already sent
+4. The end screen, for a tester who kept going, opens a panel under the score, "Your last step
+   is the feedback form.", with the same button and Copy my answers (1.9.3), and offers Save my
+   record further down. The panel carries the same kind of line, counted against every locked line, and "If you already sent
    the form at line 5, send it again from here and the lines since go with it." It has no Send my
    results, and the footer taps cannot bring one back.
 5. Play again keeps the codename, goes straight to line 1 and marks the record "run 2". The tester
@@ -300,7 +311,11 @@ The feedback form is the Mason Microsoft Form "Second Pass: tester feedback", at
 `FEEDBACK_FORM` in `index.html` (https://forms.cloud.microsoft/r/Q2gRni88vR). Its question 9 is
 "Your drill answers (the drill fills this in for you, so please leave it as it is)", optional and
 long answer, and the form has pre-filled answers turned on. A tester who opens the form from the
-bare link, in an email for instance, sends an empty question 9, so the stop's button is the way in.
+bare link, in an email or from the line under the band for instance, sends an empty question 9
+unless they paste into it, so the stop's button is the way in and Copy my answers is the way back
+for a tester who sends from the tab they opened first. The copy carries the whole record, with no
+cut to fit a link, in the grammar below, so `tools/tester_record_parse.py` reads a pasted answer
+the same way as a pre-filled one.
 
 Two constants beside `FEEDBACK_FORM` turn the prefill on. Both start empty, and while either one is
 empty the button opens the bare form exactly as 1.9.1 did and the band and the stop keep their
