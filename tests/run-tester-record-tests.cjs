@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-/* The tester record and the feedback form link it rides in (release 1.9.2).
+/* The tester record, the feedback form link it rides in (release 1.9.2), and the start link
+ * and Copy my answers (release 1.9.3).
  *
  *   node tests/run-tester-record-tests.cjs
  *
@@ -14,6 +15,7 @@
 "use strict";
 const { boot } = require("./index-harness.cjs");
 
+const VERSION = "1.9.3";
 const BARE = "https://forms.cloud.microsoft/r/Q2gRni88vR";
 /* the shape of a real pre-filled link, with an id and a question name as long as Microsoft's */
 const PREFILL = {
@@ -159,7 +161,7 @@ const BAND_ON = "Tester link<span>Nothing is sent from this page. The feedback f
     check("T02", "no prefill: the stop keeps its 1.9.1 sentence and adds no note about the form",
       html.indexOf("That's five lines, which is all the feedback needs.") > -1 && html.indexOf("stopnote") === -1 && !!t.el("keepgoing"));
     eq("T03", "no prefill: the band still says nothing is sent", t.el("testband").innerHTML, BAND_OFF);
-    eq("T03b", "no prefill: the version prints as 1.9.2 on the footer", t.el("verline").textContent, "second-pass-drill 1.9.2, test mode");
+    eq("T03b", "no prefill: the version prints as " + VERSION + " on the footer", t.el("verline").textContent, "second-pass-drill " + VERSION + ", test mode");
   }
   for (const [id, pf] of [["T04a", { base: PREFILL.base, param: "" }], ["T04b", { base: "", param: PREFILL.param }]]) {
     const t = await fiveLines({ prefill: pf });
@@ -178,7 +180,7 @@ const BAND_ON = "Tester link<span>Nothing is sent from this page. The feedback f
     eq("T06", "prefill: the link carries the record the page builds now", rec, t.window.__BTM_TESTER.record());
     const r = split(rec);
     eq("T07", "header: stamp, codename, attempt id, case, answered, right, points, run, case file",
-      r.head, ["second-pass-drill 1.9.2", S.codename, S.attemptId, "case halyard", "answered 5", "right 3", "points " + S.points, "run 1", "case file halyard-v4"]);
+      r.head, ["second-pass-drill " + VERSION, S.codename, S.attemptId, "case halyard", "answered 5", "right 3", "points " + S.points, "run 1", "case file halyard-v4"]);
     check("T07b", "header: points are the run's own total and above zero", S.points > 0 && r.head[6] === "points " + S.points);
     check("T07c", "the delimiters carry no spaces", rec.indexOf(" | ") === -1 && rec.indexOf(" || ") === -1 && /\|\|L1\|/.test(rec), rec);
     eq("T08", "five line segments, one per locked line, in order", r.lines.map((l) => l[0]), ["L1", "L2", "L3", "L4", "L5"]);
@@ -346,7 +348,7 @@ const BAND_ON = "Tester link<span>Nothing is sent from this page. The feedback f
     const S = t.S();
     tap(t, 3);
     eq("T42", "on the tester link, three taps on the footer leave test mode on: band shown, test attempt, footer says test mode",
-      [t.el("testband").hidden, S.testAttempt, t.el("verline").textContent, t.el("testband").innerHTML], [false, true, "second-pass-drill 1.9.2, test mode", BAND_ON]);
+      [t.el("testband").hidden, S.testAttempt, t.el("verline").textContent, t.el("testband").innerHTML], [false, true, "second-pass-drill " + VERSION + ", test mode", BAND_ON]);
     tap(t, 3);
     FIVE.forEach((l, k) => { play(t, l[0], l[1], l[2], l[3]); if (k < FIVE.length - 1) next(t); });
     check("T42b", "after six taps the line 5 stop still draws with the feedback form and Keep going",
@@ -363,7 +365,7 @@ const BAND_ON = "Tester link<span>Nothing is sent from this page. The feedback f
     const on = [p.el("testband").hidden, p.S().testAttempt];
     tap(p, 3);
     eq("T43", "on the public link three taps turn test mode on, and three more do not turn it off",
-      [on, p.el("testband").hidden, p.S().testAttempt, p.el("verline").textContent], [[false, true], false, true, "second-pass-drill 1.9.2, test mode"]);
+      [on, p.el("testband").hidden, p.S().testAttempt, p.el("verline").textContent], [[false, true], false, true, "second-pass-drill " + VERSION + ", test mode"]);
   }
 
   /* ---------- T44: Play again marks the record as a later run ---------- */
@@ -437,6 +439,126 @@ const BAND_ON = "Tester link<span>Nothing is sent from this page. The feedback f
     const t = await fiveLines({ prefill: { base: BARE, param: PREFILL.param } });
     eq("T47e", "a base with no ResponsePage.aspx?id= counts as empty: the bare form and the 1.9.1 band",
       [t.feedbackHref(), t.el("testband").innerHTML, t.screenHtml().indexOf("stopnote")], [BARE, BAND_OFF, -1]);
+  }
+
+  /* ---------- T48-T49: the bare form under the band, from the intro to line 5 (1.9.3) ---------- */
+  const FIRST_ON = '<a id="formfirstlink" href="' + BARE + '" target="_blank" rel="noopener">Open the feedback form in a new tab</a>' +
+    " now so you can see the questions. Send it from the button after line 5, which fills in your answers.";
+  const FIRST_OFF = '<a id="formfirstlink" href="' + BARE + '" target="_blank" rel="noopener">Open the feedback form in a new tab</a>' +
+    " now so you can see the questions. Send it from the button after line 5.";
+  {
+    const t = boot({ search: "?test=1", prefill: PREFILL });
+    await t.ready();
+    const ff = t.el("formfirst");
+    eq("T48", "the tester intro shows the bare form link under the band before Play, in a new tab, with the prefill sentence",
+      [t.S().step, ff.hidden, ff.innerHTML, !!t.el("formfirstlink")], [0, false, FIRST_ON, true]);
+    t.S().tourSeen = true;
+    t.click("go");
+    const seen = [];
+    for (let k = 0; k < 5; k++) {
+      seen.push(ff.hidden);
+      play(t, FIVE[k][0], FIVE[k][1], FIVE[k][2], FIVE[k][3]);
+      if (k < 4) { seen.push(ff.hidden); next(t); }
+    }
+    seen.push(ff.hidden);
+    eq("T48b", "it stays on lines 1 to 5 and their reveals, and goes once line 5 is locked and the stop draws",
+      seen, [false, false, false, false, false, false, false, false, false, true]);
+    t.click("feedbackform");
+    eq("T48c", "the stop's button still carries the record, and the start link was never rewritten",
+      [valueOf(t.feedbackHref()) === t.window.__BTM_TESTER.record(BUDGET), t.el("formfirstlink").getAttribute("href")], [true, BARE]);
+    t.click("keepgoing");
+    t.click("backline");
+    const back = ff.hidden;
+    play(t, "stand", [CHIP.hold], undefined, 5);
+    eq("T48d", "Back to line 5 brings the start link back while line 5 is open, and locking it hides it again", [back, ff.hidden], [false, true]);
+    t.click("formfirstlink");
+    check("T48e", "pressing the start link is a link, not a request", netNonGet(t).length === 0 && t.net.length === 3, JSON.stringify(t.net));
+  }
+  {
+    const t = boot({ search: "?test=1", prefill: { base: "", param: "" } });
+    await t.ready();
+    eq("T49", "with the prefill off the start link does not promise the answers are filled in", [t.el("formfirst").hidden, t.el("formfirst").innerHTML], [false, FIRST_OFF]);
+    const p = boot({ search: "" });
+    await p.ready();
+    eq("T49b", "the public link shows no start link", [p.el("formfirst").hidden, p.el("formfirst").innerHTML], [true, ""]);
+    tap(p, 3);
+    eq("T49c", "three footer taps on the public intro turn test mode on and the start link with it", p.el("formfirst").hidden, false);
+    const words = (FIRST_ON + FIRST_OFF).replace(/<[^>]*>/g, "");
+    check("T49d", "the start link copy carries no em dash and no semicolon", words.indexOf(";") === -1 && words.indexOf(EM_DASH) === -1, words);
+  }
+
+  /* ---------- T50-T54: the feedback button's face and Copy my answers (1.9.3) ---------- */
+  const flush = async () => { for (let k = 0; k < 5; k++) await new Promise((r) => setImmediate(r)); };
+  const HINT = '<p class="copyhint" id="copyhint">Already have the form open? Paste into question&nbsp;9.</p>';
+  const COPIED = "Copied. Paste it into question" + ch(0xA0) + "9 of the feedback form.";
+  const BYHAND = "This browser did not let the page copy. Your answers are selected in the box below, so copy them from there.";
+  {
+    const t = await fiveLines({ prefill: PREFILL });
+    const html = t.screenHtml();
+    const a = t.el("feedbackform");
+    check("T50", "with the prefill on, the stop's button reads Open the feedback form with your answers, is the large green one, and opens a new tab",
+      html.indexOf('<span>Open the feedback form with your answers</span><span class="btnsub">Opens in a new tab</span></a>') > -1 &&
+      a.classList.contains("green") && a.classList.contains("feedbackgo") && a.getAttribute("target") === "_blank" && a.getAttribute("rel") === "noopener", html);
+    check("T50b", "the stop draws the note, then the button, then Copy my answers with its hint, then Keep going",
+      html.indexOf("stopnote") < html.indexOf('id="feedbackform"') && html.indexOf('id="feedbackform"') < html.indexOf('id="copyanswers"') &&
+      html.indexOf('id="copyanswers"') < html.indexOf(HINT) && html.indexOf(HINT) < html.indexOf('id="keepgoing"'));
+    eq("T50c", "the copy controls carry their labels: the hint describes the button, the status line is polite, the box is read-only and named",
+      [t.el("copyanswers").getAttribute("aria-describedby"), t.el("copystate").getAttribute("role"), t.el("copystate").getAttribute("aria-live"),
+       /id="copybox" readonly hidden/.test(html), t.el("copybox").getAttribute("aria-label")],
+      ["copyhint", "status", "polite", true, "Your answers, to paste into question 9 of the feedback form"]);
+    /* the clipboard takes the record as it is when the button is pressed */
+    let got = null;
+    t.window.navigator.clipboard = { writeText: (s) => { got = s; return Promise.resolve(); } };
+    t.S().words[1] = "added after the stop drew";
+    t.click("copyanswers");
+    await flush();
+    eq("T51", "Copy my answers puts the whole record on the clipboard, read at the press, and says Copied",
+      [got === t.window.__BTM_TESTER.record(), (got || "").indexOf("added after the stop drew") > -1, t.el("copyanswers").textContent, t.el("copystate").textContent],
+      [true, true, "Copied", COPIED]);
+    const r = split(got || "");
+    check("T51b", "the copied record parses as the link's does: the same header, five lines, no cut notes",
+      r.head.length === 9 && r.lines.length === 5 && !r.cut && !r.trunc && !r.off, got);
+    /* the clipboard refuses and so does the copy command: the box opens with the record in it */
+    t.window.navigator.clipboard = { writeText: () => Promise.reject(new Error("denied")) };
+    t.document.execCommand = () => false;
+    t.click("copyanswers");
+    await flush();
+    eq("T52", "when the browser will not copy, the read-only box opens holding the record and the line says to copy it from there",
+      [t.el("copybox").hidden, t.el("copybox").value === t.window.__BTM_TESTER.record(), t.el("copyanswers").textContent, t.el("copystate").textContent],
+      [false, true, "Copy my answers", BYHAND]);
+    /* no clipboard at all, and the copy command works: copied through the box, which closes */
+    delete t.window.navigator.clipboard;
+    t.document.execCommand = () => true;
+    t.click("copyanswers");
+    await flush();
+    eq("T52b", "with no clipboard the copy command copies through the box, and the box closes again",
+      [t.el("copybox").hidden, t.el("copyanswers").textContent, t.el("copystate").textContent], [true, "Copied", COPIED]);
+    /* the stop's keys are as they were: Enter and Space carry nobody past it */
+    const before = t.S().step;
+    ["Enter", " "].forEach((key) => t.document.dispatch("keydown", { key, code: key === " " ? "Space" : "Enter", target: t.document.body, preventDefault() {}, stopPropagation() {} }));
+    eq("T53", "Enter and Space on the stop still do nothing, and Keep going is still there", [t.S().step, !!t.el("keepgoing"), !!t.el("next")], [before, true, false]);
+    check("T53b", "copying made no request", netNonGet(t).length === 0 && t.net.length === 3, JSON.stringify(t.net));
+    const text = t.screenHtml().replace(/<[^>]*>/g, "").replace(/&[a-z]+;/g, "");
+    check("T53c", "the stop's copy carries no em dash and no semicolon", text.indexOf(";") === -1 && text.indexOf(EM_DASH) === -1, text);
+  }
+  {
+    const t = await fiveLines({ prefill: { base: "", param: "" } });
+    const html = t.screenHtml();
+    check("T54", "with the prefill off the button keeps its plain label, and Copy my answers is still offered",
+      html.indexOf('<span>Open the feedback form</span><span class="btnsub">') > -1 && !!t.el("copyanswers") && html.indexOf(HINT) > -1 && t.feedbackHref() === BARE);
+    t.click("keepgoing");
+    playAll(t, () => ["stand", [CHIP.hold], undefined, 4]);
+    finish(t);
+    const end = t.screenHtml();
+    check("T54b", "the tester end screen puts the feedback panel above the read out and the record, with the button and Copy my answers",
+      end.indexOf('id="endhead">Your last step is the feedback form.</p>') > -1 && end.indexOf('id="feedbackform"') > -1 && !!t.el("copyanswers") &&
+      end.indexOf('id="endhead"') < end.indexOf('id="showmiss"') && end.indexOf('id="copyanswers"') < end.indexOf('id="saverec"') && !t.el("sendres"), end.slice(0, 400));
+    let got = null;
+    t.window.navigator.clipboard = { writeText: (s) => { got = s; return Promise.resolve(); } };
+    t.click("copyanswers");
+    await flush();
+    eq("T54c", "Copy my answers on the end screen carries every locked line", [split(got || "").lines.length, t.el("copystate").textContent], [14, COPIED]);
+    eq("T54d", "the start link stays away on the end screen", t.el("formfirst").hidden, true);
   }
 
   console.log("\n" + passed + " passed, " + failed + " failed, " + (passed + failed) + " run");

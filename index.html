@@ -65,6 +65,15 @@
   font-size:var(--t-small);font-weight:700;letter-spacing:.03em;line-height:1.4;
   text-align:center;overflow-wrap:anywhere}
 #testband span{display:block;font-weight:400;letter-spacing:0;color:#d7d5d0}
+/* the bare form under the band, from the intro to line 5, so a tester can open it alongside
+   the drill and read the questions first (1.9.3) */
+#formfirst{margin:0 calc(var(--gut) * -1);max-width:none;width:calc(100% + var(--gut) * 2);
+  padding:var(--s3) var(--gut);background:var(--card);color:var(--ink);
+  border-bottom:1px solid var(--rule-strong);
+  font-size:var(--t-small);line-height:1.5;text-align:center;overflow-wrap:anywhere}
+#formfirst[hidden]{display:none}
+#formfirst a{color:var(--mason);font-weight:700;text-decoration:underline;text-underline-offset:.2em}
+#formfirst a:hover{color:#003f2c}
 
 /* ---------- the race track ---------- */
 #bar{position:sticky;top:0;z-index:5;background:var(--paper);padding:var(--s3) 0 var(--s2)}
@@ -593,13 +602,26 @@ body{overflow-x:clip}
 /* the line that says the answers are already in the form (1.9.2) */
 .stopnote{margin:var(--s2) 0 0;line-height:1.5;color:var(--ink-soft)}
 .testerstop .btn-text{display:block;margin:var(--s2) auto 0}
-.actions #feedbackform{margin-top:var(--s6)}
+/* the feedback button is the one thing to press at the stop and on the tester end screen, so it
+   is the largest control there, in Mason green, with what it does on its face; the copy button
+   under it is the outlined second choice and Keep going stays quiet text (1.9.3) */
+#screen .btn.feedbackgo{flex-direction:column;gap:2px;min-height:60px;margin-top:var(--s4);
+  padding:var(--s3) var(--s4);font-size:var(--t-lead);font-weight:700}
+.feedbackgo .btnsub{font-size:var(--t-small);font-weight:400;color:#d9e8e1}
+#screen .btn.secondary#copyanswers{margin-top:var(--s3)}
+.copyhint{margin:var(--s2) 0 0;font-size:var(--t-small);line-height:1.5;color:var(--ink-soft);text-align:center}
+.copystate{margin:var(--s1) 0 0;font-size:var(--t-small);line-height:1.5;color:var(--ink);text-align:center}
+.copystate:empty{display:none}
+.recordbox.copybox{min-height:120px}
+.copybox[hidden]{display:none}
+.final .testerstop{margin:var(--s6) 0 var(--s2)}
 </style>
 </head>
 <body>
 <div id="app">
   <div id="mason"><b>George Mason University</b><span>Costello College of Business</span><span id="codetag" hidden></span></div>
   <div id="testband" hidden role="status">Tester link<span>Nothing you do here is sent.</span></div>
+  <p id="formfirst" hidden></p>
   <div id="bar">
     <div id="track"></div>
     <div id="label"><span id="step"></span><span id="score" class="hidden"></span></div>
@@ -616,7 +638,7 @@ body{overflow-x:clip}
    One constant. It prints under the footer line on every screen, rides into the posted
    payload on question A, and stamps the local record. README and review.html state it too. */
 var PRODUCT_NAME = "Second Pass: Beat the Machine";
-var PRODUCT_VERSION = "1.9.2";
+var PRODUCT_VERSION = "1.9.3";
 var PRODUCT_STAMP = "second-pass-drill " + PRODUCT_VERSION;
 var NOTICE_VERSION = "notice-2026-09-14";
 
@@ -638,12 +660,17 @@ function paintTestBand(){
     : 'Nothing you do here is sent.') + '</span>';
   var ver = document.getElementById("verline");
   if(ver) ver.textContent = PRODUCT_STAMP + (TEST_MODE ? ", test mode" : "");
+  paintFormFirst();
 }
 
 /* ---------- the tester feedback form (1.9.1) ----------
    The tester link asks for five lines and then this form, so it stops after line 5 with a
-   button to it, and its end screen offers it where the public link offers Send my results.
-   It opens in a new tab and the drill stays where it was. */
+   button to it, and its end screen offers it near the top, where a tester sees it before the
+   read out. It opens in a new tab and the drill stays where it was. From 1.9.3 a line under the
+   band also links the bare form from the intro to line 5, so a tester can read the questions
+   alongside the drill, and it says to send the form from the button after line 5, the one that
+   carries the answers. The stop and the end screen add Copy my answers, for a tester who already
+   has the form open and pastes the record into question 9 by hand. */
 var FEEDBACK_FORM = "https://forms.cloud.microsoft/r/Q2gRni88vR";
 var TESTER_LINES = 5;
 
@@ -835,10 +862,88 @@ function testerPrefill(){
 }
 function feedbackHref(){ return testerPrefill().href; }
 /* Read at the moment the button draws, which is after every lock and every Back, and read again
-   when it is pressed, so the link never carries a line that has since changed. */
+   when it is pressed, so the link never carries a line that has since changed. Its face says what
+   it does: with the answers in the link it reads "Open the feedback form with your answers", and
+   with the prefill off it reads "Open the feedback form", as before (1.9.3). */
 function feedbackButton(){
-  return '<a class="btn" id="feedbackform" href="'+esc(feedbackHref())+'" target="_blank" rel="noopener">'+
-    'Open the feedback form</a>';
+  var pf = testerPrefill();
+  return '<a class="btn green feedbackgo" id="feedbackform" href="'+esc(pf.href)+'" target="_blank" rel="noopener">'+
+    '<span>'+(pf.on && pf.included ? 'Open the feedback form with your answers' : 'Open the feedback form')+'</span>'+
+    '<span class="btnsub">Opens in a new tab</span></a>';
+}
+/* The bare form under the band, painted once and shown from the intro until line 5 is locked. It
+   never carries answers, so it is a plain link that wireFeedbackLink() leaves alone. It says to
+   send the form from the button after line 5, and that the button fills in the answers only while
+   the prefill is on. */
+var FORMFIRST_PAINTED = false;
+function paintFormFirst(){
+  var el = document.getElementById("formfirst");
+  if(!el) return;
+  var locked = 0, i;
+  for(i=0;i<S.calls.length;i++) if(S.calls[i] === "stand" || S.calls[i] === "flag") locked++;
+  var show = TEST_MODE && locked < TESTER_LINES && (S.step < STEP_DONE || S.step === 90 || S.step === 91);
+  if(show && !FORMFIRST_PAINTED){
+    el.innerHTML = '<a id="formfirstlink" href="'+esc(FEEDBACK_FORM)+'" target="_blank" rel="noopener">'+
+      'Open the feedback form in a new tab</a> now so you can see the questions. Send it from the button after line '+
+      TESTER_LINES + (prefillOn() ? ', which fills in your answers.' : '.');
+    FORMFIRST_PAINTED = true;
+  }
+  el.hidden = !show;
+}
+/* What Copy my answers puts on the clipboard: the whole record, the same grammar question 9 gets
+   from the link but with nothing cut to fit a link, since a paste has no link to fit. A record
+   longer than TESTER_COPY_MAX is cut the same way the link is, so it still parses. */
+var TESTER_COPY_MAX = 4000;
+function testerCopyText(){
+  var full = testerRecord();
+  return full.length <= TESTER_COPY_MAX ? full : testerRecord(TESTER_COPY_MAX);
+}
+/* the feedback button, then Copy my answers with its hint, the line that answers the copy, and a
+   read-only box that only opens when the browser will not copy */
+function feedbackPanel(where){
+  return testerStopNote(where)+
+    feedbackButton()+
+    '<button type="button" class="btn secondary" id="copyanswers" aria-describedby="copyhint">Copy my answers</button>'+
+    '<p class="copyhint" id="copyhint">Already have the form open? Paste into question&nbsp;9.</p>'+
+    '<p class="copystate" id="copystate" role="status" aria-live="polite"></p>'+
+    '<textarea class="recordbox copybox" id="copybox" readonly hidden spellcheck="false" '+
+      'aria-label="Your answers, to paste into question 9 of the feedback form"></textarea>';
+}
+/* The record is read when the button is pressed, so a Back and a changed line are in it. The
+   clipboard is tried first, then the box with the browser's own copy command, and when neither
+   works the box stays open with the record selected for the tester to copy by hand. Nothing is
+   sent: the text goes to this device's clipboard and nowhere else. */
+function copyAnswers(btn){
+  var text = testerCopyText();
+  var box = document.getElementById("copybox"), state = document.getElementById("copystate");
+  function say(t){ if(state) state.textContent = t; }
+  function ok(){
+    btn.textContent = "Copied";
+    if(box) box.hidden = true;
+    say("Copied. Paste it into question 9 of the feedback form.");
+    setTimeout(function(){ if(btn.textContent === "Copied") btn.textContent = "Copy my answers"; }, 4000);
+  }
+  function byHand(){
+    btn.textContent = "Copy my answers";
+    if(box){ box.value = text; box.hidden = false; try{ box.focus(); box.select(); }catch(e){} }
+    say("This browser did not let the page copy. Your answers are selected in the box below, so copy them from there.");
+  }
+  function viaBox(){
+    if(!box) return byHand();
+    box.value = text; box.hidden = false;
+    var copied = false;
+    try{ box.select(); copied = !!document.execCommand("copy"); }catch(e){ copied = false; }
+    if(copied) ok(); else byHand();
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    try{ navigator.clipboard.writeText(text).then(ok, viaBox); }catch(e){ viaBox(); }
+  } else viaBox();
+}
+function wireCopyAnswers(){
+  document.addEventListener("click", function(e){
+    var t = e && e.target, b = (t && t.closest) ? t.closest("#copyanswers") : null;
+    if(b) copyAnswers(b);
+  });
 }
 function wireFeedbackLink(){
   function fresh(e){
@@ -1731,6 +1836,7 @@ function render(){
   app.classList.toggle("wide", S.step===2);
   app.classList.toggle("hasbar", S.step===2);
   progress();
+  paintFormFirst();
   var s = S.step;
   if(s===0) return intro();
   if(s===1) return identity();
@@ -3150,7 +3256,8 @@ function reveal(i, round){
     ? (round === 2 ? "See how you did" : "Start round two")
     : "Next line";
   /* the tester link stops after line 5: the form is the next step and going on is a choice,
-     so this reveal carries the form and a quiet Keep going in place of Next (1.9.1) */
+     so this reveal carries the form and a quiet Keep going in place of Next (1.9.1), and from
+     1.9.3 the form button is the largest control on it, with Copy my answers under it */
   var testerStop = TEST_MODE && round === 1 && i === TESTER_LINES - 1 && !last;
   screen.innerHTML =
     (i === 0 ? whyLine("This is what the answer key says about the call you just locked in.") : "")+
@@ -3162,12 +3269,12 @@ function reveal(i, round){
     (testerStop
       ? '<section class="testerstop" aria-labelledby="stophead">'+
           '<p class="stophead" id="stophead">That\'s five lines, which is all the feedback needs.</p>'+
-          testerStopNote("stop")+
-          feedbackButton()+
+          feedbackPanel("stop")+
           '<button type="button" class="btn-text quiet" id="keepgoing">Keep going</button>'+
         '</section>'
       : '<button class="btn" id="next">'+nextLabel+'<span class="kbd">Enter</span></button>');
   wireLedger();
+  paintFormFirst();
   LEVELED = false;
   function onward(){
     if(last) return go(round === 2 ? STEP_DONE : (HAS_R2 ? STEP_BRIDGE : STEP_DONE));
@@ -3998,9 +4105,9 @@ function actionsBlock(){
     '<button class="btn secondary" id="saverec">Save my record</button>'+
     '<div id="recwrap" hidden><textarea class="recordbox" id="recbox" readonly spellcheck="false"></textarea>'+
       '<button class="btn-text" id="copyrec">Copy the record</button></div>'+
-    /* the tester link posts nothing, so its end screen offers the feedback form in place of
-       Send my results (1.9.1), with a line that says what the link carries (1.9.2) */
-    (TEST_MODE ? testerStopNote("end") + feedbackButton() :
+    /* the tester link posts nothing, so its end screen has no Send my results (1.9.1). Its
+       feedback form sits near the top of the end screen instead, in testerEndPanel() (1.9.3) */
+    (TEST_MODE ? '' :
     '<h3 class="sendhead">Send your results</h3>'+
     '<p>Voluntary. It posts your calls to the Google Form responses sheet described in the '+
       'notice at the start.'+
@@ -4009,6 +4116,15 @@ function actionsBlock(){
     '<button class="btn" id="sendres">Send my results</button>'+
     '<p class="sendstate" id="sendstate"></p>')+
   '</div>';
+}
+/* The tester end screen's feedback form, under the score and above the read out, so it is the
+   first thing to press (1.9.3). It carries the same note, button and copy controls as the stop. */
+function testerEndPanel(){
+  if(!TEST_MODE) return "";
+  return '<section class="testerstop" aria-labelledby="endhead">'+
+    '<p class="stophead" id="endhead">Your last step is the feedback form.</p>'+
+    feedbackPanel("end")+
+  '</section>';
 }
 function wireActions(){
   var wrap = document.getElementById("recwrap"), box = document.getElementById("recbox");
@@ -4155,6 +4271,7 @@ function done(){
       (HAS_R2 ? '<p class="fresh">Fresh case: right call '+r2Right()+' of '+LINES2+'. Right reason '+reasonCount(2)+' of '+LINES2+'.</p>' : '')+
       (HAS_R2 ? '<p class="tiny" style="margin:4px 0 0">A second company, read once, scored on its own. '+
         'The points, the rank and the badges are read off the '+numWord(LINES)+' trained '+plural(LINES, 'line')+'.</p>' : '')+
+      testerEndPanel()+
       readShiftBlock()+
       medals+
       '<div class="sharecard"><span class="label">Your card</span>'+
@@ -4247,6 +4364,7 @@ function boot(){
   if(TEST_MODE) tourLive();
   wireTestTap();
   wireFeedbackLink();
+  wireCopyAnswers();
   buildTrack();
   render();
   /* the brand face lands after the first paint and the codename gets wider, so place it again */
