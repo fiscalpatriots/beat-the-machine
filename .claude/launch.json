@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "second-pass",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:/Users/Khaled/AppData/Local/Temp/claude/C--Users-Khaled-Documents-Coach-Dashboard-HQ/6bb11f40-b974-4e1c-854d-3e916662fd8a/scratchpad/server.cjs", "8912"],
+      "port": 8912
+    }
+  ]
+}
