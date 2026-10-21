@@ -15,7 +15,7 @@
 "use strict";
 const { boot } = require("./index-harness.cjs");
 
-const VERSION = "1.9.4";
+const VERSION = "1.9.5";
 const BARE = "https://forms.cloud.microsoft/r/Q2gRni88vR";
 /* the shape of a real pre-filled link, with an id and a question name as long as Microsoft's */
 const PREFILL = {

@@ -9,7 +9,7 @@ Live at https://fiscalpatriots.github.io/beat-the-machine/ from `main`.
 
 | What | Version | Where it is stated |
 | --- | --- | --- |
-| Product | `second-pass-drill 1.9.4` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
+| Product | `second-pass-drill 1.9.5` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
 | Round one case | `halyard-v4`, 13 September 2026 | `cases/halyard-v4.json`, question A, the local record |
 | Round two case | `brightwater-v6`, 13 September 2026 | `cases/brightwater-v6.json`, questions A and C, the local record |
 | Data notice | `notice-2026-09-14` | the notice screen, question A, the local record |
@@ -264,7 +264,7 @@ post-test and never a learning gain. The readout fields carry the prefix `prepic
 page for a facilitator with no address bar to edit. The taps work one way. Nothing on the page
 turns test mode off again, so a live run needs a new tab without `?test=1`. The footer version
 line gains ", test mode". The tester link is https://fiscalpatriots.github.io/beat-the-machine/?test=1,
-and in 1.9.4 a tester's run goes like this:
+and in 1.9.5 a tester's run goes like this:
 
 1. Play goes straight to line 1 under a random codename, with a six-tip tour over that line. The
    tester link has no notice screen, no codename screen and no case picker, and always plays
@@ -273,6 +273,13 @@ and in 1.9.4 a tester's run goes like this:
    Every reason under a call carries a one-line meaning, and on Let it stand the hold reason comes
    first with the six problems under "Letting it stand even though you saw a problem? Tap the
    problem as well." (1.9.4)
+   From 1.9.5 Let it stand and Flag it carry their meaning under their names ("The memo's
+   explanation holds up." and "The memo's explanation has a problem."), the intro says the job in
+   one boxed sentence, the call tip says from the start that the tour waits for the call, the note
+   under the question is a labelled box, and from 1,024 pixels the full ledger sits beside the line
+   in its own panel with its column heads held at the top, as they are in the ledger sheet on a
+   phone. Every answer carries "Why the key says so": the key's explanation, the account's figures
+   and the reason the key gives, with its meaning.
 2. A band under the Mason header reads "Tester link" over one line. While the two prefill
    constants below are empty it reads "Nothing you do here is sent." Once both are set it reads
    "Nothing is sent from this page. The feedback form opens with your answers filled in, and
