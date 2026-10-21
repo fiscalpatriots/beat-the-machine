@@ -40,6 +40,12 @@ new call labels and the reason box (3), the ledger scrolled with its column head
 side panel from 1,024 and the sheet below it), a right answer and a wrong one with Why the key says
 so (5, 5b), the line 5 stop (6) and the tester end screen (7). No sideways scroll at any width.
 
+Live: merged and pushed to main at 12:06 PM on 21 October; GitHub Pages served
+`second-pass-drill 1.9.5` on both the public link and `?test=1` from 12:08 PM. A headless Edge pass
+against the live tester link at 375 and 1280 went through the intro, all six tour tips, the ledger
+with its heads held, and five answered lines to the line 5 stop, with no script error. Its screens
+are `screenshots/verify/1.9.5-live-*`.
+
 ---
 
 # Second Pass, release 1.9.4
