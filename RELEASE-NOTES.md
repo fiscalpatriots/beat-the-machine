@@ -1,3 +1,47 @@
+# Second Pass, release 1.9.5
+
+21 October 2026. Khaled Alkurd, George Mason University.
+Live at https://fiscalpatriots.github.io/beat-the-machine/
+
+---
+
+## 1.9.5, what changed since 1.9.4
+
+Cut 21 October 2026 from the second round of tester feedback on the Mason form: six students on
+1.9.3, clarity 4.0 and usefulness 4.3 on average. No answer key, basis key, case file, reason value
+or record grammar changed, so the score, question 9's pre-filled record and
+`tools/tester_record_parse.py` read a 1.9.5 run exactly as a 1.9.3 or 1.9.4 one. The product stamp
+moves to `second-pass-drill 1.9.5`.
+
+| What changed | Why | Where |
+| --- | --- | --- |
+| **Each call says what it means.** Under Let it stand, inside the same button, "The memo's explanation holds up." Under Flag it, "The memo's explanation has a problem." The intro carries one boxed sentence, "Your job. On each line, decide whether the memo's explanation holds up. Let it stand when the numbers match the ledger and something on file backs the reason. Flag it when either one has a problem." Tour tip 1 now ends "Your job is to decide whether its explanation holds up." and the call tip reads "Make your call here. Let it stand means the memo's explanation holds up. Flag it means the explanation has a problem." The calls' values and what they post are unchanged | A tester rated clarity 2: "I don't really understand the 'Let It Stand' or 'Flag It' options. I think it would be easier to simplify the wording to make it clearer for the audience." | `CALL_HINT`, `JOB_LINE`, `callCard()`, `intro()`, `TOUR_STEPS`, `.jobline` |
+| **The tour no longer reads as stuck at 4 of 6.** Tip 4 is the one tip that waits for the tester: it opens the reason rows only once a call is made. Until 1.9.5 its Next button was drawn at 40 percent opacity, and the line saying the tour waits appeared only after Next was pressed, so a tester saw a faded button and nothing to do. Now the waiting line shows from the moment the tip opens, Next is never faded (pressed with no call, it moves focus to Let it stand), a half-second timer moves the tour on once a call is on the card even if the click path fails, the call handler moves the tour on even if drawing the reasons throws, and a tip whose part is missing stays up as a bottom sheet with Next and Skip tour instead of hiding | A tester: "Intro walkthrough got hung up at step 4 of 6. On Firefox with Windows 11." Run in headless Firefox 131 (Playwright build 1465) on 1.9.4 at 1280, 1024, 768 and 375 wide and at 1536x730, 1366x650, 1280x600, 1920x960, 1024x700 and 800x600: by mouse, by Enter and by Space the tour went through all six tips with no script error, so no engine fault reproduced. What did reproduce in every browser is the faded Next on tip 4 that does nothing visible until a call is made, which is the likely stall. The same Firefox walk passes on 1.9.5 | `tourShow()`, `tourPaintNext()`, `tourWatch()`, `tourPlace()`, `select()` in `callCard()` |
+| **The note under the question is a labelled box.** After a call, "How to answer: Tap at least one reason, and more than one is fine. The line under each reason says what it means." sits in a green-edged tinted box with its label, not small grey text. The line that heads the six problems on Let it stand is set in ink and semibold. On the answer, the reason note and the still-open note are the same box, labelled "Your reason" and "Still open" | A tester: "I did not realize/see the little notes that popped up under the question." | `.notebox`, `paintCommit()`, `reasonNote()`, `openNote()`, `.basissplit` |
+| **The ledger keeps its column heads, and sits beside the line on a wide screen.** In the ledger sheet the May, June, Change and Percent heads stay at the top while the rows scroll. From 1,024 pixels the full ledger also sits beside the line in its own panel, held under the progress line and scrolled to the account on the card, with the same held heads, so the question never leaves the screen; the See the full ledger button is hidden there. Under 1,024 the stacked layout and the sheet are as before. The tour places its tips clear of the panel | One tester: "I would prefer if the headers were frozen so I can scroll down and still be able to see which column is what." Another: "It would also be helpful to have the full ledger available in a pop-out on the side while still being able to see the entire question." | `ledgerSide()`, `lineLayout()`, `fitLedgerSide()`, `render()`, `.ledgerside`, `#sheetbody .scols` |
+| **Every answer says why.** A "Why the key says so" section on the answer, read from the case file the line already carries: the key's full explanation (`why`), then one sentence of the account's figures from the ledger and one naming the reason the key gives with its meaning, for example "On the ledger, account 4200 (Freight billed to customers) went from $186,000 in May to $121,000 in June, down $65,000, or 34.9 percent. The reasons the key gives are figure does not tie (a dollar amount or percent in the memo does not match the ledger) and nothing written where owed (the change is big enough to need an explanation, and the memo gives none)." On a missed problem the full explanation takes the place of its one-sentence summary, which it begins with. Scoring is unchanged | A tester: "providing more in-depth explanations of why an answer is correct or incorrect would help students better understand the concepts." | `whyBlock()`, `ledgerFactText()`, `keyReasonText()`, `reveal()`, `.whybox` |
+| **Where it fits, in one line.** The line 5 stop and the end screen say "Where this fits: auditing and intermediate accounting courses, as practice in professional skepticism. You test a written explanation against the ledger and the documents on file before you accept it, as an auditor does." | Three testers placed it in audit and intermediate accounting courses, one named professional skepticism, and one asked to see how it relates to the material being taught | `FIT_LINE`, `reveal()`, `done()`, `.fitline` |
+
+The record is unchanged: `tests/tester-record-emit.cjs` writes the same records from 1.9.4 and
+1.9.5 apart from the version and the random attempt ids.
+
+Tests: `node tests/run-tester-record-tests.cjs` at 97 of 97, `python
+tools/tests/test_tester_record_parse.py` at 34 of 34, the checker suite at 801 of 801 and the
+findings tools at 54 of 54.
+
+Firefox: run, in headless Firefox 131 through Playwright, on the local page. On 1.9.5 the tour
+goes through all six tips by mouse, by Enter and by Space at 1280 and 375, and the full walk
+(intro, tour, a call, the ledger with its heads held, two answers, the stop) passes at 320, 375,
+768, 1024, 1280 and 1600 with no script error. Windows 11 Firefox on a real desk was not run.
+
+Screens: `screenshots/verify/1.9.5-<width>-*` at 320, 375, 768, 1024, 1280 and 1600, from the page
+served locally and captured in headless Edge: the intro (1), tour tip 4 (2), a question with the
+new call labels and the reason box (3), the ledger scrolled with its column heads in view (4, the
+side panel from 1,024 and the sheet below it), a right answer and a wrong one with Why the key says
+so (5, 5b), the line 5 stop (6) and the tester end screen (7). No sideways scroll at any width.
+
+---
+
 # Second Pass, release 1.9.4
 
 20 October 2026. Khaled Alkurd, George Mason University.

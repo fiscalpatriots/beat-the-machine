@@ -623,6 +623,58 @@ body{overflow-x:clip}
 .recordbox.copybox{min-height:120px}
 .copybox[hidden]{display:none}
 .final .testerstop{margin:var(--s6) 0 var(--s2)}
+
+/* ---------- 1.9.5, from the second round of tester feedback ---------- */
+/* the job in one plain sentence, on the intro, in a box a reader cannot skim past */
+.jobline{margin:var(--s4) 0;padding:var(--s3) var(--s4);background:#eef5f1;color:var(--ink);
+  border-left:4px solid var(--mason);border-radius:0 var(--radius) var(--radius) 0;
+  font-size:var(--t-body);line-height:1.55}
+.jobline b{color:var(--mason)}
+/* a note the player has to see: a tinted box with a label, never small grey text. Ink on the
+   tint is about 16:1 and the green label about 9:1. */
+.notebox{margin:var(--s3) 0;padding:var(--s3) var(--s4);background:#eef5f1;color:var(--ink);
+  border-left:4px solid var(--mason);border-radius:0 8px 8px 0;
+  font-size:var(--t-small);line-height:1.5}
+.notebox .notelabel{display:block;margin:0 0 2px;font-size:var(--t-label);font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--mason)}
+.notebox b{font-weight:600}
+#screen .basis .notebox{margin:var(--s2) 0 var(--s3)}
+/* the line on Let it stand that heads the six problems reads as a heading, not a whisper */
+#screen .basissplit{margin:var(--s4) 0 var(--s1);font-size:var(--t-small);font-weight:600;
+  line-height:1.45;color:var(--ink)}
+/* the call rows carry what each call means under its name */
+#screen .opts.calls .opt{min-height:60px}
+/* why the key says so, on every answer */
+.whybox{margin:var(--s4) 0 0;padding:var(--s4) 0 0;border-top:1px solid var(--rule)}
+.whybox .label{display:block;margin:0 0 var(--s2);font-size:var(--t-label);font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.whybox p{margin:0 0 var(--s2);font-size:var(--t-body);line-height:1.6;color:var(--ink)}
+.whybox p:last-child{margin-bottom:0}
+.whybox .whyfacts{font-size:var(--t-small);color:var(--ink)}
+/* where the drill sits in a course, on the stop and the end screen */
+.fitline{margin:var(--s4) 0 0;font-size:var(--t-small);line-height:1.55;color:var(--ink)}
+/* the ledger's column heads stay on screen while its rows scroll, in the sheet and the side
+   panel. The statement used to clip its overflow, which made it its own scroll box and kept a
+   sticky head from sticking, so the corners are rounded on the head instead. */
+#sheetbody .stmt,.ledgerside .stmt{overflow:visible}
+#sheetbody .scols,.ledgerside .scols{position:sticky;top:0;z-index:2;background:var(--card);
+  margin:0 calc(var(--s2) * -1);padding-left:var(--s2);padding-right:var(--s2)}
+#sheetbody{padding-top:0}
+#sheetbody .stmt{margin-top:var(--s4)}
+.ledgerside{display:none}
+/* from 1,024 pixels the full ledger sits beside the line in its own scrolling panel, held under
+   the progress line, so the question never leaves the screen while the figures are read */
+@media (min-width:1024px){
+  #app.lineside{max-width:1048px}
+  .linegrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:var(--s6);align-items:start}
+  .linemain{min-width:0}
+  .ledgerside{display:block;position:sticky;top:calc(var(--barh, 88px) + 8px);
+    max-height:calc(100vh - var(--barh, 88px) - 24px);overflow:auto;overscroll-behavior:contain;
+    border-radius:var(--radius);box-shadow:var(--shadow)}
+  .ledgerside .stmt{--pad:var(--s4);box-shadow:none}
+    #app.lineside .linemain .ledgerbig{display:none}
+}
+.ledgerside:focus-visible{outline:2px solid var(--mason);outline-offset:2px}
 </style>
 </head>
 <body>
@@ -646,7 +698,7 @@ body{overflow-x:clip}
    One constant. It prints under the footer line on every screen, rides into the posted
    payload on question A, and stamps the local record. README and review.html state it too. */
 var PRODUCT_NAME = "Second Pass: Beat the Machine";
-var PRODUCT_VERSION = "1.9.4";
+var PRODUCT_VERSION = "1.9.5";
 var PRODUCT_STAMP = "second-pass-drill " + PRODUCT_VERSION;
 var NOTICE_VERSION = "notice-2026-09-14";
 
@@ -1785,6 +1837,47 @@ function ledgerBig(acct, book){
   return '<button class="btn secondary ledgerbig" data-acct="'+acct+'" data-book="'+(book||1)+'">'+
     '<svg viewBox="0 0 24 24" aria-hidden="true">'+I.ledger+'</svg>See the full ledger</button>';
 }
+/* The full ledger beside the line, from 1,024 pixels (1.9.5). A tester asked for the ledger
+   "in a pop-out on the side while still being able to see the entire question". It is the same
+   statement the sheet shows, in a panel that scrolls on its own under the progress line, with
+   its column heads held at the top. Narrower windows keep the sheet behind the button. */
+function ledgerSide(acct, round){
+  return '<aside class="ledgerside" tabindex="0" aria-label="The full ledger, beside this line">'+
+    statement(acct, false, bookOf(round === 2 ? 2 : 1)).replace(' id="hererow"', ' data-here="1"')+
+  '</aside>';
+}
+function lineLayout(main, acct, round){
+  return '<div class="linegrid"><div class="linemain">'+main+'</div>'+ledgerSide(acct, round)+'</div>';
+}
+function fitLedgerSide(){
+  syncBarH();
+  var side = document.querySelector(".ledgerside");
+  if(!side || !side.offsetWidth) return;
+  var here = side.querySelector('[data-here="1"]');
+  if(here) side.scrollTop = Math.max(0, here.offsetTop - side.clientHeight / 3);
+}
+/* the panel is held just under the progress line, whose height moves with the fonts, the lock row
+   and the window, so its height is tracked rather than read once */
+function syncBarH(){
+  var app = document.getElementById("app"), bar = document.getElementById("bar");
+  if(!app || !bar) return;
+  app.style.setProperty("--barh", bar.offsetHeight + "px");
+  /* A sticky panel cannot ride past the bottom of its row, and the page can scroll that bottom
+     up to where the footer starts. The panel is kept short enough to stay whole under the
+     progress line even then, so its column heads never slide up behind it. */
+  var side = document.querySelector(".ledgerside"), grid = document.querySelector(".linegrid");
+  if(!side || !grid || !side.offsetWidth) return;
+  var below = document.documentElement.scrollHeight - (grid.getBoundingClientRect().bottom + window.pageYOffset);
+  var room = window.innerHeight - bar.offsetHeight - 16 - Math.max(0, Math.min(below, window.innerHeight));
+  side.style.maxHeight = Math.max(320, Math.floor(room)) + "px";
+}
+window.addEventListener("resize", syncBarH);
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(syncBarH);
+(function(){
+  var bar = document.getElementById("bar");
+  if(bar && window.ResizeObserver){ try{ new ResizeObserver(syncBarH).observe(bar); }catch(e){} }
+  else window.addEventListener("load", syncBarH);
+})();
 function wireLedger(){
   Array.prototype.forEach.call(screen.querySelectorAll("[data-acct]"), function(b){
     b.addEventListener("click", function(){
@@ -1848,6 +1941,9 @@ function render(){
   var app = document.getElementById("app");
   app.classList.toggle("wide", S.step===2);
   app.classList.toggle("hasbar", S.step===2);
+  /* the line screens of both rounds carry the ledger beside them on a wide window (1.9.5) */
+  app.classList.toggle("lineside", (S.step>=3 && S.step<=STEP_L1_LAST) ||
+    (HAS_R2 && S.step>=STEP_L2 && S.step<=STEP_L2_LAST));
   progress();
   paintFormFirst();
   var s = S.step;
@@ -2088,6 +2184,8 @@ function intro(){
         ? 'Read each line of the memo beside its own figures and flag the ones that do not hold. Do the first five, then the three-minute feedback form.'+
           (S.tourSeen ? '' : ' The first line comes with a short tour.')
         : 'Before any of the memo appears, you read the ledger on its own and tap the lines you would give a second look. Then you read '+numWord(LINES)+' '+plural(LINES, 'line')+' of the memo and flag the ones that do not hold.'+fresh)+'</p>'+
+    /* the job, said once in plain words where nobody can miss it (1.9.5) */
+    '<p class="jobline"><b>Your job.</b> '+esc(JOB_LINE)+'</p>'+
     caseControl()+
     '<button class="btn" id="go">Play</button>'+
     playFrames()+
@@ -2574,6 +2672,15 @@ function explainText(i){
    Tapping Let it stand or Flag it selects it and opens the basis row. Nothing is committed and
    nothing is revealed until Lock it in. Until then the other button is still live, the chips are
    still open, and Back reopens the line before this one with its own basis and words intact. */
+/* What each call means, printed under its name on the button (1.9.5). A tester rated clarity 2
+   because Let it stand and Flag it did not explain themselves. The calls, their values and what
+   they post are unchanged. */
+var CALL_HINT = {
+  stand:"The memo's explanation holds up.",
+  flag:"The memo's explanation has a problem."
+};
+/* the job in plain words, on the intro and on the tour's first tip (1.9.5) */
+var JOB_LINE = "On each line, decide whether the memo's explanation holds up. Let it stand when the numbers match the ledger and something on file backs the reason. Flag it when either one has a problem.";
 function callCard(i, round){
   var c = cardsOf(round)[i];
   if(round === 2){ if(!S.r2Start) S.r2Start = Date.now(); }
@@ -2588,23 +2695,26 @@ function callCard(i, round){
     : "";
   /* the instruction line prints over the first card of a round and not over the thirteen after it,
      the way a quiz states its rule once and then shows only the question (1.8.0) */
-  screen.innerHTML =
+  screen.innerHTML = lineLayout(
     (i === 0 ? whyLine("Read the memo against the ledger and the file, then make the call you would defend to a reviewer.") : "")+
     '<div class="card">'+
       cardBody(c, round, i)+
       '<p class="ask" id="callask">Does the memo\'s explanation hold?</p>'+
       '<div class="opts calls" role="group" aria-labelledby="callask">'+
         '<button type="button" class="opt" id="stand" aria-pressed="false">'+
-          '<span class="mk" aria-hidden="true"></span><span class="ol">Let it stand</span>'+
+          '<span class="mk" aria-hidden="true"></span><span class="ol"><span class="olt">Let it stand</span>'+
+            '<span class="oh">'+esc(CALL_HINT.stand)+'</span></span>'+
           '<span class="kbd ink">1</span></button>'+
         '<button type="button" class="opt" id="flag" aria-pressed="false">'+
-          '<span class="mk" aria-hidden="true"></span><span class="ol">Flag it</span>'+
+          '<span class="mk" aria-hidden="true"></span><span class="ol"><span class="olt">Flag it</span>'+
+            '<span class="oh">'+esc(CALL_HINT.flag)+'</span></span>'+
           '<span class="kbd ink">2</span></button>'+
       '</div>'+
       '<div class="commit" id="commit" hidden></div>'+
     '</div>'+
-    backBtn;
+    backBtn, c.acct, round);
   wireLedger();
+  fitLedgerSide();
 
   var standBtn = document.getElementById("stand"), flagBtn = document.getElementById("flag");
   var commit = document.getElementById("commit");
@@ -2714,7 +2824,9 @@ function callCard(i, round){
     commit.innerHTML =
       '<div class="basis">'+
         '<p class="ask">You said '+(sel === "flag" ? "flag it" : "let it stand")+'. What is your basis?</p>'+
-        '<p class="tiny basishint">Tap at least one. More than one is fine.</p>'+
+        /* the note under the question is a labelled box (1.9.5): a tester never saw it as grey text */
+        '<p class="notebox basishint"><span class="notelabel">How to answer</span>Tap at least one reason, and more than one is fine. '+
+          'The line under each reason says what it means.</p>'+
         '<div class="chips opts" role="group" aria-label="Your basis">'+
           opts.map(function(o, k){
             var on = picked.indexOf(o) > -1;
@@ -2791,9 +2903,14 @@ function callCard(i, round){
     var opts = basisChips(val);
     basisOf(round)[i] = (basisOf(round)[i] || []).filter(function(x){ return opts.indexOf(x) > -1; });
     saveRun();
-    paintButtons();
-    paintCommit();
-    tourAfterCall();
+    /* the tour moves on even if drawing the reasons throws in some browser, so a tester is never
+       left on the call tip with the call already made (1.9.5) */
+    try{
+      paintButtons();
+      paintCommit();
+    } finally {
+      tourAfterCall();
+    }
   }
 
   function lock(){
@@ -2882,19 +2999,19 @@ function callCard(i, round){
    focus goes to the tip and comes back to the part, and a polite live region reads each tip out. */
 var TOUR_STEPS = [
   {sel:".card .quote",
-   text:"This is the sentence the AI wrote about this account, and it is the one you are checking."},
+   text:"This is the sentence the AI wrote about this account. Your job is to decide whether its explanation holds up."},
   {sel:".card .strip", optional:true,
    text:"These are the ledger figures for the same account, so you can check the memo's numbers for yourself."},
   {sel:".card .file", optional:true,
    text:"This is what is on file, and if nothing here backs the memo's reason, that reason is not established."},
   {sel:".card .opts.calls", call:true,
-   text:"Make your call here: let it stand if the figure and the reason both hold, or flag it if either one does not."},
+   text:"Make your call here. Let it stand means the memo's explanation holds up. Flag it means the explanation has a problem."},
   {sel:"#commit .basis .opts",
    text:"Now tap every reason that applies, and only those. The line under each reason says what it means."},
   {sel:"#lockin",
    text:"When you are sure, lock it in to see the answer key."}
 ];
-var TOUR_WAIT = "Choose Let it stand or Flag it first, and the next tip opens by itself.";
+var TOUR_WAIT = "Choose Let it stand or Flag it on the card, and the next tip opens by itself.";
 var TOUR_CLOSED = "The tour is closed, and line 1 is yours to answer.";
 var TOUR = null;
 
@@ -2967,7 +3084,7 @@ function tourStart(){
     '<div class="tourrow"><button type="button" class="btn-text quiet" id="tourskip">Skip tour</button>'+
       '<button type="button" class="btn" id="tournext">Next</button></div>';
   document.body.appendChild(tip);
-  TOUR = {k:0, steps:steps, tip:tip, spot:null, raf:0};
+  TOUR = {k:0, steps:steps, tip:tip, spot:null, raf:0, watch:0};
   document.getElementById("tournext").addEventListener("click", tourNext);
   document.getElementById("tourskip").addEventListener("click", function(){ tourStop(true); });
   tip.addEventListener("keydown", function(e){
@@ -3001,6 +3118,14 @@ function tourShow(k){
   document.getElementById("tournext").textContent = (k === n - 1) ? "Got it" : "Next";
   var wait = document.getElementById("tourwait");
   wait.hidden = true; wait.textContent = "";
+  /* The call tip says from the start that the tour waits for the call. Before 1.9.5 it said so
+     only after Next was pressed, and Next was drawn faded, so a tester on Firefox read the tour
+     as stuck at 4 of 6. */
+  if(st.call && !tourCallMade()){ wait.textContent = TOUR_WAIT; wait.hidden = false; }
+  if(TOUR.watch){ clearInterval(TOUR.watch); TOUR.watch = 0; }
+  /* and a timer, not only the click, carries it on once a call is on the card: a browser that
+     drops the click path still gets the next tip within half a second */
+  if(st.call) TOUR.watch = setInterval(tourWatch, 500);
   /* the last tip has one way out */
   document.getElementById("tourskip").hidden = (k === n - 1);
   tourPaintNext();
@@ -3012,10 +3137,22 @@ function tourShow(k){
   tourPlace(true);
   try{ tip.focus({preventScroll:true}); }catch(e){ tip.focus(); }
 }
+/* Next is never drawn faded (1.9.5). On the call tip, with no call made, it says so and moves
+   focus to Let it stand, which is something a tester can see happen. */
 function tourPaintNext(){
   if(!TOUR) return;
-  var wait = !!TOUR.steps[TOUR.k].call && !tourCallMade();
-  document.getElementById("tournext").setAttribute("aria-disabled", wait ? "true" : "false");
+  var nx = document.getElementById("tournext");
+  if(nx) nx.removeAttribute("aria-disabled");
+}
+function tourWatch(){
+  if(!TOUR){ return; }
+  var st = TOUR.steps[TOUR.k];
+  if(!st || !st.call){ clearInterval(TOUR.watch); TOUR.watch = 0; return; }
+  var nxt = TOUR.steps[TOUR.k + 1];
+  if(tourCallMade() && (!nxt || document.querySelector(nxt.sel))){
+    clearInterval(TOUR.watch); TOUR.watch = 0;
+    tourShow(TOUR.k + 1);
+  }
 }
 function tourNext(){
   if(!TOUR) return;
@@ -3044,8 +3181,15 @@ function tourPlace(scroll){
   var tip = TOUR.tip, target = document.querySelector(TOUR.steps[TOUR.k].sel);
   if(TOUR.spot && TOUR.spot !== target) TOUR.spot.classList.remove("tourspot");
   TOUR.spot = target;
-  if(!target){ tip.hidden = true; return; }
   tip.hidden = false;
+  /* a part that is not on the page leaves the tip up as a sheet along the bottom, with Next and
+     Skip tour in reach, where before 1.9.5 the tip hid and the tour went on with nothing shown */
+  if(!target){
+    tip.classList.remove("below", "above", "side");
+    tip.classList.add("sheet");
+    tip.style.left = ""; tip.style.top = ""; tip.style.width = "";
+    return;
+  }
   target.classList.add("tourspot");
   var vw = document.documentElement.clientWidth, vh = window.innerHeight;
   var bar = document.getElementById("bar"), barH = bar ? bar.offsetHeight : 0;
@@ -3070,11 +3214,14 @@ function tourPlace(scroll){
     var h2 = tip.offsetHeight;
     var band = vh - barH - 2 * M;
     var left, top, place;
-    if(vw - r.right - GAP - 16 >= w){
+    /* the ledger panel beside the line (1.9.5) counts as part of the card, so a tip never sits on it */
+    var edge = r.right, side = document.querySelector(".ledgerside");
+    if(side && side.offsetWidth) edge = Math.max(edge, side.getBoundingClientRect().right);
+    if(vw - edge - GAP - 16 >= w){
       /* a wide window has room beside the card, so the tip covers nothing on it */
       place = "side";
       top = tTop;
-      left = r.right + GAP;
+      left = edge + GAP;
       var regTop = tTop - M, regBot = Math.max(tTop + h2, tBot) + M;
       if(regBot - regTop > vh - barH || regTop < sy + barH) want = regTop - barH;
       else if(regBot > sy + vh) want = regBot - vh;
@@ -3109,6 +3256,7 @@ function tourStop(back){
   var t = TOUR;
   TOUR = null;
   if(t.raf) cancelAnimationFrame(t.raf);
+  if(t.watch) clearInterval(t.watch);
   var target = document.querySelector(t.steps[t.k].sel);
   if(t.spot) t.spot.classList.remove("tourspot");
   if(t.tip.parentNode) t.tip.parentNode.removeChild(t.tip);
@@ -3198,12 +3346,12 @@ function basisKeyText(c){
 function reasonNote(idx, round){
   var c = (round===2) ? CARDS2[idx] : CARDS[idx];
   return reasonRightAt(idx, round)
-    ? '<p class="tiny" style="margin:8px 0 0"><b>Your reason agrees with the key.</b></p>'
-    : '<p class="tiny" style="margin:8px 0 0"><b>Your reason does not agree with the key.</b> '+
+    ? '<p class="notebox"><span class="notelabel">Your reason</span><b>Your reason agrees with the key.</b></p>'
+    : '<p class="notebox"><span class="notelabel">Your reason</span><b>Your reason does not agree with the key.</b> '+
       'On this line the basis is: '+esc(basisKeyText(c))+'.</p>';
 }
 function openNote(c){
-  return c.stillOpen ? '<p class="tiny" style="margin:8px 0 0"><b>Still open.</b> '+esc(c.stillOpen)+'</p>' : "";
+  return c.stillOpen ? '<p class="notebox"><span class="notelabel">Still open</span>'+esc(c.stillOpen)+'</p>' : "";
 }
 
 /* ---------- the reveal ----------
@@ -3235,6 +3383,38 @@ function runState(round){
       ? pointsText(pr.need)+' points to '+esc(pr.next)+'.'
       : 'Partner is the top rank.')+'</p>'+
   '</div>';
+}
+
+/* Why the key says so, on every answer (1.9.5). A tester asked for more on why an answer is
+   right or wrong. Everything here is read from the case file the line already carries: the
+   key's own explanation, the figures on the ledger and the reason the key gives, with that
+   reason's meaning in plain words. Nothing here touches the score. */
+function lc1(t){ t = String(t || ""); return t.charAt(0).toLowerCase() + t.slice(1); }
+function keyReasonText(c){
+  var k = basisKeyOf(c);
+  if(!k.length) return "";
+  var parts = k.map(function(o){
+    var h = BASIS_HINT[o] ? lc1(BASIS_HINT[o]).replace(/\.$/, "") : "";
+    return h ? (o + " (" + h + ")") : o;
+  });
+  var list = parts.length < 2 ? parts[0] : parts.slice(0, -1).join(", ") + " and " + parts[parts.length - 1];
+  return (k.length === 1 ? "The reason the key gives is " : "The reasons the key gives are ") + list + ".";
+}
+function ledgerFactText(c, round){
+  if(typeof c.prior !== "number" || typeof c.current !== "number") return "";
+  var mo = (bookOf(round === 2 ? 2 : 1) || {}).months || MONTHS_DEFAULT;
+  var d = c.current - c.prior;
+  var move = d === 0 ? "no change"
+    : (d < 0 ? "down " : "up ") + money(d) + (c.prior ? ", or " + pctOf(c) + " percent" : "");
+  return "On the ledger, account " + c.acct + (c.name ? " (" + c.name + ")" : "") + " went from " + money(c.prior) + " in " +
+    mo[0] + " to " + money(c.current) + " in " + mo[1] + ", " + move + ".";
+}
+function whyBlock(c, round, withWhy){
+  var main = (withWhy && c.why) ? '<p>'+esc(c.why)+'</p>' : '';
+  var facts = [ledgerFactText(c, round), keyReasonText(c)].filter(Boolean).join(" ");
+  if(!main && !facts) return "";
+  return '<div class="whybox"><span class="label">Why the key says so</span>'+main+
+    (facts ? '<p class="whyfacts">'+esc(facts)+'</p>' : '')+'</div>';
 }
 
 function reveal(i, round){
@@ -3271,11 +3451,14 @@ function reveal(i, round){
         '<span class="revtype">'+esc(c.type)+'</span>'+
         '<h2 class="verdict">'+head+'</h2>'+
         '<p class="revtell">'+esc(c.tell)+'</p>'+
+        whyBlock(c, round, true)+
         pts+
         (LEVELED ? '<p class="levelup">New rank, '+esc(rank())+'.</p>' : '')+
       '</div>';
   } else {
-    var truth = (c.key === "flag") ? c.truth : c.over;
+    /* on a missed problem the key's full explanation stands in for its one-sentence summary,
+       which it opens with; on a false flag the trap comes first and the explanation follows */
+    var truth = (c.key === "flag") ? (c.why || c.truth) : c.over;
     var ask = (c.key === "flag")
       ? c.ask
       : "Nothing to ask on this line. The figure and the reason both held, and flagging a line "+
@@ -3289,6 +3472,7 @@ function reveal(i, round){
         '<span class="revtype">'+esc(c.type)+'</span>'+
         '<h2 class="verdict">'+head+'</h2>'+
         '<p class="revtruth">'+esc(truth)+'</p>'+
+        whyBlock(c, round, c.key !== "flag")+
         '<div class="askbox"><span class="label">The ask</span><p>'+esc(ask)+'</p></div>'+
         (nil ? '<p class="revnil">'+esc(nil)+'</p>' : '')+
         '<p class="revcoach">'+esc(c.tell)+'</p>'+
@@ -3302,7 +3486,7 @@ function reveal(i, round){
      so this reveal carries the form and a quiet Keep going in place of Next (1.9.1), and from
      1.9.3 the form button is the largest control on it, with Copy my answers under it */
   var testerStop = TEST_MODE && round === 1 && i === TESTER_LINES - 1 && !last;
-  screen.innerHTML =
+  screen.innerHTML = lineLayout(
     (i === 0 ? whyLine("This is what the answer key says about the call you just locked in.") : "")+
     face+
     (reasonRightAt(i, round) ? "" : reasonNote(i, round))+
@@ -3314,8 +3498,9 @@ function reveal(i, round){
           '<p class="stophead" id="stophead">That\'s five lines, which is all the feedback needs.</p>'+
           feedbackPanel("stop")+
           '<button type="button" class="btn-text quiet" id="keepgoing">Keep going</button>'+
-        '</section>'
-      : '<button class="btn" id="next">'+nextLabel+'<span class="kbd">Enter</span></button>');
+        '</section>'+
+        '<p class="fitline">'+esc(FIT_LINE)+'</p>'
+      : '<button class="btn" id="next">'+nextLabel+'<span class="kbd">Enter</span></button>'), c.acct, round);
   wireLedger();
   paintFormFirst();
   LEVELED = false;
@@ -3335,6 +3520,7 @@ function reveal(i, round){
     if(e.key === "Enter" || e.key === " " || e.code === "Space"){ e.preventDefault(); onward(); }
   });
   window.scrollTo(0, 0);
+  fitLedgerSide();
 }
 
 /* ---------- round two. A company the player has never seen, scored on its own. ---------- */
@@ -4162,6 +4348,8 @@ function actionsBlock(){
 }
 /* The tester end screen's feedback form, under the score and above the read out, so it is the
    first thing to press (1.9.3). It carries the same note, button and copy controls as the stop. */
+/* where the drill sits in a course, in one line, from where testers placed it (1.9.5) */
+var FIT_LINE = "Where this fits: auditing and intermediate accounting courses, as practice in professional skepticism. You test a written explanation against the ledger and the documents on file before you accept it, as an auditor does.";
 function testerEndPanel(){
   if(!TEST_MODE) return "";
   return '<section class="testerstop" aria-labelledby="endhead">'+
@@ -4306,6 +4494,7 @@ function done(){
         ? esc(pointsText(pr.need)+" points short of "+pr.next+". ")
         : "Partner is the top rank. ")+
         'Trainee through Partner are ranks in this drill. They say nothing about professional seniority.</p>'+
+      '<p class="fitline">'+esc(FIT_LINE)+'</p>'+
       '<p class="lapwrap"><span>Best streak '+S.best+'</span>'+
         '<span>Lap time '+lapText()+'</span></p>'+
       '<p class="counts"><span><b>'+S.caught+'</b>caught</span>'+
