@@ -142,6 +142,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 .btn.secondary:hover,.btn.ghost:hover,.btn.call:hover{border-color:var(--ink);background:transparent}
 .btn.green{background:var(--mason);border-color:var(--mason)}
 .btn.green:hover{background:#003f2c;border-color:#003f2c}
+/* a link styled as a button keeps its own text colour on hover; a:hover would turn it ink */
+a.btn:hover{color:#fff}
+a.btn.secondary:hover,a.btn.ghost:hover,a.btn.call:hover{color:var(--ink)}
 .btn:disabled,.btn[disabled]{opacity:.4;cursor:not-allowed;transform:none}
 .btn.block{display:flex;width:100%}
 .btn-text{

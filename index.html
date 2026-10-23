@@ -639,6 +639,9 @@ body{overflow-x:clip}
   letter-spacing:.08em;text-transform:uppercase;color:var(--mason)}
 .notebox b{font-weight:600}
 #screen .basis .notebox{margin:var(--s2) 0 var(--s3)}
+/* a reason that misses the key reads orange, not green: ink on the tint about 15:1, label about 6:1 */
+.notebox.miss{background:#fdf0e4;border-left-color:#b45309}
+.notebox.miss .notelabel{color:#9a3f05}
 /* the line on Let it stand that heads the six problems reads as a heading, not a whisper */
 #screen .basissplit{margin:var(--s4) 0 var(--s1);font-size:var(--t-small);font-weight:600;
   line-height:1.45;color:var(--ink)}
@@ -3347,7 +3350,7 @@ function reasonNote(idx, round){
   var c = (round===2) ? CARDS2[idx] : CARDS[idx];
   return reasonRightAt(idx, round)
     ? '<p class="notebox"><span class="notelabel">Your reason</span><b>Your reason agrees with the key.</b></p>'
-    : '<p class="notebox"><span class="notelabel">Your reason</span><b>Your reason does not agree with the key.</b> '+
+    : '<p class="notebox miss"><span class="notelabel">Your reason</span><b>Your reason does not agree with the key.</b> '+
       'On this line the basis is: '+esc(basisKeyText(c))+'.</p>';
 }
 function openNote(c){
