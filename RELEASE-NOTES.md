@@ -531,7 +531,10 @@ drift apart.
 
 ## Honest scope
 
-- **No participant has used it.** There are no results, and none are implied anywhere.
+- **Students have tried it, and no study has been run.** Eight students in accounting and finance
+  programs tried the drill on their own on 20 and 21 October 2026 and answered a short form, and a
+  ninth did on 22 October. Their ratings are feedback, not measured results, and none are implied
+  anywhere.
 - **No practitioner has been observed** running a real memo through it without coaching.
 - **No educator has independently reviewed the answer keys.** The keys are defensible under the
   supplied case facts and have survived one external review, which is not the same thing.
