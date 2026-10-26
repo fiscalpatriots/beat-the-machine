@@ -136,8 +136,12 @@
 .revlabel{font-size:var(--t-label);font-weight:700;text-transform:uppercase;
   letter-spacing:.08em;color:var(--ink-soft)}
 .ledgerhint{margin:0 0 var(--s4);font-size:var(--t-small);line-height:1.5;color:var(--ink-soft)}
-.chart{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;
+.chart{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;
   column-gap:var(--s3);row-gap:var(--s3);width:100%;margin:0 0 var(--s4)}
+/* the measure, named over the bars, and each balance printed at the end of its bar (1.9.6) */
+.chartcap{margin:0 0 var(--s2);font-size:var(--t-small);line-height:1.4;color:var(--ink-soft)}
+.chartval{font-size:var(--t-small);line-height:1.2;color:var(--ink);white-space:nowrap;
+  font-variant-numeric:tabular-nums;text-align:right}
 .chartlab{font-size:var(--t-small);line-height:1.2;color:var(--ink-soft);white-space:nowrap}
 .chartlab.now{color:var(--ink)}
 .charttrack{display:block;min-width:0}
@@ -1893,17 +1897,26 @@ function wireLedger(){
 /* The two month labels are page text rather than text inside a drawing, so they stay at the
    page's small size at every width. As an SVG they scaled with the card and fell to about 10.8
    pixels on a 320 pixel phone. */
+/* From 1.9.6 the picture names its measure and prints each balance at the end of its bar. A
+   tester on 1.9.5 saw "a bar graph with no labels of measure or metric": the caption says the
+   bars are month-end balances in dollars, and why one is red. */
+function signedMoney(v){ return (v < 0 ? "-" : "") + money(v); }
 function chart(c, mo){
   mo = mo || MONTHS_DEFAULT;
   var max = Math.max(Math.abs(c.prior), Math.abs(c.current)) || 1;
   var wa = Math.max(0, Math.min(100, 100 * Math.abs(c.prior) / max)).toFixed(1);
   var wb = Math.max(0, Math.min(100, 100 * Math.abs(c.current) / max)).toFixed(1);
   var d = c.current - c.prior;
-  return '<div class="chart" role="img" aria-label="'+esc(c.name+', '+mo[0]+' '+money(c.prior)+', '+mo[1]+' '+money(c.current))+'">'+
+  var cap = "Account balance at the end of each month, in dollars." +
+    (d < 0 ? " The " + mo[1] + " bar is red because the balance went down." : "");
+  return '<p class="chartcap">'+esc(cap)+'</p>'+
+    '<div class="chart" role="img" aria-label="'+esc(c.name+', balance in dollars, '+mo[0]+' '+signedMoney(c.prior)+', '+mo[1]+' '+signedMoney(c.current))+'">'+
     '<span class="chartlab" aria-hidden="true">'+esc(mo[0])+'</span>'+
     '<span class="charttrack" aria-hidden="true"><i class="chartbar old" style="width:'+wa+'%"></i></span>'+
+    '<span class="chartval" aria-hidden="true">'+esc(signedMoney(c.prior))+'</span>'+
     '<span class="chartlab now" aria-hidden="true">'+esc(mo[1])+'</span>'+
     '<span class="charttrack" aria-hidden="true"><i class="chartbar'+(d<0 ? " neg" : "")+'" style="width:'+wb+'%"></i></span>'+
+    '<span class="chartval" aria-hidden="true">'+esc(signedMoney(c.current))+'</span>'+
   '</div>';
 }
 
