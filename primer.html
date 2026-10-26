@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#005239">
+
+<title>Second Pass: a primer for instructors</title>
+<meta name="description" content="One page for instructors: what the financial close and a close memo are, what the Second Pass drill trains, and how to fit it into a 35-minute lesson.">
+<link rel="canonical" href="https://fiscalpatriots.github.io/beat-the-machine/primer.html">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Second Pass">
+<meta property="og:url" content="https://fiscalpatriots.github.io/beat-the-machine/primer.html">
+<meta property="og:title" content="Second Pass: a primer for instructors">
+<meta property="og:description" content="One page for instructors: what the financial close and a close memo are, what the Second Pass drill trains, and how to fit it into a 35-minute lesson.">
+<meta property="og:image" content="https://fiscalpatriots.github.io/beat-the-machine/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Second Pass, a second pass on AI-drafted close commentary, George Mason University, Costello College of Business.">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/second-pass.css">
+<script src="assets/nav.js" defer></script>
+<style>
+/* The instructor primer (1.9.6). One page, read top to bottom, printable. It layers on
+   assets/second-pass.css and repeats the tokens it uses so it still stands without the sheet.
+   Nothing on it scrolls sideways at any width: the lesson plan is a list of rows that stack
+   under 560 pixels. */
+:root{
+  --paper:#f6f3ec;--card:#ffffff;--ink:#1a1a1a;--ink-soft:#5f6366;
+  --mason:#005239;--mason-deep:#003527;--gold:#ffc733;
+  --rule:#d9d3c5;--rule-strong:#b9b2a1;--radius:12px;
+  --face:Figtree,"Open Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --gut:24px;
+}
+@media (max-width:520px){:root{--gut:20px}}
+@media (max-width:360px){:root{--gut:14px}}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;max-width:100%;overflow-x:hidden}
+body{background:var(--paper);color:var(--ink);font:18px/1.6 var(--face);-webkit-font-smoothing:antialiased}
+a{color:var(--mason);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.16em}
+a:hover{color:var(--mason-deep);text-decoration-thickness:2px}
+#page{max-width:760px;margin:0 auto;padding:0 var(--gut) 24px}
+.masthead{padding:30px 0 0}
+.masthead .inst{font-size:13px;letter-spacing:.11em;text-transform:uppercase;font-weight:600;color:var(--mason)}
+.masthead hr{border:0;border-top:3px solid var(--gold);margin:16px 0 0}
+.titleblock{padding:26px 0 8px}
+.byline{margin:0 0 10px;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+h1{margin:0;font-size:38px;line-height:1.15;letter-spacing:-.02em;color:var(--mason);font-weight:700}
+.standfirst{margin:12px 0 0;font-size:20px;line-height:1.5}
+@media (max-width:640px){h1{font-size:30px}.standfirst{font-size:18px}}
+section{border-top:1px solid var(--rule);margin:28px 0 0;padding:22px 0 0}
+h2{margin:0 0 10px;font-size:22px;line-height:1.3;letter-spacing:-.01em;color:var(--ink)}
+p{margin:0 0 14px}
+.box{background:#eef5f1;border-left:4px solid var(--mason);border-radius:0 var(--radius) var(--radius) 0;
+  padding:14px 18px;margin:0 0 14px}
+.box b{color:var(--mason)}
+.plan{list-style:none;margin:6px 0 14px;padding:0;border-top:1px solid var(--rule)}
+.plan li{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid var(--rule)}
+.plan .min{font-weight:700;color:var(--mason);font-variant-numeric:tabular-nums}
+.plan b{display:block}
+.plan p{margin:4px 0 0;font-size:17px}
+@media (max-width:560px){.plan li{grid-template-columns:minmax(0,1fr);gap:2px}}
+.qs{margin:0 0 14px;padding-left:22px}
+.qs li{margin:0 0 6px}
+.stamp{margin:30px 0 0;font-size:14px;color:var(--ink-soft)}
+@media print{#sp-nav,#sp-foot,.skip{display:none!important}body{background:#fff;font-size:12pt}
+  section{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div id="page">
+  <main id="sp-main" tabindex="-1">
+
+  <div class="masthead">
+    <div class="inst">George Mason University</div>
+    <hr>
+  </div>
+
+  <div class="titleblock">
+    <p class="byline">For instructors &middot; Khaled Alkurd</p>
+    <h1>Second Pass: a primer for instructors</h1>
+    <p class="standfirst">What the close is, what a close memo is, what the drill trains, and how to fit it into one class meeting.</p>
+  </div>
+
+  <section id="close">
+    <h2>The financial close</h2>
+    <p>At the end of each month a company closes its books. The accounting team records the month's
+    last entries, reconciles the accounts and produces a ledger of balances that managers and
+    auditors can rely on. Before anyone relies on those balances, someone has to explain the ones
+    that moved.</p>
+  </section>
+
+  <section id="memo">
+    <h2>The close memo</h2>
+    <p>A close memo, which some firms call flux commentary, gives a sentence or two on why each
+    account changed since last month. A staff accountant usually drafts it, and a manager or
+    controller reads it before signing off on the month. More and more often an AI assistant
+    writes the first draft from the ledger.</p>
+    <p>The memo only owes an explanation where the change is big enough to matter. The drill's case
+    sets that rule plainly: a line owes commentary only when it clears both $25,000 and 10 percent.</p>
+    <div class="box"><b>What the student checks on each line.</b> Do the figures in the sentence match
+    the ledger? Does a document on file back the reason it gives? A memo can read well and still fail
+    either test, which is why someone has to check it.</div>
+  </section>
+
+  <section id="trains">
+    <h2>What Second Pass trains</h2>
+    <p>Second Pass gives students repetitions on that review. On the public link a student first
+    reads the ledger on its own and marks the lines worth a second look, before any of the memo
+    appears. Then, line by line, the student makes a call. Let it stand means the memo's explanation
+    holds up. Flag it means it has a problem.</p>
+    <p>A call alone is not enough. The student also has to name the reason, such as a figure that
+    does not tie or a reason with nothing on file behind it, and the drill scores the call and the
+    reason separately. The AI Native Accounting Foundation calls this kind of practice teach-back:
+    the reviewer explains and defends the output instead of only approving it. Each answer then
+    shows why the key says what it does, with the account's figures from the ledger.</p>
+  </section>
+
+  <section id="lesson">
+    <h2>A 35-minute lesson</h2>
+    <ul class="plan">
+      <li><span class="min">10 minutes before</span><div><b>Set up the review</b>
+        <p>Explain the close and the memo in your own words, or read the first two sections of this
+        page aloud. Read the threshold rule from the case. Tell the class an AI assistant drafted the
+        memo and that some lines are wrong, without saying which kinds of mistake to look for.</p></div></li>
+      <li><span class="min">15 minutes in the drill</span><div><b>Each student works alone</b>
+        <p>Students open <a href="index.html">the drill</a> on a phone or laptop, read the ledger
+        first, then go through the fourteen practice lines. On each one they make the call, tap the
+        reason and lock it in. Five lines from a second company follow, scored on their own. Ask them
+        not to compare answers until everyone is done.</p></div></li>
+      <li><span class="min">10 minutes of discussion</span><div><b>Defend the calls</b>
+        <p>Ask students to defend one flag and one stand out loud, naming the ledger figure or the
+        document that settled it. Then work through a few of the questions below.</p></div></li>
+    </ul>
+    <ol class="qs">
+      <li>Which figure in the memo did not match the ledger?</li>
+      <li>Which reason sounded specific but had nothing on file behind it?</li>
+      <li>Which account needed an explanation and got none?</li>
+      <li>Which clean line did you flag, and what made you doubt it?</li>
+    </ol>
+    <p>The <a href="Second-Pass-Facilitator-Guide.pdf">facilitator guide</a> has a longer session plan
+    with the answer to each line, and <a href="Second-Pass-Review-Protocol.pdf">the review
+    protocol</a> is the same check written as a procedure a reviewer follows at work.</p>
+  </section>
+
+  <section id="courses">
+    <h2>Where it fits</h2>
+    <p>Students who tested the drill placed it in auditing and intermediate accounting courses. One
+    named professional skepticism as the skill it practices: testing a written explanation against
+    the ledger and the documents on file before accepting it, as an auditor does.</p>
+    <p>So far eleven testers sent their drill logs, and 52 of their 64 calls matched the answer key.
+    That is a small sample, and the <a href="review.html#outcomes">review page</a> sets out what it
+    counts and what it does not.</p>
+  </section>
+
+  <section id="confidential">
+    <h2>A note on confidentiality</h2>
+    <p>The <a href="checker.html">checker page</a> transmits nothing you paste into it. The ledger and
+    the memo are read by the script in your own browser, and the only network request the page makes
+    is for its font, which carries no ledger data. The drill sends nothing on its own either. On the
+    public link a round reaches the results form only if the student presses Send my results on the
+    end screen, and the tester link never posts at all. If you build a case from your own ledger, use
+    made-up figures or a close you have permission to use.</p>
+  </section>
+
+  <p class="stamp">Written for Second Pass 1.9.6, 25 October 2026.</p>
+
+  </main>
+</div>
+</body>
+</html>
