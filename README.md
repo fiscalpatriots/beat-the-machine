@@ -9,7 +9,7 @@ Live at https://fiscalpatriots.github.io/beat-the-machine/ from `main`.
 
 | What | Version | Where it is stated |
 | --- | --- | --- |
-| Product | `second-pass-drill 1.9.5` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
+| Product | `second-pass-drill 1.9.6` | the `PRODUCT_VERSION` constant in `index.html`, the footer line under every screen, question A of every posted payload, and the scope block on `review.html` |
 | Round one case | `halyard-v4`, 13 September 2026 | `cases/halyard-v4.json`, question A, the local record |
 | Round two case | `brightwater-v6`, 13 September 2026 | `cases/brightwater-v6.json`, questions A and C, the local record |
 | Data notice | `notice-2026-09-14` | the notice screen, question A, the local record |
@@ -264,9 +264,9 @@ post-test and never a learning gain. The readout fields carry the prefix `prepic
 page for a facilitator with no address bar to edit. The taps work one way. Nothing on the page
 turns test mode off again, so a live run needs a new tab without `?test=1`. The footer version
 line gains ", test mode". The tester link is https://fiscalpatriots.github.io/beat-the-machine/?test=1,
-and in 1.9.5 a tester's run goes like this:
+and in 1.9.6 a tester's run goes like this:
 
-1. Play goes straight to line 1 under a random codename, with a six-tip tour over that line. The
+1. Play goes straight to line 1 under a random codename, with a four-tip tour over that line. The
    tester link has no notice screen, no codename screen and no case picker, and always plays
    Halyard. A public run left in the same tab is not picked up, so a codename typed there never
    rides in the tester record. Enter or Space on a tip presses Next, as the Next button does (1.9.4).
@@ -280,6 +280,11 @@ and in 1.9.5 a tester's run goes like this:
    in its own panel with its column heads held at the top, as they are in the ledger sheet on a
    phone. Every answer carries "Why the key says so": the key's explanation, the account's figures
    and the reason the key gives, with its meaning.
+   From 1.9.6 the intro's box says what a close memo is, the two checks on each line and what each
+   call means, and links the instructor primer (`primer.html`) in a new tab. The tour ends at the
+   call tip, never waits for a click, skips any tip whose part is missing, and closes once a call
+   is made. The bars on each card carry a caption naming the measure (month-end balance in dollars)
+   and print each balance at the end of its bar.
 2. A band under the Mason header reads "Tester link" over one line. While the two prefill
    constants below are empty it reads "Nothing you do here is sent." Once both are set it reads
    "Nothing is sent from this page. The feedback form opens with your answers filled in, and

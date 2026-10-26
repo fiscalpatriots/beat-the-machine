@@ -268,6 +268,22 @@ p.measures-note{margin:0 0 16px;font-size:16.5px;color:var(--ink-soft);line-heig
 .rows b{font-weight:700;font-size:17px}
 .rows p{margin:0;font-size:17px}
 @media (max-width:560px){.rows div{grid-template-columns:minmax(0,1fr);gap:4px}}
+
+/* tester calls so far (1.9.6): one headline figure, a row per error type with a bar of the share
+   that matched the key, and the sample named in the same panel. The numbers live in the JSON
+   block #tester-calls-data in the Outcomes section, so the next read changes that block only. */
+.tally{border:1px solid var(--rule);border-radius:var(--radius);background:var(--card);padding:18px;margin:0 0 16px}
+.tally h4{margin:0 0 4px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--ink-soft)}
+.tally .head{margin:0 0 12px;font-size:19px;line-height:1.4}
+.tally .head b{color:var(--mason);font-variant-numeric:tabular-nums}
+.tally ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
+.tally li{display:grid;grid-template-columns:minmax(0,1fr) 110px 4.5em;align-items:center;gap:12px;
+  padding:8px 0;border-bottom:1px solid var(--rule);font-size:15.5px;line-height:1.35}
+.tally .tr{display:block;height:8px;border-radius:4px;background:var(--rule)}
+.tally .tr i{display:block;height:8px;border-radius:4px;background:var(--mason)}
+.tally .ct{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tally .cap{margin:12px 0 0}
+@media (max-width:420px){.tally li{grid-template-columns:minmax(0,1fr) 4.5em}.tally .tr{display:none}}
 </style>
 </head>
 <body>
@@ -462,7 +478,7 @@ p.measures-note{margin:0 0 16px;font-size:16.5px;color:var(--ink-soft);line-heig
       </nav>
       <div class="railblock">
         <dl>
-          <dt>Product</dt><dd id="v-product">second-pass-drill 1.9.5</dd>
+          <dt>Product</dt><dd id="v-product">second-pass-drill 1.9.6</dd>
           <dt>Practice case</dt><dd id="v-practice">halyard-v4, 13 September 2026</dd>
           <dt>Assessment case</dt><dd id="v-assessment">brightwater-v6, 13 September 2026</dd>
           <dt>Data notice</dt><dd id="v-notice">notice-2026-09-14</dd>
@@ -472,6 +488,7 @@ p.measures-note{margin:0 0 16px;font-size:16.5px;color:var(--ink-soft);line-heig
         <p class="railhead">On file</p>
         <ul>
           <li><a href="Second-Pass-Review-Protocol.pdf">The protocol, printable</a></li>
+          <li><a href="primer.html">For instructors: a one-page primer</a></li>
           <li><a href="PROVENANCE.md">How the case was made</a></li>
           <li><a href="cases/README.md">Case files and changes</a></li>
           <li><a href="evidence/EVIDENCE-NOTE.md">What six AI drafts claimed</a></li>
@@ -628,6 +645,31 @@ p.measures-note{margin:0 0 16px;font-size:16.5px;color:var(--ink-soft);line-heig
         <h3><span class="n">05</span>Outcomes</h3>
         <p class="measures"><span>Attempts <i>&middot;</i></span> <span>Right call <i>&middot;</i></span> <span>Reason category <i>&middot;</i></span> <span>False flags</span></p>
         <p class="measures-note">Four counts, and they fill from the response export once people have played the frozen release. An attempt is not a person.</p>
+        <div class="tally" id="tester-calls" aria-labelledby="tester-calls-h">
+          <h4 id="tester-calls-h">Tester calls so far</h4>
+          <noscript><p class="cap">The tester tally is drawn by a short script from the data block on this page.</p></noscript>
+        </div>
+        <!-- The tester tally, as data. Update these numbers and the panel above follows. Source: the
+             drill log field of the tester feedback form, responses 3 to 15, test rows left out. -->
+        <script type="application/json" id="tester-calls-data">
+        {
+          "readOn": "25 October 2026",
+          "builds": ["1.9.3", "1.9.5"],
+          "testers": 11,
+          "calls": 64,
+          "matched": 52,
+          "byType": [
+            {"type": "Figure does not tie (arithmetic)", "matched": 12, "lines": 16},
+            {"type": "Clean lines, where the key says let it stand", "matched": 20, "lines": 27},
+            {"type": "Direction wrong", "matched": 7, "lines": 7},
+            {"type": "No source on file", "matched": 4, "lines": 4},
+            {"type": "Nothing written where owed", "matched": 3, "lines": 3},
+            {"type": "Wrong period", "matched": 2, "lines": 3},
+            {"type": "Two reasons on one line", "matched": 4, "lines": 4}
+          ],
+          "falseFlags": 7
+        }
+        </script>
         <p>The call and the reason are scored separately, so a run can agree with the answer key and give a basis that does not. Every player first marks, from the ledger alone, the lines they would give a second look, and the export reports where the final calls moved off that read and whether toward the key or away from it. The reason chips measure agreement with accepted reason categories, and on the five fresh-case items the drill collects a short written explanation for an independent educator to score blind against a rubric, which has not been done yet. These are answer-key agreement on a keyed exercise and nothing more, and five items with no baseline cannot show a learning gain. Every run can be saved to a file on the player&rsquo;s own machine, sending it is a separate step the player chooses, and a codename is a pseudonym rather than anonymity.</p>
       </section>
 
@@ -715,6 +757,39 @@ p.measures-note{margin:0 0 16px;font-size:16.5px;color:var(--ink-soft);line-heig
   }
   stamp('v-practice', 'cases/halyard-v4.json');
   stamp('v-assessment', 'cases/brightwater-v6.json');
+})();
+
+/* Tester calls so far (1.9.6), drawn from the JSON block in the Outcomes section. Every figure
+   on the panel comes from that block, and the sample size is printed beside the result. */
+(function () {
+  'use strict';
+  var box = document.getElementById('tester-calls');
+  var src = document.getElementById('tester-calls-data');
+  if (!box || !src) return;
+  var d;
+  try { d = JSON.parse(src.textContent); } catch (e) { return; }
+  var WORDS = ['zero','one','two','three','four','five','six','seven','eight','nine','ten',
+               'eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
+  function word(n) { return WORDS[n] || String(n); }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  var pct = d.calls ? Math.round(100 * d.matched / d.calls) : 0;
+  var missed = d.calls - d.matched;
+  var builds = d.builds.length > 1 ? d.builds.slice(0, -1).join(', ') + ' and ' + d.builds[d.builds.length - 1] : d.builds[0];
+  var rows = d.byType.map(function (r) {
+    var w = r.lines ? (100 * r.matched / r.lines).toFixed(1) : '0';
+    return '<li><span>' + esc(r.type) + '</span>' +
+      '<span class="tr" aria-hidden="true"><i style="width:' + w + '%"></i></span>' +
+      '<span class="ct">' + r.matched + ' of ' + r.lines + '</span></li>';
+  }).join('');
+  box.innerHTML =
+    '<h4 id="tester-calls-h">Tester calls so far</h4>' +
+    '<p class="head"><b>' + d.matched + ' of ' + d.calls + '</b> calls matched the answer key, ' + pct + ' percent, from ' +
+      word(d.testers) + ' testers who sent their drill log with the feedback form.</p>' +
+    '<ul aria-label="Calls that matched the key, by the error the key names">' + rows + '</ul>' +
+    '<p class="cap">Of the ' + missed + ' calls that missed, ' + word(d.falseFlags) + ' were a clean line the tester flagged. ' +
+      'Testers rarely let a planted error through, and most misses were false flags, which is the harder judgment the drill trains. ' +
+      'This is a small sample, ' + word(d.testers) + ' people and ' + d.calls + ' calls on builds ' + esc(builds) +
+      ', read from the form on ' + esc(d.readOn) + '. It counts agreement with a hand-keyed answer key and is not a measured learning result.</p>';
 })();
 </script>
 </body>

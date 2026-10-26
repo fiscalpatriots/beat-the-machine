@@ -136,8 +136,12 @@
 .revlabel{font-size:var(--t-label);font-weight:700;text-transform:uppercase;
   letter-spacing:.08em;color:var(--ink-soft)}
 .ledgerhint{margin:0 0 var(--s4);font-size:var(--t-small);line-height:1.5;color:var(--ink-soft)}
-.chart{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;
+.chart{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;
   column-gap:var(--s3);row-gap:var(--s3);width:100%;margin:0 0 var(--s4)}
+/* the measure, named over the bars, and each balance printed at the end of its bar (1.9.6) */
+.chartcap{margin:0 0 var(--s2);font-size:var(--t-small);line-height:1.4;color:var(--ink-soft)}
+.chartval{font-size:var(--t-small);line-height:1.2;color:var(--ink);white-space:nowrap;
+  font-variant-numeric:tabular-nums;text-align:right}
 .chartlab{font-size:var(--t-small);line-height:1.2;color:var(--ink-soft);white-space:nowrap}
 .chartlab.now{color:var(--ink)}
 .charttrack{display:block;min-width:0}
@@ -701,7 +705,7 @@ body{overflow-x:clip}
    One constant. It prints under the footer line on every screen, rides into the posted
    payload on question A, and stamps the local record. README and review.html state it too. */
 var PRODUCT_NAME = "Second Pass: Beat the Machine";
-var PRODUCT_VERSION = "1.9.5";
+var PRODUCT_VERSION = "1.9.6";
 var PRODUCT_STAMP = "second-pass-drill " + PRODUCT_VERSION;
 var NOTICE_VERSION = "notice-2026-09-14";
 
@@ -1893,17 +1897,26 @@ function wireLedger(){
 /* The two month labels are page text rather than text inside a drawing, so they stay at the
    page's small size at every width. As an SVG they scaled with the card and fell to about 10.8
    pixels on a 320 pixel phone. */
+/* From 1.9.6 the picture names its measure and prints each balance at the end of its bar. A
+   tester on 1.9.5 saw "a bar graph with no labels of measure or metric": the caption says the
+   bars are month-end balances in dollars, and why one is red. */
+function signedMoney(v){ return (v < 0 ? "-" : "") + money(v); }
 function chart(c, mo){
   mo = mo || MONTHS_DEFAULT;
   var max = Math.max(Math.abs(c.prior), Math.abs(c.current)) || 1;
   var wa = Math.max(0, Math.min(100, 100 * Math.abs(c.prior) / max)).toFixed(1);
   var wb = Math.max(0, Math.min(100, 100 * Math.abs(c.current) / max)).toFixed(1);
   var d = c.current - c.prior;
-  return '<div class="chart" role="img" aria-label="'+esc(c.name+', '+mo[0]+' '+money(c.prior)+', '+mo[1]+' '+money(c.current))+'">'+
+  var cap = "Account balance at the end of each month, in dollars." +
+    (d < 0 ? " The " + mo[1] + " bar is red because the balance went down." : "");
+  return '<p class="chartcap">'+esc(cap)+'</p>'+
+    '<div class="chart" role="img" aria-label="'+esc(c.name+', balance in dollars, '+mo[0]+' '+signedMoney(c.prior)+', '+mo[1]+' '+signedMoney(c.current))+'">'+
     '<span class="chartlab" aria-hidden="true">'+esc(mo[0])+'</span>'+
     '<span class="charttrack" aria-hidden="true"><i class="chartbar old" style="width:'+wa+'%"></i></span>'+
+    '<span class="chartval" aria-hidden="true">'+esc(signedMoney(c.prior))+'</span>'+
     '<span class="chartlab now" aria-hidden="true">'+esc(mo[1])+'</span>'+
     '<span class="charttrack" aria-hidden="true"><i class="chartbar'+(d<0 ? " neg" : "")+'" style="width:'+wb+'%"></i></span>'+
+    '<span class="chartval" aria-hidden="true">'+esc(signedMoney(c.current))+'</span>'+
   '</div>';
 }
 
@@ -2187,8 +2200,9 @@ function intro(){
         ? 'Read each line of the memo beside its own figures and flag the ones that do not hold. Do the first five, then the three-minute feedback form.'+
           (S.tourSeen ? '' : ' The first line comes with a short tour.')
         : 'Before any of the memo appears, you read the ledger on its own and tap the lines you would give a second look. Then you read '+numWord(LINES)+' '+plural(LINES, 'line')+' of the memo and flag the ones that do not hold.'+fresh)+'</p>'+
-    /* the job, said once in plain words where nobody can miss it (1.9.5) */
-    '<p class="jobline"><b>Your job.</b> '+esc(JOB_LINE)+'</p>'+
+    /* the job, said once in plain words where nobody can miss it (1.9.5), and from 1.9.6 what a
+       close memo is and what each call means, in the same box, before the tour or the first card */
+    '<p class="jobline closeline"><b>What you are checking.</b> '+esc(CLOSE_LINE)+'</p>'+
     caseControl()+
     '<button class="btn" id="go">Play</button>'+
     playFrames()+
@@ -2196,7 +2210,11 @@ function intro(){
       (TEST_MODE ? '' :
       '<a class="howlink" href="checker.html">Checker page</a>'+
       '<a class="howlink" href="author.html">Build one from your own ledger</a>'+
-      '<a class="howlink" href="review.html">For reviewers: the entry in one page</a>')+'</div>';
+      '<a class="howlink" href="review.html">For reviewers: the entry in one page</a>')+
+      /* the instructor line shows on the tester link as well, since faculty arrive on ?test=1, and
+         it opens in a new tab so a run in progress stays where it is (1.9.6) */
+      '<a class="howlink" id="primerlink" href="'+PRIMER_HREF+'" target="_blank" rel="noopener">For instructors: what the close is and how to teach with this drill, on one page</a>'+
+    '</div>';
   wireCaseControl();
   /* The tester link goes from Play straight into the drill under a random codename. Test mode
      posts nothing, so the notice about what gets posted and the codename screen have nothing
@@ -2682,8 +2700,11 @@ var CALL_HINT = {
   stand:"The memo's explanation holds up.",
   flag:"The memo's explanation has a problem."
 };
-/* the job in plain words, on the intro and on the tour's first tip (1.9.5) */
-var JOB_LINE = "On each line, decide whether the memo's explanation holds up. Let it stand when the numbers match the ledger and something on file backs the reason. Flag it when either one has a problem.";
+/* What a close memo is, said before the tour or the first card (1.9.6). Three testers, one of
+   them faculty, asked what the memo was before they could judge it. The paragraph says what the
+   close is, who drafted the memo, the two things checked on each line and what each call means. */
+var CLOSE_LINE = "At the end of each month a company closes its books, and someone writes a close memo: a sentence or two on why each account moved since last month. Here an AI assistant drafted that memo from the ledger. On each line you check two things. Do the figures in the sentence match the ledger, and does a document on file back the reason it gives? Let it stand means the explanation holds up on both counts. Flag it means one of them has a problem.";
+var PRIMER_HREF = "primer.html";
 function callCard(i, round){
   var c = cardsOf(round)[i];
   if(round === 2){ if(!S.r2Start) S.r2Start = Date.now(); }
@@ -2992,7 +3013,7 @@ function callCard(i, round){
 
 /* ---------- the line 1 tour, on the tester link only (1.9.0) ----------
    His ask: a one-question tutorial with tips, so a tester gets the gist before the drill asks
-   anything of them. Six tips sit over the real parts of line 1, one sentence each, with a Next
+   anything of them. Four tips (six until 1.9.6) sit over the real parts of line 1, with a Next
    button, a Skip tour link and a count. The card under them stays live: the player makes the
    call and taps the basis themselves, so line 1 is answered and scored like any other line.
    It shows once per tab. The flag rides in the run state and Play again leaves it set. A tip
@@ -3007,12 +3028,13 @@ var TOUR_STEPS = [
    text:"These are the ledger figures for the same account, so you can check the memo's numbers for yourself."},
   {sel:".card .file", optional:true,
    text:"This is what is on file, and if nothing here backs the memo's reason, that reason is not established."},
-  {sel:".card .opts.calls", call:true,
-   text:"Make your call here. Let it stand means the memo's explanation holds up. Flag it means the explanation has a problem."},
-  {sel:"#commit .basis .opts",
-   text:"Now tap every reason that applies, and only those. The line under each reason says what it means."},
-  {sel:"#lockin",
-   text:"When you are sure, lock it in to see the answer key."}
+  /* From 1.9.6 the tour ends at the call tip, and no tip waits for the tester (see tourShow).
+     Tip 4 of 6 was the only tip that waited for a click on the card before it would move, and two
+     testers on Firefox, one on 1.9.3 and one faculty tester on 1.9.5, still read it as frozen. The
+     reason and lock tips are folded into its sentence, and the How to answer box under the
+     question carries the rest. */
+  {sel:".card .opts.calls",
+   text:"Make your call here. Let it stand means the memo's explanation holds up. Flag it means the explanation has a problem. Then tap every reason that applies and lock it in to see the answer key."}
 ];
 var TOUR_WAIT = "Choose Let it stand or Flag it on the card, and the next tip opens by itself.";
 var TOUR_CLOSED = "The tour is closed, and line 1 is yours to answer.";
@@ -3114,6 +3136,10 @@ function tourStart(){
 }
 function tourShow(k){
   if(!TOUR) return;
+  /* The guard (1.9.6): a tip whose part is not on the page is skipped, and when no tip is left
+     the tour closes and hands line 1 over. A missing part never holds the tour on a tip. */
+  while(k < TOUR.steps.length && !document.querySelector(TOUR.steps[k].sel)) k++;
+  if(k >= TOUR.steps.length) return tourStop(true);
   TOUR.k = k;
   var st = TOUR.steps[k], n = TOUR.steps.length;
   document.getElementById("tourcount").textContent = (k + 1) + " of " + n;
@@ -3171,13 +3197,12 @@ function tourNext(){
   if(TOUR.k >= TOUR.steps.length - 1) return tourStop(true);
   tourShow(TOUR.k + 1);
 }
-/* a call was chosen on the card: on the call tip the reason rows have just opened under it, so
-   the tour moves on to them; on any other tip the card grew, so the tip is placed again */
+/* A call was chosen on the card. From 1.9.6 that closes the tour: the tester is answering line 1,
+   the reason rows have just opened under the call, and a tip left over them would cover the very
+   chips it asks for. Focus stays on the call the tester pressed. */
 function tourAfterCall(){
   if(!TOUR) return;
-  if(TOUR.steps[TOUR.k].call) return tourShow(TOUR.k + 1);
-  tourPaintNext();
-  tourPlace(false);
+  tourStop(false);
 }
 function tourPlace(scroll){
   if(!TOUR) return;
