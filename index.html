@@ -2187,8 +2187,9 @@ function intro(){
         ? 'Read each line of the memo beside its own figures and flag the ones that do not hold. Do the first five, then the three-minute feedback form.'+
           (S.tourSeen ? '' : ' The first line comes with a short tour.')
         : 'Before any of the memo appears, you read the ledger on its own and tap the lines you would give a second look. Then you read '+numWord(LINES)+' '+plural(LINES, 'line')+' of the memo and flag the ones that do not hold.'+fresh)+'</p>'+
-    /* the job, said once in plain words where nobody can miss it (1.9.5) */
-    '<p class="jobline"><b>Your job.</b> '+esc(JOB_LINE)+'</p>'+
+    /* the job, said once in plain words where nobody can miss it (1.9.5), and from 1.9.6 what a
+       close memo is and what each call means, in the same box, before the tour or the first card */
+    '<p class="jobline closeline"><b>What you are checking.</b> '+esc(CLOSE_LINE)+'</p>'+
     caseControl()+
     '<button class="btn" id="go">Play</button>'+
     playFrames()+
@@ -2196,7 +2197,11 @@ function intro(){
       (TEST_MODE ? '' :
       '<a class="howlink" href="checker.html">Checker page</a>'+
       '<a class="howlink" href="author.html">Build one from your own ledger</a>'+
-      '<a class="howlink" href="review.html">For reviewers: the entry in one page</a>')+'</div>';
+      '<a class="howlink" href="review.html">For reviewers: the entry in one page</a>')+
+      /* the instructor line shows on the tester link as well, since faculty arrive on ?test=1, and
+         it opens in a new tab so a run in progress stays where it is (1.9.6) */
+      '<a class="howlink" id="primerlink" href="'+PRIMER_HREF+'" target="_blank" rel="noopener">For instructors: what the close is and how to teach with this drill, on one page</a>'+
+    '</div>';
   wireCaseControl();
   /* The tester link goes from Play straight into the drill under a random codename. Test mode
      posts nothing, so the notice about what gets posted and the codename screen have nothing
@@ -2682,8 +2687,11 @@ var CALL_HINT = {
   stand:"The memo's explanation holds up.",
   flag:"The memo's explanation has a problem."
 };
-/* the job in plain words, on the intro and on the tour's first tip (1.9.5) */
-var JOB_LINE = "On each line, decide whether the memo's explanation holds up. Let it stand when the numbers match the ledger and something on file backs the reason. Flag it when either one has a problem.";
+/* What a close memo is, said before the tour or the first card (1.9.6). Three testers, one of
+   them faculty, asked what the memo was before they could judge it. The paragraph says what the
+   close is, who drafted the memo, the two things checked on each line and what each call means. */
+var CLOSE_LINE = "At the end of each month a company closes its books, and someone writes a close memo: a sentence or two on why each account moved since last month. Here an AI assistant drafted that memo from the ledger. On each line you check two things. Do the figures in the sentence match the ledger, and does a document on file back the reason it gives? Let it stand means the explanation holds up on both counts. Flag it means one of them has a problem.";
+var PRIMER_HREF = "primer.html";
 function callCard(i, round){
   var c = cardsOf(round)[i];
   if(round === 2){ if(!S.r2Start) S.r2Start = Date.now(); }
