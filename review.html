@@ -607,8 +607,8 @@ p.measures-note{margin:0 0 16px;font-size:16.5px;color:var(--ink-soft);line-heig
 
       <section id="tested">
         <h3><span class="n">04</span>How it was tested</h3>
-        <p>Three independent reviews by ChatGPT read this build on 13 September 2026, each one against
-        the live pages and the code rather than against a description of them. Every probe they wrote
+        <p>ChatGPT reviewed this build three times on 13 September 2026, each time against
+        the live pages and the code rather than against a description of them. Every probe those reviews wrote
         is kept as a regression fixture, seventeen from the first, twenty-four from the second and
         forty from the third. An AI agent session that built none of this graded the third
         review into 41 findings, and then wrote 175 new probes against the repaired checker. Forty-eight of
@@ -622,7 +622,7 @@ p.measures-note{margin:0 0 16px;font-size:16.5px;color:var(--ink-soft);line-heig
         endpoint, an educator&rsquo;s scoring, a rerun of the drafting evidence in clean contexts, and a
         practitioner working a ledger they did not build.</p>
         <p>The repair was the rule rather than another list of words. A sentence now clears only when
-        nothing risky is left once every claim in it has been read, so the same 175 probes come back
+        every claim in it has been read and accounted for, with nothing ambiguous left over, so the same 175 probes come back
         with none of them cleared wrongly, and the suite is 799 fixtures that the browser checker and
         a separate command-line checker both run, agreeing on every compared field. The audit&rsquo;s
         second round on 14 September wrote 186 new probes, and 34 of them still cleared, such as
@@ -630,8 +630,9 @@ p.measures-note{margin:0 0 16px;font-size:16.5px;color:var(--ink-soft);line-heig
         rules that hold them, set out in <a href="RELEASE-NOTES.md">the release notes</a>.
         Run again on 10 October 2026, 185 of the 186 return the status the audit requires.
         The last is a memo of two sentences whose second is the false one, and the audit&rsquo;s grader
-        reads only the first, while both checkers fail the second. Since then, nine students in accounting and finance programs tried the drill
-        on their own between 20 and 22 October 2026 and answered a short form, and release 1.9.5
+        reads only the first, while both checkers fail the second. Since then, thirteen testers tried the drill
+        on their own between 20 and 25 October 2026 and answered a short form: ten students in accounting
+        and finance programs, two faculty members and one other. Release 1.9.5
         answers what the first six found unclear. What has not happened is as short to say: no practitioner has been
         watched using it, and no educator has scored a written explanation.</p>
         <p>The refining started before any of this shipped. The command-line trainer this grew out of
@@ -644,7 +645,7 @@ p.measures-note{margin:0 0 16px;font-size:16.5px;color:var(--ink-soft);line-heig
       <section id="outcomes">
         <h3><span class="n">05</span>Outcomes</h3>
         <p class="measures"><span>Attempts <i>&middot;</i></span> <span>Right call <i>&middot;</i></span> <span>Reason category <i>&middot;</i></span> <span>False flags</span></p>
-        <p class="measures-note">Four counts, and they fill from the response export once people have played the frozen release. An attempt is not a person.</p>
+        <p class="measures-note">Four counts, read from the response export. Testers have sent drill logs with the feedback form since 20 October 2026, and the panel below shows their calls so far. An attempt is not a person.</p>
         <div class="tally" id="tester-calls" aria-labelledby="tester-calls-h">
           <h4 id="tester-calls-h">Tester calls so far</h4>
           <noscript><p class="cap">The tester tally is drawn by a short script from the data block on this page.</p></noscript>
@@ -670,7 +671,7 @@ p.measures-note{margin:0 0 16px;font-size:16.5px;color:var(--ink-soft);line-heig
           "falseFlags": 7
         }
         </script>
-        <p>The call and the reason are scored separately, so a run can agree with the answer key and give a basis that does not. Every player first marks, from the ledger alone, the lines they would give a second look, and the export reports where the final calls moved off that read and whether toward the key or away from it. The reason chips measure agreement with accepted reason categories, and on the five fresh-case items the drill collects a short written explanation for an independent educator to score blind against a rubric, which has not been done yet. These are answer-key agreement on a keyed exercise and nothing more, and five items with no baseline cannot show a learning gain. Every run can be saved to a file on the player&rsquo;s own machine, sending it is a separate step the player chooses, and a codename is a pseudonym rather than anonymity.</p>
+        <p>The call and the reason are scored separately, so a run can agree with the answer key and give a basis that does not. Every player first marks, from the ledger alone, the lines they would give a second look, and the export reports where the final calls moved off that read and whether toward the key or away from it. The reason chips measure agreement with accepted reason categories, and on the five fresh-case items the drill collects a short written explanation for an educator from outside the project to score blind against a rubric, which has not been done yet. These are answer-key agreement on a keyed exercise and nothing more, and five items with no baseline cannot show a learning gain. Every run can be saved to a file on the player&rsquo;s own machine, sending it is a separate step the player chooses, and a codename is a pseudonym rather than anonymity.</p>
       </section>
 
       <section id="scope">

@@ -793,7 +793,7 @@ on the reveal face beside the points. Verified in test mode on
 ## Round two, the assessment
 
 Round one is practice: every call gets a reveal, a running score and a car that moves. Round two
-is an independent assessment on a company the player has never seen, and it is scored at the end.
+is a separate assessment on a company the player has never seen, and it is scored at the end.
 
 The bridge screen says so: **"Round two is scored at the end, so you get no hints."** Under that
 it prints what the case file calls the assessment note, which tells the player that every figure
@@ -1044,7 +1044,7 @@ Question B carries both round totals beside the attempt identifier. Each Why fie
 The downloadable record carries `basisKey` and `reasonResult` on each of the nineteen items and
 `rightReason` beside `right` in both rounds.
 
-This exists because an independent release review completed the whole drill on 13 September 2026
+This exists because a ChatGPT release review completed the whole drill on 13 September 2026
 while tapping `wrong account` on every one of the nineteen lines, and the page awarded 14 of 14
 and 5 of 5. The same run now scores zero on reason.
 
@@ -1055,7 +1055,7 @@ score well on it without having reasoned. The measurement adopted on 13 Septembe
 shipping in `brightwater-v6`, adds a short written explanation on each of the five fresh-case
 items, naming the decisive evidence, why it matters for this period, and the action or source
 request that follows. The page collects those answers and never scores them. `RUBRIC.md` is what an
-independent educator will score them against, blind, on a sheet that hides the call result, and
+educator from outside the project will score them against, blind, on a sheet that hides the call result, and
 none has been scored yet. The chips stay a separate result, and a scorer's disagreement with the
 key is recorded rather than settled by changing the key.
 
