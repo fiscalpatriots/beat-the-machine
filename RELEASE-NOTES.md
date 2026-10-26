@@ -1,3 +1,36 @@
+# Second Pass, release 1.9.6
+
+25 October 2026. Khaled Alkurd, George Mason University.
+Live at https://fiscalpatriots.github.io/beat-the-machine/
+
+---
+
+## 1.9.6, what changed since 1.9.5
+
+Cut 25 October 2026 from the tester feedback on 1.9.3 and 1.9.5, faculty included. Thank you to
+every tester who wrote in: each change below answers something one of you said. No answer key,
+basis key, case file, reason value or record grammar changed, so the score, question 9's
+pre-filled record and `tools/tester_record_parse.py` read a 1.9.6 run exactly as a 1.9.5 one. The
+product stamp moves to `second-pass-drill 1.9.6`.
+
+| What changed | Why | Where |
+| --- | --- | --- |
+| **The intro says what a close memo is.** The boxed line on the opening screen now reads "What you are checking." and says what the month-end close is, that an AI assistant drafted the memo from the ledger, the two checks on each line (do the figures match the ledger, does a document on file back the reason) and what Let it stand and Flag it mean. It replaces the 1.9.5 "Your job." box. A link in the intro's link row, "For instructors: what the close is and how to teach with this drill, on one page", opens the primer in a new tab on the public link and the tester link alike | Three testers, one of them faculty, asked what the memo was before they could judge it | `CLOSE_LINE`, `PRIMER_HREF`, `intro()`, `.jobline` |
+| **The tour no longer stops at 4 of 6.** It is four tips now and ends at the call tip, whose sentence carries the reason and lock steps, with Got it to close. No tip waits for a click on the card, a call made while the tour is up closes it so no tip covers the reason chips, and a tip whose part is not on the page is skipped, closing the tour when none is left | Two testers on Firefox, Windows 11 on 1.9.3 and a faculty tester on "Laptop/Mozilla" on 1.9.5, saw the tour stop at step 4. The page uses no `:has()`, popover or `inert`, and its focus and scroll calls are wrapped, so the code shows no Firefox-only fault. The one tip that could hold the tour in any browser was tip 4, which waited for the call | `TOUR_STEPS`, `tourShow()`, `tourAfterCall()` |
+| **The bars on each card name their measure.** A caption over the two bars reads "Account balance at the end of each month, in dollars.", adding why the second bar is red when the balance fell, and each month's balance is printed at the end of its bar | A tester on 1.9.5: a bar graph with no labels of measure or metric | `chart()`, `signedMoney()`, `.chart`, `.chartcap`, `.chartval` |
+| **Tester calls so far, on the review page.** A panel in Outcomes: eleven testers, 64 calls, 52 matched the key (81 percent), a row per error type, and the note that seven of the twelve misses were a clean line flagged. It names the sample as small, the builds (1.9.3 and 1.9.5) and the read date, 25 October 2026. The numbers sit in one JSON block so the next read changes that block only | The drill logs testers sent with the form, read against the key | `review.html`, `#tester-calls-data` |
+| **An instructor primer.** `primer.html`, one page: the financial close, the close memo, what the drill trains, a 35-minute lesson (10 minutes before, 15 in the drill, 10 of discussion), where testers placed it and a note on confidentiality. Linked from the intro, the review page's On file list and the sitemap | Both faculty testers asked how it fits a course, and one asked for teaching material on the close alongside it | `primer.html`, `review.html`, `sitemap.xml` |
+| **The version.** `second-pass-drill 1.9.6` on the footer, the review page rail and the README | | `PRODUCT_VERSION`, `tests/run-tester-record-tests.cjs` |
+
+Tests: `node tests/run-tester-record-tests.cjs` at 97 of 97, `python
+tools/tests/test_tester_record_parse.py` at 34 of 34, the checker suite at 801 of 801 and the
+findings tools passing.
+
+Not run for this release: a browser walk of the tour in Firefox or any other engine. The tour
+change was checked by reading the code and by the suites above, which do not drive the tour.
+
+---
+
 # Second Pass, release 1.9.5
 
 21 October 2026. Khaled Alkurd, George Mason University.
