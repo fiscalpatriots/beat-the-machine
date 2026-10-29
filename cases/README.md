@@ -387,7 +387,7 @@ the travel line a document carries end to end.
 
 ### The human-readable copy
 
-`EXERCISE-kestrel-rev1.md` in the Coach HQ repository holds the same case written for a facilitator,
+`EXERCISE-kestrel-rev1.md`, kept outside this repository, holds the same case written for a facilitator,
 with the setup, the ledger, the twelve sentences, the on-file facts and the key in a separate final
 section.
 

@@ -1272,6 +1272,3 @@ GitHub Pages serves the root of `main` and the change is live within a minute or
 git add -A && git commit -m "..." && git push
 curl -s https://fiscalpatriots.github.io/beat-the-machine/index.html | diff - index.html
 ```
-
-The source of truth for the content is
-`Coach Dashboard HQ/drafts-2026-09-05-aina/EXERCISE-case-01-form-rev4.md`.
